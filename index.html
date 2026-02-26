@@ -1917,7 +1917,7 @@ async function importStats(event) {
 // ── SERVICE WORKER REGISTRATION ──
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/english-quiz/sw.js')
+    navigator.serviceWorker.register('./sw.js')
       .then(reg => console.log('SW registered, scope:', reg.scope))
       .catch(err => console.warn('SW registration failed:', err));
   });
