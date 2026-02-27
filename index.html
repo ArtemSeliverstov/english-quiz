@@ -640,7 +640,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 </div>
 
 <!-- ══ FAMILY SCREEN ══ -->
-<div id="tab-family" style="display:none">
+<div id="tab-family" class="hidden">
   <div class="family-wrap">
 
     <div id="fb-status-bar" class="fb-status loading">⏳ Connecting to server…</div>
@@ -2089,8 +2089,9 @@ function showTab(name) {
   });
   document.getElementById('tab-'+name).classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (name === 'setup') document.querySelectorAll('.tab')[0].classList.add('active');
-  if (name === 'stats') { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
+  if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
+  if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
+  if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
 }
 
 // ══════════════════════════════════════════════
