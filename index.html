@@ -2084,7 +2084,7 @@ function toggleBiz() {
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════
 function showTab(name) {
-  ['setup','stats','quiz','results'].forEach(t => {
+  ['setup','stats','quiz','results','family'].forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
   });
   document.getElementById('tab-'+name).classList.remove('hidden');
@@ -3319,9 +3319,9 @@ window.finishSession = async function() {
 };
 
 // Refresh family tab when switched to
-const _origShowTab = window.showTab;
+const _origShowTab = window.showTab || showTab;
 window.showTab = function(name) {
-  if (_origShowTab) _origShowTab(name);
+  _origShowTab(name);
   if (name === 'family' && currentPlayer) fetchAndRenderFamily();
 };
 
