@@ -2979,6 +2979,11 @@ async function syncToFirebase(immediate = false) {
   syncTimer = setTimeout(async () => {
     try {
       const db = typeof DB !== 'undefined' ? DB : await loadData();
+      // Never overwrite Firebase with empty local data
+      if ((db.totalAnswered || 0) === 0 && (db.totalSessions || 0) === 0) {
+        console.log('Sync skipped — local data is empty');
+        return;
+      }
       await fbSet('players/' + currentPlayer, buildPayload(db));
       setFbStatus('online', '✅ Synced with server');
     } catch(e) {
@@ -2997,7 +3002,7 @@ async function loadFromFirebase() {
     const remote = await fbGet('players/' + currentPlayer);
     if (!remote) return false;
     const local = typeof DB !== 'undefined' ? DB : await loadData();
-    if ((remote.totalAnswered || 0) > (local.totalAnswered || 0)) {
+    if ((remote.totalAnswered || 0) > 0 && (remote.totalAnswered || 0) >= (local.totalAnswered || 0)) {
       const merged = {
         ...defaultData(),
         sessions:       remote.recentSessions || [],
