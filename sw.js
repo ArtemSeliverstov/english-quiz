@@ -1,17 +1,21 @@
-const CACHE_NAME = 'english-quiz-v3';
+const CACHE_NAME = 'english-quiz-v4';
+
+// Use relative paths — works on any subdirectory (GitHub Pages, local, etc.)
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './sw.js'
 ];
 
-// Install: cache all assets
+// Install: cache core assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
+      // addAll fails if any asset 404s — use individual adds so one miss doesn't break it all
+      return Promise.allSettled(ASSETS.map(a => cache.add(a)));
     })
   );
   self.skipWaiting();
@@ -29,19 +33,22 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: cache-first strategy
+// Fetch strategy
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
-  // Google Fonts — network first, no offline fallback needed
-  if (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com')) {
+  // External resources — always network, never cache
+  if (url.includes('fonts.googleapis.com') ||
+      url.includes('fonts.gstatic.com') ||
+      url.includes('firebasedatabase.app') ||
+      url.includes('firebaseio.com')) {
     event.respondWith(
-      fetch(event.request).catch(() => new Response('', {status: 408}))
+      fetch(event.request).catch(() => new Response('', { status: 408 }))
     );
     return;
   }
 
-  // Everything else — cache first
+  // Local assets — cache first, network fallback
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
@@ -52,6 +59,7 @@ self.addEventListener('fetch', event => {
         }
         return response;
       }).catch(() => {
+        // Offline fallback for navigation
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html');
         }
