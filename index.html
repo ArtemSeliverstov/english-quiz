@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260228-dcb0ac61">
+  <meta name="app-version" content="v20260228-f27168ed">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">dcb0ac61</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">f27168ed</span></p>
 </header>
 
 <!-- TABS -->
@@ -2255,14 +2255,35 @@ async function loadData() {
     return new Promise((res) => {
       const tx  = db.transaction(STORE, 'readonly');
       const req = tx.objectStore(STORE).get(KEY);
-      req.onsuccess = e => res(e.target.result || defaultData());
-      req.onerror   = ()  => res(defaultData());
+      req.onsuccess = e => {
+        const result = e.target.result;
+        if (result && result.totalAnswered > 0) { res(result); return; }
+        // IndexedDB empty — try localStorage backup
+        const backupKey = 'quizDB_backup_' + (localStorage.getItem('quizPlayerKey') || 'default');
+        try {
+          const raw = localStorage.getItem(backupKey);
+          if (raw) {
+            const { data } = JSON.parse(raw);
+            if (data && data.totalAnswered > 0) {
+              console.log('Restored from localStorage backup:', data.totalAnswered, 'answers');
+              res(data); return;
+            }
+          }
+        } catch(e) { /* ignore */ }
+        res(result || defaultData());
+      };
+      req.onerror = () => res(defaultData());
     });
   } catch { return defaultData(); }
 }
 
 async function saveData(d) {
   try {
+    // Mirror to localStorage as backup (survives IndexedDB wipes)
+    try {
+      localStorage.setItem('quizDB_backup_' + (currentPlayer||'default'),
+        JSON.stringify({ ts: Date.now(), data: d }));
+    } catch(e) { /* localStorage might be full — ignore */ }
     const db = await openDB();
     return new Promise((res, rej) => {
       const tx  = db.transaction(STORE, 'readwrite');
