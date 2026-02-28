@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260228-bb815669">
+  <meta name="app-version" content="v20260228-dcb0ac61">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">bb815669</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">dcb0ac61</span></p>
 </header>
 
 <!-- TABS -->
@@ -3806,8 +3806,13 @@ if ('serviceWorker' in navigator) {
       for (const r of regs) await r.unregister();
       const keys = await caches.keys();
       for (const k of keys) await caches.delete(k);
-      // reload without the param so we don't loop
-      location.replace(location.pathname);
+      // reload with no-cache header to bypass HTTP cache too
+      const resp = await fetch(location.pathname, { cache: 'no-store' });
+      const html = await resp.text();
+      document.open();
+      document.write(html);
+      document.close();
+      history.replaceState(null, '', location.pathname);
       return;
     }
     navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
