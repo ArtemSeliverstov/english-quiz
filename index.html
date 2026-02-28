@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260228-ebf83695">
+  <meta name="app-version" content="v20260228-bb815669">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">ebf83695</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">bb815669</span></p>
 </header>
 
 <!-- TABS -->
@@ -2294,7 +2294,7 @@ function backfillStats(db) {
   if (!db.catStats) db.catStats = {};
   if (!db.lvlStats) db.lvlStats = {};
   Object.entries(db.qStats || {}).forEach(([id, st]) => {
-    const q = ALL_QUESTIONS.find(q => q.id === id);
+    const q = ALL_QUESTIONS.find(q => q && q.id === id);
     if (!q) return;
     const cat = q.cat, lvl = q.lvl || 'B2';
     if (!db.catStats[cat]) db.catStats[cat] = {seen:0,correct:0};
@@ -2911,7 +2911,7 @@ function renderCoverage() {
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   const catSeen = {};
   Object.keys(qStats).forEach(id => {
-    const q = ALL_QUESTIONS.find(q => q.id === id);
+    const q = ALL_QUESTIONS.find(q => q && q.id === id);
     if (!q) return;
     if (lvlSeen[q.lvl] !== undefined) lvlSeen[q.lvl]++;
     catSeen[q.cat] = (catSeen[q.cat] || 0) + 1;
@@ -3104,7 +3104,7 @@ function exportStats() {
   // Build a human-readable export with question text attached to each qStat
   const readable = {};
   for (const [id, st] of Object.entries(DB.qStats)) {
-    const q = ALL_QUESTIONS.find(q => q.id === id);
+    const q = ALL_QUESTIONS.find(q => q && q.id === id);
     readable[id] = {
       question: q ? q.q.replace(/<[^>]+>/g, '') : '(unknown)',
       category: q ? q.cat : '?',
@@ -3194,8 +3194,8 @@ async function importStats(event) {
 </script>
 
 
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+
 <script>
 // ══════════════════════════════════════════════════════════════
 //  FIREBASE REST API  (no SDK — pure fetch, works everywhere)
@@ -3481,7 +3481,7 @@ function playerCoverageHTML(p) {
   const LEVEL_TOTALS = { B1: 353, B2: 515, C1: 142, C2: 16 };
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
-    const q = ALL_QUESTIONS.find(q => q.id === id);
+    const q = ALL_QUESTIONS.find(q => q && q.id === id);
     if (q && lvlSeen[q.lvl] !== undefined) lvlSeen[q.lvl]++;
   });
   return ['B1','B2','C1','C2'].map(lv => {
