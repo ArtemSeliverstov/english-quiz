@@ -1,4 +1,4 @@
-const CACHE_NAME = 'english-quiz-v20260228-959662ee';
+const CACHE_NAME = 'english-quiz-v20260228-d8e64163';
 
 // Use relative paths — works on any subdirectory (GitHub Pages, local, etc.)
 const ASSETS = [

@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260228-959662ee">
+  <meta name="app-version" content="v20260228-d8e64163">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub">multiple choice · fill the gap · smart repetition · vb340c0ab</p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">d8e64163</span></p>
 </header>
 
 <!-- TABS -->
@@ -3263,7 +3263,7 @@ function confirmPlayer(key) {
   document.getElementById('name-picker').style.display = 'none';
   const member = FAMILY_MEMBERS.find(m => m.key === key);
   if (member) {
-    document.getElementById('hdr-sub').textContent =
+    document.getElementById('hdr-player').textContent =
       member.emoji + ' ' + member.name + ' · multiple choice · fill the gap · smart repetition';
   }
   syncToFirebase(true);
@@ -3757,7 +3757,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load any locally saved PIN override (from Change PIN)
     loadLocalPinOverride(currentPlayer);
     const member = FAMILY_MEMBERS.find(m => m.key === currentPlayer);
-    if (member) document.getElementById('hdr-sub').textContent =
+    if (member) document.getElementById('hdr-player').textContent =
       member.emoji + ' ' + member.name + ' · multiple choice · fill the gap · smart repetition';
     setFbStatus('loading', '⏳ Loading your progress from server…');
     loadFromFirebase().then(loaded => {
