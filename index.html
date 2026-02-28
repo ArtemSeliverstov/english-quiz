@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260228-d8e64163">
+  <meta name="app-version" content="v20260228-ebf83695">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">d8e64163</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">ebf83695</span></p>
 </header>
 
 <!-- TABS -->
@@ -714,7 +714,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;">Family leaderboard</div>
-      <button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export for AI</button>
+      <button class="export-ai-btn" onclick="syncToFirebase(true)" title="Force sync your data to server" style="background:var(--surface);color:var(--text);border:1px solid var(--border);margin-right:.5rem;">🔄 Sync now</button><button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export for AI</button>
     </div>
 
     <div id="family-list">
@@ -1935,7 +1935,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 
 // ── PAST SIMPLE vs PAST CONTINUOUS (mixed context) ──
 {id:'ptc09',q:'While I ___ to work, I ___ an old friend.',type:'mcq',opts:['was walking / ran into','walked / was running into','was walking / was running into','walked / ran into'],ans:0,cat:'Tenses',lvl:'B1',exp:'Ongoing background action (walking) + sudden interrupting event (ran into) — classic past continuous + past simple combination.'},
-{id:'ptc10',q:'She ___ dinner when the lights ___.',type:'mcq',opts:['was cooking / went out','cooked / were going out','was cooking / were going out','cooked / went out'],ans:0,cat:'Tenses',lvl:'B1',exp:'Ongoing action (cooking) interrupted by a sudden event (lights went out) — past continuous + past simple.'},,
+{id:'ptc10',q:'She ___ dinner when the lights ___.',type:'mcq',opts:['was cooking / went out','cooked / were going out','was cooking / were going out','cooked / went out'],ans:0,cat:'Tenses',lvl:'B1',exp:'Ongoing action (cooking) interrupted by a sudden event (lights went out) — past continuous + past simple.'},
 {id:'art_b02',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'I bought ___ new phone yesterday. ___ phone has a great camera.',opts:['a','the','—'],ans:0,exp:'<strong>First mention</strong> — use <em>a</em>. Second mention of the same thing — use <em>the.</em> <em>I bought a new phone</em> (first mention, unknown) — <em>The phone has a great camera</em> (now we both know which phone).'},
 {id:'art_b03',lvl:'B1',biz:false,cat:'Articles',type:'mcq',q:'Which sentence uses articles correctly?',opts:['She is doctor.','She is the doctor.','She is a doctor.'],ans:2,exp:'<strong>Jobs and professions</strong> use the indefinite article: <em>a/an.</em> <em>She is a doctor / he is an engineer / I am a teacher.</em> Russian has no articles — this is one of the most common errors Russian speakers make.'},
 {id:'art_b04',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'Can you close ___ window, please? It is cold.',opts:['the','a','—'],ans:0,exp:'<strong>The</strong> = both speaker and listener know which window is meant — there is only one window in the room. When the context makes it clear which specific thing is meant, use <em>the.</em>'},
@@ -3395,8 +3395,11 @@ async function syncToFirebase(immediate = false) {
   syncTimer = setTimeout(async () => {
     try {
       const db = typeof DB !== 'undefined' ? DB : await loadData();
-      // Never overwrite Firebase with empty local data
-      if ((db.totalAnswered || 0) === 0 && (db.totalSessions || 0) === 0) {
+      // Never overwrite Firebase with completely empty local data
+      const hasAnyData = (db.totalAnswered || 0) > 0
+        || (db.totalSessions || 0) > 0
+        || Object.keys(db.qStats || {}).length > 0;
+      if (!hasAnyData) {
         console.log('Sync skipped — local data is empty');
         return;
       }
@@ -3458,10 +3461,12 @@ function setFbStatus(type, msg) {
 async function fetchAndRenderFamily() {
   try {
     const data = await fbGet('players');
+    console.log('Family data from Firebase:', data);
     renderFamily(data || {});
     const count = Object.keys(data || {}).length;
     setFbStatus('online', '✅ Connected · ' + count + ' player(s)');
   } catch(e) {
+    console.warn('fetchAndRenderFamily error:', e);
     setFbStatus('offline', '⚠️ Cannot reach server');
   }
 }
