@@ -1,4 +1,4 @@
-const CACHE_NAME = 'english-quiz-v4';
+const CACHE_NAME = 'english-quiz-v20260228-3fb1845b';
 
 // Use relative paths — works on any subdirectory (GitHub Pages, local, etc.)
 const ASSETS = [
@@ -47,6 +47,9 @@ self.addEventListener('fetch', event => {
     );
     return;
   }
+
+  // Skip non-http requests (chrome-extension://, data:, etc.)
+  if (!event.request.url.startsWith('http')) return;
 
   // Local assets — cache first, network fallback
   event.respondWith(
