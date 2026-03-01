@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260301-5e2b3404">
+  <meta name="app-version" content="v20260301-74adda25">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">5e2b3404</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">74adda25</span></p>
 </header>
 
 <!-- TABS -->
@@ -603,7 +603,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
     </div>
     <div class="field">
       <label>Question mode</label>
-      <div class="mode-btns">
+      <div class="mode-btns" id="mode-btns">
         <button class="mode-btn active" data-mode="smart" onclick="setMode(this)">🧠 Smart (focus on mistakes)</button>
         <button class="mode-btn" data-mode="random" onclick="setMode(this)">🎲 Random</button>
         <button class="mode-btn" data-mode="weak" onclick="setMode(this)">⚠️ Weak spots only</button>
@@ -642,10 +642,10 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
         <div>
           <label>Maximum level</label>
           <div class="mode-btns" id="level-btns" style="margin-top:.4rem;margin-bottom:.4rem;">
-            <button class="mode-btn active" data-level="B1" onclick="setLevel(this)">B1</button>
+            <button class="mode-btn" data-level="B1" onclick="setLevel(this)">B1</button>
             <button class="mode-btn" data-level="B2" onclick="setLevel(this)">B2</button>
             <button class="mode-btn" data-level="C1" onclick="setLevel(this)">C1</button>
-            <button class="mode-btn" data-level="C2" onclick="setLevel(this)">C2</button>
+            <button class="mode-btn active" data-level="C2" onclick="setLevel(this)">C2</button>
           </div>
           <div id="level-desc" class="level-desc">All levels included</div>
         </div>
@@ -2424,7 +2424,7 @@ function showTab(name) {
 // ══════════════════════════════════════════════
 function setMode(btn) {
   mode = btn.dataset.mode;
-  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#mode-btns .mode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
@@ -2453,10 +2453,9 @@ function selectQuestions(count) {
   }
   if (mode === 'new') {
     const unseen = qs.filter(q => !DB.qStats[q.id]);
+    if (unseen.length === 0) { alert('No unseen questions match your criteria!'); return []; }
     shuffle(unseen);
-    const extra = qs.filter(q => DB.qStats[q.id]);
-    shuffle(extra);
-    return [...unseen, ...extra].slice(0, count);
+    return unseen.slice(0, count);
   }
   if (mode === 'weak') {
     const weak = qs.filter(q => DB.qStats[q.id] && getErrorRate(q.id) > 0.3);
@@ -2528,7 +2527,7 @@ function renderQ() {
   const q = sessionQs[cur];
   const isGap = q.type === 'gap';
   const isInput = q.type === 'input';
-  const typeBadge = `<span class="q-type-badge ${q.type==='multi'?'gap':isGap?'gap':isInput?'gap':'mcq'}">${q.type==='multi'?'article chains':isGap?'fill the gap':isInput?'type the answer':'multiple choice'}</span>`;
+  const typeBadge = `<span class="q-type-badge ${q.type==='multi'?'gap':isGap?'gap':isInput?'gap':'mcq'}">${q.type==='multi'?'fill the gap':isGap?'fill the gap':isInput?'type the answer':'multiple choice'}</span>`;
 
   document.getElementById('q-num').textContent = `Question ${cur + 1} of ${sessionQs.length}`;
   const st = DB.qStats[q.id];
@@ -2550,7 +2549,12 @@ function renderQ() {
     const sentenceEl = document.createElement('div');
     sentenceEl.className = 'gap-sentence';
     // replace ___ in q.q with a styled blank span
-    sentenceEl.innerHTML = q.q.replace('___', '<span class="gap-blank" id="gap-blank">___</span>');
+    // Replace each ___ with a numbered blank span
+    let blankCount = 0;
+    sentenceEl.innerHTML = q.q.replace(/___/g, () => {
+      const n = blankCount++;
+      return `<span class="gap-blank" id="gap-blank-${n}">___</span>`;
+    });
     optsEl.appendChild(sentenceEl);
 
     const bankEl = document.createElement('div');
@@ -2680,7 +2684,7 @@ function renderMulti(q, container) {
   const label = document.createElement('div');
   label.className = 'multi-chips-label';
   label.id = 'multi-chips-label';
-  label.textContent = `Select article for blank 1:`;
+  label.textContent = `Select answer for blank 1:`;
   chipsWrap.appendChild(label);
   const chipsEl = document.createElement('div');
   chipsEl.className = 'multi-chips';
@@ -2696,7 +2700,7 @@ function renderMultiChips(q, blankIdx) {
   const label = document.getElementById('multi-chips-label');
   if (!chipsEl) return;
   chipsEl.innerHTML = '';
-  label.textContent = `Select article for blank ${blankIdx + 1}:`;
+  label.textContent = `Select answer for blank ${blankIdx + 1}:`;
   const blank = q.blanks[blankIdx];
   blank.opts.forEach((opt, i) => {
     const chip = document.createElement('button');
@@ -2806,12 +2810,29 @@ async function answerMCQ(i) {
 async function answerGap(i, chip) {
   const q = sessionQs[cur];
   const correct = i === q.ans;
-  // fill the blank
-  const blank = document.getElementById('gap-blank');
-  if (blank) {
-    blank.textContent = q.opts[i];
+  // fill all blanks — split answer by ' / ' for multi-blank gap questions
+  const chosenParts  = q.opts[i].split(' / ');
+  const correctParts = q.opts[q.ans].split(' / ');
+  const blankCount   = (q.q.match(/___/g) || []).length;
+  for (let n = 0; n < blankCount; n++) {
+    const blank = document.getElementById(`gap-blank-${n}`);
+    if (!blank) continue;
+    blank.textContent = chosenParts[n] !== undefined ? chosenParts[n] : chosenParts[0];
     blank.classList.remove('filled');
     blank.classList.add(correct ? 'correct-gap' : 'wrong-gap');
+  }
+  // For wrong answer, also show correct in blanks
+  if (!correct) {
+    setTimeout(() => {
+      for (let n = 0; n < blankCount; n++) {
+        const blank = document.getElementById(`gap-blank-${n}`);
+        if (blank) {
+          blank.textContent = correctParts[n] !== undefined ? correctParts[n] : correctParts[0];
+          blank.classList.remove('wrong-gap');
+          blank.classList.add('correct-gap');
+        }
+      }
+    }, 600);
   }
   // style all chips
   document.querySelectorAll('.word-chip').forEach(c => {
@@ -2822,10 +2843,6 @@ async function answerGap(i, chip) {
     else if (idx === q.ans && !correct) c.classList.add('reveal-chip');
     else c.classList.add('used');
   });
-  // if wrong, also show the correct word in the blank
-  if (!correct && blank) {
-    setTimeout(() => { blank.textContent = q.opts[q.ans]; blank.classList.add('correct-gap'); }, 400);
-  }
   await recordAnswer(correct, q);
 }
 
