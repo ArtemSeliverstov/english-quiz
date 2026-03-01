@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260301-98bd8a4f">
+  <meta name="app-version" content="v20260301-5e2b3404">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">98bd8a4f</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">5e2b3404</span></p>
 </header>
 
 <!-- TABS -->
@@ -1356,7 +1356,7 @@ const ALL_QUESTIONS = [
 // ══ LESSON: JAN 26 — -ing vs -ed adjectives ══
 {id:'ie01',lvl:'B1',biz:false,cat:'Vocabulary',q:'Which is correct?',opts:['Maybe it\'s interested for you.','Maybe it\'s interesting for you.','Maybe it\'s interest for you.'],ans:1,exp:'<strong>-ING adjectives</strong> describe the cause of a feeling (the thing that makes you feel this way): <em>interesting, boring, exciting, tiring</em>. <strong>-ED adjectives</strong> describe how a person feels: <em>interested, bored, excited, tired</em>.'},
 {id:'ie02',lvl:'B1',biz:false,cat:'Vocabulary',type:'gap',q:'The lecture was ___. I was ___ from start to finish.',opts:['boring / bored','bored / boring','boring / boring','bored / bored'],ans:0,exp:'<strong>Boring</strong> (the lecture = the cause) → <strong>bored</strong> (I = how I felt). The -ing form describes the thing; the -ed form describes the person\'s feeling. <em>The movie was exciting / I was excited.</em>'},
-{id:'ie03',lvl:'B1',biz:false,cat:'Vocabulary',q:'Which sentence is correct?',opts:['She\'s very boring — she reads the dictionary for fun.','She\'s very boring — she fell asleep in the meeting.','She\'s very bored — she\'s the funniest person I know.'],ans:1,exp:'<strong>Boring</strong> (about a person) = they cause others to feel bored; they are dull. <strong>Bored</strong> = the person themselves feels bored. <em>She\'s boring</em> = she makes others lose interest. <em>She\'s bored</em> = she has nothing to do.'},
+{id:'ie03',lvl:'B1',biz:false,cat:'Vocabulary',q:'Which sentence is correct?',opts:['She\'s very boring — nobody wants to sit next to her at dinner.','She\'s very bored — she fell asleep in the meeting.','She\'s very bored — she\'s the funniest person I know.'],ans:0,exp:'<strong>Boring</strong> (about a person) = they cause others to feel bored. <strong>Bored</strong> = the person themselves feels bored. Option A is correct: nobody wanting to sit next to her shows she has a boring effect on others. Option B describes her own feeling (she fell asleep = she was bored). Option C contradicts itself — a funny person would not be bored.'},
 
 // ══ LESSON: JAN 26 — existential problems ══
 {id:'ex_a01',lvl:'C1',biz:true,cat:'Vocabulary',q:'What does EXISTENTIAL threat/problem mean?',opts:['A minor inconvenience.','A threat that endangers the very existence of something.','A philosophical disagreement.','A financial audit issue.'],ans:1,exp:'<strong>Existential</strong> = threatening the existence of something. <em>An existential threat to the company</em> = the company might not survive. Often used for serious strategic, financial, or competitive crises.'},
@@ -2438,7 +2438,7 @@ function setCat(btn) {
 //  QUESTION SELECTION ALGORITHM
 // ══════════════════════════════════════════════
 function selectQuestions(count) {
-  const LEVEL_ORDER = {B1:352,B2:542,C1:140,C2:16};
+  const LEVEL_ORDER = {B1:1,B2:2,C1:3,C2:4};
   const maxLvlNum = LEVEL_ORDER[maxLevel] || 4;
   let pool = ALL_QUESTIONS.filter(q => {
     if (catFilter !== 'All' && q.cat !== catFilter) return false;
@@ -2789,10 +2789,7 @@ async function recordAnswer(correct, q) {
   exp.style.display = 'block';
   document.getElementById('score-running').textContent = `Score: ${sessionScore}`;
   document.getElementById('next-btn').disabled = false;
-  // Reveal category after answer
-  const catEl = document.getElementById('q-cat');
-  const currentHTML = catEl.innerHTML;
-  catEl.innerHTML = `<span style="opacity:.6">${q.cat}</span>` + (currentHTML ? ' ' + currentHTML : '');
+  // Category already shown in q-cat from renderQuestion
   await saveData(DB);
 }
 
