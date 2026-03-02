@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260302-280a0ce1">
+  <meta name="app-version" content="v20260302-45544fe1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1033,7 +1033,7 @@ const ALL_QUESTIONS = [
 {id:'ob05',lvl:'C1',biz:false,cat:'Vocabulary',q:'Which sentence uses FALLIBLE correctly?',opts:['Even experienced professionals are fallible and make mistakes.','The fallible report was submitted on time.','She fallible her way through the presentation.'],ans:0,exp:'<strong>Fallible</strong> = capable of making mistakes; not infallible. Used to describe people or systems: <em>humans are fallible, no system is infallible.</em> It is an adjective only — never used as a verb or noun modifier in the way option B suggests.'},
 
 // ══ LESSON: HW — COLLEAGUES OUTSIDE WORK ══
-{id:'hw02',lvl:'B2',biz:false,cat:'Prepositions',q:'Which preposition is correct? "It\'s quite difficult ___ my current workplace."',opts:['at my workplace','in my workplace','Both at and in are correct here.','on my workplace'],ans:2,exp:'Both <strong>at</strong> and <strong>in</strong> are correct here. <em>At</em> treats the workplace as a location/point; <em>in</em> treats it as a space you are inside. Both are natural and native.orrect here. <em>At</em> treats it as a location; <em>in</em> treats it as a space you\'re inside.'},
+{id:'hw02',lvl:'B2',biz:false,cat:'Prepositions',q:'Which preposition(s) can correctly complete: "It\'s quite difficult to work ___ this company."?',opts:['at this company','in this company','Both are correct','on this company'],ans:2,exp:'Both <strong>at</strong> and <strong>in</strong> are correct. <em>At</em> treats the company as a point/location; <em>in</em> treats it as a space you are inside. Both are natural in native speech.'},
 {id:'hw03',lvl:'B1',biz:false,cat:'Grammar',q:'Which sentence is most natural for describing a habit?',opts:['I have one friend with whom I play squash.','I have one friend who I play squash with.','I have one friend that I play squash with.','All three are correct.'],ans:3,exp:'All three are grammatically fine. <em>With whom</em> is formal. <em>Who/that … with</em> is more natural and common in everyday speech.'},
 
 // ══ LESSON: HW — SEEK ══
@@ -2254,6 +2254,77 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 ,{id:'aph34',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['The company is in the process of restructuring its operations.','The company is in a process of restructuring its operations.','The company is in process of restructuring its operations.'],ans:0,exp:'In the process of — fixed phrase. Always the: in the process of doing something. This is one of the clearest examples: in the process of negotiating, in the process of being reviewed. Never: in a process of, in process of.'}
 ,{id:'aph35',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'We are at ___ crossroads, but we have been here before and found a way forward.',opts:['a','the','—'],ans:0,exp:'At a crossroads — use a because this is a non-specific critical decision point, one of several the company may face. If a specific crossroads has already been described: at the crossroads we discussed in the last meeting. First mention = a.'}
 ,{id:'aph36',lvl:'C1',biz:true,cat:'Articles',type:'mcq',q:'Which pair is correct?',opts:['We are in a middle of negotiations. / This is the heart of the problem.','We are in the middle of negotiations. / This is a heart of the problem.','We are in the middle of negotiations. / This is the heart of the problem.'],ans:2,exp:'In the middle of — always the (fixed phrase). At the heart of — always the (fixed phrase). Both require the definite article. The traps: in a middle and a heart are both wrong in these fixed expressions.'}
+
+  // --- ADJECTIVES + PREPOSITIONS (pp_ap05-pp_ap24) ---
+  {id:'pp_ap05',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'England is famous ___ its rainy weather.',ans:'for',hint:'adjective + preposition (1 word)'},
+  {id:'pp_ap06',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"I'm very proud ___ my daughter — she worked very hard.",ans:'of',hint:'adjective + preposition (1 word)'},
+  {id:'pp_ap07',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"He isn't really interested ___ getting married.",ans:'in',hint:'adjective + preposition (1 word)'},
+  {id:'pp_ap08',lvl:'B2',biz:false,cat:'Prepositions',type:'gap',q:'Luke is very pleased ___ his exam results.',opts:['with','about','of','at'],ans:0,exp:'<strong>Pleased with</strong> collocates with results, performance, or things you own/achieved. <em>About</em> is also natural in conversation — both are acceptable.'},
+  {id:'pp_ap09',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"Unfortunately, I'm very bad ___ music.",ans:'at',hint:'adjective + preposition: skill level (1 word)'},
+  {id:'pp_ap10',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"I've been married ___ my husband for 10 years.",ans:'to',hint:'adjective + preposition: relationship (1 word)'},
+  {id:'pp_ap11',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"She's very excited ___ the party.",ans:'about',hint:'adjective + preposition: feeling (1 word)'},
+  {id:'pp_ap12',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'Julie is very different ___ her sister.',ans:'from',hint:'adjective + preposition: contrast (1 word)',exp:'<strong>Different from</strong> is standard in formal British English. <em>Different to</em> is also heard informally in BrE; <em>different than</em> is American English.'},
+  {id:'pp_ap13',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'My niece is afraid ___ dogs.',ans:'of',hint:'adjective + preposition: fear (1 word)'},
+  {id:'pp_ap14',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'A ball gown is similar ___ an evening dress.',ans:'to',hint:'adjective + preposition: resemblance (1 word)'},
+  {id:'pp_ap15',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'What is your town famous ___?',ans:'for',hint:'adjective + preposition (1 word)'},
+  {id:'pp_ap16',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"It's great you got that job — you should be proud ___ yourself.",ans:'of',hint:'adjective + preposition (1 word)'},
+  {id:'pp_ap17',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"I'm very excited ___ buying a new computer.",ans:'about',hint:'adjective + preposition: anticipation (1 word)'},
+  {id:'pp_ap18',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'That bike is similar ___ yours.',ans:'to',hint:'adjective + preposition: resemblance (1 word)'},
+  {id:'pp_ap19',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'She is interested ___ jazz.',ans:'in',hint:'adjective + preposition: interest (1 word)'},
+  {id:'pp_ap20',lvl:'B2',biz:false,cat:'Prepositions',type:'gap',q:'Are you pleased ___ your new house?',opts:['with','about','of','for'],ans:0,exp:'<strong>Pleased with</strong> is the standard collocation for things you own, possess, or have acquired. <em>About</em> is also natural in conversation.'},
+  {id:'pp_ap21',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'Lucy is extremely good ___ languages.',ans:'at',hint:'adjective + preposition: skill (1 word)'},
+  {id:'pp_ap22',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'Who is James married ___?',ans:'to',hint:'adjective + preposition: relationship (1 word)'},
+  {id:'pp_ap23',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'English cheese is very different ___ French cheese.',ans:'from',hint:'adjective + preposition: contrast (1 word)',exp:'<strong>Different from</strong> is standard formal BrE. <em>Different to</em> is also heard informally; <em>different than</em> is American English.'},
+  {id:'pp_ap24',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"He isn't afraid ___ anything.",ans:'of',hint:'adjective + preposition: fear (1 word)'},
+  // --- ZERO CONDITIONAL (zc04-zc13) ---
+  {id:'zc04',lvl:'B1',biz:false,cat:'Conditionals',type:'gap',q:"If I ___ late, I'm late for work.",opts:['wake up','woke up','had woken up','am waking up'],ans:0,exp:'Zero conditional uses <strong>present simple</strong> in both clauses — a general truth or habit.'},
+  {id:'zc05',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'If my husband cooks, he ___ (burn) the food.',ans:'burns',hint:'zero conditional: present simple 3rd person (1 word)'},
+  {id:'zc06',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:"If Julie doesn't wear a hat, she ___ (get) sunstroke.",ans:'gets',hint:'zero conditional: present simple (1 word)'},
+  {id:'zc07',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'If you mix water and electricity, you ___ (get) a shock.',ans:'get',hint:'zero conditional: present simple (1 word)'},
+  {id:'zc08',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:"If children don't eat well, they ___ (not/be) healthy.",ans:"aren't",hint:'zero conditional: present simple negative (1 contracted word)'},
+  {id:'zc09',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'Lots of people ___ (come) if Jenny has a party.',ans:'come',hint:'zero conditional: present simple (1 word)'},
+  {id:'zc10',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'If you ___ (heat) ice, it melts.',ans:'heat',hint:'zero conditional: present simple (1 word)'},
+  {id:'zc11',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'I feel good the next day if I ___ (go) to bed early.',ans:'go',hint:'zero conditional: present simple (1 word)'},
+  {id:'zc12',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'She ___ (buy) expensive clothes if she goes shopping.',ans:'buys',hint:'zero conditional: present simple 3rd person (1 word)'},
+  {id:'zc13',lvl:'B1',biz:false,cat:'Conditionals',type:'input',q:'The river ___ (freeze) if it is very cold.',ans:'freezes',hint:'zero conditional: present simple 3rd person (1 word)'},
+  // --- WHICH OR THAT (wt11-wt20) ---
+  {id:'wt11',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The laptop ___ I bought last week is already broken.',opts:['that','which'],ans:0,exp:'No commas = <strong>defining clause</strong> — <em>that</em> is preferred. <em>Which</em> is also correct in BrE but <em>that</em> is the standard choice in defining clauses.'},
+  {id:'wt12',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The restaurant ___ we went to yesterday was fantastic.',opts:['that','which'],ans:0,exp:'No commas = <strong>defining clause</strong>. <em>That</em> is preferred; <em>which</em> is also acceptable in BrE.'},
+  {id:'wt13',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The painting ___ is in the hallway is worth thousands of pounds.',opts:['that','which'],ans:0,exp:'No commas = <strong>defining clause</strong>. <em>That</em> is preferred; <em>which</em> is acceptable in BrE.'},
+  {id:'wt14',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'The rule, ___ applies to all students, has been updated recently.',ans:'which',hint:'commas signal a non-defining clause — use which, not that (1 word)'},
+  {id:'wt15',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'The shoes, ___ I ordered online, were more expensive than I expected.',ans:'which',hint:'commas signal a non-defining clause — use which, not that (1 word)'},
+  {id:'wt16',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'The restaurant, ___ we went to yesterday, was fantastic.',ans:'which',hint:'commas signal a non-defining clause — use which, not that (1 word)'},
+  {id:'wt17',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'The film, ___ won the award, broke box office records.',ans:'which',hint:'commas signal a non-defining clause — use which, not that (1 word)'},
+  {id:'wt18',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The decision ___ they made surprised everyone.',opts:['that','which'],ans:0,exp:'No commas = <strong>defining clause</strong>. <em>That</em> is preferred; <em>which</em> is also acceptable in BrE.'},
+  {id:'wt19',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The app ___ he created became very popular.',opts:['that','which'],ans:0,exp:'No commas = <strong>defining clause</strong>. <em>That</em> is preferred; <em>which</em> is acceptable in BrE.'},
+  {id:'wt20',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'The painting, ___ is in the hallway, was a gift from my aunt.',ans:'which',hint:'commas signal a non-defining clause — use which, not that (1 word)'},
+  // --- WHO OR WHOM (rc_b06-rc_b15) ---
+  {id:'rc_b06',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'Do you know the girl ___ always waves from her window?',ans:'who',hint:'relative pronoun: subject (1 word)'},
+  {id:'rc_b07',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"He's the author ___ I spoke to at the meeting.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is formal and technically correct (object position). <em>Who</em> is widely accepted in modern conversational English.'},
+  {id:'rc_b08',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"That's the person ___ we invited to the party.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is correct in formal/written English (object position). <em>Who</em> is widely used in speech.'},
+  {id:'rc_b09',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:'I met a student ___ speaks really good English.',ans:'who',hint:'relative pronoun: subject (1 word)'},
+  {id:'rc_b10',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"He's the actor ___ everyone admires.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is formal (object of <em>admires</em>). <em>Who</em> is common in everyday speech.'},
+  {id:'rc_b11',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"He's the boy ___ I helped with his homework.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is correct formally (object of <em>helped</em>). <em>Who</em> is natural in everyday speech.'},
+  {id:'rc_b12',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:"Our neighbour, ___ lives next door, always gets us birthday presents.",ans:'who',hint:'relative pronoun: subject (1 word)'},
+  {id:'rc_b13',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"That's the girl ___ I told you about yesterday.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is correct formally (object of <em>told…about</em>). <em>Who</em> is widely used conversationally.'},
+  {id:'rc_b14',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:"He's the one person ___ I trust completely.",opts:['who','whom'],ans:1,exp:'<strong>Whom</strong> is correct formally (object of <em>trust</em>). <em>Who</em> is natural in everyday speech.'},
+  {id:'rc_b15',lvl:'B2',biz:false,cat:'Relative Clauses',type:'input',q:"That's the girl ___ plays football for England.",ans:'who',hint:'relative pronoun: subject (1 word)'},
+  // --- IRREGULAR VERBS PAST SIMPLE 2 (irv21-irv35) ---
+  {id:'irv21',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'I ___ (come) to England in 1993.',ans:'came',hint:'irregular past simple of COME (1 word)'},
+  {id:'irv22',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (stand) under a tree to shelter from the rain.',ans:'stood',hint:'irregular past simple of STAND (1 word)'},
+  {id:'irv23',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'They ___ (do) their homework yesterday.',ans:'did',hint:'irregular past simple of DO (1 word)'},
+  {id:'irv24',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'We ___ (sing) too much last night.',ans:'sang',hint:'irregular past simple of SING (1 word)'},
+  {id:'irv25',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'He already ___ (eat) all the cake by the time we arrived.',ans:'ate',hint:'irregular past simple of EAT (1 word)'},
+  {id:'irv26',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'The child ___ (fall) off his bicycle.',ans:'fell',hint:'irregular past simple of FALL (1 word)'},
+  {id:'irv27',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'It ___ (take) three hours to drive to Paris.',ans:'took',hint:'irregular past simple of TAKE (1 word)'},
+  {id:'irv28',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'I ___ (find) your keys under the table.',ans:'found',hint:'irregular past simple of FIND (1 word)'},
+  {id:'irv29',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (get) a new bike for her birthday.',ans:'got',hint:'irregular past simple of GET (1 word)'},
+  {id:'irv30',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (sell) her house last year.',ans:'sold',hint:'irregular past simple of SELL (1 word)'},
+  {id:'irv31',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'We ___ (go) to New York in January.',ans:'went',hint:'irregular past simple of GO (1 word)'},
+  {id:'irv32',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'Lucy ___ (pay) the bill before leaving the restaurant.',ans:'paid',hint:'irregular past simple of PAY (1 word)'},
+  {id:'irv33',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'We ___ (see) the new film yesterday.',ans:'saw',hint:'irregular past simple of SEE (1 word)'},
+  {id:'irv34',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (wear) her new coat to the party.',ans:'wore',hint:'irregular past simple of WEAR (1 word)'},
+  {id:'irv35',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'They ___ (put) their bags in the bedroom.',ans:'put',hint:'irregular past simple of PUT — same in past (1 word)'},
 ];
 
 // ══════════════════════════════════════════════
