@@ -1,1 +1,72 @@
-Y29uc3QgQ0FDSEVfTkFNRSA9ICdlbmdsaXNoLXF1aXotdjIwMjYwMzAyLTI4MGEwY2UxJzsKCi8vIFVzZSByZWxhdGl2ZSBwYXRocyDigJQgd29ya3Mgb24gYW55IHN1YmRpcmVjdG9yeSAoR2l0SHViIFBhZ2VzLCBsb2NhbCwgZXRjLikKY29uc3QgQVNTRVRTID0gWwogICcuLycsCiAgJy4vaW5kZXguaHRtbCcsCiAgJy4vbWFuaWZlc3QuanNvbicsCiAgJy4vaWNvbi0xOTIucG5nJywKICAnLi9pY29uLTUxMi5wbmcnLAogICcuL3N3LmpzJwpdOwoKLy8gSW5zdGFsbDogY2FjaGUgY29yZSBhc3NldHMKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbCgKICAgIGNhY2hlcy5vcGVuKENBQ0hFX05BTUUpLnRoZW4oY2FjaGUgPT4gewogICAgICAvLyBhZGRBbGwgZmFpbHMgaWYgYW55IGFzc2V0IDQwNHMg4oCUIHVzZSBpbmRpdmlkdWFsIGFkZHMgc28gb25lIG1pc3MgZG9lc24ndCBicmVhayBpdCBhbGwKICAgICAgcmV0dXJuIFByb21pc2UuYWxsU2V0dGxlZChBU1NFVFMubWFwKGEgPT4gY2FjaGUuYWRkKGEpKSk7CiAgICB9KQogICk7CiAgc2VsZi5za2lwV2FpdGluZygpOwp9KTsKCi8vIEFjdGl2YXRlOiBjbGVhbiB1cCBvbGQgY2FjaGVzCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBldmVudCA9PiB7CiAgZXZlbnQud2FpdFVudGlsKAogICAgY2FjaGVzLmtleXMoKS50aGVuKGtleXMgPT4KICAgICAgUHJvbWlzZS5hbGwoCiAgICAgICAga2V5cy5maWx0ZXIoayA9PiBrICE9PSBDQUNIRV9OQU1FKS5tYXAoayA9PiBjYWNoZXMuZGVsZXRlKGspKQogICAgICApCiAgICApCiAgKTsKICBzZWxmLmNsaWVudHMuY2xhaW0oKTsKfSk7CgovLyBGZXRjaCBzdHJhdGVneQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGNvbnN0IHVybCA9IGV2ZW50LnJlcXVlc3QudXJsOwoKICAvLyBFeHRlcm5hbCByZXNvdXJjZXMg4oCUIGFsd2F5cyBuZXR3b3JrLCBuZXZlciBjYWNoZQogIGlmICh1cmwuaW5jbHVkZXMoJ2ZvbnRzLmdvb2dsZWFwaXMuY29tJykgfHwKICAgICAgdXJsLmluY2x1ZGVzKCdmb250cy5nc3RhdGljLmNvbScpIHx8CiAgICAgIHVybC5pbmNsdWRlcygnZmlyZWJhc2VkYXRhYmFzZS5hcHAnKSB8fAogICAgICB1cmwuaW5jbHVkZXMoJ2ZpcmViYXNlaW8uY29tJykpIHsKICAgIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgICBmZXRjaChldmVudC5yZXF1ZXN0KS5jYXRjaCgoKSA9PiBuZXcgUmVzcG9uc2UoJycsIHsgc3RhdHVzOiA0MDggfSkpCiAgICApOwogICAgcmV0dXJuOwogIH0KCiAgLy8gU2tpcCBub24taHR0cCByZXF1ZXN0cyAoY2hyb21lLWV4dGVuc2lvbjovLywgZGF0YTosIGV0Yy4pCiAgaWYgKCFldmVudC5yZXF1ZXN0LnVybC5zdGFydHNXaXRoKCdodHRwJykpIHJldHVybjsKCiAgLy8gTG9jYWwgYXNzZXRzIOKAlCBjYWNoZSBmaXJzdCwgbmV0d29yayBmYWxsYmFjawogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpLnRoZW4oY2FjaGVkID0+IHsKICAgICAgaWYgKGNhY2hlZCkgcmV0dXJuIGNhY2hlZDsKICAgICAgcmV0dXJuIGZldGNoKGV2ZW50LnJlcXVlc3QpLnRoZW4ocmVzcG9uc2UgPT4gewogICAgICAgIGlmIChldmVudC5yZXF1ZXN0Lm1ldGhvZCA9PT0gJ0dFVCcgJiYgcmVzcG9uc2Uuc3RhdHVzID09PSAyMDApIHsKICAgICAgICAgIGNvbnN0IGNsb25lID0gcmVzcG9uc2UuY2xvbmUoKTsKICAgICAgICAgIGNhY2hlcy5vcGVuKENBQ0hFX05BTUUpLnRoZW4oY2FjaGUgPT4gY2FjaGUucHV0KGV2ZW50LnJlcXVlc3QsIGNsb25lKSk7CiAgICAgICAgfQogICAgICAgIHJldHVybiByZXNwb25zZTsKICAgICAgfSkuY2F0Y2goKCkgPT4gewogICAgICAgIC8vIE9mZmxpbmUgZmFsbGJhY2sgZm9yIG5hdmlnYXRpb24KICAgICAgICBpZiAoZXZlbnQucmVxdWVzdC5tb2RlID09PSAnbmF2aWdhdGUnKSB7CiAgICAgICAgICByZXR1cm4gY2FjaGVzLm1hdGNoKCcuL2luZGV4Lmh0bWwnKTsKICAgICAgICB9CiAgICAgIH0pOwogICAgfSkKICApOwp9KTsK
+const CACHE_NAME = 'english-quiz-v20260302-280a0ce1';
+
+// Use relative paths — works on any subdirectory (GitHub Pages, local, etc.)
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './sw.js'
+];
+
+// Install: cache core assets
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      // addAll fails if any asset 404s — use individual adds so one miss doesn't break it all
+      return Promise.allSettled(ASSETS.map(a => cache.add(a)));
+    })
+  );
+  self.skipWaiting();
+});
+
+// Activate: clean up old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+// Fetch strategy
+self.addEventListener('fetch', event => {
+  const url = event.request.url;
+
+  // External resources — always network, never cache
+  if (url.includes('fonts.googleapis.com') ||
+      url.includes('fonts.gstatic.com') ||
+      url.includes('firebasedatabase.app') ||
+      url.includes('firebaseio.com')) {
+    event.respondWith(
+      fetch(event.request).catch(() => new Response('', { status: 408 }))
+    );
+    return;
+  }
+
+  // Skip non-http requests (chrome-extension://, data:, etc.)
+  if (!event.request.url.startsWith('http')) return;
+
+  // Local assets — cache first, network fallback
+  event.respondWith(
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+      return fetch(event.request).then(response => {
+        if (event.request.method === 'GET' && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => {
+        // Offline fallback for navigation
+        if (event.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+      });
+    })
+  );
+});
