@@ -1,6 +1,6 @@
-const CACHE_NAME = 'english-quiz-v20260301-74adda25';
+const CACHE_NAME = 'english-quiz-v20260302-280a0ce1';
 
-// Use relative paths — works on any subdirectory (GitHub Pages, local, etc.)
+// Use relative paths â works on any subdirectory (GitHub Pages, local, etc.)
 const ASSETS = [
   './',
   './index.html',
@@ -14,7 +14,7 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      // addAll fails if any asset 404s — use individual adds so one miss doesn't break it all
+      // addAll fails if any asset 404s â use individual adds so one miss doesn't break it all
       return Promise.allSettled(ASSETS.map(a => cache.add(a)));
     })
   );
@@ -37,7 +37,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
-  // External resources — always network, never cache
+  // External resources â always network, never cache
   if (url.includes('fonts.googleapis.com') ||
       url.includes('fonts.gstatic.com') ||
       url.includes('firebasedatabase.app') ||
@@ -51,7 +51,7 @@ self.addEventListener('fetch', event => {
   // Skip non-http requests (chrome-extension://, data:, etc.)
   if (!event.request.url.startsWith('http')) return;
 
-  // Local assets — cache first, network fallback
+  // Local assets â cache first, network fallback
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
