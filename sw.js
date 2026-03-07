@@ -1,4 +1,4 @@
-const CACHE_NAME = 'english-quiz-v20260302-5cb0a35c';
+const CACHE_NAME = 'english-quiz-v20260302-dac20bbc';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './sw.js'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => Promise.allSettled(ASSETS.map(url => cache.add(url)))));

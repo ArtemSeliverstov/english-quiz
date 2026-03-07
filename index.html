@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260302-S20fix">
+  <meta name="app-version" content="v20260302-bd9605f5">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">S20fix</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">bd9605f5</span></p>
 </header>
 
 <!-- TABS -->
@@ -916,15 +916,15 @@ const ALL_QUESTIONS = [
 {id:'id07',lvl:'C1',biz:true,cat:'Idioms',q:'NULL AND VOID means:',opts:['Very important.','Having no legal force.','Temporarily invalid.','Under dispute.'],ans:1,exp:'<strong>Null and void</strong> = officially invalid and without legal effect. Both words mean the same thing.'},
 
 // ══ GERUNDS & INFINITIVES ══
-{id:'gi01',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'I enjoy ___ in the sea.',opts:['swimming','to swim','swim'],ans:0,exp:'<strong>Enjoy</strong> is followed by a gerund (-ing). <em>I enjoy swimming.</em>'},
-{id:'gi02',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'She suggested ___ to the cinema after dinner.',opts:['going','to go','go','went'],ans:0,exp:'<strong>Suggest</strong> + gerund. <em>Suggest going</em>, not <em>suggest to go</em>.'},
-{id:'gi03',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'He decided ___ early.',opts:['to leave','leaving','leave'],ans:0,exp:'<strong>Decide</strong> + infinitive. <em>He decided to leave.</em>'},
-{id:'gi04',lvl:'B2',biz:true,cat:'Gerunds & Infinitives',type:'gap',q:'They managed ___ finish the project before the deadline.',opts:['to','of','in','—'],ans:0,exp:'<strong>Manage to</strong> + infinitive. <em>He managed to finish.</em>'},
-{id:'gi05',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'Would you mind ___ the window?',opts:['opening','to open','open'],ans:0,exp:'<strong>Mind</strong> + gerund. <em>Would you mind opening…?</em>'},
+{id:'gi01',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'I enjoy ___ in the sea.',opts:['swimming','to swim','swim'],ans:0,exp:'<strong>Enjoy</strong> always takes a gerund (-ing), never an infinitive — it describes an activity in progress. <em>I enjoy swimming / reading / working here.</em> Compare <em>want/decide</em> which take infinitives.'},
+{id:'gi02',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'She suggested ___ to the cinema after dinner.',opts:['going','to go','go','went'],ans:0,exp:'<strong>Suggest</strong> takes a gerund (-ing), never an infinitive. Think of it as proposing an activity, not directing someone: <em>suggest going / suggest waiting / suggest trying.</em> Suggest to go does not exist in standard English.'},
+{id:'gi03',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'He decided ___ early.',opts:['to leave','leaving','leave'],ans:0,exp:'<strong>Decide</strong> takes to + infinitive because it points forward to a planned action, not an ongoing activity: <em>decided to leave / to stay / to resign.</em> Compare <em>enjoy/avoid</em> which take -ing.'},
+{id:'gi04',lvl:'B2',biz:true,cat:'Gerunds & Infinitives',type:'gap',q:'They managed ___ finish the project before the deadline.',opts:['to','of','in','—'],ans:0,exp:'<strong>Manage to</strong> + infinitive describes succeeding at something difficult. The <em>to</em> is part of the fixed pattern — never <em>manage in</em> or <em>manage of</em>: <em>managed to finish / to convince / to escape.</em>'},
+{id:'gi05',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'Would you mind ___ the window?',opts:['opening','to open','open'],ans:0,exp:'<strong>Mind</strong> always takes a gerund (-ing), never an infinitive. It asks whether an activity bothers you: <em>Would you mind opening / waiting / speaking more slowly?</em> Would you mind to open is wrong.'},
 {id:'gi06',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'I look forward to ___ you at the conference.',opts:['seeing','see','have seen','be seeing'],ans:0,exp:'<strong>Look forward to</strong> + gerund. The <em>to</em> is a preposition here, not part of an infinitive.'},
 {id:'gi07',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'She kept ___ me.',opts:['interrupting','to interrupt','interrupt'],ans:0,exp:'<strong>Keep</strong> + gerund. <em>Keep doing something</em> = continue doing repeatedly.'},
-{id:'gi08',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'She promised ___ call as soon as she arrived.',opts:['to','of','—','that'],ans:0,exp:'<strong>Promise to</strong> + infinitive. <em>She promised to call me.</em>'},
-{id:'gi09',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'They avoided ___ noise.',opts:['making','to make','make'],ans:0,exp:'<strong>Avoid</strong> + gerund. <em>Avoid making noise.</em>'},
+{id:'gi08',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'She promised ___ call as soon as she arrived.',opts:['to','of','—','that'],ans:0,exp:'<strong>Promise</strong> takes to + infinitive — it commits to a future action: <em>promised to call / to help / to be there.</em> The <em>to</em> is mandatory. Promise doing exists but is rare and informal.'},
+{id:'gi09',lvl:'B2',type:'gap',biz:false,cat:'Gerunds & Infinitives',q:'They avoided ___ noise.',opts:['making','to make','make'],ans:0,exp:'<strong>Avoid</strong> always takes a gerund (-ing), never an infinitive — it refers to not doing an ongoing action: <em>avoid making / avoid saying / avoid using.</em> Avoid to make is wrong in standard English.'},
 {id:'gi10',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'I hope ___ you at the party on Saturday.',opts:['to see','seeing','see','of seeing'],ans:0,exp:'<strong>Hope to</strong> + infinitive. <em>I hope to see you soon.</em>'},
 
 // ══ CONDITIONALS ══
@@ -1875,11 +1875,11 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 
 // ══ IDIOMS — TYPE-IN (STAGE 3) ══
 
-{id:'id_ti01',lvl:'C1',biz:false,cat:'Idioms',type:'input',q:'They followed the ___ of the law perfectly, but completely ignored its spirit.',ans:'letter',hint:'(1 word)',exp:'<strong>The letter of the law</strong> = the exact literal wording. <strong>The spirit of the law</strong> = the intended purpose. Used when someone technically obeys a rule while violating its intent.'},
+{id:'id_ti01',lvl:'C1',biz:false,cat:'Idioms',type:'input',q:'They followed the ___ of the law perfectly, but completely ignored its spirit.',ans:'letter',hint:'exact/literal wording of a rule — opposite of its spirit (1 word)',exp:'<strong>The letter of the law</strong> = the exact literal wording. <strong>The spirit of the law</strong> = the intended purpose. Used when someone technically obeys a rule while violating its intent.'},
 {id:'id_ti02',lvl:'C1',biz:true,cat:'Idioms',type:'input',q:'Long hours and last-minute changes are ___ for the course in investment banking.',ans:'par',hint:'___ for the course (1 word, from golf)',exp:'<strong>Par for the course</strong> = exactly what you would expect, even if unpleasant. From golf: par = the expected number of strokes. <em>Delays are par for the course in construction.</em>'},
 {id:'id_ti03',lvl:'C1',biz:true,cat:'Idioms',type:'input',q:'The salary is enormous but the culture is toxic — he is caught in the ___.',ans:'golden handcuffs',hint:'financial incentives that trap you in a job (2 words)',exp:'<strong>Golden handcuffs</strong> = high pay or benefits that make it financially difficult to leave. The <em>gold</em> = the reward; the <em>handcuffs</em> = the trap.'},
 {id:'id_ti04',lvl:'C1',biz:false,cat:'Idioms',type:'input',q:'You have ___ off more than you can chew with this project — it is too ambitious.',ans:'bitten',hint:'past participle of bite (1 word)',exp:'<strong>Bite off more than you can chew</strong> = take on more than you can handle. With <em>have</em> requires the past participle: <em>bitten.</em>'},
-{id:'id_ti05',lvl:'C1',biz:true,cat:'Idioms',type:'input',q:'We are all ___ the same boat here — the budget cuts affect every department.',ans:'in',hint:'(1 word — preposition)',exp:'<strong>In the same boat</strong> = in the same difficult situation. The preposition is always <em>in.</em> <em>We are all in the same boat.</em>'},
+{id:'id_ti05',lvl:'C1',biz:true,cat:'Idioms',type:'input',q:'We are all ___ the same boat here — the budget cuts affect every department.',ans:'in',hint:'think: physically inside a vessel (1 word — preposition)',exp:'<strong>In the same boat</strong> = in the same difficult situation. The preposition is always <em>in.</em> <em>We are all in the same boat.</em>'},
 {id:'id_ti06',lvl:'C1',biz:false,cat:'Idioms',type:'input',q:'She really ___ the nail on the head with that analysis — exactly the right diagnosis.',ans:'hit',hint:'past tense (1 word, irregular)',exp:'<strong>Hit the nail on the head</strong> = identify something exactly right. Past tense: <em>hit</em> (irregular — same form). <em>She hit the nail on the head.</em>'},
 
 // ══ REPORTED SPEECH — TYPE-IN (STAGE 4) ══
