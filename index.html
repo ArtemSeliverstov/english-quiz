@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260316-s33">
+  <meta name="app-version" content="v20260316-s34">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260316-s33</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260316-s34</span></p>
 </header>
 
 <!-- TABS -->
@@ -661,6 +661,9 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
           <div id="biz-label" style="font-size:.75rem;color:var(--muted);margin-top:.3rem;">Include</div>
         </div>
       </div>
+    </div>
+    <div id="b1-nudge" style="display:none;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:6px;padding:.65rem .9rem;margin-bottom:.75rem;font-size:.78rem;color:#fbbf24;line-height:1.4;">
+      ⚠️ <strong>Stick to B1 for now</strong> — your B1 accuracy is below 75%. Build confidence here before moving up.
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
   </div>
@@ -754,6 +757,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
     <div class="score-ring" id="res-ring"><div class="score-num" id="res-score"></div></div>
     <h2 id="res-title"></h2>
     <p id="res-msg"></p>
+    <div id="res-insight" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:.6rem .9rem;margin:.75rem 0 .5rem;font-size:.82rem;color:#fbbf24;line-height:1.5;"></div>
     <div class="result-actions">
       <button class="btn btn-primary" onclick="startQuiz()">Play Again</button>
       <button class="btn-outline" onclick="showTab('setup')">Change Settings</button>
@@ -2637,6 +2641,39 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
   {id:'irv33',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'We ___ (see) the new film yesterday.',ans:'saw',hint:'irregular past simple of SEE (1 word)',exp:'<strong>See → saw</strong> (irregular). Past participle: <em>seen</em>. Three forms: see / saw / seen.'},
   {id:'irv34',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (wear) her new coat to the party.',ans:'wore',hint:'irregular past simple of WEAR (1 word)',exp:'<strong>Wear → wore</strong> (irregular). Past participle: <em>worn</em>. Three forms: wear / wore / worn.'},
   {id:'irv35',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'They ___ (put) their bags in the bedroom.',ans:'put',hint:'irregular past simple of PUT — same in past (1 word)',exp:'<strong>Put → put</strong> (irregular). Past participle: <em>put</em>. <em>Put</em> is the same in all three forms: put / put / put.'},
+,{id:'col_b01',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'She always ___ an effort to arrive on time, even when the commute is difficult.',opts:['makes','does','gives','takes'],ans:0,exp:'<strong>Make an effort</strong> — always <em>make</em>, not do or give. Fixed collocation: <em>make progress, make an effort, make a decision</em>. Russian uses одно слово for "effort" without the verb constraint English imposes.'}
+,{id:'col_b02',lvl:'B2',biz:true,cat:'Collocations',type:'gap',q:'The CEO agreed to ___ responsibility for the failed merger.',opts:['take','make','do','give'],ans:0,exp:'<strong>Take responsibility</strong> — fixed collocation. Also: <em>take action, take credit, take the lead</em>. ✗ Do/make responsibility — both wrong in English.'}
+,{id:'col_b03',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'It took me a while to ___ sense of the instructions.',opts:['make','do','take','get'],ans:0,exp:'<strong>Make sense of</strong> = understand. ✗ Do sense is wrong. Compare: <em>make a decision, make progress</em> — all use make, not do.'}
+,{id:'col_b04',lvl:'B2',biz:true,cat:'Collocations',type:'gap',q:'We need to ___ a decision before the end of the quarter.',opts:['make','do','take','have'],ans:0,exp:'<strong>Make a decision</strong> — fixed collocation. <em>Reach a decision</em> also works formally. Russian принять решение maps closer to <em>take</em> — a common transfer error.'}
+,{id:'col_b05',lvl:'B2',biz:false,cat:'Collocations',type:'input',q:'The noise from the street ___ it very difficult to concentrate.',ans:'made',hint:'(1 word — past tense) make/do collocations: made + it + adjective',exp:'<strong>Make it + adjective</strong> — fixed structure: <em>The heat made it impossible; The noise made it hard</em>. ✗ Did it difficult — wrong verb. This is the most productive make/do pattern at B2.'}
+,{id:'col_b06',lvl:'B2',biz:true,cat:'Collocations',type:'input',q:'She always ___ a point of following up after every client meeting.',ans:'makes',hint:'(1 word) make a point of = intentionally always do something',exp:'<strong>Make a point of + gerund</strong> = deliberately do something every time. <em>She makes a point of sending thank-you notes.</em> ✗ Does a point — wrong verb.'}
+,{id:'col_b07',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'I ___ a mistake and sent the email to the wrong person.',opts:['made','did','took','had'],ans:0,exp:'<strong>Make a mistake</strong> — the most fixed of all make/do collocations. ✗ Do a mistake is the classic Russian-speaker error (сделал ошибку → do a mistake). <em>Make</em> is used for things you create or produce, including errors.'}
+,{id:'col_b08',lvl:'B2',biz:true,cat:'Collocations',type:'gap',q:'Could you ___ me a favour and forward that report?',opts:['do','make','give','take'],ans:0,exp:'<strong>Do someone a favour</strong> — fixed collocation. <em>Do a favour, do the housework, do research</em>. ✗ Make a favour is wrong. Russian оказать услугу does not map directly — learners must memorise this.'}
+,{id:'gi_c01',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'input',q:'She stopped ___ (talk) when the boss entered the room.',ans:'talking',hint:'stop + gerund = quit the action (1 word)',exp:'<strong>Stop + gerund</strong> = quit doing that action. <em>Stop talking</em> = she was talking and then stopped. ✗ Stop + to-inf = she stopped <em>in order to</em> talk — the opposite meaning.'}
+,{id:'gi_c02',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'input',q:'I remember ___ (meet) her at the conference last year.',ans:'meeting',hint:'remember + gerund = recall a past event (1 word)',exp:'<strong>Remember + gerund</strong> = recall a past action. ✗ Remember + to-inf = do not forget to do something in the future: <em>Remember to call me</em>. Same verb, opposite time orientation.'}
+,{id:'gi_c03',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'input',q:'He tried ___ (open) the window but it was stuck.',ans:'to open',hint:'try + to-infinitive = attempt (2 words)',exp:'<strong>Try + to-infinitive</strong> = attempt to do something. ✗ Try + gerund = experiment to see if it works: <em>Try opening the window</em> = see if that helps. Same verb, different meaning.'}
+,{id:'gi_c04',lvl:'B2',biz:true,cat:'Gerunds & Infinitives',type:'input',q:'The manager suggested ___ (hold) the meeting online instead.',ans:'holding',hint:'suggest + gerund — never infinitive (1 word)',exp:'<strong>Suggest + gerund</strong> — always. ✗ Suggest to hold is a very common Russian-speaker error (предложил провести → suggest to hold). <em>Suggest, recommend, avoid, deny</em> all take -ing.'}
+,{id:'gi_c05',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'input',q:'Would you mind ___ (wait) a few more minutes?',ans:'waiting',hint:'mind + gerund — always (1 word)',exp:'<strong>Mind + gerund</strong> — always. <em>Would you mind waiting / closing / moving?</em> ✗ Mind to wait is wrong in any tense. Mind signals mild objection to an ongoing action — gerund only.'}
+,{id:'gi_c06',lvl:'B2',biz:true,cat:'Gerunds & Infinitives',type:'gap',q:'The consultant proposed ___ the contract before the deadline.',opts:['renegotiating','to renegotiate','renegotiate'],ans:0,exp:'<strong>Propose + gerund</strong> — always. Same pattern as suggest/recommend/deny/avoid. ✗ Propose to renegotiate is a Russian-transfer error. Note: <em>propose to</em> + person (marry) is different.'}
+,{id:'gi_c07',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',type:'gap',q:'I need to remember ___ my passport before we leave.',opts:['to bring','bringing','bring'],ans:0,exp:'<strong>Remember + to-infinitive</strong> = a future obligation you must not forget. ✗ Remember + gerund = recall a past action: <em>I remember bringing it last time</em>. This contrast is the most tested G&I pattern at B2.'}
+,{id:'irv36',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'She ___ (break) a glass while washing the dishes.',ans:'broke',hint:'past simple of BREAK (1 word)',exp:'<strong>Break → broke</strong> (irregular). Past participle: <em>broken</em>. <em>Breaked</em> is wrong — break is always irregular.'}
+,{id:'irv37',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'I ___ (know) the answer but I was too nervous to speak.',ans:'knew',hint:'past simple of KNOW (1 word)',exp:'<strong>Know → knew</strong> (irregular). Past participle: <em>known</em>. <em>Knowed</em> does not exist. Know is a stative verb — never used in the continuous.'}
+,{id:'irv38',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'She ___ (win) the competition three years in a row.',ans:'won',hint:'past simple of WIN (1 word)',exp:'<strong>Win → won</strong> (irregular). Past participle: also <em>won</em>. Both past forms are identical. <em>Winned</em> is wrong.'}
+,{id:'irv39',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'We ___ (hide) behind the sofa to surprise him.',ans:'hid',hint:'past simple of HIDE (1 word)',exp:'<strong>Hide → hid</strong> (irregular). Past participle: <em>hidden</em>. <em>Hided</em> is wrong — hide looks regular but is not.'}
+,{id:'irv40',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'He ___ (run) so fast that no one could catch him.',ans:'ran',hint:'past simple of RUN (1 word)',exp:'<strong>Run → ran</strong> (irregular). Past participle: <em>run</em> (same as base form). <em>Runned</em> is wrong.'}
+,{id:'irvpp21',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'Have you ever ___ (break) a bone?',ans:'broken',hint:'past participle of BREAK (1 word)',exp:'<strong>Break → broke → broken</strong>. Three forms. <em>Have broke</em> is wrong — the past participle is <em>broken</em>, not the past simple.'}
+,{id:'irvpp22',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'She has ___ (win) every match this season.',ans:'won',hint:'past participle of WIN (1 word)',exp:'<strong>Win → won → won</strong>. Both past forms are <em>won</em>. <em>Have winned</em> is wrong.'}
+,{id:'irvpp23',lvl:'B1',biz:false,cat:'Grammar',type:'input',q:'I have never ___ (run) more than five kilometres.',ans:'run',hint:'past participle of RUN (1 word)',exp:'<strong>Run → ran → run</strong>. Past participle is the same as the base form. <em>Have ran</em> is the most common error — always use <em>run</em> with have/has/had.'}
+,{id:'pv_b07',lvl:'B1',biz:false,cat:'Phrasal Verbs',type:'gap',q:'She always ___ her younger brother when their parents are out.',opts:['looks after','looks for','looks up'],ans:0,exp:'<strong>Look after</strong> = take care of someone. ✗ Look for = search. ✗ Look up = find information. Context: a responsible sibling — care, not search.'}
+,{id:'pv_b08',lvl:'B1',biz:false,cat:'Phrasal Verbs',type:'gap',q:'Can you ___ for a moment? I need to ask you something.',opts:['hold on','hold up','hold off'],ans:0,exp:'<strong>Hold on</strong> = wait (informal). <em>Hold on a moment</em>. ✗ Hold up = delay or rob. ✗ Hold off = postpone. Russian подождите maps directly to <em>hold on</em>.'}
+,{id:'pv_b09',lvl:'B1',biz:false,cat:'Phrasal Verbs',type:'gap',q:'Could you please ___ this form before you leave?',opts:['fill in','fill up','fill over'],ans:0,exp:'<strong>Fill in</strong> (British) = complete a form. American variant: <em>fill out</em> — both correct. ✗ Fill up = fill to maximum capacity (a tank, a glass).'}
+,{id:'pv_b10',lvl:'B1',biz:false,cat:'Phrasal Verbs',type:'input',q:'I ___ (wake up — past tense) very late on Sunday morning.',ans:'woke up',hint:'past tense of wake up (2 words)',exp:'<strong>Wake up → woke up</strong>. The particle <em>up</em> is part of the phrasal verb. <em>Waked up</em> is wrong — wake is irregular: wake / woke / woken.'}
+,{id:'pv_b11',lvl:'B1',biz:false,cat:'Phrasal Verbs',type:'gap',q:'The meeting has been ___ until next Thursday.',opts:['put off','put up','put on'],ans:0,exp:'<strong>Put off</strong> = postpone. ✗ Put up = accommodate / tolerate / display. ✗ Put on = wear or activate. A meeting moved to a later date → <em>put off</em>.'}
+,{id:'pv11',lvl:'B2',biz:false,cat:'Phrasal Verbs',type:'gap',q:'She ___ a new business while raising two children.',opts:['set up','set off','set out'],ans:0,exp:'<strong>Set up</strong> = establish or start (a business, system, meeting). ✗ Set off = begin a journey or trigger something. ✗ Set out = begin a journey with a purpose. Only <em>set up</em> collocates with "business".'}
+,{id:'pv12',lvl:'B2',biz:true,cat:'Phrasal Verbs',type:'gap',q:'The terms of the agreement ___ clearly in Clause 4.',opts:['are set out','are set up','are set off'],ans:0,exp:'<strong>Set out (passive)</strong> = describe or explain in detail, especially in a formal document. ✗ Set up = establish. ✗ Set off = trigger. <em>Set out</em> in writing = state something systematically.'}
+,{id:'pv13',lvl:'B2',biz:false,cat:'Phrasal Verbs',type:'input',q:'She tried to ___ her idea but nobody in the room understood.',ans:'get across',hint:'communicate successfully to others (2 words)',exp:'<strong>Get across</strong> = make an idea understood by others. <em>She couldn\'t get her point across.</em> ✗ Get through = contact someone by phone, or survive difficulty. The focus here is whether the idea was received.'}
+,{id:'pv14',lvl:'B2',biz:true,cat:'Phrasal Verbs',type:'gap',q:'We need to ___ the figures before the board presentation.',opts:['go over','go through','go off'],ans:0,exp:'<strong>Go over</strong> = review or check carefully. ✗ Go through = examine from start to finish or experience something (longer, more thorough). For a pre-meeting check of one item, <em>go over</em> is more natural. ✗ Go off = explode.'}
+,{id:'pv15',lvl:'B2',biz:false,cat:'Phrasal Verbs',type:'gap',q:'The rain ___ just as we were leaving the park.',opts:['came down','came on','came off'],ans:0,exp:'<strong>Come down</strong> = rain or snow falls. <em>The rain came down heavily.</em> ✗ Come on = hurry or begin. ✗ Come off = detach or succeed. <em>Come down</em> is the natural collocation for precipitation.'}
 ];
 
 // ══════════════════════════════════════════════
@@ -3323,6 +3360,31 @@ function showResults(score, total, pct) {
   document.getElementById('res-title').textContent = title;
   document.getElementById('res-msg').textContent = msg;
 
+  // Session category insight
+  const insight = document.getElementById('res-insight');
+  if (insight) {
+    const catMap = {};
+    sessionAnswered.forEach(a => {
+      if (!catMap[a.cat]) catMap[a.cat] = { seen: 0, wrong: 0 };
+      catMap[a.cat].seen++;
+      if (!a.correct) catMap[a.cat].wrong++;
+    });
+    // Find worst category with at least 2 questions seen
+    let worstCat = null, worstCatData = null, worstRate = 0;
+    Object.entries(catMap).forEach(([cat, s]) => {
+      if (s.seen >= 2) {
+        const rate = s.wrong / s.seen;
+        if (rate > worstRate) { worstRate = rate; worstCat = cat; worstCatData = s; }
+      }
+    });
+    if (worstCat && worstRate > 0) {
+      insight.textContent = `📌 Weakest this session: ${worstCat} — ${worstCatData.wrong}/${worstCatData.seen} wrong. Try a focused session next time.`;
+      insight.style.display = 'block';
+    } else {
+      insight.style.display = 'none';
+    }
+  }
+
   const rw = document.getElementById('review-wrap');
   rw.innerHTML = '<div style="font-family:Playfair Display,serif;font-size:1.1rem;margin-bottom:.75rem;">Session review</div>';
   sessionAnswered.forEach((a, i) => {
@@ -3338,13 +3400,13 @@ function showResults(score, total, pct) {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1338;
-  const LEVEL_TOTALS = { B1: 449, B2: 623, C1: 250, C2: 16 };
+  const TOTAL = 1371;
+  const LEVEL_TOTALS = { B1: 462, B2: 643, C1: 250, C2: 16 };
   const CAT_TOTALS = {
-    'Grammar':198,'Tenses':149,'Vocabulary':140,'Articles':118,'Gerunds & Infinitives':116,
-    'Phrasal Verbs':85,'Prepositions':69,'Conditionals':69,'Relative Clauses':42,
+    'Grammar':206,'Tenses':149,'Vocabulary':140,'Articles':118,'Gerunds & Infinitives':123,
+    'Phrasal Verbs':95,'Prepositions':69,'Conditionals':69,'Relative Clauses':42,
     'Modal Verbs':51,'Linking Words':49,'Word Choice':35,'Question Formation':32,
-    'Reported Speech':26,'Indirect Questions':25,'Collocations':21,'Idioms':20,
+    'Collocations':29,'Reported Speech':26,'Indirect Questions':25,'Idioms':20,
     'Adjectives':20,'Word Order':18,'Used To':16,'Passive Voice':14,'Comparisons':13,'Emphasis':12
   };
   // Proficiency thresholds: [seenFraction, minAccuracy, minSeen]
@@ -3751,6 +3813,15 @@ function confirmPlayer(key) {
   }
   syncToFirebase(true);
   startFamilyPoll();
+  // B1 nudge: show warning if player's B1 accuracy < 75%
+  const nudge = document.getElementById('b1-nudge');
+  if (nudge) {
+    const b1Stats = Object.entries(DB.qStats || {})
+      .filter(([id]) => { const q = ALL_QUESTIONS.find(x => x.id === id); return q && q.lvl === 'B1'; })
+      .reduce((acc, [, s]) => { acc.seen += (s.seen||0); acc.correct += (s.correct||0); return acc; }, {seen:0,correct:0});
+    const b1Acc = b1Stats.seen >= 20 ? b1Stats.correct / b1Stats.seen : 1;
+    nudge.style.display = b1Acc < 0.75 ? 'block' : 'none';
+  }
 }
 
 // Called when a name button is clicked
@@ -3961,7 +4032,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = { B1: 449, B2: 623, C1: 250, C2: 16 };
+  const LEVEL_TOTALS = { B1: 462, B2: 643, C1: 250, C2: 16 };
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
@@ -4070,33 +4141,87 @@ window.exportForAI = async function() {
   try {
     setFbStatus('loading', '⏳ Fetching all player data…');
     const data = await fbGet('players');
+    const now = Date.now();
     const report = { exportDate: new Date().toISOString(), totalPlayers: Object.keys(data||{}).length, players: {} };
     for (const [key, p] of Object.entries(data || {})) {
+      const qst = p.qStats || {};
+
+      // ── Category accuracy ─────────────────────────────────────────────────
       const cats = Object.entries(p.catStats||{}).map(([cat,s])=>({
         category:cat, seen:s.seen, correct:s.correct,
         accuracy: s.seen>0?Math.round(s.correct/s.seen*100)+'%':'0%'
-      })).sort((a,b)=>parseInt(b.accuracy)-parseInt(a.accuracy));
+      })).sort((a,b)=>parseInt(a.accuracy)-parseInt(b.accuracy)); // worst-first for AI
+
+      // ── Level accuracy ────────────────────────────────────────────────────
       const lvls = Object.entries(p.lvlStats||{}).map(([lvl,s])=>({
         level:lvl, seen:s.seen, correct:s.correct,
         accuracy: s.seen>0?Math.round(s.correct/s.seen*100)+'%':'0%'
       }));
-      const worstQs = Object.entries(p.qStats||{})
-        .filter(([,s])=>s&&s.seen>=3&&s.wrong/s.seen>=0.4)
+
+      // ── Full question detail (all seen, sorted worst-first) ───────────────
+      const questionDetail = Object.entries(qst)
+        .filter(([,s])=>s&&s.seen>=1)
         .map(([id,s])=>{
-          const q=ALL_QUESTIONS.find(q=>q&&q.id===id);
-          return {id, question:q?q.q.replace(/<[^>]+>/g,'').slice(0,80):id,
-            category:q?q.cat:'?', level:q?q.lvl:'?',
-            seen:s.seen, errorRate:Math.round(s.wrong/s.seen*100)+'%'};
-        }).sort((a,b)=>parseInt(b.errorRate)-parseInt(a.errorRate)).slice(0,20);
+          const q = ALL_QUESTIONS.find(x=>x&&x.id===id);
+          const lastSeenDays = s.lastSeen ? Math.round((now-s.lastSeen)/86400000) : null;
+          return {
+            id,
+            cat: q?q.cat:'?', lvl: q?q.lvl:'?', type: q?q.type||'gap':'?',
+            seen: s.seen, wrong: s.wrong||0,
+            errorRate: Math.round((s.wrong||0)/s.seen*100)+'%',
+            lastSeenDays
+          };
+        })
+        .sort((a,b)=>parseInt(b.errorRate)-parseInt(a.errorRate)||b.seen-a.seen);
+
+      // ── Worst questions (≥3 seen, ≥40% error) — enriched with stem ───────
+      const worstQs = questionDetail
+        .filter(d=>d.seen>=3&&parseInt(d.errorRate)>=40)
+        .slice(0,20)
+        .map(d=>{
+          const q = ALL_QUESTIONS.find(x=>x&&x.id===d.id);
+          return { ...d, question: q?q.q.replace(/<[^>]+>/g,'').slice(0,80):d.id };
+        });
+
+      // ── Trend: last 5 vs prior 5 session accuracy ─────────────────────────
+      const sessions = (p.recentSessions||[]).filter(s=>s&&s.date&&s.pct!=null);
+      let trend = 'insufficient data';
+      if (sessions.length >= 6) {
+        const pct = s => parseInt(typeof s.pct==='string'?s.pct:s.pct+'%');
+        const last5  = sessions.slice(0,5).reduce((a,s)=>a+pct(s),0)/5;
+        const prior5 = sessions.slice(5,10).filter(s=>s).reduce((a,s)=>a+pct(s),0)/Math.min(5,sessions.slice(5,10).length);
+        const delta = Math.round(last5-prior5);
+        trend = delta >= 3 ? `improving (+${delta}pp)` : delta <= -3 ? `declining (${delta}pp)` : `stable (${delta>0?'+':''}${delta}pp)`;
+      }
+
+      // ── Coverage gaps: unseen question count by category ─────────────────
+      const seenIds = new Set(Object.keys(qst));
+      const unseenByCat = {};
+      ALL_QUESTIONS.forEach(q=>{
+        if (!q||seenIds.has(q.id)) return;
+        unseenByCat[q.cat] = (unseenByCat[q.cat]||0)+1;
+      });
+      const neverSeenCount = ALL_QUESTIONS.filter(q=>q&&!seenIds.has(q.id)).length;
+
       report.players[key] = {
         name: p.displayName||key,
-        summary: { totalSessions:p.totalSessions||0, totalAnswered:p.totalAnswered||0,
+        summary: {
+          totalSessions:p.totalSessions||0, totalAnswered:p.totalAnswered||0,
           overallAccuracy:p.totalAnswered>0?Math.round(p.totalCorrect/p.totalAnswered*100)+'%':'0%',
           currentStreak:p.currentStreak||0, longestStreak:p.longestStreak||0,
-          lastPlayedDate:p.lastPlayedDate||null, uniqueQsSeen:Object.keys(p.qStats||{}).length },
-        categoryAccuracy:cats, levelAccuracy:lvls, worstQuestions:worstQs,
-        recentSessions:(p.recentSessions||[]).filter(s=>s&&s.date).slice(0,10).map(s=>({
-          date:new Date(s.date).toLocaleDateString('en-GB'), pct:s.pct+'%', total:s.total||s.score||'?', mode:s.mode||'?'
+          lastPlayedDate:p.lastPlayedDate||null,
+          uniqueQsSeen:seenIds.size, neverSeenCount,
+          trend
+        },
+        categoryAccuracy: cats,
+        levelAccuracy: lvls,
+        worstQuestions: worstQs,
+        questionDetail,
+        unseenByCategory: unseenByCat,
+        recentSessions: sessions.slice(0,10).map(s=>({
+          date:new Date(s.date).toLocaleDateString('en-GB'),
+          pct:typeof s.pct==='string'?s.pct:s.pct+'%',
+          total:s.total||s.score||'?', mode:s.mode||'?'
         }))
       };
     }
@@ -4105,7 +4230,7 @@ window.exportForAI = async function() {
     const a    = document.createElement('a');
     a.href=url; a.download='family_stats_ai_'+new Date().toISOString().slice(0,10)+'.json';
     a.click(); URL.revokeObjectURL(url);
-    setFbStatus('online','✅ Export ready');
+    setFbStatus('online','✅ Export ready — '+Object.keys(data||{}).length+' players');
   } catch(e) { alert('Export failed: '+e.message); }
 };
 
