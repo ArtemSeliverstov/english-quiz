@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260309-s32">
+  <meta name="app-version" content="v20260316-s33">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -580,7 +580,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260309-s32</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260316-s33</span></p>
 </header>
 
 <!-- TABS -->
@@ -4081,9 +4081,9 @@ window.exportForAI = async function() {
         accuracy: s.seen>0?Math.round(s.correct/s.seen*100)+'%':'0%'
       }));
       const worstQs = Object.entries(p.qStats||{})
-        .filter(([,s])=>s.seen>=3&&s.wrong/s.seen>=0.4)
+        .filter(([,s])=>s&&s.seen>=3&&s.wrong/s.seen>=0.4)
         .map(([id,s])=>{
-          const q=ALL_QUESTIONS.find(q=>q.id===id);
+          const q=ALL_QUESTIONS.find(q=>q&&q.id===id);
           return {id, question:q?q.q.replace(/<[^>]+>/g,'').slice(0,80):id,
             category:q?q.cat:'?', level:q?q.lvl:'?',
             seen:s.seen, errorRate:Math.round(s.wrong/s.seen*100)+'%'};
@@ -4095,8 +4095,8 @@ window.exportForAI = async function() {
           currentStreak:p.currentStreak||0, longestStreak:p.longestStreak||0,
           lastPlayedDate:p.lastPlayedDate||null, uniqueQsSeen:Object.keys(p.qStats||{}).length },
         categoryAccuracy:cats, levelAccuracy:lvls, worstQuestions:worstQs,
-        recentSessions:(p.recentSessions||[]).slice(0,10).map(s=>({
-          date:new Date(s.date).toLocaleDateString('en-GB'), pct:s.pct+'%', total:s.total, mode:s.mode
+        recentSessions:(p.recentSessions||[]).filter(s=>s&&s.date).slice(0,10).map(s=>({
+          date:new Date(s.date).toLocaleDateString('en-GB'), pct:s.pct+'%', total:s.total||s.score||'?', mode:s.mode||'?'
         }))
       };
     }
