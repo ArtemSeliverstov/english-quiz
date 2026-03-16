@@ -623,6 +623,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
         <button class="cat-btn" data-cat="Gerunds & Infinitives" onclick="setCat(this)">Gerunds &amp; Infinitives</button>
         <button class="cat-btn" data-cat="Grammar" onclick="setCat(this)">Grammar</button>
         <button class="cat-btn" data-cat="Idioms" onclick="setCat(this)">Idioms</button>
+        <button class="cat-btn" data-cat="Indirect Questions" onclick="setCat(this)">Indirect Questions</button>
         <button class="cat-btn" data-cat="Linking Words" onclick="setCat(this)">Linking Words</button>
         <button class="cat-btn" data-cat="Modal Verbs" onclick="setCat(this)">Modal Verbs</button>
         <button class="cat-btn" data-cat="Passive Voice" onclick="setCat(this)">Passive Voice</button>
@@ -632,6 +633,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
         <button class="cat-btn" data-cat="Relative Clauses" onclick="setCat(this)">Relative Clauses</button>
         <button class="cat-btn" data-cat="Reported Speech" onclick="setCat(this)">Reported Speech</button>
         <button class="cat-btn" data-cat="Tenses" onclick="setCat(this)">Tenses</button>
+        <button class="cat-btn" data-cat="Used To" onclick="setCat(this)">Used To</button>
         <button class="cat-btn" data-cat="Vocabulary" onclick="setCat(this)">Vocabulary</button>
         <button class="cat-btn" data-cat="Word Choice" onclick="setCat(this)">Word Choice</button>
         <button class="cat-btn" data-cat="Word Order" onclick="setCat(this)">Word Order</button>
@@ -940,8 +942,6 @@ const ALL_QUESTIONS = [
 {id:'cc07',lvl:'B2',biz:false,cat:'Vocabulary',type:'gap',q:'I\'ve been here ___ 2019 — it\'s been quite a journey!',opts:['since','for','from','during'],ans:0,exp:'<strong>Since</strong> + point in time (2019). <strong>For</strong> + duration (five years).'},
 
 // ══ QUESTION TAGS ══
-{id:'qt01',lvl:'B1',biz:false,cat:'Question Formation',type:'gap',q:'It\'s cold today, ___ it?',opts:['isn\'t','is','wasn\'t','doesn\'t'],ans:0,exp:'Positive statement → negative tag: <em>It\'s cold, <strong>isn\'t it?</strong></em>'},
-{id:'qt02',lvl:'B1',biz:false,cat:'Question Formation',type:'gap',q:'She doesn\'t like coffee, ___ she?',opts:['does','doesn\'t','is','did'],ans:0,exp:'Negative statement → positive tag: <em>She doesn\'t like coffee, <strong>does she?</strong></em>'},
 {id:'qt03',lvl:'B1',biz:false,cat:'Question Formation',q:'Which is correct? "Let\'s take a break, ___ ?"',opts:['will we?','shall we?','do we?'],ans:1,exp:'After <strong>let\'s</strong>, the tag is always <strong>shall we?</strong>'},
 {id:'qt04',lvl:'B1',biz:false,cat:'Question Formation',type:'gap',q:'Nobody called while I was out, ___ they?',opts:['did','didn\'t','were','wasn\'t'],ans:0,exp:'<em>Nobody</em> is negative, so use a positive tag: <strong>did they?</strong>'},
 
@@ -2355,7 +2355,6 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'sayt08',lvl:'B1',biz:false,cat:'Reported Speech',type:'gap',q:'The boss ___ me that I should do some more work on this report.',opts:['told','said'],ans:0,exp:'<strong>Told me</strong> — <em>tell</em> + person directly. <em>Said me</em> is wrong. This is one of the most common errors: <em>He said me</em> → should be <em>He told me</em>.'},
 {id:'sayt09',lvl:'B1',biz:false,cat:'Reported Speech',type:'gap',q:'Jack ___ my mother he would be in Spain this week.',opts:['told','said'],ans:0,exp:'<strong>Told my mother</strong> — the person receiving the message (<em>my mother</em>) comes directly after <em>tell</em>. <em>Said my mother</em> is incorrect.'},
 {id:'st10',lvl:'B1',biz:false,cat:'Reported Speech',type:'mcq',q:'Which sentence is correct?',opts:['She said me to be quiet.','She told me to be quiet.','She said to me to be quiet.'],ans:1,exp:'<strong>Told me to be quiet</strong> ✓. With imperatives in reported speech, use <em>tell + person + to-infinitive</em>. <em>Said me</em> is wrong. <em>Said to me to be quiet</em> is awkward and non-standard.'},
-{id:'wt01',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The laptop ___ I bought last week is already broken.',opts:['that','which'],ans:0,exp:'<strong>That</strong> — defining relative clause (no commas). The clause identifies <em>which</em> laptop. Both <em>that</em> and <em>which</em> are possible in defining clauses, but <em>that</em> is more natural in everyday English.'},
 {id:'wt02',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The rule, ___ applies to all students, has been updated.',opts:['which','that'],ans:0,exp:'<strong>Which</strong> — non-defining relative clause (note the commas). Non-defining clauses add extra information about something already identified. <em>That</em> is NEVER used in non-defining clauses.'},
 {id:'wt03',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The shoes, ___ I ordered online, were more expensive than I expected.',opts:['which','that'],ans:0,exp:'<strong>Which</strong> — the commas signal a non-defining clause. The shoes are already identified; this clause adds extra information. Non-defining clauses require <em>which</em>, never <em>that</em>.'},
 {id:'wt04',lvl:'B2',biz:false,cat:'Relative Clauses',type:'gap',q:'The film ___ won the award was directed by Gerwig.',opts:['that','which'],ans:0,exp:'<strong>That</strong> — defining relative clause (no commas). The clause specifies <em>which</em> film. <em>Which</em> is also acceptable here, but <em>that</em> is the more natural choice for defining clauses.'},
@@ -2411,7 +2410,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'ut2_04',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My grandfather ___ drink a cup of coffee after dinner every night.',opts:['would drink','had drunk','has drunk'],ans:0,exp:'<strong>Would drink</strong> = repeated past ritual. For habitual past actions, <em>would + infinitive</em> is natural and vivid. <em>Used to drink</em> is equally correct but not given here.'},
 {id:'ut2_05',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'Luke ___ have a car in those days.',opts:['didn\'t use to have','wouldn\'t have','didn\'t used to have'],ans:0,exp:'<strong>Didn\'t use to have</strong> — past state (owning a car). <em>Would</em> cannot be used for states. Spelling note: <em>didn\'t use to</em> (not <em>used to</em>) — the negative drops the -d.'},
 {id:'ut2_06',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'We ___ live in Brazil when I was young.',opts:['used to live','would live','were living'],ans:0,exp:'<strong>Used to live</strong> — living somewhere permanently is a state. <em>Would live</em> is wrong for states. <em>Were living</em> suggests a temporary situation at a specific time, not a past general state.'},
-{id:'ut2_07',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My family ___ often go to the countryside for the weekend.',opts:['would often go','had often gone','were often going'],ans:0,exp:'<strong>Would often go</strong> = repeated past weekend habit. A clear repeated action — both <em>would</em> and <em>used to</em> work here. <em>Had often gone</em> is past perfect (different meaning). <em>Were often going</em> sounds unnatural for habitual past.'},
+{id:'ut2_07',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My grandfather ___ often go fishing at the weekend when I was young.',opts:['would often go','had often gone','were often going'],ans:0,exp:'<strong>Would + infinitive</strong> for repeated past actions. A specific narrative action (fishing) locks in <em>would</em>. ✗ <em>Used to go</em> also works for habits, but <em>would</em> is the target here — the question tests active recall of <em>would</em> for past narrative habit. ✗ <em>Had often gone</em> = past perfect (wrong here). ✗ <em>Were often going</em> = continuous, unnatural for habit.'},
 {id:'ut2_08',lvl:'B2',biz:false,cat:'Grammar',type:'mcq',q:'Which sentence is correct?',opts:['She would know everyone in the village.','She used to know everyone in the village.','She was used to know everyone in the village.'],ans:1,exp:'<strong>Used to know</strong> — <em>know</em> is stative. <em>Would know</em> is wrong because <em>would</em> cannot be used for past states. Option C confuses <em>used to</em> (past habit) with <em>be used to</em> (accustomed to) — completely different structures.'},
 {id:'but01',lvl:'B2',biz:false,cat:'Grammar',q:'Which is correct?',opts:['I\'m used to wake up early.','I\'m used to waking up early.','I used to waking up early.'],ans:1,exp:'<strong>Be used to + -ing</strong>: the verb must be in gerund form. <em>I\'m used to waking up</em> = I\'m accustomed to it. Option A incorrectly uses the infinitive. Option C drops <em>be</em>, making it grammatically broken.'},
 {id:'but02',lvl:'B2',biz:false,cat:'Grammar',q:'Which is correct?',opts:['She used to living alone.','She is used to living alone.','She is used to live alone.'],ans:1,exp:'<strong>Is used to + -ing</strong> = accustomed to. Option A drops <em>is</em> — grammatically broken. Option C uses the infinitive after <em>used to</em> — wrong: <em>be used to</em> always takes -ing.'},
@@ -3339,12 +3338,12 @@ function showResults(score, total, pct) {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1341;
-  const LEVEL_TOTALS = { B1: 451, B2: 624, C1: 250, C2: 16 };
+  const TOTAL = 1338;
+  const LEVEL_TOTALS = { B1: 449, B2: 623, C1: 250, C2: 16 };
   const CAT_TOTALS = {
     'Grammar':198,'Tenses':149,'Vocabulary':140,'Articles':118,'Gerunds & Infinitives':116,
-    'Phrasal Verbs':85,'Prepositions':69,'Conditionals':69,'Relative Clauses':43,
-    'Modal Verbs':51,'Linking Words':49,'Word Choice':35,'Question Formation':34,
+    'Phrasal Verbs':85,'Prepositions':69,'Conditionals':69,'Relative Clauses':42,
+    'Modal Verbs':51,'Linking Words':49,'Word Choice':35,'Question Formation':32,
     'Reported Speech':26,'Indirect Questions':25,'Collocations':21,'Idioms':20,
     'Adjectives':20,'Word Order':18,'Used To':16,'Passive Voice':14,'Comparisons':13,'Emphasis':12
   };
@@ -3962,7 +3961,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = { B1: 451, B2: 624, C1: 250, C2: 16 };
+  const LEVEL_TOTALS = { B1: 449, B2: 623, C1: 250, C2: 16 };
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
