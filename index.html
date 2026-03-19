@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260319-s62">
+  <meta name="app-version" content="v20260319-s65">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -564,6 +564,61 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 .pcov-bar{height:100%;border-radius:20px;transition:width .5s;}
 .pcov-pct{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);width:28px;text-align:right;flex-shrink:0;}
 .pcov-acc{font-family:'DM Mono',monospace;font-size:.62rem;width:28px;text-align:right;flex-shrink:0;}
+
+/* ── MOBILE UX — iPhone optimisations (S65) ── */
+
+/* Safe area: bottom padding for home bar */
+body{padding-bottom:env(safe-area-inset-bottom, 0);}
+.start-btn,.btn-primary,.btn-outline,.input-submit{margin-bottom:env(safe-area-inset-bottom, 0);}
+
+/* Tap feedback for all interactive elements (no :hover on mobile) */
+.option:active:not(:disabled){border-color:var(--accent);background:rgba(247,201,72,.1);transform:translateX(4px);}
+.word-chip:active:not(:disabled),.art-chip:active:not(:disabled){border-color:var(--accent);background:rgba(247,201,72,.12);transform:translateY(-2px);}
+.cat-btn:active{border-color:var(--accent);color:var(--accent);}
+.mode-btn:active{border-color:var(--accent);color:var(--accent);}
+.tab:active{background:var(--card);color:var(--text);}
+.start-btn:active{background:#e5b83a;transform:translateY(1px);}
+.btn-primary:active{background:#e5b83a;transform:translateY(1px);}
+.len-btn:active{background:rgba(139,92,246,.18);border-color:var(--accent);color:var(--accent);}
+
+/* Collapsible category chips */
+.cat-filter-wrap{max-height:2.6rem;overflow:hidden;transition:max-height .3s ease;}
+.cat-filter-wrap.expanded{max-height:none;}
+.cat-toggle-btn{display:none;padding:.3rem .8rem;border:1px dashed var(--border);border-radius:20px;
+  background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;margin-top:.4rem;
+  transition:color .2s;}
+.cat-toggle-btn:active{color:var(--accent);}
+
+/* Mobile breakpoint */
+@media(max-width:480px){
+  html{font-size:16px;}
+  body{padding:.4rem;}
+  .container{max-width:100%;}
+  header{padding:.3rem .7rem;border-radius:10px;}
+  header h1{font-size:1.1rem;}
+  .setup{padding:1.2rem;border-radius:14px;}
+  .setup h2{font-size:1.25rem;margin-bottom:1rem;}
+  .question-card{padding:1rem;border-radius:14px;}
+  .q-text{font-size:1rem;}
+  .gap-sentence{font-size:1.05rem;}
+  .option{padding:.6rem .75rem;font-size:.82rem;border-radius:10px;}
+  .explanation{font-size:.82rem;padding:.6rem .75rem;line-height:1.55;}
+  .results{padding:1.5rem 1rem;border-radius:14px;}
+  .score-ring{width:110px;height:110px;}
+  .score-num{font-size:1.5rem;}
+  .mode-btns{gap:.35rem;}
+  .mode-btn{padding:.5rem .7rem;font-size:.8rem;border-radius:8px;flex:1 1 auto;min-width:0;text-align:center;}
+  .cat-btn{padding:.3rem .7rem;font-size:.75rem;}
+  .cat-toggle-btn{display:inline-block;}
+  .len-btn{font-size:.72rem;padding:.3rem .35rem;}
+  .stat-box .num{font-size:1.6rem;}
+  .stat-box .lbl{font-size:.7rem;}
+  .btn{padding:.7rem 1.4rem;font-size:.9rem;}
+  .input-field{min-width:140px;font-size:.95rem;}
+  .multi-sentence{font-size:1rem;}
+  .field label{font-size:.78rem;}
+  .nav{margin-top:.8rem;}
+}
 </style>
 </head>
 <body>
@@ -597,7 +652,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s62</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s65</span></p>
 </header>
 
 <!-- TABS -->
@@ -646,6 +701,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
         <button class="cat-btn" data-cat="Comparisons" onclick="setCat(this)">Comparisons</button>
         <button class="cat-btn" data-cat="Conditionals" onclick="setCat(this)">Conditionals</button>
         <button class="cat-btn" data-cat="Emphasis" onclick="setCat(this)">Emphasis</button>
+        <button class="cat-btn" data-cat="Everyday English" onclick="setCat(this)">Everyday English</button>
         <button class="cat-btn" data-cat="Gerunds & Infinitives" onclick="setCat(this)">Gerunds &amp; Infinitives</button>
         <button class="cat-btn" data-cat="Grammar" onclick="setCat(this)">Grammar</button>
         <button class="cat-btn" data-cat="Idioms" onclick="setCat(this)">Idioms</button>
@@ -664,6 +720,7 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
         <button class="cat-btn" data-cat="Word Choice" onclick="setCat(this)">Word Choice</button>
         <button class="cat-btn" data-cat="Word Order" onclick="setCat(this)">Word Order</button>
       </div>
+      <button class="cat-toggle-btn" id="cat-toggle-btn" onclick="toggleCatChips()">More categories ▾</button>
       <div id="cat-nudge" style="display:none;margin-top:.5rem;font-size:.78rem;color:var(--muted);background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);border-radius:8px;padding:.5rem .75rem;line-height:1.5;">⚠️ Topic drill active — good for studying a grammar point, not for building retention. For weak-area training, use <strong style="color:var(--text);">🎯 Fix Weak Spots</strong> mode instead.</div>
     </div>
     <div class="field">
@@ -1270,7 +1327,7 @@ exp:'<strong>Cross-border</strong> = between different countries: <em>cross-bord
 {id:'gr_b08',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'___ a problem with the printer. Can someone take a look?',opts:['There\'s','It\'s','There are','It has'],ans:0,exp:'<strong>There is/are</strong> introduces the existence of something new: <em>There\'s a problem.</em> ✗ <em>It\'s a problem</em> requires a previously mentioned referent — you can\'t say <em>it\'s</em> to introduce something the listener doesn\'t know yet. Russian uses <em>есть</em> similarly, but learners sometimes calque <em>это</em> as <em>it</em>.'},
 {id:'gr_b09',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'___ too cold to sit outside. Let\'s find a table inside.',opts:['It\'s','There\'s','There is','It has'],ans:0,exp:'<strong>It\'s + adjective</strong> describes weather or conditions: <em>It\'s cold, hot, dark, noisy.</em> ✗ <em>There\'s cold</em> is wrong — <em>there is</em> introduces nouns, not adjectives. This is a very common Russian-speaker error: <em>это холодно</em> → ✗ <em>This is cold.</em>'},
 {id:'gr_b10',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'He hurt ___ while playing football.',opts:['himself','him','his','itself'],ans:0,exp:'<strong>Reflexive pronouns</strong> are used when subject and object are the same person: <em>He hurt himself.</em> ✗ <em>Him</em> would refer to a different person. Russian has a single reflexive <em>себя</em>, but English requires a matched form: myself/yourself/himself/herself/itself/ourselves/yourselves/themselves.'},
-{id:'gr_b11',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'She made the coffee ___ — she didn\'t need any help.',opts:['herself','her','by her','on her own'],ans:0,exp:'<strong>By + reflexive pronoun</strong> = alone/without help: <em>She did it herself / by herself.</em> Both work. ✗ <em>Alone herself</em> combines two ways to say the same thing — redundant. ✗ <em>By her</em> is incorrect — the reflexive is required after <em>by</em> in this structure.'},
+{id:'gr_b11',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'She made the coffee ___ — she didn\'t need any help.',opts:['herself','her','by her','hers'],ans:0,exp:'<strong>Herself</strong> = emphatic reflexive: she did it alone, without help. ✗ <em>Her</em> is an object pronoun — grammatically wrong in this position. ✗ <em>By her</em> is incomplete — <em>by</em> in the independence structure requires a reflexive: <em>by herself</em>. ✗ <em>Hers</em> is a possessive pronoun — wrong part of speech here.'},
 {id:'gr_b12',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'Please ___ me the truth — I can handle it.',opts:['tell','say','speak','talk'],ans:0,exp:'<strong>Tell + person + thing</strong>: <em>tell me, tell him, tell the truth.</em> ✗ <em>Say</em> takes a direct object (the words) not a person: <em>say something, say "hello"</em> — not <em>say me.</em> Russian <em>сказать</em> maps to both, so learners often use <em>say</em> where <em>tell</em> is needed.'},
 {id:'gr_b13',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'Can you ___ me where the meeting room is?',opts:['tell','say','speak','ask to'],ans:0,exp:'<strong>Tell + person + indirect question</strong>: <em>tell me where it is.</em> ✗ <em>Say me</em> is a classic Russian-speaker error — <em>say</em> never takes a person as direct object in standard English. Use <em>say to me</em> or <em>tell me.</em>'},
 {id:'gr_b14',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'Have you ___ to Paris, or is this your first visit?',opts:['been','gone','went','being'],ans:0,exp:'<strong>Been to</strong> = visited and returned. <strong>Gone to</strong> = went and is still there. <em>Have you been to Paris?</em> assumes you\'re back. ✗ <em>Gone to</em> would mean you\'re currently in Paris — impossible if you\'re asking the question in person. A key distinction Russian speakers often miss.'},
@@ -2729,7 +2786,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'ut2_01',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'I ___ have short hair when I was a teenager.',opts:['used to have','would have','had used to have'],ans:0,exp:'<strong>Used to have</strong> — <em>have</em> here describes a past state (appearance). <em>Would</em> cannot be used with stative meanings. <em>Had used to</em> is not a real form.'},
 {id:'ut2_02',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'She ___ love playing badminton before she hurt her shoulder.',opts:['used to','would','had'],ans:0,exp:'<strong>Used to love</strong> — <em>love</em> is stative. <em>Would</em> cannot replace <em>used to</em> with stative verbs describing past states. <em>Was loving</em> is also wrong — stative verbs rarely take the continuous.'},
 {id:'ut2_03',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'He ___ walk along the beach every evening before bed.',opts:['would','used to','had'],ans:0,exp:'<strong>Would walk</strong> = repeated past habit/action. For actions (not states), both <em>would</em> and <em>used to</em> work. <em>Had walked</em> is past perfect — a different tense.'},
-{id:'ut2_04',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My grandfather ___ drink a cup of coffee after dinner every night.',opts:['would','used to','had'],ans:0,exp:'<strong>Would drink</strong> = repeated past ritual. For habitual past actions, <em>would + infinitive</em> is natural and vivid. <em>Used to drink</em> is equally correct but not given here.'},
+{id:'ut2_04',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My grandfather ___ drink a cup of coffee after dinner every night.',opts:['would','used to','had'],ans:0,exp:'<strong>Would</strong> = repeated past ritual (habitual past action). ✗ <em>Used to</em> is also correct for past habits, but <em>would</em> is more vivid and narrative — preferred when emphasising the regularity of a specific routine. ✗ <em>Had</em> (past perfect) would need a following action to complete the sequence.'},
 {id:'ut2_05',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'Luke ___ have a car in those days.',opts:['didn\'t use to have','wouldn\'t have','didn\'t used to have'],ans:0,exp:'<strong>Didn\'t use to have</strong> — past state (owning a car). <em>Would</em> cannot be used for states. Spelling note: <em>didn\'t use to</em> (not <em>used to</em>) — the negative drops the -d.'},
 {id:'ut2_06',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'We ___ live in Brazil when I was young.',opts:['used to','would','decided to'],ans:0,exp:'<strong>Used to live</strong> — living somewhere permanently is a state. <em>Would live</em> is wrong for states. <em>Were living</em> suggests a temporary situation at a specific time, not a past general state.'},
 {id:'ut2_07',lvl:'B2',biz:false,cat:'Grammar',type:'gap',q:'My grandfather ___ go fishing at the weekend when I was young.',opts:['would','used to','had'],ans:0,exp:'<strong>Would + infinitive</strong> for repeated past actions. A specific narrative action (fishing) locks in <em>would</em>. ✗ <em>Used to go</em> also works for habits, but <em>would</em> is the target here — the question tests active recall of <em>would</em> for past narrative habit. ✗ <em>Had often gone</em> = past perfect (wrong here). ✗ <em>Were often going</em> = continuous, unnatural for habit.'},
@@ -3340,6 +3397,43 @@ exp:'<strong>A</strong> — classifying use: introduces the noun into a category
 // PASSIVE VOICE input
 {id:'pva_i01',lvl:'B1',biz:false,cat:'Passive Voice',type:'input',q:'The new bridge ___ (BUILD) in 2018.',ans:['was built'],hint:'passive past simple (2 words)',exp:'<strong>Passive voice</strong> — <em>be + past participle</em>. The tense is carried by <em>be</em>: <em>is built / was built / has been built / will be built.</em> ✗ <em>The bridge is build</em> — always use past participle after <em>be</em>. ✗ Russian passive uses <em>быть + краткое причастие</em> (short adjective form) — English always uses the full past participle.'},
 {id:'pva_i02',lvl:'B2',biz:true,cat:'Passive Voice',type:'input',q:'The report ___ (SEND) to all stakeholders by Friday.',ans:['will be sent'],hint:'passive future (3 words)',exp:'<strong>Passive voice</strong> — <em>be + past participle</em>. The tense is carried by <em>be</em>: <em>is built / was built / has been built / will be built.</em> ✗ <em>The bridge is build</em> — always use past participle after <em>be</em>. ✗ Russian passive uses <em>быть + краткое причастие</em> (short adjective form) — English always uses the full past participle.'},
+
+// === Everyday English (ee01–ee30) — S63 ===
+// Compound Socialising
+{id:'ee01',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'Your neighbour texts: \'Free tomorrow morning?\' Which reply sounds most natural?',opts:['Yeah, fancy a coffee?','I confirm my availability for tomorrow morning.','Yes I am free tomorrow morning, what do you propose?'],ans:0,exp:'<strong>Fancy a coffee?</strong> matches the casual tone. ✗ <em>I confirm my availability</em> reads like a corporate email. Russian textbooks teach formal responses first, but in casual British English, matching the other person\'s relaxed register IS the polite move.'},
+{id:'ee02',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'Your neighbour invites you to a BBQ on Saturday. You reply: \'___! Shall I bring anything?\'',opts:['Sounds lovely','I accept your invitation with pleasure','That is agreeable to me'],ans:'Sounds lovely',exp:'<strong>Sounds lovely</strong> is the standard warm British acceptance. ✗ <em>I accept your invitation with pleasure</em> is wedding-RSVP level formality — completely wrong for a neighbour BBQ. In Russian, formal acceptance can be used casually; in English it can\'t.'},
+{id:'ee03',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'Your neighbour says: \'We should get together more often.\' You reply: \'Definitely! ___ ___ sometime this week?\'',ans:'How about|What about',hint:'(2 words) suggest a time — casual question opener',exp:'<strong>How about</strong> and <strong>What about</strong> are the natural casual ways to suggest a time. ✗ <em>Would it be possible to arrange</em> is far too formal for a neighbour chat.'},
+{id:'ee04',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'At the pool, you see a neighbour you met last week. You say: \'Good afternoon. How do you do?\' She looks confused and says \'...um, fine?\' What went wrong?',opts:['"How do you do?" is extremely formal — "Hi! How\'s it going?" is what people actually say.','You should have said it louder.','Nothing — she was just being rude.'],ans:0,exp:'<strong>How do you do?</strong> is reserved for very formal first introductions — using it poolside sounds stiff and old-fashioned. A simple <em>Hi! How\'s it going?</em> is what British neighbours expect. Russian <em>Как поживаете?</em> sounds equally formal — use the ты-equivalent register.'},
+{id:'ee05',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'After coffee at your neighbour\'s place, you\'re leaving. You say: \'Thanks so much — ___!\'',opts:['this was really lovely','I am grateful for the hospitality you have provided','the coffee was of excellent quality'],ans:'this was really lovely',exp:'<strong>This was really lovely</strong> is warm, personal, and natural. ✗ <em>I am grateful for the hospitality</em> sounds like a formal thank-you letter, not a doorstep goodbye.'},
+{id:'ee06',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'You want to invite your neighbour to come over. You text: \'___ ___ if you\'re free later!\'',ans:'Pop round|Pop over|Come round|Come over',hint:'(2 words) casual British invitation to visit someone\'s home',exp:'<strong>Pop round</strong> and <strong>pop over</strong> are classic casual British invitations. <em>Come round</em> and <em>come over</em> also work. ✗ <em>Please visit my residence</em> — nobody texts this. Russian <em>Заходи</em> is similarly casual; English needs the same register.'},
+{id:'ee07',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'You text your neighbour: \'I shall await further communication regarding the BBQ arrangements.\' She replies: \'\U0001f602 You crack me up. Just come over at 6!\' What was wrong with your message?',opts:['Way too formal — "Sounds good, see you at 6!" would be natural.','You should have used even more formal language.','Nothing — she didn\'t understand proper English.'],ans:0,exp:'<strong>I shall await further communication</strong> reads like a legal letter, not a WhatsApp message. When someone says <em>Let\'s do a BBQ</em>, match their casual tone: <em>Sounds good!</em>, <em>Can\'t wait!</em>, <em>Lovely — see you then!</em>'},
+{id:'ee08',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'You\'re texting your neighbour about Saturday plans. You write: \'Come over around ___\'',opts:['7-ish?','approximately 19:00 hours?','7 o\'clock precisely?'],ans:'7-ish?',exp:'<strong>-ish</strong> is the standard British casual way to give an approximate time. It signals <em>no need to be exact</em>. ✗ <em>19:00 hours</em> is military/formal. ✗ <em>precisely</em> contradicts casual planning. Russian <em>примерно в 7</em> is similarly relaxed — English <em>-ish</em> does the same job.'},
+{id:'ee09',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'At a compound get-together, someone you\'ve chatted with before says \'How have you been?\' You reply: \'___\'',opts:['Not bad, thanks — you?','I have been experiencing satisfactory conditions, thank you for inquiring.','I am fine.'],ans:'Not bad, thanks — you?',exp:'<strong>Not bad, thanks — you?</strong> bounces the conversation back naturally. ✗ <em>I am fine</em> is technically correct but sounds flat and closed — doesn\'t invite continuation. British small talk expects you to return the question.'},
+// Kids & School
+{id:'ee10',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'Another parent at school pickup says: \'Our kids seem to get on really well!\' Which reply is most natural?',opts:['They do, don\'t they? We should arrange a playdate!','I have also observed that our children have a positive relationship.','Yes they are friends.'],ans:0,exp:'<strong>They do, don\'t they?</strong> echoes the observation warmly, and <em>playdate</em> is the natural next step. ✗ <em>I have also observed</em> is clinical and cold for a school-gate chat.'},
+{id:'ee11',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'You\'re arranging for your child\'s friend to visit. You text the parent: \'Can Leo ___ ___ after school on Friday?\'',ans:'come over|come round|pop over|pop round',hint:'(2 words) casual phrasal verb: visit our home',exp:'<strong>Come over</strong> and <strong>come round</strong> are the standard casual phrasals for a child visiting. <em>Pop over/round</em> also works. ✗ <em>Visit our household</em> — no parent texts this.'},
+{id:'ee12',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'A parent texts: \'Pick up at 5?\' You reply: \'___\'',opts:['Perfect — see you then!','That is an acceptable time for collection.','OK'],ans:'Perfect — see you then!',exp:'<strong>Perfect — see you then!</strong> is warm and confirms clearly. ✗ <em>Acceptable time for collection</em> reads like a parcel delivery notice. ✗ Bare <em>OK</em> works but feels cold — British convention expects slightly warmer confirmation.'},
+{id:'ee13',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'Your child\'s teacher sends a note: \'Leo had a great day today — really participated well.\' Which reply is most appropriate?',opts:['That\'s so lovely to hear — thanks for letting me know!','I acknowledge receipt of your communication regarding my child\'s performance.','Thank you teacher.'],ans:0,exp:'<strong>That\'s so lovely to hear</strong> is warm and personal. ✗ <em>I acknowledge receipt</em> is absurdly corporate. ✗ Bare <em>Thank you teacher</em> is grammatically off (needs a comma) and too brief for British school-parent norms.'},
+{id:'ee14',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'Chatting with another parent, you say: \'How\'s Maya ___ ___ at the new school?\'',ans:'settling in|getting on',hint:'(2 words) phrasal verb: adapting to a new environment',exp:'<strong>Settling in</strong> (adapting) and <strong>getting on</strong> (doing, progressing) are the natural British phrasals for asking about a child at a new school.'},
+{id:'ee15',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'You need to message another parent about a change of plan. You text: \'___ — can we do Thursday instead of Wednesday?\'',opts:['Sorry to be a pain','I sincerely apologise for the inconvenience','I must change'],ans:'Sorry to be a pain',exp:'<strong>Sorry to be a pain</strong> is the natural British softener for a small plan change. ✗ <em>I sincerely apologise for the inconvenience</em> is customer-service language, not parent-to-parent. Russian <em>Извини за беспокойство</em> has a similar casual register.'},
+{id:'ee16',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'After a playdate, you text the other parent: \'Thanks for having her — she had a brilliant time!\' Which reply from them sounds most natural?',opts:['Ah, she\'s welcome any time!','The pleasure was entirely ours. Your daughter\'s conduct was exemplary.','No problem.'],ans:0,exp:'<strong>She\'s welcome any time!</strong> is warm and natural British English. ✗ <em>Your daughter\'s conduct was exemplary</em> is absurdly formal. ✗ <em>No problem</em> works but is notably less warm than British convention expects.'},
+// Padel / Sports
+{id:'ee17',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'You want to invite a friend to play padel. Which message sounds most natural?',opts:['Fancy a hit tomorrow evening?','Would you be interested in participating in a padel match?','I want to play padel. Do you want to play padel with me?'],ans:0,exp:'<strong>Fancy a hit?</strong> is casual British for <em>want to play?</em> ✗ <em>Would you be interested in participating</em> is recruitment-email formality. ✗ Repeating <em>play padel</em> twice is clunky.'},
+{id:'ee18',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'Your friend confirms for padel. You reply: \'Great — I\'ll ___. See you at 6!\'',opts:['book us a court','make a formal reservation for a court','reserve the facilities'],ans:'book us a court',exp:'<strong>Book us a court</strong> is natural and direct. ✗ <em>Formal reservation</em> and <em>reserve the facilities</em> are hotel-brochure language.'},
+{id:'ee19',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'After a good padel game, your partner says: \'That was fun!\' You reply: \'Yeah! ___ ___ next week?\'',ans:'Same time|Same again',hint:'(2 words) suggest repeating the arrangement',exp:'<strong>Same time next week?</strong> is the natural way to suggest a recurring session. Short, casual, assumes the other person is up for it.'},
+{id:'ee20',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'A friend texts asking if you want to play padel on Saturday. You\'re keen. You reply: \'___\'',opts:['Count me in!','I formally accept your sporting invitation.','I would like to participate.'],ans:'Count me in!',exp:'<strong>Count me in</strong> is the natural enthusiastic yes for casual plans. ✗ <em>Formally accept</em> and <em>like to participate</em> are absurdly stiff for a WhatsApp message about padel.'},
+{id:'ee21',type:'input',cat:'Everyday English',lvl:'B1',biz:false,hard:true,stem:'You can\'t make padel this week. You text: \'Can\'t make it this week — ___ ___ ___ though!\'',ans:'count me in|next time for sure|next week though',hint:'(3-4 words) say you want to join next time',exp:'<strong>Count me in next time</strong> and <strong>next week though!</strong> are natural casual ways to stay included. Shows enthusiasm despite declining. ✗ <em>I regret that I am unable to attend</em> — nobody texts this to a padel mate.'},
+{id:'ee22',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'After padel, your group is chatting. Someone says \'That was a close one!\' You reply: \'___\'',opts:['Yeah, you guys really had us on the ropes!','Indeed, the competition was fierce and the outcome uncertain.','Yes the game was close.'],ans:'Yeah, you guys really had us on the ropes!',exp:'<strong>Had us on the ropes</strong> is natural sporty English — means <em>nearly beat us</em>. ✗ <em>The competition was fierce and the outcome uncertain</em> sounds like a sports commentator writing a report, not chatting after a game.'},
+// Casual Catch-up & Small Talk
+{id:'ee23',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'You bump into an acquaintance at the supermarket. They say \'Oh hi! How are you?\' Which reply is most natural?',opts:['Hey! Yeah, good thanks — you?','I am in satisfactory health, thank you for your concern.','I\'m fine thank you and you?'],ans:0,exp:'<strong>Yeah, good thanks — you?</strong> is natural casual British. Note: <em>good</em> not <em>well</em> in casual speech. ✗ <em>Satisfactory health</em> is absurdly clinical. ✗ <em>I\'m fine thank you and you</em> sounds robotic without natural pauses. Russian <em>Нормально, а ты?</em> maps to <em>Good, you?</em> — keep it equally brief.'},
+{id:'ee24',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'A colleague asks \'What did you get up to at the weekend?\' You reply: \'Oh, ___ — just the usual.\'',opts:['not much','nothing of significance occurred','I did not do anything special'],ans:'not much',exp:'<strong>Not much — just the usual</strong> is the classic casual deflection. ✗ <em>Nothing of significance occurred</em> is comically formal for a Monday morning chat.'},
+{id:'ee25',type:'input',cat:'Everyday English',lvl:'B1',biz:false,stem:'You\'re wrapping up a casual chat with a neighbour. You say: \'Anyway, I\'d better ___ ___!\'',ans:'get going|be off|head off|crack on',hint:'(2 words) casual British way to say you need to leave',exp:'<strong>Get going</strong>, <strong>be off</strong>, <strong>head off</strong>, and <strong>crack on</strong> are all natural casual British ways to signal you need to leave. ✗ <em>I must now depart</em> — nobody says this.'},
+{id:'ee26',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'At a school event, another parent says \'Your son is doing so well!\' You reply: \'I acknowledge your positive assessment of my child\'s academic performance.\' The parent smiles awkwardly and walks away. What should you have said?',opts:['Ah thanks, that\'s really kind of you to say!','I also evaluate your child positively.','Thank you. He does perform well. Goodbye.'],ans:0,exp:'<strong>That\'s really kind of you to say</strong> is warm, natural, and keeps the conversation open. ✗ Acknowledging <em>assessments</em> and <em>evaluating children</em> turns a friendly compliment into a performance review. British parents expect warmth and modesty.'},
+{id:'ee27',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'You see a friend you haven\'t seen in ages. You say: \'___! How long has it been?\'',opts:['Long time no see','It has been a considerable duration since our last encounter','I have not seen you for a long time'],ans:'Long time no see',exp:'<strong>Long time no see</strong> is a fixed informal greeting for someone you haven\'t seen in a while. ✗ <em>Considerable duration since our last encounter</em> is a parody of formal English.'},
+{id:'ee28',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'Your friend says \'See you Monday!\' You reply: \'Yeah — ___!\'',opts:['have a good weekend','I wish you pleasant days of rest','goodbye until the next working day'],ans:'have a good weekend',exp:'<strong>Have a good weekend</strong> is the universal casual British Friday parting. Warm, expected, automatic. ✗ <em>Pleasant days of rest</em> sounds like a Victorian doctor\'s prescription. ✗ <em>Goodbye until the next working day</em> is robot language.'},
+{id:'ee29',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,stem:'A new neighbour introduces themselves. After chatting for a few minutes, you say: \'___. I\'m sure we\'ll bump into each other again soon!\'',opts:['Lovely to meet you','It was a pleasure to make your acquaintance','Nice meeting'],ans:'Lovely to meet you',exp:'<strong>Lovely to meet you</strong> is warm British casual. ✗ <em>A pleasure to make your acquaintance</em> is period-drama formal. ✗ <em>Nice meeting</em> is grammatically incomplete.'},
+{id:'ee30',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'At a compound event, someone asks \'So, what do you do?\' Which answer sounds most natural and friendly?',opts:['Oh, I work in finance — nothing too exciting! How about you?','I am employed as a financial professional at an energy corporation.','I work.'],ans:0,exp:'Self-deprecating humour (<em>nothing too exciting</em>) + bouncing the question back (<em>How about you?</em>) is classic British small talk. ✗ <em>Employed as a financial professional</em> is CV language. ✗ Bare <em>I work</em> kills the conversation. Russian speakers often give factual answers without social lubricant — British convention expects you to soften and reciprocate.'}
+
 ];
 
 // ══════════════════════════════════════════════
@@ -3602,6 +3696,21 @@ function setCat(btn) {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   updateCatNudge();
+  // On mobile: collapse chips after selection (unless "All")
+  const wrap = document.getElementById('cat-filter-wrap');
+  const toggle = document.getElementById('cat-toggle-btn');
+  if (wrap && toggle && window.innerWidth <= 480 && catFilter !== 'All') {
+    wrap.classList.remove('expanded');
+    toggle.textContent = 'More categories ▾';
+  }
+}
+
+function toggleCatChips() {
+  const wrap = document.getElementById('cat-filter-wrap');
+  const toggle = document.getElementById('cat-toggle-btn');
+  if (!wrap || !toggle) return;
+  const expanded = wrap.classList.toggle('expanded');
+  toggle.textContent = expanded ? 'Less ▴' : 'More categories ▾';
 }
 
 function updateCatNudge() {
@@ -3874,6 +3983,9 @@ function renderQ() {
     btn.textContent = 'Check';
     btn.onclick = () => answerInput();
     field.addEventListener('keydown', e => { if (e.key === 'Enter') answerInput(); });
+    field.addEventListener('focus', () => {
+      setTimeout(() => field.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+    });
     wrap.appendChild(field);
     wrap.appendChild(btn);
     optsEl.appendChild(wrap);
@@ -4303,9 +4415,9 @@ function showResults(score, total, pct) {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1789;
-  const LEVEL_TOTALS = { B1: 567, B2: 907, C1: 299, C2: 16 };
-  const CAT_TOTALS = { 'Adjectives': 26, 'Articles': 182, 'Collocations': 29, 'Comparisons': 27, 'Conditionals': 87, 'Emphasis': 15, 'Gerunds & Infinitives': 160, 'Grammar': 236, 'Idioms': 35, 'Indirect Questions': 31, 'Linking Words': 78, 'Modal Verbs': 69, 'Passive Voice': 22, 'Phrasal Verbs': 167, 'Prepositions': 78, 'Question Formation': 36, 'Relative Clauses': 42, 'Reported Speech': 26, 'Tenses': 172, 'Used To': 19, 'Vocabulary': 186, 'Word Choice': 44, 'Word Order': 22 };
+  const TOTAL = 1743;
+  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
+  const CAT_TOTALS = { 'Adjectives': 26, 'Articles': 151, 'Collocations': 29, 'Comparisons': 27, 'Conditionals': 87, 'Emphasis': 13, 'Everyday English': 30, 'Gerunds & Infinitives': 160, 'Grammar': 236, 'Idioms': 20, 'Indirect Questions': 31, 'Linking Words': 73, 'Modal Verbs': 66, 'Passive Voice': 22, 'Phrasal Verbs': 167, 'Prepositions': 78, 'Question Formation': 33, 'Relative Clauses': 42, 'Reported Speech': 26, 'Tenses': 168, 'Used To': 16, 'Vocabulary': 180, 'Word Choice': 44, 'Word Order': 18 };
   // Proficiency thresholds: [seenFraction, minAccuracy, minSeen]
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -4475,7 +4587,7 @@ function renderLevelInference() {
   if (!banner) return;
   const lvlStats = DB.lvlStats || {};
   const qStats = DB.qStats || {};
-  const LEVEL_TOTALS = { B1: 564, B2: 838, C1: 295, C2: 16 };
+  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
     B2: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -5296,7 +5408,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = { B1: 567, B2: 907, C1: 299, C2: 16 };
+  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
