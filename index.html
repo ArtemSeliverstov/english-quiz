@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260319-s65">
+  <meta name="app-version" content="v20260319-s66">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -584,6 +584,37 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 /* Collapsible category chips */
 .cat-filter-wrap{max-height:2.6rem;overflow:hidden;transition:max-height .3s ease;}
 .cat-filter-wrap.expanded{max-height:none;}
+/* ── [K] Simplified start screen ── */
+.simple-setup{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.5rem 1.25rem;}
+.simple-setup h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.25rem;}
+.simple-greeting{font-size:.82rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.5;min-height:1.2rem;}
+.simple-cards{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.1rem;}
+.simple-card{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;border-radius:14px;border:2px solid var(--border);background:var(--surface);cursor:pointer;transition:border-color .18s,background .18s,box-shadow .18s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.simple-card:active{transform:scale(.985);}
+.simple-card.active{border-color:var(--accent);background:rgba(247,201,72,.07);box-shadow:0 0 0 4px rgba(247,201,72,.1);}
+.simple-card-icon{font-size:1.6rem;line-height:1;flex-shrink:0;}
+.simple-card-text{flex:1;min-width:0;}
+.simple-card-title{font-size:.95rem;font-weight:700;color:var(--text);line-height:1.2;}
+.simple-card-sub{font-size:.75rem;color:var(--muted);margin-top:.18rem;line-height:1.35;}
+.simple-card-check{font-size:1.1rem;opacity:0;transition:opacity .15s;}
+.simple-card.active .simple-card-check{opacity:1;}
+.simple-start-btn{width:100%;padding:1rem;border-radius:12px;border:none;background:var(--accent);color:#0f0e17;font-weight:700;font-size:1.05rem;cursor:pointer;transition:background .15s,transform .1s;margin-bottom:.75rem;}
+.simple-start-btn:hover{background:#f9d76a;}
+.simple-start-btn:active{background:#e5b83a;transform:translateY(1px);}
+.simple-more-link{display:block;text-align:center;font-size:.78rem;color:var(--muted);cursor:pointer;padding:.3rem;text-decoration:underline;text-decoration-color:rgba(167,169,190,.3);}
+.simple-more-link:hover{color:var(--text);}
+.simple-full-setup{margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem;}
+/* simpleUI toggle in family cards */
+.simple-ui-row{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;padding:.5rem .6rem;background:var(--surface);border-radius:8px;border:1px solid var(--border);}
+.simple-ui-label{font-size:.75rem;color:var(--muted);}
+.simple-ui-toggle{position:relative;width:36px;height:20px;cursor:pointer;}
+.simple-ui-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.simple-ui-slider{position:absolute;inset:0;background:var(--surface2);border-radius:20px;transition:background .2s;}
+.simple-ui-slider::before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;border-radius:50%;background:#fff;transition:transform .2s;}
+.simple-ui-toggle input:checked+.simple-ui-slider{background:var(--accent);}
+.simple-ui-toggle input:checked+.simple-ui-slider::before{transform:translateX(16px);}
+/* iPad-friendly card width */
+@media(min-width:481px){.simple-setup{max-width:500px;margin:0 auto;}.simple-cards{max-width:460px;}}
 .cat-toggle-btn{display:none;padding:.3rem .8rem;border:1px dashed var(--border);border-radius:20px;
   background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;margin-top:.4rem;
   transition:color .2s;}
@@ -652,7 +683,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s65</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s66</span></p>
 </header>
 
 <!-- TABS -->
@@ -664,7 +695,22 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <!-- ══ SETUP SCREEN ══ -->
 <div id="tab-setup">
-  <div class="setup">
+
+  <!-- [K] Simplified start screen — shown for anna / nicole when simpleUI:true -->
+  <div id="simple-setup" style="display:none;">
+    <div class="simple-setup">
+      <h2>Start a new session</h2>
+      <div id="simple-greeting" class="simple-greeting"></div>
+      <div id="simple-cards" class="simple-cards">
+        <!-- cards injected by renderSimpleSetup() -->
+      </div>
+      <button class="simple-start-btn" onclick="simpleStartQuiz()">Start →</button>
+      <span class="simple-more-link" id="simple-more-link" onclick="toggleMoreOptions()">⚙️ More options ▾</span>
+      <div id="simple-full-setup" class="simple-full-setup" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="setup" id="full-setup">
     <h2>Start a new session</h2>
     <div id="player-greeting" style="font-size:.82rem;color:var(--muted);margin-bottom:.9rem;line-height:1.5;min-height:1.2rem;"></div>
     <div class="field">
@@ -751,6 +797,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
   </div>
+</div>
 </div>
 
 <!-- ══ STATS SCREEN ══ -->
@@ -3641,7 +3688,7 @@ function showTab(name) {
   ['setup','stats','quiz','results','family'].forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
   });
-  if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); }
+  if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
   document.getElementById('tab-'+name).classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
@@ -3747,6 +3794,194 @@ function goFixWeakSpotsForCat(cat) {
   if (hint) hint.textContent = MODE_HINTS['weak'];
   updateCatNudge();
   showTab('setup');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  [K] SIMPLIFIED START SCREEN  (Anna & Nicole)
+// ══════════════════════════════════════════════════════════════
+
+// Per-player card definitions — matches KB spec exactly
+const SIMPLE_CARDS = {
+  anna: [
+    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+      mode:'smart', cat:'Everyday English', count:10, maxLvl:'B2' },
+    { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
+      mode:'smart', cat:'All',              count:10, maxLvl:'B2' },
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,  // dynamic
+      mode:'weak',  cat:'All',              count:10, maxLvl:'B2' },
+    { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
+      mode:'consolidate', cat:'All',        count:10, maxLvl:'B2' }
+  ],
+  nicole: [
+    { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
+      mode:'smart', cat:'All',              count:10, maxLvl:'B1' },
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,  // dynamic
+      mode:'weak',  cat:'All',              count:10, maxLvl:'B1' },
+    { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
+      mode:'consolidate', cat:'All',        count:10, maxLvl:'B1' },
+    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+      mode:'smart', cat:'Everyday English', count:10, maxLvl:'B1' }
+  ]
+};
+
+let simpleCardIndex = 0; // which card is currently selected
+
+function getWeakCatSubtitle() {
+  // Compute 2 weakest categories from catStats (min 5 seen)
+  const cats = Object.entries(DB.catStats || {})
+    .filter(([, s]) => s.seen >= 5)
+    .map(([cat, s]) => ({ cat, pct: Math.round(s.correct / s.seen * 100) }))
+    .sort((a, b) => a.pct - b.pct);
+  if (cats.length === 0) return 'Your weak areas';
+  return cats.slice(0, 2).map(c => c.cat).join(' · ');
+}
+
+function renderSimpleSetup() {
+  const panel = document.getElementById('simple-setup');
+  if (!panel) return;
+  const cards = SIMPLE_CARDS[currentPlayer];
+  if (!cards) return;
+
+  // Greeting (reuse same logic as renderGreeting)
+  const greetEl = document.getElementById('simple-greeting');
+  if (greetEl) {
+    const streak = DB.currentStreak || 0;
+    const lastPlayed = DB.lastPlayedDate || null;
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    let streakPart = '';
+    if (streak >= 7)      streakPart = '🔥 ' + streak + '-day streak — incredible!';
+    else if (streak >= 3) streakPart = '🔥 ' + streak + '-day streak — keep it up!';
+    else if (streak >= 1) streakPart = '🔥 ' + streak + '-day streak';
+    let returnPart = '';
+    const name = DB.displayName || currentPlayer || '';
+    if (!lastPlayed)               returnPart = 'Welcome, ' + name + '! Ready for your first session?';
+    else if (lastPlayed === today)  returnPart = 'Good to see you again, ' + name + '!';
+    else if (lastPlayed === yesterday) returnPart = 'Welcome back, ' + name + '!';
+    else {
+      const daysAgo = Math.round((Date.now() - new Date(lastPlayed).getTime()) / 86400000);
+      returnPart = daysAgo <= 7
+        ? 'Welcome back, ' + name + '! ' + daysAgo + ' days since your last session.'
+        : 'Welcome back, ' + name + '! Great to see you again.';
+    }
+    greetEl.textContent = [returnPart, streakPart].filter(Boolean).join(' · ');
+  }
+
+  // Render cards
+  const container = document.getElementById('simple-cards');
+  if (!container) return;
+  const weakSub = getWeakCatSubtitle();
+  container.innerHTML = cards.map((c, i) => {
+    const sub = c.sub !== null ? c.sub : weakSub;
+    const isActive = i === simpleCardIndex;
+    return `<div class="simple-card${isActive ? ' active' : ''}" onclick="simpleCardTap(${i})">
+      <div class="simple-card-icon">${c.icon}</div>
+      <div class="simple-card-text">
+        <div class="simple-card-title">${c.title}</div>
+        <div class="simple-card-sub">${sub}</div>
+      </div>
+      <div class="simple-card-check">✓</div>
+    </div>`;
+  }).join('');
+}
+
+function simpleCardTap(idx) {
+  simpleCardIndex = idx;
+  // Update active state
+  document.querySelectorAll('.simple-card').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  // If full setup is open, collapse it
+  const full = document.getElementById('simple-full-setup');
+  const link = document.getElementById('simple-more-link');
+  if (full && full.style.display !== 'none') {
+    full.style.display = 'none';
+    if (link) link.textContent = '⚙️ More options ▾';
+  }
+}
+
+function simpleStartQuiz() {
+  const cards = SIMPLE_CARDS[currentPlayer];
+  if (!cards) { startQuiz(); return; }
+  const card = cards[simpleCardIndex];
+  if (!card) { startQuiz(); return; }
+  // Apply card preset to global state
+  mode = card.mode;
+  catFilter = card.cat;
+  maxLevel = card.maxLvl;
+  includeBiz = false; // always false for anna/nicole
+  // Sync UI state so session header reflects reality
+  document.querySelectorAll('#mode-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode));
+  document.querySelectorAll('.cat-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.cat === catFilter));
+  document.querySelectorAll('#level-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.level === maxLevel));
+  // Set session length
+  const slider = document.getElementById('q-count');
+  const val = document.getElementById('q-count-val');
+  if (slider) { slider.value = card.count; syncLenBtns(card.count); }
+  if (val) val.textContent = card.count;
+  startQuiz();
+}
+
+function toggleMoreOptions() {
+  const full = document.getElementById('simple-full-setup');
+  const fullSetup = document.getElementById('full-setup');
+  const link = document.getElementById('simple-more-link');
+  if (!full || !fullSetup) return;
+  const opening = full.style.display === 'none';
+  if (opening) {
+    // Move the full-setup panel into the collapsible area (once)
+    if (!full.contains(fullSetup)) full.appendChild(fullSetup);
+    fullSetup.style.display = 'block';
+    full.style.display = 'block';
+    if (link) link.textContent = '⚙️ Less ▴';
+  } else {
+    full.style.display = 'none';
+    if (link) link.textContent = '⚙️ More options ▾';
+  }
+}
+
+function checkSimpleUI() {
+  // Called after player confirmed + Firebase data loaded
+  const useSimple = (currentPlayer === 'anna' || currentPlayer === 'nicole')
+    && DB._simpleUI === true;
+  const simplePanel = document.getElementById('simple-setup');
+  const fullPanel   = document.getElementById('full-setup');
+  const tabSetup    = document.getElementById('tab-setup');
+  if (!simplePanel || !fullPanel || !tabSetup) return;
+  // If full-setup was moved into simple-full-setup, restore it
+  const simpleFull = document.getElementById('simple-full-setup');
+  if (simpleFull && simpleFull.contains(fullPanel)) {
+    tabSetup.appendChild(fullPanel);
+    if (simpleFull) simpleFull.style.display = 'none';
+  }
+  if (useSimple) {
+    simpleCardIndex = 0;
+    renderSimpleSetup();
+    simplePanel.style.display = 'block';
+    fullPanel.style.display   = 'none';
+  } else {
+    simplePanel.style.display = 'none';
+    fullPanel.style.display   = 'block';
+  }
+}
+
+async function toggleSimpleUI(playerKey, enabled) {
+  try {
+    // Write flag to Firebase for this player
+    await fbSet('players/' + playerKey + '/simpleUI', enabled);
+    // If toggling current player, update local DB and re-render setup
+    if (playerKey === currentPlayer) {
+      DB._simpleUI = enabled;
+      if (typeof saveData === 'function') await saveData(DB);
+      checkSimpleUI();
+      if (enabled) showTab('setup');
+    }
+  } catch(e) {
+    console.warn('toggleSimpleUI failed:', e);
+  }
 }
 
 function toggleCatProgress() {
@@ -5198,6 +5433,8 @@ function confirmPlayer(key) {
     const b1Acc = b1Stats.seen >= 20 ? b1Stats.correct / b1Stats.seen : 1;
     nudge.style.display = b1Acc < 0.75 ? 'block' : 'none';
   }
+  // [K] Show simple or full setup depending on player preference
+  checkSimpleUI();
 }
 
 // Called when a name button is clicked
@@ -5365,6 +5602,7 @@ async function loadFromFirebase() {
         longestStreak:  remote.longestStreak    || 0,
         lastPlayedDate: remote.lastPlayedDate   || null,
         createdAt:      remote.createdAt        || new Date().toISOString(),
+        _simpleUI:      remote.simpleUI         === true,
       };
       if (typeof saveData === 'function') await saveData(merged);
       if (typeof DB !== 'undefined') {
@@ -5521,6 +5759,14 @@ function renderFamily(playersData) {
       </div>
       ${sparkBars?`<div class="sparkline">${sparkBars}</div>`:''}
       <div class="player-coverage">${playerCoverageHTML(p)}</div>
+      ${(p.key==='anna'||p.key==='nicole')?`
+      <div class="simple-ui-row">
+        <span class="simple-ui-label">🃏 Simplified start screen</span>
+        <label class="simple-ui-toggle" title="Toggle card-based start screen for this player">
+          <input type="checkbox" ${p.simpleUI?'checked':''} onchange="toggleSimpleUI('${p.key}',this.checked)">
+          <span class="simple-ui-slider"></span>
+        </label>
+      </div>`:''}
     </div>`;
   }).join('');
 }
