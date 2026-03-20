@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260319-s66">
+  <meta name="app-version" content="v20260319-s66r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -581,9 +581,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .btn-primary:active{background:#e5b83a;transform:translateY(1px);}
 .len-btn:active{background:rgba(139,92,246,.18);border-color:var(--accent);color:var(--accent);}
 
-/* Collapsible category chips */
-.cat-filter-wrap{max-height:2.6rem;overflow:hidden;transition:max-height .3s ease;}
-.cat-filter-wrap.expanded{max-height:none;}
+/* Collapsible category chips — collapsed on mobile/tablet only */
 /* ── [K] Simplified start screen ── */
 .simple-setup{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.5rem 1.25rem;}
 .simple-setup h2{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:.25rem;}
@@ -620,6 +618,13 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
   transition:color .2s;}
 .cat-toggle-btn:active{color:var(--accent);}
 
+/* Tablet + mobile: collapse chips behind toggle */
+@media(max-width:768px){
+  .cat-filter-wrap{max-height:2.6rem;overflow:hidden;transition:max-height .3s ease;}
+  .cat-filter-wrap.expanded{max-height:none;}
+  .cat-toggle-btn{display:inline-block;}
+}
+
 /* Mobile breakpoint */
 @media(max-width:480px){
   html{font-size:16px;}
@@ -640,8 +645,12 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
   .mode-btns{gap:.35rem;}
   .mode-btn{padding:.5rem .7rem;font-size:.8rem;border-radius:8px;flex:1 1 auto;min-width:0;text-align:center;}
   .cat-btn{padding:.3rem .7rem;font-size:.75rem;}
-  .cat-toggle-btn{display:inline-block;}
   .len-btn{font-size:.72rem;padding:.3rem .35rem;}
+  .simple-setup{padding:1rem;border-radius:14px;}
+  .simple-card{padding:.7rem .85rem;gap:.75rem;}
+  .simple-card-icon{font-size:1.4rem;}
+  .simple-card-title{font-size:.9rem;}
+  .simple-start-btn{padding:.85rem;font-size:.95rem;}
   .stat-box .num{font-size:1.6rem;}
   .stat-box .lbl{font-size:.7rem;}
   .btn{padding:.7rem 1.4rem;font-size:.9rem;}
@@ -683,7 +692,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s66</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s66r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -3746,7 +3755,7 @@ function setCat(btn) {
   // On mobile: collapse chips after selection (unless "All")
   const wrap = document.getElementById('cat-filter-wrap');
   const toggle = document.getElementById('cat-toggle-btn');
-  if (wrap && toggle && window.innerWidth <= 480 && catFilter !== 'All') {
+  if (wrap && toggle && window.innerWidth <= 768 && catFilter !== 'All') {
     wrap.classList.remove('expanded');
     toggle.textContent = 'More categories ▾';
   }
@@ -6013,6 +6022,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadFromFirebase().then(loaded => {
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
       startFamilyPoll();
+      checkSimpleUI();
     });
   }
 });
