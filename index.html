@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260319-s67">
+  <meta name="app-version" content="v20260319-s68r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -692,7 +692,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s67</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s68r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -4404,6 +4404,16 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
 async function recordAnswer(correct, q) {
   if (correct) { sessionScore++; streak++; } else streak = 0;
 
+  // streak tracking — update on first answer of each day so a partial session
+  // still counts toward the streak (session-end block is idempotent: guards with !== today)
+  const _today = new Date().toISOString().slice(0,10);
+  if (DB.lastPlayedDate !== _today) {
+    const _yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    DB.currentStreak = (DB.lastPlayedDate === _yesterday) ? (DB.currentStreak||0)+1 : 1;
+    DB.lastPlayedDate = _today;
+    if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
+  }
+
   // per-question
   if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0};
   DB.qStats[q.id].seen++;
@@ -6032,6 +6042,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
       startFamilyPoll();
       checkSimpleUI();
+      // One-time streak credit for Nicole: app failed to save her Mar 19 session.
+      // Condition is very specific — only fires once, on her device, today.
+      if (currentPlayer === 'nicole'
+          && DB.currentStreak === 1
+          && DB.lastPlayedDate === '2026-03-20'
+          && !DB._streakCreditMar20) {
+        DB.currentStreak = 4;
+        DB.longestStreak = Math.max(DB.longestStreak || 0, 4);
+        DB._streakCreditMar20 = true;
+        if (typeof saveData === 'function') saveData(DB);
+        syncToFirebase(true);
+      }
     });
   }
 });
