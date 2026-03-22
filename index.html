@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260319-s68r3">
+  <meta name="app-version" content="v20260322-s70">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -79,6 +79,18 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
 /* ── STATS SCREEN ── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stats-hero{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:1.25rem;}
+.hero-main{margin-bottom:.9rem;}
+.hero-insight{font-size:.92rem;color:var(--text);line-height:1.55;}
+.hero-insight strong{color:var(--accent2);}
+.hero-insight .hero-pct{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;}
+.hero-insight .hero-cat{color:var(--accent);font-weight:700;}
+.hero-action-btn{background:var(--accent);color:#0f0e17;border:none;padding:.55rem 1.3rem;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;margin-top:.7rem;-webkit-tap-highlight-color:transparent;}
+.hero-action-btn:active{opacity:.85;transform:scale(.97);}
+.hero-stats{display:flex;gap:1.2rem;flex-wrap:wrap;}
+.hero-stat{display:flex;flex-direction:column;align-items:center;min-width:60px;}
+.hero-stat .hs-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;line-height:1;}
+.hero-stat .hs-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:.2rem;font-family:'DM Mono',monospace;}
 .stat-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem;text-align:center;}
 .stat-box .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;}
 .stat-box .lbl{color:var(--muted);font-size:.78rem;font-family:'DM Mono',monospace;text-transform:uppercase;
@@ -293,6 +305,101 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
       font-weight: 600;
     }
 
+    /* ── TRANSFORM (Key Word Transformation) ── */
+    .transform-source {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .transform-source-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+    .transform-keyword {
+      display: inline-block;
+      background: rgba(99,102,241,.12);
+      color: #818cf8;
+      font-family: 'DM Mono', monospace;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.2em 0.65em;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+      margin: 0.6rem 0 0.3rem;
+    }
+    .transform-target {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.9;
+      margin: 0.5rem 0 0.8rem;
+      color: var(--text);
+    }
+    .transform-blank {
+      display: inline-block;
+      min-width: 180px;
+      border-bottom: 2.5px solid #818cf8;
+      padding: 0 6px 2px;
+      font-size: 1rem;
+      color: #818cf8;
+      font-weight: 600;
+      text-align: center;
+      font-style: italic;
+    }
+    .transform-blank.correct-input { border-color: #22c55e; color: #22c55e; }
+    .transform-blank.wrong-input   { border-color: #ef4444; color: #ef4444; }
+    .transform-kw-warning {
+      font-size: 0.8rem;
+      color: #ef4444;
+      margin-top: 0.3rem;
+      font-weight: 500;
+    }
+    .q-type-badge.transform { background: rgba(99,102,241,.12); color: #818cf8; }
+
+    /* ── WORDFORM (Word Formation) ── */
+    .wordform-base {
+      display: inline-block;
+      background: rgba(236,72,153,.1);
+      color: #ec4899;
+      font-family: 'DM Mono', monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.25em 0.7em;
+      border-radius: 6px;
+      letter-spacing: 0.06em;
+      margin: 0.6rem 0 0.2rem;
+    }
+    .wordform-base-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .wordform-blank {
+      display: inline-block;
+      min-width: 140px;
+      border-bottom: 2.5px solid #ec4899;
+      padding: 0 6px 2px;
+      font-size: 1.05rem;
+      color: #ec4899;
+      font-weight: 600;
+      text-align: center;
+      font-style: italic;
+    }
+    .wordform-blank.correct-input { border-color: #22c55e; color: #22c55e; }
+    .wordform-blank.wrong-input   { border-color: #ef4444; color: #ef4444; }
+    .q-type-badge.wordform { background: rgba(236,72,153,.1); color: #ec4899; }
+
   
     /* ── LEVEL SELECTOR ── */
     .level-desc {
@@ -360,6 +467,18 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
     /* ══ FAMILY / FIREBASE ══ */
     .family-wrap { padding: 0 0 2rem; }
+    .family-activity{display:flex;justify-content:center;gap:1rem;margin-bottom:1.1rem;padding:.6rem 0;}
+    .fa-player{display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:52px;}
+    .fa-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;}
+    .fa-avatar.active-today{box-shadow:0 0 0 3px var(--green);}
+    .fa-avatar.inactive-warn{box-shadow:0 0 0 3px var(--accent);}
+    .fa-avatar.inactive-danger{box-shadow:0 0 0 3px var(--accent2);animation:pulse-ring 2s ease-in-out infinite;}
+    @keyframes pulse-ring{0%,100%{box-shadow:0 0 0 3px var(--accent2)}50%{box-shadow:0 0 0 5px rgba(248,113,113,.3)}}
+    .fa-name{font-size:.7rem;color:var(--muted);font-weight:600;white-space:nowrap;}
+    .fa-when{font-size:.62rem;color:var(--muted);white-space:nowrap;}
+    .fa-when.today{color:var(--green);}
+    .fa-when.warn{color:var(--accent);}
+    .fa-when.danger{color:var(--accent2);}
     .player-card {
       background: var(--card);
       border-radius: 14px;
@@ -692,7 +811,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260319-s68r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70</span></p>
 </header>
 
 <!-- TABS -->
@@ -710,6 +829,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
     <div class="simple-setup">
       <h2>Start a new session</h2>
       <div id="simple-greeting" class="simple-greeting"></div>
+      <div id="simple-cooldown" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:.65rem .9rem;margin-bottom:.6rem;font-size:.82rem;color:#fbbf24;line-height:1.5;"></div>
       <div id="simple-cards" class="simple-cards">
         <!-- cards injected by renderSimpleSetup() -->
       </div>
@@ -772,6 +892,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
         <button class="cat-btn" data-cat="Tenses" onclick="setCat(this)">Tenses</button>
         <button class="cat-btn" data-cat="Used To" onclick="setCat(this)">Used To</button>
         <button class="cat-btn" data-cat="Vocabulary" onclick="setCat(this)">Vocabulary</button>
+        <button class="cat-btn" onclick="setCatFilter(this)">Word Formation</button>
         <button class="cat-btn" data-cat="Word Choice" onclick="setCat(this)">Word Choice</button>
         <button class="cat-btn" data-cat="Word Order" onclick="setCat(this)">Word Order</button>
       </div>
@@ -812,7 +933,15 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 <!-- ══ STATS SCREEN ══ -->
 <div id="tab-stats" class="hidden">
   <div id="level-inference-banner" style="display:none;border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.88rem;line-height:1.5;"></div>
-  <div class="stats-grid" id="stats-grid"></div>
+
+  <!-- U2: Hero card — actionable next step -->
+  <div id="stats-hero" class="stats-hero">
+    <div class="hero-main">
+      <div id="hero-insight" class="hero-insight"></div>
+      <button class="hero-action-btn" id="hero-action-btn" style="display:none;" onclick="heroAction()">🎯 Practice now</button>
+    </div>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
 
   <div id="cat-progress-wrap" style="margin-bottom:1.5rem;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;cursor:pointer;" onclick="toggleCatProgress()">
@@ -825,27 +954,36 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
     </div>
   </div>
 
-  <div class="coverage-panel" id="coverage-wrap">
-    <div class="section-title">Coverage &amp; Proficiency</div>
-    <div id="coverage-panel"></div>
+  <!-- U2: Collapsible full statistics -->
+  <div id="full-stats-toggle" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;cursor:pointer;padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;" onclick="toggleFullStats()">
+    <div style="font-size:.88rem;font-weight:600;color:var(--text);">Full statistics</div>
+    <span id="full-stats-chevron" style="font-size:.75rem;color:var(--muted);transition:transform .2s;">▶</span>
   </div>
+  <div id="full-stats-inner" style="display:none;">
+    <div class="stats-grid" id="stats-grid"></div>
 
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;">
-    <div class="section-title" style="margin:0;">Session history</div>
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-      <button class="clear-btn" onclick="openChangePinModal()" title="Change your login PIN">🔐 Change PIN</button>
-      <button class="clear-btn" onclick="exportStats()" title="Download stats as JSON to attach to Claude">📤 Export stats</button>
-      <button class="clear-btn" onclick="document.getElementById('import-input').click()" title="Import previously exported stats">📥 Import stats</button>
-      <button class="clear-btn" onclick="clearHistory()">🗑 Clear</button>
-      <input type="file" id="import-input" accept=".json" style="display:none" onchange="importStats(event)">
+    <div class="coverage-panel" id="coverage-wrap">
+      <div class="section-title">Coverage &amp; Proficiency</div>
+      <div id="coverage-panel"></div>
     </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;">
+      <div class="section-title" style="margin:0;">Session history</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button class="clear-btn" onclick="openChangePinModal()" title="Change your login PIN">🔐 Change PIN</button>
+        <button class="clear-btn" onclick="exportStats()" title="Download stats as JSON to attach to Claude">📤 Export stats</button>
+        <button class="clear-btn" onclick="document.getElementById('import-input').click()" title="Import previously exported stats">📥 Import stats</button>
+        <button class="clear-btn" onclick="clearHistory()">🗑 Clear</button>
+        <input type="file" id="import-input" accept=".json" style="display:none" onchange="importStats(event)">
+      </div>
+    </div>
+    <div class="history-list" id="history-list"></div>
+    <div class="section-title">Weak spots (most missed)</div>
+    <div id="weak-train-wrap" style="display:none;margin-bottom:.75rem;">
+      <button class="btn btn-primary" style="font-size:.85rem;padding:.5rem 1.1rem;" onclick="goFixWeakSpots()">🎯 Train these questions</button>
+    </div>
+    <div class="weak-list" id="weak-list"></div>
   </div>
-  <div class="history-list" id="history-list"></div>
-  <div class="section-title">Weak spots (most missed)</div>
-  <div id="weak-train-wrap" style="display:none;margin-bottom:.75rem;">
-    <button class="btn btn-primary" style="font-size:.85rem;padding:.5rem 1.1rem;" onclick="goFixWeakSpots()">🎯 Train these questions</button>
-  </div>
-  <div class="weak-list" id="weak-list"></div>
 </div>
 
 
@@ -886,9 +1024,15 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
     <div id="fb-status-bar" class="fb-status loading">⏳ Connecting to server…</div>
 
+    <!-- U3: Activity strip — who's playing? -->
+    <div id="family-activity" class="family-activity"></div>
+
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;">Family leaderboard</div>
-      <button class="export-ai-btn" onclick="syncToFirebase(true)" title="Force sync your data to server" style="background:var(--surface);color:var(--text);border:1px solid var(--border);margin-right:.5rem;">🔄 Sync now</button><button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export for AI</button>
+      <div style="display:flex;gap:.4rem;">
+        <button class="export-ai-btn" onclick="syncToFirebase(true)" title="Force sync your data to server" style="background:var(--surface);color:var(--text);border:1px solid var(--border);">🔄 Sync</button>
+        <button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export</button>
+      </div>
     </div>
 
     <div id="family-list">
@@ -932,8 +1076,8 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
       <button class="btn btn-primary" style="font-size:.9rem;padding:.6rem 1.2rem;" onclick="goFixWeakSpots()">🎯 Fix Weak Spots now</button>
     </div>
     <div class="result-actions">
-      <button class="btn btn-primary" onclick="startQuiz()">Play Again</button>
-      <button class="btn-outline" onclick="showTab('setup')">Change Settings</button>
+      <button class="btn btn-primary" onclick="quickReplay()">↻ Same Again</button>
+      <button class="btn-outline" onclick="showTab('setup')">New Session</button>
       <button class="btn-outline" onclick="showTab('stats')">View Stats</button>
     </div>
     <div class="review-wrap" id="review-wrap"></div>
@@ -944,9 +1088,14 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 <script>
 // ══════════════════════════════════════════════
 //  QUESTION DATABASE
-//  type: 'mcq' = multiple choice (2-4 opts)
-//  type: 'gap' = fill the gap (click the word)
-//    gap q.q must contain ___ as the blank
+//  type: 'mcq'       = multiple choice (2-4 opts)
+//  type: 'gap'       = fill the gap (click the word)
+//  type: 'input'     = type the answer (free text)
+//  type: 'multi'     = multi-blank article chains
+//  type: 'transform' = Key Word Transformation (Cambridge B2/C1 Part 4)
+//     source: original sentence, keyword: given word, q: gapped target, ans: pipe-separated alternates
+//  type: 'wordform'  = Word Formation (Cambridge B2/C1 Part 3)
+//     base: root word in CAPS, q: gapped sentence, ans: pipe-separated alternates
 // ══════════════════════════════════════════════
 const ALL_QUESTIONS = [
 
@@ -2058,7 +2207,7 @@ exp:'<strong>Terminate</strong> = to formally end a contract or agreement. ✗ <
 
 // BATCH: C1 INDIRECT QUESTIONS (qf11-qf30)
 
-{id:'qf11',lvl:'C1',biz:false,cat:'Question Formation',type:'gap',q:'Could you tell me ___ the report is ready yet?',opts:['if','whether','that','what'],ans:1,exp:'Both <em>if</em> and <em>whether</em> introduce embedded yes/no questions. However, <em>whether</em> is preferred in formal/written registers. ✗ <em>that</em> is for reported statements, not questions. ✗ <em>what</em> is for wh-questions.'},
+{id:'qf11',lvl:'C1',biz:false,cat:'Question Formation',type:'gap',q:'Could you tell me ___ the report is ready yet?',opts:['if','whether','that','what'],ans:[0,1],exp:'Both <em>if</em> and <em>whether</em> introduce embedded yes/no questions. However, <em>whether</em> is preferred in formal/written registers. ✗ <em>that</em> is for reported statements, not questions. ✗ <em>what</em> is for wh-questions.'},
 {id:'qf12',lvl:'C1',biz:false,cat:'Question Formation',type:'gap',q:'I wonder ___ she will accept the offer or turn it down.',opts:['whether','if','that','what'],ans:0,exp:'<em>Whether</em> is required (not <em>if</em>) before an <em>or</em> alternative: <em>whether X or Y</em>. ✗ <em>if X or Y</em> is grammatically awkward and non-standard. The <em>or</em> clause signals binary choice → <em>whether</em>.'},
 {id:'qf13',lvl:'C1',biz:false,cat:'Question Formation',type:'gap',q:'The question is ___ we have enough budget to proceed.',opts:['whether','if','that','how'],ans:0,exp:'After <em>be</em> as a linking verb (<em>the question is</em>), use <em>whether</em>, not <em>if</em>. ✗ <em>if</em> is not used after <em>be</em>. Pattern: <em>The issue/question/problem is whether …</em>. <em>That</em> would introduce a fact, not a yes/no uncertainty.'},
 {id:'qf14',lvl:'C1',biz:false,cat:'Question Formation',type:'gap',q:'Do you know what time ___ tomorrow?',opts:['the meeting starts','does the meeting start','starts the meeting','is the meeting starting'],ans:0,exp:'<strong>Indirect questions use statement word order</strong>: <em>what time the meeting starts</em> (S + V), not ✗ <em>does the meeting start</em> (question order). Russian speakers often keep question word order in embedded clauses: ✗ <em>Do you know what time starts the meeting?</em>'},
@@ -3488,8 +3637,109 @@ exp:'<strong>A</strong> — classifying use: introduces the noun into a category
 {id:'ee27',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,q:'You see a friend you haven\'t seen in ages. You say: \'___! How long has it been?\'',opts:['Long time no see','It has been a considerable duration since our last encounter','I have not seen you for a long time'],ans:0,exp:'<strong>Long time no see</strong> is a fixed informal greeting for someone you haven\'t seen in a while. ✗ <em>Considerable duration since our last encounter</em> is a parody of formal English.'},
 {id:'ee28',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,q:'Your friend says \'See you Monday!\' You reply: \'Yeah — ___!\'',opts:['have a good weekend','I wish you pleasant days of rest','goodbye until the next working day'],ans:0,exp:'<strong>Have a good weekend</strong> is the universal casual British Friday parting. Warm, expected, automatic. ✗ <em>Pleasant days of rest</em> sounds like a Victorian doctor\'s prescription. ✗ <em>Goodbye until the next working day</em> is robot language.'},
 {id:'ee29',type:'gap',cat:'Everyday English',lvl:'B1',biz:false,q:'A new neighbour introduces themselves. After chatting for a few minutes, you say: \'___. I\'m sure we\'ll bump into each other again soon!\'',opts:['Lovely to meet you','It was a pleasure to make your acquaintance','Nice meeting'],ans:0,exp:'<strong>Lovely to meet you</strong> is warm British casual. ✗ <em>A pleasure to make your acquaintance</em> is period-drama formal. ✗ <em>Nice meeting</em> is grammatically incomplete.'},
-{id:'ee30',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'At a compound event, someone asks \'So, what do you do?\' Which answer sounds most natural and friendly?',opts:['Oh, I work in finance — nothing too exciting! How about you?','I am employed as a financial professional at an energy corporation.','I work.'],ans:0,exp:'Self-deprecating humour (<em>nothing too exciting</em>) + bouncing the question back (<em>How about you?</em>) is classic British small talk. ✗ <em>Employed as a financial professional</em> is CV language. ✗ Bare <em>I work</em> kills the conversation. Russian speakers often give factual answers without social lubricant — British convention expects you to soften and reciprocate.'}
+{id:'ee30',type:'mcq',cat:'Everyday English',lvl:'B1',biz:false,q:'At a compound event, someone asks \'So, what do you do?\' Which answer sounds most natural and friendly?',opts:['Oh, I work in finance — nothing too exciting! How about you?','I am employed as a financial professional at an energy corporation.','I work.'],ans:0,exp:'Self-deprecating humour (<em>nothing too exciting</em>) + bouncing the question back (<em>How about you?</em>) is classic British small talk. ✗ <em>Employed as a financial professional</em> is CV language. ✗ Bare <em>I work</em> kills the conversation. Russian speakers often give factual answers without social lubricant — British convention expects you to soften and reciprocate.'},
 
+// ══ TRANSFORM — Key Word Transformation (S70) ══
+// B2 Passive Voice transforms
+{id:'tf_01',type:'transform',lvl:'B2',biz:true,cat:'Passive Voice',source:'Someone broke the window during the storm.',keyword:'WAS',q:'The window ___ during the storm.',ans:'was broken',exp:'Active → passive: move the object to subject position, add <em>was</em> + past participle. The agent (<em>someone</em>) is omitted when unknown or unimportant.'},
+{id:'tf_02',type:'transform',lvl:'B2',biz:true,cat:'Passive Voice',source:'People believe that the CEO will resign.',keyword:'BELIEVED',q:'The CEO ___ resign.',ans:'is believed to',exp:'Impersonal passive with reporting verb: <em>People believe X will do Y</em> → <em>X is believed to do Y</em>. The infinitive replaces the that-clause.'},
+{id:'tf_03',type:'transform',lvl:'B2',biz:false,cat:'Passive Voice',source:'They are building a new hospital near our house.',keyword:'BEING',q:'A new hospital ___ near our house.',ans:'is being built',exp:'Present continuous passive: <em>am/is/are + being + past participle</em>. Active agent (<em>they</em>) dropped.'},
+{id:'tf_04',type:'transform',lvl:'B2',biz:true,cat:'Passive Voice',source:'The company should have informed the employees earlier.',keyword:'BEEN',q:'The employees should have ___ earlier.',ans:'been informed',exp:'Modal perfect passive: <em>should have + been + past participle</em>. The obligation remains; only the voice changes.'},
+{id:'tf_05',type:'transform',lvl:'B2',biz:true,cat:'Passive Voice',source:'Nobody told us about the changes.',keyword:'TOLD',q:'We were not ___ the changes.',ans:'told about',exp:'Passive with indirect object: <em>tell someone about X</em> → <em>someone was told about X</em>. The preposition <em>about</em> stays.'},
+// B2 Reported Speech transforms
+{id:'tf_06',type:'transform',lvl:'B2',biz:false,cat:'Reported Speech',source:'"I will finish the report tomorrow," she said.',keyword:'WOULD',q:'She said she ___ the report the following day.',ans:'would finish',exp:'Direct → reported speech: <em>will → would</em>, <em>tomorrow → the following day</em>. Tense backshift is the core rule.'},
+{id:'tf_07',type:'transform',lvl:'B2',biz:true,cat:'Reported Speech',source:'"Don\'t forget to send the invoice," he told her.',keyword:'REMINDED',q:'He ___ the invoice.',ans:'reminded her to send',exp:'Imperative → reported: <em>tell someone to do X</em> or <em>remind someone to do X</em>. The keyword REMINDED signals the reporting verb + to-infinitive pattern.'},
+{id:'tf_08',type:'transform',lvl:'B2',biz:false,cat:'Reported Speech',source:'"Why didn\'t you call me?" she asked him.',keyword:'WHY',q:'She asked him ___ her.',ans:'why he hadn\'t called|why he had not called',exp:'Reported question: drop auxiliary inversion, backshift tense. <em>Why didn\'t you call?</em> → <em>why he hadn\'t called</em>. No question mark in reported form.'},
+{id:'tf_09',type:'transform',lvl:'B2',biz:false,cat:'Reported Speech',source:'"Yes, I took the money," he said.',keyword:'ADMITTED',q:'He ___ the money.',ans:'admitted taking|admitted that he had taken',exp:'Reported admission: <em>admit + gerund</em> or <em>admit that + clause</em>. Both patterns are correct.'},
+// B2 Conditional transforms
+{id:'tf_10',type:'transform',lvl:'B2',biz:false,cat:'Conditionals',source:'I don\'t have enough money, so I can\'t buy a car.',keyword:'COULD',q:'If I had enough money, I ___ a car.',ans:'could buy',exp:'Second conditional: unreal present condition → hypothetical result. <em>Could buy</em> = would be able to buy. The keyword COULD signals the modal in the result clause.'},
+{id:'tf_11',type:'transform',lvl:'B2',biz:true,cat:'Conditionals',source:'She didn\'t prepare well, so she failed the interview.',keyword:'WOULD',q:'If she had prepared well, she ___ the interview.',ans:'would have passed|would not have failed|wouldn\'t have failed',exp:'Third conditional: unreal past condition → unreal past result. <em>Had prepared</em> + <em>would have passed</em>. The failed outcome is reversed.'},
+{id:'tf_12',type:'transform',lvl:'B2',biz:false,cat:'Conditionals',source:'I regret not studying harder at university.',keyword:'WISH',q:'I ___ harder at university.',ans:'wish I had studied',exp:'Wish + past perfect for past regrets: <em>I wish I had studied harder</em> = I regret not studying harder. A key B2 transformation.'},
+// B2 Gerund/Infinitive transforms
+{id:'tf_13',type:'transform',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',source:'He started the project and then stopped.',keyword:'GAVE',q:'He ___ on the project.',ans:'gave up working|gave up',exp:'<em>Stopped</em> → <em>gave up + gerund</em>. Phrasal verb swap: <em>give up</em> = stop doing. After phrasal verbs ending in a preposition, use the gerund.'},
+{id:'tf_14',type:'transform',lvl:'B2',biz:true,cat:'Gerunds & Infinitives',source:'It\'s not worth arguing about this issue.',keyword:'POINT',q:'There is no ___ about this issue.',ans:'point in arguing|point arguing',exp:'<em>Not worth doing X</em> → <em>no point in doing X</em>. Both express futility. <em>In</em> is optional after <em>point</em>.'},
+{id:'tf_15',type:'transform',lvl:'B2',biz:false,cat:'Gerunds & Infinitives',source:'I find it difficult to concentrate when it\'s noisy.',keyword:'DIFFICULTY',q:'I have ___ when it\'s noisy.',ans:'difficulty concentrating|difficulty in concentrating',exp:'<em>Find it difficult to do</em> → <em>have difficulty (in) doing</em>. The gerund follows <em>difficulty</em>.'},
+// B2 Comparison transforms
+{id:'tf_16',type:'transform',lvl:'B2',biz:false,cat:'Comparisons',source:'No other student in the class is as clever as Maria.',keyword:'MOST',q:'Maria is the ___ in the class.',ans:'most clever student|cleverest student',exp:'<em>No other X is as ... as Y</em> → <em>Y is the most/‑est</em>. Superlative transformation.'},
+{id:'tf_17',type:'transform',lvl:'B2',biz:false,cat:'Comparisons',source:'English is easier than Chinese.',keyword:'AS',q:'Chinese is not ___ English.',ans:'as easy as',exp:'Comparative → negative equality: <em>X is easier than Y</em> → <em>Y is not as easy as X</em>. Reverse subject, use <em>not as...as</em> with base adjective.'},
+// B2 Modal Verb transforms
+{id:'tf_18',type:'transform',lvl:'B2',biz:true,cat:'Modal Verbs',source:'Perhaps the manager forgot about the meeting.',keyword:'MIGHT',q:'The manager ___ about the meeting.',ans:'might have forgotten',exp:'<em>Perhaps X did Y</em> → <em>X might have done Y</em>. Past possibility/speculation = <em>might + have + past participle</em>.'},
+{id:'tf_19',type:'transform',lvl:'B2',biz:true,cat:'Modal Verbs',source:'It is necessary for all staff to attend the training.',keyword:'MUST',q:'All staff ___ the training.',ans:'must attend',exp:'<em>It is necessary to do X</em> → <em>must do X</em>. Obligation transformation: the impersonal structure becomes a direct modal.'},
+{id:'tf_20',type:'transform',lvl:'B2',biz:false,cat:'Modal Verbs',source:'I\'m sure she has already left.',keyword:'MUST',q:'She ___ already.',ans:'must have left',exp:'<em>I\'m sure X has done Y</em> → <em>X must have done Y</em>. Logical certainty about the past = <em>must have + past participle</em>.'},
+// B2 Phrasal Verb ↔ Formal verb swaps
+{id:'tf_21',type:'transform',lvl:'B2',biz:true,cat:'Phrasal Verbs',source:'We need to reduce costs across all departments.',keyword:'CUT',q:'We need to ___ across all departments.',ans:'cut down on costs|cut back on costs',exp:'<em>Reduce</em> → <em>cut down on / cut back on</em>. Formal verb → phrasal verb swap. Both phrasal verbs mean to decrease.'},
+{id:'tf_22',type:'transform',lvl:'B2',biz:true,cat:'Phrasal Verbs',source:'The CEO postponed the annual meeting.',keyword:'PUT',q:'The CEO ___ the annual meeting.',ans:'put off',exp:'<em>Postpone</em> → <em>put off</em>. Formal → phrasal verb: <em>put off</em> = delay, postpone.'},
+{id:'tf_23',type:'transform',lvl:'B2',biz:true,cat:'Phrasal Verbs',source:'Can you investigate why the server crashed?',keyword:'LOOK',q:'Can you ___ why the server crashed?',ans:'look into',exp:'<em>Investigate</em> → <em>look into</em>. Formal → phrasal: <em>look into</em> = examine, investigate.'},
+// B2 Linking Words transforms
+{id:'tf_24',type:'transform',lvl:'B2',biz:true,cat:'Linking Words',source:'Although the project was expensive, it was successful.',keyword:'DESPITE',q:'___ expensive, the project was successful.',ans:'despite being|despite the project being',exp:'<em>Although + clause</em> → <em>Despite + gerund/noun</em>. <em>Despite</em> is a preposition, not a conjunction — it cannot take a clause directly.'},
+{id:'tf_25',type:'transform',lvl:'B2',biz:false,cat:'Linking Words',source:'She is rich but she is not happy.',keyword:'SPITE',q:'In ___ rich, she is not happy.',ans:'spite of being',exp:'<em>But</em> (contrast conjunction) → <em>in spite of + gerund</em>. Fixed phrase: <em>in spite of</em> = despite.'},
+// B2 Tenses transforms
+{id:'tf_26',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'When did you start learning English?',keyword:'LONG',q:'How ___ English?',ans:'long have you been learning',exp:'<em>When did you start...?</em> → <em>How long have you been...?</em>. Past simple start point → present perfect continuous duration.'},
+{id:'tf_27',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'I haven\'t seen her for three months.',keyword:'LAST',q:'The ___ her was three months ago.',ans:'last time I saw',exp:'<em>Haven\'t done X for Y</em> → <em>The last time I did X was Y ago</em>. Present perfect duration → past simple with <em>last time</em>.'},
+{id:'tf_28',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'This is my first time in Japan.',keyword:'NEVER',q:'I have ___ before.',ans:'never been to Japan|never visited Japan',exp:'<em>First time doing X</em> → <em>have never done X before</em>. Experience → present perfect with <em>never</em>.'},
+// B2 Articles/Grammar transforms
+{id:'tf_29',type:'transform',lvl:'B2',biz:false,cat:'Grammar',source:'Learning a new language takes patience.',keyword:'PATIENT',q:'You need to be ___ a new language.',ans:'patient when learning|patient to learn',exp:'Noun (<em>patience</em>) → adjective (<em>patient</em>) with restructured sentence. The keyword forces a word-family change.'},
+{id:'tf_30',type:'transform',lvl:'B2',biz:true,cat:'Grammar',source:'She types faster than anyone else in the office.',keyword:'FASTEST',q:'She is the ___ in the office.',ans:'fastest typist',exp:'<em>Verb + comparative + than anyone</em> → <em>superlative + noun</em>. Restructure from action to attribute.'},
+// C1 Transform questions
+{id:'tf_31',type:'transform',lvl:'C1',biz:true,cat:'Emphasis',source:'I had never seen such a chaotic meeting.',keyword:'NEVER',q:'___ such a chaotic meeting.',ans:'never had I seen|never before had I seen',exp:'<strong>Negative inversion:</strong> fronting <em>never</em> forces subject-auxiliary inversion: <em>Never had I seen</em>. This is formal/emphatic and common in C1 writing.'},
+{id:'tf_32',type:'transform',lvl:'C1',biz:true,cat:'Emphasis',source:'I only realised the mistake after I sent the email.',keyword:'ONLY',q:'___ the mistake.',ans:'only after I sent the email did I realise|only after sending the email did I realise',exp:'<em>Only after X did Y</em> — fronting <em>only after</em> triggers inversion in the main clause. A key C1 emphatic structure.'},
+{id:'tf_33',type:'transform',lvl:'C1',biz:false,cat:'Conditionals',source:'If she had known about the delay, she would not have come.',keyword:'HAD',q:'___ about the delay, she would not have come.',ans:'had she known',exp:'Third conditional inversion: <em>If she had known</em> → <em>Had she known</em>. Dropping <em>if</em> and inverting is formal register.'},
+{id:'tf_34',type:'transform',lvl:'C1',biz:true,cat:'Passive Voice',source:'People expect that the company will announce record profits.',keyword:'EXPECTED',q:'The company is ___ record profits.',ans:'expected to announce',exp:'Impersonal → personal passive: <em>People expect that X will do Y</em> → <em>X is expected to do Y</em>. Infinitive after passive reporting verb.'},
+{id:'tf_35',type:'transform',lvl:'C1',biz:false,cat:'Reported Speech',source:'"I\'m sorry I didn\'t call you earlier," he told her.',keyword:'APOLOGISED',q:'He ___ earlier.',ans:'apologised for not calling her|apologised for not having called her',exp:'<em>I\'m sorry I didn\'t do X</em> → <em>apologised for not doing X</em>. Reporting verb + preposition + gerund. Negative gerund: <em>not calling</em>.'},
+{id:'tf_36',type:'transform',lvl:'C1',biz:true,cat:'Reported Speech',source:'"You should apply for the promotion," she told him.',keyword:'ENCOURAGED',q:'She ___ for the promotion.',ans:'encouraged him to apply',exp:'<em>Should do X</em> (advice) → <em>encouraged someone to do X</em> (reported advice). C1 reporting verb + object + infinitive.'},
+{id:'tf_37',type:'transform',lvl:'C1',biz:true,cat:'Modal Verbs',source:'It wasn\'t necessary for you to stay so late.',keyword:'NEED',q:'You ___ so late.',ans:'needn\'t have stayed|need not have stayed',exp:'<em>It wasn\'t necessary</em> → <em>needn\'t have + past participle</em>. This implies the action was done but was unnecessary.'},
+{id:'tf_38',type:'transform',lvl:'C1',biz:false,cat:'Modal Verbs',source:'I\'m sure he was at the party because his car was outside.',keyword:'MUST',q:'He ___ at the party because his car was outside.',ans:'must have been',exp:'<em>I\'m sure X was Y</em> → <em>X must have been Y</em>. Logical deduction about the past from evidence.'},
+{id:'tf_39',type:'transform',lvl:'C1',biz:true,cat:'Gerunds & Infinitives',source:'She didn\'t allow us to use the meeting room.',keyword:'LET',q:'She didn\'t ___ the meeting room.',ans:'let us use',exp:'<em>Allow someone to do</em> → <em>let someone do</em> (bare infinitive). <em>Let</em> takes the bare infinitive — no <em>to</em>.'},
+{id:'tf_40',type:'transform',lvl:'C1',biz:false,cat:'Gerunds & Infinitives',source:'He regrets not accepting the job offer.',keyword:'WISHES',q:'He ___ the job offer.',ans:'wishes he had accepted',exp:'<em>Regret not doing X</em> → <em>wish + past perfect</em>. For past regrets: <em>wish + had + past participle</em>.'},
+{id:'tf_41',type:'transform',lvl:'C1',biz:true,cat:'Linking Words',source:'The product failed because the market research was inadequate.',keyword:'DUE',q:'The product failed ___ market research.',ans:'due to inadequate|due to the inadequate',exp:'<em>Because + clause</em> → <em>due to + noun phrase</em>. <em>Due to</em> is a preposition phrase = because of. Adjective replaces clause.'},
+{id:'tf_42',type:'transform',lvl:'C1',biz:true,cat:'Emphasis',source:'The board not only rejected the proposal but also fired the consultant.',keyword:'NOT',q:'___ the proposal but the board also fired the consultant.',ans:'not only did the board reject',exp:'<em>Not only ... but also</em> with inversion: fronting <em>not only</em> triggers auxiliary inversion in the first clause.'},
+{id:'tf_43',type:'transform',lvl:'C1',biz:false,cat:'Comparisons',source:'I have never eaten such delicious food.',keyword:'MOST',q:'It was the ___ ever eaten.',ans:'most delicious food I had|most delicious food I have',exp:'<em>Never ... such + adjective + noun</em> → <em>the most + adjective + noun + I have/had ever</em>. Superlative transformation with present or past perfect.'},
+{id:'tf_44',type:'transform',lvl:'C1',biz:true,cat:'Tenses',source:'The company started exporting in 2015 and still exports today.',keyword:'BEEN',q:'The company has ___ since 2015.',ans:'been exporting',exp:'<em>Started doing X and still does</em> → <em>has been doing X since</em>. Present perfect continuous for an ongoing action from a past point.'},
+{id:'tf_45',type:'transform',lvl:'C1',biz:false,cat:'Conditionals',source:'Without your help, I would not have passed the exam.',keyword:'IF',q:'I would not have passed the exam ___ me.',ans:'if you hadn\'t helped|if you had not helped',exp:'<em>Without X</em> → <em>if X hadn\'t happened</em>. Reversing the preposition phrase into a third conditional clause.'},
+
+// ══ WORDFORM — Word Formation (S70) ══
+// B2 Word Formation
+{id:'wf_01',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'DECIDE',q:'The board\'s ___ surprised everyone.',ans:'decision',hint:'noun (1 word)',exp:'<strong>Decide → decision</strong> (verb → noun). Russian learners sometimes use <em>decidement</em> by analogy with Russian suffixes. The correct English nominalisation uses <em>-sion</em>.'},
+{id:'wf_02',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'ACHIEVE',q:'Completing the marathon was her greatest ___.',ans:'achievement',hint:'noun (1 word)',exp:'<strong>Achieve → achievement</strong> (verb → noun, <em>-ment</em> suffix). Not <em>achievation</em> or <em>achieveness</em>.'},
+{id:'wf_03',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'COMPETE',q:'The level of ___ in this industry is intense.',ans:'competition',hint:'noun (1 word)',exp:'<strong>Compete → competition</strong> (verb → noun). Related forms: <em>competitive</em> (adj), <em>competitor</em> (person noun), <em>competitively</em> (adverb).'},
+{id:'wf_04',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'HAPPY',q:'Money alone cannot guarantee ___.',ans:'happiness',hint:'noun (1 word)',exp:'<strong>Happy → happiness</strong> (adjective → noun, <em>-ness</em> suffix). Not <em>happity</em> or <em>happiment</em>. Compare: <em>sad → sadness, kind → kindness</em>.'},
+{id:'wf_05',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'EMPLOY',q:'The ___ rate in the region has risen sharply.',ans:'unemployment',hint:'noun: opposite meaning (1 word)',exp:'<strong>Employ → unemployment</strong> (verb → negative noun). Prefix <em>un-</em> + <em>employ</em> + suffix <em>-ment</em>. Two derivations in one word.'},
+{id:'wf_06',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'HONEST',q:'Everyone admires her ___ even when the truth is uncomfortable.',ans:'honesty',hint:'noun (1 word)',exp:'<strong>Honest → honesty</strong> (adjective → noun, <em>-y</em> suffix). Not <em>honestness</em> (though technically possible, <em>honesty</em> is the standard form).'},
+{id:'wf_07',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'COMMUNICATE',q:'Good ___ skills are essential for any manager.',ans:'communication',hint:'noun (1 word)',exp:'<strong>Communicate → communication</strong> (verb → noun, <em>-tion</em>). A core business English word family.'},
+{id:'wf_08',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'DANGER',q:'Swimming in this area is extremely ___.',ans:'dangerous',hint:'adjective (1 word)',exp:'<strong>Danger → dangerous</strong> (noun → adjective, <em>-ous</em> suffix). Not <em>dangered</em> or <em>dangerful</em>.'},
+{id:'wf_09',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'RELY',q:'She is a very ___ colleague — you can always count on her.',ans:'reliable',hint:'adjective (1 word)',exp:'<strong>Rely → reliable</strong> (verb → adjective, <em>-able</em> suffix). Note the spelling change: <em>y → i</em> before <em>-able</em>. Not <em>relyable</em>.'},
+{id:'wf_10',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'CARE',q:'He drove ___ and caused an accident.',ans:'carelessly',hint:'adverb: without care (1 word)',exp:'<strong>Care → carelessly</strong> (noun → adverb). Two steps: <em>care → careless</em> (-less suffix = without) → <em>carelessly</em> (-ly suffix = adverb). Russian speakers often use the adjective form where English requires an adverb.'},
+{id:'wf_11',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'SUCCESS',q:'The product launch was incredibly ___.',ans:'successful',hint:'adjective (1 word)',exp:'<strong>Success → successful</strong> (noun → adjective, <em>-ful</em> suffix). Not <em>successfull</em> (one <em>l</em> only). Compare: <em>unsuccessfully</em> (un- + success + -ful + -ly).'},
+{id:'wf_12',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'POSSIBLE',q:'It\'s ___ to finish the project by Friday — the deadline is too tight.',ans:'impossible',hint:'adjective: opposite meaning (1 word)',exp:'<strong>Possible → impossible</strong> (adjective → negative adjective, <em>im-</em> prefix). Not <em>unpossible</em> or <em>dispossible</em>. Prefix choice: <em>im-</em> before <em>p</em> and <em>m</em>.'},
+{id:'wf_13',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'ANALYSE',q:'The financial ___ showed a clear downward trend.',ans:'analysis',hint:'noun (1 word)',exp:'<strong>Analyse → analysis</strong> (verb → noun). Irregular nominalisation — not <em>analysement</em> or <em>analysation</em>. Plural: <em>analyses</em>.'},
+{id:'wf_14',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'CREATE',q:'She is a very ___ person who always has new ideas.',ans:'creative',hint:'adjective (1 word)',exp:'<strong>Create → creative</strong> (verb → adjective, <em>-ive</em> suffix). Related: <em>creation</em> (noun), <em>creatively</em> (adverb), <em>creativity</em> (abstract noun).'},
+{id:'wf_15',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'ORGANISE',q:'The conference was well ___ and ran smoothly.',ans:'organised|organized',hint:'adjective / past participle (1 word)',exp:'<strong>Organise → organised</strong> (verb → adjective/participle). British: <em>-ised</em>. American: <em>-ized</em>. Both accepted.'},
+{id:'wf_16',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'FRIEND',q:'Everyone commented on how ___ the local people were.',ans:'friendly',hint:'adjective (1 word)',exp:'<strong>Friend → friendly</strong> (noun → adjective, <em>-ly</em> suffix). Note: <em>friendly</em> is an adjective, not an adverb. <em>In a friendly way</em> is the adverb form.'},
+{id:'wf_17',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'INVEST',q:'The return on ___ has exceeded expectations.',ans:'investment',hint:'noun (1 word)',exp:'<strong>Invest → investment</strong> (verb → noun, <em>-ment</em> suffix). A core finance term. Also: <em>investor</em> (person noun, <em>-or</em>).'},
+{id:'wf_18',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'APPEAR',q:'The sudden ___ of the celebrity caused a commotion.',ans:'appearance',hint:'noun (1 word)',exp:'<strong>Appear → appearance</strong> (verb → noun, <em>-ance</em> suffix). Not <em>appearment</em>. Compare: <em>disappearance</em> (dis- + appear + -ance).'},
+{id:'wf_19',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'EFFICIENT',q:'We need to improve the ___ of our supply chain.',ans:'efficiency',hint:'noun (1 word)',exp:'<strong>Efficient → efficiency</strong> (adjective → noun, <em>-cy</em> suffix). Not <em>efficientness</em>. Compare: <em>inefficiency</em> (in- + efficiency).'},
+{id:'wf_20',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'COMPLETE',q:'He finished the task ___ on his own without any help.',ans:'completely',hint:'adverb (1 word)',exp:'<strong>Complete → completely</strong> (adjective → adverb, <em>-ly</em> suffix). Russian speakers often omit the <em>-ly</em>, using the adjective form as an adverb.'},
+{id:'wf_21',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'PROFESSION',q:'Her ___ approach impressed the interview panel.',ans:'professional',hint:'adjective (1 word)',exp:'<strong>Profession → professional</strong> (noun → adjective, <em>-al</em> suffix). Also: <em>professionally</em> (adverb), <em>professionalism</em> (abstract noun).'},
+{id:'wf_22',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'AGREE',q:'There was a sharp ___ between the two sides.',ans:'disagreement',hint:'noun: opposite meaning (1 word)',exp:'<strong>Agree → disagreement</strong> (verb → negative noun). Prefix <em>dis-</em> + <em>agree</em> + suffix <em>-ment</em>. Not <em>unagreement</em>.'},
+{id:'wf_23',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'PATIENT',q:'She waited ___ for her turn to be called.',ans:'patiently',hint:'adverb (1 word)',exp:'<strong>Patient → patiently</strong> (adjective → adverb, <em>-ly</em> suffix). Also: <em>patience</em> (noun), <em>impatient</em> (negative adj), <em>impatiently</em> (negative adverb).'},
+{id:'wf_24',type:'wordform',lvl:'B2',biz:true,cat:'Word Formation',base:'RESPONSIBLE',q:'She accepted full ___ for the error.',ans:'responsibility',hint:'noun (1 word)',exp:'<strong>Responsible → responsibility</strong> (adjective → noun, <em>-ity</em> suffix). Spelling change: <em>-ble → -bility</em>. Not <em>responsibleness</em>.'},
+{id:'wf_25',type:'wordform',lvl:'B2',biz:false,cat:'Word Formation',base:'WEAK',q:'The main ___ of the plan is the lack of funding.',ans:'weakness',hint:'noun (1 word)',exp:'<strong>Weak → weakness</strong> (adjective → noun, <em>-ness</em> suffix). Compare: <em>strength</em> (strong → strength — irregular pair).'},
+// C1 Word Formation
+{id:'wf_26',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'NEGOTIATE',q:'After lengthy ___, both parties reached an agreement.',ans:'negotiations|negotiation',hint:'noun (1 word)',exp:'<strong>Negotiate → negotiation(s)</strong> (verb → noun, <em>-tion</em>). Plural is more common for extended processes. Also: <em>negotiator</em> (person), <em>negotiable</em> (adjective).'},
+{id:'wf_27',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'PREDICT',q:'Market conditions are highly ___ at the moment.',ans:'unpredictable',hint:'adjective: cannot be predicted (1 word)',exp:'<strong>Predict → unpredictable</strong> (verb → negative adjective). Three steps: <em>predict → predictable</em> (-able) → <em>unpredictable</em> (un-). Not <em>impredictable</em>.'},
+{id:'wf_28',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'TOLERATE',q:'Her ___ of different viewpoints made her an excellent mediator.',ans:'tolerance',hint:'noun (1 word)',exp:'<strong>Tolerate → tolerance</strong> (verb → noun, <em>-ance</em>). Also: <em>tolerant</em> (adj), <em>intolerant/intolerance</em> (negatives). Not <em>tolerateness</em>.'},
+{id:'wf_29',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'STRATEGY',q:'We need to think more ___ about our long-term goals.',ans:'strategically',hint:'adverb (1 word)',exp:'<strong>Strategy → strategically</strong> (noun → adverb). Two steps: <em>strategy → strategic</em> (-ic suffix) → <em>strategically</em> (-ally). Note: <em>-ic</em> adjectives add <em>-ally</em>, not just <em>-ly</em>.'},
+{id:'wf_30',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'HESITATE',q:'After a moment\'s ___, she agreed to sign the contract.',ans:'hesitation',hint:'noun (1 word)',exp:'<strong>Hesitate → hesitation</strong> (verb → noun, <em>-tion</em>). Not <em>hesitatement</em>. Also: <em>hesitant</em> (adj), <em>hesitantly</em> (adverb).'},
+{id:'wf_31',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'STABLE',q:'Political ___ in the region has discouraged foreign investors.',ans:'instability',hint:'noun: opposite meaning (1 word)',exp:'<strong>Stable → instability</strong> (adjective → negative noun). Prefix <em>in-</em> + root + suffix <em>-ity</em>. Not <em>unstableness</em> or <em>unstability</em>.'},
+{id:'wf_32',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'COURAGE',q:'She ___ spoke up against the unfair decision.',ans:'courageously',hint:'adverb (1 word)',exp:'<strong>Courage → courageously</strong> (noun → adverb). Two steps: <em>courage → courageous</em> (-ous suffix) → <em>courageously</em> (-ly). Not <em>couragely</em>.'},
+{id:'wf_33',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'DIFFER',q:'Product ___ is key to gaining a competitive advantage.',ans:'differentiation',hint:'noun: making something distinct (1 word)',exp:'<strong>Differ → differentiation</strong> (verb → noun). Chain: <em>differ → different → differentiate → differentiation</em>. A high-value business English term.'},
+{id:'wf_34',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'COMFORT',q:'The long journey was extremely ___.',ans:'uncomfortable',hint:'adjective: opposite meaning (1 word)',exp:'<strong>Comfort → uncomfortable</strong> (noun → negative adjective). <em>Comfort → comfortable</em> (-able) → <em>uncomfortable</em> (un-). Not <em>discomfortable</em>.'},
+{id:'wf_35',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'APPLY',q:'We received over two hundred ___ for the position.',ans:'applications',hint:'noun, plural (1 word)',exp:'<strong>Apply → application(s)</strong> (verb → noun, <em>-ation</em>). Also: <em>applicant</em> (person), <em>applicable</em> (adjective), <em>applicability</em> (abstract noun).'},
+{id:'wf_36',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'MEMORY',q:'The speech was so powerful that it was truly ___.',ans:'memorable',hint:'adjective: worth remembering (1 word)',exp:'<strong>Memory → memorable</strong> (noun → adjective). Not <em>memoriful</em> or <em>memoried</em>. Also: <em>memorise</em> (verb), <em>memorial</em> (noun/adj).'},
+{id:'wf_37',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'CRITIC',q:'He ___ reviewed every detail of the contract before signing.',ans:'critically',hint:'adverb (1 word)',exp:'<strong>Critic → critically</strong> (noun → adverb). Chain: <em>critic → critical</em> (-al) → <em>critically</em> (-ly). Also: <em>criticise</em> (verb), <em>criticism</em> (noun).'},
+{id:'wf_38',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'SUSTAIN',q:'The company is committed to ___ growth over short-term profits.',ans:'sustainable',hint:'adjective (1 word)',exp:'<strong>Sustain → sustainable</strong> (verb → adjective, <em>-able</em> suffix). Core ESG vocabulary. Also: <em>sustainability</em> (noun), <em>unsustainable</em> (negative).'},
+{id:'wf_39',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'ENTHUSIASTIC',q:'She spoke about the project with great ___.',ans:'enthusiasm',hint:'noun (1 word)',exp:'<strong>Enthusiastic → enthusiasm</strong> (adjective → noun). Irregular: not <em>enthusiasticism</em>. Also: <em>enthusiast</em> (person), <em>enthusiastically</em> (adverb).'},
+{id:'wf_40',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'REVENUE',q:'The company needs to ___ its income streams to reduce risk.',ans:'diversify',hint:'verb: make more varied (1 word)',exp:'<strong>Context clue:</strong> <em>income streams</em> + <em>reduce risk</em> = diversification strategy. <em>Diversify</em> (verb) from the concept of revenue variety. Note: the base word REVENUE is a context anchor — the answer comes from the business domain, not direct derivation.'},
 ];
 
 // ══════════════════════════════════════════════
@@ -3811,29 +4061,58 @@ function goFixWeakSpotsForCat(cat) {
 
 // Per-player card definitions — matches KB spec exactly
 const SIMPLE_CARDS = {
+  artem: [
+    { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
+      mode:'smart', cat:'All',              count:20, maxLvl:'C2' },
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,
+      mode:'weak',  cat:'All',              count:20, maxLvl:'C2' },
+    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+      mode:'smart', cat:'Everyday English', count:10, maxLvl:'C2' },
+    { icon:'💼', title:'Business Focus',    sub:'Professional English',
+      mode:'smart', cat:'All',              count:20, maxLvl:'C2', biz:true }
+  ],
   anna: [
     { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Everyday English', count:10, maxLvl:'B2' },
     { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
       mode:'smart', cat:'All',              count:10, maxLvl:'B2' },
-    { icon:'🎯', title:'Fix Weak Spots',    sub:null,  // dynamic
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,
       mode:'weak',  cat:'All',              count:10, maxLvl:'B2' },
     { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
       mode:'consolidate', cat:'All',        count:10, maxLvl:'B2' }
   ],
+  egor: [
+    { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
+      mode:'smart', cat:'All',              count:20, maxLvl:'C1' },
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,
+      mode:'weak',  cat:'All',              count:20, maxLvl:'C1' },
+    { icon:'📚', title:'Extended Session',  sub:'Deep practice — 30 questions',
+      mode:'smart', cat:'All',              count:30, maxLvl:'C1' },
+    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+      mode:'smart', cat:'Everyday English', count:10, maxLvl:'B2' }
+  ],
   nicole: [
     { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
       mode:'smart', cat:'All',              count:10, maxLvl:'B1' },
-    { icon:'🎯', title:'Fix Weak Spots',    sub:null,  // dynamic
+    { icon:'🎯', title:'Fix Weak Spots',    sub:null,
       mode:'weak',  cat:'All',              count:10, maxLvl:'B1' },
     { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
       mode:'consolidate', cat:'All',        count:10, maxLvl:'B1' },
+    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+      mode:'smart', cat:'Everyday English', count:10, maxLvl:'B1' }
+  ],
+  ernest: [
+    { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
+      mode:'smart', cat:'All',              count:10, maxLvl:'B2' },
+    { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
+      mode:'consolidate', cat:'All',        count:10, maxLvl:'B2' },
     { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Everyday English', count:10, maxLvl:'B1' }
   ]
 };
 
 let simpleCardIndex = 0; // which card is currently selected
+let lastSessionSettings = null; // U4: for quick replay
 
 function getWeakCatSubtitle() {
   // Compute 2 weakest categories from catStats (min 5 seen)
@@ -3874,6 +4153,18 @@ function renderSimpleSetup() {
         : 'Welcome back, ' + name + '! Great to see you again.';
     }
     greetEl.textContent = [returnPart, streakPart].filter(Boolean).join(' · ');
+  }
+
+  // [F] Cool-down brake: encourage after bad sessions
+  const cooldownEl = document.getElementById('simple-cooldown');
+  const lastSession = (DB.sessions || [])[0];
+  if (cooldownEl && lastSession && lastSession.pct <= 40) {
+    cooldownEl.innerHTML = '💪 Tough round last time — how about a confidence-building session? You\'ve got this!';
+    cooldownEl.style.display = 'block';
+    const consolIdx = cards.findIndex(c => c.mode === 'consolidate');
+    if (consolIdx >= 0) simpleCardIndex = consolIdx;
+  } else if (cooldownEl) {
+    cooldownEl.style.display = 'none';
   }
 
   // Render cards
@@ -4139,6 +4430,7 @@ function startQuiz() {
   sessionQs = selectQuestions(count);
   if (sessionQs.length === 0) { alert('No questions match your criteria!'); return; }
   cur = 0; sessionScore = 0; sessionAnswered = []; streak = 0;
+  lastSessionSettings = { mode, cat: catFilter, maxLvl: maxLevel, biz: includeBiz, count };
   // Show category banner if filter is active
   const banner = document.getElementById('gi-banner');
   if (catFilter !== 'All') {
@@ -4164,7 +4456,11 @@ function renderQ() {
   }
   const isGap = q.type === 'gap';
   const isInput = q.type === 'input';
-  const typeBadge = `<span class="q-type-badge ${q.type==='multi'?'gap':isGap?'gap':isInput?'gap':'mcq'}">${q.type==='multi'?'fill the gap':isGap?'fill the gap':isInput?'type the answer':'multiple choice'}</span>`;
+  const isTransform = q.type === 'transform';
+  const isWordform = q.type === 'wordform';
+  const badgeClass = isTransform ? 'transform' : isWordform ? 'wordform' : q.type==='multi'?'gap':isGap?'gap':isInput?'gap':'mcq';
+  const badgeLabel = isTransform ? 'key word transformation' : isWordform ? 'word formation' : q.type==='multi'?'fill the gap':isGap?'fill the gap':isInput?'type the answer':'multiple choice';
+  const typeBadge = `<span class="q-type-badge ${badgeClass}">${badgeLabel}</span>`;
 
   document.getElementById('q-num').textContent = `Question ${cur + 1} of ${sessionQs.length}`;
   const st = DB.qStats[q.id];
@@ -4243,6 +4539,90 @@ function renderQ() {
     wrap.appendChild(btn);
     optsEl.appendChild(wrap);
     setTimeout(() => field.focus(), 80);
+  } else if (q.type === 'transform') {
+    // ── TRANSFORM: source sentence → keyword → gapped target → input field ──
+    // Source sentence box
+    const srcLabel = document.createElement('div');
+    srcLabel.className = 'transform-source-label';
+    srcLabel.textContent = 'Original sentence:';
+    optsEl.appendChild(srcLabel);
+    const srcBox = document.createElement('div');
+    srcBox.className = 'transform-source';
+    srcBox.textContent = q.source;
+    optsEl.appendChild(srcBox);
+    // Keyword pill
+    const kwLabel = document.createElement('div');
+    kwLabel.className = 'transform-source-label';
+    kwLabel.textContent = 'Use this word:';
+    optsEl.appendChild(kwLabel);
+    const kwPill = document.createElement('div');
+    kwPill.innerHTML = '<span class="transform-keyword">' + q.keyword + '</span>';
+    optsEl.appendChild(kwPill);
+    // Target sentence with blank
+    const tgtEl = document.createElement('div');
+    tgtEl.className = 'transform-target';
+    tgtEl.innerHTML = q.q.replace('___', '<span class="transform-blank" id="transform-blank">___</span>');
+    optsEl.appendChild(tgtEl);
+    // Input field + submit button
+    const tWrap = document.createElement('div');
+    tWrap.className = 'input-wrap';
+    const tField = document.createElement('input');
+    tField.type = 'text'; tField.className = 'input-field'; tField.id = 'transform-field';
+    tField.placeholder = 'complete the sentence\u2026';
+    tField.autocomplete = 'off'; tField.autocorrect = 'off'; tField.spellcheck = false;
+    const tBtn = document.createElement('button');
+    tBtn.className = 'input-submit'; tBtn.textContent = 'Check';
+    tBtn.onclick = () => answerTransform();
+    tField.addEventListener('keydown', e => { if (e.key === 'Enter') answerTransform(); });
+    tField.addEventListener('focus', () => {
+      setTimeout(() => tField.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+    });
+    tWrap.appendChild(tField); tWrap.appendChild(tBtn);
+    optsEl.appendChild(tWrap);
+    // Keyword warning container (hidden until needed)
+    const kwWarn = document.createElement('div');
+    kwWarn.className = 'transform-kw-warning'; kwWarn.id = 'kw-warning'; kwWarn.style.display = 'none';
+    optsEl.appendChild(kwWarn);
+    setTimeout(() => tField.focus(), 80);
+  } else if (q.type === 'wordform') {
+    // ── WORDFORM: gap sentence + base word badge → input field ──
+    // Sentence with blank
+    const wfSent = document.createElement('div');
+    wfSent.className = 'input-sentence';
+    wfSent.innerHTML = q.q.replace('___', '<span class="wordform-blank" id="wordform-blank">___</span>');
+    optsEl.appendChild(wfSent);
+    // Base word badge
+    const baseLabel = document.createElement('div');
+    baseLabel.className = 'wordform-base-label';
+    baseLabel.textContent = 'Form a word from:';
+    optsEl.appendChild(baseLabel);
+    const baseBadge = document.createElement('div');
+    baseBadge.innerHTML = '<span class="wordform-base">' + q.base + '</span>';
+    optsEl.appendChild(baseBadge);
+    // Hint (optional)
+    if (q.hint) {
+      const wfHint = document.createElement('div');
+      wfHint.className = 'input-hint';
+      wfHint.textContent = q.hint;
+      optsEl.appendChild(wfHint);
+    }
+    // Input field + submit button
+    const wfWrap = document.createElement('div');
+    wfWrap.className = 'input-wrap';
+    const wfField = document.createElement('input');
+    wfField.type = 'text'; wfField.className = 'input-field'; wfField.id = 'wordform-field';
+    wfField.placeholder = 'type the correct form\u2026';
+    wfField.autocomplete = 'off'; wfField.autocorrect = 'off'; wfField.spellcheck = false;
+    const wfBtn = document.createElement('button');
+    wfBtn.className = 'input-submit'; wfBtn.textContent = 'Check';
+    wfBtn.onclick = () => answerWordform();
+    wfField.addEventListener('keydown', e => { if (e.key === 'Enter') answerWordform(); });
+    wfField.addEventListener('focus', () => {
+      setTimeout(() => wfField.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+    });
+    wfWrap.appendChild(wfField); wfWrap.appendChild(wfBtn);
+    optsEl.appendChild(wfWrap);
+    setTimeout(() => wfField.focus(), 80);
   } else if (q.type === 'multi') {
     renderMulti(q, optsEl);
   } else {
@@ -4257,7 +4637,7 @@ function renderQ() {
   }
 
   // Set question text
-  if (isGap || q.type === 'multi' || q.type === 'input') {
+  if (isGap || q.type === 'multi' || q.type === 'input' || isTransform || isWordform) {
     document.getElementById('q-text').innerHTML = '';
   } else {
     document.getElementById('q-text').innerHTML = q.q;
@@ -4396,9 +4776,48 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
     if (nextDot) nextDot.classList.add('dot-active');
     renderMultiChips(q, nextBlank);
   } else {
-    // All blanks done — record and show explanation
-    await recordAnswer(multiState.allCorrect, q);
+    // All blanks done — compute partial credit [H]
+    const blanksCorrect = multiState.results.filter(Boolean).length;
+    const blanksTotal = q.blanks.length;
+    const fraction = blanksCorrect / blanksTotal;
+    await recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q);
   }
+}
+
+async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
+  const allCorrect = blanksCorrect === blanksTotal;
+  if (allCorrect) { sessionScore++; streak++; } else streak = 0;
+  const _today = new Date().toISOString().slice(0,10);
+  if (DB.lastPlayedDate !== _today) {
+    const _yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+    DB.currentStreak = (DB.lastPlayedDate === _yesterday) ? (DB.currentStreak||0)+1 : 1;
+    DB.lastPlayedDate = _today;
+    if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
+  }
+  if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0};
+  DB.qStats[q.id].seen++;
+  DB.qStats[q.id].correct += fraction;
+  DB.qStats[q.id].wrong += (1 - fraction);
+  DB.qStats[q.id].lastSeen = Date.now();
+  const cat = q.cat;
+  if (!DB.catStats[cat]) DB.catStats[cat] = {seen:0,correct:0};
+  DB.catStats[cat].seen++;
+  if (allCorrect) DB.catStats[cat].correct++;
+  const lvl = q.lvl || 'B2';
+  if (!DB.lvlStats[lvl]) DB.lvlStats[lvl] = {seen:0,correct:0};
+  DB.lvlStats[lvl].seen++;
+  if (allCorrect) DB.lvlStats[lvl].correct++;
+  DB.totalAnswered++;
+  if (allCorrect) DB.totalCorrect++;
+  sessionAnswered.push({q:q.q, cat:q.cat, lvl:q.lvl||'B2', correct:allCorrect, id:q.id,
+    multiPartial: !allCorrect ? blanksCorrect+'/'+blanksTotal : null});
+  const exp = document.getElementById('q-explanation');
+  const partialNote = allCorrect ? '✅ ' : '⚠️ ' + blanksCorrect + '/' + blanksTotal + ' blanks correct — ';
+  exp.innerHTML = partialNote + q.exp;
+  exp.style.display = 'block';
+  document.getElementById('score-running').textContent = 'Score: ' + sessionScore;
+  document.getElementById('next-btn').disabled = false;
+  await saveData(DB);
 }
 
 async function recordAnswer(correct, q) {
@@ -4530,6 +4949,89 @@ async function answerInput() {
       hintEl.textContent = hintEl.dataset.fullHint;
       hintEl.style.color = 'var(--yellow)';
     }
+  }
+  await recordAnswer(correct, q);
+}
+
+// ══════════════════════════════════════════════
+//  TRANSFORM ANSWER CHECK
+//  Scoring: case-insensitive, whitespace-normalised,
+//  pipe-separated alternates. Keyword must appear in answer.
+// ══════════════════════════════════════════════
+async function answerTransform() {
+  const q = sessionQs[cur];
+  const field = document.getElementById('transform-field');
+  const btn = field && field.parentElement.querySelector('.input-submit');
+  if (!field || btn.disabled) return;
+  const raw = field.value.trim().toLowerCase().replace(/\s+/g, ' ');
+  if (!raw) return;
+
+  // Parse accepted answers (pipe-separated string or array)
+  const accepted = Array.isArray(q.ans)
+    ? q.ans.map(a => a.toLowerCase().trim())
+    : q.ans.split('|').map(a => a.toLowerCase().trim());
+
+  // Check keyword presence
+  const kw = q.keyword.toLowerCase();
+  const kwWarn = document.getElementById('kw-warning');
+  if (!raw.includes(kw)) {
+    if (kwWarn) {
+      kwWarn.style.display = '';
+      kwWarn.textContent = 'Your answer must include the word ' + q.keyword;
+    }
+    return; // don't submit — let them fix it
+  }
+  if (kwWarn) kwWarn.style.display = 'none';
+
+  const correct = accepted.includes(raw);
+  field.disabled = true;
+  btn.disabled = true;
+  field.classList.add(correct ? 'correct-field' : 'wrong-field');
+  const blank = document.getElementById('transform-blank');
+  if (blank) {
+    blank.textContent = correct ? raw : accepted[0];
+    blank.classList.add(correct ? 'correct-input' : 'wrong-input');
+  }
+  if (!correct) {
+    const reveal = document.createElement('div');
+    reveal.className = 'input-correct-reveal';
+    reveal.innerHTML = '\u2705 Correct: <em>' + accepted.join(' / ') + '</em>';
+    document.getElementById('q-options').appendChild(reveal);
+  }
+  await recordAnswer(correct, q);
+}
+
+// ══════════════════════════════════════════════
+//  WORDFORM ANSWER CHECK
+//  Scoring: exact match, case-insensitive,
+//  pipe-separated alternates for Br/Am variants.
+// ══════════════════════════════════════════════
+async function answerWordform() {
+  const q = sessionQs[cur];
+  const field = document.getElementById('wordform-field');
+  const btn = field && field.parentElement.querySelector('.input-submit');
+  if (!field || btn.disabled) return;
+  const raw = field.value.trim().toLowerCase().replace(/\s+/g, ' ');
+  if (!raw) return;
+
+  const accepted = Array.isArray(q.ans)
+    ? q.ans.map(a => a.toLowerCase().trim())
+    : q.ans.split('|').map(a => a.toLowerCase().trim());
+
+  const correct = accepted.includes(raw);
+  field.disabled = true;
+  btn.disabled = true;
+  field.classList.add(correct ? 'correct-field' : 'wrong-field');
+  const blank = document.getElementById('wordform-blank');
+  if (blank) {
+    blank.textContent = correct ? raw : accepted[0];
+    blank.classList.add(correct ? 'correct-input' : 'wrong-input');
+  }
+  if (!correct) {
+    const reveal = document.createElement('div');
+    reveal.className = 'input-correct-reveal';
+    reveal.innerHTML = '\u2705 Correct: <em>' + accepted.join(' / ') + '</em>';
+    document.getElementById('q-options').appendChild(reveal);
   }
   await recordAnswer(correct, q);
 }
@@ -4668,9 +5170,28 @@ function showResults(score, total, pct) {
   sessionAnswered.forEach((a, i) => {
     const div = document.createElement('div');
     div.className = 'review-item ' + (a.correct ? 'ok' : 'fail');
-    div.innerHTML = `<span>${a.correct ? '✓' : '✗'}</span><span>Q${i+1} [${a.cat}]: ${a.q.replace(/<[^>]+>/g,'').slice(0,70)}${a.q.length > 70 ? '…' : ''}</span>`;
+    const mark = a.correct ? '✓' : (a.multiPartial ? '⚠️ '+a.multiPartial : '✗');
+    div.innerHTML = `<span>${mark}</span><span>Q${i+1} [${a.cat}]: ${a.q.replace(/<[^>]+>/g,'').slice(0,70)}${a.q.length > 70 ? '…' : ''}</span>`;
     rw.appendChild(div);
   });
+}
+
+// U4: Quick replay
+function quickReplay() {
+  if (!lastSessionSettings) { startQuiz(); return; }
+  const s = lastSessionSettings;
+  mode = s.mode; catFilter = s.cat; maxLevel = s.maxLvl; includeBiz = s.biz;
+  const slider = document.getElementById('q-count');
+  const val = document.getElementById('q-count-val');
+  if (slider) { slider.value = s.count; syncLenBtns(s.count); }
+  if (val) val.textContent = s.count;
+  document.querySelectorAll('#mode-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === mode));
+  document.querySelectorAll('.cat-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.cat === catFilter));
+  document.querySelectorAll('#level-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.level === maxLevel));
+  startQuiz();
 }
 
 // ══════════════════════════════════════════════
@@ -4678,9 +5199,9 @@ function showResults(score, total, pct) {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1743;
-  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
-  const CAT_TOTALS = { 'Adjectives': 26, 'Articles': 151, 'Collocations': 29, 'Comparisons': 27, 'Conditionals': 87, 'Emphasis': 13, 'Everyday English': 30, 'Gerunds & Infinitives': 160, 'Grammar': 236, 'Idioms': 20, 'Indirect Questions': 31, 'Linking Words': 73, 'Modal Verbs': 66, 'Passive Voice': 22, 'Phrasal Verbs': 167, 'Prepositions': 78, 'Question Formation': 33, 'Relative Clauses': 42, 'Reported Speech': 26, 'Tenses': 168, 'Used To': 16, 'Vocabulary': 180, 'Word Choice': 44, 'Word Order': 18 };
+  const TOTAL = 1828;
+  const LEVEL_TOTALS = { B1: 594, B2: 893, C1: 325, C2: 16 };
+  const CAT_TOTALS = { 'Adjectives': 26, 'Articles': 151, 'Collocations': 29, 'Comparisons': 30, 'Conditionals': 92, 'Emphasis': 16, 'Everyday English': 30, 'Gerunds & Infinitives': 165, 'Grammar': 238, 'Idioms': 20, 'Indirect Questions': 31, 'Linking Words': 76, 'Modal Verbs': 71, 'Passive Voice': 28, 'Phrasal Verbs': 170, 'Prepositions': 78, 'Question Formation': 33, 'Relative Clauses': 42, 'Reported Speech': 32, 'Tenses': 172, 'Used To': 16, 'Vocabulary': 180, 'Word Choice': 44, 'Word Formation': 40, 'Word Order': 18 };
   // Proficiency thresholds: [seenFraction, minAccuracy, minSeen]
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -4912,7 +5433,80 @@ function setMaxLevelInference(lv) {
   showTab('setup');
 }
 
+// U2: Stats hero card — actionable insight
+let heroTargetCat = null;
+function renderStatsHero() {
+  const totalAns = DB.totalAnswered || 0;
+  const totalCor = DB.totalCorrect || 0;
+  const overallPct = totalAns > 0 ? Math.round((totalCor / totalAns) * 100) : 0;
+  const curStreak = DB.currentStreak || 0;
+  const uniqueSeen = Object.keys(DB.qStats || {}).length;
+
+  // Find weakest category (min 5 seen)
+  const catEntries = Object.entries(DB.catStats || {})
+    .filter(([,s]) => s.seen >= 5)
+    .map(([cat,s]) => ({cat, pct: Math.round(s.correct/s.seen*100), seen: s.seen}))
+    .sort((a,b) => a.pct - b.pct);
+
+  const insightEl = document.getElementById('hero-insight');
+  const actionBtn = document.getElementById('hero-action-btn');
+  const heroStats = document.getElementById('hero-stats');
+
+  if (totalAns === 0) {
+    insightEl.innerHTML = '👋 Welcome! Take your first quiz to see your progress here.';
+    actionBtn.style.display = 'none';
+  } else if (catEntries.length > 0) {
+    const worst = catEntries[0];
+    heroTargetCat = worst.cat;
+    if (worst.pct < 60) {
+      insightEl.innerHTML = 'Your biggest opportunity: <span class="hero-cat">' + worst.cat + '</span> at <span class="hero-pct" style="color:var(--accent2)">' + worst.pct + '%</span><br><span style="font-size:.82rem;color:var(--muted)">A focused session here will have the most impact.</span>';
+    } else {
+      insightEl.innerHTML = 'Weakest area: <span class="hero-cat">' + worst.cat + '</span> at <span class="hero-pct">' + worst.pct + '%</span><br><span style="font-size:.82rem;color:var(--muted)">Solid across the board — keep pushing!</span>';
+    }
+    actionBtn.textContent = '🎯 Practice ' + worst.cat;
+    actionBtn.style.display = 'inline-block';
+  } else {
+    insightEl.innerHTML = 'Keep going! Play a few more sessions to unlock category insights.';
+    actionBtn.style.display = 'none';
+  }
+
+  // 3 key stats
+  heroStats.innerHTML = `
+    <div class="hero-stat"><div class="hs-num" style="color:var(--green)">${overallPct}%</div><div class="hs-lbl">Accuracy</div></div>
+    <div class="hero-stat"><div class="hs-num" style="color:var(--accent)">${curStreak} 🔥</div><div class="hs-lbl">Streak</div></div>
+    <div class="hero-stat"><div class="hs-num">${uniqueSeen}</div><div class="hs-lbl">Seen</div></div>
+    <div class="hero-stat"><div class="hs-num">${DB.totalSessions||0}</div><div class="hs-lbl">Sessions</div></div>
+  `;
+}
+
+function heroAction() {
+  if (!heroTargetCat) return;
+  mode = 'weak';
+  catFilter = heroTargetCat;
+  maxLevel = 'C2';
+  includeBiz = true;
+  const slider = document.getElementById('q-count');
+  const val = document.getElementById('q-count-val');
+  if (slider) { slider.value = 10; syncLenBtns(10); }
+  if (val) val.textContent = '10';
+  document.querySelectorAll('#mode-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === 'weak'));
+  document.querySelectorAll('.cat-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.cat === heroTargetCat));
+  startQuiz();
+}
+
+function toggleFullStats() {
+  const inner = document.getElementById('full-stats-inner');
+  const chevron = document.getElementById('full-stats-chevron');
+  if (!inner) return;
+  const opening = inner.style.display === 'none';
+  inner.style.display = opening ? 'block' : 'none';
+  if (chevron) chevron.textContent = opening ? '▼' : '▶';
+}
+
 function renderStats() {
+  renderStatsHero();
   renderLevelInference();
   renderCoverage();
   renderCatProgress();
@@ -5674,7 +6268,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
+  const LEVEL_TOTALS = { B1: 594, B2: 893, C1: 325, C2: 16 };
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
@@ -5702,12 +6296,10 @@ function playerCoverageHTML(p) {
 function renderFamily(playersData) {
   const list = document.getElementById('family-list');
   if (!list) return;
-  // Level multiplier for ranking
   const LEVEL_MULT = { B1: 1.0, B2: 1.3, C1: 1.6, C2: 2.0 };
 
   const players = Object.entries(playersData).map(([key, p]) => {
     const accuracy = p.totalAnswered > 0 ? Math.round(p.totalCorrect / p.totalAnswered * 100) : 0;
-    // Determine highest level with meaningful attempt (≥10 questions)
     const lvlOrder = ['C2','C1','B2','B1'];
     let topLvlKey = 'B1';
     for (const lv of lvlOrder) {
@@ -5716,10 +6308,36 @@ function renderFamily(playersData) {
     }
     const lvlMult = LEVEL_MULT[topLvlKey] || 1.0;
     const seen = Object.keys(p.qStats || {}).length;
-    // Weighted score: accuracy × log(seen+1) × level_multiplier
     const score = accuracy * Math.log(seen + 1) * lvlMult;
     return { key, ...p, accuracy, score, topLvlKey, lvlMult, seen };
   }).sort((a, b) => b.score - a.score);
+
+  // U3: Activity strip
+  const actEl = document.getElementById('family-activity');
+  if (actEl && players.length > 0) {
+    const today = new Date().toISOString().slice(0,10);
+    actEl.innerHTML = players.map(p => {
+      const color = p.color || '#888';
+      const lp = p.lastPlayedDate;
+      let whenText = 'Never';
+      let whenClass = 'danger';
+      let ringClass = 'inactive-danger';
+      if (lp) {
+        if (lp === today) { whenText = 'Today'; whenClass = 'today'; ringClass = 'active-today'; }
+        else {
+          const days = Math.round((Date.now() - new Date(lp).getTime()) / 86400000);
+          if (days <= 2) { whenText = days + 'd ago'; whenClass = ''; ringClass = ''; }
+          else if (days <= 7) { whenText = days + 'd ago'; whenClass = 'warn'; ringClass = 'inactive-warn'; }
+          else { whenText = days + 'd ago'; whenClass = 'danger'; ringClass = 'inactive-danger'; }
+        }
+      }
+      return `<div class="fa-player">
+        <div class="fa-avatar ${ringClass}" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
+        <div class="fa-name">${(p.displayName||p.key).split(' ')[0]}</div>
+        <div class="fa-when ${whenClass}">${whenText}</div>
+      </div>`;
+    }).join('');
+  }
 
   if (players.length === 0) {
     list.innerHTML = '<div style="color:var(--muted);font-size:.9rem;text-align:center;padding:1rem;">No players yet — play a session to appear here!</div>';
@@ -5732,21 +6350,14 @@ function renderFamily(playersData) {
     const lastPlayed = p.lastPlayedDate
       ? (p.lastPlayedDate === new Date().toISOString().slice(0,10) ? 'Today' : p.lastPlayedDate)
       : 'Never';
-    const lvlOrder = ['C2','C1','B2','B1'];
-    let topLevel = '';
-    for (const lv of lvlOrder) {
-      const ls = (p.lvlStats || {})[lv];
-      if (ls && ls.seen >= 20 && Math.round(ls.correct/ls.seen*100) >= 70) { topLevel = lv; break; }
-    }
     const cats = Object.entries(p.catStats || {})
       .filter(([,s]) => s.seen >= 5)
       .map(([cat,s]) => ({ cat, pct: Math.round(s.correct/s.seen*100) }))
       .sort((a,b) => b.pct - a.pct);
     const bestCat  = cats[0] ? cats[0].cat + ' ' + cats[0].pct + '%' : null;
     const worstCat = cats.length > 1 ? cats[cats.length-1].cat + ' ' + cats[cats.length-1].pct + '%' : null;
-    // Weekly score: avg pct across sessions in the current ISO week (Mon–Sun)
     const now = new Date();
-    const dayOfWeek = (now.getDay() + 6) % 7; // 0=Mon
+    const dayOfWeek = (now.getDay() + 6) % 7;
     const weekStart = new Date(now); weekStart.setDate(now.getDate() - dayOfWeek); weekStart.setHours(0,0,0,0);
     const weeklySessions = (p.recentSessions || []).filter(s => {
       const d = s.date ? new Date(s.date) : null;
@@ -5763,38 +6374,33 @@ function renderFamily(playersData) {
       const col = s.pct>=75?'var(--green)':s.pct>=55?'var(--accent)':'var(--accent2)';
       return `<div class="spark-bar" style="height:${h}px;background:${col}" title="${s.pct}%"></div>`;
     }).join('');
+    const cardId = 'fam-detail-' + p.key;
     return `
     <div class="player-card${isMe?' me':''}">
       <div class="player-header">
         <div class="player-avatar" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
         <div>
           <div class="player-name">${p.displayName||p.key}${isMe?' <span style="font-size:.7rem;color:var(--accent)">(you)</span>':''}</div>
-          <div class="player-last">Last played: ${lastPlayed} · Streak: ${p.currentStreak||0} 🔥 · ${p.topLvlKey}×${p.lvlMult}</div>
+          <div class="player-last">Last: ${lastPlayed} · ${p.currentStreak||0} 🔥</div>
         </div>
         <div class="player-rank">${medals[i]||i+1}</div>
       </div>
-      <div class="player-stats">
+      <div class="player-stats" style="grid-template-columns:repeat(3,1fr);">
         <div class="ps-box"><div class="ps-num" style="color:var(--green)">${p.accuracy}%</div><div class="ps-lbl">Accuracy</div></div>
         <div class="ps-box"><div class="ps-num">${p.totalSessions||0}</div><div class="ps-lbl">Sessions</div></div>
-        <div class="ps-box"><div class="ps-num">${p.seen||0}</div><div class="ps-lbl">Seen</div></div>
-        <div class="ps-box"><div class="ps-num" style="color:var(--accent)">${Math.round(p.score||0)}</div><div class="ps-lbl">Score</div></div>
         <div class="ps-box"><div class="ps-num" style="color:var(--b1)">${weeklyScore !== null ? weeklyScore + '%' : '—'}</div><div class="ps-lbl">This week</div></div>
       </div>
       <div class="player-cats">
-        ${topLevel?`<span class="level-badge ${topLevel.toLowerCase()}">${topLevel} ✓</span>`:''}
         ${bestCat ?`<span class="cat-pill best">💪 ${bestCat}</span>`:''}
         ${worstCat?`<span class="cat-pill worst">📖 ${worstCat}</span>`:''}
       </div>
-      ${sparkBars?`<div class="sparkline">${sparkBars}</div>`:''}
-      <div class="player-coverage">${playerCoverageHTML(p)}</div>
-      ${(p.key==='anna'||p.key==='nicole')?`
-      <div class="simple-ui-row">
-        <span class="simple-ui-label">🃏 Simplified start screen</span>
-        <label class="simple-ui-toggle" title="Toggle card-based start screen for this player">
-          <input type="checkbox" ${p.simpleUI?'checked':''} onchange="toggleSimpleUI('${p.key}',this.checked)">
-          <span class="simple-ui-slider"></span>
-        </label>
-      </div>`:''}
+      <div style="margin-top:.5rem;text-align:center;">
+        <span style="font-size:.75rem;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="document.getElementById('${cardId}').style.display=document.getElementById('${cardId}').style.display==='none'?'block':'none';this.textContent=document.getElementById('${cardId}').style.display==='none'?'Details ▸':'Details ▾'">Details ▸</span>
+      </div>
+      <div id="${cardId}" style="display:none;">
+        ${sparkBars?`<div class="sparkline">${sparkBars}</div>`:''}
+        <div class="player-coverage">${playerCoverageHTML(p)}</div>
+      </div>
     </div>`;
   }).join('');
 }
