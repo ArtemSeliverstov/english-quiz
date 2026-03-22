@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260322-s70">
+  <meta name="app-version" content="v20260322-s70r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -80,6 +80,13 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 /* ── STATS SCREEN ── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem;}
 .stats-hero{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.3rem;margin-bottom:1.25rem;}
+.articles-nudge{display:flex;align-items:center;gap:.8rem;background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(245,158,11,.04));border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:.8rem 1rem;margin-bottom:1rem;}
+.articles-nudge-icon{font-size:1.5rem;flex-shrink:0;}
+.articles-nudge-body{flex:1;min-width:0;}
+.articles-nudge-title{font-weight:700;font-size:.85rem;color:#fbbf24;margin-bottom:.15rem;}
+.articles-nudge-text{font-size:.78rem;color:var(--muted);line-height:1.4;}
+.articles-nudge-btn{flex-shrink:0;background:#fbbf24;color:#1a1a2e;border:none;border-radius:8px;padding:.45rem .9rem;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.articles-nudge-btn:hover{background:#f5d76e;}
 .hero-main{margin-bottom:.9rem;}
 .hero-insight{font-size:.92rem;color:var(--text);line-height:1.55;}
 .hero-insight strong{color:var(--accent2);}
@@ -635,6 +642,21 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 .cat-tile.ct-red{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.25);color:#f87171;cursor:pointer;}
 .cat-tile.ct-red:hover{transform:scale(1.03);}
 .cat-tile.ct-grey{background:var(--surface);border-color:var(--border);color:var(--muted);opacity:.7;}
+/* ── U5: CATEGORY MASTERY BADGES ── */
+.cat-tile .ct-badge{float:right;font-size:.85rem;line-height:1;margin-top:-.1rem;}
+.badge-shelf{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;padding:.8rem;background:var(--card);border:1px solid var(--border);border-radius:12px;min-height:42px;align-items:center;}
+.badge-shelf-title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:.5rem;white-space:nowrap;}
+.badge-shelf-empty{font-size:.78rem;color:var(--muted);font-style:italic;}
+.badge-item{display:inline-flex;align-items:center;gap:.25rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.2rem .5rem;font-size:.72rem;font-weight:600;color:var(--text);white-space:nowrap;}
+.badge-item .badge-medal{font-size:.85rem;}
+.badge-count{display:inline-flex;align-items:center;gap:.2rem;font-size:.7rem;font-weight:600;color:var(--muted);}
+.badge-count .bc-medal{font-size:.75rem;}
+@keyframes badgePop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+.badge-new{animation:badgePop .5s ease-out;}
+.badge-toast{position:fixed;top:1.5rem;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid #f7c948;border-radius:14px;padding:.8rem 1.4rem;z-index:10000;display:flex;align-items:center;gap:.7rem;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:badgePop .4s ease-out;}
+.badge-toast-medal{font-size:2rem;}
+.badge-toast-body{color:#e0e0e0;font-size:.85rem;line-height:1.4;}
+.badge-toast-cat{font-weight:700;color:#f7c948;}
 .coverage-panel{margin-bottom:1.5rem;}
 .coverage-title{font-family:'Playfair Display',serif;font-size:1.2rem;margin:0 0 .9rem;}
 .cov-overall{background:var(--surface);border-radius:12px;padding:1rem 1.1rem;margin-bottom:1rem;}
@@ -811,7 +833,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -941,6 +963,22 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
       <button class="hero-action-btn" id="hero-action-btn" style="display:none;" onclick="heroAction()">🎯 Practice now</button>
     </div>
     <div class="hero-stats" id="hero-stats"></div>
+  </div>
+
+  <!-- [D] Articles intervention nudge — shows when Articles < 70% and ≥5 seen -->
+  <div id="articles-nudge" class="articles-nudge" style="display:none;">
+    <div class="articles-nudge-icon">📖</div>
+    <div class="articles-nudge-body">
+      <div class="articles-nudge-title">Articles need attention</div>
+      <div id="articles-nudge-text" class="articles-nudge-text"></div>
+    </div>
+    <button class="articles-nudge-btn" onclick="practiceArticles()">Practice Articles</button>
+  </div>
+
+  <!-- U5: Badge shelf -->
+  <div id="badge-shelf" class="badge-shelf" style="display:none;">
+    <span class="badge-shelf-title">Badges</span>
+    <span id="badge-shelf-items"></span>
   </div>
 
   <div id="cat-progress-wrap" style="margin-bottom:1.5rem;">
@@ -1539,7 +1577,7 @@ exp:'<strong>Cross-border</strong> = between different countries: <em>cross-bord
 {id:'gr_b15',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'Where\'s Maria? — She\'s ___ to the shops. She\'ll be back soon.',opts:['gone','been','went','go'],ans:0,exp:'<strong>Gone to</strong> = left and not yet returned: <em>She\'s gone to the shops.</em> ✗ <em>Been to</em> = visited and returned — you couldn\'t say <em>she\'s been to the shops</em> if she\'s still out.'},
 {id:'gr_b16',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'You ___ finish the report today — tomorrow is fine.',opts:['don\'t have to','mustn\'t','shouldn\'t','can\'t'],ans:0,exp:'<strong>Don\'t have to</strong> = no obligation (it\'s optional). ✗ <strong>Mustn\'t</strong> = prohibition (it\'s forbidden). These are opposite in meaning. Russian <em>не нужно</em> = don\'t have to; <em>нельзя</em> = mustn\'t — speakers sometimes confuse which English form to use.'},
 {id:'gr_b17',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'You ___ park here — it\'s a no-parking zone.',opts:['mustn\'t','don\'t have to','needn\'t','shouldn\'t really'],ans:0,exp:'<strong>Mustn\'t</strong> = prohibition — it is not allowed. ✗ <em>Don\'t have to</em> = no obligation, which would wrongly imply parking is optional rather than forbidden. Use <em>mustn\'t</em> when a rule or law prevents something.'},
-{id:'gr_b18',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'The teacher ___ the students repeat the sentence three times.',opts:['made','let','allowed','got'],ans:0,exp:'<strong>Make + object + bare infinitive</strong> = force/cause: <em>made them repeat.</em> ✗ <em>Let</em> = permit: <em>let them repeat</em> (they wanted to). <em>Allow</em> takes <em>to</em>: <em>allowed them to repeat.</em> <em>Made</em> implies no choice; <em>let</em> implies permission — opposite meanings.'},,
+{id:'gr_b18',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'The teacher ___ the students repeat the sentence three times.',opts:['made','let','allowed','got'],ans:0,exp:'<strong>Make + object + bare infinitive</strong> = force/cause: <em>made them repeat.</em> ✗ <em>Let</em> = permit: <em>let them repeat</em> (they wanted to). <em>Allow</em> takes <em>to</em>: <em>allowed them to repeat.</em> <em>Made</em> implies no choice; <em>let</em> implies permission — opposite meanings.'},
 
 // ══ LESSON: JAN 28 — GET vs BE for change ══
 {id:'gc01',lvl:'B1',biz:false,type:'mcq',cat:'Grammar',q:'Which sentence uses GET correctly to describe a change of state?',opts:['It\'s getting dark — we should head home.','It\'s getting to dark — we should head home.','It gets to be dark now — we should head home.'],ans:0,exp:'<strong>Get + adjective</strong> describes a change happening: <em>getting dark, getting cold, getting late, getting better.</em> No preposition between <em>get/getting</em> and the adjective. <em>It\'s getting to dark</em> is wrong — <em>to</em> does not belong here. <em>Gets to be</em> is informal American English and unnatural in this context.'},
@@ -1868,7 +1906,7 @@ exp:'<strong>Cross-border</strong> = between different countries: <em>cross-bord
 
 // ══ LESSON: JAN 22 — opaque / transparent ══
 {id:'op02',lvl:'B2',biz:false,cat:'Vocabulary',type:'gap',q:'It\'s important to be ___ about your decisions, but some pricing details may remain ___.',opts:['transparent / opaque','opaque / transparent','clear / clearly','honest / dishonest'],ans:0,exp:'<strong>Transparent</strong> = open and clear (positive). <strong>Opaque</strong> = unclear, not see-through (often neutral or negative). They are opposites. <em>Be transparent about key decisions; some areas may be more opaque.</em>'},
-{id:'op03',lvl:'B2',biz:false,type:'mcq',cat:'Vocabulary',q:'Which sentence uses OPAQUE correctly?',opts:['The new policy is opaque — staff have no idea what it requires.','The glass was completely opaque, so we could see right through it.','The report was opaque — it explained everything in precise detail.'],ans:0,exp:'<strong>Opaque</strong> (figurative) = hard to understand, deliberately unclear. <em>Opaque language / opaque policy / opaque pricing.</em> Literally, opaque = not transparent (the opposite of option B). Option C contradicts itself — <em>precise detail</em> is the opposite of opaque.'},,
+{id:'op03',lvl:'B2',biz:false,type:'mcq',cat:'Vocabulary',q:'Which sentence uses OPAQUE correctly?',opts:['The new policy is opaque — staff have no idea what it requires.','The glass was completely opaque, so we could see right through it.','The report was opaque — it explained everything in precise detail.'],ans:0,exp:'<strong>Opaque</strong> (figurative) = hard to understand, deliberately unclear. <em>Opaque language / opaque policy / opaque pricing.</em> Literally, opaque = not transparent (the opposite of option B). Option C contradicts itself — <em>precise detail</em> is the opposite of opaque.'},
 
 // BATCH: C1 VOCABULARY EXPANSION (voc15-voc29)
 
@@ -1917,7 +1955,7 @@ exp:'<strong>Hurdle</strong>. From athletics — a barrier you jump over in a ra
 {id:'voc39',lvl:'C1',biz:true,cat:'Vocabulary',type:'gap',q:'The results ___ suggest a correlation between engagement and output.',opts:['appear to','clearly','definitely'],ans:0,exp:'<strong>Appear to</strong> = hedged claim — the speaker is not certain. Essential in academic and professional contexts to avoid overclaiming. ✗ <em>Clearly</em> and <em>definitely</em> are confident assertions — too strong when interpreting data. Hedging verbs: <em>appear to, seem to, tend to, suggest that.</em>'},
 {id:'voc40',lvl:'B2',biz:true,cat:'Vocabulary',type:'gap',q:'We need to ___ the meeting. (formal written register)',opts:['postpone','push back','delay'],ans:0,exp:'<strong>Postpone</strong> is the most formal register: suits board minutes, official correspondence. ✗ <em>Push back</em> is natural spoken business English but informal. ✗ <em>Delay</em> is neutral and broadly correct. Register rule: <em>postpone</em> (formal written) > <em>delay</em> (neutral) > <em>push back</em> (spoken/informal).'},
 {id:'voc41',lvl:'B2',biz:true,cat:'Vocabulary',type:'mcq',q:'Which word is most appropriate in a formal report?',opts:['utilise','use','make use of'],ans:0,exp:'<strong>Utilise</strong> = make practical or effective use of something — appropriate in formal, technical, or academic writing. ✗ <em>Use</em> is neutral and shorter (often preferred in plain-English writing). ✗ <em>Make use of</em> is wordy. Note: in everyday contexts, <em>use</em> is usually better — <em>utilise</em> is appropriate when the nuance of effective/practical use matters.'},
-,
+
 {id:'voc42',lvl:'B1',biz:false,cat:'Vocabulary',type:'input',
 q:'Can I give you a piece of ___? You should call him and apologise.',
 ans:['advice'],hint:'noun: a suggestion about what someone should do (1 word)',
@@ -2203,7 +2241,7 @@ exp:'<strong>Terminate</strong> = to formally end a contract or agreement. ✗ <
 {id:'qf07',lvl:'B1',biz:false,type:'mcq',cat:'Question Formation',q:'Choose the correct question.',opts:['Why he didn\'t call?','Why didn\'t he call?','Why he not called?'],ans:1,exp:'Negative question: <strong>Why + auxiliary (negative) + subject + verb.</strong> <em>Why didn\'t he call?</em> Russian speakers often omit the auxiliary entirely or use Russian word order.'},
 {id:'qf08',lvl:'B1',biz:false,cat:'Question Formation',type:'gap',q:'Could you explain ___ the project was delayed?',opts:['why','why was','why did','why is'],ans:0,exp:'After <em>could you explain</em>, use indirect question word order: <strong>why + subject + verb</strong> (statement order). <em>Could you explain why the project was delayed</em> — no inversion after the question word.'},
 {id:'qf09',lvl:'B1',biz:false,type:'mcq',cat:'Question Formation',q:'Which is correct?',opts:['How much does it cost?','How much it costs?','How much it does cost?'],ans:0,exp:'Direct question: <strong>How much + auxiliary + subject + verb.</strong> <em>How much does it cost?</em> Never omit the auxiliary in a direct question. Contrast with indirect: <em>I want to know how much it costs</em> (no auxiliary, statement order).'},
-{id:'qf10',lvl:'B1',biz:false,type:'mcq',cat:'Question Formation',q:'Which indirect question is correct?',opts:['I\'m not sure where did I put my keys.','I\'m not sure where I put my keys.','I\'m not sure where I did put my keys.'],ans:1,exp:'<strong>Indirect questions</strong> (embedded in statements) always use statement word order, even with past tense: <em>where I put my keys</em>. The auxiliary <em>did</em> disappears entirely in indirect questions — use the full past simple form of the verb instead.'},,
+{id:'qf10',lvl:'B1',biz:false,type:'mcq',cat:'Question Formation',q:'Which indirect question is correct?',opts:['I\'m not sure where did I put my keys.','I\'m not sure where I put my keys.','I\'m not sure where I did put my keys.'],ans:1,exp:'<strong>Indirect questions</strong> (embedded in statements) always use statement word order, even with past tense: <em>where I put my keys</em>. The auxiliary <em>did</em> disappears entirely in indirect questions — use the full past simple form of the verb instead.'},
 
 // BATCH: C1 INDIRECT QUESTIONS (qf11-qf30)
 
@@ -2285,7 +2323,7 @@ exp:'<strong>Terminate</strong> = to formally end a contract or agreement. ✗ <
 {id:'iq_c22',lvl:'C1',biz:true,cat:'Indirect Questions',type:'gap',q:'The board has not yet decided ___ to proceed with the merger.',opts:['whether','if','that','how to'],ans:0,exp:'<strong>Decide whether + infinitive</strong>: <em>decided whether to proceed.</em> <em>Whether</em> (not <em>if</em>) is used before infinitives in formal contexts: <em>decided whether to go, unsure whether to accept.</em> ✗ <em>If + infinitive</em> is non-standard in formal writing. <em>How to proceed</em> would be correct but changes the meaning — asking about the method, not the decision itself.'},
 {id:'iq_c23',lvl:'C1',biz:false,cat:'Indirect Questions',type:'gap',q:'I can\'t understand ___ she managed to finish it so quickly.',opts:['how','how did she','why','that'],ans:0,exp:'<strong>How + statement word order</strong>: <em>I can\'t understand how she managed to finish.</em> ✗ <em>How did she manage</em> is the direct question — auxiliary <em>did</em> and inversion disappear in embedded form. After <em>understand, explain, know, wonder,</em> always use statement word order.'},
 {id:'iq_c24',lvl:'C1',biz:false,cat:'Indirect Questions',type:'gap',q:'Nobody knows ___ will happen next.',opts:['what','what will','that','whatever'],ans:0,exp:'<strong>What + statement word order</strong>: <em>Nobody knows what will happen.</em> Here <em>what</em> is the subject of the embedded clause — no auxiliary needed because <em>what</em> itself is the subject. ✗ <em>What will happen</em> vs <em>what happens</em> — both possible; here future <em>will</em> is correct. ✗ <em>Nobody knows what it will happen</em> — double subject error.'},
-{id:'iq_c25',lvl:'C1',biz:true,cat:'Indirect Questions',type:'gap',q:'We need to confirm ___ the payment has been processed.',opts:['whether','if','that','which'],ans:[0,1],exp:'<strong>Confirm whether</strong> for a yes/no open question: <em>confirm whether the payment has been processed</em> = we don\'t yet know. ✗ <em>Confirm that</em> would state a fact already believed to be true: <em>Please confirm that the payment has been received</em> = we think it has. Both are correct in different contexts — here <em>whether</em> fits because the status is unknown.'},,
+{id:'iq_c25',lvl:'C1',biz:true,cat:'Indirect Questions',type:'gap',q:'We need to confirm ___ the payment has been processed.',opts:['whether','if','that','which'],ans:[0,1],exp:'<strong>Confirm whether</strong> for a yes/no open question: <em>confirm whether the payment has been processed</em> = we don\'t yet know. ✗ <em>Confirm that</em> would state a fact already believed to be true: <em>Please confirm that the payment has been received</em> = we think it has. Both are correct in different contexts — here <em>whether</em> fits because the status is unknown.'},
 
 // ══ PREPOSITIONS — ADJECTIVE + PREPOSITION (Russian speakers miss these) ══
 {id:'pp_ap01',lvl:'B2',biz:false,cat:'Prepositions',type:'gap',q:'She is very good ___ mathematics — probably the best in the class.',opts:['at','in','for','with'],ans:0,exp:'<strong>Good at</strong> + skill/subject. This is a fixed collocation. Russian has "хорошо в", but English always uses <em>at</em> for skills and subjects: <em>good at tennis, good at maths, good at cooking.</em>'},
@@ -2609,7 +2647,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'art_c09',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'What\'s ___ capital of Bahrain?',opts:['the','a','—','an'],ans:0,exp:'<strong>The</strong> with unique things — there is only one capital of each country: <em>the capital, the president, the moon, the sun, the equator.</em> Uniqueness implies a definite, known referent. ✗ <em>A capital</em> would imply there might be more than one, which is wrong.'},
 {id:'art_c10',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'He had ___ accident on his way home. Fortunately, it wasn\'t serious.',opts:['an','a','the','—'],ans:0,exp:'<strong>An</strong> before vowel sounds: <em>an accident, an answer, an opinion, an update, an hour.</em> The rule is about the spoken sound, not the letter. <em>Accident</em> starts with the vowel sound /æ/ → <em>an accident.</em> ✗ <em>A accident</em> is wrong because of the vowel sound clash.'},
 {id:'art_c11',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'I\'m going to ___ bed. I\'m exhausted.',opts:['—','the','a','my'],ans:0,exp:'<strong>No article</strong> with certain functional places: <em>go to bed, go to work, go to school, go to church, go to hospital.</em> These phrases describe the purpose/function, not the physical place. ✗ <em>Go to the bed</em> = approach the physical piece of furniture, not go to sleep.'},
-{id:'art_c12',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'___ Pacific Ocean is the largest ocean in the world.',opts:['The','A','—','An'],ans:0,exp:'<strong>The</strong> with named bodies of water, mountain ranges, and geographic features: <em>the Pacific Ocean, the Amazon, the Alps, the Sahara.</em> These are definite by convention — there is only one Pacific. ✗ No article (<em>Pacific Ocean is largest</em>) is incorrect in standard English, though Russian uses no article here.'},,,
+{id:'art_c12',lvl:'B1',biz:false,cat:'Articles',type:'gap',q:'___ Pacific Ocean is the largest ocean in the world.',opts:['The','A','—','An'],ans:0,exp:'<strong>The</strong> with named bodies of water, mountain ranges, and geographic features: <em>the Pacific Ocean, the Amazon, the Alps, the Sahara.</em> These are definite by convention — there is only one Pacific. ✗ No article (<em>Pacific Ocean is largest</em>) is incorrect in standard English, though Russian uses no article here.'},
 
 // BATCH: B1 ARTICLES EXPANSION
 
@@ -2827,7 +2865,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'ut_b13',lvl:'B2',biz:false,cat:'Used To',type:'gap',q:'I\'m ___ working long hours — it\'s just part of the job.',opts:['used to','use to','getting used to','was used to'],ans:0,exp:'<strong>Be used to + gerund</strong> = currently accustomed to: <em>I\'m used to working long hours.</em> Present tense shows the state is current and established. ✗ <em>Getting used to</em> would mean you\'re still adapting — but <em>I\'m used to</em> means adaptation is complete.'},
 {id:'ut_b14',lvl:'B2',biz:false,cat:'Used To',type:'gap',q:'My grandmother ___ bake bread every Friday morning.',opts:['would','is used to','gets used to','used for'],ans:0,exp:'<strong>Would</strong> for nostalgic, repeated past actions: <em>She would bake bread every Friday.</em> This is a classic use of <em>would</em> in narrative to describe a warm memory. <em>Used to bake</em> is also correct, but <em>would</em> is more vivid and often preferred in storytelling.'},
 {id:'ut_b15',lvl:'B2',biz:false,cat:'Used To',type:'gap',q:'He finds remote work difficult because he\'s not ___ working from home.',opts:['used to','used for','use to','accustomed for'],ans:0,exp:'<strong>Not used to + gerund</strong>: <em>He\'s not used to working from home</em> = he hasn\'t yet adapted. The gerund (-ing) is essential after <em>used to</em> when <em>used to</em> functions as an adjective (be/get used to). ✗ <em>Not use to</em> is a spelling error in this structure (only correct in negative/question of the past habit form with <em>did</em>).'},
-{id:'ut_b16',lvl:'B2',biz:false,cat:'Used To',type:'gap',q:'When she lived in London, she ___ take the Tube to work every day.',opts:['used to','is used to','would have','gets used to'],ans:0,exp:'<strong>Used to + infinitive</strong> for a past repeated action that is no longer true: <em>She used to take the Tube.</em> <em>Would take</em> is also correct here. ✗ <em>Is used to taking</em> = is currently accustomed to — wrong tense and meaning. ✗ <em>Would have taken</em> = third conditional / past hypothetical — different structure.'},,
+{id:'ut_b16',lvl:'B2',biz:false,cat:'Used To',type:'gap',q:'When she lived in London, she ___ take the Tube to work every day.',opts:['used to','is used to','would have','gets used to'],ans:0,exp:'<strong>Used to + infinitive</strong> for a past repeated action that is no longer true: <em>She used to take the Tube.</em> <em>Would take</em> is also correct here. ✗ <em>Is used to taking</em> = is currently accustomed to — wrong tense and meaning. ✗ <em>Would have taken</em> = third conditional / past hypothetical — different structure.'},
 
 // ══ BATCH 12 — ZERO + FIRST CONDITIONAL (B1) ══
 
@@ -2857,7 +2895,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'nm07',lvl:'B2',biz:false,cat:'Modal Verbs',type:'gap',q:'She ___ be at home yet — her car isn\'t in the drive.',opts:['can\'t','mustn\'t','won\'t'],ans:0,exp:'<strong>Can\'t be</strong> = logical deduction that something is impossible or very unlikely now. Evidence (no car) leads to a present logical conclusion. Not a prohibition or refusal.'},
 {id:'nm08',lvl:'B2',biz:false,cat:'Modal Verbs',type:'gap',q:'My computer stopped working so I ___ finish my homework.',opts:['couldn\'t','can\'t','mustn\'t'],ans:0,exp:'<strong>Couldn\'t</strong> = past inability. The computer problem is a past event, so a past modal is needed. <em>Can\'t</em> is present tense. <em>Mustn\'t</em> is prohibition.'},
 {id:'nm09',lvl:'B2',biz:false,cat:'Modal Verbs',type:'gap',q:'Don\'t worry — I ___ tell anyone your secret.',opts:['won\'t','mustn\'t','shouldn\'t'],ans:0,exp:'<strong>Won\'t</strong> = refusal or firm decision not to do something (making a promise). <em>Mustn\'t</em> would be a prohibition imposed by someone else. <em>Shouldn\'t</em> is advice.'},
-{id:'nm10',lvl:'B2',biz:false,cat:'Modal Verbs',type:'gap',q:'They ___ touch that wire — it\'s dangerous.',opts:['mustn\'t','shouldn\'t','can\'t'],ans:0,exp:'<strong>Mustn\'t</strong> = strong prohibition — it is forbidden and dangerous. Both <em>mustn\'t</em> and <em>shouldn\'t</em> work here, but <em>mustn\'t</em> is stronger and more appropriate for a safety rule.'},,
+{id:'nm10',lvl:'B2',biz:false,cat:'Modal Verbs',type:'gap',q:'They ___ touch that wire — it\'s dangerous.',opts:['mustn\'t','shouldn\'t','can\'t'],ans:0,exp:'<strong>Mustn\'t</strong> = strong prohibition — it is forbidden and dangerous. Both <em>mustn\'t</em> and <em>shouldn\'t</em> work here, but <em>mustn\'t</em> is stronger and more appropriate for a safety rule.'},
 
 // BATCH: C1 MODAL VERBS (mvc01-mvc15)
 
@@ -3003,7 +3041,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'but05',lvl:'B2',biz:false,type:'gap',cat:'Grammar',q:'She ___ drinking a lot of coffee, so she doesn\'t have trouble sleeping.',opts:['is used to','used to','is used to drink'],ans:0,exp:'<strong>Is used to drinking</strong> = currently accustomed to it. <em>Used to drink</em> would imply she no longer drinks coffee (past habit). <em>Is used to drink</em> is wrong — <em>be used to</em> must be followed by -ing.'},
 {id:'but06',lvl:'B2',biz:false,type:'mcq',cat:'Grammar',q:'Which sentence uses BE USED TO correctly?',opts:['He is used to work night shifts.','He is used to working night shifts.','He used to working night shifts.'],ans:1,exp:'<strong>Is used to working</strong> ✓ — <em>be used to + -ing</em>. Option A wrongly uses infinitive. Option C drops <em>be</em> — you need the verb <em>be</em> in the correct form: <em>am/is/are/was/were used to</em>.'},
 {id:'but07',lvl:'B2',biz:false,type:'mcq',cat:'Grammar',q:'What is the difference between these sentences? (A) I used to drive to work. (B) I\'m used to driving to work.',opts:['A = past habit (no longer); B = currently accustomed to it','A = currently accustomed to; B = past habit','Both mean the same thing'],ans:0,exp:'<strong>Used to + infinitive</strong> = past habit that no longer happens. <strong>Be used to + -ing</strong> = currently accustomed to something. Completely different structures despite looking similar.'},
-{id:'but08',lvl:'B2',biz:false,type:'gap',cat:'Grammar',q:'She has just moved to Tokyo. She needs to ___ the subway.',opts:['get used to using','get used to use','used to using'],ans:0,exp:'<strong>Get used to + -ing</strong> = process of becoming accustomed. <em>Get used to use</em> is wrong — must be -ing. <em>Used to using</em> drops <em>get</em> — grammatically broken. The full pattern: <em>get used to + noun/-ing</em>.'},,
+{id:'but08',lvl:'B2',biz:false,type:'gap',cat:'Grammar',q:'She has just moved to Tokyo. She needs to ___ the subway.',opts:['get used to using','get used to use','used to using'],ans:0,exp:'<strong>Get used to + -ing</strong> = process of becoming accustomed. <em>Get used to use</em> is wrong — must be -ing. <em>Used to using</em> drops <em>get</em> — grammatically broken. The full pattern: <em>get used to + noun/-ing</em>.'},
 
 // BATCH: USED TO / WOULD expansion (uto series)
 
@@ -3021,7 +3059,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'asl03',lvl:'B2',biz:false,cat:'Word Choice',type:'gap',q:'He arrived ___ I was leaving.',opts:['as','like'],ans:0,exp:'<strong>As + clause</strong> (subject + verb). <em>As</em> can introduce a time clause meaning "at the same time as". <em>Like</em> cannot be followed by a full clause in standard English.'},
 {id:'asl04',lvl:'B2',biz:false,cat:'Word Choice',type:'gap',q:'He works in a bank, ___ his father.',opts:['like','as'],ans:0,exp:'<strong>Like his father</strong> = similar to his father (resemblance). <em>As his father</em> would suggest he has taken over his father\'s specific role at the bank.'},
 {id:'asl05',lvl:'B2',biz:false,cat:'Word Choice',type:'gap',q:'Your perfume smells ___ flowers.',opts:['like','as'],ans:0,exp:'<strong>Like</strong> = resemblance/similarity. After sense verbs (<em>smell, look, sound, feel, taste</em>), use <em>like</em> + noun for comparisons.'},
-{id:'asl06',lvl:'B2',biz:false,cat:'Linking Words',type:'gap',q:'___ it was cold, I took a scarf.',opts:['As','Like'],ans:0,exp:'<strong>As</strong> = because/since (reason clause). <em>As</em> can introduce a reason when the cause is already known. <em>Like</em> cannot introduce a reason clause.'},,
+{id:'asl06',lvl:'B2',biz:false,cat:'Linking Words',type:'gap',q:'___ it was cold, I took a scarf.',opts:['As','Like'],ans:0,exp:'<strong>As</strong> = because/since (reason clause). <em>As</em> can introduce a reason when the cause is already known. <em>Like</em> cannot introduce a reason clause.'},
 
 // BATCH: C1 LINKING WORDS (lkc11-lkc25)
 
@@ -3089,7 +3127,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'fl01',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'I have ___ money left — just enough for the bus.',opts:['a little','little','few'],ans:0,exp:'<strong>A little</strong> (uncountable) = a small amount, which is positive/sufficient. <strong>Little</strong> (uncountable) = almost none, negative meaning. <em>Money</em> is uncountable → ✗ <em>few</em> is wrong (countable nouns only). <em>A little</em> fits: there is some, and it is enough.'},
 {id:'fl02',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'___ students passed the exam — most failed.',opts:['Few','A few','Little'],ans:0,exp:'<strong>Few</strong> (countable) = almost none — a negative, disappointing quantity. <strong>A few</strong> = some — a positive, sufficient amount. <em>Students</em> is plural countable → ✗ <em>little</em> is wrong. Context (<em>most failed</em>) confirms the negative meaning → <em>few</em>.'},
 {id:'ben01',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'___ of the restaurants was open, so we had no choice.',opts:['Both','Either','Neither'],ans:2,exp:'<strong>Neither of</strong> + plural noun = not one and not the other (= zero from two). Negative meaning without <em>not</em>. If neither restaurant was open, there is nothing to choose — hence no choice. ✗ <em>Both</em> = two things together (positive). ✗ <em>Either</em> = one of two options. Russian: <em>ни один из</em> ≈ <em>neither</em>.'},
-{id:'ben02',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'You can have ___ the tea or the coffee — not both.',opts:['neither','either','both'],ans:1,exp:'<strong>Either … or</strong> = one of two options (choice). <strong>Neither … nor</strong> = none of two options. <strong>Both</strong> = the two together — but the sentence explicitly says <em>not both</em>. Pattern: <em>either X or Y</em> offers a choice between X and Y.'},,
+{id:'ben02',lvl:'B1',biz:false,cat:'Grammar',type:'gap',q:'You can have ___ the tea or the coffee — not both.',opts:['neither','either','both'],ans:1,exp:'<strong>Either … or</strong> = one of two options (choice). <strong>Neither … nor</strong> = none of two options. <strong>Both</strong> = the two together — but the sentence explicitly says <em>not both</em>. Pattern: <em>either X or Y</em> offers a choice between X and Y.'},
 {id:'lm05',lvl:'B2',biz:false,cat:'Word Choice',type:'input',q:'The comedian really ___ us laugh last night.',ans:['made'],hint:'past tense: let or make? (1 word)',exp:'<strong>Made us laugh</strong> = caused us to laugh. <em>Make</em> can mean "cause" as well as "force". Past: <em>made</em>. <em>Let us laugh</em> would mean permitted it — odd here (it implies we wanted to laugh but needed permission).'},
 {id:'lm06',lvl:'B2',biz:false,cat:'Word Choice',type:'input',q:'That film ___ me cry — it was so sad.',ans:['made'],hint:'past tense: let or make? (1 word)',exp:'<strong>Made me cry</strong> = caused the emotional reaction. <em>Make</em> = cause/produce a result. Past: <em>made</em>. <em>Let me cry</em> would imply it gave permission — wrong meaning.'},
 {id:'lm07',lvl:'B2',biz:false,cat:'Word Choice',type:'input',q:'Lucy might ___ you borrow her laptop if you ask nicely.',ans:['let'],hint:'(1 word) let or make? — after might',exp:'<strong>Let</strong> = allow/permit. She might permit you to borrow it. After modal verbs, use base form: <em>might let</em>. <em>Make you borrow</em> = force you — wrong meaning here.'},
@@ -3189,7 +3227,7 @@ exp:'<strong>Put out</strong> (a fire) = extinguish it. Separable: <em>put the f
 {id:'c1_m06',lvl:'C1',biz:true,cat:'Modal Verbs',type:'gap',q:'The project ___ have been approved — it meets all the criteria.',opts:['should','must','would','could'],ans:0,exp:'<strong>Should have + past participle</strong> = what was expected or ought to have happened (positive expectation): <em>It should have been approved — it met all the criteria.</em> This expresses surprise or frustration that something didn\'t happen as expected. ✗ <em>Must have been approved</em> = you\'re confident it was. ✗ <em>Would have</em> = conditional (if something else had happened).'},
 {id:'c1_m07',lvl:'C1',biz:false,cat:'Modal Verbs',type:'gap',q:'I ___ have worried so much — everything turned out fine.',opts:['needn\'t','shouldn\'t','mustn\'t','wouldn\'t'],ans:0,exp:'<strong>Needn\'t have + past participle</strong> = an action was done but was unnecessary: <em>I needn\'t have worried — it was fine.</em> I did worry, but it was not necessary. ✗ <em>Shouldn\'t have worried</em> = it was wrong/inadvisable to worry (criticism). The distinction: <em>needn\'t have</em> = unnecessary; <em>shouldn\'t have</em> = it was a mistake.'},
 {id:'c1_m08',lvl:'C1',biz:false,cat:'Modal Verbs',type:'gap',q:'You ___ have called — I would have come straight away.',opts:['should','would','must','could'],ans:0,exp:'<strong>Should have + past participle</strong> = criticism or regret about something not done: <em>You should have called</em> — you didn\'t, and that was a mistake. ✗ <em>Could have called</em> = you had the ability to call (capability, not criticism). ✗ <em>Would have called</em> = hypothetical (if something had been different). <em>Should have</em> is the standard form for expressing that a past action was expected/advisable but didn\'t happen.'},
-,{id:'mvc22',lvl:'B1',biz:false,cat:'Modal Verbs',type:'input',
+{id:'mvc22',lvl:'B1',biz:false,cat:'Modal Verbs',type:'input',
 q:'She speaks five languages — she ___ be very good at learning them.',
 ans:['must'],hint:'modal verb: logical deduction — you are almost certain this is true (1 word)',
 exp:'<strong>Must</strong> = present deduction (positive). The evidence (speaking five languages) leads to a logical conclusion. ✗ <em>should</em> — that expresses advice, not deduction from evidence. ✗ <em>can</em> — that expresses ability, not a conclusion drawn from evidence.'},
@@ -3225,7 +3263,7 @@ exp:'<strong>Can\'t have</strong> (or <strong>couldn\'t have</strong>) + past pa
 q:'It ___ be Maria at the door — she said she\'d come at seven.',
 ans:['must','might','could','may'],hint:'modal verb: you think this is likely based on what you know (1 word)',
 exp:'<strong>Must</strong> (near-certain deduction) or <strong>might/may/could</strong> (possibility). Context — <em>she said she\'d come at seven</em> — suggests near-certainty, so <em>must</em> is the strongest fit. All four are accepted. ✗ <em>should</em> — expectation based on a plan, also possible but tests a different meaning.'},
-,
+
   // --- ADJECTIVES + PREPOSITIONS (pp_ap05-pp_ap24) ---
   {id:'pp_ap05',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:'England is famous ___ its rainy weather.',ans:'for',hint:'adjective + preposition (1 word)',exp:'<strong>Famous for</strong> — always <em>for</em> when naming the reason something is well known. <em>Famous for its rainy weather / famous for Big Ben.</em> Never famous of.'},
   {id:'pp_ap06',lvl:'B2',biz:false,cat:'Prepositions',type:'input',q:"I'm very proud ___ my daughter — she worked very hard.",ans:'of',hint:'adjective + preposition (1 word)',exp:'<strong>Proud of</strong> — always <em>of</em>. Expresses satisfaction about someone or something. <em>Proud of my daughter / proud of the result.</em> Never proud about.'},
@@ -3411,7 +3449,7 @@ exp:'<strong>Take back</strong> = retract or withdraw something you said: <em>I 
   {id:'irv33',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'We ___ (see) the new film yesterday.',ans:'saw',hint:'irregular past simple of SEE (1 word)',exp:'<strong>See → saw</strong> (irregular). Past participle: <em>seen</em>. Three forms: see / saw / seen.'},
   {id:'irv34',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'She ___ (wear) her new coat to the party.',ans:'wore',hint:'irregular past simple of WEAR (1 word)',exp:'<strong>Wear → wore</strong> (irregular). Past participle: <em>worn</em>. Three forms: wear / wore / worn.'},
   {id:'irv35',lvl:'B1',biz:false,cat:'Tenses',type:'input',q:'They ___ (put) their bags in the bedroom.',ans:'put',hint:'irregular past simple of PUT — same in past (1 word)',exp:'<strong>Put → put</strong> (irregular). Past participle: <em>put</em>. <em>Put</em> is the same in all three forms: put / put / put.'},
-,{id:'col_b01',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'She always ___ an effort to arrive on time, even when the commute is difficult.',opts:['makes','does','gives','takes'],ans:0,exp:'<strong>Make an effort</strong> — always <em>make</em>, not do or give. Fixed collocation: <em>make progress, make an effort, make a decision</em>. Russian uses одно слово for "effort" without the verb constraint English imposes.'}
+{id:'col_b01',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'She always ___ an effort to arrive on time, even when the commute is difficult.',opts:['makes','does','gives','takes'],ans:0,exp:'<strong>Make an effort</strong> — always <em>make</em>, not do or give. Fixed collocation: <em>make progress, make an effort, make a decision</em>. Russian uses одно слово for "effort" without the verb constraint English imposes.'}
 ,{id:'col_b02',lvl:'B2',biz:true,cat:'Collocations',type:'gap',q:'The CEO agreed to ___ responsibility for the failed merger.',opts:['take','make','do','give'],ans:0,exp:'<strong>Take responsibility</strong> — fixed collocation. Also: <em>take action, take credit, take the lead</em>. ✗ Do/make responsibility — both wrong in English.'}
 ,{id:'col_b03',lvl:'B2',biz:false,cat:'Collocations',type:'gap',q:'It took me a while to ___ sense of the instructions.',opts:['make','do','take','get'],ans:0,exp:'<strong>Make sense of</strong> = understand. ✗ Do sense is wrong. Compare: <em>make a decision, make progress</em> — all use make, not do.'}
 ,{id:'col_b04',lvl:'B2',biz:true,cat:'Collocations',type:'gap',q:'We need to ___ a decision before the end of the quarter.',opts:['make','do','take','have'],ans:0,exp:'<strong>Make a decision</strong> — fixed collocation. <em>Reach a decision</em> also works formally. Russian принять решение maps closer to <em>take</em> — a common transfer error.'}
@@ -3553,7 +3591,7 @@ exp:'<strong>Take back</strong> = retract or withdraw something you said: <em>I 
 {id:'art_i08',lvl:'B2',biz:true,cat:'Articles',type:'input',q:'She has ___ (A/AN/THE/—) experience that makes her ideal for this role.',ans:['the'],hint:'definite article — specific known experience (1 word)',exp:'<strong>The</strong> — use when both speaker and listener know which specific thing is meant: (1) second mention — <em>I saw a dog. The dog was huge.</em>; (2) unique things — <em>the sun, the moon</em>; (3) superlatives — <em>the best, the most expensive</em>; (4) fixed phrases — <em>in the morning, at the end</em>. ✗ Russian speakers omit <em>the</em> where English requires it — particularly with second mention and unique things.'},
 {id:'art_i09',lvl:'B2',biz:false,cat:'Articles',type:'multi',intro:'Articles: first and second mention',q:'I saw ___ dog in the park. ___ dog was very friendly.',blanks:[{opts:['a','an','the','—'],ans:0},{opts:['a','an','the','—'],ans:2}],exp:'<strong>The</strong> — use when both speaker and listener know which specific thing is meant: (1) second mention — <em>I saw a dog. The dog was huge.</em>; (2) unique things — <em>the sun, the moon</em>; (3) superlatives — <em>the best, the most expensive</em>; (4) fixed phrases — <em>in the morning, at the end</em>. ✗ Russian speakers omit <em>the</em> where English requires it — particularly with second mention and unique things.'},
 {id:'art_i10',lvl:'B1',biz:false,cat:'Articles',type:'input',q:'___ (A/AN/THE/—) information you sent me was very helpful.',ans:['The','the'],hint:'definite article — specific info (1 word)',exp:'<strong>The</strong> — use when both speaker and listener know which specific thing is meant: (1) second mention — <em>I saw a dog. The dog was huge.</em>; (2) unique things — <em>the sun, the moon</em>; (3) superlatives — <em>the best, the most expensive</em>; (4) fixed phrases — <em>in the morning, at the end</em>. ✗ Russian speakers omit <em>the</em> where English requires it — particularly with second mention and unique things.'},
-{id:'art_i11',lvl:'B2',biz:true,cat:'Articles',type:'input',q:'___ (A/AN/THE/—) trust is essential in any business relationship.',ans:['—','-'],hint:'zero article — abstract noun generally (1 symbol)',exp:'<strong>Zero article (∅)</strong> before: (1) uncountable nouns used generally — <em>water, music, information, advice, progress</em>; (2) plural countable nouns used generally — <em>cats, teachers</em>; (3) abstract nouns generally — <em>love, fear, freedom</em>. ✗ <em>The information is important</em> (when speaking generally, not about specific info) → ✓ <em>Information is important.</em> Russian has no articles — English requires a conscious rule for each noun type.'},,
+{id:'art_i11',lvl:'B2',biz:true,cat:'Articles',type:'input',q:'___ (A/AN/THE/—) trust is essential in any business relationship.',ans:['—','-'],hint:'zero article — abstract noun generally (1 symbol)',exp:'<strong>Zero article (∅)</strong> before: (1) uncountable nouns used generally — <em>water, music, information, advice, progress</em>; (2) plural countable nouns used generally — <em>cats, teachers</em>; (3) abstract nouns generally — <em>love, fear, freedom</em>. ✗ <em>The information is important</em> (when speaking generally, not about specific info) → ✓ <em>Information is important.</em> Russian has no articles — English requires a conscious rule for each noun type.'},
 {id:'art_i12',lvl:'B2',biz:false,cat:'Articles',type:'input',
 q:'Mount Everest is ___ (A/AN/THE/—) highest mountain in the world.',
 ans:['the'],hint:'article used with superlatives (1 word)',
@@ -4298,9 +4336,11 @@ function renderCatProgress() {
   if (!grid) return;
   const allCats = [...new Set(ALL_QUESTIONS.map(q => q.cat))].sort();
   const catStats = DB.catStats || {};
+  const badges = computeBadges(catStats);
   grid.innerHTML = allCats.map(cat => {
     const s = catStats[cat];
     const hasSeen = s && s.seen >= 5;
+    const badgeHtml = badges[cat] ? '<span class="ct-badge">' + badges[cat] + '</span>' : '';
     if (!hasSeen) {
       return '<div class="cat-tile ct-grey"><span class="ct-pct">—</span>' + cat + '</div>';
     }
@@ -4315,7 +4355,7 @@ function renderCatProgress() {
       cls = 'ct-red';
       onclickAttr = 'onclick="goFixWeakSpotsForCat(' + JSON.stringify(cat) + ')"';
     }
-    return '<div class="cat-tile ' + cls + '" ' + onclickAttr + ' title="' + s.seen + ' answers · ' + pct + '% accuracy"><span class="ct-pct">' + pct + '%</span>' + cat + '</div>';
+    return '<div class="cat-tile ' + cls + '" ' + onclickAttr + ' title="' + s.seen + ' answers · ' + pct + '% accuracy">' + badgeHtml + '<span class="ct-pct">' + pct + '%</span>' + cat + '</div>';
   }).join('');
 }
 
@@ -5080,6 +5120,11 @@ async function finishSession() {
   }
 
   await saveData(DB);
+
+  // U5: Check for newly earned badges
+  checkNewBadges();
+  await saveData(DB); // save badge state
+
   showResults(sessionScore, sessionQs.length, pct);
 }
 
@@ -5477,6 +5522,12 @@ function renderStatsHero() {
     <div class="hero-stat"><div class="hs-num">${uniqueSeen}</div><div class="hs-lbl">Seen</div></div>
     <div class="hero-stat"><div class="hs-num">${DB.totalSessions||0}</div><div class="hs-lbl">Sessions</div></div>
   `;
+
+  // [D] Articles intervention nudge
+  renderArticlesNudge();
+
+  // U5: Badge shelf
+  renderBadgeShelf();
 }
 
 function heroAction() {
@@ -5493,6 +5544,124 @@ function heroAction() {
     b.classList.toggle('active', b.dataset.mode === 'weak'));
   document.querySelectorAll('.cat-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.cat === heroTargetCat));
+  startQuiz();
+}
+
+// ══════════════════════════════════════════════
+//  U5: CATEGORY MASTERY BADGES
+//  🥉 ≥70% with 30+ seen · 🥈 ≥80% with 30+ seen · 🥇 ≥90% with 50+ seen
+// ══════════════════════════════════════════════
+function computeBadges(catStats) {
+  const badges = {};
+  Object.entries(catStats || {}).forEach(([cat, s]) => {
+    if (!s || !s.seen) return;
+    const pct = Math.round(s.correct / s.seen * 100);
+    if (pct >= 90 && s.seen >= 50) badges[cat] = '🥇';
+    else if (pct >= 80 && s.seen >= 30) badges[cat] = '🥈';
+    else if (pct >= 70 && s.seen >= 30) badges[cat] = '🥉';
+  });
+  return badges;
+}
+
+function renderBadgeShelf() {
+  const shelf = document.getElementById('badge-shelf');
+  const items = document.getElementById('badge-shelf-items');
+  if (!shelf || !items) return;
+  const badges = computeBadges(DB.catStats);
+  const entries = Object.entries(badges).sort((a,b) => {
+    const order = {'🥇':0,'🥈':1,'🥉':2};
+    return (order[a[1]]||9) - (order[b[1]]||9) || a[0].localeCompare(b[0]);
+  });
+  if (entries.length === 0) {
+    shelf.style.display = 'none';
+    return;
+  }
+  shelf.style.display = 'flex';
+  items.innerHTML = entries.map(([cat, medal]) =>
+    '<span class="badge-item"><span class="badge-medal">' + medal + '</span>' + cat + '</span>'
+  ).join('');
+}
+
+function checkNewBadges() {
+  const current = computeBadges(DB.catStats);
+  const prev = DB.badges || {};
+  const newBadges = [];
+  Object.entries(current).forEach(([cat, medal]) => {
+    if (prev[cat] !== medal) {
+      newBadges.push({ cat, medal });
+    }
+  });
+  // Save current badges
+  DB.badges = current;
+  // Show toast for first new badge (most important one)
+  if (newBadges.length > 0) {
+    // Sort: gold first
+    const order = {'🥇':0,'🥈':1,'🥉':2};
+    newBadges.sort((a,b) => (order[a.medal]||9) - (order[b.medal]||9));
+    showBadgeToast(newBadges[0]);
+  }
+}
+
+function showBadgeToast(badge) {
+  // Remove any existing toast
+  const existing = document.querySelector('.badge-toast');
+  if (existing) existing.remove();
+  const levelNames = {'🥇':'Gold','🥈':'Silver','🥉':'Bronze'};
+  const toast = document.createElement('div');
+  toast.className = 'badge-toast';
+  toast.innerHTML = '<span class="badge-toast-medal">' + badge.medal + '</span>' +
+    '<div class="badge-toast-body"><div style="font-weight:700;font-size:.95rem">New badge!</div>' +
+    '<span class="badge-toast-cat">' + badge.cat + '</span> — ' + (levelNames[badge.medal]||'') + ' mastery</div>';
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity .4s';
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 500);
+  }, 3500);
+}
+
+// ══════════════════════════════════════════════
+//  [D] ARTICLES INTERVENTION NUDGE
+//  Shows when Articles accuracy < 70% and seen >= 5
+//  and Articles is NOT already the hero card target
+// ══════════════════════════════════════════════
+function renderArticlesNudge() {
+  const nudge = document.getElementById('articles-nudge');
+  if (!nudge) return;
+  nudge.style.display = 'none';
+
+  const artStats = (DB.catStats || {})['Articles'];
+  if (!artStats || artStats.seen < 5) return;
+
+  const artPct = Math.round(artStats.correct / artStats.seen * 100);
+  if (artPct >= 70) return;
+
+  // Don't show if Articles is already the hero card target
+  if (heroTargetCat === 'Articles') return;
+
+  // Compose message based on severity
+  const textEl = document.getElementById('articles-nudge-text');
+  if (artPct < 50) {
+    textEl.textContent = 'Your Articles accuracy is ' + artPct + '% — this is the trickiest area for Russian speakers. A focused session will help.';
+  } else {
+    textEl.textContent = 'Articles at ' + artPct + '% — a/an/the patterns need more practice. Most common family-wide weak spot.';
+  }
+  nudge.style.display = 'flex';
+}
+
+function practiceArticles() {
+  mode = 'weak';
+  catFilter = 'Articles';
+  maxLevel = 'C2';
+  includeBiz = true;
+  const slider = document.getElementById('q-count');
+  if (slider) { slider.value = 10; syncLenBtns(10); }
+  const val = document.getElementById('q-count-val');
+  if (val) val.textContent = '10';
+  document.querySelectorAll('#mode-btns .mode-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.mode === 'weak'));
+  document.querySelectorAll('.cat-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.cat === 'Articles'));
   startQuiz();
 }
 
@@ -6393,6 +6562,19 @@ function renderFamily(playersData) {
       <div class="player-cats">
         ${bestCat ?`<span class="cat-pill best">💪 ${bestCat}</span>`:''}
         ${worstCat?`<span class="cat-pill worst">📖 ${worstCat}</span>`:''}
+        ${(() => {
+          const b = computeBadges(p.catStats || {});
+          const n = Object.keys(b).length;
+          if (n === 0) return '';
+          const gold = Object.values(b).filter(v=>v==='🥇').length;
+          const silver = Object.values(b).filter(v=>v==='🥈').length;
+          const bronze = Object.values(b).filter(v=>v==='🥉').length;
+          const parts = [];
+          if (gold) parts.push(gold+'🥇');
+          if (silver) parts.push(silver+'🥈');
+          if (bronze) parts.push(bronze+'🥉');
+          return '<span class="badge-count">' + parts.join(' ') + '</span>';
+        })()}
       </div>
       <div style="margin-top:.5rem;text-align:center;">
         <span style="font-size:.75rem;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="document.getElementById('${cardId}').style.display=document.getElementById('${cardId}').style.display==='none'?'block':'none';this.textContent=document.getElementById('${cardId}').style.display==='none'?'Details ▸':'Details ▾'">Details ▸</span>
