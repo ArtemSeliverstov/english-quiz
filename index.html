@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260322-s70r7">
+  <meta name="app-version" content="v20260322-s70r8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -833,7 +833,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r7</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r8</span></p>
 </header>
 
 <!-- TABS -->
@@ -3941,7 +3941,7 @@ function syncLenBtns(n) {
 function renderGreeting() {
   const el = document.getElementById('player-greeting');
   if (!el) return;
-  const name = DB.displayName || currentPlayer || '';
+  const name = capFirst(DB.displayName || currentPlayer || '');
   if (!name) { el.textContent = ''; return; }
 
   const streak = DB.currentStreak || 0;
@@ -4174,7 +4174,7 @@ function renderSimpleSetup() {
     else if (streak >= 3) streakPart = '🔥 ' + streak + '-day streak — keep it up!';
     else if (streak >= 1) streakPart = '🔥 ' + streak + '-day streak';
     let returnPart = '';
-    const name = DB.displayName || currentPlayer || '';
+    const name = capFirst(DB.displayName || currentPlayer || '');
     if (!lastPlayed)               returnPart = 'Welcome, ' + name + '! Ready for your first session?';
     else if (lastPlayed === today)  returnPart = 'Good to see you again, ' + name + '!';
     else if (lastPlayed === yesterday) returnPart = 'Welcome back, ' + name + '!';
@@ -6196,14 +6196,17 @@ async function hashPin(pin) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
+function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
 function confirmPlayer(key) {
   currentPlayer = key;
   localStorage.setItem('quizPlayerKey', key);
   document.getElementById('name-picker').style.display = 'none';
   const member = FAMILY_MEMBERS.find(m => m.key === key);
   if (member) {
-    document.getElementById('hdr-player').textContent =
-      member.emoji + ' ' + member.name + ' · multiple choice · fill the gap · smart repetition';
+    const el = document.getElementById('hdr-player');
+      el.textContent = member.emoji + ' ' + member.name;
+      el.style.display = '';
   }
   syncToFirebase(true);
   startFamilyPoll();
@@ -6315,7 +6318,7 @@ function showNamePicker() {
 function buildPayload(db) {
   const member = FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {};
   return {
-    displayName:    member.name  || currentPlayer,
+    displayName: member.name || capFirst(currentPlayer),
     emoji:          member.emoji || '👤',
     color:          member.color || '#888',
     updatedAt:      Date.now(),
@@ -6494,7 +6497,7 @@ function renderFamily(playersData) {
       }
       return `<div class="fa-player">
         <div class="fa-avatar ${ringClass}" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
-        <div class="fa-name">${(p.displayName||p.key).split(' ')[0]}</div>
+        <div class="fa-name">${capFirst((p.displayName||p.key).split(' ')[0])}</div>
         <div class="fa-when ${whenClass}">${whenText}</div>
       </div>`;
     }).join('');
@@ -6541,7 +6544,7 @@ function renderFamily(playersData) {
       <div class="player-header">
         <div class="player-avatar" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
         <div>
-          <div class="player-name">${p.displayName||p.key}${isMe?' <span style="font-size:.7rem;color:var(--accent)">(you)</span>':''}</div>
+          <div class="player-name">${capFirst(p.displayName||p.key)}${isMe?' <span style="font-size:.7rem;color:var(--accent)">(you)</span>':''}</div>
           <div class="player-last">Last: ${lastPlayed} · ${p.currentStreak||0} 🔥</div>
         </div>
         <div class="player-rank">${medals[i]||i+1}</div>
@@ -6649,7 +6652,7 @@ window.exportForAI = async function() {
       const neverSeenCount = ALL_QUESTIONS.filter(q=>q&&!seenIds.has(q.id)).length;
 
       report.players[key] = {
-        name: p.displayName||key,
+        name: capFirst(p.displayName||key),
         summary: {
           totalSessions:p.totalSessions||0, totalAnswered:p.totalAnswered||0,
           overallAccuracy:p.totalAnswered>0?Math.round(p.totalCorrect/p.totalAnswered*100)+'%':'0%',
