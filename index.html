@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260322-s70r5">
+  <meta name="app-version" content="v20260322-s70r7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -25,7 +25,7 @@
 /* ── BASE FONT SCALE ── */
 html{font-size:18px;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding:.6rem;
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;padding:.6rem;
   background-image:radial-gradient(ellipse at 20% 10%,rgba(247,201,72,.06) 0%,transparent 60%),
     radial-gradient(ellipse at 80% 90%,rgba(111,239,178,.05) 0%,transparent 60%);}
 .container{max-width:760px;margin:0 auto;}
@@ -130,11 +130,6 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
   font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);}
 .progress-bar-wrap{background:var(--surface);border-radius:20px;height:6px;margin-bottom:.75rem;overflow:hidden;}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:20px;transition:width .4s ease;}
-
-/* ── QUIZ SCREEN LAYOUT ── */
-#tab-quiz{display:flex;flex-direction:column;max-height:100dvh;max-height:calc(100vh - 60px);overflow:hidden;}
-#tab-quiz .question-card{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-#tab-quiz .nav{flex-shrink:0;}
 
 /* ── QUESTION CARD ── */
 .question-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.2rem 1.5rem;
@@ -838,7 +833,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r5</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r7</span></p>
 </header>
 
 <!-- TABS -->
@@ -978,12 +973,6 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
       <div id="articles-nudge-text" class="articles-nudge-text"></div>
     </div>
     <button class="articles-nudge-btn" onclick="practiceArticles()">Practice Articles</button>
-  </div>
-
-  <!-- U5: Badge shelf -->
-  <div id="badge-shelf" class="badge-shelf" style="display:none;">
-    <span class="badge-shelf-title">Badges</span>
-    <span id="badge-shelf-items"></span>
   </div>
 
   <div id="cat-progress-wrap" style="margin-bottom:1.5rem;">
@@ -4578,7 +4567,7 @@ function renderQ() {
     btn.onclick = () => answerInput();
     field.addEventListener('keydown', e => { if (e.key === 'Enter') answerInput(); });
     field.addEventListener('focus', () => {
-      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 300);
     });
     wrap.appendChild(field);
     wrap.appendChild(btn);
@@ -4620,7 +4609,7 @@ function renderQ() {
     tBtn.onclick = () => answerTransform();
     tField.addEventListener('keydown', e => { if (e.key === 'Enter') answerTransform(); });
     tField.addEventListener('focus', () => {
-      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 300);
     });
     tWrap.appendChild(tField); tWrap.appendChild(tBtn);
     optsEl.appendChild(tWrap);
@@ -4663,7 +4652,7 @@ function renderQ() {
     wfBtn.onclick = () => answerWordform();
     wfField.addEventListener('keydown', e => { if (e.key === 'Enter') answerWordform(); });
     wfField.addEventListener('focus', () => {
-      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 300);
     });
     wfWrap.appendChild(wfField); wfWrap.appendChild(wfBtn);
     optsEl.appendChild(wfWrap);
@@ -5531,8 +5520,6 @@ function renderStatsHero() {
   // [D] Articles intervention nudge
   renderArticlesNudge();
 
-  // U5: Badge shelf
-  renderBadgeShelf();
 }
 
 function heroAction() {
