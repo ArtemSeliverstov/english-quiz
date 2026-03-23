@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260322-s70r3">
+  <meta name="app-version" content="v20260322-s70r5">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -130,6 +130,11 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
   font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);}
 .progress-bar-wrap{background:var(--surface);border-radius:20px;height:6px;margin-bottom:.75rem;overflow:hidden;}
 .progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:20px;transition:width .4s ease;}
+
+/* ── QUIZ SCREEN LAYOUT ── */
+#tab-quiz{display:flex;flex-direction:column;max-height:100dvh;max-height:calc(100vh - 60px);overflow:hidden;}
+#tab-quiz .question-card{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+#tab-quiz .nav{flex-shrink:0;}
 
 /* ── QUESTION CARD ── */
 .question-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.2rem 1.5rem;
@@ -833,7 +838,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player">multiple choice · fill the gap · smart repetition</span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r5</span></p>
 </header>
 
 <!-- TABS -->
@@ -4573,7 +4578,7 @@ function renderQ() {
     btn.onclick = () => answerInput();
     field.addEventListener('keydown', e => { if (e.key === 'Enter') answerInput(); });
     field.addEventListener('focus', () => {
-      setTimeout(() => field.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
     });
     wrap.appendChild(field);
     wrap.appendChild(btn);
@@ -4615,7 +4620,7 @@ function renderQ() {
     tBtn.onclick = () => answerTransform();
     tField.addEventListener('keydown', e => { if (e.key === 'Enter') answerTransform(); });
     tField.addEventListener('focus', () => {
-      setTimeout(() => tField.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
     });
     tWrap.appendChild(tField); tWrap.appendChild(tBtn);
     optsEl.appendChild(tWrap);
@@ -4658,7 +4663,7 @@ function renderQ() {
     wfBtn.onclick = () => answerWordform();
     wfField.addEventListener('keydown', e => { if (e.key === 'Enter') answerWordform(); });
     wfField.addEventListener('focus', () => {
-      setTimeout(() => wfField.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+      setTimeout(() => { const card = document.getElementById('question-card'); if (card) card.scrollIntoView({behavior:'smooth',block:'start'}); }, 300);
     });
     wfWrap.appendChild(wfField); wfWrap.appendChild(wfBtn);
     optsEl.appendChild(wfWrap);
