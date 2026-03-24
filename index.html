@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260322-s70r8">
+  <meta name="app-version" content="v20260323-s71">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -800,6 +800,46 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
   .field label{font-size:.78rem;}
   .nav{margin-top:.8rem;}
 }
+
+/* ── EXERCISES TAB ── */
+.ex-subtabs{display:flex;gap:.4rem;margin-bottom:1rem;background:var(--surface);padding:.25rem;border-radius:9px;}
+.ex-subtab{flex:1;text-align:center;padding:.45rem;border:none;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;}
+.ex-subtab.active{background:var(--card);color:var(--text);}
+.ex-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem;}
+.ex-input{width:100%;padding:.6rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.ex-input:focus{border-color:var(--accent);}
+.ex-textarea{min-height:110px;font-family:'DM Mono',monospace;font-size:.75rem;resize:vertical;}
+select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a7a9be' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem;}
+.ex-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-bottom:1rem;}
+.ex-type-chip{padding:.5rem .3rem;border-radius:8px;border:2px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .2s;font-size:.7rem;font-weight:600;color:var(--muted);}
+.ex-type-chip:hover{border-color:rgba(247,201,72,.3);}
+.ex-type-chip.selected{border-color:var(--accent);background:rgba(247,201,72,.06);color:var(--accent);}
+.ex-chip-icon{font-size:.95rem;display:block;margin-bottom:.1rem;}
+.ex-mode-row{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;font-size:.75rem;color:var(--muted);}
+.ex-toggle{width:38px;height:20px;background:var(--surface);border-radius:10px;border:1px solid var(--border);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0;}
+.ex-toggle.on{background:rgba(247,201,72,.15);border-color:var(--accent);}
+.ex-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--muted);transition:all .2s;}
+.ex-toggle.on::after{left:20px;background:var(--accent);}
+.ex-save-btn{width:100%;padding:.75rem;border-radius:8px;border:none;background:var(--accent);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;margin-top:1rem;transition:all .2s;}
+.ex-save-btn:hover{background:#f5d76e;transform:translateY(-1px);}
+.ex-save-btn:active{transform:translateY(0);}
+.ex-save-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.ex-status{padding:.7rem .9rem;border-radius:8px;margin-top:.7rem;font-size:.8rem;font-weight:500;display:none;animation:fadeIn .3s ease;}
+.ex-status.success{display:block;background:rgba(111,239,178,.08);border:1px solid rgba(111,239,178,.2);color:var(--green);}
+.ex-status.error{display:block;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);color:var(--accent2);}
+.ex-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem;}
+.ex-stat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem;text-align:center;}
+.ex-stat-val{font-size:1.3rem;font-weight:700;font-family:'DM Mono',monospace;}
+.ex-stat-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:.15rem;}
+.ex-hist-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.75rem .9rem;margin-bottom:.55rem;}
+.ex-hc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;}
+.ex-hc-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.ex-hc-date{font-size:.65rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.ex-hc-mid{display:flex;gap:1rem;margin-bottom:.2rem;font-size:.72rem;color:var(--muted);}
+.ex-hc-mid strong{color:var(--text);font-family:'DM Mono',monospace;}
+.ex-hc-topic{font-size:.68rem;color:var(--muted);font-style:italic;}
+.ex-hc-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:.4rem;overflow:hidden;}
+.ex-hc-fill{height:100%;border-radius:2px;}
 </style>
 </head>
 <body>
@@ -833,7 +873,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260322-s70r8</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260323-s71</span></p>
 </header>
 
 <!-- TABS -->
@@ -841,6 +881,7 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
   <button class="tab active" onclick="showTab('setup')">🎯 Practice</button>
   <button class="tab" onclick="showTab('stats')">📊 Statistics</button>
   <button class="tab" onclick="showTab('family')">👨‍👩‍👧 Family</button>
+  <button class="tab" onclick="showTab('exercises')">📝 Exercises</button>
 </div>
 
 <!-- ══ SETUP SCREEN ══ -->
@@ -1069,6 +1110,105 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 
     <div id="family-list">
       <div style="color:var(--muted);font-size:.9rem;padding:1rem 0;text-align:center;">Loading players…</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ EXERCISES SCREEN ══ -->
+<div id="tab-exercises" class="hidden">
+  <div style="max-width:520px;margin:0 auto;">
+
+    <!-- Sub-tabs: Log / History -->
+    <div class="ex-subtabs">
+      <button class="ex-subtab active" onclick="exSubTab('log')">Log Exercise</button>
+      <button class="ex-subtab" onclick="exSubTab('history')">History</button>
+    </div>
+
+    <!-- ── LOG PANEL ── -->
+    <div id="ex-panel-log">
+
+      <!-- Exercise type chips -->
+      <div class="ex-label">Exercise Type</div>
+      <div class="ex-type-grid">
+        <div class="ex-type-chip" data-extype="transform" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">🔄</span>Transform
+        </div>
+        <div class="ex-type-chip" data-extype="error_correction" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">🔍</span>Error Corr.
+        </div>
+        <div class="ex-type-chip" data-extype="dictation" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">✍️</span>Dictation
+        </div>
+        <div class="ex-type-chip" data-extype="free_write" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">📝</span>Free Write
+        </div>
+        <div class="ex-type-chip" data-extype="conversation" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">💬</span>Conversation
+        </div>
+        <div class="ex-type-chip" data-extype="translation" onclick="exSelectType(this)">
+          <span class="ex-chip-icon">🇷🇺</span>Translation
+        </div>
+      </div>
+
+      <!-- Mode toggle -->
+      <div class="ex-mode-row">
+        <div class="ex-toggle" id="exModeToggle" onclick="exToggleMode()"></div>
+        <span class="ex-mode-label" id="exModeLabel">Manual entry</span>
+        <span style="margin-left:auto;font-size:.65rem;color:var(--muted);opacity:.7;">paste Claude JSON →</span>
+      </div>
+
+      <!-- Manual mode -->
+      <div id="ex-manual">
+        <div class="ex-label">Topic / Focus</div>
+        <input type="text" class="ex-input" id="exTopic" placeholder="e.g. phrasal verbs, articles, conditionals">
+
+        <div class="ex-label" style="margin-top:.8rem;">Level</div>
+        <select class="ex-input" id="exLevel">
+          <option value="B1">B1</option>
+          <option value="B2" selected>B2</option>
+          <option value="C1">C1</option>
+          <option value="mixed">Mixed</option>
+        </select>
+
+        <div style="display:flex;gap:.7rem;margin-top:.8rem;">
+          <div style="flex:1;">
+            <div class="ex-label">Correct</div>
+            <input type="number" class="ex-input" id="exCorrect" min="0" max="99" value="0">
+          </div>
+          <div style="flex:1;">
+            <div class="ex-label">Total</div>
+            <input type="number" class="ex-input" id="exTotal" min="1" max="99" value="8">
+          </div>
+          <div style="flex:1;">
+            <div class="ex-label">Minutes</div>
+            <input type="number" class="ex-input" id="exDuration" min="1" max="120" value="10">
+          </div>
+        </div>
+
+        <div class="ex-label" style="margin-top:.8rem;">Error Notes <span style="font-weight:400;opacity:.5;">(optional)</span></div>
+        <input type="text" class="ex-input" id="exErrors" placeholder="e.g. missed articles, confused look into / look up">
+      </div>
+
+      <!-- JSON mode -->
+      <div id="ex-json" style="display:none;">
+        <div class="ex-label">Paste Claude's JSON output</div>
+        <textarea class="ex-input ex-textarea" id="exJsonInput" placeholder='{"exercise":"transform","topic":"phrasal verbs","level":"B2","total":8,"correct":5,"errors":["missed: set up"]}'></textarea>
+        <div style="font-size:.65rem;color:var(--muted);margin-top:.3rem;">Claude generates this at the end of each exercise session.</div>
+      </div>
+
+      <button class="ex-save-btn" id="exSaveBtn" onclick="exSave()">💾 Save to Firebase</button>
+      <div id="exStatus" class="ex-status"></div>
+    </div>
+
+    <!-- ── HISTORY PANEL ── -->
+    <div id="ex-panel-history" style="display:none;">
+      <div class="ex-stats-grid" id="exStatsGrid">
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatTotal">—</div><div class="ex-stat-label">Sessions</div></div>
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatAvg">—</div><div class="ex-stat-label">Avg Score</div></div>
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatWeek">—</div><div class="ex-stat-label">This Week</div></div>
+      </div>
+      <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
     </div>
 
   </div>
@@ -3976,7 +4116,7 @@ function renderGreeting() {
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════
 function showTab(name) {
-  ['setup','stats','quiz','results','family'].forEach(t => {
+  ['setup','stats','quiz','results','family','exercises'].forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
   });
   if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
@@ -3985,6 +4125,7 @@ function showTab(name) {
   if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
   if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
   if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
+  if (name === 'exercises') { document.querySelectorAll('.tab')[3].classList.add('active'); exLoadHistory(); }
 }
 
 // ══════════════════════════════════════════════
@@ -5238,9 +5379,9 @@ function quickReplay() {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1828;
-  const LEVEL_TOTALS = { B1: 594, B2: 893, C1: 325, C2: 16 };
-  const CAT_TOTALS = { 'Adjectives': 26, 'Articles': 151, 'Collocations': 29, 'Comparisons': 30, 'Conditionals': 92, 'Emphasis': 16, 'Everyday English': 30, 'Gerunds & Infinitives': 165, 'Grammar': 238, 'Idioms': 20, 'Indirect Questions': 31, 'Linking Words': 76, 'Modal Verbs': 71, 'Passive Voice': 28, 'Phrasal Verbs': 170, 'Prepositions': 78, 'Question Formation': 33, 'Relative Clauses': 42, 'Reported Speech': 32, 'Tenses': 172, 'Used To': 16, 'Vocabulary': 180, 'Word Choice': 44, 'Word Formation': 40, 'Word Order': 18 };
+  const TOTAL = 1904;
+  const LEVEL_TOTALS = {'B1':597,'B2':962,'C1':329,'C2':16};
+  const CAT_TOTALS = {'Adjectives':26,'Articles':182,'Collocations':29,'Comparisons':30,'Conditionals':92,'Emphasis':18,'Everyday English':30,'Gerunds & Infinitives':165,'Grammar':238,'Idioms':35,'Indirect Questions':31,'Linking Words':81,'Modal Verbs':74,'Passive Voice':28,'Phrasal Verbs':170,'Prepositions':78,'Question Formation':36,'Relative Clauses':42,'Reported Speech':32,'Tenses':176,'Used To':19,'Vocabulary':186,'Word Choice':44,'Word Formation':40,'Word Order':22};
   // Proficiency thresholds: [seenFraction, minAccuracy, minSeen]
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -5902,7 +6043,7 @@ const FAMILY_MEMBERS = [
     pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
   { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff',
     pinHash: 'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730' },
-,{id:'aph01',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The company is in ___ middle of a major digital transformation.',opts:['the','a','—'],ans:0,exp:'In the middle of — fixed phrase. The middle is always used with the definite article in this structure: in the middle of something, in the middle of doing something. Never: in a middle of, in middle of.'}
+{id:'aph01',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The company is in ___ middle of a major digital transformation.',opts:['the','a','—'],ans:0,exp:'In the middle of — fixed phrase. The middle is always used with the definite article in this structure: in the middle of something, in the middle of doing something. Never: in a middle of, in middle of.'}
 ,{id:'aph02',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['We are in middle of restructuring.','We are in the middle of restructuring.','We are in a middle of restructuring.'],ans:1,exp:'In the middle of (no article before the second noun when it is a gerund/verb). The middle requires the. Never: in a middle, in middle. The same pattern: in the middle of negotiations, in the middle of a crisis.'}
 ,{id:'aph03',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The project is at ___ heart of our five-year strategy.',opts:['the','a','—'],ans:0,exp:'At the heart of — fixed phrase meaning at the most important or central part of. The heart always takes the here. Similar: at the core of, at the centre of, at the root of.'}
 ,{id:'aph04',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The industry is on ___ brink of collapse.',opts:['the','a','—'],ans:0,exp:'On the brink of — fixed phrase meaning very close to a critical point. Always the: on the brink of failure, on the brink of a breakthrough. Similar: on the verge of, on the edge of.'}
@@ -6432,7 +6573,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = { B1: 594, B2: 893, C1: 325, C2: 16 };
+  const LEVEL_TOTALS = {'B1':597,'B2':962,'C1':329,'C2':16};
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
@@ -6811,8 +6952,55 @@ function loadLocalPinOverride(key) {
 // ══════════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════════
+// ── EXERCISE DEEPLINK HANDLER (runs before name picker) ──
+(function() {
+  const exParam = new URLSearchParams(location.search).get('exlog');
+  if (!exParam) return;
+  window._exlogMode = true; // flag to suppress name picker
+  document.addEventListener('DOMContentLoaded', () => {
+    // Hide the entire app UI, show a clean save screen
+    document.querySelectorAll('.tabs, #tab-setup, #tab-stats, #tab-family, #tab-exercises').forEach(el => {
+      if (el) el.style.display = 'none';
+    });
+    try {
+      const json = decodeURIComponent(escape(atob(exParam)));
+      const data = JSON.parse(json);
+      const player = data._player;
+      if (!player) throw new Error('No player in link data');
+      delete data._player;
+      if (!data.date) data.date = new Date().toISOString().slice(0,10);
+      if (data.correct != null && data.total) data.score = +(data.correct / data.total).toFixed(3);
+      const ts = Date.now();
+      // Show saving indicator
+      exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
+      fetch(FB_DB_URL + '/' + player + '/exercises/' + ts + '.json', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(r => {
+        if (r.ok) {
+          const pct = Math.round((data.score||0)*100);
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+          // After 2s redirect to clean app
+          setTimeout(() => { location.href = location.pathname; }, 2500);
+        } else {
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '). Try again.', 'error');
+        }
+      }).catch(e => {
+        document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+        exDeeplinkToast('❌ ' + e.message, 'error');
+      });
+    } catch(e) {
+      exDeeplinkToast('❌ Bad link: ' + e.message, 'error');
+    }
+    history.replaceState(null, '', location.pathname);
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
-  if (!currentPlayer) {
+  if (!currentPlayer && !window._exlogMode) {
     setTimeout(showNamePicker, 600);
   } else {
     // Load any locally saved PIN override (from Change PIN)
@@ -6889,6 +7077,187 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('SW not registered (offline mode unavailable):', err.message));
   });
 }
+
+
+function exDeeplinkToast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'ex-deeplink-toast';
+  el.style.cssText = 'position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:9999;padding:.75rem 1.2rem;border-radius:10px;font-family:DM Sans,sans-serif;font-size:.85rem;font-weight:600;max-width:90%;text-align:center;animation:fadeIn .3s ease;';
+  el.style.background = type === 'success' ? 'rgba(111,239,178,.15)' : 'rgba(255,107,107,.15)';
+  el.style.border = '1px solid ' + (type === 'success' ? 'rgba(111,239,178,.3)' : 'rgba(255,107,107,.3)');
+  el.style.color = type === 'success' ? '#6fefb2' : '#ff6b6b';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .5s'; setTimeout(() => el.remove(), 500); }, 4000);
+}
+
+// ══════════════════════════════════════════════
+//  EXERCISE LOGGER
+// ══════════════════════════════════════════════
+const EX_TYPE_COLORS = {
+  transform:'#a78bfa', error_correction:'#ff6b6b', dictation:'#6fefb2',
+  free_write:'#f7c948', conversation:'#93c5fd', translation:'#fbbf24'
+};
+let exState = { type:null, jsonMode:false, allExercises:null };
+
+function exSubTab(which) {
+  document.querySelectorAll('.ex-subtab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('ex-panel-log').style.display = which === 'log' ? '' : 'none';
+  document.getElementById('ex-panel-history').style.display = which === 'history' ? '' : 'none';
+  if (which === 'history') exLoadHistory();
+}
+
+function exSelectType(el) {
+  document.querySelectorAll('.ex-type-chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  exState.type = el.dataset.extype;
+}
+
+function exToggleMode() {
+  exState.jsonMode = !exState.jsonMode;
+  document.getElementById('exModeToggle').classList.toggle('on', exState.jsonMode);
+  document.getElementById('exModeLabel').textContent = exState.jsonMode ? 'JSON paste' : 'Manual entry';
+  document.getElementById('ex-manual').style.display = exState.jsonMode ? 'none' : '';
+  document.getElementById('ex-json').style.display = exState.jsonMode ? '' : 'none';
+}
+
+function exShowStatus(msg, type) {
+  const el = document.getElementById('exStatus');
+  el.textContent = msg;
+  el.className = 'ex-status ' + type;
+}
+
+async function exSave() {
+  const statusEl = document.getElementById('exStatus');
+  statusEl.className = 'ex-status';
+  statusEl.style.display = 'none';
+
+  const player = window.currentPlayer;
+  if (!player) return exShowStatus('Log in as a player first (use the PIN screen)', 'error');
+
+  let data;
+  if (exState.jsonMode) {
+    const raw = document.getElementById('exJsonInput').value.trim();
+    if (!raw) return exShowStatus('Paste the JSON from Claude', 'error');
+    try {
+      const clean = raw.replace(/^```json?\s*/i, '').replace(/```\s*$/, '').trim();
+      data = JSON.parse(clean);
+    } catch(e) {
+      return exShowStatus('Invalid JSON: ' + e.message, 'error');
+    }
+    data.date = data.date || new Date().toISOString().slice(0,10);
+    data.score = (data.correct != null && data.total) ? +(data.correct / data.total).toFixed(3) : (data.score || 0);
+    if (!data.exercise) return exShowStatus('JSON missing "exercise" field', 'error');
+  } else {
+    if (!exState.type) return exShowStatus('Select an exercise type', 'error');
+    const total = parseInt(document.getElementById('exTotal').value) || 0;
+    const correct = parseInt(document.getElementById('exCorrect').value) || 0;
+    if (total < 1) return exShowStatus('Total must be at least 1', 'error');
+    if (correct > total) return exShowStatus('Correct cannot exceed Total', 'error');
+    const errText = document.getElementById('exErrors').value.trim();
+    data = {
+      date: new Date().toISOString().slice(0,10),
+      exercise: exState.type,
+      topic: document.getElementById('exTopic').value.trim() || 'general',
+      level: document.getElementById('exLevel').value,
+      total: total,
+      correct: correct,
+      score: +(correct / total).toFixed(3),
+      duration_min: parseInt(document.getElementById('exDuration').value) || null,
+      errors: errText ? errText.split(',').map(s => s.trim()).filter(Boolean) : []
+    };
+  }
+
+  const ts = Date.now();
+  const btn = document.getElementById('exSaveBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Saving...';
+
+  try {
+    const res = await fetch(FB_DB_URL + '/' + player + '/exercises/' + ts + '.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const pct = Math.round((data.score || 0) * 100);
+    exShowStatus('Saved! ' + capFirst(player) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+    if (exState.jsonMode) {
+      document.getElementById('exJsonInput').value = '';
+    } else {
+      document.getElementById('exTopic').value = '';
+      document.getElementById('exCorrect').value = '0';
+      document.getElementById('exErrors').value = '';
+    }
+    exState.allExercises = null; // force reload
+  } catch(e) {
+    exShowStatus('Firebase error: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Save to Firebase';
+  }
+}
+
+async function exLoadHistory() {
+  if (exState.allExercises) { exRenderHistory(); return; }
+  const list = document.getElementById('exHistoryList');
+  list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">⏳ Loading…</div>';
+
+  try {
+    const player = window.currentPlayer;
+    if (!player) { list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Log in first to see your history</div>'; return; }
+    const res = await fetch(FB_DB_URL + '/' + player + '/exercises.json');
+    const data = await res.json();
+    const items = [];
+    if (data) {
+      Object.entries(data).forEach(([ts, ex]) => {
+        items.push({ ...ex, player: player, timestamp: parseInt(ts) });
+      });
+    }
+    exState.allExercises = items;
+    exRenderHistory();
+  } catch(e) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Error: ' + e.message + '</div>';
+  }
+}
+
+function exRenderHistory() {
+  const items = (exState.allExercises || []).sort((a, b) => b.timestamp - a.timestamp);
+  const list = document.getElementById('exHistoryList');
+
+  // Stats
+  document.getElementById('exStatTotal').textContent = items.length || '—';
+  if (items.length > 0) {
+    const avg = items.reduce((s, e) => s + (e.score || 0), 0) / items.length;
+    document.getElementById('exStatAvg').textContent = Math.round(avg * 100) + '%';
+    const now = new Date(); const mon = new Date(now);
+    mon.setDate(now.getDate() - ((now.getDay() + 6) % 7)); mon.setHours(0,0,0,0);
+    const wk = items.filter(e => new Date(e.date) >= mon).length;
+    document.getElementById('exStatWeek').textContent = wk || '0';
+  } else {
+    document.getElementById('exStatAvg').textContent = '—';
+    document.getElementById('exStatWeek').textContent = '—';
+  }
+
+  if (items.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);"><div style="font-size:2rem;margin-bottom:.6rem;opacity:.5;">📭</div><div style="font-size:.82rem;">No exercises logged yet.<br>Do a Claude exercise and log it here!</div></div>';
+    return;
+  }
+
+  list.innerHTML = items.slice(0, 40).map(e => {
+    const pct = Math.round((e.score || 0) * 100);
+    const color = EX_TYPE_COLORS[e.exercise] || '#a7a9be';
+    const barColor = pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--accent)' : 'var(--accent2)';
+    return '<div class="ex-hist-card">' +
+      '<div class="ex-hc-top"><span class="ex-hc-type" style="color:' + color + '">' + (e.exercise||'').replace(/_/g,' ') + '</span><span class="ex-hc-date">' + (e.date||'—') + '</span></div>' +
+      '<div class="ex-hc-mid"><span><strong>' + pct + '%</strong> score</span><span><strong>' + (e.correct||0) + '</strong>/' + (e.total||0) + '</span>' + (e.level ? '<span>' + e.level + '</span>' : '') + (e.duration_min ? '<span>' + e.duration_min + ' min</span>' : '') + '</div>' +
+      (e.topic ? '<div class="ex-hc-topic">' + e.topic + '</div>' : '') +
+      '<div class="ex-hc-bar"><div class="ex-hc-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>' +
+    '</div>';
+  }).join('');
+}
+
 </script>
 </body>
 </html>
