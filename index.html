@@ -834,7 +834,8 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 .ex-hist-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.75rem .9rem;margin-bottom:.55rem;}
 .ex-hc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;}
 .ex-hc-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
-.ex-hc-date{font-size:.65rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.ex-hc-date{font-size:.65rem;color:var(--muted);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:.4rem;}
+.ex-del-btn{background:none;border:none;cursor:pointer;font-size:.7rem;opacity:.35;padding:2px 4px;transition:opacity .15s;}.ex-del-btn:hover{opacity:.8;}
 .ex-hc-mid{display:flex;gap:1rem;margin-bottom:.2rem;font-size:.72rem;color:var(--muted);}
 .ex-hc-mid strong{color:var(--text);font-family:'DM Mono',monospace;}
 .ex-hc-topic{font-size:.68rem;color:var(--muted);font-style:italic;}
@@ -6798,6 +6799,28 @@ window.exportForAI = async function() {
       });
       const neverSeenCount = ALL_QUESTIONS.filter(q=>q&&!seenIds.has(q.id)).length;
 
+      // ── Exercise history (from /players/{key}/exercises) ────────────────
+      const exerciseHistory = [];
+      const exData = p.exercises || {};
+      Object.entries(exData).forEach(([ts, ex]) => {
+        if (ex && typeof ex === 'object') {
+          exerciseHistory.push({
+            timestamp: +ts,
+            date: ex.date || new Date(+ts).toISOString().slice(0,10),
+            exercise: ex.exercise || '?',
+            topic: ex.topic || '?',
+            level: ex.level || '?',
+            total: ex.total || 0,
+            correct: ex.correct || 0,
+            score: ex.score || 0,
+            errors: ex.errors || [],
+            chat_url: ex.chat_url || null,
+            meta: ex.meta || null
+          });
+        }
+      });
+      exerciseHistory.sort((a,b) => b.timestamp - a.timestamp);
+
       report.players[key] = {
         name: capFirst(p.displayName||key),
         summary: {
@@ -6817,7 +6840,8 @@ window.exportForAI = async function() {
           date:new Date(s.date).toLocaleDateString('en-GB'),
           pct:typeof s.pct==='string'?s.pct:s.pct+'%',
           total:s.total||s.score||'?', mode:s.mode||'?'
-        }))
+        })),
+        exerciseHistory
       };
     }
     const blob = new Blob([JSON.stringify(report,null,2)],{type:'application/json'});
@@ -7263,13 +7287,30 @@ function exRenderHistory() {
     const pct = Math.round((e.score || 0) * 100);
     const color = EX_TYPE_COLORS[e.exercise] || '#a7a9be';
     const barColor = pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--accent)' : 'var(--accent2)';
-    return '<div class="ex-hist-card">' +
-      '<div class="ex-hc-top"><span class="ex-hc-type" style="color:' + color + '">' + (e.exercise||'').replace(/_/g,' ') + '</span><span class="ex-hc-date">' + (e.date||'—') + '</span></div>' +
+    return '<div class="ex-hist-card" id="excard-' + e.timestamp + '">' +
+      '<div class="ex-hc-top"><span class="ex-hc-type" style="color:' + color + '">' + (e.exercise||'').replace(/_/g,' ') + '</span><span class="ex-hc-date">' + (e.date||'—') + '<button class="ex-del-btn" onclick="exDeleteEntry(' + e.timestamp + ')" title="Delete">🗑</button></span></div>' +
       '<div class="ex-hc-mid"><span><strong>' + pct + '%</strong> score</span><span><strong>' + (e.correct||0) + '</strong>/' + (e.total||0) + '</span>' + (e.level ? '<span>' + e.level + '</span>' : '') + (e.duration_min ? '<span>' + e.duration_min + ' min</span>' : '') + '</div>' +
       (e.topic ? '<div class="ex-hc-topic">' + e.topic + '</div>' : '') +
       '<div class="ex-hc-bar"><div class="ex-hc-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>' +
     '</div>';
   }).join('');
+}
+
+async function exDeleteEntry(ts) {
+  if (!confirm('Delete this exercise entry?')) return;
+  const player = currentPlayer;
+  if (!player) return;
+  try {
+    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    // Remove from local cache and re-render
+    exState.allExercises = (exState.allExercises || []).filter(e => e.timestamp !== ts);
+    exRenderHistory();
+  } catch(e) {
+    alert('Delete failed: ' + e.message);
+  }
 }
 
 </script>
