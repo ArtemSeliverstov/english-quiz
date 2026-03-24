@@ -7145,7 +7145,7 @@ async function exSave() {
   statusEl.className = 'ex-status';
   statusEl.style.display = 'none';
 
-  const player = window.currentPlayer;
+  const player = currentPlayer;
   if (!player) return exShowStatus('Log in as a player first (use the PIN screen)', 'error');
 
   let data;
@@ -7219,7 +7219,7 @@ async function exLoadHistory() {
   list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">⏳ Loading…</div>';
 
   try {
-    const player = window.currentPlayer;
+    const player = currentPlayer;
     if (!player) { list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Log in first to see your history</div>'; return; }
     const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises.json');
     const data = await res.json();
