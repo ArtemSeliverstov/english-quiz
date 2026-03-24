@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260323-s71">
+  <meta name="app-version" content="v20260324-s72">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -873,7 +873,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260323-s71</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260324-s72</span></p>
 </header>
 
 <!-- TABS -->
@@ -6973,7 +6973,7 @@ function loadLocalPinOverride(key) {
       const ts = Date.now();
       // Show saving indicator
       exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
-      fetch(FB_DB_URL + '/' + player + '/exercises/' + ts + '.json', {
+      fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -7175,7 +7175,7 @@ async function exSave() {
   btn.textContent = '⏳ Saving...';
 
   try {
-    const res = await fetch(FB_DB_URL + '/' + player + '/exercises/' + ts + '.json', {
+    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -7207,7 +7207,7 @@ async function exLoadHistory() {
   try {
     const player = window.currentPlayer;
     if (!player) { list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Log in first to see your history</div>'; return; }
-    const res = await fetch(FB_DB_URL + '/' + player + '/exercises.json');
+    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises.json');
     const data = await res.json();
     const items = [];
     if (data) {
