@@ -6497,7 +6497,13 @@ async function syncToFirebase(immediate = false) {
         console.log('Sync skipped — local data is empty');
         return;
       }
-      await fbSet('players/' + currentPlayer, buildPayload(db));
+      // Use PATCH instead of PUT to preserve exercises node
+      const r = await fetch(`${FB_DB_URL}/players/${currentPlayer}.json`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(buildPayload(db))
+      });
+      if (!r.ok) throw new Error('sync failed: ' + r.status);
       setFbStatus('online', '✅ Synced with server');
     } catch(e) {
       setFbStatus('offline', '⚠️ Offline — progress saved locally');
@@ -6973,11 +6979,13 @@ function loadLocalPinOverride(key) {
       const ts = Date.now();
       // Show saving indicator
       exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
-      fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
-        method: 'PUT',
+      const patchData = {};
+      patchData['exercises/' + ts] = data;
+      fetch(FB_DB_URL + '/players/' + player + '.json', {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }).then(r => {
+        body: JSON.stringify(patchData)
+      }).then(async r => {
         if (r.ok) {
           const pct = Math.round((data.score||0)*100);
           document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
@@ -6985,8 +6993,9 @@ function loadLocalPinOverride(key) {
           // After 2s redirect to clean app
           setTimeout(() => { location.href = location.pathname; }, 2500);
         } else {
+          const body = await r.text().catch(() => '');
           document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '). Try again.', 'error');
+          exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '): ' + body.slice(0, 120), 'error');
         }
       }).catch(e => {
         document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
@@ -7006,8 +7015,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load any locally saved PIN override (from Change PIN)
     loadLocalPinOverride(currentPlayer);
     const member = FAMILY_MEMBERS.find(m => m.key === currentPlayer);
-    if (member) document.getElementById('hdr-player').textContent =
-      member.emoji + ' ' + member.name + ' · multiple choice · fill the gap · smart repetition';
+    if (member) {
+      const hpEl = document.getElementById('hdr-player');
+      hpEl.textContent = member.emoji + ' ' + member.name;
+      hpEl.style.display = '';
+    }
     setFbStatus('loading', '⏳ Loading your progress from server…');
     loadFromFirebase().then(loaded => {
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
@@ -7175,10 +7187,12 @@ async function exSave() {
   btn.textContent = '⏳ Saving...';
 
   try {
-    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
-      method: 'PUT',
+    const patchData = {};
+    patchData['exercises/' + ts] = data;
+    const res = await fetch(FB_DB_URL + '/players/' + player + '.json', {
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(patchData)
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const pct = Math.round((data.score || 0) * 100);
