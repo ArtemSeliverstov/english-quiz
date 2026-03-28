@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260324-s72">
+  <meta name="app-version" content="v20260328-s75">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -802,9 +802,15 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 }
 
 /* ── EXERCISES TAB ── */
-.ex-subtabs{display:flex;gap:.4rem;margin-bottom:1rem;background:var(--surface);padding:.25rem;border-radius:9px;}
-.ex-subtab{flex:1;text-align:center;padding:.45rem;border:none;border-radius:7px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;}
-.ex-subtab.active{background:var(--card);color:var(--text);}
+.ex-week-plan{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;margin-bottom:1rem;}
+.ex-wp-title{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem;}
+.ex-wp-days{display:flex;gap:.35rem;justify-content:space-between;}
+.ex-wp-day{flex:1;text-align:center;padding:.35rem .1rem;border-radius:6px;background:var(--card);border:1px solid var(--border);min-width:0;}
+.ex-wp-day.today{border-color:var(--accent);background:rgba(247,201,72,.06);}
+.ex-wp-day-name{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.2rem;}
+.ex-wp-day.today .ex-wp-day-name{color:var(--accent);}
+.ex-wp-day-status{font-size:.85rem;line-height:1;}
+.ex-wp-noplan{font-size:.75rem;color:var(--muted);text-align:center;padding:.3rem 0;font-style:italic;}
 .ex-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem;}
 .ex-input{width:100%;padding:.6rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;-webkit-appearance:none;}
 .ex-input:focus{border-color:var(--accent);}
@@ -874,7 +880,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260324-s72</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260328-s75</span></p>
 </header>
 
 <!-- TABS -->
@@ -1120,97 +1126,18 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 <div id="tab-exercises" class="hidden">
   <div style="max-width:520px;margin:0 auto;">
 
-    <!-- Sub-tabs: Log / History -->
-    <div class="ex-subtabs">
-      <button class="ex-subtab active" onclick="exSubTab('log')">Log Exercise</button>
-      <button class="ex-subtab" onclick="exSubTab('history')">History</button>
+    <!-- ── STATS ROW ── -->
+    <div class="ex-stats-grid" id="exStatsGrid">
+      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatTotal">—</div><div class="ex-stat-label">Sessions</div></div>
+      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatAvg">—</div><div class="ex-stat-label">Avg Score</div></div>
+      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatWeek">—</div><div class="ex-stat-label">This Week</div></div>
     </div>
 
-    <!-- ── LOG PANEL ── -->
-    <div id="ex-panel-log">
+    <!-- ── WEEKLY PLAN STRIP ── -->
+    <div id="exWeeklyPlan" class="ex-week-plan"></div>
 
-      <!-- Exercise type chips -->
-      <div class="ex-label">Exercise Type</div>
-      <div class="ex-type-grid">
-        <div class="ex-type-chip" data-extype="transform" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">🔄</span>Transform
-        </div>
-        <div class="ex-type-chip" data-extype="error_correction" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">🔍</span>Error Corr.
-        </div>
-        <div class="ex-type-chip" data-extype="dictation" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">✍️</span>Dictation
-        </div>
-        <div class="ex-type-chip" data-extype="free_write" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">📝</span>Free Write
-        </div>
-        <div class="ex-type-chip" data-extype="conversation" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">💬</span>Conversation
-        </div>
-        <div class="ex-type-chip" data-extype="translation" onclick="exSelectType(this)">
-          <span class="ex-chip-icon">🇷🇺</span>Translation
-        </div>
-      </div>
-
-      <!-- Mode toggle -->
-      <div class="ex-mode-row">
-        <div class="ex-toggle" id="exModeToggle" onclick="exToggleMode()"></div>
-        <span class="ex-mode-label" id="exModeLabel">Manual entry</span>
-        <span style="margin-left:auto;font-size:.65rem;color:var(--muted);opacity:.7;">paste Claude JSON →</span>
-      </div>
-
-      <!-- Manual mode -->
-      <div id="ex-manual">
-        <div class="ex-label">Topic / Focus</div>
-        <input type="text" class="ex-input" id="exTopic" placeholder="e.g. phrasal verbs, articles, conditionals">
-
-        <div class="ex-label" style="margin-top:.8rem;">Level</div>
-        <select class="ex-input" id="exLevel">
-          <option value="B1">B1</option>
-          <option value="B2" selected>B2</option>
-          <option value="C1">C1</option>
-          <option value="mixed">Mixed</option>
-        </select>
-
-        <div style="display:flex;gap:.7rem;margin-top:.8rem;">
-          <div style="flex:1;">
-            <div class="ex-label">Correct</div>
-            <input type="number" class="ex-input" id="exCorrect" min="0" max="99" value="0">
-          </div>
-          <div style="flex:1;">
-            <div class="ex-label">Total</div>
-            <input type="number" class="ex-input" id="exTotal" min="1" max="99" value="8">
-          </div>
-          <div style="flex:1;">
-            <div class="ex-label">Minutes</div>
-            <input type="number" class="ex-input" id="exDuration" min="1" max="120" value="10">
-          </div>
-        </div>
-
-        <div class="ex-label" style="margin-top:.8rem;">Error Notes <span style="font-weight:400;opacity:.5;">(optional)</span></div>
-        <input type="text" class="ex-input" id="exErrors" placeholder="e.g. missed articles, confused look into / look up">
-      </div>
-
-      <!-- JSON mode -->
-      <div id="ex-json" style="display:none;">
-        <div class="ex-label">Paste Claude's JSON output</div>
-        <textarea class="ex-input ex-textarea" id="exJsonInput" placeholder='{"exercise":"transform","topic":"phrasal verbs","level":"B2","total":8,"correct":5,"errors":["missed: set up"]}'></textarea>
-        <div style="font-size:.65rem;color:var(--muted);margin-top:.3rem;">Claude generates this at the end of each exercise session.</div>
-      </div>
-
-      <button class="ex-save-btn" id="exSaveBtn" onclick="exSave()">💾 Save to Firebase</button>
-      <div id="exStatus" class="ex-status"></div>
-    </div>
-
-    <!-- ── HISTORY PANEL ── -->
-    <div id="ex-panel-history" style="display:none;">
-      <div class="ex-stats-grid" id="exStatsGrid">
-        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatTotal">—</div><div class="ex-stat-label">Sessions</div></div>
-        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatAvg">—</div><div class="ex-stat-label">Avg Score</div></div>
-        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatWeek">—</div><div class="ex-stat-label">This Week</div></div>
-      </div>
-      <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
-    </div>
+    <!-- ── HISTORY ── -->
+    <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
 
   </div>
 </div>
@@ -6687,6 +6614,32 @@ function renderFamily(playersData) {
       return `<div class="spark-bar" style="height:${h}px;background:${col}" title="${s.pct}%"></div>`;
     }).join('');
     const cardId = 'fam-detail-' + p.key;
+    // ── Exercise stats for family card ──
+    const exEntries = [];
+    const exData = p.exercises || {};
+    Object.entries(exData).forEach(([ts, ex]) => {
+      if (ex && typeof ex === 'object') exEntries.push({ ...ex, timestamp: +ts });
+    });
+    exEntries.sort((a,b) => b.timestamp - a.timestamp);
+    const exCount = exEntries.length;
+    const exAvg = exCount > 0 ? Math.round(exEntries.reduce((s,e) => s + (e.score||0), 0) / exCount * 100) : null;
+    const lastExTs = exEntries[0] ? exEntries[0].timestamp : null;
+    let lastExText = 'Never', lastExColor = 'var(--muted)';
+    if (lastExTs) {
+      const daysAgo = Math.round((Date.now() - lastExTs) / 86400000);
+      if (daysAgo === 0) { lastExText = 'Today'; lastExColor = 'var(--green)'; }
+      else if (daysAgo <= 2) { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--text)'; }
+      else if (daysAgo <= 5) { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--accent)'; }
+      else { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--accent2)'; }
+    }
+    const exDetailHTML = exEntries.slice(0,3).map(e => {
+      const pct = Math.round((e.score||0)*100);
+      const col = pct>=75?'var(--green)':pct>=50?'var(--accent)':'var(--accent2)';
+      return '<div style="display:flex;justify-content:space-between;align-items:center;font-size:.72rem;padding:.2rem 0;">' +
+        '<span style="color:' + (EX_TYPE_COLORS[e.exercise]||'#a7a9be') + ';font-weight:600;text-transform:uppercase;font-size:.6rem;">' + (e.exercise||'').replace(/_/g,' ') + '</span>' +
+        '<span style="color:' + col + ';font-weight:700;">' + pct + '%</span>' +
+        '<span style="color:var(--muted);font-size:.6rem;">' + (e.date||'').slice(5) + '</span></div>';
+    }).join('');
     return `
     <div class="player-card${isMe?' me':''}">
       <div class="player-header">
@@ -6702,6 +6655,11 @@ function renderFamily(playersData) {
         <div class="ps-box"><div class="ps-num">${p.totalSessions||0}</div><div class="ps-lbl">Sessions</div></div>
         <div class="ps-box"><div class="ps-num" style="color:var(--b1)">${weeklyScore !== null ? weeklyScore + '%' : '—'}</div><div class="ps-lbl">This week</div></div>
       </div>
+      ${exCount > 0 ? `<div class="player-stats" style="grid-template-columns:repeat(3,1fr);margin-top:.3rem;">
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;">${exCount}</div><div class="ps-lbl">📝 Exercises</div></div>
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${exAvg>=70?'var(--green)':exAvg>=50?'var(--accent)':'var(--accent2)'}">${exAvg}%</div><div class="ps-lbl">Ex. Avg</div></div>
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${lastExColor}">${lastExText}</div><div class="ps-lbl">Last Ex.</div></div>
+      </div>` : ''}
       <div class="player-cats">
         ${bestCat ?`<span class="cat-pill best">💪 ${bestCat}</span>`:''}
         ${worstCat?`<span class="cat-pill worst">📖 ${worstCat}</span>`:''}
@@ -6725,6 +6683,7 @@ function renderFamily(playersData) {
       <div id="${cardId}" style="display:none;">
         ${sparkBars?`<div class="sparkline">${sparkBars}</div>`:''}
         <div class="player-coverage">${playerCoverageHTML(p)}</div>
+        ${exDetailHTML ? '<div style="margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);"><div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.3rem;">Recent exercises</div>' + exDetailHTML + '</div>' : ''}
       </div>
     </div>`;
   }).join('');
@@ -6828,6 +6787,7 @@ window.exportForAI = async function() {
           overallAccuracy:p.totalAnswered>0?Math.round(p.totalCorrect/p.totalAnswered*100)+'%':'0%',
           currentStreak:p.currentStreak||0, longestStreak:p.longestStreak||0,
           lastPlayedDate:p.lastPlayedDate||null,
+          lastExerciseDate: (() => { const ex = p.exercises||{}; const ts = Object.keys(ex).map(Number).sort((a,b)=>b-a); return ts.length > 0 ? new Date(ts[0]).toISOString().slice(0,10) : null; })(),
           uniqueQsSeen:seenIds.size, neverSeenCount,
           trend
         },
@@ -7003,27 +6963,58 @@ function loadLocalPinOverride(key) {
       const ts = Date.now();
       // Show saving indicator
       exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
-      const patchData = {};
-      patchData['exercises/' + ts] = data;
-      fetch(FB_DB_URL + '/players/' + player + '.json', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(patchData)
-      }).then(async r => {
-        if (r.ok) {
-          const pct = Math.round((data.score||0)*100);
+      // Check for duplicate before saving
+      fetch(FB_DB_URL + '/players/' + player + '/exercises.json').then(r => r.json()).then(existing => {
+        const isDup = existing && Object.values(existing).some(ex =>
+          ex && ex.date === data.date && ex.exercise === data.exercise &&
+          ex.topic === data.topic && ex.score === data.score
+        );
+        if (isDup) {
           document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-          // After 2s redirect to clean app
-          setTimeout(() => { location.href = location.pathname; }, 2500);
-        } else {
-          const body = await r.text().catch(() => '');
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '): ' + body.slice(0, 120), 'error');
+          exDeeplinkToast('⚠️ Duplicate detected (same date/exercise/topic/score). Not saved.', 'error');
+          setTimeout(() => { location.href = location.pathname; }, 3500);
+          return;
         }
+        const patchData = {};
+        patchData['exercises/' + ts] = data;
+        fetch(FB_DB_URL + '/players/' + player + '.json', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(patchData)
+        }).then(async r => {
+          if (r.ok) {
+            const pct = Math.round((data.score||0)*100);
+            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+            exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+            setTimeout(() => { location.href = location.pathname; }, 2500);
+          } else {
+            const body = await r.text().catch(() => '');
+            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+            exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '): ' + body.slice(0, 120), 'error');
+          }
+        }).catch(e => {
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('❌ ' + e.message, 'error');
+        });
       }).catch(e => {
-        document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-        exDeeplinkToast('❌ ' + e.message, 'error');
+        // If dupe-check fetch fails, save anyway
+        const patchData = {};
+        patchData['exercises/' + ts] = data;
+        fetch(FB_DB_URL + '/players/' + player + '.json', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(patchData)
+        }).then(async r => {
+          if (r.ok) {
+            const pct = Math.round((data.score||0)*100);
+            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+            exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+            setTimeout(() => { location.href = location.pathname; }, 2500);
+          } else {
+            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+            exDeeplinkToast('❌ Save failed', 'error');
+          }
+        });
       });
     } catch(e) {
       exDeeplinkToast('❌ Bad link: ' + e.message, 'error');
@@ -7134,112 +7125,66 @@ const EX_TYPE_COLORS = {
   transform:'#a78bfa', error_correction:'#ff6b6b', dictation:'#6fefb2',
   free_write:'#f7c948', conversation:'#93c5fd', translation:'#fbbf24'
 };
-let exState = { type:null, jsonMode:false, allExercises:null };
+let exState = { allExercises:null };
 
-function exSubTab(which) {
-  document.querySelectorAll('.ex-subtab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('ex-panel-log').style.display = which === 'log' ? '' : 'none';
-  document.getElementById('ex-panel-history').style.display = which === 'history' ? '' : 'none';
-  if (which === 'history') exLoadHistory();
-}
+// Weekly exercise schedule per player (from exercises guide)
+const EX_WEEKLY_PLANS = {
+  artem:  {mon:2,tue:2,wed:2,thu:2,fri:1,sat:0,sun:0},
+  anna:   {mon:1,tue:0,wed:2,thu:0,fri:1,sat:0,sun:0},
+  nicole: {mon:2,tue:1,wed:0,thu:2,fri:0,sat:1,sun:0},
+  ernest: {mon:0,tue:1,wed:0,thu:1,fri:0,sat:1,sun:0},
+  egor:   null
+};
+const DAY_NAMES = ['mon','tue','wed','thu','fri','sat','sun'];
+const DAY_LABELS = ['M','T','W','T','F','S','S'];
 
-function exSelectType(el) {
-  document.querySelectorAll('.ex-type-chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  exState.type = el.dataset.extype;
-}
-
-function exToggleMode() {
-  exState.jsonMode = !exState.jsonMode;
-  document.getElementById('exModeToggle').classList.toggle('on', exState.jsonMode);
-  document.getElementById('exModeLabel').textContent = exState.jsonMode ? 'JSON paste' : 'Manual entry';
-  document.getElementById('ex-manual').style.display = exState.jsonMode ? 'none' : '';
-  document.getElementById('ex-json').style.display = exState.jsonMode ? '' : 'none';
-}
-
-function exShowStatus(msg, type) {
-  const el = document.getElementById('exStatus');
-  el.textContent = msg;
-  el.className = 'ex-status ' + type;
-}
-
-async function exSave() {
-  const statusEl = document.getElementById('exStatus');
-  statusEl.className = 'ex-status';
-  statusEl.style.display = 'none';
-
+function exRenderWeeklyPlan() {
+  const el = document.getElementById('exWeeklyPlan');
+  if (!el) return;
   const player = currentPlayer;
-  if (!player) return exShowStatus('Log in as a player first (use the PIN screen)', 'error');
-
-  let data;
-  if (exState.jsonMode) {
-    const raw = document.getElementById('exJsonInput').value.trim();
-    if (!raw) return exShowStatus('Paste the JSON from Claude', 'error');
-    try {
-      const clean = raw.replace(/^```json?\s*/i, '').replace(/```\s*$/, '').trim();
-      data = JSON.parse(clean);
-    } catch(e) {
-      return exShowStatus('Invalid JSON: ' + e.message, 'error');
-    }
-    data.date = data.date || new Date().toISOString().slice(0,10);
-    data.score = (data.correct != null && data.total) ? +(data.correct / data.total).toFixed(3) : (data.score || 0);
-    if (!data.exercise) return exShowStatus('JSON missing "exercise" field', 'error');
-  } else {
-    if (!exState.type) return exShowStatus('Select an exercise type', 'error');
-    const total = parseInt(document.getElementById('exTotal').value) || 0;
-    const correct = parseInt(document.getElementById('exCorrect').value) || 0;
-    if (total < 1) return exShowStatus('Total must be at least 1', 'error');
-    if (correct > total) return exShowStatus('Correct cannot exceed Total', 'error');
-    const errText = document.getElementById('exErrors').value.trim();
-    data = {
-      date: new Date().toISOString().slice(0,10),
-      exercise: exState.type,
-      topic: document.getElementById('exTopic').value.trim() || 'general',
-      level: document.getElementById('exLevel').value,
-      total: total,
-      correct: correct,
-      score: +(correct / total).toFixed(3),
-      duration_min: parseInt(document.getElementById('exDuration').value) || null,
-      errors: errText ? errText.split(',').map(s => s.trim()).filter(Boolean) : []
-    };
+  const plan = player ? EX_WEEKLY_PLANS[player] : null;
+  if (!plan) {
+    el.innerHTML = player
+      ? '<div class="ex-wp-noplan">No fixed exercise schedule</div>'
+      : '<div class="ex-wp-noplan">Log in to see your exercise plan</div>';
+    return;
   }
-
-  const ts = Date.now();
-  const btn = document.getElementById('exSaveBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Saving...';
-
-  try {
-    const patchData = {};
-    patchData['exercises/' + ts] = data;
-    const res = await fetch(FB_DB_URL + '/players/' + player + '.json', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(patchData)
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const pct = Math.round((data.score || 0) * 100);
-    exShowStatus('Saved! ' + capFirst(player) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-    if (exState.jsonMode) {
-      document.getElementById('exJsonInput').value = '';
-    } else {
-      document.getElementById('exTopic').value = '';
-      document.getElementById('exCorrect').value = '0';
-      document.getElementById('exErrors').value = '';
+  const now = new Date();
+  const todayIdx = (now.getDay() + 6) % 7; // 0=Mon
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - todayIdx); weekStart.setHours(0,0,0,0);
+  // Count exercises done per day this week
+  const doneCounts = {};
+  (exState.allExercises || []).forEach(e => {
+    const d = new Date(e.date || e.timestamp);
+    if (d >= weekStart) {
+      const di = (d.getDay() + 6) % 7;
+      doneCounts[DAY_NAMES[di]] = (doneCounts[DAY_NAMES[di]] || 0) + 1;
     }
-    exState.allExercises = null; // force reload
-  } catch(e) {
-    exShowStatus('Firebase error: ' + e.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '💾 Save to Firebase';
-  }
+  });
+  let html = '<div class="ex-wp-title">This week\'s plan</div><div class="ex-wp-days">';
+  DAY_NAMES.forEach((day, i) => {
+    const target = plan[day] || 0;
+    const done = doneCounts[day] || 0;
+    const isToday = i === todayIdx;
+    const isPast = i < todayIdx;
+    let status = '';
+    if (target === 0) { status = '·'; }
+    else if (done >= target) { status = '✅'; }
+    else if (isToday) { status = '🔵'; }
+    else if (isPast) { status = '❌'; }
+    else { status = '○'; }
+    html += '<div class="ex-wp-day' + (isToday ? ' today' : '') + '">' +
+      '<div class="ex-wp-day-name">' + DAY_LABELS[i] + '</div>' +
+      '<div class="ex-wp-day-status">' + status + '</div></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
 }
 
 async function exLoadHistory() {
-  if (exState.allExercises) { exRenderHistory(); return; }
   const list = document.getElementById('exHistoryList');
+  if (!list) return;
+  if (exState.allExercises) { exRenderWeeklyPlan(); exRenderHistory(); return; }
   list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">⏳ Loading…</div>';
 
   try {
@@ -7254,6 +7199,7 @@ async function exLoadHistory() {
       });
     }
     exState.allExercises = items;
+    exRenderWeeklyPlan();
     exRenderHistory();
   } catch(e) {
     list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Error: ' + e.message + '</div>';
@@ -7279,7 +7225,7 @@ function exRenderHistory() {
   }
 
   if (items.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);"><div style="font-size:2rem;margin-bottom:.6rem;opacity:.5;">📭</div><div style="font-size:.82rem;">No exercises logged yet.<br>Do a Claude exercise and log it here!</div></div>';
+    list.innerHTML = '<div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);"><div style="font-size:2rem;margin-bottom:.6rem;opacity:.5;">📭</div><div style="font-size:.82rem;">No exercises logged yet.<br>Do a Claude exercise — results save automatically via deeplink!</div></div>';
     return;
   }
 
@@ -7305,8 +7251,8 @@ async function exDeleteEntry(ts) {
       method: 'DELETE'
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    // Remove from local cache and re-render
     exState.allExercises = (exState.allExercises || []).filter(e => e.timestamp !== ts);
+    exRenderWeeklyPlan();
     exRenderHistory();
   } catch(e) {
     alert('Delete failed: ' + e.message);
