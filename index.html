@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260328-s75">
+  <meta name="app-version" content="v20260328-s76">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -804,12 +804,17 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 /* ── EXERCISES TAB ── */
 .ex-week-plan{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;margin-bottom:1rem;}
 .ex-wp-title{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem;}
-.ex-wp-days{display:flex;gap:.35rem;justify-content:space-between;}
-.ex-wp-day{flex:1;text-align:center;padding:.35rem .1rem;border-radius:6px;background:var(--card);border:1px solid var(--border);min-width:0;}
-.ex-wp-day.today{border-color:var(--accent);background:rgba(247,201,72,.06);}
-.ex-wp-day-name{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.2rem;}
-.ex-wp-day.today .ex-wp-day-name{color:var(--accent);}
-.ex-wp-day-status{font-size:.85rem;line-height:1;}
+.ex-wp-bar-wrap{height:6px;background:var(--card);border-radius:3px;overflow:hidden;margin-bottom:.35rem;border:1px solid var(--border);}
+.ex-wp-bar{height:100%;border-radius:3px;transition:width .4s ease;}
+.ex-wp-count{font-size:.75rem;font-weight:600;color:var(--text);margin-bottom:.5rem;text-align:center;}
+.ex-wp-slots{display:flex;flex-direction:column;gap:.25rem;}
+.ex-wp-slot{font-size:.7rem;color:var(--muted);padding:.25rem .5rem;border-radius:4px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;gap:.3rem;}
+.ex-wp-slot.done{opacity:.55;text-decoration:line-through;}
+.ex-wp-slot.ex-slot-high{border-left:2px solid var(--red);}
+.ex-wp-slot.ex-slot-med{border-left:2px solid var(--accent);}
+.ex-slot-type{font-weight:600;color:var(--text);text-transform:capitalize;}
+.ex-slot-topic{color:var(--muted);}
+.ex-wp-bonus{font-size:.7rem;color:var(--green);padding:.4rem .5rem;margin-top:.3rem;text-align:center;border-radius:4px;background:rgba(52,211,153,.06);}
 .ex-wp-noplan{font-size:.75rem;color:var(--muted);text-align:center;padding:.3rem 0;font-style:italic;}
 .ex-label{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem;}
 .ex-input{width:100%;padding:.6rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;-webkit-appearance:none;}
@@ -880,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260328-s75</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260328-s76</span></p>
 </header>
 
 <!-- TABS -->
@@ -3840,7 +3845,205 @@ exp:'<strong>A</strong> — classifying use: introduces the noun into a category
 {id:'wf_38',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'SUSTAIN',q:'The company is committed to ___ growth over short-term profits.',ans:'sustainable',hint:'adjective (1 word)',exp:'<strong>Sustain → sustainable</strong> (verb → adjective, <em>-able</em> suffix). Core ESG vocabulary. Also: <em>sustainability</em> (noun), <em>unsustainable</em> (negative).'},
 {id:'wf_39',type:'wordform',lvl:'C1',biz:false,cat:'Word Formation',base:'ENTHUSIASTIC',q:'She spoke about the project with great ___.',ans:'enthusiasm',hint:'noun (1 word)',exp:'<strong>Enthusiastic → enthusiasm</strong> (adjective → noun). Irregular: not <em>enthusiasticism</em>. Also: <em>enthusiast</em> (person), <em>enthusiastically</em> (adverb).'},
 {id:'wf_40',type:'wordform',lvl:'C1',biz:true,cat:'Word Formation',base:'REVENUE',q:'The company needs to ___ its income streams to reduce risk.',ans:'diversify',hint:'verb: make more varied (1 word)',exp:'<strong>Context clue:</strong> <em>income streams</em> + <em>reduce risk</em> = diversification strategy. <em>Diversify</em> (verb) from the concept of revenue variety. Note: the base word REVENUE is a context anchor — the answer comes from the business domain, not direct derivation.'},
-];
+{id:'voc70', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
+ q:'The company\'s new strategy proved to be very ___ (adjective: producing the desired result). (1 word)',
+ ans:'effective', hint:'adjective: producing the intended result (1 word)',
+ exp:'<strong>Effective</strong> = achieving the intended result. ✗ <em>efficient</em> means producing results without wasting resources — the distinction: efficient is about process, effective is about outcome. <em>The plan was effective (it worked) but not efficient (it took too long).</em>'},
+{id:'voc71', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
+ q:'She found it hard to ___ her laughter during the serious meeting. (verb: to hold back a feeling) (1 word)',
+ ans:'suppress', hint:'verb: to hold back or stop something from being expressed (1 word)',
+ exp:'<strong>Suppress</strong> = deliberately prevent something from being shown. ✗ <em>repress</em> is more psychological (unconscious); suppress is a conscious act. ✗ <em>express</em> is the opposite. Common in formal and academic English.'},
+{id:'voc72', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
+ q:'The politician\'s speech was deliberately ___ (adjective: unclear, open to more than one meaning). (1 word)',
+ ans:'ambiguous', hint:'adjective: having two or more possible meanings (1 word)',
+ exp:'<strong>Ambiguous</strong> = open to multiple interpretations. ✗ <em>vague</em> means generally unclear; ambiguous specifically means two or more meanings are possible. Common in law, politics, academic writing: <em>The contract clause was ambiguous.</em>'},
+{id:'voc73', lvl:'B2', biz:true, cat:'Vocabulary', type:'input',
+ q:'The team managed to ___ funding for the project. (verb: to successfully obtain after effort) (1 word)',
+ ans:'secure|obtain|acquire', hint:'verb: to successfully obtain something after effort — formal register (1 word)',
+ exp:'<strong>Secure</strong>, <strong>obtain</strong>, or <strong>acquire</strong> all fit. Secure is strongest in business (implies locking in the outcome). ✗ <em>get</em> is too informal for professional writing. <em>Secure funding / obtain approval / acquire assets</em> — each has a slightly different register.'},
+{id:'voc74', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
+ q:'His argument contained a serious logical ___ (noun: an error or weakness in reasoning). (1 word)',
+ ans:'flaw', hint:'noun: a fault or weakness that makes something imperfect (1 word)',
+ exp:'<strong>Flaw</strong> = a structural weakness or fault. ✗ <em>mistake</em> is more general; flaw implies a built-in weakness. ✗ <em>error</em> is close but less common in <em>logical flaw</em>. Compare: <em>a design flaw, a character flaw</em>.'},
+{id:'voc75', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
+ q:'The news came as a complete shock — nobody could have ___ it. (verb: past participle, to have expected this in advance) (1 word)',
+ ans:'anticipated|foreseen|predicted', hint:'verb: past participle — to expect or foresee something before it happens (1 word)',
+ exp:'<strong>Anticipated</strong>, <strong>foreseen</strong>, or <strong>predicted</strong> all fit. Anticipated = expected based on prior knowledge; foreseen = perceived in advance; predicted = stated it would happen. ✗ <em>guessed</em> is too informal. All are common in formal and academic writing.'},
+{id:'art_i19', lvl:'B2', biz:false, cat:'Articles', type:'input',
+ q:'She has been playing ___ piano since she was five. (write the article, or – if none needed)',
+ ans:'the', hint:'article before a musical instrument when referring to a skill (1 word)',
+ exp:'<strong>The</strong> piano — use <em>the</em> before musical instruments when referring to playing as a skill: <em>play the piano, the violin, the guitar</em>. ✗ No article is non-standard in British English. Russian speakers often omit the article entirely — resist this.'},
+{id:'lki11', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
+ q:'He worked very hard; ___, he failed to meet the deadline. (contrast connector + clause — 1 word)',
+ ans:'nevertheless|nonetheless|however', hint:'contrast/concession connector after a semicolon (1 word)',
+ exp:'<strong>Nevertheless</strong>, <strong>nonetheless</strong>, or <strong>however</strong> introduce a contrasting idea after a semicolon. ✗ <em>although</em> and <em>despite</em> cannot follow a semicolon alone — they introduce a clause or noun phrase. Always follow with a comma: <em>nevertheless, he failed.</em>'},
+{id:'lki12', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
+ q:'The report was long ___ informative. (connector showing unexpected addition between two adjectives — 1 word)',
+ ans:'yet|but', hint:'connector showing contrast between two adjectives (1 word)',
+ exp:'<strong>Yet</strong> or <strong>but</strong> connect contrasting adjectives: <em>long yet informative</em>. ✗ <em>and</em> implies no contrast. ✗ <em>although</em> cannot connect single adjectives — it needs a full clause. <em>Yet</em> is more formal and literary; <em>but</em> is neutral.'},
+{id:'lki13', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
+ q:'___ living in the same building, they rarely spoke to each other. (concession connector + -ing clause — 2 words)',
+ ans:'despite|in spite of', hint:'concession connector + noun/-ing phrase (1–3 words)',
+ exp:'<strong>Despite</strong> or <strong>in spite of</strong> + noun/-ing express concession. ✗ <em>Although</em> needs a full subject + verb: <em>although they lived...</em>. The -ing after despite/in spite of must share the subject of the main clause.'},
+{id:'lki14', lvl:'B2', biz:true, cat:'Linking Words', type:'input',
+ q:'Sales increased in Q1; ___, profits fell due to higher costs. (contrast connector — 1 word)',
+ ans:'however|nevertheless|nonetheless', hint:'connector showing unexpected contrast after a positive result (1 word)',
+ exp:'<strong>However</strong>, <strong>nevertheless</strong>, or <strong>nonetheless</strong> introduce a contrasting idea. ✗ <em>therefore</em> signals a logical consequence, not a contrast. ✗ <em>moreover</em> adds information in the same direction. Always follow with a comma: <em>however, profits fell.</em>'},
+{id:'lki15', lvl:'B1', biz:false, cat:'Linking Words', type:'input',
+ q:'She studied all night ___ she could pass the exam. (purpose connector — 2 words)',
+ ans:'so that', hint:'purpose connector + full clause with modal (2 words)',
+ exp:'<strong>So that</strong> introduces a purpose clause: <em>studied so that she could pass</em>. ✗ <em>in order to</em> is also possible but needs an infinitive, not <em>could</em>: <em>in order to pass</em>. ✗ <em>because</em> gives a reason, not a purpose. Russian: <em>чтобы</em> maps to both forms.'},
+{id:'tns_i13', lvl:'B2', biz:false, cat:'Tenses', type:'input',
+ q:'By the time the guests arrived, she ___ (prepare) everything. (2 words)',
+ ans:'had prepared', hint:'past perfect — action completed before another past event (2 words)',
+ exp:'<strong>Past perfect</strong> (<em>had prepared</em>) for the action completed before the guests arrived. ✗ <em>prepared</em> (past simple) loses the "before" meaning. The time marker <em>by the time</em> + past simple triggers past perfect in the other clause.'},
+{id:'tns_i14', lvl:'B2', biz:false, cat:'Tenses', type:'input',
+ q:'They ___ (not see) each other for ten years before they met at the reunion. (3 words)',
+ ans:'had not seen|hadn\'t seen', hint:'past perfect negative — duration up to a past point (2–3 words)',
+ exp:'<strong>Had not seen</strong> — past perfect negative for a state that lasted up to a past point. ✗ <em>didn\'t see</em> (past simple) cannot carry the "duration up to then" meaning. <em>For ten years before</em> signals the state preceded the reunion.'},
+{id:'tns_i15', lvl:'B1', biz:false, cat:'Tenses', type:'input',
+ q:'This time yesterday, they ___ (play) football in the park. (2 words)',
+ ans:'were playing', hint:'past continuous: action in progress at a specific past moment (2 words)',
+ exp:'<strong>Were playing</strong> — past continuous for an action in progress at a specific point in the past. ✗ <em>played</em> describes a completed action, not one ongoing at that exact moment. <em>This time yesterday</em> is a time-point marker that signals past continuous.'},
+{id:'tns_i16', lvl:'B2', biz:true, cat:'Tenses', type:'input',
+ q:'The contract ___ (sign) by both parties before the deadline. (2 words — passive)',
+ ans:'was signed', hint:'past simple passive: focus on the object, not the doer (2 words)',
+ exp:'<strong>Was signed</strong> — past simple passive: <em>was/were + past participle</em>. ✗ <em>signed</em> is active — but no stated subject is doing the action here, so passive is required. Common in formal and legal English: <em>The agreement was reached, the contract was signed.</em>'},
+{id:'wo_i01', lvl:'B2', biz:false, cat:'Word Order', type:'input',
+ q:'"She speaks very English well." — correct the word order after \'speaks\': She speaks ___ (3 words)',
+ ans:'English very well', hint:'adverb of manner: comes after the object, not between verb and object (3 words)',
+ exp:'<strong>Speaks English very well</strong> — manner adverbs follow the object: verb + object + adverb. ✗ Placing <em>very well</em> before the object (*speaks very well English) is a common Russian-speaker error influenced by L1 word order.'},
+{id:'wo_i02', lvl:'B2', biz:false, cat:'Word Order', type:'input',
+ q:'"Where you are going?" — correct the word order after \'Where\': Where ___ (3 words)',
+ ans:'are you going', hint:'question word order: auxiliary + subject + main verb (3 words)',
+ exp:'<strong>Where are you going?</strong> — questions require subject-auxiliary inversion. ✗ <em>where you are going</em> is statement word order — a very common error for Russian speakers, where question word order does not change. Rule: Wh- word + auxiliary + subject + verb.'},
+{id:'wo_i03', lvl:'B1', biz:false, cat:'Word Order', type:'input',
+ q:'I ___ (never/have/been) to Australia. Put in the correct order. (3 words)',
+ ans:'have never been', hint:'frequency adverb goes between auxiliary and main verb (3 words)',
+ exp:'<strong>Have never been</strong> — frequency adverbs sit between the auxiliary and the main verb: <em>have never been, has always known</em>. ✗ <em>never have been</em> puts the adverb before the auxiliary. ✗ <em>have been never</em> puts it after the main verb. Both are wrong.'},
+{id:'wo_i04', lvl:'B2', biz:true, cat:'Word Order', type:'input',
+ q:'She told me that the meeting ___ (would/postponed/be). Put in the correct order. (3 words)',
+ ans:'would be postponed', hint:'passive in reported speech: modal + be + past participle (3 words)',
+ exp:'<strong>Would be postponed</strong> — passive voice after a modal: modal + <em>be</em> + past participle. ✗ Any other order (*would postponed be, *be would postponed) breaks the auxiliary + infinitive structure. Common in formal reporting: <em>I was told the decision would be delayed.</em>'},
+{id:'mvc31', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
+ q:'You ___ have waited so long — I wasn\'t busy at all. (modal: it was not necessary — 2 words)',
+ ans:'needn\'t have|need not have', hint:'modal: unnecessary past action that did happen (2 words)',
+ exp:'<strong>Needn\'t have</strong> + past participle = you did it, but it was unnecessary. ✗ <em>didn\'t need to wait</em> = you didn\'t wait (because it wasn\'t necessary) — different meaning. ✗ <em>shouldn\'t have</em> = you did it, but it was wrong. A key B2 distinction.'},
+{id:'mvc32', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
+ q:'He looks pale. He ___ ill. (modal: present possibility — 2 words)',
+ ans:'might be|could be|may be', hint:'modal for present possibility (2 words)',
+ exp:'<strong>Might be</strong>, <strong>could be</strong>, or <strong>may be</strong> all express present possibility. ✗ <em>must be</em> expresses near-certainty, not mere possibility. ✗ <em>should be</em> is for expectation based on logic. <em>Might</em> is slightly more tentative than <em>may</em>.'},
+{id:'mvc33', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
+ q:'You ___ the secret — she is very upset now. (modal: it was wrong to do this — 3 words)',
+ ans:'shouldn\'t have told|should not have told', hint:'modal perfect for criticising a past action (3 words)',
+ exp:'<strong>Shouldn\'t have told</strong> — modal perfect for criticising a past action: <em>should/ought to + have + past participle</em>. ✗ <em>mustn\'t have told</em> is not standard for criticism. ✗ <em>needn\'t have told</em> means it was unnecessary, not that it was wrong.'},
+{id:'qf32', lvl:'B2', biz:false, cat:'Question Formation', type:'input',
+ q:'Ask what time the film starts. → What time ___ ? (present simple question — 3 words)',
+ ans:'does the film start|does it start', hint:'present simple question: do/does + subject + base verb (3 words)',
+ exp:'<strong>Does the film start?</strong> — present simple question: do/does + subject + base verb. ✗ <em>does the film starts</em> is wrong — no -s after does. ✗ Statement word order (*the film starts when?) is a common Russian-speaker transfer error.'},
+{id:'qf33', lvl:'B2', biz:false, cat:'Question Formation', type:'input',
+ q:'"Someone broke the window." → Who ___ ? (subject question — 3 words)',
+ ans:'broke the window', hint:'subject question: Wh-word is the subject — no auxiliary needed (3 words)',
+ exp:'<strong>Who broke the window?</strong> — when the Wh-word is the subject, no auxiliary (do/did) is used. ✗ <em>Who did break the window?</em> is wrong in standard English. Compare: <em>Who did you see?</em> (object question, auxiliary needed) vs <em>Who called?</em> (subject question, no auxiliary).'},
+{id:'qf34', lvl:'B2', biz:true, cat:'Question Formation', type:'input',
+ q:'Polite indirect question: "Could you tell me where ___ ?" (3 words — indirect word order)',
+ ans:'the exit is', hint:'indirect question: statement word order after embedded question phrase (3 words)',
+ exp:'<strong>Where the exit is</strong> — indirect questions use statement word order (subject + verb), not question inversion. ✗ <em>where is the exit</em> is direct question order — wrong after <em>Could you tell me...</em>. Key B2 accuracy point for Russian speakers.'},
+{id:'ut_i01', lvl:'B2', biz:false, cat:'Used To', type:'input',
+ q:'When I was a child, I ___ walk to school every day. (past habit — 3 words)',
+ ans:'used to walk|would walk', hint:'past repeated action no longer happening — 3 words',
+ exp:'<strong>Used to walk</strong> or <strong>would walk</strong> both express a repeated past habit no longer true. ✗ <em>was walking</em> is past continuous — for an action in progress at a specific time. ✗ <em>walked</em> is possible but lacks the habitual meaning. <em>Would</em> works only for repeated actions, not states.'},
+{id:'ut_i02', lvl:'B2', biz:false, cat:'Used To', type:'input',
+ q:'She ___ living alone now — it was hard at first. (be accustomed to — 3 words)',
+ ans:'is used to', hint:'be used to + -ing: accustomed to a current situation (3 words)',
+ exp:'<strong>Is used to</strong> living — <em>be used to + gerund</em> = accustomed to a current situation. ✗ <em>used to live</em> means she no longer lives alone — wrong here. Key distinction: <em>used to + infinitive</em> (past habit) vs <em>be used to + -ing</em> (current familiarity).'},
+{id:'ut_i03', lvl:'B2', biz:false, cat:'Used To', type:'input',
+ q:'I ___ smoke, but I quit five years ago. (past habit that stopped — 3 words)',
+ ans:'used to smoke', hint:'past habit no longer true: used to + base verb (3 words)',
+ exp:'<strong>Used to smoke</strong> — past habit that no longer continues. ✗ <em>would smoke</em> is also possible for repeated actions but less natural for a named habit you quit. ✗ <em>was smoking</em> is past continuous — implies a specific moment, not a habit.'},
+{id:'emph_i02', lvl:'B2', biz:false, cat:'Emphasis', type:'input',
+ q:'Complete the cleft sentence for emphasis: It ___ who was most surprised. (subject cleft — 2 words)',
+ ans:'was she', hint:'cleft structure: It + was/is + emphasised subject (2 words)',
+ exp:'<strong>It was she</strong> who was most surprised — cleft sentence: <em>It + was + emphasised element + who/that + rest</em>. Always <em>was</em> with singular subjects. ✗ <em>It were she</em> is grammatically wrong. Cleft sentences highlight one element and are common in formal written English.'},
+{id:'emph_i03', lvl:'C1', biz:false, cat:'Emphasis', type:'input',
+ q:'___ did I realise how serious the problem was. (negative adverbial inversion — 2 words)',
+ ans:'only then|not until then', hint:'negative/limiting adverb at the front triggers subject-auxiliary inversion (2 words)',
+ exp:'<strong>Only then</strong> did I realise — negative adverbial inversion: a limiting adverb at the front forces auxiliary inversion. ✗ <em>Only then I realised</em> is wrong — inversion is mandatory. Other triggers: <em>Never, Rarely, Hardly, No sooner, Not until</em>. Marks C1 sophistication in formal writing.'},
+{id:'idom_b01', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'When Sarah walked into the party, her warm smile helped to ___ immediately.',
+ opts:['break the ice','spill the beans','beat around the bush','get cold feet'],
+ ans:0,
+ exp:'<strong>Break the ice</strong> = do or say something to relieve tension and make people feel comfortable in a new social situation. ✗ <em>Spill the beans</em> = reveal a secret. ✗ <em>Get cold feet</em> = become nervous and hesitate before doing something.'},
+{id:'idom_b02', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'The dentist appointment was painful, but he decided to ___ and get it done.',
+ opts:['bite the bullet','cut to the chase','read between the lines','sit on the fence'],
+ ans:0,
+ exp:'<strong>Bite the bullet</strong> = endure a painful or difficult situation with courage because it cannot be avoided. ✗ <em>Cut to the chase</em> = get to the main point directly. ✗ <em>Sit on the fence</em> = avoid committing to a position.'},
+{id:'idom_b03', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
+ q:'I\'ve made my offer — now ___ . It\'s up to you to decide.',
+ opts:['the ball is in your court','the tip of the iceberg','once in a blue moon','cost an arm and a leg'],
+ ans:0,
+ exp:'<strong>The ball is in your court</strong> = it is now your turn to take action or make a decision. ✗ <em>The tip of the iceberg</em> = only a small visible part of a much larger problem. ✗ <em>Cost an arm and a leg</em> = be very expensive.'},
+{id:'idom_b04', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'She accidentally ___ about the surprise party, and now everyone knows.',
+ opts:['spilled the beans','broke the ice','let the cat out of the bag','cut to the chase'],
+ ans:0,
+ exp:'<strong>Spill the beans</strong> = accidentally or carelessly reveal a secret. ✗ <em>Let the cat out of the bag</em> is close in meaning — it can be used here too — but <em>spill the beans</em> is the more natural fit with "accidentally". Note: the two idioms overlap but spill the beans emphasises carelessly revealing information.'},
+{id:'idom_b05', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'I can\'t come to the gym today — I\'m feeling a bit ___ .',
+ opts:['under the weather','on thin ice','over the moon','in the same boat'],
+ ans:0,
+ exp:'<strong>Under the weather</strong> = feeling slightly ill or unwell. ✗ <em>Over the moon</em> = extremely happy. ✗ <em>On thin ice</em> = in a risky or precarious situation. ✗ <em>In the same boat</em> = in the same difficult situation as others.'},
+{id:'idom_b06', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'We only visit that restaurant ___ — it costs an arm and a leg.',
+ opts:['once in a blue moon','under the weather','on the fence','at the drop of a hat'],
+ ans:0,
+ exp:'<strong>Once in a blue moon</strong> = very rarely, almost never. ✗ <em>At the drop of a hat</em> = immediately, without hesitation — the opposite meaning here. The idiom <em>costs an arm and a leg</em> in the same sentence confirms the reason for infrequent visits.'},
+{id:'idom_b07', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'That restaurant ___ — we spent over £200 on dinner for two.',
+ opts:['cost an arm and a leg','broke the ice','spilled the beans','cut corners'],
+ ans:0,
+ exp:'<strong>Cost an arm and a leg</strong> = be extremely expensive. ✗ <em>Cut corners</em> = do something badly to save time or money. ✗ <em>Break the ice</em> = reduce tension in a social situation — unrelated to expense.'},
+{id:'idom_b08', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'Someone ___ about the redundancies before the official announcement.',
+ opts:['let the cat out of the bag','broke the ice','bit the bullet','sat on the fence'],
+ ans:0,
+ exp:'<strong>Let the cat out of the bag</strong> = accidentally reveal a secret or surprise. ✗ <em>Spill the beans</em> overlaps in meaning but <em>let the cat out of the bag</em> is the more idiomatic choice when a specific piece of confidential news is disclosed. ✗ <em>Break the ice</em> = ease social tension.'},
+{id:'idom_b09', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
+ q:'She\'s still ___ about accepting the job offer — she can\'t decide.',
+ opts:['on the fence','under the weather','over the moon','in hot water'],
+ ans:0,
+ exp:'<strong>On the fence</strong> = unable to make a decision; not committed to either side. ✗ <em>In hot water</em> = in trouble. ✗ <em>Over the moon</em> = extremely happy. Used frequently in professional contexts: <em>The committee is still on the fence about the proposal.</em>'},
+{id:'idom_b10', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'Stop ___ — just tell me what you actually want to say.',
+ opts:['beating around the bush','biting the bullet','breaking the ice','cutting corners'],
+ ans:0,
+ exp:'<strong>Beat around the bush</strong> = avoid getting to the main point; talk around a subject without addressing it directly. ✗ <em>Cut corners</em> = do something carelessly to save effort. ✗ <em>Bite the bullet</em> = endure something difficult — not about avoidance.'},
+{id:'idom_b11', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'He ___ just before the wedding — he was too nervous to go through with it.',
+ opts:['got cold feet','spilled the beans','beat around the bush','broke the ice'],
+ ans:0,
+ exp:'<strong>Get cold feet</strong> = suddenly become nervous or hesitant about something you were previously committed to doing. ✗ <em>Spill the beans</em> = reveal a secret. ✗ <em>Beat around the bush</em> = avoid the main point in conversation.'},
+{id:'idom_b12', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
+ q:'The ten complaints we\'ve received are just ___ — the real problem is much bigger.',
+ opts:['the tip of the iceberg','once in a blue moon','the ball in our court','a bitter pill'],
+ ans:0,
+ exp:'<strong>The tip of the iceberg</strong> = the small visible part of a much larger problem. Like an iceberg, most of the issue is hidden. ✗ <em>Once in a blue moon</em> = very rarely — unrelated. Common in business and journalism: <em>These losses are just the tip of the iceberg.</em>'},
+{id:'idom_b13', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
+ q:'We don\'t have much time — let\'s ___ and talk about the main issue.',
+ opts:['cut to the chase','sit on the fence','break the ice','beat around the bush'],
+ ans:0,
+ exp:'<strong>Cut to the chase</strong> = stop talking about less important things and get to the main point. ✗ <em>Beat around the bush</em> = the opposite — avoiding the point. ✗ <em>Sit on the fence</em> = avoid taking a side. Useful in presentations and meetings.'},
+{id:'idom_b14', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'His message sounded positive, but you need to ___ — he\'s clearly not happy.',
+ opts:['read between the lines','cut to the chase','spill the beans','bite the bullet'],
+ ans:0,
+ exp:'<strong>Read between the lines</strong> = understand the hidden or implied meaning behind what is literally said or written. ✗ <em>Cut to the chase</em> = get to the point directly. ✗ <em>Spill the beans</em> = reveal a secret. Reading between the lines requires inference.'},
+{id:'idom_b15', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
+ q:'New employees sometimes find it hard to ___ in a large team.',
+ opts:['break the ice','cut to the chase','bite the bullet','spill the beans'],
+ ans:0,
+ exp:'<strong>Break the ice</strong> = do or say something that helps people relax and start communicating in an unfamiliar situation. ✗ <em>Cut to the chase</em> = skip to the main point. ✗ <em>Bite the bullet</em> = endure something unpleasant. Breaking the ice is about social ease, not avoiding discomfort.'}];
 
 // ══════════════════════════════════════════════
 //  STORAGE — IndexedDB (works with file://)
@@ -4453,8 +4656,12 @@ function selectQuestions(count) {
     const scored = known.map(q => {
       const st = DB.qStats[q.id];
       const er = getErrorRate(q.id);
-      const recencyBoost = st.lastSeen ? Math.min(1, (Date.now() - st.lastSeen) / (7 * 86400000)) : 1;
-      return { q, weight: 1 + er * 4 * recencyBoost };
+      const consec = st.consec || 0;
+      const intervalDays = consec === 0 ? 1 : consec === 1 ? 2 : consec === 2 ? 4 : consec === 3 ? 7 : 14;
+      const intervalMs = intervalDays * 86400000;
+      const elapsed = st.lastSeen ? Date.now() - st.lastSeen : intervalMs;
+      const dueRatio = Math.min(2, elapsed / intervalMs);
+      return { q, weight: Math.max(0.1, (0.5 + er * 4) * dueRatio) };
     });
     const result = [];
     const bucket = [...scored];
@@ -4479,36 +4686,75 @@ function selectQuestions(count) {
     shuffle(weak);
     return weak.slice(0, count);
   }
-  // SMART: weight by error rate + recency
+  // SMART: weight by error rate + spaced repetition interval
+  // Split into review pool (seen) and new pool (unseen), budget ~25% new
+  const seenPool = [];
+  const unseenPool = [];
   // Pre-compute per-category seen counts for hard:true suppression
   const catSeenCounts = {};
   Object.keys(DB.qStats).forEach(id => {
     const q = ALL_QUESTIONS.find(x => x && x.id === id);
     if (q) catSeenCounts[q.cat] = (catSeenCounts[q.cat] || 0) + 1;
   });
-  const scored = qs.map(q => {
+  qs.forEach(q => {
     const st = DB.qStats[q.id];
     if (!st) {
-      // Unseen: suppress hard input questions if category is new (<3 seen)
+      // Unseen: suppress hard questions if category is new (<3 seen)
       const catSeen = catSeenCounts[q.cat] || 0;
       const weight = (q.hard && catSeen < 3) ? 0.2 : 3;
-      return { q, weight };
+      unseenPool.push({ q, weight });
+    } else {
+      const er = getErrorRate(q.id);
+      // Interval scaling: consecutive correct answers increase suppression window
+      // 0 consec = 1 day, 1 = 2d, 2 = 4d, 3 = 7d, 4+ = 14d
+      const consec = st.consec || 0;
+      const intervalDays = consec === 0 ? 1 : consec === 1 ? 2 : consec === 2 ? 4 : consec === 3 ? 7 : 14;
+      const intervalMs = intervalDays * 86400000;
+      const elapsed = st.lastSeen ? Date.now() - st.lastSeen : intervalMs;
+      // Due ratio: 0 if just seen, 1 when interval elapsed, >1 if overdue
+      const dueRatio = Math.min(2, elapsed / intervalMs);
+      // Weight: error-heavy questions stay high, well-learned fade out
+      // High error (er=1) + overdue (due=2) → weight 9. Low error (er=0) + just seen → weight ~0.1
+      const weight = Math.max(0.1, (0.5 + er * 4) * dueRatio);
+      seenPool.push({ q, weight });
     }
-    const er = getErrorRate(q.id);
-    const recencyBoost = st.lastSeen ? Math.min(1, (Date.now() - st.lastSeen) / (7 * 86400000)) : 1;
-    return { q, weight: 1 + er * 4 * recencyBoost };
   });
-  // weighted random sample without replacement
+  // Budget: ~25% unseen, 75% reviews. If not enough unseen, fill with reviews.
+  const newBudget = Math.max(1, Math.round(count * 0.25));
+  const reviewBudget = count - Math.min(newBudget, unseenPool.length);
+  const actualNew = Math.min(newBudget, unseenPool.length);
+  // Pick from review pool first
   const result = [];
-  const bucket = [...scored];
-  for (let i = 0; i < count && bucket.length > 0; i++) {
-    const totalW = bucket.reduce((s, x) => s + x.weight, 0);
+  const rBucket = [...seenPool];
+  for (let i = 0; i < reviewBudget && rBucket.length > 0; i++) {
+    const totalW = rBucket.reduce((s, x) => s + x.weight, 0);
     let r = Math.random() * totalW;
-    for (let j = 0; j < bucket.length; j++) {
-      r -= bucket[j].weight;
-      if (r <= 0) { result.push(bucket[j].q); bucket.splice(j, 1); break; }
+    for (let j = 0; j < rBucket.length; j++) {
+      r -= rBucket[j].weight;
+      if (r <= 0) { result.push(rBucket[j].q); rBucket.splice(j, 1); break; }
     }
   }
+  // Pick from unseen pool
+  const nBucket = [...unseenPool];
+  for (let i = 0; i < actualNew && nBucket.length > 0; i++) {
+    const totalW = nBucket.reduce((s, x) => s + x.weight, 0);
+    let r = Math.random() * totalW;
+    for (let j = 0; j < nBucket.length; j++) {
+      r -= nBucket[j].weight;
+      if (r <= 0) { result.push(nBucket[j].q); nBucket.splice(j, 1); break; }
+    }
+  }
+  // If review pool was too small, backfill with more unseen
+  while (result.length < count && nBucket.length > 0) {
+    const totalW = nBucket.reduce((s, x) => s + x.weight, 0);
+    let r = Math.random() * totalW;
+    for (let j = 0; j < nBucket.length; j++) {
+      r -= nBucket[j].weight;
+      if (r <= 0) { result.push(nBucket[j].q); nBucket.splice(j, 1); break; }
+    }
+  }
+  // Shuffle so new questions aren't always at the end
+  shuffle(result);
   return result;
 }
 
@@ -4897,11 +5143,12 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
     DB.lastPlayedDate = _today;
     if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
   }
-  if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0};
+  if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
   DB.qStats[q.id].seen++;
   DB.qStats[q.id].correct += fraction;
   DB.qStats[q.id].wrong += (1 - fraction);
   DB.qStats[q.id].lastSeen = Date.now();
+  DB.qStats[q.id].consec = allCorrect ? (DB.qStats[q.id].consec||0)+1 : 0;
   const cat = q.cat;
   if (!DB.catStats[cat]) DB.catStats[cat] = {seen:0,correct:0};
   DB.catStats[cat].seen++;
@@ -4937,10 +5184,11 @@ async function recordAnswer(correct, q) {
   }
 
   // per-question
-  if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0};
+  if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
   DB.qStats[q.id].seen++;
   DB.qStats[q.id][correct?'correct':'wrong']++;
   DB.qStats[q.id].lastSeen = Date.now();
+  DB.qStats[q.id].consec = correct ? (DB.qStats[q.id].consec||0)+1 : 0;
 
   // per-category
   const cat = q.cat;
@@ -5307,9 +5555,9 @@ function quickReplay() {
 // ══════════════════════════════════════════════
 
 function renderCoverage() {
-  const TOTAL = 1904;
-  const LEVEL_TOTALS = {'B1':597,'B2':962,'C1':329,'C2':16};
-  const CAT_TOTALS = {'Adjectives':26,'Articles':182,'Collocations':29,'Comparisons':30,'Conditionals':92,'Emphasis':18,'Everyday English':30,'Gerunds & Infinitives':165,'Grammar':238,'Idioms':35,'Indirect Questions':31,'Linking Words':81,'Modal Verbs':74,'Passive Voice':28,'Phrasal Verbs':170,'Prepositions':78,'Question Formation':36,'Relative Clauses':42,'Reported Speech':32,'Tenses':176,'Used To':19,'Vocabulary':186,'Word Choice':44,'Word Formation':40,'Word Order':22};
+  const TOTAL = 1874;
+  const LEVEL_TOTALS = {'B1':597,'B2':935,'C1':326,'C2':16};
+  const CAT_TOTALS = {'Adjectives':26,'Articles':152,'Collocations':29,'Comparisons':30,'Conditionals':92,'Emphasis':18,'Everyday English':30,'Gerunds & Infinitives':165,'Grammar':238,'Idioms':35,'Indirect Questions':31,'Linking Words':81,'Modal Verbs':74,'Passive Voice':28,'Phrasal Verbs':170,'Prepositions':78,'Question Formation':36,'Relative Clauses':42,'Reported Speech':32,'Tenses':176,'Used To':19,'Vocabulary':186,'Word Choice':44,'Word Formation':40,'Word Order':22};
   // Proficiency thresholds: [seenFraction, minAccuracy, minSeen]
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -5479,7 +5727,7 @@ function renderLevelInference() {
   if (!banner) return;
   const lvlStats = DB.lvlStats || {};
   const qStats = DB.qStats || {};
-  const LEVEL_TOTALS = { B1: 594, B2: 838, C1: 295, C2: 16 };
+  const LEVEL_TOTALS = {'B1':597,'B2':935,'C1':326,'C2':16};
   const PROF_THRESH = {
     B1: { seenFrac: 0.80, acc: 80, minSeen: 20 },
     B2: { seenFrac: 0.80, acc: 80, minSeen: 20 },
@@ -5971,286 +6219,6 @@ const FAMILY_MEMBERS = [
     pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
   { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff',
     pinHash: 'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730' },
-{id:'aph01',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The company is in ___ middle of a major digital transformation.',opts:['the','a','—'],ans:0,exp:'In the middle of — fixed phrase. The middle is always used with the definite article in this structure: in the middle of something, in the middle of doing something. Never: in a middle of, in middle of.'}
-,{id:'aph02',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['We are in middle of restructuring.','We are in the middle of restructuring.','We are in a middle of restructuring.'],ans:1,exp:'In the middle of (no article before the second noun when it is a gerund/verb). The middle requires the. Never: in a middle, in middle. The same pattern: in the middle of negotiations, in the middle of a crisis.'}
-,{id:'aph03',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The project is at ___ heart of our five-year strategy.',opts:['the','a','—'],ans:0,exp:'At the heart of — fixed phrase meaning at the most important or central part of. The heart always takes the here. Similar: at the core of, at the centre of, at the root of.'}
-,{id:'aph04',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The industry is on ___ brink of collapse.',opts:['the','a','—'],ans:0,exp:'On the brink of — fixed phrase meaning very close to a critical point. Always the: on the brink of failure, on the brink of a breakthrough. Similar: on the verge of, on the edge of.'}
-,{id:'aph05',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['She was on a verge of resigning.','She was on verge of resigning.','She was on the verge of resigning.'],ans:2,exp:'On the verge of — fixed phrase. Always the. Means very close to doing something: on the verge of a deal, on the verge of announcing. Never: on a verge, on verge.'}
-,{id:'aph06',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'We are at ___ height of the negotiation process.',opts:['the','a','—'],ans:0,exp:'At the height of — fixed phrase meaning at the most intense or important point. Always the: at the height of the crisis, at the height of his career. Similar fixed phrases: at the peak of, at the depth of.'}
-,{id:'aph07',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'This decision was made in ___ heat of the moment.',opts:['the','a','—'],ans:0,exp:'In the heat of the moment — completely fixed phrase. Always the. Means done impulsively without thinking. Both the heat and the moment require the definite article.'}
-,{id:'aph08',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['On the one hand costs are rising; on a other hand, revenues are too.','On the one hand costs are rising; on the other hand, revenues are too.','On one hand costs are rising; on other hand, revenues are too.'],ans:1,exp:'On the one hand… on the other hand — both parts of this fixed contrast phrase require the. It is always the one hand and the other hand. A very common mistake is to omit the article in the second part.'}
-,{id:'aph09',lvl:'B2',biz:false,cat:'Articles',type:'gap',q:'___ the end, we decided to postpone the launch.',opts:['In','At','By'],ans:0,exp:'In the end = finally, after a long process. At the end = at the final point of something specific (at the end of the meeting). In the end is used when talking about a final outcome after deliberation.'}
-,{id:'aph10',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['In long run, automation will reduce costs.','In the long run, automation will reduce costs.','In a long run, automation will reduce costs.'],ans:1,exp:'In the long run — fixed phrase. Always the. Means over a long period of time. Also: in the short run, in the long term, in the short term. Never omit the article.'}
-,{id:'aph11',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'We need to evaluate this on ___ basis of the available data.',opts:['the','a','—'],ans:0,exp:'On the basis of — fixed phrase meaning using something as a foundation for judgement. Always the: on the basis of evidence, on the basis of performance. Similar: on the grounds of, on the strength of.'}
-,{id:'aph12',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['The decision was made on a basis of cost alone.','The decision was made on basis of cost alone.','The decision was made on the basis of cost alone.'],ans:2,exp:'On the basis of — always the basis. This is a fixed phrase used to explain the reason or criterion for a decision. On the basis of cost, on the basis of evidence, on the basis of feedback.'}
-,{id:'aph13',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'___ the meantime, the team will continue current operations.',opts:['In','At','On'],ans:0,exp:'In the meantime — fixed phrase meaning while something else is happening or being waited for. Always in the meantime, never at the meantime or on the meantime.'}
-,{id:'aph14',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'We are operating under ___ assumption that costs will stabilise.',opts:['the','a','an'],ans:0,exp:'Under the assumption that — fixed phrase. Use the when the assumption has been stated or is shared knowledge. Compare: under a false assumption (non-specific). Here the assumption is specific and known to both parties.'}
-,{id:'aph15',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['Under circumstances, we cannot proceed.','Under the circumstances, we cannot proceed.','Under a circumstances, we cannot proceed.'],ans:1,exp:'Under the circumstances — fixed phrase meaning given the current situation. Always the: under the circumstances, under the current circumstances. Never: under circumstances (without article) in this idiomatic sense.'}
-,{id:'aph16',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The budget was cut at ___ expense of the R&D department.',opts:['the','a','—'],ans:0,exp:'At the expense of — fixed phrase meaning something was sacrificed or harmed. Always the: at the expense of quality, at the expense of the team. Similar: at the cost of, at the risk of.'}
-,{id:'aph17',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The project was approved at ___ request of the board.',opts:['the','a','—'],ans:0,exp:'At the request of — fixed phrase. The request is used because it refers to a specific identifiable request. Similar: at the suggestion of, at the recommendation of, at the direction of.'}
-,{id:'aph18',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['In wake of the merger, several departments were restructured.','In the wake of the merger, several departments were restructured.','In a wake of the merger, several departments were restructured.'],ans:1,exp:'In the wake of — fixed phrase meaning as a result of or following something. Always the: in the wake of the crisis, in the wake of the announcement. Never omit the.'}
-,{id:'aph19',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'___ the whole, the project was delivered on time and within budget.',opts:['On','In','At'],ans:0,exp:'On the whole — fixed phrase meaning generally or considering everything. Always on the whole, never in the whole or at the whole. Similar: by and large, all in all.'}
-,{id:'aph20',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'We are working with ___ assumption that the timeline is fixed.',opts:['the','a','an'],ans:1,exp:'Working with an assumption — here the assumption is being introduced for the first time and is not yet specific. Compare: we are working under the assumption (a known, shared assumption). First mention of a non-specific assumption takes a/an.'}
-,{id:'aph21',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['In course of the review, several issues were found.','In the course of the review, several issues were found.','In a course of the review, several issues were found.'],ans:1,exp:'In the course of — fixed phrase meaning during or throughout. Always the: in the course of the investigation, in the course of his career. Never: in course of (no article).'}
-,{id:'aph22',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'She was promoted on ___ grounds of outstanding performance.',opts:['the','a','—'],ans:0,exp:'On the grounds of — fixed phrase meaning because of / citing as a reason. Always the: on the grounds of misconduct, on the grounds of poor performance. Similar: on the basis of, on account of.'}
-,{id:'aph23',lvl:'C1',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['The proposal was rejected on grounds that it lacked detail.','The proposal was rejected on the grounds that it lacked detail.','The proposal was rejected on a grounds that it lacked detail.'],ans:1,exp:'On the grounds that — fixed phrase. Always the grounds when followed by a that-clause giving a reason. On the grounds that it was too expensive / on the grounds that it was premature.'}
-,{id:'aph24',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'In ___ light of recent events, we need to revise the strategy.',opts:['the','a','—'],ans:0,exp:'In the light of (or in light of) — fixed phrase meaning considering or taking into account. When used formally, in the light of always takes the. In light of is an accepted variant (no article), but in the light of is more formal.'}
-,{id:'aph25',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The negotiations stalled in ___ face of strong opposition.',opts:['the','a','—'],ans:0,exp:'In the face of — fixed phrase meaning despite or when confronted with. Always the: in the face of adversity, in the face of criticism, in the face of uncertainty. Never: in a face of, in face of.'}
-,{id:'aph26',lvl:'B2',biz:true,cat:'Articles',type:'mcq',q:'Which sentence uses the article correctly?',opts:['She completed the task at the risk of her own career.','She completed the task at a risk of her own career.','She completed the task at risk of her own career.'],ans:0,exp:'At the risk of — fixed phrase. The risk when referring to a specific sacrifice or danger. At the risk of sounding repetitive / at the risk of her career. The other form at risk (no article) means in danger: the project is at risk.'}
-,{id:'aph27',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'___ the time, no one realised how significant the decision was.',opts:['At','In','On'],ans:0,exp:'At the time — fixed phrase meaning at that particular moment in the past. Always at the time. Compare: in time = with enough time; on time = punctually. At the time refers to a specific past moment.'}
-,{id:'aph28',lvl:'B2',biz:true,cat:'Articles',type:'gap',q:'The restructuring is ___ first place a financial decision, not a strategic one.',opts:['in the','in a','in'],ans:0,exp:'In the first place — fixed phrase meaning primarily / above all. Always the: in the first place, this is a budget issue. Also used at the end of a sentence to mean from the start: why did we agree in the first place?'}
-,{id:'aph29',lvl:'C1',biz:true,cat:'Articles',type:'mcq',q:'Which is correct?',opts:['In absence of clear guidelines, teams improvised.','In an absence of clear guidelines, teams improvised.','In the absence of clear guidelines, teams improvised.'],ans:2,exp:'In the absence of — fixed phrase meaning when something is not there. Always the: in the absence of data, in the absence of a decision, in the absence of leadership. Never: in absence of.'}
-,{id:'aph30',lvl:'C1',biz:true,cat:'Articles',type:'gap',q:'The team acted in ___ interest of the company, not personal gain.',opts:['the','a','—'],ans:0,exp:'In the interest(s) of — fixed phrase. Always the: in the interest of fairness, in the interests of efficiency. This is a formal phrase used to justify a decision by reference to a common good.'}
-,
-
-{id:'voc70', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
- q:'The company\'s new strategy proved to be very ___ (adjective: producing the desired result). (1 word)',
- ans:'effective', hint:'adjective: producing the intended result (1 word)',
- exp:'<strong>Effective</strong> = achieving the intended result. ✗ <em>efficient</em> means producing results without wasting resources — the distinction: efficient is about process, effective is about outcome. <em>The plan was effective (it worked) but not efficient (it took too long).</em>'},
-
-{id:'voc71', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
- q:'She found it hard to ___ her laughter during the serious meeting. (verb: to hold back a feeling) (1 word)',
- ans:'suppress', hint:'verb: to hold back or stop something from being expressed (1 word)',
- exp:'<strong>Suppress</strong> = deliberately prevent something from being shown. ✗ <em>repress</em> is more psychological (unconscious); suppress is a conscious act. ✗ <em>express</em> is the opposite. Common in formal and academic English.'},
-
-{id:'voc72', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
- q:'The politician\'s speech was deliberately ___ (adjective: unclear, open to more than one meaning). (1 word)',
- ans:'ambiguous', hint:'adjective: having two or more possible meanings (1 word)',
- exp:'<strong>Ambiguous</strong> = open to multiple interpretations. ✗ <em>vague</em> means generally unclear; ambiguous specifically means two or more meanings are possible. Common in law, politics, academic writing: <em>The contract clause was ambiguous.</em>'},
-
-{id:'voc73', lvl:'B2', biz:true, cat:'Vocabulary', type:'input',
- q:'The team managed to ___ funding for the project. (verb: to successfully obtain after effort) (1 word)',
- ans:'secure|obtain|acquire', hint:'verb: to successfully obtain something after effort — formal register (1 word)',
- exp:'<strong>Secure</strong>, <strong>obtain</strong>, or <strong>acquire</strong> all fit. Secure is strongest in business (implies locking in the outcome). ✗ <em>get</em> is too informal for professional writing. <em>Secure funding / obtain approval / acquire assets</em> — each has a slightly different register.'},
-
-{id:'voc74', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
- q:'His argument contained a serious logical ___ (noun: an error or weakness in reasoning). (1 word)',
- ans:'flaw', hint:'noun: a fault or weakness that makes something imperfect (1 word)',
- exp:'<strong>Flaw</strong> = a structural weakness or fault. ✗ <em>mistake</em> is more general; flaw implies a built-in weakness. ✗ <em>error</em> is close but less common in <em>logical flaw</em>. Compare: <em>a design flaw, a character flaw</em>.'},
-
-{id:'voc75', lvl:'B2', biz:false, cat:'Vocabulary', type:'input',
- q:'The news came as a complete shock — nobody could have ___ it. (verb: past participle, to have expected this in advance) (1 word)',
- ans:'anticipated|foreseen|predicted', hint:'verb: past participle — to expect or foresee something before it happens (1 word)',
- exp:'<strong>Anticipated</strong>, <strong>foreseen</strong>, or <strong>predicted</strong> all fit. Anticipated = expected based on prior knowledge; foreseen = perceived in advance; predicted = stated it would happen. ✗ <em>guessed</em> is too informal. All are common in formal and academic writing.'},
-
-{id:'art_i19', lvl:'B2', biz:false, cat:'Articles', type:'input',
- q:'She has been playing ___ piano since she was five. (write the article, or – if none needed)',
- ans:'the', hint:'article before a musical instrument when referring to a skill (1 word)',
- exp:'<strong>The</strong> piano — use <em>the</em> before musical instruments when referring to playing as a skill: <em>play the piano, the violin, the guitar</em>. ✗ No article is non-standard in British English. Russian speakers often omit the article entirely — resist this.'},
-
-{id:'lki11', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
- q:'He worked very hard; ___, he failed to meet the deadline. (contrast connector + clause — 1 word)',
- ans:'nevertheless|nonetheless|however', hint:'contrast/concession connector after a semicolon (1 word)',
- exp:'<strong>Nevertheless</strong>, <strong>nonetheless</strong>, or <strong>however</strong> introduce a contrasting idea after a semicolon. ✗ <em>although</em> and <em>despite</em> cannot follow a semicolon alone — they introduce a clause or noun phrase. Always follow with a comma: <em>nevertheless, he failed.</em>'},
-
-{id:'lki12', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
- q:'The report was long ___ informative. (connector showing unexpected addition between two adjectives — 1 word)',
- ans:'yet|but', hint:'connector showing contrast between two adjectives (1 word)',
- exp:'<strong>Yet</strong> or <strong>but</strong> connect contrasting adjectives: <em>long yet informative</em>. ✗ <em>and</em> implies no contrast. ✗ <em>although</em> cannot connect single adjectives — it needs a full clause. <em>Yet</em> is more formal and literary; <em>but</em> is neutral.'},
-
-{id:'lki13', lvl:'B2', biz:false, cat:'Linking Words', type:'input',
- q:'___ living in the same building, they rarely spoke to each other. (concession connector + -ing clause — 2 words)',
- ans:'despite|in spite of', hint:'concession connector + noun/-ing phrase (1–3 words)',
- exp:'<strong>Despite</strong> or <strong>in spite of</strong> + noun/-ing express concession. ✗ <em>Although</em> needs a full subject + verb: <em>although they lived...</em>. The -ing after despite/in spite of must share the subject of the main clause.'},
-
-{id:'lki14', lvl:'B2', biz:true, cat:'Linking Words', type:'input',
- q:'Sales increased in Q1; ___, profits fell due to higher costs. (contrast connector — 1 word)',
- ans:'however|nevertheless|nonetheless', hint:'connector showing unexpected contrast after a positive result (1 word)',
- exp:'<strong>However</strong>, <strong>nevertheless</strong>, or <strong>nonetheless</strong> introduce a contrasting idea. ✗ <em>therefore</em> signals a logical consequence, not a contrast. ✗ <em>moreover</em> adds information in the same direction. Always follow with a comma: <em>however, profits fell.</em>'},
-
-{id:'lki15', lvl:'B1', biz:false, cat:'Linking Words', type:'input',
- q:'She studied all night ___ she could pass the exam. (purpose connector — 2 words)',
- ans:'so that', hint:'purpose connector + full clause with modal (2 words)',
- exp:'<strong>So that</strong> introduces a purpose clause: <em>studied so that she could pass</em>. ✗ <em>in order to</em> is also possible but needs an infinitive, not <em>could</em>: <em>in order to pass</em>. ✗ <em>because</em> gives a reason, not a purpose. Russian: <em>чтобы</em> maps to both forms.'},
-
-{id:'tns_i13', lvl:'B2', biz:false, cat:'Tenses', type:'input',
- q:'By the time the guests arrived, she ___ (prepare) everything. (2 words)',
- ans:'had prepared', hint:'past perfect — action completed before another past event (2 words)',
- exp:'<strong>Past perfect</strong> (<em>had prepared</em>) for the action completed before the guests arrived. ✗ <em>prepared</em> (past simple) loses the "before" meaning. The time marker <em>by the time</em> + past simple triggers past perfect in the other clause.'},
-
-{id:'tns_i14', lvl:'B2', biz:false, cat:'Tenses', type:'input',
- q:'They ___ (not see) each other for ten years before they met at the reunion. (3 words)',
- ans:'had not seen|hadn\'t seen', hint:'past perfect negative — duration up to a past point (2–3 words)',
- exp:'<strong>Had not seen</strong> — past perfect negative for a state that lasted up to a past point. ✗ <em>didn\'t see</em> (past simple) cannot carry the "duration up to then" meaning. <em>For ten years before</em> signals the state preceded the reunion.'},
-
-{id:'tns_i15', lvl:'B1', biz:false, cat:'Tenses', type:'input',
- q:'This time yesterday, they ___ (play) football in the park. (2 words)',
- ans:'were playing', hint:'past continuous: action in progress at a specific past moment (2 words)',
- exp:'<strong>Were playing</strong> — past continuous for an action in progress at a specific point in the past. ✗ <em>played</em> describes a completed action, not one ongoing at that exact moment. <em>This time yesterday</em> is a time-point marker that signals past continuous.'},
-
-{id:'tns_i16', lvl:'B2', biz:true, cat:'Tenses', type:'input',
- q:'The contract ___ (sign) by both parties before the deadline. (2 words — passive)',
- ans:'was signed', hint:'past simple passive: focus on the object, not the doer (2 words)',
- exp:'<strong>Was signed</strong> — past simple passive: <em>was/were + past participle</em>. ✗ <em>signed</em> is active — but no stated subject is doing the action here, so passive is required. Common in formal and legal English: <em>The agreement was reached, the contract was signed.</em>'},
-
-{id:'wo_i01', lvl:'B2', biz:false, cat:'Word Order', type:'input',
- q:'"She speaks very English well." — correct the word order after \'speaks\': She speaks ___ (3 words)',
- ans:'English very well', hint:'adverb of manner: comes after the object, not between verb and object (3 words)',
- exp:'<strong>Speaks English very well</strong> — manner adverbs follow the object: verb + object + adverb. ✗ Placing <em>very well</em> before the object (*speaks very well English) is a common Russian-speaker error influenced by L1 word order.'},
-
-{id:'wo_i02', lvl:'B2', biz:false, cat:'Word Order', type:'input',
- q:'"Where you are going?" — correct the word order after \'Where\': Where ___ (3 words)',
- ans:'are you going', hint:'question word order: auxiliary + subject + main verb (3 words)',
- exp:'<strong>Where are you going?</strong> — questions require subject-auxiliary inversion. ✗ <em>where you are going</em> is statement word order — a very common error for Russian speakers, where question word order does not change. Rule: Wh- word + auxiliary + subject + verb.'},
-
-{id:'wo_i03', lvl:'B1', biz:false, cat:'Word Order', type:'input',
- q:'I ___ (never/have/been) to Australia. Put in the correct order. (3 words)',
- ans:'have never been', hint:'frequency adverb goes between auxiliary and main verb (3 words)',
- exp:'<strong>Have never been</strong> — frequency adverbs sit between the auxiliary and the main verb: <em>have never been, has always known</em>. ✗ <em>never have been</em> puts the adverb before the auxiliary. ✗ <em>have been never</em> puts it after the main verb. Both are wrong.'},
-
-{id:'wo_i04', lvl:'B2', biz:true, cat:'Word Order', type:'input',
- q:'She told me that the meeting ___ (would/postponed/be). Put in the correct order. (3 words)',
- ans:'would be postponed', hint:'passive in reported speech: modal + be + past participle (3 words)',
- exp:'<strong>Would be postponed</strong> — passive voice after a modal: modal + <em>be</em> + past participle. ✗ Any other order (*would postponed be, *be would postponed) breaks the auxiliary + infinitive structure. Common in formal reporting: <em>I was told the decision would be delayed.</em>'},
-
-{id:'mvc31', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
- q:'You ___ have waited so long — I wasn\'t busy at all. (modal: it was not necessary — 2 words)',
- ans:'needn\'t have|need not have', hint:'modal: unnecessary past action that did happen (2 words)',
- exp:'<strong>Needn\'t have</strong> + past participle = you did it, but it was unnecessary. ✗ <em>didn\'t need to wait</em> = you didn\'t wait (because it wasn\'t necessary) — different meaning. ✗ <em>shouldn\'t have</em> = you did it, but it was wrong. A key B2 distinction.'},
-
-{id:'mvc32', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
- q:'He looks pale. He ___ ill. (modal: present possibility — 2 words)',
- ans:'might be|could be|may be', hint:'modal for present possibility (2 words)',
- exp:'<strong>Might be</strong>, <strong>could be</strong>, or <strong>may be</strong> all express present possibility. ✗ <em>must be</em> expresses near-certainty, not mere possibility. ✗ <em>should be</em> is for expectation based on logic. <em>Might</em> is slightly more tentative than <em>may</em>.'},
-
-{id:'mvc33', lvl:'B2', biz:false, cat:'Modal Verbs', type:'input',
- q:'You ___ the secret — she is very upset now. (modal: it was wrong to do this — 3 words)',
- ans:'shouldn\'t have told|should not have told', hint:'modal perfect for criticising a past action (3 words)',
- exp:'<strong>Shouldn\'t have told</strong> — modal perfect for criticising a past action: <em>should/ought to + have + past participle</em>. ✗ <em>mustn\'t have told</em> is not standard for criticism. ✗ <em>needn\'t have told</em> means it was unnecessary, not that it was wrong.'},
-
-{id:'qf32', lvl:'B2', biz:false, cat:'Question Formation', type:'input',
- q:'Ask what time the film starts. → What time ___ ? (present simple question — 3 words)',
- ans:'does the film start|does it start', hint:'present simple question: do/does + subject + base verb (3 words)',
- exp:'<strong>Does the film start?</strong> — present simple question: do/does + subject + base verb. ✗ <em>does the film starts</em> is wrong — no -s after does. ✗ Statement word order (*the film starts when?) is a common Russian-speaker transfer error.'},
-
-{id:'qf33', lvl:'B2', biz:false, cat:'Question Formation', type:'input',
- q:'"Someone broke the window." → Who ___ ? (subject question — 3 words)',
- ans:'broke the window', hint:'subject question: Wh-word is the subject — no auxiliary needed (3 words)',
- exp:'<strong>Who broke the window?</strong> — when the Wh-word is the subject, no auxiliary (do/did) is used. ✗ <em>Who did break the window?</em> is wrong in standard English. Compare: <em>Who did you see?</em> (object question, auxiliary needed) vs <em>Who called?</em> (subject question, no auxiliary).'},
-
-{id:'qf34', lvl:'B2', biz:true, cat:'Question Formation', type:'input',
- q:'Polite indirect question: "Could you tell me where ___ ?" (3 words — indirect word order)',
- ans:'the exit is', hint:'indirect question: statement word order after embedded question phrase (3 words)',
- exp:'<strong>Where the exit is</strong> — indirect questions use statement word order (subject + verb), not question inversion. ✗ <em>where is the exit</em> is direct question order — wrong after <em>Could you tell me...</em>. Key B2 accuracy point for Russian speakers.'},
-
-{id:'ut_i01', lvl:'B2', biz:false, cat:'Used To', type:'input',
- q:'When I was a child, I ___ walk to school every day. (past habit — 3 words)',
- ans:'used to walk|would walk', hint:'past repeated action no longer happening — 3 words',
- exp:'<strong>Used to walk</strong> or <strong>would walk</strong> both express a repeated past habit no longer true. ✗ <em>was walking</em> is past continuous — for an action in progress at a specific time. ✗ <em>walked</em> is possible but lacks the habitual meaning. <em>Would</em> works only for repeated actions, not states.'},
-
-{id:'ut_i02', lvl:'B2', biz:false, cat:'Used To', type:'input',
- q:'She ___ living alone now — it was hard at first. (be accustomed to — 3 words)',
- ans:'is used to', hint:'be used to + -ing: accustomed to a current situation (3 words)',
- exp:'<strong>Is used to</strong> living — <em>be used to + gerund</em> = accustomed to a current situation. ✗ <em>used to live</em> means she no longer lives alone — wrong here. Key distinction: <em>used to + infinitive</em> (past habit) vs <em>be used to + -ing</em> (current familiarity).'},
-
-{id:'ut_i03', lvl:'B2', biz:false, cat:'Used To', type:'input',
- q:'I ___ smoke, but I quit five years ago. (past habit that stopped — 3 words)',
- ans:'used to smoke', hint:'past habit no longer true: used to + base verb (3 words)',
- exp:'<strong>Used to smoke</strong> — past habit that no longer continues. ✗ <em>would smoke</em> is also possible for repeated actions but less natural for a named habit you quit. ✗ <em>was smoking</em> is past continuous — implies a specific moment, not a habit.'},
-
-{id:'emph_i02', lvl:'B2', biz:false, cat:'Emphasis', type:'input',
- q:'Complete the cleft sentence for emphasis: It ___ who was most surprised. (subject cleft — 2 words)',
- ans:'was she', hint:'cleft structure: It + was/is + emphasised subject (2 words)',
- exp:'<strong>It was she</strong> who was most surprised — cleft sentence: <em>It + was + emphasised element + who/that + rest</em>. Always <em>was</em> with singular subjects. ✗ <em>It were she</em> is grammatically wrong. Cleft sentences highlight one element and are common in formal written English.'},
-
-{id:'emph_i03', lvl:'C1', biz:false, cat:'Emphasis', type:'input',
- q:'___ did I realise how serious the problem was. (negative adverbial inversion — 2 words)',
- ans:'only then|not until then', hint:'negative/limiting adverb at the front triggers subject-auxiliary inversion (2 words)',
- exp:'<strong>Only then</strong> did I realise — negative adverbial inversion: a limiting adverb at the front forces auxiliary inversion. ✗ <em>Only then I realised</em> is wrong — inversion is mandatory. Other triggers: <em>Never, Rarely, Hardly, No sooner, Not until</em>. Marks C1 sophistication in formal writing.'}
-,
-
-{id:'idom_b01', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'When Sarah walked into the party, her warm smile helped to ___ immediately.',
- opts:['break the ice','spill the beans','beat around the bush','get cold feet'],
- ans:0,
- exp:'<strong>Break the ice</strong> = do or say something to relieve tension and make people feel comfortable in a new social situation. ✗ <em>Spill the beans</em> = reveal a secret. ✗ <em>Get cold feet</em> = become nervous and hesitate before doing something.'},
-
-{id:'idom_b02', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'The dentist appointment was painful, but he decided to ___ and get it done.',
- opts:['bite the bullet','cut to the chase','read between the lines','sit on the fence'],
- ans:0,
- exp:'<strong>Bite the bullet</strong> = endure a painful or difficult situation with courage because it cannot be avoided. ✗ <em>Cut to the chase</em> = get to the main point directly. ✗ <em>Sit on the fence</em> = avoid committing to a position.'},
-
-{id:'idom_b03', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
- q:'I\'ve made my offer — now ___ . It\'s up to you to decide.',
- opts:['the ball is in your court','the tip of the iceberg','once in a blue moon','cost an arm and a leg'],
- ans:0,
- exp:'<strong>The ball is in your court</strong> = it is now your turn to take action or make a decision. ✗ <em>The tip of the iceberg</em> = only a small visible part of a much larger problem. ✗ <em>Cost an arm and a leg</em> = be very expensive.'},
-
-{id:'idom_b04', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'She accidentally ___ about the surprise party, and now everyone knows.',
- opts:['spilled the beans','broke the ice','let the cat out of the bag','cut to the chase'],
- ans:0,
- exp:'<strong>Spill the beans</strong> = accidentally or carelessly reveal a secret. ✗ <em>Let the cat out of the bag</em> is close in meaning — it can be used here too — but <em>spill the beans</em> is the more natural fit with "accidentally". Note: the two idioms overlap but spill the beans emphasises carelessly revealing information.'},
-
-{id:'idom_b05', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'I can\'t come to the gym today — I\'m feeling a bit ___ .',
- opts:['under the weather','on thin ice','over the moon','in the same boat'],
- ans:0,
- exp:'<strong>Under the weather</strong> = feeling slightly ill or unwell. ✗ <em>Over the moon</em> = extremely happy. ✗ <em>On thin ice</em> = in a risky or precarious situation. ✗ <em>In the same boat</em> = in the same difficult situation as others.'},
-
-{id:'idom_b06', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'We only visit that restaurant ___ — it costs an arm and a leg.',
- opts:['once in a blue moon','under the weather','on the fence','at the drop of a hat'],
- ans:0,
- exp:'<strong>Once in a blue moon</strong> = very rarely, almost never. ✗ <em>At the drop of a hat</em> = immediately, without hesitation — the opposite meaning here. The idiom <em>costs an arm and a leg</em> in the same sentence confirms the reason for infrequent visits.'},
-
-{id:'idom_b07', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'That restaurant ___ — we spent over £200 on dinner for two.',
- opts:['cost an arm and a leg','broke the ice','spilled the beans','cut corners'],
- ans:0,
- exp:'<strong>Cost an arm and a leg</strong> = be extremely expensive. ✗ <em>Cut corners</em> = do something badly to save time or money. ✗ <em>Break the ice</em> = reduce tension in a social situation — unrelated to expense.'},
-
-{id:'idom_b08', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'Someone ___ about the redundancies before the official announcement.',
- opts:['let the cat out of the bag','broke the ice','bit the bullet','sat on the fence'],
- ans:0,
- exp:'<strong>Let the cat out of the bag</strong> = accidentally reveal a secret or surprise. ✗ <em>Spill the beans</em> overlaps in meaning but <em>let the cat out of the bag</em> is the more idiomatic choice when a specific piece of confidential news is disclosed. ✗ <em>Break the ice</em> = ease social tension.'},
-
-{id:'idom_b09', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
- q:'She\'s still ___ about accepting the job offer — she can\'t decide.',
- opts:['on the fence','under the weather','over the moon','in hot water'],
- ans:0,
- exp:'<strong>On the fence</strong> = unable to make a decision; not committed to either side. ✗ <em>In hot water</em> = in trouble. ✗ <em>Over the moon</em> = extremely happy. Used frequently in professional contexts: <em>The committee is still on the fence about the proposal.</em>'},
-
-{id:'idom_b10', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'Stop ___ — just tell me what you actually want to say.',
- opts:['beating around the bush','biting the bullet','breaking the ice','cutting corners'],
- ans:0,
- exp:'<strong>Beat around the bush</strong> = avoid getting to the main point; talk around a subject without addressing it directly. ✗ <em>Cut corners</em> = do something carelessly to save effort. ✗ <em>Bite the bullet</em> = endure something difficult — not about avoidance.'},
-
-{id:'idom_b11', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'He ___ just before the wedding — he was too nervous to go through with it.',
- opts:['got cold feet','spilled the beans','beat around the bush','broke the ice'],
- ans:0,
- exp:'<strong>Get cold feet</strong> = suddenly become nervous or hesitant about something you were previously committed to doing. ✗ <em>Spill the beans</em> = reveal a secret. ✗ <em>Beat around the bush</em> = avoid the main point in conversation.'},
-
-{id:'idom_b12', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
- q:'The ten complaints we\'ve received are just ___ — the real problem is much bigger.',
- opts:['the tip of the iceberg','once in a blue moon','the ball in our court','a bitter pill'],
- ans:0,
- exp:'<strong>The tip of the iceberg</strong> = the small visible part of a much larger problem. Like an iceberg, most of the issue is hidden. ✗ <em>Once in a blue moon</em> = very rarely — unrelated. Common in business and journalism: <em>These losses are just the tip of the iceberg.</em>'},
-
-{id:'idom_b13', lvl:'B2', biz:true, cat:'Idioms', type:'gap',
- q:'We don\'t have much time — let\'s ___ and talk about the main issue.',
- opts:['cut to the chase','sit on the fence','break the ice','beat around the bush'],
- ans:0,
- exp:'<strong>Cut to the chase</strong> = stop talking about less important things and get to the main point. ✗ <em>Beat around the bush</em> = the opposite — avoiding the point. ✗ <em>Sit on the fence</em> = avoid taking a side. Useful in presentations and meetings.'},
-
-{id:'idom_b14', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'His message sounded positive, but you need to ___ — he\'s clearly not happy.',
- opts:['read between the lines','cut to the chase','spill the beans','bite the bullet'],
- ans:0,
- exp:'<strong>Read between the lines</strong> = understand the hidden or implied meaning behind what is literally said or written. ✗ <em>Cut to the chase</em> = get to the point directly. ✗ <em>Spill the beans</em> = reveal a secret. Reading between the lines requires inference.'},
-
-{id:'idom_b15', lvl:'B2', biz:false, cat:'Idioms', type:'gap',
- q:'New employees sometimes find it hard to ___ in a large team.',
- opts:['break the ice','cut to the chase','bite the bullet','spill the beans'],
- ans:0,
- exp:'<strong>Break the ice</strong> = do or say something that helps people relax and start communicating in an unfamiliar situation. ✗ <em>Cut to the chase</em> = skip to the main point. ✗ <em>Bite the bullet</em> = endure something unpleasant. Breaking the ice is about social ease, not avoiding discomfort.'}
-
-
-
 ];
 
 // ══════════════════════════════════════════════════════════════
@@ -6507,7 +6475,7 @@ function startFamilyPoll() {
 }
 
 function playerCoverageHTML(p) {
-  const LEVEL_TOTALS = {'B1':597,'B2':962,'C1':329,'C2':16};
+  const LEVEL_TOTALS = {'B1':597,'B2':935,'C1':326,'C2':16};
   const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
@@ -7128,12 +7096,41 @@ const EX_TYPE_COLORS = {
 let exState = { allExercises:null };
 
 // Weekly exercise schedule per player (from exercises guide)
-const EX_WEEKLY_PLANS = {
-  artem:  {mon:2,tue:2,wed:2,thu:2,fri:1,sat:0,sun:0},
-  anna:   {mon:1,tue:0,wed:2,thu:0,fri:1,sat:0,sun:0},
-  nicole: {mon:2,tue:1,wed:0,thu:2,fri:0,sat:1,sun:0},
-  ernest: {mon:0,tue:1,wed:0,thu:1,fri:0,sat:1,sun:0},
-  egor:   null
+// Weekly exercise targets per player: topic slots to fill each week
+// Each slot = one exercise session logged. Order and day don't matter.
+const EX_WEEKLY_TARGETS = {
+  artem: {total:9, slots:[
+    {topic:'Phrasal Verbs',type:'transform',pri:'high'},
+    {topic:'Articles',type:'error_correction',pri:'high'},
+    {topic:'Articles + Collocations',type:'translation',pri:'high'},
+    {topic:'Collocations',type:'dictation',pri:'high'},
+    {topic:'Phrasal Verbs + Articles',type:'translation',pri:'high'},
+    {topic:'G&I',type:'free_write',pri:'med'},
+    {topic:'Conditionals + Reported Speech',type:'transform',pri:'med'},
+    {topic:'Mixed errors',type:'error_correction',pri:'med'},
+    {topic:'Phrasal Verbs in email',type:'free_write',pri:'med'}
+  ]},
+  anna: {total:4, slots:[
+    {topic:'Collocations',type:'conversation',pri:'high'},
+    {topic:'Conditionals',type:'transform',pri:'high'},
+    {topic:'Vocabulary + Collocations',type:'translation',pri:'high'},
+    {topic:'Passive Voice',type:'error_correction',pri:'med'}
+  ]},
+  nicole: {total:6, slots:[
+    {topic:'Irregular Verbs',type:'dictation',pri:'high'},
+    {topic:'Word Choice',type:'translation',pri:'high'},
+    {topic:'Relative Clauses',type:'transform',pri:'high'},
+    {topic:'Articles',type:'error_correction',pri:'med'},
+    {topic:'Conditionals',type:'transform',pri:'med'},
+    {topic:'Irregular Verbs story',type:'free_write',pri:'med'}
+  ]},
+  ernest: {total:4, slots:[
+    {topic:'Articles',type:'error_correction',pri:'high'},
+    {topic:'Conditionals',type:'transform',pri:'high'},
+    {topic:'Collocations + Word Choice',type:'translation',pri:'high'},
+    {topic:'Vocabulary story',type:'free_write',pri:'med'}
+  ]},
+  egor: null
 };
 const DAY_NAMES = ['mon','tue','wed','thu','fri','sat','sun'];
 const DAY_LABELS = ['M','T','W','T','F','S','S'];
@@ -7142,8 +7139,8 @@ function exRenderWeeklyPlan() {
   const el = document.getElementById('exWeeklyPlan');
   if (!el) return;
   const player = currentPlayer;
-  const plan = player ? EX_WEEKLY_PLANS[player] : null;
-  if (!plan) {
+  const targets = player ? EX_WEEKLY_TARGETS[player] : null;
+  if (!targets) {
     el.innerHTML = player
       ? '<div class="ex-wp-noplan">No fixed exercise schedule</div>'
       : '<div class="ex-wp-noplan">Log in to see your exercise plan</div>';
@@ -7152,31 +7149,37 @@ function exRenderWeeklyPlan() {
   const now = new Date();
   const todayIdx = (now.getDay() + 6) % 7; // 0=Mon
   const weekStart = new Date(now); weekStart.setDate(now.getDate() - todayIdx); weekStart.setHours(0,0,0,0);
-  // Count exercises done per day this week
-  const doneCounts = {};
-  (exState.allExercises || []).forEach(e => {
+  // Count exercises done this week
+  const weekExercises = (exState.allExercises || []).filter(e => {
     const d = new Date(e.date || e.timestamp);
-    if (d >= weekStart) {
-      const di = (d.getDay() + 6) % 7;
-      doneCounts[DAY_NAMES[di]] = (doneCounts[DAY_NAMES[di]] || 0) + 1;
-    }
+    return d >= weekStart;
   });
-  let html = '<div class="ex-wp-title">This week\'s plan</div><div class="ex-wp-days">';
-  DAY_NAMES.forEach((day, i) => {
-    const target = plan[day] || 0;
-    const done = doneCounts[day] || 0;
-    const isToday = i === todayIdx;
-    const isPast = i < todayIdx;
-    let status = '';
-    if (target === 0) { status = '·'; }
-    else if (done >= target) { status = '✅'; }
-    else if (isToday) { status = '🔵'; }
-    else if (isPast) { status = '❌'; }
-    else { status = '○'; }
-    html += '<div class="ex-wp-day' + (isToday ? ' today' : '') + '">' +
-      '<div class="ex-wp-day-name">' + DAY_LABELS[i] + '</div>' +
-      '<div class="ex-wp-day-status">' + status + '</div></div>';
+  const done = weekExercises.length;
+  const total = targets.total;
+  const pct = total > 0 ? Math.min(100, Math.round(done / total * 100)) : 0;
+  const barColor = done >= total ? 'var(--green)' : pct >= 50 ? 'var(--yellow)' : 'var(--blue)';
+  // Build slot grid: match done exercises to target slots by type
+  const slotsDone = targets.slots.map(slot => {
+    return weekExercises.some(e =>
+      e.exercise && slot.type &&
+      e.exercise.toLowerCase().replace(/[\s_]+/g,'').includes(slot.type.replace(/_/g,''))
+    );
   });
+  let html = '<div class="ex-wp-title">This week\'s progress</div>';
+  html += '<div class="ex-wp-bar-wrap"><div class="ex-wp-bar" style="width:'+pct+'%;background:'+barColor+'"></div></div>';
+  html += '<div class="ex-wp-count">' + done + ' / ' + total + ' exercises</div>';
+  html += '<div class="ex-wp-slots">';
+  targets.slots.forEach((slot, i) => {
+    const isDone = slotsDone[i];
+    const priCls = slot.pri === 'high' ? 'ex-slot-high' : 'ex-slot-med';
+    html += '<div class="ex-wp-slot ' + priCls + (isDone ? ' done' : '') + '">' +
+      (isDone ? '✅ ' : '○ ') +
+      '<span class="ex-slot-type">' + slot.type.replace(/_/g,' ') + '</span> ' +
+      '<span class="ex-slot-topic">' + slot.topic + '</span></div>';
+  });
+  if (done >= total) {
+    html += '<div class="ex-wp-bonus">🎯 Weekly target hit! Extra sessions welcome — Claude will pick from your weak spots.</div>';
+  }
   html += '</div>';
   el.innerHTML = html;
 }
