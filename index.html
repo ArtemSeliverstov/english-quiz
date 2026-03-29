@@ -1249,6 +1249,22 @@ function buildCategoryChips() {
   });
 }
 
+function normalizeQuestions(data) {
+  // Firebase RTDB converts JSON arrays to objects with numeric keys
+  // e.g. {"0":{...},"1":{...},...} — convert back to array
+  if (Array.isArray(data)) return data.filter(q => q != null);
+  if (data && typeof data === 'object') {
+    const keys = Object.keys(data);
+    // Check if keys are numeric
+    if (keys.length > 0 && keys.every(k => /^\d+$/.test(k))) {
+      const arr = [];
+      keys.forEach(k => { if (data[k] != null) arr.push(data[k]); });
+      return arr;
+    }
+  }
+  return [];
+}
+
 async function loadQuestions() {
   const spinner = document.getElementById('q-loading');
   if (spinner) spinner.style.display = 'flex';
@@ -1268,20 +1284,20 @@ async function loadQuestions() {
       // Newer version available — fetch from Firebase
       const qRes = await fetch(FB_QUESTIONS_URL);
       if (!qRes.ok) throw new Error('Failed to fetch questions: HTTP ' + qRes.status);
-      const questions = await qRes.json();
+      const questions = normalizeQuestions(await qRes.json());
       ALL_QUESTIONS = questions;
       await saveQuestionsToIDB(questions);
       localStorage.setItem('qVersion', String(serverVersion));
       console.log('Questions updated from Firebase: v' + serverVersion + ', ' + questions.length + ' questions');
     } else if (cachedQuestions) {
       // Version matches or offline with cache
-      ALL_QUESTIONS = cachedQuestions;
+      ALL_QUESTIONS = normalizeQuestions(cachedQuestions);
       console.log('Questions loaded from IDB cache: ' + cachedQuestions.length + ' questions');
     } else if (serverVersion !== null) {
       // No cache but online — fetch
       const qRes = await fetch(FB_QUESTIONS_URL);
       if (!qRes.ok) throw new Error('Failed to fetch questions: HTTP ' + qRes.status);
-      const questions = await qRes.json();
+      const questions = normalizeQuestions(await qRes.json());
       ALL_QUESTIONS = questions;
       await saveQuestionsToIDB(questions);
       localStorage.setItem('qVersion', String(serverVersion));
@@ -1308,7 +1324,7 @@ async function loadQuestions() {
     // Try IDB fallback
     const cached = await loadQuestionsFromIDB();
     if (cached && cached.length > 0) {
-      ALL_QUESTIONS = cached;
+      ALL_QUESTIONS = normalizeQuestions(cached);
       computeCoverageConstants();
       buildCategoryChips();
       if (spinner) spinner.style.display = 'none';
@@ -1338,7 +1354,7 @@ async function checkQuestionsVersion() {
       // Silently refresh questions in background
       const qRes = await fetch(FB_QUESTIONS_URL);
       if (!qRes.ok) return;
-      const questions = await qRes.json();
+      const questions = normalizeQuestions(await qRes.json());
       ALL_QUESTIONS = questions;
       await saveQuestionsToIDB(questions);
       localStorage.setItem('qVersion', String(serverVersion));
