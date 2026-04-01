@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260329-s79">
+  <meta name="app-version" content="v20260401-s80">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260329-s79</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260401-s80</span></p>
 </header>
 
 <!-- TABS -->
@@ -2438,7 +2438,11 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
   }
 
   multiState.results.push(correct);
-  if (!correct) multiState.allCorrect = false;
+  if (!correct) {
+    multiState.allCorrect = false;
+    if (!multiState.wrongChoices) multiState.wrongChoices = [];
+    multiState.wrongChoices[blankIdx] = blank.opts[chosen];
+  }
 
   const nextBlank = blankIdx + 1;
 
@@ -2456,6 +2460,9 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
     const blanksCorrect = multiState.results.filter(Boolean).length;
     const blanksTotal = q.blanks.length;
     const fraction = blanksCorrect / blanksTotal;
+    if (!allCorrect && multiState.wrongChoices && multiState.wrongChoices.length) {
+      q._lastPlayerAnswer = multiState.wrongChoices.map((v,i) => v !== undefined ? `[${i+1}]:${v}` : null).filter(Boolean).join(', ');
+    }
     await recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q);
   }
 }
@@ -2476,6 +2483,7 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   DB.qStats[q.id].wrong += (1 - fraction);
   DB.qStats[q.id].lastSeen = Date.now();
   DB.qStats[q.id].consec = allCorrect ? (DB.qStats[q.id].consec||0)+1 : 0;
+  if (allCorrect) { delete DB.qStats[q.id].lastWrong; } else if (q._lastPlayerAnswer !== undefined) { DB.qStats[q.id].lastWrong = q._lastPlayerAnswer; }
   const cat = q.cat;
   if (!DB.catStats[cat]) DB.catStats[cat] = {seen:0,correct:0};
   DB.catStats[cat].seen++;
@@ -2516,6 +2524,7 @@ async function recordAnswer(correct, q) {
   DB.qStats[q.id][correct?'correct':'wrong']++;
   DB.qStats[q.id].lastSeen = Date.now();
   DB.qStats[q.id].consec = correct ? (DB.qStats[q.id].consec||0)+1 : 0;
+  if (correct) { delete DB.qStats[q.id].lastWrong; } else if (q._lastPlayerAnswer !== undefined) { DB.qStats[q.id].lastWrong = q._lastPlayerAnswer; }
 
   // per-category
   const cat = q.cat;
@@ -2550,6 +2559,7 @@ async function answerMCQ(i) {
   btns.forEach(b => b.disabled = true);
   btns[i].classList.add(correct ? 'correct' : 'wrong');
   if (!correct) btns[q.ans].classList.add('reveal');
+  q._lastPlayerAnswer = q.opts[i];
   await recordAnswer(correct, q);
 }
 
@@ -2593,6 +2603,7 @@ async function answerGap(i, chip) {
     else if (ansArr.includes(idx) && !correct) c.classList.add('reveal-chip');
     else c.classList.add('used');
   });
+  q._lastPlayerAnswer = q.opts[i];
   await recordAnswer(correct, q);
 }
 
@@ -2628,6 +2639,7 @@ async function answerInput() {
       hintEl.style.color = 'var(--yellow)';
     }
   }
+  q._lastPlayerAnswer = raw;
   await recordAnswer(correct, q);
 }
 
@@ -2676,6 +2688,7 @@ async function answerTransform() {
     reveal.innerHTML = '\u2705 Correct: <em>' + accepted.join(' / ') + '</em>';
     document.getElementById('q-options').appendChild(reveal);
   }
+  q._lastPlayerAnswer = raw;
   await recordAnswer(correct, q);
 }
 
@@ -2711,6 +2724,7 @@ async function answerWordform() {
     reveal.innerHTML = '\u2705 Correct: <em>' + accepted.join(' / ') + '</em>';
     document.getElementById('q-options').appendChild(reveal);
   }
+  q._lastPlayerAnswer = raw;
   await recordAnswer(correct, q);
 }
 
@@ -4017,7 +4031,8 @@ window.exportForAI = async function() {
             cat: q?q.cat:'?', lvl: q?q.lvl:'?', type: q?q.type||'gap':'?',
             seen: s.seen, wrong: s.wrong||0,
             errorRate: Math.round((s.wrong||0)/s.seen*100)+'%',
-            lastSeenDays
+            lastSeenDays,
+            ...(s.lastWrong !== undefined ? {lastWrong: s.lastWrong} : {})
           };
         })
         .sort((a,b)=>parseInt(b.errorRate)-parseInt(a.errorRate)||b.seen-a.seen);
@@ -4028,7 +4043,9 @@ window.exportForAI = async function() {
         .slice(0,20)
         .map(d=>{
           const q = ALL_QUESTIONS.find(x=>x&&x.id===d.id);
-          return { ...d, question: q?q.q.replace(/<[^>]+>/g,'').slice(0,80):d.id };
+          const st = qst[d.id];
+          return { ...d, question: q?q.q.replace(/<[^>]+>/g,'').slice(0,80):d.id,
+            ...(st&&st.lastWrong!==undefined ? {lastWrong: st.lastWrong} : {}) };
         });
 
       // ── Trend: last 5 vs prior 5 session accuracy ─────────────────────────
