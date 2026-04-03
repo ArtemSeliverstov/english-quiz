@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260401-s80">
+  <meta name="app-version" content="v20260403-s81">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260401-s80</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260403-s81</span></p>
 </header>
 
 <!-- TABS -->
@@ -3467,7 +3467,7 @@ function exportStats() {
     categoryAccuracy: catSummary,
     levelAccuracy: lvlSummary,
     recentSessions: DB.sessions.slice(0,20).map(s => ({
-      date: new Date(s.date).toLocaleDateString('en-GB'),
+      date: (() => { const d = new Date(s.date); return !isNaN(d) ? d.toLocaleDateString('en-GB') : (s.date||'?'); })(),
       score: s.score+'/'+s.total,
       pct: s.pct+'%',
       mode: s.mode,
@@ -3708,7 +3708,13 @@ function buildPayload(db) {
     catStats:       db.catStats       || {},
     lvlStats:       db.lvlStats       || {},
     qStats:         db.qStats         || {},
-    recentSessions: (db.sessions || []).slice(0, 10),
+    recentSessions: (db.sessions || []).slice(0, 10).map(s => {
+      if (!s || !s.date) return s;
+      if (/^\d{4}-/.test(s.date)) return s;
+      const dm = s.date.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+      if (dm) return { ...s, date: `${dm[3]}-${dm[2]}-${dm[1]}` };
+      return s;
+    }),
   };
 }
 
@@ -3757,9 +3763,20 @@ async function loadFromFirebase() {
     if (!remote) return false;
     const local = typeof DB !== 'undefined' ? DB : await loadData();
     if ((remote.totalAnswered || 0) > 0 && (remote.totalAnswered || 0) >= (local.totalAnswered || 0)) {
+      // Normalise session dates: stored dates may be dd/MM/yyyy (from old exports/restores)
+      // or full ISO strings. Convert all to ISO yyyy-MM-dd so new Date() parses correctly.
+      const normaliseSessions = (sessions) => (sessions || []).map(s => {
+        if (!s || !s.date) return s;
+        // Already ISO format (yyyy-MM-dd or full ISO timestamp)
+        if (/^\d{4}-/.test(s.date)) return s;
+        // dd/MM/yyyy → yyyy-MM-dd
+        const dm = s.date.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+        if (dm) return { ...s, date: `${dm[3]}-${dm[2]}-${dm[1]}` };
+        return s;
+      });
       const merged = {
         ...defaultData(),
-        sessions:       remote.recentSessions || [],
+        sessions:       normaliseSessions(remote.recentSessions),
         qStats:         remote.qStats         || {},
         catStats:       remote.catStats        || {},
         lvlStats:       remote.lvlStats        || {},
@@ -4107,7 +4124,13 @@ window.exportForAI = async function() {
         questionDetail,
         unseenByCategory: unseenByCat,
         recentSessions: sessions.slice(0,10).map(s=>({
-          date:new Date(s.date).toLocaleDateString('en-GB'),
+          date: (() => {
+            if (!s.date) return '?';
+            const d = new Date(s.date);
+            if (!isNaN(d)) return d.toLocaleDateString('en-GB');
+            // Fallback: already dd/MM/yyyy
+            return s.date;
+          })(),
           pct:typeof s.pct==='string'?s.pct:s.pct+'%',
           total:s.total||s.score||'?', mode:s.mode||'?'
         })),
@@ -4347,6 +4370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setFbStatus('loading', '⏳ Loading your progress from server…');
     loadFromFirebase().then(loaded => {
+      window._fbLoadComplete = true;
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
       startFamilyPoll();
       checkSimpleUI();
@@ -4366,11 +4390,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Pull-before-push guard: prevent syncing empty local state to Firebase
+// before loadFromFirebase has completed on a fresh app load.
+// _fbLoadComplete is set true once loadFromFirebase resolves (success or fail).
+window._fbLoadComplete = false;
+
 // Patch saveData to trigger sync
 const _origSave = window.saveData;
 window.saveData = async function(d) {
   if (_origSave) await _origSave(d);
-  syncToFirebase(false);
+  if (window._fbLoadComplete) syncToFirebase(false);
 };
 
 // Force immediate sync after session end
