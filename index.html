@@ -4119,6 +4119,8 @@ function renderMultiChips(q, blankIdx) {
 }
 
 async function answerMultiBlank(chosen, chip, q, blankIdx) {
+  // Guard against double-tap: ignore if this blank was already answered
+  if (!multiState || multiState.results.length !== blankIdx) return;
   const blank = q.blanks[blankIdx];
   const correct = chosen === blank.ans;
 
@@ -6254,12 +6256,21 @@ function exRenderWeeklyPlan() {
   const pct = total > 0 ? Math.min(100, Math.round(done / total * 100)) : 0;
   const barColor = done >= total ? 'var(--green)' : pct >= 50 ? 'var(--yellow)' : 'var(--blue)';
   // Build slot grid: one-to-one matching — each exercise entry can satisfy at most one slot
+  // Matching rules:
+  //   article_drill → exercise==article_drill OR (exercise==error_correction AND topic contains 'article')
+  //   particle_sort → exercise==particle_sort OR (exercise==transform AND topic contains 'particle')
+  //   other types   → exercise string contains slot type string
+  function slotMatches(e, slot) {
+    if (!e.exercise || !slot.type) return false;
+    const ex = e.exercise.toLowerCase().replace(/[\s_]+/g,'');
+    const topic = (e.topic||'').toLowerCase();
+    if (slot.type === 'article_drill') return ex === 'articledrill' || (ex === 'errorcorrection' && topic.includes('article'));
+    if (slot.type === 'particle_sort') return ex === 'particlesort' || (ex === 'transform' && topic.includes('particle'));
+    return ex.includes(slot.type.replace(/_/g,''));
+  }
   const remaining = [...weekExercises];
   const slotsDone = targets.slots.map(slot => {
-    const idx = remaining.findIndex(e =>
-      e.exercise && slot.type &&
-      e.exercise.toLowerCase().replace(/[\s_]+/g,'').includes(slot.type.replace(/_/g,''))
-    );
+    const idx = remaining.findIndex(e => slotMatches(e, slot));
     if (idx !== -1) { remaining.splice(idx, 1); return true; }
     return false;
   });
