@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260405-s83">
+  <meta name="app-version" content="v20260406-s84">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260405-s83</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260406-s84</span></p>
 </header>
 
 <!-- TABS -->
@@ -5288,6 +5288,8 @@ function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 function confirmPlayer(key) {
   currentPlayer = key;
   localStorage.setItem('quizPlayerKey', key);
+  // Grammar Reference language bridge — auto-switch for Russian-speaking players
+  localStorage.setItem('ref-lang', (key === 'anna' || key === 'nicole') ? 'ru' : 'en');
   document.getElementById('name-picker').style.display = 'none';
   const member = FAMILY_MEMBERS.find(m => m.key === key);
   if (member) {
@@ -6181,7 +6183,8 @@ function exDeeplinkToast(msg, type) {
 // ══════════════════════════════════════════════
 const EX_TYPE_COLORS = {
   transform:'#a78bfa', error_correction:'#ff6b6b', dictation:'#6fefb2',
-  free_write:'#f7c948', conversation:'#93c5fd', translation:'#fbbf24'
+  free_write:'#f7c948', conversation:'#93c5fd', translation:'#fbbf24',
+  article_drill:'#f87171', particle_sort:'#c084fc'
 };
 let exState = { allExercises:null };
 
@@ -6189,33 +6192,35 @@ let exState = { allExercises:null };
 // Weekly exercise targets per player: topic slots to fill each week
 // Each slot = one exercise session logged. Order and day don't matter.
 const EX_WEEKLY_TARGETS = {
-  artem: {total:9, slots:[
-    {topic:'Phrasal Verbs',type:'transform',pri:'high'},
-    {topic:'Articles',type:'error_correction',pri:'high'},
+  artem: {total:11, slots:[
+    {topic:'PV Family Drill',type:'transform',pri:'high'},
+    {topic:'Articles Decision Drill',type:'article_drill',pri:'high'},
     {topic:'Articles + Collocations',type:'translation',pri:'high'},
     {topic:'Collocations',type:'dictation',pri:'high'},
-    {topic:'Phrasal Verbs + Articles',type:'translation',pri:'high'},
+    {topic:'PV + A2 foundation',type:'translation',pri:'high'},
     {topic:'G&I',type:'free_write',pri:'med'},
     {topic:'Conditionals + Reported Speech',type:'transform',pri:'med'},
     {topic:'Mixed errors',type:'error_correction',pri:'med'},
-    {topic:'Phrasal Verbs in email',type:'free_write',pri:'med'}
+    {topic:'PV in email',type:'free_write',pri:'med'},
+    {topic:'PV Particle Sort',type:'particle_sort',pri:'high'},
+    {topic:'Russian Trap — anti-calque',type:'translation',pri:'high'}
   ]},
   anna: {total:4, slots:[
     {topic:'Collocations',type:'conversation',pri:'high'},
     {topic:'Conditionals',type:'transform',pri:'high'},
     {topic:'Vocabulary + Collocations',type:'translation',pri:'high'},
-    {topic:'Passive Voice',type:'error_correction',pri:'med'}
+    {topic:'Articles — binary drill',type:'error_correction',pri:'med'}
   ]},
   nicole: {total:6, slots:[
     {topic:'Irregular Verbs',type:'dictation',pri:'high'},
     {topic:'Word Choice',type:'translation',pri:'high'},
     {topic:'Relative Clauses',type:'transform',pri:'high'},
-    {topic:'Articles',type:'error_correction',pri:'med'},
+    {topic:'Articles Decision Drill',type:'article_drill',pri:'med'},
     {topic:'Conditionals',type:'transform',pri:'med'},
     {topic:'Irregular Verbs story',type:'free_write',pri:'med'}
   ]},
   ernest: {total:4, slots:[
-    {topic:'Articles',type:'error_correction',pri:'high'},
+    {topic:'Articles Decision Drill',type:'article_drill',pri:'high'},
     {topic:'Conditionals',type:'transform',pri:'high'},
     {topic:'Collocations + Word Choice',type:'translation',pri:'high'},
     {topic:'Vocabulary story',type:'free_write',pri:'med'}
