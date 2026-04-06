@@ -6253,12 +6253,15 @@ function exRenderWeeklyPlan() {
   const total = targets.total;
   const pct = total > 0 ? Math.min(100, Math.round(done / total * 100)) : 0;
   const barColor = done >= total ? 'var(--green)' : pct >= 50 ? 'var(--yellow)' : 'var(--blue)';
-  // Build slot grid: match done exercises to target slots by type
+  // Build slot grid: one-to-one matching — each exercise entry can satisfy at most one slot
+  const remaining = [...weekExercises];
   const slotsDone = targets.slots.map(slot => {
-    return weekExercises.some(e =>
+    const idx = remaining.findIndex(e =>
       e.exercise && slot.type &&
       e.exercise.toLowerCase().replace(/[\s_]+/g,'').includes(slot.type.replace(/_/g,''))
     );
+    if (idx !== -1) { remaining.splice(idx, 1); return true; }
+    return false;
   });
   let html = '<div class="ex-wp-title">This week\'s progress</div>';
   html += '<div class="ex-wp-bar-wrap"><div class="ex-wp-bar" style="width:'+pct+'%;background:'+barColor+'"></div></div>';
