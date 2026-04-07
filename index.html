@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260407-s85">
+  <meta name="app-version" content="v20260407-s85r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260407-s85</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260407-s85r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -6153,12 +6153,7 @@ if ('serviceWorker' in navigator) {
       const keys = await caches.keys();
       for (const k of keys) await caches.delete(k);
       // reload with no-cache header to bypass HTTP cache too
-      const resp = await fetch(location.pathname, { cache: 'no-store' });
-      const html = await resp.text();
-      document.open();
-      document.write(html);
-      document.close();
-      history.replaceState(null, '', location.pathname);
+      location.replace(location.pathname);
       return;
     }
     navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' })
