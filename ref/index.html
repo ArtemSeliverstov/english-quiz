@@ -153,6 +153,19 @@ body:not(.lang-ru) .en-inline { display:inline; }
 
 /* ── Divider ── */
 .section-divider { border:none; border-top:2px solid var(--border); margin:2.5rem 0 1rem; }
+
+/* ── PV tables ── */
+.pv-table { width:100%; border-collapse:collapse; font-size:12.5px; margin:.5rem 0 1rem; }
+.pv-table th { text-align:left; padding:.4rem .6rem; background:var(--surface2); border:1px solid var(--border); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--text3); white-space:nowrap; }
+.pv-table td { padding:.38rem .6rem; border:1px solid var(--border); vertical-align:top; }
+.pv-table tr:nth-child(even) td { background:rgba(255,255,255,.02); }
+.pv-table em { color:var(--text3); font-size:11.5px; }
+.pvr[style*="none"] { display:none; }
+.pv-tag { display:inline-block; font-size:9.5px; font-weight:700; padding:1px 5px; border-radius:4px; white-space:nowrap; margin:.1rem .1rem 0 0; }
+.pv-quiz { background:rgba(52,211,153,.12); color:var(--green); }
+.pv-err  { background:rgba(248,113,113,.15); color:var(--red); }
+.pv-soon { background:rgba(167,139,250,.12); color:var(--purple); }
+.pv-3w   { background:rgba(251,146,60,.1); color:var(--orange); }
 </style>
 </head>
 <body>
@@ -174,7 +187,7 @@ body:not(.lang-ru) .en-inline { display:inline; }
   <a class="hub-card active" href="#articles">📐 <span class="en-inline">Articles</span><span class="ru-inline">Артикли</span> <span class="hub-badge badge-live"><span class="en-inline">LIVE</span><span class="ru-inline">✓</span></span></a>
   <div class="hub-card soon">⏱ <span class="en-inline">Tenses</span><span class="ru-inline">Времена</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
   <div class="hub-card soon">🔗 <span class="en-inline">Prepositions</span><span class="ru-inline">Предлоги</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
-  <div class="hub-card soon">🔀 <span class="en-inline">Phrasal Verbs</span><span class="ru-inline">Фраз. глаголы</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
+  <a class="hub-card active" href="#phrasal-verbs">🔀 <span class="en-inline">Phrasal Verbs</span><span class="ru-inline">Фраз. глаголы</span> <span class="hub-badge badge-live"><span class="en-inline">LIVE</span><span class="ru-inline">✓</span></span></a>
 </div>
 
 <a class="back-link" href="../index.html" style="margin-bottom:1.5rem;">
@@ -515,13 +528,250 @@ body:not(.lang-ru) .en-inline { display:inline; }
   <tr><td>as a result</td><td><span class="flow-article fa-a">a</span></td><td><span class="en-inline">consequently</span><span class="ru-inline">в результате</span></td></tr>
 </table>
 
+
+<!-- ══════════════════════════════════════════════════════════
+     PHRASAL VERBS SECTION
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-divider" style="border-top:1px solid var(--border);margin:2.5rem 0 2rem;"></div>
+
+<div class="section-head" id="phrasal-verbs">
+  <span class="en">🔀 Phrasal Verbs — particle logic &amp; translations</span>
+  <span class="ru">🔀 Фразовые глаголы — логика частиц и переводы</span>
+</div>
+
+<div class="nav-pills" style="margin-bottom:1.2rem;">
+  <a class="nav-pill" href="#pv-particles"><span class="en-inline">Particles</span><span class="ru-inline">Частицы</span></a>
+  <a class="nav-pill" href="#pv-get">GET</a>
+  <a class="nav-pill" href="#pv-turn">TURN/BRING/COME</a>
+  <a class="nav-pill" href="#pv-set">SET/TAKE</a>
+  <a class="nav-pill" href="#pv-phase2"><span class="en-inline">Coming soon</span><span class="ru-inline">Скоро</span></a>
+  <a class="nav-pill" href="#pv-other"><span class="en-inline">Other</span><span class="ru-inline">Другие</span></a>
+  <a class="nav-pill" href="#pv-calques">🇷🇺 Ловушки</a>
+</div>
+
+<!-- PV search -->
+<input style="width:100%;padding:.5rem .8rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13px;margin-bottom:.8rem;outline:none;box-sizing:border-box;" id="pv-search" placeholder="Search PVs… (e.g. get, off, give up, расслабиться)" oninput="filterPVs(this.value)">
+<div id="pv-no-match" style="display:none;font-size:13px;color:var(--text3);padding:.4rem 0;">No matches.</div>
+
+<!-- ── Particle map ── -->
+<h3 id="pv-particles" style="margin-top:1.2rem;">
+  <span class="en">Particle Meaning Map</span><span class="ru">Карта значений частиц</span>
+</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:.8rem;">
+  <span class="en-inline">When you blank on a particle — ask "what is happening?" and match to the meaning below. Not for memorisation: a fallback when production fails.</span>
+  <span class="ru-inline">Когда забываете частицу — спросите «что происходит?» и найдите совпадение. Не для заучивания — запасная логика при провале.</span>
+</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.4rem;margin-bottom:1.5rem;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--red);font-size:1rem;margin-bottom:.2rem;">OFF</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">separation · departure · stopping</span><span class="ru-inline">разделение · уход · прекращение</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">call off, cut off, turn off, set off</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--green);font-size:1rem;margin-bottom:.2rem;">OUT</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">completion · discovery · exhaustion</span><span class="ru-inline">завершение · обнаружение · исчерпание</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">find out, sort out, turn out, rule out</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--blue);font-size:1rem;margin-bottom:.2rem;">UP</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">increase · creation · appearance</span><span class="ru-inline">увеличение · создание · появление</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">draw up, set up, turn up, build up</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--orange);font-size:1rem;margin-bottom:.2rem;">DOWN</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">decrease · rejection · stopping</span><span class="ru-inline">уменьшение · отказ · прекращение</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">turn down, cut down, wind down, let down</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--purple);font-size:1rem;margin-bottom:.2rem;">THROUGH</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">completion · survival · penetration</span><span class="ru-inline">завершение · преодоление · проникновение</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">get through, go through, fall through</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:var(--yellow);font-size:1rem;margin-bottom:.2rem;">ABOUT</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">causation · general topic</span><span class="ru-inline">причинность · общая тема</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">bring about, come about, go about</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:#e879f9;font-size:1rem;margin-bottom:.2rem;">INTO</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">transformation · collision · investigation</span><span class="ru-inline">превращение · столкновение · расследование</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">turn into, run into, look into</div>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .9rem;">
+    <div style="font-weight:700;font-family:var(--mono);color:#67e8f9;font-size:1rem;margin-bottom:.2rem;">ON</div>
+    <div style="font-size:12px;color:var(--text2);"><span class="en-inline">continuation · attachment</span><span class="ru-inline">продолжение · присоединение</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-top:.2rem;">go on, keep on, press on, carry on</div>
+  </div>
+</div>
+
+<!-- ── GET family ── -->
+<h3 id="pv-get" style="color:var(--red);">
+  <span class="en">GET family — your #1 problem (6 chronic failures)</span>
+  <span class="ru">Семья GET — главная проблема (6 хронических ошибок)</span>
+</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:.6rem;">
+  <span class="en-inline">All 6 particles change the meaning completely. The particle answers "what direction / what happened?" Russian has no equivalent — hence the blank.</span>
+  <span class="ru-inline">Все 6 частиц полностью меняют смысл. Частица отвечает «в каком направлении / что произошло?». В русском аналога нет.</span>
+</p>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Phrasal Verb</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th><th><span class="ru-inline">Перевод</span><span class="en-inline" style="display:none">RU</span></th><th><span class="en-inline">Example</span><span class="ru-inline">Пример</span></th><th>Tag</th></tr>
+<tr class="pvr" data-pv="get off">
+  <td><strong>get off</strong></td>
+  <td><span class="en-inline">leave a vehicle; escape punishment</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">выйти из транспорта; избежать наказания</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">He got off with a warning.</span><span class="ru-inline">Он отделался предупреждением.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td>
+</tr>
+<tr class="pvr" data-pv="get out of">
+  <td><strong>get out of</strong></td>
+  <td><span class="en-inline">avoid a responsibility; exit from</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">уклониться от обязанности; выбраться из</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">He got out of the meeting by pretending to be ill.</span><span class="ru-inline">Он уклонился от встречи, притворившись больным.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span> <span class="pv-tag pv-3w">3-word</span></td>
+</tr>
+<tr class="pvr" data-pv="get through">
+  <td><strong>get through</strong></td>
+  <td><span class="en-inline">complete work; reach by phone; survive difficulty</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">справиться с работой; дозвониться; пережить трудность</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">I can't get through to the client.</span><span class="ru-inline">Я не могу дозвониться до клиента.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td>
+</tr>
+<tr class="pvr" data-pv="get across">
+  <td><strong>get across</strong></td>
+  <td><span class="en-inline">communicate an idea successfully</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">донести мысль, объяснить идею</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">I struggled to get my point across.</span><span class="ru-inline">Мне было сложно донести свою мысль.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td>
+</tr>
+<tr class="pvr" data-pv="get over">
+  <td><strong>get over</strong></td>
+  <td><span class="en-inline">recover from illness, loss, or shock</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">оправиться от болезни, потери, шока</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">It took months to get over the failed deal.</span><span class="ru-inline">На восстановление после провала сделки ушли месяцы.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td>
+</tr>
+<tr class="pvr" data-pv="get away with">
+  <td><strong>get away with</strong></td>
+  <td><span class="en-inline">do something wrong without being caught</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">остаться безнаказанным</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">You can't get away with a low-quality report.</span><span class="ru-inline">Нельзя безнаказанно сдать некачественный отчёт.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-3w">3-word</span></td>
+</tr>
+<tr class="pvr" data-pv="get back">
+  <td><strong>get back</strong></td>
+  <td><span class="en-inline">return; contact again later (get back to sb)</span><span class="ru-inline" style="display:none">—</span></td>
+  <td><span class="ru-inline">вернуться; связаться позже</span><span class="en-inline" style="display:none">—</span></td>
+  <td><em><span class="en-inline">I'll get back to you after the review.</span><span class="ru-inline">Я вернусь к вам после проверки.</span></em></td>
+  <td><span class="pv-tag pv-quiz">quiz</span></td>
+</tr>
+</table></div>
+
+<!-- ── TURN / BRING / COME ── -->
+<h3 id="pv-turn" style="margin-top:1.4rem;"><span class="en-inline">TURN / BRING / COME families</span><span class="ru-inline">Семьи TURN / BRING / COME</span></h3>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Phrasal Verb</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th><th><span class="ru-inline">Перевод</span><span class="en-inline" style="display:none">RU</span></th><th><span class="en-inline">Example</span><span class="ru-inline">Пример</span></th><th>Tag</th></tr>
+<tr class="pvr" data-pv="turn out"><td><strong>turn out</strong></td><td><span class="en-inline">result; prove to be</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">оказаться; получиться</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">It turned out to be the right decision.</span><span class="ru-inline">Оказалось, что это было правильным решением.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td></tr>
+<tr class="pvr" data-pv="turn up"><td><strong>turn up</strong></td><td><span class="en-inline">arrive unexpectedly; increase volume</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">появиться неожиданно; прибавить громкость</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Three investors turned up without notice.</span><span class="ru-inline">Три инвестора явились без предупреждения.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="turn down"><td><strong>turn down</strong></td><td><span class="en-inline">reject an offer; reduce volume</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">отклонить предложение; убавить громкость</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The board turned down the proposal.</span><span class="ru-inline">Совет отклонил предложение.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="turn off"><td><strong>turn off</strong></td><td><span class="en-inline">switch off; repel</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">выключить; отпугнуть</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">His attitude turns investors off.</span><span class="ru-inline">Его поведение отпугивает инвесторов.</span></em></td><td><span class="pv-tag pv-soon">Phase 2</span></td></tr>
+<tr class="pvr" data-pv="turn into"><td><strong>turn into</strong></td><td><span class="en-inline">become; transform into</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">превратиться во что-то</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The pilot turned into a full JV within a year.</span><span class="ru-inline">Пилот превратился в полноценное СП за год.</span></em></td><td><span class="pv-tag pv-soon">Phase 2</span></td></tr>
+<tr class="pvr" data-pv="bring about"><td><strong>bring about</strong></td><td><span class="en-inline">cause a change; make happen</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">вызвать изменения; добиться чего-либо</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The new CEO brought about a culture shift.</span><span class="ru-inline">Новый CEO добился изменения корпоративной культуры.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td></tr>
+<tr class="pvr" data-pv="bring forward"><td><strong>bring forward</strong></td><td><span class="en-inline">reschedule earlier; propose an idea</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">перенести на более ранний срок; выдвинуть</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Can we bring the meeting forward to Tuesday?</span><span class="ru-inline">Можем перенести встречу на вторник?</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="bring up"><td><strong>bring up</strong></td><td><span class="en-inline">raise a topic; raise a child</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">поднять тему; воспитывать ребёнка</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">She brought up the cash flow issue.</span><span class="ru-inline">Она подняла вопрос о движении средств.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="come up with"><td><strong>come up with</strong></td><td><span class="en-inline">think of an idea or solution</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">придумать идею или решение</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The team came up with three scenarios.</span><span class="ru-inline">Команда разработала три сценария.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span> <span class="pv-tag pv-3w">3-word</span></td></tr>
+<tr class="pvr" data-pv="come across"><td><strong>come across</strong></td><td><span class="en-inline">find by chance; make an impression</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">наткнуться случайно; производить впечатление</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">He comes across as very decisive.</span><span class="ru-inline">Он производит впечатление очень решительного.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="come round"><td><strong>come round</strong></td><td><span class="en-inline">change opinion; visit; regain consciousness</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">изменить мнение; зайти в гости; прийти в сознание</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The CFO came round to our valuation method.</span><span class="ru-inline">Финансовый директор согласился с нашей методологией.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="come up"><td><strong>come up</strong></td><td><span class="en-inline">arise; be mentioned; occur unexpectedly</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">возникнуть; быть упомянутым; неожиданно произойти</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">An urgent issue came up before the closing.</span><span class="ru-inline">Перед закрытием возникла срочная проблема.</span></em></td><td><span class="pv-tag pv-soon">Phase 2</span></td></tr>
+</table></div>
+
+<!-- ── SET / TAKE ── -->
+<h3 id="pv-set" style="margin-top:1.4rem;"><span class="en-inline">SET / TAKE families</span><span class="ru-inline">Семьи SET / TAKE</span></h3>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Phrasal Verb</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th><th><span class="ru-inline">Перевод</span><span class="en-inline" style="display:none">RU</span></th><th><span class="en-inline">Example</span><span class="ru-inline">Пример</span></th><th>Tag</th></tr>
+<tr class="pvr" data-pv="set up"><td><strong>set up</strong></td><td><span class="en-inline">establish; arrange; configure</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">основать; организовать; настроить</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">We set up a subsidiary in Singapore.</span><span class="ru-inline">Мы открыли дочернюю компанию в Сингапуре.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="set back"><td><strong>set back</strong></td><td><span class="en-inline">delay progress; cost (informal)</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">задержать прогресс; обойтись в сумму</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The issue set the project back six months.</span><span class="ru-inline">Проблема задержала проект на шесть месяцев.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="set off"><td><strong>set off</strong></td><td><span class="en-inline">begin a journey; trigger a reaction</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">отправиться в путь; запустить реакцию</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">We set off for the site visit at 6 AM.</span><span class="ru-inline">Мы выехали на объект в 6 утра.</span></em></td><td><span class="pv-tag pv-soon">Phase 2</span></td></tr>
+<tr class="pvr" data-pv="take up"><td><strong>take up</strong></td><td><span class="en-inline">start an activity; occupy time/space; accept an offer</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">начать увлечение; занять время/место; принять предложение</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">He took up cycling during the sabbatical.</span><span class="ru-inline">Во время отпуска он увлёкся велоспортом.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td></tr>
+<tr class="pvr" data-pv="take over"><td><strong>take over</strong></td><td><span class="en-inline">assume control; acquire a company</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">взять под контроль; поглотить компанию</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The fund took over a majority stake in the refinery.</span><span class="ru-inline">Фонд приобрёл контрольный пакет НПЗ.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="take off"><td><strong>take off</strong></td><td><span class="en-inline">remove clothing (A2); aircraft departs; succeed rapidly (B2)</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">снять одежду; взлететь; стремительно преуспеть</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The new product line took off faster than projected.</span><span class="ru-inline">Новая линейка взлетела быстрее, чем прогнозировалось.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="take back"><td><strong>take back</strong></td><td><span class="en-inline">retract a statement; return goods</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">взять слова обратно; вернуть товар</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">He had to take back his comments after the audit.</span><span class="ru-inline">После аудита ему пришлось взять слова обратно.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="take in"><td><strong>take in</strong></td><td><span class="en-inline">absorb information; deceive; accommodate</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">усвоить информацию; обмануть; принять</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">I was completely taken in by his pitch.</span><span class="ru-inline">Его презентация меня полностью обманула.</span></em></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+</table></div>
+
+<!-- ── Phase 2 coming PVs ── -->
+<h3 id="pv-phase2" style="margin-top:1.4rem;">
+  <span class="en-inline">Phase 2 — high-priority additions (not in quiz yet)</span>
+  <span class="ru-inline">Фаза 2 — приоритетные дополнения (пока не в тесте)</span>
+</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:.6rem;"><span class="en-inline">~40 PVs coming in Phase 2. Learn meanings now — questions follow.</span><span class="ru-inline">~40 глаголов появятся в Фазе 2. Учите значения сейчас.</span></p>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Phrasal Verb</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th><th><span class="ru-inline">Перевод</span><span class="en-inline" style="display:none">RU</span></th><th><span class="en-inline">Example</span><span class="ru-inline">Пример</span></th></tr>
+<tr class="pvr" data-pv="give up"><td><strong>give up</strong></td><td><span class="en-inline">stop trying; abandon a habit</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">сдаться; бросить привычку</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Don't give up on the negotiation.</span><span class="ru-inline">Не сдавайтесь на переговорах.</span></em></td></tr>
+<tr class="pvr" data-pv="find out"><td><strong>find out</strong></td><td><span class="en-inline">discover; learn a fact</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">узнать; выяснить</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">We need to find out why the deal fell through.</span><span class="ru-inline">Нам нужно выяснить, почему сделка сорвалась.</span></em></td></tr>
+<tr class="pvr" data-pv="sort out"><td><strong>sort out</strong></td><td><span class="en-inline">resolve; organise; deal with</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">урегулировать; разобраться; организовать</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">HR sorted out the contract dispute.</span><span class="ru-inline">Отдел кадров урегулировал спор по контракту.</span></em></td></tr>
+<tr class="pvr" data-pv="work out"><td><strong>work out</strong></td><td><span class="en-inline">calculate; find solution; exercise; develop well</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">рассчитать; найти решение; тренироваться; получиться</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Things worked out better than expected.</span><span class="ru-inline">Всё получилось лучше, чем ожидалось.</span></em></td></tr>
+<tr class="pvr" data-pv="call off"><td><strong>call off</strong></td><td><span class="en-inline">cancel a meeting, deal, or strike</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">отменить встречу, сделку, забастовку</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The merger was called off at the last minute.</span><span class="ru-inline">Слияние отменили в последнюю минуту.</span></em></td></tr>
+<tr class="pvr" data-pv="figure out"><td><strong>figure out</strong></td><td><span class="en-inline">understand; find a solution (informal)</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">понять; разобраться (неформально)</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">I can't figure out why margins dropped in Q3.</span><span class="ru-inline">Не могу понять, почему упала маржа в Q3.</span></em></td></tr>
+<tr class="pvr" data-pv="point out"><td><strong>point out</strong></td><td><span class="en-inline">draw attention to; mention</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">указать на; обратить внимание; упомянуть</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The auditor pointed out three compliance gaps.</span><span class="ru-inline">Аудитор указал на три пробела в соответствии.</span></em></td></tr>
+<tr class="pvr" data-pv="rule out"><td><strong>rule out</strong></td><td><span class="en-inline">exclude; make impossible</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">исключить; признать невозможным</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">We can't rule out a strategic partnership.</span><span class="ru-inline">Мы не можем исключить стратегическое партнёрство.</span></em></td></tr>
+<tr class="pvr" data-pv="end up"><td><strong>end up</strong></td><td><span class="en-inline">finally be/do something (often unplanned)</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">в итоге оказаться/сделать что-то</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">We ended up restructuring the entire debt facility.</span><span class="ru-inline">В итоге мы реструктурировали весь долговой инструмент.</span></em></td></tr>
+<tr class="pvr" data-pv="go through"><td><strong>go through</strong></td><td><span class="en-inline">experience difficulty; examine carefully; be approved</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">пережить трудность; тщательно изучить; получить одобрение</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Let me go through the terms before signing.</span><span class="ru-inline">Дайте изучить условия перед подписанием.</span></em></td></tr>
+<tr class="pvr" data-pv="put up with"><td><strong>put up with</strong></td><td><span class="en-inline">tolerate something unpleasant</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">мириться с; терпеть что-то неприятное</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The team won't put up with last-minute changes.</span><span class="ru-inline">Команда не будет мириться с изменениями в последний момент.</span></em></td></tr>
+<tr class="pvr" data-pv="keep up with"><td><strong>keep up with</strong></td><td><span class="en-inline">maintain pace; stay informed</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">идти в ногу с; быть в курсе</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Hard to keep up with regulatory changes.</span><span class="ru-inline">Сложно следить за нормативными изменениями.</span></em></td></tr>
+<tr class="pvr" data-pv="show up"><td><strong>show up</strong></td><td><span class="en-inline">arrive; appear; make someone look bad</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">появиться; прийти; выставить в плохом свете</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Only two of five bidders showed up.</span><span class="ru-inline">Явились лишь двое из пяти участников тендера.</span></em></td></tr>
+<tr class="pvr" data-pv="build up"><td><strong>build up</strong></td><td><span class="en-inline">increase gradually; develop; accumulate</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">постепенно наращивать; развивать; накапливать</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">They built up a strong pipeline over three years.</span><span class="ru-inline">За три года они сформировали солидный портфель проектов.</span></em></td></tr>
+<tr class="pvr" data-pv="step down"><td><strong>step down</strong></td><td><span class="en-inline">resign from a position</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">уйти с должности; сложить полномочия</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The CEO stepped down after the earnings miss.</span><span class="ru-inline">CEO ушёл в отставку после слабых результатов.</span></em></td></tr>
+<tr class="pvr" data-pv="wind down"><td><strong>wind down</strong></td><td><span class="en-inline">relax; gradually reduce/close operations</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">расслабиться; постепенно сворачивать деятельность</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">After cycling camp I need time to wind down.</span><span class="ru-inline">После велолагеря мне нужно расслабиться. ⚠ не «relax myself»</span></em></td></tr>
+<tr class="pvr" data-pv="fall through"><td><strong>fall through</strong></td><td><span class="en-inline">plan or deal fails to happen</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">сорваться (о плане, сделке)</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The acquisition fell through on due diligence.</span><span class="ru-inline">Поглощение сорвалось из-за проверки.</span></em></td></tr>
+<tr class="pvr" data-pv="fall behind"><td><strong>fall behind</strong></td><td><span class="en-inline">fail to keep up; be late on schedule/payments</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">отставать; задержать платежи/сроки</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The project fell behind schedule by two months.</span><span class="ru-inline">Проект отстал от графика на два месяца.</span></em></td></tr>
+<tr class="pvr" data-pv="pay off"><td><strong>pay off</strong></td><td><span class="en-inline">be worthwhile; repay a debt; bribe</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">окупиться; погасить долг; подкупить</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The investment in training paid off — turnover dropped 30%.</span><span class="ru-inline">Инвестиции в обучение окупились — текучесть упала на 30%.</span></em></td></tr>
+<tr class="pvr" data-pv="cut off"><td><strong>cut off</strong></td><td><span class="en-inline">disconnect; interrupt; isolate</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">отрезать; прервать связь/финансирование</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Funding was cut off after the audit.</span><span class="ru-inline">Финансирование прекратили после аудита.</span></em></td></tr>
+<tr class="pvr" data-pv="hold up"><td><strong>hold up</strong></td><td><span class="en-inline">delay; remain strong; rob</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">задержать; держаться (о показателях); ограбить</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Margins held up despite the headwinds.</span><span class="ru-inline">Маржа держалась несмотря на встречный ветер.</span></em></td></tr>
+<tr class="pvr" data-pv="let down"><td><strong>let down</strong></td><td><span class="en-inline">disappoint; fail to support</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">разочаровать; подвести</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">The supplier let us down two weeks before launch.</span><span class="ru-inline">Поставщик подвёл нас за две недели до запуска.</span></em></td></tr>
+<tr class="pvr" data-pv="press on"><td><strong>press on</strong></td><td><span class="en-inline">continue despite difficulty</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">продолжать несмотря на трудности</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Despite the setback, we pressed on.</span><span class="ru-inline">Несмотря на неудачу, мы продолжили.</span></em></td></tr>
+<tr class="pvr" data-pv="wear out"><td><strong>wear out</strong></td><td><span class="en-inline">exhaust; deteriorate through use</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">измотать; износиться</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Five stages in four days wore out the whole peloton.</span><span class="ru-inline">Пять этапов за четыре дня вымотали весь пелотон.</span></em></td></tr>
+<tr class="pvr" data-pv="sign up"><td><strong>sign up</strong></td><td><span class="en-inline">register; enrol; commit to</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">зарегистрироваться; записаться</span><span class="en-inline" style="display:none">—</span></td><td><em><span class="en-inline">Twenty companies signed up for the pilot.</span><span class="ru-inline">Двадцать компаний записались в пилот.</span></em></td></tr>
+</table></div>
+
+<!-- ── Other quiz PVs ── -->
+<h3 id="pv-other" style="margin-top:1.4rem;"><span class="en-inline">Other PVs currently in the quiz</span><span class="ru-inline">Другие глаголы из теста</span></h3>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Phrasal Verb</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th><th><span class="ru-inline">Перевод</span><span class="en-inline" style="display:none">RU</span></th><th>Tag</th></tr>
+<tr class="pvr" data-pv="read up on"><td><strong>read up on</strong></td><td><span class="en-inline">research thoroughly; study in depth</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">основательно изучить; углублённо исследовать</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span> <span class="pv-tag pv-3w">3-word</span></td></tr>
+<tr class="pvr" data-pv="cut down on"><td><strong>cut down on</strong></td><td><span class="en-inline">reduce spending, consumption, activity</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">сократить расходы/потребление/деятельность</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span> <span class="pv-tag pv-3w">3-word</span></td></tr>
+<tr class="pvr" data-pv="draw up"><td><strong>draw up</strong></td><td><span class="en-inline">prepare a document, plan, or contract</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">составить документ, план, контракт</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-err">chronic</span></td></tr>
+<tr class="pvr" data-pv="follow up on"><td><strong>follow up on</strong></td><td><span class="en-inline">check progress; take further action</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">проверить ход; предпринять дальнейшие шаги</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span> <span class="pv-tag pv-3w">3-word</span></td></tr>
+<tr class="pvr" data-pv="run into"><td><strong>run into</strong></td><td><span class="en-inline">encounter a problem; meet by chance</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">столкнуться с проблемой; случайно встретить</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="carry out"><td><strong>carry out</strong></td><td><span class="en-inline">perform; execute a task, plan, or order</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">выполнить; провести задачу, план, приказ</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="look into"><td><strong>look into</strong></td><td><span class="en-inline">investigate; examine</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">расследовать; изучить</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="put forward"><td><strong>put forward</strong></td><td><span class="en-inline">propose; suggest an idea or candidate</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">предложить; выдвинуть идею или кандидата</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="give out"><td><strong>give out</strong></td><td><span class="en-inline">distribute; stop working; run out</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">раздавать; выйти из строя; иссякнуть</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+<tr class="pvr" data-pv="wind up"><td><strong>wind up</strong></td><td><span class="en-inline">end up in a situation; close a business</span><span class="ru-inline" style="display:none">—</span></td><td><span class="ru-inline">оказаться в ситуации; ликвидировать бизнес</span><span class="en-inline" style="display:none">—</span></td><td><span class="pv-tag pv-quiz">quiz</span></td></tr>
+</table></div>
+
+<!-- ── Russian Trap calques ── -->
+<h3 id="pv-calques" style="margin-top:1.4rem;color:var(--red);">
+  <span class="en-inline">⚠ Russian Trap — calque errors to avoid</span>
+  <span class="ru-inline">⚠ Русская ловушка — кальки, которых нужно избегать</span>
+</h3>
+<div style="overflow-x:auto;"><table class="pv-table">
+<tr><th>Russian</th><th>❌ <span class="en-inline">Calque (avoid)</span><span class="ru-inline">Калька (избегать)</span></th><th>✅ <span class="en-inline">Correct</span><span class="ru-inline">Правильно</span></th><th><span class="en-inline">Why</span><span class="ru-inline">Почему</span></th></tr>
+<tr class="pvr" data-pv="расслабиться relax wind down"><td style="color:var(--text3);">расслабиться</td><td style="color:var(--red);font-family:var(--mono);">relax myself</td><td><strong>wind down</strong></td><td><span class="en-inline">No reflexive "myself". Wind down = gradually relax after effort.</span><span class="ru-inline">Возвратная форма не используется. Wind down = постепенно расслабиться после усилий.</span></td></tr>
+<tr class="pvr" data-pv="переговоры зашли в тупик broke down breakdown"><td style="color:var(--text3);">переговоры зашли в тупик</td><td style="color:var(--red);font-family:var(--mono);">went into deadlock</td><td><strong>broke down</strong></td><td><span class="en-inline">Break down for negotiations = completely fail/collapse.</span><span class="ru-inline">Break down для переговоров = полностью провалиться/рухнуть.</span></td></tr>
+<tr class="pvr" data-pv="начать заниматься take up hobby"><td style="color:var(--text3);">начать заниматься</td><td style="color:var(--red);font-family:var(--mono);">start doing / begin</td><td><strong>take up</strong></td><td><span class="en-inline">For hobbies: "took up cycling" = started as regular activity.</span><span class="ru-inline">Для увлечений: "took up cycling" = начал заниматься регулярно.</span></td></tr>
+<tr class="pvr" data-pv="делать фото take photos make"><td style="color:var(--text3);">делать фото</td><td style="color:var(--red);font-family:var(--mono);">make photos</td><td><strong>take photos</strong></td><td><span class="en-inline">Fixed collocation: always "take photos", never "make".</span><span class="ru-inline">Устойчивое словосочетание: всегда take photos, никогда make.</span></td></tr>
+<tr class="pvr" data-pv="разобраться sort out deal with решить"><td style="color:var(--text3);">разобраться с проблемой</td><td style="color:var(--red);font-family:var(--mono);">decide with the problem</td><td><strong>sort out / deal with</strong></td><td><span class="en-inline">Sort out = resolve/organise. Deal with = handle. Neither = "decide with".</span><span class="ru-inline">Sort out = урегулировать. Deal with = справиться. Дословный перевод не работает.</span></td></tr>
+<tr class="pvr" data-pv="объехать get around bypass"><td style="color:var(--text3);">объехать препятствие</td><td style="color:var(--red);font-family:var(--mono);">drive around</td><td><strong>get around</strong></td><td><span class="en-inline">Get around = bypass a problem/obstacle; also "get around the regulation" in business.</span><span class="ru-inline">Get around = обойти проблему/препятствие; в бизнесе: "обойти регуляцию".</span></td></tr>
+</table></div>
+
 <div style="margin-top:1.5rem;text-align:center;">
   <a class="back-link" href="../index.html"><span class="en-inline">← Back to Quiz</span><span class="ru-inline">← К тесту</span></a>
 </div>
 
 <div class="footer">
-  <span class="en">English Grammar Quiz · Grammar Reference · v1</span>
-  <span class="ru">Справочник по грамматике · v1</span>
+  <span class="en">English Grammar Quiz · Grammar Reference · v2</span>
+  <span class="ru">Справочник по грамматике · v2</span>
 </div>
 
 </div>
@@ -539,6 +789,19 @@ function setLang(lang) {
 const params = new URLSearchParams(location.search);
 const savedLang = params.get('lang') || localStorage.getItem('ref-lang') || 'en';
 setLang(savedLang);
+
+function filterPVs(q) {
+  q = q.toLowerCase().trim();
+  const noMatch = document.getElementById('pv-no-match');
+  let any = false;
+  document.querySelectorAll('.pvr').forEach(row => {
+    const txt = (row.dataset.pv || '') + ' ' + row.textContent.toLowerCase();
+    const show = !q || txt.includes(q);
+    row.style.display = show ? '' : 'none';
+    if (show) any = true;
+  });
+  if (noMatch) noMatch.style.display = (q && !any) ? 'block' : 'none';
+}
 </script>
 </body>
 </html>
