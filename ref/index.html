@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Reference · English Grammar Quiz</title>
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #181b23;
+  --surface2: #22252f;
+  --border: #2a2e3a;
+  --text: #e2e4ea;
+  --text2: #a1a5b3;
+  --text3: #6b7084;
+  --green: #34d399;
+  --green-bg: rgba(52,211,153,.08);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,.08);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96,165,250,.08);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,.08);
+  --yellow: #fbbf24;
+  --yellow-bg: rgba(251,191,36,.08);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,.08);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'SF Mono', 'Cascadia Code', monospace;
+  --r: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+.shell { max-width:680px; margin:0 auto; padding:1.2rem 1rem 4rem; }
+
+/* ── Header ── */
+.header { text-align:center; padding:1.5rem 0 1rem; }
+.header h1 { font-size:1.5rem; font-weight:700; letter-spacing:-.02em; }
+.header h1 span { color:var(--purple); }
+.header .sub { font-size:12px; color:var(--text3); margin-top:.2rem; }
+
+/* ── Language toggle ── */
+.lang-bar { display:flex; justify-content:center; gap:0; margin:1rem 0 1.5rem; }
+.lang-btn { padding:.45rem 1.2rem; font-size:13px; font-weight:600; border:1px solid var(--border); background:var(--surface); color:var(--text3); cursor:pointer; transition:all .15s; }
+.lang-btn:first-child { border-radius:var(--r) 0 0 var(--r); }
+.lang-btn:last-child { border-radius:0 var(--r) var(--r) 0; }
+.lang-btn.active { background:var(--purple); color:#fff; border-color:var(--purple); }
+
+/* ── Hub cards ── */
+.card-grid { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2rem; justify-content:center; }
+.hub-card {
+  display:block; text-decoration:none; color:var(--text);
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--r);
+  padding:.6rem .9rem; font-size:12px; font-weight:600; transition:all .15s;
+  display:flex; align-items:center; gap:.4rem;
+}
+.hub-card:hover { border-color:var(--purple); }
+.hub-card.active { border-color:var(--purple); background:var(--purple-bg); }
+.hub-card.soon { opacity:.4; pointer-events:none; }
+.hub-badge { font-size:9px; font-weight:700; padding:1px 5px; border-radius:6px; }
+.badge-live { background:rgba(52,211,153,.15); color:var(--green); }
+.badge-soon { background:rgba(107,112,132,.15); color:var(--text3); }
+
+/* ── Sections ── */
+h2 { font-size:1.15rem; font-weight:700; margin:2.5rem 0 .6rem; padding-top:1rem; border-bottom:1px solid var(--border); padding-bottom:.4rem; }
+h3 { font-size:.95rem; font-weight:600; color:var(--blue); margin:1.2rem 0 .4rem; }
+
+/* ── Nav pills ── */
+.nav-pills { display:flex; flex-wrap:wrap; gap:.4rem; margin:.8rem 0 1rem; justify-content:center; }
+.nav-pill { font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; background:var(--surface); border:1px solid var(--border); color:var(--text2); text-decoration:none; transition:all .15s; }
+.nav-pill:hover { border-color:var(--purple); color:var(--purple); }
+
+/* ── Flowchart ── */
+.flow { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1.2rem; margin:.8rem 0 1.2rem; }
+.flow-step { display:flex; align-items:flex-start; gap:.6rem; margin:.5rem 0; }
+.flow-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0; margin-top:2px; }
+.flow-q { background:var(--purple-bg); border:1px solid rgba(167,139,250,.3); color:var(--purple); }
+.flow-a { background:var(--green-bg); border:1px solid rgba(52,211,153,.3); color:var(--green); font-size:12px; }
+.flow-text { font-size:13px; color:var(--text2); }
+.flow-text strong { color:var(--text); }
+.flow-article { font-family:var(--mono); font-weight:700; font-size:14px; padding:2px 8px; border-radius:4px; }
+.fa-the { background:var(--green-bg); color:var(--green); }
+.fa-a { background:var(--blue-bg); color:var(--blue); }
+.fa-zero { background:var(--yellow-bg); color:var(--yellow); }
+
+/* ── Example pairs ── */
+.ex-pair { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:.8rem 1rem; margin:.5rem 0; }
+.ex-wrong { color:var(--red); font-size:14px; }
+.ex-wrong::before { content:'✗ '; font-weight:700; }
+.ex-right { color:var(--green); font-size:14px; margin-top:.2rem; }
+.ex-right::before { content:'✓ '; font-weight:700; }
+.ex-why { font-size:12px; color:var(--text3); margin-top:.3rem; padding-top:.3rem; border-top:1px solid var(--border); }
+
+/* ── Pattern cards ── */
+.pattern { border-radius:var(--r); padding:1rem 1.2rem; margin:1rem 0; }
+.pattern-header { display:flex; align-items:center; gap:.6rem; margin-bottom:.6rem; flex-wrap:wrap; }
+.pattern-num { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:#fff; flex-shrink:0; }
+.pattern-title { font-weight:700; font-size:14px; }
+.pattern-share { font-size:11px; font-weight:600; padding:2px 8px; border-radius:10px; margin-left:auto; }
+
+.p1 { background:var(--red-bg); border-left:3px solid var(--red); }
+.p1 .pattern-num { background:var(--red); }
+.p1 .pattern-share { background:var(--red-bg); color:var(--red); }
+.p2 { background:var(--orange-bg); border-left:3px solid var(--orange); }
+.p2 .pattern-num { background:var(--orange); }
+.p2 .pattern-share { background:var(--orange-bg); color:var(--orange); }
+.p3 { background:var(--purple-bg); border-left:3px solid var(--purple); }
+.p3 .pattern-num { background:var(--purple); }
+.p3 .pattern-share { background:var(--purple-bg); color:var(--purple); }
+.p4 { background:var(--blue-bg); border-left:3px solid var(--blue); }
+.p4 .pattern-num { background:var(--blue); }
+.p4 .pattern-share { background:var(--blue-bg); color:var(--blue); }
+.p5 { background:var(--green-bg); border-left:3px solid var(--green); }
+.p5 .pattern-num { background:var(--green); }
+.p5 .pattern-share { background:var(--green-bg); color:var(--green); }
+
+/* ── Rule box ── */
+.rule { background:var(--surface2); border-radius:var(--r); padding:.7rem 1rem; margin:.5rem 0; font-size:13px; }
+.rule-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); margin-bottom:.2rem; }
+
+/* ── Tables ── */
+table { width:100%; border-collapse:collapse; font-size:13px; margin:.6rem 0; }
+th { text-align:left; padding:.4rem .6rem; background:var(--surface); border:1px solid var(--border); font-size:11px; font-weight:600; color:var(--text2); text-transform:uppercase; letter-spacing:.04em; }
+td { padding:.4rem .6rem; border:1px solid var(--border); color:var(--text2); }
+
+/* ── Russian bridge ── */
+.bridge { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:.8rem 1rem; margin:.6rem 0; }
+.bridge-row { display:flex; align-items:center; gap:.5rem; margin:.3rem 0; font-size:13px; }
+.bridge-ru { color:var(--yellow); font-weight:600; min-width:100px; }
+.bridge-arrow { color:var(--text3); }
+.bridge-en { color:var(--green); font-weight:600; }
+.bridge-warn { background:rgba(248,113,113,.08); border:1px solid rgba(248,113,113,.2); border-radius:var(--r); padding:.6rem .8rem; margin-top:.6rem; font-size:12px; color:var(--red); }
+
+/* ── Back link ── */
+.back-link { display:inline-block; font-size:13px; color:var(--purple); text-decoration:none; padding:6px 14px; border:1px solid var(--purple); border-radius:20px; transition:all .15s; }
+.back-link:hover { background:var(--purple); color:#fff; }
+
+/* ── Top link (floating) ── */
+.top-link { position:fixed; bottom:1rem; right:1rem; width:36px; height:36px; border-radius:50%; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; text-decoration:none; font-size:16px; color:var(--text3); transition:all .15s; z-index:10; }
+.top-link:hover { border-color:var(--purple); color:var(--purple); }
+
+/* ── Language switching ── */
+.ru { display:none; }
+body.lang-ru .en { display:none; }
+body.lang-ru .ru { display:block; }
+body.lang-ru .ru-inline { display:inline; }
+body.lang-ru .en-inline { display:none; }
+body:not(.lang-ru) .ru-inline { display:none; }
+body:not(.lang-ru) .en-inline { display:inline; }
+
+/* ── Footer ── */
+.footer { text-align:center; margin-top:3rem; padding-top:1rem; border-top:1px solid var(--border); font-size:11px; color:var(--text3); }
+
+/* ── Divider ── */
+.section-divider { border:none; border-top:2px solid var(--border); margin:2.5rem 0 1rem; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ═══════════════ HEADER & HUB ═══════════════ -->
+<div class="header" id="top">
+  <h1><span>📖</span> Grammar Reference</h1>
+  <div class="sub en">English Grammar Quiz · Rule Reference & Error Patterns</div>
+  <div class="sub ru">Справочник по грамматике · Правила и типичные ошибки</div>
+</div>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en')">English</button>
+  <button class="lang-btn" onclick="setLang('ru')">Русский</button>
+</div>
+
+<div class="card-grid">
+  <a class="hub-card active" href="#articles">📐 <span class="en-inline">Articles</span><span class="ru-inline">Артикли</span> <span class="hub-badge badge-live"><span class="en-inline">LIVE</span><span class="ru-inline">✓</span></span></a>
+  <div class="hub-card soon">⏱ <span class="en-inline">Tenses</span><span class="ru-inline">Времена</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
+  <div class="hub-card soon">🔗 <span class="en-inline">Prepositions</span><span class="ru-inline">Предлоги</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
+  <div class="hub-card soon">🔀 <span class="en-inline">Phrasal Verbs</span><span class="ru-inline">Фраз. глаголы</span> <span class="hub-badge badge-soon"><span class="en-inline">SOON</span><span class="ru-inline">скоро</span></span></div>
+</div>
+
+<a class="back-link" href="../index.html" style="margin-bottom:1.5rem;">
+  <span class="en-inline">← Back to Quiz</span><span class="ru-inline">← К тесту</span>
+</a>
+
+
+<!-- ═══════════════ ARTICLES SECTION ═══════════════ -->
+<hr class="section-divider">
+
+<h2 id="articles" style="border-bottom:none;margin-top:1rem;">
+  <span class="en">📐 Articles — a / an / the / ∅</span>
+  <span class="ru">📐 Артикли — a / an / the / ∅</span>
+</h2>
+
+<div class="nav-pills">
+  <a class="nav-pill" href="#flowchart"><span class="en-inline">Decision Tree</span><span class="ru-inline">Схема решения</span></a>
+  <a class="nav-pill" href="#pattern1">a → the</a>
+  <a class="nav-pill" href="#pattern2"><span class="en-inline">Phantom ∅</span><span class="ru-inline">Лишний артикль</span></a>
+  <a class="nav-pill" href="#pattern3"><span class="en-inline">Prep + art</span><span class="ru-inline">Предл. + арт.</span></a>
+  <a class="nav-pill" href="#pattern4"><span class="en-inline">Fixed</span><span class="ru-inline">Устойчивые</span></a>
+  <a class="nav-pill" href="#pattern5"><span class="en-inline">Dropped</span><span class="ru-inline">Пропущен</span></a>
+  <a class="nav-pill" href="#russian">🇷🇺</a>
+  <a class="nav-pill" href="#zero"><span class="en-inline">Zero ∅</span><span class="ru-inline">Нулевой</span></a>
+  <a class="nav-pill" href="#fixed-list"><span class="en-inline">Top 20</span><span class="ru-inline">Топ 20</span></a>
+</div>
+
+
+<!-- ── Decision Tree ── -->
+<h3 id="flowchart">
+  <span class="en">🌳 The Decision Tree</span>
+  <span class="ru">🌳 Схема выбора артикля</span>
+</h3>
+
+<div class="en">
+<p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Every time you see a noun, ask yourself two questions — in this order:</p>
+</div>
+<div class="ru">
+<p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Каждый раз, когда видишь существительное, задай себе два вопроса — именно в таком порядке:</p>
+</div>
+
+<div class="flow">
+  <div class="flow-step">
+    <div class="flow-icon flow-q">1</div>
+    <div class="flow-text">
+      <div class="en"><strong>Am I identifying WHICH ONE?</strong> — Do both the speaker and listener know exactly which thing we're talking about?</div>
+      <div class="ru"><strong>Я указываю, КАКОЙ ИМЕННО?</strong> — Оба собеседника знают, о каком конкретном предмете идёт речь?</div>
+    </div>
+  </div>
+  <div class="flow-step" style="margin-left:2.2rem;">
+    <div class="flow-icon flow-a">→</div>
+    <div class="flow-text">
+      <div class="en">Yes → <span class="flow-article fa-the">the</span> &nbsp; <em style="color:var(--text3)">"Pass me <strong>the</strong> report" — we both know which report</em></div>
+      <div class="ru">Да → <span class="flow-article fa-the">the</span> &nbsp; <em style="color:var(--text3)">"Передай мне <strong>the</strong> report" — мы оба знаем, какой именно отчёт</em></div>
+    </div>
+  </div>
+  <div class="flow-step" style="margin-top:.8rem;">
+    <div class="flow-icon flow-q">2</div>
+    <div class="flow-text">
+      <div class="en"><strong>Am I classifying WHAT KIND?</strong> — Am I saying what type of thing it is, without pointing to a specific one?</div>
+      <div class="ru"><strong>Я говорю, ЧТО ЭТО ЗА ВЕЩЬ?</strong> — Я называю тип/категорию, не указывая на конкретный предмет?</div>
+    </div>
+  </div>
+  <div class="flow-step" style="margin-left:2.2rem;">
+    <div class="flow-icon flow-a">→</div>
+    <div class="flow-text">
+      <div class="en">
+        Singular countable → <span class="flow-article fa-a">a / an</span> &nbsp; <em style="color:var(--text3)">"She's <strong>a</strong> teacher"</em><br>
+        Plural or uncountable → <span class="flow-article fa-zero">∅</span> &nbsp; <em style="color:var(--text3)">"I like <strong>∅</strong> coffee" · "They are <strong>∅</strong> engineers"</em>
+      </div>
+      <div class="ru">
+        Единственное число (исчисляемое) → <span class="flow-article fa-a">a / an</span> &nbsp; <em style="color:var(--text3)">"She's <strong>a</strong> teacher" (Она учительница)</em><br>
+        Множественное или неисчисляемое → <span class="flow-article fa-zero">∅</span> &nbsp; <em style="color:var(--text3)">"I like <strong>∅</strong> coffee" (Я люблю кофе) · "They are <strong>∅</strong> engineers"</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rule">
+  <div class="rule-label"><span class="en">The key test</span><span class="ru">Главная проверка</span></div>
+  <div class="en"><strong>"Do we BOTH know WHICH ONE?"</strong> → If yes, use <span class="flow-article fa-the">the</span>. If not, use <span class="flow-article fa-a">a</span> or <span class="flow-article fa-zero">∅</span>.</div>
+  <div class="ru"><strong>«Мы ОБА знаем, КАКОЙ ИМЕННО?»</strong> → Если да → <span class="flow-article fa-the">the</span>. Если нет → <span class="flow-article fa-a">a</span> или <span class="flow-article fa-zero">∅</span>.<br><br>
+  В русском языке артиклей нет — мы показываем «какой именно» через указательные местоимения (этот, тот) или порядок слов. В английском эту работу делают артикли — <strong>каждый раз</strong>, а не только когда хочется подчеркнуть.</div>
+</div>
+
+
+<!-- ── Pattern 1 ── -->
+<h3 id="pattern1"><span class="en">Pattern 1: a → the swap</span><span class="ru">Ошибка 1: Путаница a и the</span></h3>
+
+<div class="pattern p1">
+  <div class="pattern-header">
+    <div class="pattern-num">1</div>
+    <div class="pattern-title"><span class="en">You wrote <em>a</em> but the answer is <em>the</em></span><span class="ru">Написал(а) <em>a</em>, а нужно <em>the</em></span></div>
+    <span class="pattern-share">~40%</span>
+  </div>
+  <div class="en">
+    <p style="font-size:13px;color:var(--text2)">The most common mistake. You know an article is needed, but reach for "a" when the context demands "the".</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.3rem"><strong>This happens when:</strong><br>
+    • <strong>Second mention</strong> — introduced with "a", now referring back<br>
+    • <strong>Shared knowledge</strong> — both speakers know which one<br>
+    • <strong>Unique in context</strong> — only one possible referent<br>
+    • <strong>Inherited specificity</strong> — "of" makes it specific</p>
+  </div>
+  <div class="ru">
+    <p style="font-size:13px;color:var(--text2)">Самая частая ошибка. Ты понимаешь, что артикль нужен, но ставишь "a" вместо "the". Это происходит, когда оба собеседника уже знают, о каком предмете речь.</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.3rem"><strong>Когда это случается:</strong><br>
+    • <strong>Второе упоминание</strong> — предмет уже введён через "a", теперь ссылаемся на него<br>
+    • <strong>Общее знание</strong> — оба знают, о чём речь (директор, менеджер отеля)<br>
+    • <strong>Единственный в контексте</strong> — только один такой (солнце, вид отсюда)<br>
+    • <strong>Через «of»</strong> — предлог «of» делает существительное конкретным</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.5rem">💡 <strong>Подсказка:</strong> спроси себя — «Я бы сказал(а) <em>этот</em> или <em>тот</em> по-русски?» Если да → нужен <strong>the</strong>.</p>
+  </div>
+</div>
+
+<div class="ex-pair">
+  <div class="ex-wrong">We commissioned a report. <strong>A</strong> report revealed several risks.</div>
+  <div class="ex-right">We commissioned a report. <strong>The</strong> report revealed several risks.</div>
+  <div class="ex-why"><span class="en">Second mention — we introduced "a report" in sentence 1, now we both know which report. → THE</span><span class="ru">Второе упоминание — в первом предложении ввели "a report", во втором оба знаем какой. По-русски: «<em>тот самый</em> отчёт». → THE</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">Please tell <strong>a</strong> CFO we need the figures by Friday.</div>
+  <div class="ex-right">Please tell <strong>the</strong> CFO we need the figures by Friday.</div>
+  <div class="ex-why"><span class="en">Shared knowledge — only one CFO. We both know who. → THE</span><span class="ru">Общее знание — в компании один CFO, мы оба знаем кто. По-русски: «<em>нашему</em> CFO». → THE</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">After the ride, <strong>a</strong> view was incredible.</div>
+  <div class="ex-right">After the ride, <strong>the</strong> view was incredible.</div>
+  <div class="ex-why"><span class="en">Unique in context — only one view from that spot. → THE</span><span class="ru">Единственный — вид с этого места только один. По-русски: «<em>этот</em> вид». → THE</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">We reviewed <strong>a</strong> outcome of the feasibility study.</div>
+  <div class="ex-right">We reviewed <strong>the</strong> outcome of the feasibility study.</div>
+  <div class="ex-why"><span class="en">Inherited specificity — "of the feasibility study" makes it specific. → THE</span><span class="ru">Через «of» — "of the feasibility study" делает результат конкретным. Какой результат? <em>Этого</em> исследования. → THE</span></div>
+</div>
+
+
+<!-- ── Pattern 2 ── -->
+<h3 id="pattern2"><span class="en">Pattern 2: Phantom articles</span><span class="ru">Ошибка 2: Лишний артикль</span></h3>
+
+<div class="pattern p2">
+  <div class="pattern-header">
+    <div class="pattern-num">2</div>
+    <div class="pattern-title"><span class="en">You added <em>a/the</em> where no article is needed (∅)</span><span class="ru">Добавил(а) <em>a/the</em> там, где артикль не нужен (∅)</span></div>
+    <span class="pattern-share">~25%</span>
+  </div>
+  <div class="en">
+    <p style="font-size:13px;color:var(--text2)">Once you learn articles matter, it's tempting to add them everywhere. But some nouns take NO article.</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.3rem">• <strong>Uncountable</strong>: ∅ progress, ∅ information, ∅ advice, ∅ equipment<br>
+    • <strong>Next/last + time</strong>: ∅ next Monday, ∅ last week<br>
+    • <strong>Days</strong>: on ∅ Wednesday<br>
+    • <strong>Abstract (general)</strong>: ∅ management, ∅ procurement<br>
+    • <strong>Meals</strong>: have ∅ breakfast · <strong>Sports</strong>: play ∅ football</p>
+  </div>
+  <div class="ru">
+    <p style="font-size:13px;color:var(--text2)">Когда учишь артикли, появляется соблазн ставить их везде. Но перед некоторыми существительными артикль <strong>не нужен</strong> — это «нулевой артикль» (∅). Как ни странно, это ближе к русскому!</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.3rem">• <strong>Неисчисляемые</strong>: ∅ progress, ∅ information, ∅ advice. ⚠️ В русском «прогресс» исчисляемое — ловушка!<br>
+    • <strong>Next/last + время</strong>: ∅ next Monday, ∅ last week — без артикля всегда<br>
+    • <strong>Дни</strong>: on ∅ Wednesday<br>
+    • <strong>Абстрактные (в общем смысле)</strong>: ∅ management, ∅ procurement<br>
+    • <strong>Еда</strong>: have ∅ breakfast · <strong>Спорт</strong>: play ∅ football</p>
+  </div>
+</div>
+
+<div class="ex-pair">
+  <div class="ex-wrong">We made <strong>a</strong> good progress last quarter.</div>
+  <div class="ex-right">We made good progress last quarter.</div>
+  <div class="ex-why"><span class="en">"Progress" is uncountable. No article. (Russian "прогресс" IS countable — trap!)</span><span class="ru">«Progress» неисчисляемое. Без артикля. Ловушка: русское «прогресс» исчисляемое!</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">We'll discuss this <strong>the</strong> next Monday.</div>
+  <div class="ex-right">We'll discuss this next Monday.</div>
+  <div class="ex-why"><span class="en">"Next + day/week/month" = zero article. Always.</span><span class="ru">«Next + день/неделя/месяц» = без артикля. Всегда. Без исключений.</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">Ernest spent whole evening writing <strong>a</strong> Python code.</div>
+  <div class="ex-right">Ernest spent the whole evening writing Python code.</div>
+  <div class="ex-why"><span class="en">"Code" is uncountable (like "software"). No "a". But "the whole evening" = THE (specific evening).</span><span class="ru">«Code» неисчисляемое (как «software»). Нельзя «a code». А «the whole evening» нужен THE — конкретный вечер.</span></div>
+</div>
+
+
+<!-- ── Pattern 3 ── -->
+<h3 id="pattern3"><span class="en">Pattern 3: Preposition + article</span><span class="ru">Ошибка 3: Предлог + артикль</span></h3>
+
+<div class="pattern p3">
+  <div class="pattern-header">
+    <div class="pattern-num">3</div>
+    <div class="pattern-title"><span class="en">Confused by preposition + noun combinations</span><span class="ru">Ошибка в сочетании «предлог + существительное»</span></div>
+    <span class="pattern-share">~15%</span>
+  </div>
+  <div class="en">
+    <p style="font-size:13px;color:var(--text2)">• <strong>"the X of Y"</strong> — "of" usually makes the noun specific → THE<br>
+    • <strong>"in ∅ [abstract]"</strong> — abstract nouns after "in" are often zero article</p>
+  </div>
+  <div class="ru">
+    <p style="font-size:13px;color:var(--text2)">В русском этого различия нет (всё «в процессе закупок», «результат исследования» — без артикля).</p>
+    <p style="font-size:13px;color:var(--text2)">• <strong>"the X of Y"</strong> — «of» делает существительное конкретным → THE<br>
+    • <strong>"in ∅ [абстрактное]"</strong> — абстрактные после «in» часто без артикля</p>
+  </div>
+</div>
+
+<div class="ex-pair">
+  <div class="ex-wrong">We discussed feasibility of the project.</div>
+  <div class="ex-right">We discussed <strong>the</strong> feasibility of the project.</div>
+  <div class="ex-why"><span class="en">"Of the project" makes "feasibility" specific. → THE</span><span class="ru">«Of the project» делает «feasibility» конкретным — не абстрактная выполнимость, а <em>этого</em> проекта. → THE</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">Delays <strong>in the</strong> procurement slowed everything down.</div>
+  <div class="ex-right">Delays in procurement slowed everything down.</div>
+  <div class="ex-why"><span class="en">"In procurement" = general domain, not specific. Zero article.</span><span class="ru">«In procurement» — сфера деятельности вообще. Нулевой артикль. Как в русском: «в сфере закупок».</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">Most of riders finished the race.</div>
+  <div class="ex-right">Most of <strong>the</strong> riders finished the race.</div>
+  <div class="ex-why"><span class="en">"Most of THE + noun" — specific group → always THE.</span><span class="ru">«Most of THE + сущ.» — конкретная группа → всегда THE. «Большинство <em>этих</em> гонщиков».</span></div>
+</div>
+
+
+<!-- ── Pattern 4 ── -->
+<h3 id="pattern4"><span class="en">Pattern 4: Fixed expressions</span><span class="ru">Ошибка 4: Устойчивые выражения</span></h3>
+
+<div class="pattern p4">
+  <div class="pattern-header">
+    <div class="pattern-num">4</div>
+    <div class="pattern-title"><span class="en">No rule — memorise as a chunk</span><span class="ru">Правила нет — запомни как фразу</span></div>
+    <span class="pattern-share">~12%</span>
+  </div>
+  <div class="en"><p style="font-size:13px;color:var(--text2)">Some article choices are frozen in the expression. You can't derive them from rules.</p></div>
+  <div class="ru"><p style="font-size:13px;color:var(--text2)">Некоторые артикли «вморожены» в выражение. Их нельзя вычислить — нужно запомнить как целую фразу. Как в русском «принять решение», а не «сделать решение».</p></div>
+</div>
+
+<div class="ex-pair">
+  <div class="ex-wrong">Please take <strong>the</strong> action on this matter.</div>
+  <div class="ex-right">Please take action on this matter.</div>
+  <div class="ex-why"><span class="en">"Take action" = fixed phrase, zero article. Like "take charge", "take place".</span><span class="ru">«Take action» — устойчивая фраза без артикля. Запомни: принять меры = take ∅ action.</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">He was riding in <strong>a</strong> saddle for six hours.</div>
+  <div class="ex-right">He was riding in <strong>the</strong> saddle for six hours.</div>
+  <div class="ex-why"><span class="en">"In the saddle" = fixed idiom (cycling/riding). Always THE.</span><span class="ru">«In the saddle» — идиома «в седле». Всегда THE. Запомни целиком.</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong"><strong>The</strong> Board of <strong>the</strong> Directors approved the budget.</div>
+  <div class="ex-right"><strong>The</strong> Board of Directors approved the budget.</div>
+  <div class="ex-why"><span class="en">"Board of Directors" — "Directors" is part of the title. One "the" only.</span><span class="ru">«Board of Directors» — «Directors» часть названия. Только один «the» в начале.</span></div>
+</div>
+
+
+<!-- ── Pattern 5 ── -->
+<h3 id="pattern5"><span class="en">Pattern 5: Dropped articles</span><span class="ru">Ошибка 5: Пропущенный артикль</span></h3>
+
+<div class="pattern p5">
+  <div class="pattern-header">
+    <div class="pattern-num">5</div>
+    <div class="pattern-title"><span class="en">You forgot any article at all</span><span class="ru">Забыл(а) поставить артикль вообще</span></div>
+    <span class="pattern-share">~8%</span>
+  </div>
+  <div class="en"><p style="font-size:13px;color:var(--text2)">Simply omitting an article. Natural in Russian, but English singular countable nouns <em>always</em> need one.</p></div>
+  <div class="ru">
+    <p style="font-size:13px;color:var(--text2)">Просто забыл(а) поставить артикль. В русском это нормально! Но в английском исчисляемое в ед. числе <strong>почти всегда</strong> нуждается в артикле.</p>
+    <p style="font-size:13px;color:var(--text2);margin-top:.3rem">💡 В русском мы показываем определённость через порядок слов (известное — вначале). В английском порядок фиксирован (SVO) — артикли делают всю работу.</p>
+  </div>
+</div>
+
+<div class="ex-pair">
+  <div class="ex-wrong">It's tough deadline — we need to act fast.</div>
+  <div class="ex-right">It's <strong>a</strong> tough deadline — we need to act fast.</div>
+  <div class="ex-why"><span class="en">"Deadline" = singular, countable. First mention, not specific → A.</span><span class="ru">«Deadline» — ед. число, исчисляемое. Первое упоминание → A.</span></div>
+</div>
+<div class="ex-pair">
+  <div class="ex-wrong">We need to buy new tool for the team.</div>
+  <div class="ex-right">We need to buy <strong>a</strong> new tool for the team.</div>
+  <div class="ex-why"><span class="en">"Tool" = singular, countable, non-specific → A.</span><span class="ru">«Tool» — ед. число, исчисляемое, не конкретный → A. По-русски «новый инструмент» без ничего — но английский требует артикль.</span></div>
+</div>
+
+
+<!-- ── Russian Bridge ── -->
+<h3 id="russian"><span class="en">🇷🇺 Russian Bridge</span><span class="ru">🇷🇺 Мост из русского языка</span></h3>
+
+<div class="en"><p style="font-size:13px;color:var(--text2)">Russian has no articles, but it DOES have words that work similarly:</p></div>
+<div class="ru"><p style="font-size:13px;color:var(--text2)">В русском нет артиклей, но есть слова, которые работают похоже. Используй их как мостик:</p></div>
+
+<div class="bridge">
+  <div class="bridge-row"><span class="bridge-ru">этот (this)</span><span class="bridge-arrow">≈</span><span class="bridge-en">the</span> <span style="color:var(--text3);font-size:12px;margin-left:.5rem">— <span class="en-inline">definite, present</span><span class="ru-inline">определённый, рядом</span></span></div>
+  <div class="bridge-row"><span class="bridge-ru">тот (that)</span><span class="bridge-arrow">≈</span><span class="bridge-en">the</span> <span style="color:var(--text3);font-size:12px;margin-left:.5rem">— <span class="en-inline">referenced earlier</span><span class="ru-inline">упоминался раньше</span></span></div>
+  <div class="bridge-row"><span class="bridge-ru">один (a certain)</span><span class="bridge-arrow">≈</span><span class="bridge-en">a</span> <span style="color:var(--text3);font-size:12px;margin-left:.5rem">— <span class="en-inline">specific but new</span><span class="ru-inline">конкретный, но новый</span></span></div>
+  <div class="bridge-row"><span class="bridge-ru">какой-нибудь (any)</span><span class="bridge-arrow">≈</span><span class="bridge-en">a</span> <span style="color:var(--text3);font-size:12px;margin-left:.5rem">— <span class="en-inline">non-specific</span><span class="ru-inline">любой, неопределённый</span></span></div>
+  <div class="bridge-warn">
+    <span class="en">⚠️ <strong>Works for ~60% of cases.</strong> Does NOT work for: play <em>the</em> piano · <em>the</em> UK · <em>the</em> whale is endangered · go to ∅ school · have ∅ breakfast.</span>
+    <span class="ru">⚠️ <strong>Работает примерно в 60% случаев.</strong> НЕ работает для: play <em>the</em> piano · <em>the</em> UK · <em>the</em> whale is endangered · go to ∅ school · have ∅ breakfast. Эти случаи — просто запомни.</span>
+  </div>
+</div>
+
+
+<!-- ── Zero Article Cheat Sheet ── -->
+<h3 id="zero"><span class="en">Zero Article Cheat Sheet</span><span class="ru">Шпаргалка: когда артикль НЕ нужен</span></h3>
+
+<table>
+  <tr><th><span class="en-inline">Category</span><span class="ru-inline">Категория</span></th><th><span class="en-inline">Examples</span><span class="ru-inline">Примеры</span></th></tr>
+  <tr><td><span class="en-inline">Uncountable (general)</span><span class="ru-inline">Неисчисляемые</span></td><td>∅ progress, ∅ information, ∅ advice, ∅ equipment, ∅ research, ∅ furniture</td></tr>
+  <tr><td><span class="en-inline">Next/last + time</span><span class="ru-inline">Next/last + время</span></td><td>∅ next Monday, ∅ last week, ∅ next year</td></tr>
+  <tr><td><span class="en-inline">Meals</span><span class="ru-inline">Приёмы пищи</span></td><td>have ∅ breakfast, ∅ lunch, ∅ dinner</td></tr>
+  <tr><td><span class="en-inline">Sports</span><span class="ru-inline">Спорт</span></td><td>play ∅ football, ∅ basketball, ∅ padel</td></tr>
+  <tr><td><span class="en-inline">Institutions (as function)</span><span class="ru-inline">Учреждения (функция)</span></td><td>go to ∅ school, ∅ hospital, ∅ prison, ∅ university</td></tr>
+  <tr><td><span class="en-inline">Abstract (general)</span><span class="ru-inline">Абстрактные</span></td><td>∅ management, ∅ procurement, ∅ performance, ∅ life</td></tr>
+  <tr><td><span class="en-inline">Countries (most)</span><span class="ru-inline">Страны</span></td><td>∅ Turkey, ∅ Bahrain, ∅ France — <em><span class="en-inline">but:</span><span class="ru-inline">но:</span> the UK, the USA, the Netherlands</em></td></tr>
+  <tr><td><span class="en-inline">Languages</span><span class="ru-inline">Языки</span></td><td>speak ∅ English, ∅ Russian, study ∅ French</td></tr>
+  <tr><td><span class="en-inline">Business compounds</span><span class="ru-inline">Деловые составные</span></td><td>∅ board meeting, ∅ risk management, ∅ performance review</td></tr>
+</table>
+
+
+<!-- ── Fixed Expressions ── -->
+<h3 id="fixed-list"><span class="en">Fixed Expressions — Top 20</span><span class="ru">Устойчивые выражения — Топ 20</span></h3>
+
+<div class="en"><p style="font-size:13px;color:var(--text2);margin-bottom:.4rem">Cannot be derived from rules. Memorise as chunks.</p></div>
+<div class="ru"><p style="font-size:13px;color:var(--text2);margin-bottom:.4rem">Нельзя вычислить по правилам. Запоминай как целые фразы.</p></div>
+
+<table>
+  <tr><th><span class="en-inline">Expression</span><span class="ru-inline">Выражение</span></th><th>Art.</th><th><span class="en-inline">Meaning</span><span class="ru-inline">Значение</span></th></tr>
+  <tr><td>take action</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">act on something</span><span class="ru-inline">принять меры</span></td></tr>
+  <tr><td>make progress</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">move forward</span><span class="ru-inline">добиться прогресса</span></td></tr>
+  <tr><td>reach agreement</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">come to a deal</span><span class="ru-inline">достичь соглашения</span></td></tr>
+  <tr><td>in the saddle</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">cycling / riding</span><span class="ru-inline">в седле</span></td></tr>
+  <tr><td>at the end of the day</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">ultimately</span><span class="ru-inline">в конечном счёте</span></td></tr>
+  <tr><td>on the other hand</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">alternatively</span><span class="ru-inline">с другой стороны</span></td></tr>
+  <tr><td>in fact</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">actually</span><span class="ru-inline">на самом деле</span></td></tr>
+  <tr><td>take charge</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">assume responsibility</span><span class="ru-inline">взять на себя</span></td></tr>
+  <tr><td>play the piano</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">instruments = THE</span><span class="ru-inline">инструменты = THE</span></td></tr>
+  <tr><td>go to school</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">attend as student</span><span class="ru-inline">ходить учиться</span></td></tr>
+  <tr><td>go to the school</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">go to the building</span><span class="ru-inline">пойти в здание школы</span></td></tr>
+  <tr><td>Board of Directors</td><td><span class="flow-article fa-the">the</span> Board</td><td><span class="en-inline">one "the" only</span><span class="ru-inline">один «the»</span></td></tr>
+  <tr><td>at work / at home</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">locations as activities</span><span class="ru-inline">место = деятельность</span></td></tr>
+  <tr><td>by car / by bus</td><td><span class="flow-article fa-zero">∅</span></td><td><span class="en-inline">transport mode</span><span class="ru-inline">вид транспорта</span></td></tr>
+  <tr><td>have a meeting</td><td><span class="flow-article fa-a">a</span></td><td><span class="en-inline">hold a meeting</span><span class="ru-inline">провести встречу</span></td></tr>
+  <tr><td>the fact that...</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">always THE + fact + that</span><span class="ru-inline">всегда THE fact that</span></td></tr>
+  <tr><td>in the long run</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">over time</span><span class="ru-inline">в долгосрочной перспективе</span></td></tr>
+  <tr><td>take a decision</td><td><span class="flow-article fa-a">a</span></td><td><span class="en-inline">make a choice (BrE)</span><span class="ru-inline">принять решение</span></td></tr>
+  <tr><td>for the time being</td><td><span class="flow-article fa-the">the</span></td><td><span class="en-inline">temporarily</span><span class="ru-inline">пока что</span></td></tr>
+  <tr><td>as a result</td><td><span class="flow-article fa-a">a</span></td><td><span class="en-inline">consequently</span><span class="ru-inline">в результате</span></td></tr>
+</table>
+
+<div style="margin-top:1.5rem;text-align:center;">
+  <a class="back-link" href="../index.html"><span class="en-inline">← Back to Quiz</span><span class="ru-inline">← К тесту</span></a>
+</div>
+
+<div class="footer">
+  <span class="en">English Grammar Quiz · Grammar Reference · v1</span>
+  <span class="ru">Справочник по грамматике · v1</span>
+</div>
+
+</div>
+
+<a class="top-link" href="#top" title="Back to top">↑</a>
+
+<script>
+function setLang(lang) {
+  document.body.classList.toggle('lang-ru', lang === 'ru');
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === (lang === 'ru' ? 'Русский' : 'English'));
+  });
+  localStorage.setItem('ref-lang', lang);
+}
+const params = new URLSearchParams(location.search);
+const savedLang = params.get('lang') || localStorage.getItem('ref-lang') || 'en';
+setLang(savedLang);
+</script>
+</body>
+</html>
