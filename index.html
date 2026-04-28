@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260416-s86">
+  <meta name="app-version" content="v20260428-s87">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260416-s86</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260428-s87</span></p>
 </header>
 
 <!-- TABS -->
@@ -5226,26 +5226,183 @@ async function importStats(event) {
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  FIREBASE REST API  (no SDK — pure fetch, works everywhere)
+//  FIRESTORE REST API  (no SDK — pure fetch, works everywhere)
+//  Replaces RTDB as of v20260428-s87
 // ══════════════════════════════════════════════════════════════
-const FB_DB_URL = 'https://artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app';
-const FB_API_KEY = 'AIzaSyCxliSy3zCWY3dvVtBASXS3tHjYm10w1cU';
+const FS_PROJECT = 'artem-grammar-hub';
+const FS_BASE = `https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents`;
 
-// Simple REST helpers
-async function fbGet(path) {
-  const r = await fetch(`${FB_DB_URL}/${path}.json`);
-  if (!r.ok) throw new Error('fbGet failed: ' + r.status);
-  return r.json();
+// ---------- Firestore typed-value conversion ----------
+function _fsValue(v) {
+  if (v === null || v === undefined) return { nullValue: null };
+  if (typeof v === 'boolean') return { booleanValue: v };
+  if (typeof v === 'number') {
+    return Number.isInteger(v) ? { integerValue: String(v) } : { doubleValue: v };
+  }
+  if (typeof v === 'string') return { stringValue: v };
+  if (Array.isArray(v)) return { arrayValue: { values: v.map(_fsValue) } };
+  if (typeof v === 'object') {
+    const fields = {};
+    for (const [k, val] of Object.entries(v)) {
+      if (val === undefined) continue;
+      if (k.includes('/') || k.startsWith('__')) continue;
+      fields[k] = _fsValue(val);
+    }
+    return { mapValue: { fields } };
+  }
+  throw new Error('Cannot convert ' + typeof v);
+}
+function _fsFromValue(v) {
+  if (v == null) return null;
+  if ('nullValue' in v) return null;
+  if ('booleanValue' in v) return v.booleanValue;
+  if ('integerValue' in v) return Number(v.integerValue);
+  if ('doubleValue' in v) return v.doubleValue;
+  if ('stringValue' in v) return v.stringValue;
+  if ('timestampValue' in v) return v.timestampValue;
+  if ('arrayValue' in v) return (v.arrayValue.values || []).map(_fsFromValue);
+  if ('mapValue' in v) {
+    const out = {};
+    for (const [k, val] of Object.entries(v.mapValue.fields || {})) out[k] = _fsFromValue(val);
+    return out;
+  }
+  return null;
+}
+function _fsToDoc(obj) {
+  const fields = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === undefined) continue;
+    fields[k] = _fsValue(v);
+  }
+  return { fields };
+}
+function _fsFromDoc(doc) {
+  if (!doc || !doc.fields) return null;
+  const out = {};
+  for (const [k, v] of Object.entries(doc.fields)) out[k] = _fsFromValue(v);
+  return out;
 }
 
-async function fbSet(path, data) {
-  const r = await fetch(`${FB_DB_URL}/${path}.json`, {
-    method: 'PUT',
+// ---------- Firestore REST helpers ----------
+async function fsGet(path) {
+  const res = await fetch(`${FS_BASE}/${path}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`fsGet ${path}: HTTP ${res.status}`);
+  return _fsFromDoc(await res.json());
+}
+async function fsSet(path, obj) {
+  const res = await fetch(`${FS_BASE}/${path}`, {
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(_fsToDoc(obj)),
   });
-  if (!r.ok) throw new Error('fbSet failed: ' + r.status);
-  return r.json();
+  if (!res.ok) throw new Error(`fsSet ${path}: HTTP ${res.status} ${await res.text()}`);
+  return await res.json();
+}
+async function fsMerge(path, obj) {
+  const fieldPaths = Object.keys(obj).filter(k => obj[k] !== undefined);
+  if (fieldPaths.length === 0) return null;
+  const mask = fieldPaths.map(f => `updateMask.fieldPaths=${encodeURIComponent(f)}`).join('&');
+  const url = `${FS_BASE}/${path}?${mask}`;
+  const res = await fetch(url, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(_fsToDoc(obj)),
+  });
+  if (!res.ok) throw new Error(`fsMerge ${path}: HTTP ${res.status} ${await res.text()}`);
+  return await res.json();
+}
+async function fsDelete(path) {
+  const res = await fetch(`${FS_BASE}/${path}`, { method: 'DELETE' });
+  if (!res.ok && res.status !== 404) throw new Error(`fsDelete ${path}: HTTP ${res.status}`);
+  return true;
+}
+async function fsList(parentPath, pageSize = 100) {
+  let docs = [];
+  let pageToken = null;
+  do {
+    const url = `${FS_BASE}/${parentPath}?pageSize=${pageSize}${pageToken ? `&pageToken=${pageToken}` : ''}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`fsList ${parentPath}: HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.documents) {
+      for (const d of data.documents) {
+        const id = d.name.split('/').pop();
+        const obj = _fsFromDoc(d);
+        if (obj) docs.push({ id, ...obj });
+      }
+    }
+    pageToken = data.nextPageToken || null;
+  } while (pageToken);
+  return docs;
+}
+
+// ---------- Stage 1: live exercise log (exercise_active collection) ----------
+function exMakeSessionId(player) {
+  const r = Math.random().toString(36).slice(2, 6);
+  return `${player}_${Date.now()}_${r}`;
+}
+async function exStartActive(player, opts = {}) {
+  const sid = opts.session_id || exMakeSessionId(player);
+  const doc = {
+    player,
+    session_id: sid,
+    exercise: opts.exercise || 'unknown',
+    topic: opts.topic || '',
+    level: opts.level || 'B1',
+    started_at: new Date().toISOString(),
+    total_planned: opts.total_planned || 0,
+    items: [],
+    final: false,
+    chat_url: opts.chat_url || '',
+  };
+  await fsSet(`exercise_active/${sid}`, doc);
+  return sid;
+}
+async function exAppendItem(session_id, item) {
+  const doc = await fsGet(`exercise_active/${session_id}`);
+  if (!doc) throw new Error(`Active session ${session_id} not found`);
+  const items = Array.isArray(doc.items) ? doc.items : [];
+  items.push({ ...item, ts: new Date().toISOString() });
+  await fsMerge(`exercise_active/${session_id}`, { items });
+  return items.length;
+}
+async function exFinalize(session_id) {
+  const doc = await fsGet(`exercise_active/${session_id}`);
+  if (!doc) throw new Error(`Active session ${session_id} not found`);
+  const player = doc.player;
+  const ts = String(Date.now());
+  const items = doc.items || [];
+  const total = items.length;
+  const correct = items.filter(it => it.correct === true).length;
+  const final_doc = {
+    exercise: doc.exercise,
+    topic: doc.topic,
+    level: doc.level,
+    total,
+    correct,
+    date: new Date().toISOString().slice(0, 10),
+    chat_url: doc.chat_url,
+    items,
+    finalized_from_session: session_id,
+  };
+  await fsSet(`players/${player}/exercises/${ts}`, final_doc);
+  await fsDelete(`exercise_active/${session_id}`);
+  return ts;
+}
+async function exCleanupStale() {
+  try {
+    const docs = await fsList('exercise_active');
+    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+    for (const d of docs) {
+      const t = new Date(d.started_at).getTime();
+      if (t < cutoff) {
+        await fsDelete(`exercise_active/${d.id}`);
+      }
+    }
+  } catch (e) {
+    console.warn('Active session cleanup failed:', e.message);
+  }
 }
 
 // Poll family data every 30 seconds (REST has no real-time listener)
@@ -5453,13 +5610,7 @@ async function syncToFirebase(immediate = false) {
         console.log('Sync skipped — local data is empty');
         return;
       }
-      // Use PATCH instead of PUT to preserve exercises node
-      const r = await fetch(`${FB_DB_URL}/players/${currentPlayer}.json`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(buildPayload(db))
-      });
-      if (!r.ok) throw new Error('sync failed: ' + r.status);
+      await fsMerge(`players/${currentPlayer}`, buildPayload(db));
       setFbStatus('online', '✅ Synced with server');
     } catch(e) {
       setFbStatus('offline', '⚠️ Offline — progress saved locally');
@@ -5474,7 +5625,7 @@ async function syncToFirebase(immediate = false) {
 async function loadFromFirebase() {
   if (!currentPlayer) return false;
   try {
-    const remote = await fbGet('players/' + currentPlayer);
+    const remote = await fsGet('players/' + currentPlayer);
     if (!remote) return false;
     const local = typeof DB !== 'undefined' ? DB : await loadData();
     if ((remote.totalAnswered || 0) > 0 && (remote.totalAnswered || 0) >= (local.totalAnswered || 0)) {
@@ -5530,7 +5681,7 @@ async function fetchAndRenderFamily() {
   try {
     // Fetch each player individually — bulk /players.json truncates large qStats nodes
     const playerKeys = FAMILY_MEMBERS.map(m => m.key);
-    const playerResults = await Promise.all(playerKeys.map(k => fbGet('players/' + k).catch(() => null)));
+    const playerResults = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
     const data = {};
     playerKeys.forEach((k, i) => { if (playerResults[i]) data[k] = playerResults[i]; });
     console.log('Family data from Firebase:', data);
@@ -5740,7 +5891,7 @@ window.exportForAI = async function() {
     setFbStatus('loading', '⏳ Fetching all player data…');
     // Fetch each player individually — bulk /players.json truncates large qStats nodes
     const playerKeys = FAMILY_MEMBERS.map(m => m.key);
-    const playerResults = await Promise.all(playerKeys.map(k => fbGet('players/' + k).catch(() => null)));
+    const playerResults = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
     const data = {};
     playerKeys.forEach((k, i) => { if (playerResults[i]) data[k] = playerResults[i]; });
     const now = Date.now();
@@ -5808,27 +5959,21 @@ window.exportForAI = async function() {
       });
       const neverSeenCount = ALL_QUESTIONS.filter(q=>q&&!seenIds.has(q.id)).length;
 
-      // ── Exercise history (from /players/{key}/exercises) ────────────────
-      const exerciseHistory = [];
-      const exData = p.exercises || {};
-      Object.entries(exData).forEach(([ts, ex]) => {
-        if (ex && typeof ex === 'object') {
-          exerciseHistory.push({
-            timestamp: +ts,
-            date: ex.date || new Date(+ts).toISOString().slice(0,10),
-            exercise: ex.exercise || '?',
-            topic: ex.topic || '?',
-            level: ex.level || '?',
-            total: ex.total || 0,
-            correct: ex.correct || 0,
-            score: ex.score || 0,
-            errors: ex.errors || [],
-            chat_url: ex.chat_url || null,
-            meta: ex.meta || null
-          });
-        }
-      });
-      exerciseHistory.sort((a,b) => b.timestamp - a.timestamp);
+      // ── Exercise history (from players/{key}/exercises subcollection) ──
+      const exDocs = await fsList(`players/${key}/exercises`).catch(() => []);
+      const exerciseHistory = exDocs.map(d => ({
+        timestamp: +d.id,
+        date: d.date || new Date(+d.id).toISOString().slice(0,10),
+        exercise: d.exercise || '?',
+        topic: d.topic || '?',
+        level: d.level || '?',
+        total: d.total || 0,
+        correct: d.correct || 0,
+        score: d.score || 0,
+        errors: d.errors || [],
+        chat_url: d.chat_url || null,
+        meta: d.meta || null
+      })).sort((a,b) => b.timestamp - a.timestamp);
 
       report.players[key] = {
         name: capFirst(p.displayName||key),
@@ -5837,7 +5982,7 @@ window.exportForAI = async function() {
           overallAccuracy:p.totalAnswered>0?Math.round(p.totalCorrect/p.totalAnswered*100)+'%':'0%',
           currentStreak:p.currentStreak||0, longestStreak:p.longestStreak||0,
           lastPlayedDate:p.lastPlayedDate||null,
-          lastExerciseDate: (() => { const ex = p.exercises||{}; const ts = Object.keys(ex).map(Number).sort((a,b)=>b-a); return ts.length > 0 ? new Date(ts[0]).toISOString().slice(0,10) : null; })(),
+          lastExerciseDate: exerciseHistory.length > 0 ? exerciseHistory[0].date : null,
           uniqueQsSeen:seenIds.size, neverSeenCount,
           trend
         },
@@ -5998,6 +6143,48 @@ function loadLocalPinOverride(key) {
 // ══════════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════════
+// ── LIVE LOG DEEPLINK HANDLERS (exstart / exupd / exfin) ──
+(function() {
+  const params = new URLSearchParams(location.search);
+
+  if (params.has('exstart')) {
+    try {
+      const data = JSON.parse(atob(params.get('exstart')));
+      const player = data._player;
+      delete data._player;
+      exStartActive(player, data).then(sid => {
+        showToast(`Started session ${sid.slice(-4)}`);
+        setTimeout(() => location.replace(location.pathname), 2000);
+      }).catch(e => showToast('exstart failed: ' + e.message));
+    } catch(e) { showToast('exstart failed: ' + e.message); }
+    return;
+  }
+
+  if (params.has('exupd')) {
+    try {
+      const data = JSON.parse(atob(params.get('exupd')));
+      const sid = data.session_id;
+      delete data.session_id;
+      exAppendItem(sid, data).then(n => {
+        showToast(`Item ${n} logged`);
+        setTimeout(() => location.replace(location.pathname), 1500);
+      }).catch(e => showToast('exupd failed: ' + e.message));
+    } catch(e) { showToast('exupd failed: ' + e.message); }
+    return;
+  }
+
+  if (params.has('exfin')) {
+    try {
+      const data = JSON.parse(atob(params.get('exfin')));
+      exFinalize(data.session_id).then(ts => {
+        showToast(`Session finalized → ${ts}`);
+        setTimeout(() => location.replace(location.pathname), 2500);
+      }).catch(e => showToast('exfin failed: ' + e.message));
+    } catch(e) { showToast('exfin failed: ' + e.message); }
+    return;
+  }
+})();
+
 // ── EXERCISE DEEPLINK HANDLER (runs before name picker) ──
 (function() {
   const exParam = new URLSearchParams(location.search).get('exlog');
@@ -6016,12 +6203,12 @@ function loadLocalPinOverride(key) {
       delete data._player;
       if (!data.date) data.date = new Date().toISOString().slice(0,10);
       if (data.correct != null && data.total) data.score = +(data.correct / data.total).toFixed(3);
-      const ts = Date.now();
+      const ts = String(Date.now());
       // Show saving indicator
       exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
-      // Check for duplicate before saving
-      fetch(FB_DB_URL + '/players/' + player + '/exercises.json').then(r => r.json()).then(existing => {
-        const isDup = existing && Object.values(existing).some(ex =>
+      // Dupe-check then save via Firestore subcollection
+      fsList('players/' + player + '/exercises').then(existing => {
+        const isDup = existing.some(ex =>
           ex && ex.date === data.date && ex.exercise === data.exercise &&
           ex.topic === data.topic && ex.score === data.score
         );
@@ -6031,45 +6218,25 @@ function loadLocalPinOverride(key) {
           setTimeout(() => { location.href = location.pathname; }, 3500);
           return;
         }
-        const patchData = {};
-        patchData['exercises/' + ts] = data;
-        fetch(FB_DB_URL + '/players/' + player + '.json', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(patchData)
-        }).then(async r => {
-          if (r.ok) {
-            const pct = Math.round((data.score||0)*100);
-            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-            exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-            setTimeout(() => { location.href = location.pathname; }, 2500);
-          } else {
-            const body = await r.text().catch(() => '');
-            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-            exDeeplinkToast('❌ Save failed (HTTP ' + r.status + '): ' + body.slice(0, 120), 'error');
-          }
+        fsSet('players/' + player + '/exercises/' + ts, data).then(() => {
+          const pct = Math.round((data.score||0)*100);
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+          setTimeout(() => { location.href = location.pathname; }, 2500);
         }).catch(e => {
           document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
           exDeeplinkToast('❌ ' + e.message, 'error');
         });
-      }).catch(e => {
-        // If dupe-check fetch fails, save anyway
-        const patchData = {};
-        patchData['exercises/' + ts] = data;
-        fetch(FB_DB_URL + '/players/' + player + '.json', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(patchData)
-        }).then(async r => {
-          if (r.ok) {
-            const pct = Math.round((data.score||0)*100);
-            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-            exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-            setTimeout(() => { location.href = location.pathname; }, 2500);
-          } else {
-            document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-            exDeeplinkToast('❌ Save failed', 'error');
-          }
+      }).catch(() => {
+        // If dupe-check fails, save anyway
+        fsSet('players/' + player + '/exercises/' + ts, data).then(() => {
+          const pct = Math.round((data.score||0)*100);
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
+          setTimeout(() => { location.href = location.pathname; }, 2500);
+        }).catch(e => {
+          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
+          exDeeplinkToast('❌ ' + e.message, 'error');
         });
       });
     } catch(e) {
@@ -6096,6 +6263,7 @@ document.addEventListener('DOMContentLoaded', () => {
       window._fbLoadComplete = true;
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
       startFamilyPoll();
+      exCleanupStale();
       checkSimpleUI();
       // One-time streak credit for Nicole: app failed to save her Mar 19 session.
       // Condition is very specific — only fires once, on her device, today.
@@ -6297,14 +6465,8 @@ async function exLoadHistory() {
   try {
     const player = currentPlayer;
     if (!player) { list.innerHTML = '<div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Log in first to see your history</div>'; return; }
-    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises.json');
-    const data = await res.json();
-    const items = [];
-    if (data) {
-      Object.entries(data).forEach(([ts, ex]) => {
-        items.push({ ...ex, player: player, timestamp: parseInt(ts) });
-      });
-    }
+    const docs = await fsList('players/' + player + '/exercises');
+    const items = docs.map(d => ({ ...d, player: player, timestamp: parseInt(d.id) }));
     exState.allExercises = items;
     exRenderWeeklyPlan();
     exRenderHistory();
@@ -6354,10 +6516,7 @@ async function exDeleteEntry(ts) {
   const player = currentPlayer;
   if (!player) return;
   try {
-    const res = await fetch(FB_DB_URL + '/players/' + player + '/exercises/' + ts + '.json', {
-      method: 'DELETE'
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    await fsDelete('players/' + player + '/exercises/' + ts);
     exState.allExercises = (exState.allExercises || []).filter(e => e.timestamp !== ts);
     exRenderWeeklyPlan();
     exRenderHistory();
