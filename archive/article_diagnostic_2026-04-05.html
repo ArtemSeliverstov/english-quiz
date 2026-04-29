@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article Diagnostic & Strategic Plan — English Grammar Quiz</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #1c2129;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text2: #b1bac4;
+  --text3: #7d8590;
+  --red: #f85149;
+  --red-bg: rgba(248,81,73,.12);
+  --orange: #d29922;
+  --orange-bg: rgba(210,153,34,.12);
+  --yellow: #e3b341;
+  --green: #3fb950;
+  --green-bg: rgba(63,185,80,.12);
+  --blue: #58a6ff;
+  --blue-bg: rgba(88,166,255,.12);
+  --purple: #bc8cff;
+  --purple-bg: rgba(188,140,255,.12);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  --r: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:14px; line-height:1.6; }
+.shell { max-width:900px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+
+h1 { font-size:1.8rem; font-weight:700; margin-bottom:.3rem; }
+.subtitle { color:var(--text3); font-size:13px; margin-bottom:2rem; }
+h2 { font-size:1.3rem; font-weight:700; margin:2.5rem 0 .8rem; padding-bottom:.4rem; border-bottom:1px solid var(--border); }
+h3 { font-size:1rem; font-weight:600; margin:1.5rem 0 .5rem; color:var(--text2); }
+
+.toc { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1rem 1.2rem; margin-bottom:2rem; }
+.toc a { display:block; color:var(--blue); text-decoration:none; font-size:13px; line-height:2; }
+.toc a:hover { text-decoration:underline; }
+
+.stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:.8rem; margin:1rem 0 1.5rem; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1rem; text-align:center; }
+.stat-val { font-size:2rem; font-weight:800; font-family:var(--mono); }
+.stat-label { font-size:12px; font-weight:600; color:var(--text2); margin-top:.2rem; }
+.stat-sub { font-size:11px; color:var(--text3); margin-top:.1rem; }
+
+.red { color:var(--red); }
+.orange { color:var(--orange); }
+.green { color:var(--green); }
+.blue { color:var(--blue); }
+.purple { color:var(--purple); }
+.yellow { color:var(--yellow); }
+
+table { width:100%; border-collapse:collapse; font-size:13px; margin:.8rem 0; }
+th { text-align:left; padding:.5rem .6rem; border-bottom:2px solid var(--border); color:var(--text2); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+td { padding:.45rem .6rem; border-bottom:1px solid var(--border); }
+tr:last-child td { border-bottom:none; }
+.td-r { text-align:right; font-family:var(--mono); font-size:12px; }
+.td-c { text-align:center; }
+tr:nth-child(even) { background:var(--surface); }
+
+.callout { border-left:3px solid; padding:.8rem 1rem; margin:1rem 0; border-radius:0 var(--r) var(--r) 0; }
+.callout-warn { border-color:var(--orange); background:var(--orange-bg); }
+.callout-danger { border-color:var(--red); background:var(--red-bg); }
+.callout-info { border-color:var(--blue); background:var(--blue-bg); }
+.callout-ok { border-color:var(--green); background:var(--green-bg); }
+.callout-label { font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.05em; margin-bottom:.3rem; }
+
+.error-tag { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:12px; margin:1px 3px; }
+.tag-a-the { background:var(--red-bg); color:var(--red); border:1px solid rgba(248,81,73,.3); }
+.tag-zero { background:var(--orange-bg); color:var(--orange); border:1px solid rgba(210,153,34,.3); }
+.tag-of-in { background:var(--purple-bg); color:var(--purple); border:1px solid rgba(188,140,255,.3); }
+.tag-fixed { background:var(--blue-bg); color:var(--blue); border:1px solid rgba(88,166,255,.3); }
+.tag-drop { background:var(--green-bg); color:var(--green); border:1px solid rgba(63,185,80,.3); }
+
+.phase { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1rem 1.2rem; margin:.8rem 0; }
+.phase-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem; }
+.phase-title { font-weight:700; font-size:15px; }
+.phase-badge { font-size:11px; font-weight:600; padding:3px 10px; border-radius:12px; }
+
+.bar-wrap { margin:.3rem 0; }
+.bar-label { display:flex; justify-content:space-between; font-size:11px; color:var(--text3); margin-bottom:3px; }
+.bar-track { height:8px; background:var(--surface2); border-radius:4px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; transition:width .3s; }
+
+.error-example { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:.6rem .8rem; margin:.4rem 0; font-size:13px; }
+.error-wrong { color:var(--red); text-decoration:line-through; }
+.error-right { color:var(--green); font-weight:600; }
+.error-arrow { color:var(--text3); margin:0 .3rem; }
+
+code { font-family:var(--mono); font-size:12px; background:var(--surface2); padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<h1>Articles: Diagnostic & Strategic Plan</h1>
+<p class="subtitle">English Grammar Quiz · Analysis date: 5 Apr 2026 · Data source: family_stats_ai_2026-04-05.json + 9 exercise sessions</p>
+
+<div class="toc">
+  <a href="#diagnosis">1. Current State Diagnosis</a>
+  <a href="#layers">2. The Three-Layer Problem</a>
+  <a href="#errors">3. Error Taxonomy — The 5 Failure Patterns</a>
+  <a href="#cross">4. Cross-Player Failure Map</a>
+  <a href="#coverage">5. Coverage Gap Analysis</a>
+  <a href="#plan">6. The Holistic Plan (3 Phases)</a>
+  <a href="#quiz">7. Quiz Changes — What to Add/Modify</a>
+  <a href="#exercises">8. Exercise Session Changes</a>
+  <a href="#research">9. Research Basis & Design Principles</a>
+  <a href="#backlog">10. Implementation Backlog</a>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="diagnosis">1. Current State Diagnosis</h2>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-val red">75%</div>
+    <div class="stat-label">Artem — Articles</div>
+    <div class="stat-sub">227 attempts · 2nd-worst high-vol category</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val orange">67%</div>
+    <div class="stat-label">Anna — Articles</div>
+    <div class="stat-sub">43 attempts · low exposure</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val red">37%</div>
+    <div class="stat-label">Ernest — Articles</div>
+    <div class="stat-sub">19 attempts · critically low</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val red">57%</div>
+    <div class="stat-label">Nicole — Articles</div>
+    <div class="stat-sub">53 attempts · worst family member</div>
+  </div>
+</div>
+
+<div class="callout callout-danger">
+  <div class="callout-label">Family-wide crisis</div>
+  <p>Articles are the <strong>weakest category across the entire family</strong> — avg 59% accuracy. Unlike PVs (where the problem was concentrated in Artem's production gap), articles are fundamentally broken for every active player. This is the highest-impact intervention possible.</p>
+</div>
+
+<h3>Artem — By Question Type</h3>
+<table>
+  <tr><th>Type</th><th>What it tests</th><th class="td-r">Accuracy</th><th class="td-r">Attempts</th><th class="td-r">Gap vs Input</th></tr>
+  <tr><td>Input</td><td>Free production — type the article</td><td class="td-r"><strong class="green">90%</strong></td><td class="td-r">30</td><td class="td-r">—</td></tr>
+  <tr><td>MCQ</td><td>Recognition — pick correct sentence</td><td class="td-r"><strong class="blue">81%</strong></td><td class="td-r">26</td><td class="td-r">—</td></tr>
+  <tr><td>Gap</td><td>Constrained choice — fill from options</td><td class="td-r"><strong class="orange">74%</strong></td><td class="td-r">61</td><td class="td-r">−16pp vs input</td></tr>
+  <tr><td>Multi</td><td>Multi-blank chains</td><td class="td-r"><strong class="red">71%</strong></td><td class="td-r">7</td><td class="td-r">−19pp vs input</td></tr>
+</table>
+
+<div class="callout callout-warn">
+  <div class="callout-label">Inverse pattern vs PVs</div>
+  <p>With phrasal verbs, input (production) was the weakest type. With articles, <strong>input is the strongest</strong> (90%) while <strong>gap is the weakest</strong> (74%). This is the opposite pattern. Why? Article input questions are typically simple a/an/the/∅ decisions. Gap questions present plausible alternatives that create confusion — especially when options include both "the" and "a" and the learner must reason about shared knowledge vs first mention. The problem isn't production — it's <strong>decision-making under ambiguity</strong>.</p>
+</div>
+
+<h3>Artem — By Level</h3>
+<table>
+  <tr><th>Level</th><th class="td-r">Accuracy</th><th class="td-r">Attempts</th><th>Note</th></tr>
+  <tr><td>B1</td><td class="td-r"><strong class="green">83%</strong></td><td class="td-r">60</td><td>Acceptable — basic rules mostly internalised</td></tr>
+  <tr><td>B2</td><td class="td-r"><strong class="red">71%</strong></td><td class="td-r">163</td><td>Core problem zone — abstract/business nouns, prepositional phrases</td></tr>
+  <tr><td>C1</td><td class="td-r"><strong>100%</strong></td><td class="td-r">4</td><td>Too few attempts to conclude</td></tr>
+</table>
+
+<h3>All Players — By Level (Articles only)</h3>
+<table>
+  <tr><th>Player</th><th class="td-r">B1</th><th class="td-r">B2</th><th class="td-r">Overall</th><th class="td-r">Unseen Qs</th></tr>
+  <tr><td>Artem</td><td class="td-r">83%</td><td class="td-r"><strong class="red">71%</strong></td><td class="td-r">75%</td><td class="td-r">2</td></tr>
+  <tr><td>Anna</td><td class="td-r">76%</td><td class="td-r"><strong class="red">57%</strong></td><td class="td-r">67%</td><td class="td-r">114</td></tr>
+  <tr><td>Ernest</td><td class="td-r">75%</td><td class="td-r"><strong class="red">28%</strong></td><td class="td-r">37%</td><td class="td-r">139</td></tr>
+  <tr><td>Nicole</td><td class="td-r">61%</td><td class="td-r"><strong class="red">0%</strong></td><td class="td-r">57%</td><td class="td-r">115</td></tr>
+  <tr><td>Egor</td><td class="td-r">—</td><td class="td-r">—</td><td class="td-r">50%</td><td class="td-r">142</td></tr>
+</table>
+
+<div class="callout callout-danger">
+  <div class="callout-label">B2 Articles = Family-wide collapse</div>
+  <p>Every player's accuracy drops dramatically at B2. Nicole hits 0%, Ernest 28%. Even Artem's B2 accuracy (71%) is well below his overall B1 performance (82%). B2 article questions test abstract nouns, business contexts, and preposition+article patterns — precisely where Russian L1 interference is strongest.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="layers">2. The Three-Layer Problem</h2>
+
+<p>Articles are harder than PVs to remediate because Russian has <strong>no article system at all</strong> — there is no L1 transfer, only L1 absence. PV learners have some L1 anchor (Russian prefix verbs map loosely to English particles). Article learners have <em>nothing</em>. This creates three distinct failure layers:</p>
+
+<h3>Layer 1 — Rule knowledge gap (B1 rules not fully internalised)</h3>
+<p>Some B1 rules are still shaky: countable vs uncountable, zero article with abstract nouns, zero article with time expressions. Evidence: Ernest picks "a good progress" (uncountable), Artem writes "the next Monday" (time expression). These are <strong>declarative knowledge</strong> failures — the rule isn't stored.</p>
+
+<h3>Layer 2 — Decision-making under ambiguity (the a/the swap)</h3>
+<p>This is Artem's primary failure mode. He <em>knows</em> an article is needed but defaults to "a" when "the" is required. The "Do we both know which one?" heuristic showed immediate improvement in exercise sessions — but it hasn't automated yet. The pattern: every time a noun has been contextually established (second mention, shared knowledge, unique referent), Artem reaches for "a" instead of "the". This accounts for ~40% of his article errors in exercises.</p>
+
+<h3>Layer 3 — Fixed expression blind spots</h3>
+<p>English has hundreds of fixed expressions where article choice is lexically determined, not rule-governed: "in the saddle" (not "a"), "take action" (not "the action"), "Board of Directors" (no "the"), "at the stage" vs "at a stage". These can't be derived from rules — they must be memorised as chunks. Current quiz coverage of these patterns is <strong>limited to ~40 aph-series questions</strong>.</p>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="errors">3. Error Taxonomy — The 5 Failure Patterns</h2>
+
+<p>Across 9 exercise sessions (Artem) + quiz data for all players, article errors cluster into 5 distinct patterns. Each requires a different intervention.</p>
+
+<div class="phase" style="border-left:3px solid var(--red)">
+  <div class="phase-header">
+    <span class="phase-title"><span class="error-tag tag-a-the">Pattern 1</span> a → the swap (shared-knowledge nouns)</span>
+    <span class="phase-badge" style="background:var(--red-bg);color:var(--red)">~40% of errors</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Recognises article is needed, but defaults to "a" when context demands "the". Root cause: Russian has no definiteness marker — the speaker/writer must learn to track discourse reference, which is an entirely new cognitive operation.</p>
+  <div class="error-example">
+    <span class="error-wrong">a view</span><span class="error-arrow">→</span><span class="error-right">the view</span> (unique referent — only one view from that spot)<br>
+    <span class="error-wrong">a support van</span><span class="error-arrow">→</span><span class="error-right">the support van</span> (shared knowledge — both speaker and listener know which one)<br>
+    <span class="error-wrong">a hotel manager</span><span class="error-arrow">→</span><span class="error-right">the hotel manager</span> (situational uniqueness — one manager at that hotel)<br>
+    <span class="error-wrong">an outcome</span><span class="error-arrow">→</span><span class="error-right">the outcome</span> (inherited specificity — "the outcome of the study")<br>
+    <span class="error-wrong">a meal</span><span class="error-arrow">→</span><span class="error-right">the meal</span> (second mention / previously established)<br>
+  </div>
+  <p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Key heuristic:</strong> "Do we both know which one?" → if yes, use THE. Showed immediate improvement in exercises but hasn't automated.</p>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--orange)">
+  <div class="phase-header">
+    <span class="phase-title"><span class="error-tag tag-zero">Pattern 2</span> Phantom articles (adding article where ∅ is correct)</span>
+    <span class="phase-badge" style="background:var(--orange-bg);color:var(--orange)">~25% of errors</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Inserts an article before uncountable/abstract nouns or in fixed time expressions. Root cause: once the learner starts "feeling" that articles matter, they overcorrect and insert them everywhere.</p>
+  <div class="error-example">
+    <span class="error-wrong">a progress</span><span class="error-arrow">→</span><span class="error-right">∅ progress</span> (uncountable noun)<br>
+    <span class="error-wrong">a Python code</span><span class="error-arrow">→</span><span class="error-right">∅ Python code</span> (uncountable — Ernest)<br>
+    <span class="error-wrong">the next Monday</span><span class="error-arrow">→</span><span class="error-right">∅ next Monday</span> (next/last + time = zero article)<br>
+    <span class="error-wrong">a Wednesday</span><span class="error-arrow">→</span><span class="error-right">∅ Wednesday</span> (day of week = zero article)<br>
+    <span class="error-wrong">the management</span><span class="error-arrow">→</span><span class="error-right">∅ management</span> (abstract concept in general sense)<br>
+  </div>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--purple)">
+  <div class="phase-header">
+    <span class="phase-title"><span class="error-tag tag-of-in">Pattern 3</span> Preposition+article patterns (the N of…, in ∅ N)</span>
+    <span class="phase-badge" style="background:var(--purple-bg);color:var(--purple)">~15% of errors</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Confused by the interaction between prepositions and articles. "The X of Y" usually takes THE (the feasibility of the project), but "in + abstract noun" often takes ∅ (in procurement, in progress). These patterns don't exist in Russian.</p>
+  <div class="error-example">
+    missed <span class="error-right">the feasibility of</span> → tried removing "the" before abstract noun<br>
+    missed <span class="error-right">in ∅ procurement</span> → added "the" before abstract noun after preposition<br>
+    missed <span class="error-right">the preparation of</span> → inconsistent with "the X of" pattern<br>
+    <span class="error-wrong">most of riders</span><span class="error-arrow">→</span><span class="error-right">most of the riders</span><br>
+  </div>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--blue)">
+  <div class="phase-header">
+    <span class="phase-title"><span class="error-tag tag-fixed">Pattern 4</span> Fixed expression errors</span>
+    <span class="phase-badge" style="background:var(--blue-bg);color:var(--blue)">~12% of errors</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Article choice is lexically frozen — no rule derivation possible. Must be memorised as chunks.</p>
+  <div class="error-example">
+    <span class="error-wrong">in a saddle</span><span class="error-arrow">→</span><span class="error-right">in the saddle</span> (fixed expression)<br>
+    <span class="error-wrong">board's meeting</span><span class="error-arrow">→</span><span class="error-right">board meeting</span> (compound noun — no article, no possessive)<br>
+    <span class="error-wrong">take the action</span><span class="error-arrow">→</span><span class="error-right">take action</span> (fixed phrase — zero article)<br>
+    <span class="error-wrong">the Board of the Directors</span><span class="error-arrow">→</span><span class="error-right">the Board of Directors</span> (proper noun pattern)<br>
+  </div>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--green)">
+  <div class="phase-header">
+    <span class="phase-title"><span class="error-tag tag-drop">Pattern 5</span> Dropped articles (omission)</span>
+    <span class="phase-badge" style="background:var(--green-bg);color:var(--green)">~8% of errors</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:.6rem">Simply forgetting to include any article at all. Least frequent for Artem (he's past the omission stage) but still significant for Nicole and Ernest.</p>
+  <div class="error-example">
+    dropped <span class="error-right">the</span> before "management team" and "performance"<br>
+    <span class="error-wrong">it's tough deadline</span><span class="error-arrow">→</span><span class="error-right">it's a tough deadline</span><br>
+    missing <span class="error-right">a</span> before "new IT tool"<br>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="cross">4. Cross-Player Failure Map</h2>
+
+<p>Questions where <strong>multiple players</strong> fail — these are likely question quality issues or particularly tricky rules.</p>
+
+<table>
+  <tr><th>Question ID</th><th>Type</th><th class="td-r">Cross-player acc</th><th>Players struggling</th><th>Pattern</th></tr>
+  <tr><td><code>art14</code></td><td>gap</td><td class="td-r red">0%</td><td>Artem (0/3), Ernest (0/1)</td><td><span class="error-tag tag-fixed">fixed</span> "take ∅ action"</td></tr>
+  <tr><td><code>art15</code></td><td>mcq</td><td class="td-r red">20%</td><td>Artem (1/2), Anna (0/1), Ernest (0/2)</td><td>Sentence-level discrimination</td></tr>
+  <tr><td><code>art11</code></td><td>mcq</td><td class="td-r red">25%</td><td>Artem (1/1), Ernest (0/3)</td><td><span class="error-tag tag-zero">zero</span> "∅ progress" (uncountable)</td></tr>
+  <tr><td><code>art_b08</code></td><td>gap</td><td class="td-r red">25%</td><td>Artem (1/1), Anna (0/1), Nicole (0/2)</td><td><span class="error-tag tag-fixed">fixed</span> expression</td></tr>
+  <tr><td><code>art_c03</code></td><td>gap</td><td class="td-r red">25%</td><td>Artem (0/2), Nicole (1/2)</td><td><span class="error-tag tag-of-in">of/in</span> pattern</td></tr>
+  <tr><td><code>art01</code></td><td>gap</td><td class="td-r orange">43%</td><td>Artem (3/6), Nicole (0/1)</td><td><span class="error-tag tag-a-the">a→the</span></td></tr>
+  <tr><td><code>art_b06</code></td><td>gap</td><td class="td-r orange">60%</td><td>Artem (2/3), Anna (0/1)</td><td><span class="error-tag tag-fixed">fixed</span></td></tr>
+  <tr><td><code>mc09</code></td><td>multi</td><td class="td-r orange">50%</td><td>Artem (1/2), Anna (1/2)</td><td>Multi-blank chain</td></tr>
+  <tr><td><code>mc12</code></td><td>multi</td><td class="td-r red">0%</td><td>Artem (0/3)</td><td>Multi-blank — complex business</td></tr>
+  <tr><td><code>mc14</code></td><td>multi</td><td class="td-r red">31%</td><td>Artem (1/1), Ernest (0.25/3)</td><td>Multi-blank — boardroom</td></tr>
+</table>
+
+<div class="callout callout-info">
+  <div class="callout-label">Observations</div>
+  <p><strong>Multi-blank (mc-series)</strong> consistently underperforms — these require 3–4 correct article decisions in one sentence, so error compounds. <strong>MCQ stems "Which is correct?"</strong> are low-quality — they don't test article selection but sentence-level discrimination, and the generic stem offers no learning scaffold. <strong>Fixed-expression questions</strong> (art14, art_b08) fail across players because these can't be derived from rules — they need dedicated memorisation. These suggest both content quality issues and genuine pedagogical gaps.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="coverage">5. Coverage Gap Analysis</h2>
+
+<h3>Current Quiz Inventory: 152 Article Questions</h3>
+<table>
+  <tr><th>Series</th><th>Description</th><th class="td-r">Count</th><th>Types</th><th>Status</th></tr>
+  <tr><td><code>aph01–36</code></td><td>Fixed-phrase articles (generic batch)</td><td class="td-r">36</td><td>gap/mcq</td><td>Low input share</td></tr>
+  <tr><td><code>art01–22</code></td><td>Topic series (mixed rules)</td><td class="td-r">22</td><td>gap/mcq</td><td>Some 100%-fail questions</td></tr>
+  <tr><td><code>art_b01–22</code></td><td>Fixed phrases (dedicated)</td><td class="td-r">~20</td><td>gap/mcq</td><td>Good coverage</td></tr>
+  <tr><td><code>art_c01–12</code></td><td>Preposition+article patterns</td><td class="td-r">12</td><td>gap</td><td>Key gap area</td></tr>
+  <tr><td><code>art_d01–15</code></td><td>First input series</td><td class="td-r">15</td><td>input/multi</td><td>Good — input pioneers</td></tr>
+  <tr><td><code>art_i01–19</code></td><td>Input expansion (various rules)</td><td class="td-r">19</td><td>input</td><td>Good coverage</td></tr>
+  <tr><td><code>mc01–15</code></td><td>Multi-blank chains</td><td class="td-r">15</td><td>multi</td><td>Consistently failing</td></tr>
+  <tr><td><code>ar01–05</code></td><td>Misc articles</td><td class="td-r">5</td><td>mixed</td><td>Sparse</td></tr>
+  <tr><td><code>st_a01–03</code></td><td>Stative articles</td><td class="td-r">3</td><td>gap</td><td>Niche</td></tr>
+  <tr><td><code>ep01–03</code></td><td>Ellipsis/particle</td><td class="td-r">3</td><td>gap</td><td>Niche</td></tr>
+</table>
+
+<h3>Sub-topic Coverage Assessment</h3>
+<p>The B2/C1 article system has ~15 distinct sub-topics. Current coverage is uneven:</p>
+
+<table>
+  <tr><th>Sub-topic</th><th class="td-r">Current Qs</th><th>Coverage</th><th>Error pattern link</th></tr>
+  <tr><td>Shared-knowledge THE (second mention, unique referent)</td><td class="td-r">~10</td><td class="orange">Sparse — needs 15+</td><td><span class="error-tag tag-a-the">Pattern 1</span></td></tr>
+  <tr><td>Uncountable/abstract nouns (∅ article)</td><td class="td-r">~12</td><td class="orange">Present but MCQ-heavy</td><td><span class="error-tag tag-zero">Pattern 2</span></td></tr>
+  <tr><td>Time expressions (∅ next Monday, ∅ last week)</td><td class="td-r">~5</td><td class="red">Sparse</td><td><span class="error-tag tag-zero">Pattern 2</span></td></tr>
+  <tr><td>"The X of Y" patterns</td><td class="td-r">~8</td><td class="orange">Present (art_c series)</td><td><span class="error-tag tag-of-in">Pattern 3</span></td></tr>
+  <tr><td>"in ∅ [abstract]" patterns (procurement, progress)</td><td class="td-r">~4</td><td class="red">Sparse</td><td><span class="error-tag tag-of-in">Pattern 3</span></td></tr>
+  <tr><td>Fixed expressions (take action, in the saddle, etc.)</td><td class="td-r">~36</td><td class="green">Well-covered (aph series)</td><td><span class="error-tag tag-fixed">Pattern 4</span></td></tr>
+  <tr><td>Geographical names (∅ France, the UK, the Sahara)</td><td class="td-r">~6</td><td class="orange">Present</td><td>—</td></tr>
+  <tr><td>Musical instruments (play the piano)</td><td class="td-r">~2</td><td class="yellow">Minimal</td><td>—</td></tr>
+  <tr><td>Superlatives (the best, the most)</td><td class="td-r">~4</td><td class="yellow">Minimal</td><td>—</td></tr>
+  <tr><td>Classifying A (she's a teacher)</td><td class="td-r">~5</td><td class="orange">Present</td><td>—</td></tr>
+  <tr><td>Institutions (go to ∅ school/hospital/prison)</td><td class="td-r">~4</td><td class="yellow">Minimal</td><td><span class="error-tag tag-zero">Pattern 2</span></td></tr>
+  <tr><td>Countable first mention (A + new noun)</td><td class="td-r">~6</td><td class="orange">Present</td><td>—</td></tr>
+  <tr><td>Generic THE (the + species/invention: the telephone)</td><td class="td-r">~2</td><td class="red">Sparse</td><td>—</td></tr>
+  <tr><td>Business compound nouns (∅ board meeting, ∅ risk management)</td><td class="td-r">~3</td><td class="red">Sparse — high value for Artem</td><td><span class="error-tag tag-fixed">Pattern 4</span></td></tr>
+  <tr><td>Discourse reference chains (a→the across sentences)</td><td class="td-r">~4</td><td class="red">Sparse — only mc series</td><td><span class="error-tag tag-a-the">Pattern 1</span></td></tr>
+</table>
+
+<div class="callout callout-warn">
+  <div class="callout-label">Key finding: the gap is in decision-context questions, not rules</div>
+  <p>The quiz has reasonable coverage of article <em>rules</em> (a/an before vowels, the with superlatives, etc.) but very poor coverage of article <em>decisions in context</em> — situations where the learner must track discourse reference, weigh shared knowledge, or navigate preposition+article interactions. These context-dependent decisions are exactly where errors concentrate. The 36 aph-series fixed-phrase questions are well-covered but don't help with Patterns 1–3.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="plan">6. The Holistic Plan (3 Phases)</h2>
+
+<div class="phase" style="border-left:3px solid var(--red)">
+  <div class="phase-header">
+    <span class="phase-title">Phase 1: Fix Existing Problems (Week 1)</span>
+    <span class="phase-badge" style="background:var(--red-bg);color:var(--red)">Immediate</span>
+  </div>
+  <p style="font-size:13px;margin:.4rem 0"><strong>A. Question quality fixes</strong> — review and fix the 10 cross-player failure questions (art14, art15, art11, art_b08, art_c03, art01, mc12, mc14, etc.). Issues: generic "Which is correct?" MCQ stems, unclear fixed-expression rules in exp, multi-blank difficulty compounding.</p>
+  <p style="font-size:13px;margin:.4rem 0"><strong>B. Exp quality audit</strong> — verify all article exp fields have contrastive structure (Rule → Why → ✗ wrong form → L1 note). Many aph/art-series exp fields were flagged in the S49 no-contrast audit.</p>
+  <p style="font-size:13px;margin:.4rem 0"><strong>C. Add 7 gap-scaffold questions</strong> targeting the a→the swap (Pattern 1) — similar to PV phase 1 scaffold questions (pv_s01–s07). Focus: shared-knowledge nouns in business and cycling contexts. Each question's exp should reinforce the "Do we both know which one?" heuristic.</p>
+  <p style="font-size:13px;margin:.4rem 0"><strong>D. Design rule: two-sentence discourse stems</strong> — research shows 32–70% of article decisions require cross-sentence context (Brown 1983, Jonz 1990). All new B2+ article gap/input questions must use two-sentence stems by default: Sentence 1 establishes the referent; Sentence 2 contains the blank. Isolated single-sentence stems are acceptable only for zero-article rules and fixed expressions.</p>
+  <div class="bar-wrap">
+    <div class="bar-label"><span>Effort</span><span>~15 question fixes + 7 new questions</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:25%;background:var(--red)"></div></div>
+  </div>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--orange)">
+  <div class="phase-header">
+    <span class="phase-title">Phase 2: Targeted Expansion by Error Pattern (Weeks 2–4)</span>
+    <span class="phase-badge" style="background:var(--orange-bg);color:var(--orange)">Core work</span>
+  </div>
+  <p style="font-size:13px;margin:.4rem 0"><strong>Pattern 1 — a→the decision drills (20 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Gap + input questions built around discourse-tracking: two-sentence stems where the first sentence introduces a noun with "a" and the second requires "the". Business memos, cycling narratives, school stories. Force the learner to track reference across sentences.</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>Pattern 2 — Zero-article decision drills (15 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Time expressions (next/last + time), uncountable nouns in business context (progress, information, advice, equipment, research), abstract nouns used generically (management, procurement, performance). Gap questions where ∅ competes with "the" or "a".</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>Pattern 3 — Preposition+article patterns (12 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Expand art_c series: "the X of Y" vs "in ∅ X" contrast pairs. E.g., "the feasibility of the project" but "in procurement". Include "most of the X" pattern. Business register essential.</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>Pattern 4 — Business fixed expressions (10 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Compound nouns (∅ board meeting, ∅ risk management, ∅ performance review), institutional phrases (take ∅ action, make ∅ progress, reach ∅ agreement), proper noun patterns (the Board of Directors, the CFO). Mostly input type — these must be memorised.</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>B1 foundation boost for Nicole/Ernest (10 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Basic rules still shaky at B1: a/an with professions, institutions (go to ∅ school/hospital), sports/meals (play ∅ football, have ∅ breakfast). Nicole themes: K-pop, school. Ernest themes: GCSE, basketball, gym.</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>NEW — Fluctuation Hypothesis diagnostics (8 questions)</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">Ionin et al. (2004) showed Russian speakers' errors concentrate in two cells of a [±definite × ±specific] matrix. 8 questions (2 per cell) using prefix <code>art_dx</code> to diagnose whether errors reflect specificity-based reasoning. The two "mismatch" cells ([+def,−spec]: "the manager on duty, whoever that is" and [−def,+spec]: "a particular report I had in mind") are the hardest. If a player gets those wrong but the convergence cells right, the exp names the specific confusion. See Section 9 for theoretical basis.</p>
+
+  <p style="font-size:13px;margin:.4rem 0"><strong>NEW — NP complexity variation rule</strong></p>
+  <p style="font-size:13px;color:var(--text2);margin:.2rem 0 .4rem">REALEC corpus data shows article omission spikes when adjectives precede the noun ("important role" → omits "an"). For all new article questions, systematically vary NP complexity: ~50% bare NP (<code>___ report</code>), ~30% modified NP (<code>___ quarterly report</code>), ~20% heavily modified NP (<code>___ recently completed quarterly report</code>). This tests processing automaticity, not just rule knowledge.</p>
+
+  <div class="bar-wrap">
+    <div class="bar-label"><span>Effort</span><span>~67 new questions across 5 batches</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--orange)"></div></div>
+  </div>
+</div>
+
+<div class="phase" style="border-left:3px solid var(--green)">
+  <div class="phase-header">
+    <span class="phase-title">Phase 3: Advanced Contexts & Maintenance (Weeks 5–8)</span>
+    <span class="phase-badge" style="background:var(--green-bg);color:var(--green)">Long-term</span>
+  </div>
+  <p style="font-size:13px;margin:.4rem 0"><strong>A. Discourse-chain multi-blanks (10 questions)</strong> — mini-paragraphs (2–3 sentences) where article choice tracks across the paragraph. Replace some of the failing mc-series with better-scaffolded versions. Business memos, cycling race reports, GCSE case studies.</p>
+  <p style="font-size:13px;margin:.4rem 0"><strong>B. C1 precision (10 questions)</strong> — generic THE (the telephone, the guitar), article with acronyms/abbreviations (the UN, ∅ NATO), article in formal registers (the aforementioned, the former). Egor and Artem focus.</p>
+  <p style="font-size:13px;margin:.4rem 0"><strong>C. Exercise integration</strong> — dedicated article exercise types added to the exercises guide (see Section 8).</p>
+  <div class="bar-wrap">
+    <div class="bar-label"><span>Effort</span><span>~20 new questions + exercise guide updates</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div>
+  </div>
+</div>
+
+<div class="callout callout-ok">
+  <div class="callout-label">Total scope (revised with research enhancements)</div>
+  <p><strong>Phase 1:</strong> ~22 questions (7 new + 15 fixes) · <strong>Phase 2:</strong> ~75 new questions (67 original + 8 Fluctuation Hypothesis diagnostics) · <strong>Phase 3:</strong> ~20 new questions · <strong>Grand total:</strong> ~95 new questions + ~15 question fixes, bringing Articles from 152 → ~247 questions (8.8% → ~12.5%, hitting Tier 4 target). Plus: exp rewrite for all 152 existing questions (pattern-specific L1 notes + Russian bridge scaffolds at B1).</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="quiz">7. Quiz Changes — What to Add/Modify</h2>
+
+<h3>Phase 1 Scaffold Questions (7 new, prefix: <code>art_s</code>)</h3>
+<p>Targeting Pattern 1 (a→the swap) with the "Do we both know which one?" heuristic embedded in every exp. Business and cycling contexts for Artem. All gap or input type.</p>
+
+<table>
+  <tr><th>ID</th><th>Sub-topic</th><th>Type</th><th>Sketch</th></tr>
+  <tr><td><code>art_s01</code></td><td>Second mention THE</td><td>gap</td><td>"We commissioned a report last month. ___ report revealed several risks." → the</td></tr>
+  <tr><td><code>art_s02</code></td><td>Situational unique THE</td><td>gap</td><td>"The peloton approached a steep climb. ___ gradient reached 12%." → The</td></tr>
+  <tr><td><code>art_s03</code></td><td>Inherited specificity</td><td>gap</td><td>"We reviewed ___ outcome of the feasibility study." → the</td></tr>
+  <tr><td><code>art_s04</code></td><td>Shared knowledge</td><td>input</td><td>"Tell ___ CFO we need the figures by Friday." → the</td></tr>
+  <tr><td><code>art_s05</code></td><td>Context-established</td><td>input</td><td>"After the ride, we sat down for ___ meal at the hotel." → a / the (context-dependent — exp explains)</td></tr>
+  <tr><td><code>art_s06</code></td><td>Contrast: a (new) vs the (known)</td><td>gap</td><td>"I met ___ new supplier yesterday. ___ supplier quoted lower prices." → a / The</td></tr>
+  <tr><td><code>art_s07</code></td><td>Zero article contrast</td><td>gap</td><td>"We need to take ___ action before the deadline." → ∅ (take action = fixed phrase)</td></tr>
+</table>
+
+<h3>Phase 1 Quality Fixes (15 existing questions)</h3>
+<table>
+  <tr><th>ID</th><th>Issue</th><th>Fix</th></tr>
+  <tr><td><code>art14</code></td><td>100% fail — "take ___ action" stem unclear</td><td>Review exp: add contrastive "take ∅ action" vs "take the action on X"</td></tr>
+  <tr><td><code>art15</code></td><td>20% cross-player — generic "Which is correct?" stem</td><td>Convert to gap or add specific stem description</td></tr>
+  <tr><td><code>art11</code></td><td>100% fail Ernest — "progress" uncountable</td><td>Add L1 note: "Russian 'прогресс' is countable; English 'progress' is not"</td></tr>
+  <tr><td><code>art19</code></td><td>100% fail Artem — generic MCQ</td><td>Review and convert to gap if possible</td></tr>
+  <tr><td><code>aph32</code></td><td>100% fail — Artem picks wrong "the" placement</td><td>Review exp and options quality</td></tr>
+  <tr><td><code>mc12</code></td><td>100% fail — 4-blank business context</td><td>Add intro scaffold or split into 2 questions</td></tr>
+  <tr><td><code>mc14</code></td><td>92% fail Ernest — boardroom 4-blank</td><td>Add intro scaffold with article rules summary</td></tr>
+  <tr><td colspan="3" style="color:var(--text3);font-style:italic">+ 8 more to be identified during actual implementation by reviewing full question content</td></tr>
+</table>
+
+<h3>Phase 2 New Question Batches</h3>
+<table>
+  <tr><th>Batch</th><th>Pattern</th><th>Prefix</th><th class="td-r">Count</th><th>Types</th><th>Levels</th></tr>
+  <tr><td>2A</td><td>a→the decision drills</td><td><code>art_e</code></td><td class="td-r">20</td><td>10 gap, 8 input, 2 multi</td><td>B2 (15), C1 (5)</td></tr>
+  <tr><td>2B</td><td>Zero-article drills</td><td><code>art_f</code></td><td class="td-r">15</td><td>8 gap, 5 input, 2 multi</td><td>B1 (5), B2 (10)</td></tr>
+  <tr><td>2C</td><td>Preposition+article</td><td><code>art_c</code> ext</td><td class="td-r">12</td><td>6 gap, 4 input, 2 multi</td><td>B2 (10), C1 (2)</td></tr>
+  <tr><td>2D</td><td>Business fixed expressions</td><td><code>aph</code> ext</td><td class="td-r">10</td><td>3 gap, 7 input</td><td>B2 (8), C1 (2)</td></tr>
+  <tr><td>2E</td><td>B1 foundation (Nicole/Ernest)</td><td><code>art_g</code></td><td class="td-r">10</td><td>5 gap, 5 input</td><td>B1 (10)</td></tr>
+  <tr><td>2F</td><td>Fluctuation Hypothesis diagnostics</td><td><code>art_dx</code></td><td class="td-r">8</td><td>4 gap, 4 input</td><td>B2 (6), C1 (2)</td></tr>
+</table>
+
+<div class="callout callout-ok">
+  <div class="callout-label">Total scope (revised)</div>
+  <p><strong>Phase 1:</strong> ~22 questions (7 new + 15 fixes) · <strong>Phase 2:</strong> ~75 new questions (67 original + 8 diagnostic) · <strong>Phase 3:</strong> ~20 new questions · <strong>Grand total:</strong> ~95 new questions + ~15 question fixes, bringing Articles from 152 → ~247 questions (from 8.8% to ~12.5% of quiz — hitting the Tier 4 target of 10–12%). Additionally: exp rewrite for all 152 existing questions (pattern-specific L1 notes + Russian bridge scaffolds at B1).</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="exercises">8. Exercise Session Changes</h2>
+
+<h3>New Exercise Type: Article Decision Drill</h3>
+<p>A dedicated exercise format for article practice, designed around the 5 error patterns:</p>
+
+<p><strong>Format:</strong> Claude presents a 2–3 sentence mini-scenario with article blanks. The player fills in a/an/the/∅ for each blank. After each item, Claude provides immediate corrective feedback linking to the specific error pattern.</p>
+
+<p><strong>Scaffolding sequence</strong> (based on Master's binary system — see Section 9):</p>
+<table>
+  <tr><th>Level</th><th>Focus</th><th>Decision framework</th><th>Example prompt style</th></tr>
+  <tr><td>Stage 1</td><td>Binary: classify or identify?</td><td>Master's core question: "Are you saying what kind (a/∅) or which one (the)?"</td><td>"We hired a consultant. ___ consultant recommended restructuring."</td></tr>
+  <tr><td>Stage 2</td><td>Ternary: THE, A, or ∅?</td><td>Add zero article: uncountable, abstract, time expressions</td><td>"___ management needs to make ___ progress on ___ project."</td></tr>
+  <tr><td>Stage 3</td><td>Full discourse tracking</td><td>a/an/the/∅ across sentences, referent chains</td><td>Full paragraph with 4–6 blanks across sentences</td></tr>
+</table>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem">Key design rule: start each drill with "convergence" items ([+def,+spec] and [−def,−spec]) to build confidence, then introduce "mismatch" items. Feedback must name the specific error pattern, not just state the correct answer.</p>
+
+<h3>Integration with Existing Exercise Types</h3>
+<table>
+  <tr><th>Exercise Type</th><th>Article Integration</th></tr>
+  <tr><td>Error Correction</td><td>Include 2–3 article errors per set (a→the, phantom article, dropped article). Already used successfully — Artem scored 94% on dedicated article error correction (Apr 3)</td></tr>
+  <tr><td>Translation</td><td>Include sentences with tricky article patterns. Russian → English forces article production (no article cue in source). Already generating article errors naturally — see Mar 24 session</td></tr>
+  <tr><td>Free Write</td><td>After submission, flag article errors first before other categories. Track article accuracy separately in feedback</td></tr>
+  <tr><td>Dictation</td><td>Include sentences with contrastive article pairs (the X of Y, in ∅ Z)</td></tr>
+</table>
+
+<h3>Recommended Article Exercise Frequency</h3>
+<table>
+  <tr><th>Player</th><th>Current article exercise frequency</th><th>Recommended</th></tr>
+  <tr><td>Artem</td><td>~2–3/week (embedded in mixed exercises)</td><td>1 dedicated article drill/week + keep embedded. Focus: Pattern 1 (a→the)</td></tr>
+  <tr><td>Anna</td><td>0</td><td>1 article error correction/week at B1 level. Focus: Pattern 2 (phantom articles) + Pattern 5 (dropped articles)</td></tr>
+  <tr><td>Ernest</td><td>1 session total</td><td>1 article drill/2 weeks at B1. Focus: uncountable nouns (Pattern 2), basic a/an/the discrimination</td></tr>
+  <tr><td>Nicole</td><td>0</td><td>1 article drill/2 weeks at B1. Focus: Pattern 5 (dropped articles) first, then Pattern 2</td></tr>
+</table>
+
+<div class="callout callout-info">
+  <div class="callout-label">Key difference from PV remediation</div>
+  <p>PV remediation focused heavily on <strong>production</strong> (input questions, translation exercises) because the gap was recognition → production. Article remediation should focus on <strong>decision-making under ambiguity</strong> (gap questions with plausible distractors, discourse-tracking exercises) because the gap is knowing a rule → applying it in context. Input questions for articles are actually the easiest type (90% for Artem) — the hard part is choosing between "a" and "the" when both seem possible.</p>
+</div>
+
+<h3>Success Metrics</h3>
+<table>
+  <tr><th>Metric</th><th>Current</th><th>Phase 1 target</th><th>Phase 2 target</th><th>Long-term target</th></tr>
+  <tr><td>Artem overall article accuracy</td><td class="td-r red">75%</td><td class="td-r">78%</td><td class="td-r">83%</td><td class="td-r green">85%+</td></tr>
+  <tr><td>Artem B2 article accuracy</td><td class="td-r red">71%</td><td class="td-r">75%</td><td class="td-r">80%</td><td class="td-r green">83%+</td></tr>
+  <tr><td>Artem gap-type article accuracy</td><td class="td-r orange">74%</td><td class="td-r">78%</td><td class="td-r">82%</td><td class="td-r green">85%+</td></tr>
+  <tr><td>Nicole overall article accuracy</td><td class="td-r red">57%</td><td class="td-r">62%</td><td class="td-r">70%</td><td class="td-r green">75%+</td></tr>
+  <tr><td>Ernest overall article accuracy</td><td class="td-r red">37%</td><td class="td-r">50%</td><td class="td-r">65%</td><td class="td-r green">75%+</td></tr>
+  <tr><td>Article share in quiz</td><td class="td-r">8.8%</td><td class="td-r">9.2%</td><td class="td-r">12%</td><td class="td-r green">10–12%</td></tr>
+</table>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="research">9. Research Basis & Design Principles</h2>
+
+<p>The following research findings directly inform the quiz and exercise design in this plan. References are abbreviated — the full research report is in the project file.</p>
+
+<h3>The Fluctuation Hypothesis (Ionin, Ko & Wexler 2004)</h3>
+<p>Learners from article-less L1s (Russian, Chinese, Korean) have UG access to two universal parameters — <strong>definiteness</strong> (English system) and <strong>specificity</strong> (whether the speaker has a particular referent in mind) — and <strong>fluctuate between them</strong>. This produces errors concentrated in two "mismatch cells" of a 2×2 matrix:</p>
+<table>
+  <tr><th>Context</th><th>Target</th><th>Russian speaker error</th><th>Why</th></tr>
+  <tr><td>[+definite, +specific]</td><td>the</td><td class="green">✓ Usually correct</td><td>Both parameters converge</td></tr>
+  <tr><td>[+definite, −specific]</td><td>the</td><td class="red">Overuses "a"</td><td>Non-specific → perceived as indefinite</td></tr>
+  <tr><td>[−definite, +specific]</td><td>a</td><td class="red">Overuses "the"</td><td>Specific → perceived as definite</td></tr>
+  <tr><td>[−definite, −specific]</td><td>a</td><td class="green">✓ Usually correct</td><td>Both parameters converge</td></tr>
+</table>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Application:</strong> The art_dx diagnostic questions (Batch 2F) directly test each cell. Error patterns in mismatch cells reveal specificity-based reasoning and require different exp feedback than generic rule errors. Trenkic (2007) proposed an alternative "Syntactic Misanalysis" account (articles treated as adjectives, explaining omission with pre-modified NPs) — both accounts inform our NP complexity variation rule.</p>
+
+<h3>Master's Binary System (1990, TESOL Quarterly)</h3>
+<p>The most effective pedagogical framework for article instruction. Simplifies articles into two operations:</p>
+<table>
+  <tr><th>Operation</th><th>Question</th><th>Article</th><th>Example</th></tr>
+  <tr><td><strong>Classification</strong></td><td>"What kind?"</td><td>a (singular count) / ∅ (plural, mass)</td><td>"She's <em>a</em> teacher" · "I like ∅ coffee"</td></tr>
+  <tr><td><strong>Identification</strong></td><td>"Which one?"</td><td>the</td><td>"Pass me <em>the</em> report" (we both know which)</td></tr>
+</table>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Application:</strong> This maps directly to the "Do we both know which one?" heuristic already proven effective in Artem's exercises. The exercise drill progression (Stage 1→2→3) follows Master's recommended sequence: binary distinction first, then zero article, then full discourse tracking. Master's 2002 comparative study testing four approaches found the binary system showed the most significant improvement.</p>
+
+<h3>Discourse Dependence (Brown 1983, Jonz 1990)</h3>
+<p>52–70% of cloze items involve cohesion; 32% of article blanks require information beyond sentence borders. Jarvis (2002) found articles are more likely to be dropped in topic-continuation positions — precisely where "the" is most needed.</p>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Application:</strong> All new B2+ article questions use two-sentence discourse stems by default. Isolated single-sentence blanks are only acceptable for zero-article rules and fixed expressions. This is the single highest-impact design change from the research.</p>
+
+<h3>REALEC Corpus Findings (HSE Moscow)</h3>
+<p>From 6,054 Russian learner essays with 134,608 error annotations:</p>
+<table>
+  <tr><th>Error type</th><th class="td-r">Share</th><th>Note</th></tr>
+  <tr><td>Incorrect "the" (overuse/misuse)</td><td class="td-r red">54%</td><td>Dominant error type — overuse, not omission</td></tr>
+  <tr><td>Article omission</td><td class="td-r orange">37%</td><td>Spikes with pre-modified NPs (adj + noun)</td></tr>
+  <tr><td>Incorrect "a"</td><td class="td-r">9%</td><td>Surprisingly rare</td></tr>
+</table>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Application:</strong> Our error taxonomy (Section 3) aligns with corpus data. Russian speakers at B2 don't primarily omit articles — they misselect between a/the. This confirms that gap questions with a/the distractors are the right primary format, not input questions (which test omission more than misselection). Derkach & Alexopoulou (2024) found Russian speakers achieve only 55% accuracy with mass nouns — confirming zero-article questions deserve dedicated coverage.</p>
+
+<h3>Russian L1 Scaffolds</h3>
+<p>Russian demonstratives can bridge to English articles — with explicit limits:</p>
+<table>
+  <tr><th>Russian</th><th>Maps to</th><th>Limitation</th></tr>
+  <tr><td>этот (this)</td><td>the (definite, present)</td><td>Works for ~60% of "the" contexts</td></tr>
+  <tr><td>тот (that)</td><td>the (definite, anaphoric)</td><td>Breaks for structural "the" (the UK, play the piano)</td></tr>
+  <tr><td>один (one/a certain)</td><td>a (specific indefinite)</td><td>Doesn't cover non-specific "a"</td></tr>
+  <tr><td>какой-нибудь (any)</td><td>a (non-specific indefinite)</td><td>Reasonable mapping</td></tr>
+  <tr><td>word order (preverbal = known)</td><td>the</td><td><strong>Fails entirely in English SVO</strong></td></tr>
+</table>
+<p style="font-size:12px;color:var(--text3);margin-top:.4rem"><strong>Application:</strong> Include этот/тот bridge in exp fields for B1 article questions only (~50 questions). At B2+, drop the bridge — it doesn't cover generic, structural, or conventional uses. Exp must explicitly mark where the analogy breaks.</p>
+
+<h3>Feedback Design Principles</h3>
+<p>From Shute (2008), Fleckenstein (2023), Li (2010), Lyster & Saito (2010):</p>
+<table>
+  <tr><th>Finding</th><th>Application to our exp fields</th></tr>
+  <tr><td>Shorter feedback outperforms longer (Shute 2008)</td><td>Keep exp ≤3 sentences / ~250 chars. Current standard is correct.</td></tr>
+  <tr><td>Adaptive > static for complex items (Fleckenstein 2023)</td><td>Article questions with 2+ plausible errors → pattern-specific L1 notes (not one generic note for all)</td></tr>
+  <tr><td>Metalinguistic feedback is strongest (Li 2010)</td><td>Our exp already does this. Continue naming the rule, not just the answer.</td></tr>
+  <tr><td>L1 metalanguage helps at lower proficiency (Gánem-Gutiérrez 2011)</td><td>Russian terms (этот, тот) in B1 exp fields; English-only at B2+</td></tr>
+  <tr><td>Visual decision trees improve retention (Mayer's multimedia theory)</td><td>Future: consider adding a binary flowchart image to article intro fields. Deferred — no image support in current intro rendering.</td></tr>
+</table>
+
+<h3>Fossilisation Risk</h3>
+<p>Ionin & Díez-Bedmar (2021) found Russian speakers <strong>do not show the same B1→B2 improvement</strong> that Spanish speakers do — article errors plateau. Chrabaszcz & Jiang (2014) confirmed this even after years of immersion. This means:</p>
+<div class="callout callout-danger">
+  <div class="callout-label">Implication for quiz design</div>
+  <p>Articles cannot be treated as a "teach once, move on" topic. The spaced repetition system must keep resurfacing article questions at all levels. The most fossilisation-resistant uses — definite singular generics ("the whale is endangered"), articles in pre-modified NPs, and abstract noun articles — belong at C1 level and should not be introduced prematurely. B1→B2 transition is the critical window for intensive practice.</p>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<h2 id="backlog">10. Implementation Backlog</h2>
+
+<p>Concrete work items derived from this analysis + research, ordered by priority. Items marked <strong>KB</strong> require KB updates; items marked <strong>Content</strong> are question/exp changes; items marked <strong>Guide</strong> update the exercises guide.</p>
+
+<table>
+  <tr><th>#</th><th>Item</th><th>Type</th><th>Effort</th><th>Impact</th><th>Phase</th></tr>
+  <tr><td>1</td><td><strong>Add article-specific rules to per-question authoring checklist</strong>: discourse stems, pattern tags, L1 note specificity, NP complexity, Fluctuation cell, Russian bridge at B1</td><td>KB</td><td>15 min</td><td class="green">High — prevents recurrence</td><td>1</td></tr>
+  <tr><td>2</td><td><strong>Pattern-specific L1 note templates</strong>: replace generic "Russian has no articles" with 5 pattern-specific notes (a→the / zero / prep+art / fixed / dropped). Include этот/тот bridge for B1.</td><td>KB</td><td>15 min (define templates)</td><td class="green">High — foundational standard</td><td>1</td></tr>
+  <tr><td>3</td><td><strong>Two-sentence discourse stem design rule</strong>: all new B2+ article gap/input questions use two-sentence stems by default</td><td>KB</td><td>5 min</td><td class="green">High — single biggest design improvement</td><td>1</td></tr>
+  <tr><td>4</td><td><strong>7 art_s scaffold questions</strong>: targeting Pattern 1 (a→the swap) with discourse stems</td><td>Content</td><td>½ session</td><td class="green">High</td><td>1</td></tr>
+  <tr><td>5</td><td><strong>15 cross-player failure question fixes</strong>: art14, art15, art11, art_b08, art_c03, mc12, mc14 etc.</td><td>Content</td><td>½ session</td><td class="green">High</td><td>1</td></tr>
+  <tr><td>6</td><td><strong>Rewrite 152 article exp fields</strong> with pattern-specific L1 notes + Russian bridge at B1 + pattern tags</td><td>Content</td><td>1 session (exp rewriter tool)</td><td class="green">High — biggest exp quality improvement</td><td>2</td></tr>
+  <tr><td>7</td><td><strong>75 new article questions</strong> across 6 batches (2A–2F) including 8 Fluctuation Hypothesis diagnostics</td><td>Content</td><td>2–3 sessions</td><td class="green">High</td><td>2</td></tr>
+  <tr><td>8</td><td><strong>Article Decision Drill</strong> exercise type: add to exercises guide with Master's binary scaffold sequence</td><td>Guide</td><td>30 min</td><td class="orange">Medium</td><td>2</td></tr>
+  <tr><td>9</td><td><strong>NP complexity tracking</strong>: after Phase 2 questions are live, export stats segmented by NP complexity (bare vs modified vs heavily modified) to test whether processing load explains errors</td><td>Analysis</td><td>1 stats session</td><td class="orange">Medium — diagnostic</td><td>2</td></tr>
+  <tr><td>10</td><td><strong>20 Phase 3 questions</strong>: discourse-chain multi-blanks (10) + C1 precision (10)</td><td>Content</td><td>1 session</td><td class="orange">Medium</td><td>3</td></tr>
+  <tr><td>11</td><td><strong>Definite singular generics at C1</strong>: "the whale is endangered" pattern — last-to-acquire for Russian speakers per Ionin (2011). Add only when Artem/Egor C1 accuracy ≥70%.</td><td>Content</td><td>½ session</td><td class="blue">Lower — C1 only</td><td>3</td></tr>
+  <tr><td>12</td><td><strong>Visual decision tree</strong>: Master's binary flowchart as image in article intro fields. Requires image support in intro rendering (not currently available).</td><td>Feature</td><td>1 session</td><td class="blue">Lower — deferred</td><td>future</td></tr>
+</table>
+
+</div>
+</body>
+</html>

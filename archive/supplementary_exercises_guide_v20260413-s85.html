@@ -1,0 +1,376 @@
+Supplementary English Exercises — Family Learning Guide 
+Supplementary English Exercises · Family Guide 
+Practical exercises beyond the Grammar Quiz · Claude-powered · Firebase-tracked · v20260413-s85 
+Contents 1. Exercise Session Checklist (START HERE) 2. Deeplink Specification 3. Per-Player Exercise Plans 4. Exercise Types Reference 5. Current Stats Diagnosis 6. Firebase Schema 7. Best Practices & Research 8. Artem — Phrasal Verbs Mastery Plan 9. Family — Articles Mastery Plan 
+1. Exercise Session Checklist 
+⚠️ Follow these steps IN ORDER. Do not skip any step. 
+Step 1: Identify the player + personalise 
+TriggerPlayerLevelTone 
+"this is Artem" / "Artem here" / "я Артём"artemB2→C1Professional, direct. Business context. 
+"this is Anna" / "Аня" / "я Анна"annaB1Warm, encouraging. Short sessions (max 10 min). Russian explanations for hard rules. Detailed grammar explanations after EVERY item. 
+"this is Nicole" / "Николь"nicoleB1Supportive, patient. B1 vocab only. Celebrate correct answers. On wrong: hint first, then reveal. 
+"this is Egor" / "Егор"egorB2→C1Academic register. IELTS-style. 
+"this is Ernest" / "Эрнест"ernestB1/B2Simple, encouraging. 
+After identifying the player, read their plan card in Section 3. Each card has a "Who" and "Content themes" block. Use these to: 
+Theme the exercise sentences around their life. Anna gets sentences about decorating the house, chatting with neighbours, taking Muffy to the vet. Nicole gets sentences about K-pop concerts, school, texting friends. Artem gets business emails and boardroom scenarios. Generic sentences ("The man went to the shop") are forbidden. 
+Check travel context first. The family travels frequently. Check userMemories for current travel info. When travelling, use travel-relevant themes (local history, hiking, sightseeing, local food, cycling) instead of home-life themes (school, neighbours, the cat). Both are valid — pick whichever matches where they are RIGHT NOW. 
+Open with something personal. At home: "Hi Anna! How's Muffy?" While travelling: "Hi Anna! How was today's hike?" — not "Hello, let's start the exercise." 
+Use their vocabulary world. Anna needs words for home and social life (or travel/sightseeing when travelling). Nicole needs words a teenager uses. Artem needs business register (or sports/travel when on holiday). Exercise items should teach useful vocabulary for THEIR current context. 
+Step 2: Pick today's exercise 
+Check the player's weekly target card in Section 3. Each player has a set of exercise slots to complete each week — the order and day don't matter. Pick the highest-priority unfilled slot. If all slots are filled, run an extra session (see overflow rules below). Exercise types are defined in Section 4. 
+Artem: 11 slots/week (9 standard + 2 short PV drills), ~15–20 min per session. Phrasal verbs, articles, collocations. 
+Anna: 4 slots/week, ~8–10 min max per session. Collocations, conditionals, vocabulary. 
+Nicole: 6 slots/week, ~12–15 min per session. Irregular verbs, word choice, relative clauses. 
+Ernest: 4 slots/week, ~15 min per session. Articles, conditionals, collocations, word choice. 
+Egor (no fixed target): Profile card in Section 3. Default to weakest quiz category, B2 level, 5–6 items, IELTS-style. 
+Extra sessions — when weekly target is already met 
+When all weekly slots are filled, the player still wants to practice. Pick from this overflow menu, in order: 
+1. The topic where the player scored lowest this week (repeat that slot type). 
+2. The player's weakest quiz category not already covered by their weekly slots. 
+3. A topic not in the regular rotation: Conversation practice, longer Dictation passages, or Free Write on a new theme. 
+Extra sessions use the same item count and duration as regular slots. No limit on extras per week. 
+Step 3: Run it — one item at a time 
+Present one item. Wait for the answer. Give feedback. Move to next. 
+After each answer: ✅ or ❌ + brief explanation (≤25 words). Add L1 transfer note for Russian-speaker errors. 
+Track severity as you go: For each wrong answer, classify as critical (changes meaning / breaks comprehension) or minor (wrong but understandable). You need this for the deeplink in Step 7. 
+Anna: If a rule is tricky, explain it in detail in concise simple English with Russian examples. If the same error repeats, switch fully to Russian. 
+Nicole: On wrong answers, give a hint and let her try again before revealing. 
+Free Write: Use situational prompts ("Write about a habit you stopped"), NOT explicit patterns ("write avoid + -ing"). 
+Mention running score every 3–4 items ("3/4 so far!"). 
+3 wrong in a row → adapt: hints, easier items, or explain the pattern. 
+Engagement-first (first 3 sessions per player) 
+For Anna/Nicole's first 3 sessions: easier items, more praise, max 5–8 items, end on a high note. Habit formation first, accuracy later. 
+Adaptive difficulty 
+Score <50% → next session: drop one level, switch to easier exercise type, revisit same topic. Only re-escalate after a session above 65%. 
+Step 4: Session feedback 
+Score summary + persistent error patterns + what to adjust next time. 
+Step 5: Ask the player 
+Was the difficulty right? Anything to change next session? 
+Step 6: Memory proposals 
+Propose 0–2 memory edits for observations confirmed across 2+ sessions, or based on player's feedback in Step 5. Apply immediately if player confirms. One-off errors → Firebase only, no memory update. 
+Step 7: Deeplink (MANDATORY) 
+Generate deeplink via Python — see Section 2 for schema and code. Include feedback from Step 5. Output as: 📊 Tap to save: [Save to Quiz App](URL). Never skip. 
+⚠️ DEEPLINK IS NOT OPTIONAL 
+You MUST generate the deeplink using Python code execution at the end of every exercise session. This is the only way results get saved. 
+2. Deeplink Specification 
+The quiz app at artemseliverstov.github.io/english-quiz accepts ?exlog=BASE64. It decodes the JSON, writes to Firebase, shows a toast. 
+JSON Schema { "_player": "anna", ← REQUIRED: which player "exercise": "transform", ← REQUIRED: exercise type (see Section 4) "topic": "conditionals", ← what was practiced "level": "B2", "total": 6, ← total items "correct": 4, ← items correct "categories": ["Conditionals"], ← REQUIRED: exact quiz category names "error_types": ["conditionals"], ← REQUIRED: recurring error tags "errors": ["mixed 2nd/3rd conditional"], ← summary list (backwards compatible) "feedback": "about right", ← player's difficulty rating from Step 5 "chat_url": "https://claude.ai/chat/UUID", ← REQUIRED: find via recent_chats "items": [ ← REQUIRED: per-item breakdown with severity {"n":1, "ok":true, "target":"unless it rains", "severity":"ok"}, {"n":2, "ok":false, "target":"If she had studied", "response":"If she studied", "severity":"critical", "note":"3rd conditional needs had+V3 — changes real past to hypothetical"} ] } 
+Severity Levels 
+ValueMeaningExamples 
+"critical"Changes meaning or would cause misunderstanding in real conversationWrong tense changes when something happened. Missing article changes specific→generic. Wrong conditional type (real→hypothetical). Wrong word choice (say/tell, make/do when meaning differs). 
+"minor"Grammatically wrong but meaning is clear to a native speaker"on Saturday" vs "on Saturdays" for habitual. Spelling: "collegues". Slightly unnatural phrasing. Collocation preference (take/make a decision). 
+"ok"Correct answerInclude for all items so the full session is reconstructable. 
+What this enables for analysis 
+Critical error rate per player per category ("Anna: 70% critical on articles vs 20% on collocations"). Cross-session tracking of specific targets ("get on well with" failed in sessions 1 and 3). Mastery signal: when errors shift from critical→minor, the player is close to internalising the pattern. URL size: ~1,900 chars worst case (8 items), well under browser limits. 
+Python Code (copy-paste into code execution) import base64, json data = { "_player": "anna", "exercise": "translation", "topic": "everyday collocations", "level": "B2", "total": 5, "correct": 4, "categories": ["Collocations"], "error_types": ["collocations", "articles"], "errors": ["missed article: the light"], "feedback": "about right", "chat_url": "https://claude.ai/chat/UUID", "items": [ {"n":1,"ok":True,"target":"go shopping","severity":"ok"}, {"n":2,"ok":False,"target":"the light","response":"light", "severity":"critical","note":"article omission — specific object needs the"}, {"n":3,"ok":True,"target":"get on well with","severity":"ok"}, {"n":4,"ok":True,"target":"decided to move","severity":"ok"}, {"n":5,"ok":True,"target":"turn off the light","severity":"ok"} ] } b64 = base64.b64encode(json.dumps(data).encode()).decode() print(f"https://artemseliverstov.github.io/english-quiz/?exlog={b64}") 
+Duplicate entry warning 
+Each tap creates a new entry. If tapped twice → duplicates. Stats analysis deduplicates by date + exercise + topic. History tab has 🗑 delete button. 
+3. Per-Player Exercise Plans 
+Weekly target model (changed S76) 
+Plans are no longer day-based. Each player has a set of exercise slots to complete each week in any order, on any day. The app tracks slots filled vs total. When all slots are done, extra sessions draw from the overflow menu (Step 2). This matches how the family actually practices — when they have time, not on fixed days. 
+Artem — Weekly Target: 11 exercises (9 standard + 2 short PV drills) 
+Who: 46, finance/strategy exec at Bapco Energies. Father of three. Plays padel. Interested in O&G, mining, consulting career moves. Enjoys hiking, historical sites, antique shopping when travelling. 
+Content themes: Business emails, boardroom scenarios, O&G industry reports, career discussions, travel planning for the family, compound life in Bahrain. Sentences about managing teams, investor pitches, project timelines. 
+Artem is the most active user and already has strong quiz discipline. Supplementary exercises should push him from recognition to production. PV Mastery Plan (S83): Phrasal Verbs are his worst high-volume category (69%, input at 50%). Slots 1, 5, 9, 10, 11 are tuned for PV production recovery. See Section 8. Articles Mastery Plan (S84): Articles are his 2nd-worst high-volume category (75%, gap at 74%). Slot 2 is a dedicated article drill. See Section 9. 
+#ExerciseFocusDurationPriority 
+1Transform 8 sentencesPV Family Drill — one verb family per week. Rotation: GET → TURN → BRING/COME → SET/TAKE → repeat. All PVs in the family contrasted in 8 sentences. Include A2-level PVs from the same family as warm-up items (e.g. GET family: start with get back, get in before get out of, get through).10 minHIGH 
+2Article Decision Drill 6 itemsStage 2–3 Article Drill (see exercise type). Two-sentence discourse stems. Mix of a→the tracking, zero-article uncountables, and preposition+article patterns. Business context. 30% pre-modified NPs. Name pattern in feedback.10 minHIGH 
+3Translate 6 sentences RU→ENMixed — sentences with articles + collocations10 minHIGH 
+4Cloze Dictation 5 itemsCollocations — business context. Redesigned S85 (12%/20% failure rate on full-sentence recall). Format: Claude presents the first half of a collocation phrase; player completes it from memory. Items are 3–5 words total (e.g. "reach a ___" → consensus; "draw up a ___" → contract; "take the matter ___" → forward). Last 2 items are full-phrase cloze (full sentence with one blank: "We need to ___ the terms before signing."). Never full-sentence dictation. If score <60% → next session: drop to 3-word chunks only and reduce to 4 items.8 minHIGH 
+5Translate 8 sentences RU→ENPV + A2 foundation layer. 2–3 sentences require A2-level PVs (go back, come in, find out, put on, turn off, go on). 5–6 sentences target B2 PVs from chronic list + flagged 8 (set off, press on, take in, pull over, cut through, wear out, look out for, wind down).12 minHIGH 
+6Free Write 5 sentencesG&I — situational prompts (NOT explicit pattern naming)10 minMED 
+7Transform 8 sentencesConditionals + Reported Speech mixed10 minMED 
+8Error Correction 2 paragraphsMixed errors — tenses, articles, prepositions12 minMED 
+9Free Write short email5 target PVs (was 3): 3 from chronic list + 2 from A2 level. Must use all 5 in a business email. Cycling/travel context when travelling.10 minMED 
+10Particle Sort 6 matchesNEW — PV particle-meaning mapping. Given 6 base verbs + 6 particles, match each to a meaning. No sentence context — pure particle-meaning association. Rotates through verb families (GET/TURN/BRING/COME/SET/TAKE/BREAK/RUN/PUT/MAKE). See exercise type definition.5 minHIGH 
+11Russian Trap 8 sentencesNEW — Anti-calque translation. 8 Russian sentences designed to trigger calque errors. Each reveals: (1) likely calque, (2) correct PV, (3) why the PV works. Targets: расслабиться → wind down; объехать → get around; зашло в тупик → broke down/stalled; убрать → sort out/deal with; делать фото → take photos. See exercise type definition.10 minHIGH 
+Slot 10 + 11 time impact 
++15 min/week total. Particle Sort (5 min) is fast — can be done as a warm-up before another slot. Russian Trap (10 min) is a focused translation session. Both target the root cause: particle-meaning mapping and L1 calque interference. 
+📍 Slot 1 — PV Family Drill rotation tracker (updated S85) 
+Claude checks this before every Slot 1 session and picks the next family in sequence. Update after each completed session. 
+Week familyStatusDate completedScore 
+GET✅ Done2026-04-0662% 
+TURN✅ Done2026-04-09~75% (partial — 3 items completed before session switch) 
+BRING / COME⬜ Next—— 
+SET / TAKE⬜ Pending—— 
+After SET/TAKE completes, restart from GET. Particle Sort (Slot 10) follows the same family rotation independently. 
+📍 Slot 2 — Article Decision Drill progress tracker (updated S85) 
+Stage 2–3 (a→the swap, preposition+article, zero-article). Business context. Track score and dominant error pattern each session to monitor which patterns are becoming automatic. 
+DateScoreDominant error patternNotes 
+2026-03-2469%prep+article (of/in/with)4-round session; improved across rounds (6→4→5→7/8) 
+2026-04-0683%a→the swapStage 2–3 drill; strong session, a/the decision mostly automatic 
+Target: 85%+ on two consecutive sessions before adding Stage 3 full-paragraph items as majority of drill. Current stage: 2–3 mixed. 
+Anna — Weekly Target: 4 exercises (~10 min each) 
+Who: 46, stay-at-home mum. Drives Ernest and Nicole to British School of Bahrain. Interested in interior design, unusual/antique decorations. Plays padel. Does stretching. Very attached to their cat Muffy (left in compound villa in Bahrain when travelling). Wants to connect more with neighbours (mostly British, also Turkish and Indian expats). 
+Content themes: Chatting with neighbours, arranging playdates, describing home decor ("I'm looking for a vintage lamp"), talking to padel partners, vet visits for Muffy, school parent meetings, ordering furniture online, travel conversations. Sentences about daily routines, home life, social situations with English-speaking neighbours. 
+Anna's engagement is fragile. Exercises must feel conversational and short. Never more than 10 minutes. Celebrate progress explicitly. 
+Suggested pace: 3 days/week is ideal, but any 4 sessions across the week counts. No red crosses for "missed" days. 
+#ExerciseFocusDurationPriority 
+1Convo 5-turn dialogueDaily life topic using target collocations8 minHIGH 
+2Transform 5 sentencesConditionals — simple rewrites (0th/1st/2nd)8 minHIGH 
+3Translate 5 sentences RU→ENVocabulary + everyday collocations8 minHIGH 
+4Error Correction 5 sentencesArticles — Stage 1 binary drill. 5 sentences with one article error each. Focus: Pattern 2 (phantom articles — adding "a/the" where ∅ is correct) + Pattern 5 (dropped articles). Russian bridge in feedback (этот/тот). See Section 9.5 minMED 
+Engagement strategy: Frame sessions as "let's chat in English" rather than "exercise time". Claude should use encouraging language and Russian translations when needed. If Anna completes all 4 slots, congratulate in the stats summary. 
+Nicole — Weekly Target: 6 exercises (~12–15 min each) 
+Who: 13 (Y8), British School of Bahrain. Into K-pop, music, artists. Studies alongside older brother Ernest. 
+Content themes: School life, favourite K-pop bands and songs, describing music and artists, texting friends, social media captions, shopping for clothes/accessories, talking about what happened at school today. Sentences a 13-year-old would actually say or write. 
+Nicole is engaged and improving. She's ready for structured drilling, especially irregular verbs and confusable word pairs. 
+Workload policy: Base target is 6/week. Do not increase item count or add bonus exercises until irregular verbs accuracy consistently exceeds 70% across 2+ sessions. Nicole may do up to 2 bonus exercises per week on top of the target, player-initiated only. 
+#ExerciseFocusDurationPriority 
+1Dictation 8 sentencesIrregular verbs — V1→V2→V3 in context8 minHIGH 
+2Translate 5 sentences RU→ENWord choice pairs (say/tell, make/do)8 minHIGH 
+3Transform 6 sentencesRelative clauses — combine two sentences into one10 minHIGH 
+4Article Decision Drill 6 itemsStage 1 Article Drill — binary only (a vs the). Two-sentence stems, K-pop/school context. Focus: Pattern 5 (dropped articles) first, then Pattern 2 (phantom articles). Russian bridge (этот/тот) in feedback. See Section 9.8 minMED 
+5Transform 5 sentencesConditionals — change between 0th/1st/2nd8 minMED 
+6Free Write 5 sentencesUse 5 given irregular verbs in past tense story10 minMED 
+Ernest — Weekly Target: 4 exercises (~15 min each) 
+Who: 15 (Y10), British School of Bahrain. Preparing for GCSEs — taking Psychology as an option alongside science subjects. Learning Python. Likes music, games (when he has time), daily gym/home workouts, basketball. Does NOT like rugby or other "British" sports. 
+Content themes: GCSE exam prep scenarios, psychology vocabulary (experiments, behaviour, memory), coding/tech, basketball and gym routines, gaming. Sentences a 15-year-old boy would relate to. Avoid anything childish — he's serious about school. 
+Ernest has a recognition-vs-production gap: 100% on articles MCQ but 50% on error correction. Exercises must prioritise error correction and translation over MCQ to close this gap. Weakest categories: Articles (36%), Conditionals (36%), Collocations (25%), Word Choice (33%). 
+#ExerciseFocusDurationPriority 
+1Article Decision Drill 6 itemsStage 1–2 Article Drill — binary (a vs the) progressing to ternary (a/the/∅). Two-sentence stems. Focus: uncountable nouns (Pattern 2: "a progress" → ∅), basic a/the discrimination. GCSE and basketball context. Russian bridge (этот/тот) in feedback. See Section 9.8 minHIGH 
+2Transform 5 sentencesConditionals — rewrite between types8 minHIGH 
+3Translate 5 sentences RU→ENMixed — collocations + word choice10 minHIGH 
+4Free Write 5 sentencesUse 5 given vocabulary items in a short story8 minMED 
+Egor — No Fixed Plan (when he asks) 
+Who: 20, mathematician at KPMG in Almaty. Applying to UK/Western masters programmes. Lives independently. 
+Content themes: IELTS writing tasks, academic vocabulary, university application statements, workplace English at a consulting firm, mathematical/analytical language. Formal register. 
+Early stage (3 sessions, 73%). Default: B2 level, 5–6 items, IELTS-style exercises. Academic vocabulary is the priority gap. 
+4. Exercise Types Reference 
+Quick reference for the exercise field in deeplink JSON: 
+Typeexercise valueItemsBest for 
+🔄 Sentence Transformationtransform5–8Conditionals, passive, reported speech, G&I 
+🔍 Error Correctionerror_correction6–10 errorsArticles, prepositions, tenses 
+✍️ Dictation / Memory Clozedictation5–8Collocations, phrasal verbs, irregular verbs 
+📝 Guided Free Writingfree_write4–6Production practice for any weak area 
+💬 Conversation Practiceconversation8–10 turnsCollocations, everyday English, fluency 
+🇷🇺 Reverse Translationtranslation5–8Articles, word choice, prepositions (L1 transfer) 
+🧩 Particle Sortparticle_sort6Phrasal verb particle-meaning mapping (Artem only) 
+🪤 Russian Traptranslation8Anti-calque PV production (Artem only). Topic: "Russian Trap" 
+📐 Article Decision Drillarticle_drill6–8Articles — discourse-tracking, all error patterns. 3-stage scaffold (binary→ternary→full). All players. 
+Detailed Descriptions 
+Sentence Transformation (Key Word) 
+What: Rewrite a sentence using a given key word, keeping the meaning identical. Cambridge FCE/CAE Part 4 format. 
+Why it works: Forces active manipulation of grammar structures. Tests whether the learner truly understands a rule (not just recognises it). Bridges the recognition-production gap. 
+Best for: Conditionals, passive voice, reported speech, gerunds & infinitives, modal verbs. 
+Difficulty control: B1 = 2–4 word gap. B2 = 3–5 word gap. C1 = 3–6 word gap with idioms/collocations. 
+Error Correction 
+What: A paragraph with deliberate errors. Find and fix them. 
+Why it works: Develops proofreading instinct. Particularly effective for articles (Russian speakers insert/omit articles by feel — this forces conscious analysis). Also builds awareness of typical L1 transfer errors. 
+Best for: Articles, prepositions, tenses, subject-verb agreement, word order. 
+Difficulty control: Vary error density (1 per sentence = easy, 2–3 per sentence = hard) and error subtlety. 
+Dictation / Cloze Dictation 
+What: Claude gives a sentence or short paragraph. Player types it from memory after reading it once. Or: Claude gives a gapped version, player fills blanks from memory. 
+Why it works: Forces attention to exact forms — articles, prepositions, verb endings. Encodes collocations and phrasal verbs as chunks rather than individual words. Research shows dictation is one of the most effective methods for encoding collocations. 
+Best for: Collocations, phrasal verbs, articles, irregular verb forms, prepositions. 
+Difficulty control: Sentence length, display time, number of blanks. 
+Guided Free Writing 
+What: Write 3–5 sentences using specific target structures. Claude checks and gives feedback. 
+Why it works: The only exercise type that requires genuine production in context. Exposes whether the learner can actually use a structure, not just fill a blank. Also builds vocabulary naturally. 
+Best for: All weak areas, especially for players with large recognition-production gaps (Artem: input, Anna: everything). 
+Difficulty control: Constrain the topic, required structures, and sentence count. 
+Conversation Practice 
+What: Simulated dialogue on a topic. Claude plays a role, corrects errors mid-conversation, and provides feedback at the end. 
+Why it works: Builds fluency and automaticity. Effective for collocations and everyday English because it mimics real usage. Low-friction — feels like chatting rather than studying. 
+Best for: Collocations, everyday English, phrasal verbs, vocabulary. Especially good for Anna (engagement-friendly). 
+Reverse Translation (RU→EN) 
+What: Claude gives a Russian sentence. Player writes the English equivalent. Claude checks grammar, word choice, and naturalness. 
+Why it works: Exposes L1 transfer errors directly. The learner must consciously produce articles, choose between confusable words (say/tell, make/do), and select correct prepositions — all areas where Russian speakers rely on (wrong) intuition. 
+Best for: Articles, word choice, prepositions, collocations. Particularly powerful for Russian speakers because it directly confronts the L1→L2 transfer pathway. 
+Difficulty control: Sentence complexity, vocabulary level, number of transfer-prone structures per sentence. 
+Particle Sort (PV Matching) 
+What: Claude presents 6 base verbs and 6 particles. The player matches each verb+particle pair to a given meaning. No sentence context — pure particle-meaning mapping. 
+Why it works: Artem's PV errors concentrate on particle confusion within verb families (GET+off vs GET+through vs GET+over). This exercise isolates the particle-meaning association that's currently missing — the exact cognitive link that fails during input production. By removing sentence context, it forces direct verb-particle-meaning wiring. 
+Best for: Phrasal verbs — specifically for players who recognise PVs in context (high MCQ) but can't produce them (low input). Artem's 41-point MCQ-to-input gap is the textbook use case. 
+Difficulty control: Easy = particles from different families (mix GET/TURN/BRING). Hard = all particles from one family (GET+6 particles). Hardest = reverse direction (given the PV, state the meaning). 
+Format example: Base verbs: GET, GET, GET, GET, GET, GET Particles: off, through, over, out of, across, into Match to meanings: A. recover from illness or disappointment B. exit a bus or train C. avoid an obligation D. communicate an idea successfully E. survive a difficult period F. become interested in a hobby 
+Session protocol: Present all 6 at once. Player answers A–F. Feedback after all 6 — don't reveal answers one by one (forces the player to hold all distinctions in working memory simultaneously). Rotate through verb families weekly: Week 1 = GET, Week 2 = TURN, Week 3 = BRING/COME, Week 4 = SET/TAKE, then repeat. exercise field: "particle_sort". 
+Russian Trap (Anti-Calque Translation) 
+What: Claude gives 8 Russian sentences specifically designed to trigger L1 calque errors. The player translates to English. After each answer, Claude shows: (1) the likely calque the player would produce, (2) the correct English with the right PV, (3) why the PV works and the calque doesn't. 
+Why it works: Artem's exercise errors show a recurring pattern: when the correct PV doesn't come to mind, he falls back to literal Russian-to-English translation (расслабиться → "relax myself" instead of wind down; объехать → "drive around" instead of cut through). Standard translation exercises don't target this specifically. Russian Trap exercises are reverse-engineered from actual calque errors to confront the L1→L2 pathway where PV retrieval fails. 
+Best for: Phrasal verbs where Russian has a single-word equivalent that the learner reaches for instead of the English PV. Also effective for collocations (делать фото → "make photos" instead of take photos). 
+Target calques (from exercise error data): 
+RussianLikely CalqueCorrect English 
+расслабитьсяrelax myselfwind down / unwind 
+объехатьdrive aroundget around / bypass / cut through 
+зашло в тупикdead endedbroke down / stalled / hit a dead end 
+убрать (проблему)put behindsort out / deal with / resolve 
+придуматьthink outcome up with / figure out 
+делать фотоmake photostake photos 
+начать заниматьсяstart to dotake up 
+привести к (изменениям)lead to / bring tobring about 
+Session protocol: One sentence at a time. After the player answers, show the three-part feedback (calque → correct → why). Track as exercise: "translation", topic: "Russian Trap — anti-calque PV drill". Sentences must use Artem's life context (business/cycling/travel). Do not reuse the same Russian sentences across sessions — create new sentences that trigger the same calque patterns in different contexts. 
+Article Decision Drill 
+What: Claude presents 2–3 sentence mini-scenarios with article blanks (___). The player fills in a/an/the/∅ for each blank. After each item, Claude provides corrective feedback naming the specific error pattern (a→the / zero / prep+art / fixed / dropped). 
+Why it works: Articles are discourse-dependent — the choice between "a" and "the" depends on whether a referent was previously established. Isolated sentence blanks miss this (Brown 1983: 32–70% of article decisions require cross-sentence context). Two-sentence stems force the learner to track reference chains. Master's (1990) binary system ("classify or identify?") provides the decision framework. Uniquely effective for Russian speakers because L1 has no article system — this builds the decision-making habit from scratch. 
+Best for: Articles — all error patterns. Especially a→the swap (Pattern 1, ~40% of errors), zero-article overuse (Pattern 2), preposition+article interactions (Pattern 3). Works for all family members. 
+Three-stage scaffold (based on Master's binary system): 
+StageDecisionFormatPlayers 
+1 — Binary"Classify (a/∅) or identify (the)?"Two-sentence pairs, choose a or the onlyNicole, Ernest, Anna 
+2 — TernaryAdd zero article: a/the/∅Same two-sentence format, add uncountable/generic contextsAnna, Ernest, Artem 
+3 — Full discoursea/an/the/∅ across sentences3–5 sentence paragraph, 4–6 blanks tracking referent chainsArtem, Egor 
+Design rules: 
+Start with convergence items — begin each drill with "easy" cells ([+definite, +specific] and [−definite, −specific]) to build confidence before the "mismatch" cells. 
+Name the pattern in feedback — don't just say "the answer is THE". Say: "Pattern: shared knowledge. You'd say этот (this one) in Russian — both speakers know which report. → THE." (B1 players get the Russian bridge; B2+ get English-only explanation.) 
+Vary NP complexity — ~30% of items should have pre-modified NPs ("the quarterly report" not just "the report") to test processing automaticity vs just rule knowledge. 
+Use player's real context — Artem: business memos, cycling reports. Nicole: school, K-pop. Anna: neighbours, daily life. Ernest: GCSE, basketball. 
+Format example (Stage 2 — Artem): The CFO presented ___ proposal to the board. After reviewing ___ numbers, the committee asked for ___ progress update on ___ infrastructure project. → Blanks: a / the / a / the → Feedback: Blank 1: "a proposal" — first mention, not yet known to the listener. (Pattern: new referent → a) Blank 2: "the numbers" — refers to the numbers in the proposal. (Pattern: inherited specificity → the) Blank 3: "a progress update" — any update, not a specific one. (Pattern: non-specific → a) Blank 4: "the infrastructure project" — shared knowledge, both know which one. (Pattern: shared knowledge → the) 
+Session protocol: 6–8 items per session. Present one item at a time. Feedback after each item (not batched). Track as exercise: "article_drill". Tag each error with its pattern in the deeplink items array. categories: ["Articles"]. error_types should use the 5 pattern names: "a→the", "zero", "prep+art", "fixed", "dropped". 
+1. Current Stats Diagnosis (23 Mar 2026) 
+The Grammar Quiz is excellent at identifying what each player gets wrong. But certain error patterns need exercise types the quiz can't provide — production practice, sentence-level manipulation, and contextual writing. This guide fills those gaps. 
+Artem — 78% overall · 119 sessions · B2→C1 
+Weak AreaQuiz AccuracyWhy the Quiz Alone Isn't EnoughExercise Needed 
+Phrasal Verbs69% (MCQ:91%, input:50%)41-point recognition-production gap. 26 PVs with chronic/struggling error rates. 90 essential PVs missing from quiz. A2 coverage only 23%. See Section 8.PV Family Drill Particle Sort Russian Trap 
+Articles75%Fossilised L1 interference (Russian has no articles) — needs production not recognitionError Correction Translate 
+Collocations74%Can't guess collocations — needs repeated exposure in contextConvo Practice Dictation 
+G&I76%Pattern confusion (verb + -ing vs to-inf) — needs contrastive drillingTransform 
+Input questions70%Can recognise correct answer but struggles to produce itFree Write Translate 
+Key insight (updated S83): Phrasal Verbs have overtaken Articles as the #1 priority. The PV input accuracy of 50% (coin-flip) vs 91% MCQ reveals the largest recognition-production gap of any category. 4 distinct error patterns identified: wrong PV entirely, missing dependent preposition, morphology errors on irregular PV forms, and Russian calque replacing PV. Full analysis in Section 8. 
+Anna — 59% overall · 17 sessions · B1 (struggling) 
+Weak AreaQuiz AccuracyRoot CauseExercise Needed 
+Collocations17%Very low exposure; hasn't built mental inventoryDictation Convo Practice 
+Vocabulary31%Limited active vocabulary at B2 levelFree Write Convo Practice 
+Conditionals45%Structural confusion across conditional typesTransform 
+Passive Voice0% (3 seen)Unfamiliar pattern — needs explicit teaching firstTransform 
+Input questions40%Much worse at producing answers than recognising themFree Write 
+Key insight: Anna has a burst-then-disappear engagement pattern. Exercises must be short (5–10 min), low-friction, and feel like conversations rather than tests. Declining trend (-12pp) is concerning. 
+Nicole — 61% overall · 31 sessions · B1 (consolidating) 
+Weak AreaQuiz AccuracyRoot CauseExercise Needed 
+Word Choice39%Confuses similar words (say/tell, make/do, bring/take)Translate Error Correction 
+Relative Clauses50%Unsure when to use who/which/where/thatTransform 
+Conditionals52%Mixing 0/1st/2nd conditional structuresTransform 
+Articles55%Same L1 interference as Artem, less exposureError Correction 
+Irregular Verbs (Grammar)56%16 questions at 100% error — hasn't memorised V2/V3 formsDictation Translate 
+Input accuracy54%Recognition-production gap, smaller than Anna's but still significantFree Write 
+Key insight: Nicole is improving (+3pp) and engaged (31 sessions). She's ready for structured exercises that build on her quiz work. Irregular verb memorisation is a quick win — pure recall, doesn't need grammar understanding. 
+5. Firebase Schema (Reference) 
+Exercise results are stored at /players/{name}/exercises/{timestamp_ms}.json on the existing Firebase DB. Full technical details (PATCH endpoints, deeplink schema, deduplication rules, delete API) are in the main KB → Storage → Exercise tracking section. /players/{name}/exercises/{timestamp_ms}/ ├── date: "2026-03-24" ├── exercise: "transform" | "error_correction" | "dictation" | "free_write" | "conversation" | "translation" | "particle_sort" ├── topic: "phrasal verbs" ├── level: "B2" ├── total: 8 ├── correct: 5 ├── score: 0.625 ├── categories: ["Phrasal Verbs"] ← exact quiz category names ├── error_types: ["phrasal_verbs"] ← cross-session tracking tags ├── errors: ["confused: look into vs look up"] ├── chat_url: "https://claude.ai/chat/UUID" └── feedback: "about right" ← player's difficulty rating 
+7. Best Practices & Research 
+Why These Exercise Types Were Chosen 
+The Recognition-Production Gap 
+Language learning research consistently shows that learners can recognise correct forms (MCQ, gap-fill) long before they can produce them. The Grammar Quiz excels at testing recognition and recall. But all three players show a measurable gap: Artem's MCQ accuracy (84%) vs input accuracy (70%) is a 14-point spread. Anna's gap is even larger. The exercises in this guide are specifically designed to push learners across that gap. 
+L1 Transfer Effects for Russian Speakers 
+Russian lacks articles entirely, uses different preposition logic, and has flexible word order. These create persistent "fossilised" errors that don't respond well to more MCQ practice — the learner needs to produce the correct form repeatedly in context to overwrite the L1 default. Reverse translation (RU→EN) is especially effective because it forces the learner through the exact cognitive pathway where transfer errors occur. 
+Spaced Repetition Meets Production 
+The Grammar Quiz already implements spaced repetition for its question bank. Supplementary exercises should follow the same principle: if a learner struggles with phrasal verbs on Monday's transformation exercise, Wednesday's dictation should include those same phrasal verbs. The Firebase tracking makes this possible — Claude can check previous exercise results and adapt. 
+Session Design Principles 
+10 minutes beats 60 minutes. Short, focused sessions produce better retention than long marathons. Especially true for Anna. 
+Mix exercise types within a week, not within a session. Each session should focus on one exercise type + one grammar area for maximum depth. 
+Production before recognition. Do the free writing / translation exercise BEFORE the quiz, not after. Producing errors first makes the quiz correction more impactful. 
+Track everything, analyse weekly. The value of these exercises compounds when Artem can see trends: "Your article accuracy improved from 68% to 79% over 3 weeks of error correction practice." 
+Russian explanations when needed. For Anna especially, Claude should explain grammar rules in Russian when the English explanation isn't landing. This isn't a crutch — it's efficient teaching. 
+Error Correction Best Practices (for Claude) 
+Correct errors inline during conversation practice, not in a big list at the end (which feels like a test result). 
+Use "sandwich" feedback: praise → correction → encouragement. 
+For repeated errors, don't just correct — explain the rule briefly and give a mnemonic if possible. 
+Never correct pronunciation/spelling in free writing unless it changes meaning. Focus on grammar and naturalness. 
+Measuring Success 
+MetricWhere to CheckTarget (4 weeks) 
+Quiz accuracy (overall)Stats exportArtem: 82% (+4pp), Anna: 65% (+6pp), Nicole: 67% (+6pp) 
+Input question accuracyStats export (by type)All players: +8pp (closing recognition-production gap) 
+Artem PV input accuracyStats export (PV × input)50% → 65% (Phase 1 target) 
+Artem PV overall accuracyStats export (PV category)69% → 75% (Phase 1 target) 
+Artem Article overall accuracyStats export (Articles category)75% → 83% (Phase 2 target) 
+Artem Article B2 accuracyStats export (Articles × B2)71% → 80% (Phase 2 target) 
+Nicole Article accuracyStats export (Articles category)57% → 70% (Phase 2 target) 
+Ernest Article accuracyStats export (Articles category)37% → 65% (Phase 2 target) 
+Exercise completion rateFirebase exercises nodeArtem: 9/11 slots. Anna: 3/4 slots. Nicole: 5/6 slots. Ernest: 3/4 slots. 
+Exercise accuracy trendFirebase exercises nodeEach exercise type: +10pp over 4 weeks 
+Category accuracy (weak areas)Stats exportEach targeted category: +5pp minimum 
+8. Artem — Phrasal Verbs Mastery Plan (added S83) 
+Context — why this section exists 
+Deep analysis of Artem's PV stats (April 2026) revealed a structural problem across three layers: coverage gaps (41% of essential B2/C1 PVs missing from quiz), meaning depth gaps (20 PVs test only 1 of 2–4 meanings), and a severe production gap (50% input accuracy vs 91% MCQ). This section is the reference for Claude during PV-focused exercise sessions. Full standalone report: phrasal_verbs_mastery_plan.html. 
+Diagnosis Summary 
+MetricValueTarget (Phase 1)Target (Phase 4) 
+PV overall accuracy69%75%80%+ 
+PV input (production)50%65%75%+ 
+PV MCQ (recognition)91%—— 
+Unique PVs in quiz9090 (+7 scaffolds)~140 
+Essential B2/C1 coverage41%41%~90% 
+A2 PV coverage23% (9/40)—Tested via exercises, not quiz 
+Chronic failures (100% err)11 PVs≤50 
+The 4 Error Patterns (from exercise logs) 
+PatternExampleExercise Fix 
+1. Wrong PV entirely — reaches for neighbouring PVdraw out → draw up; wind down ≠ give up onSlot 1 (PV Family Drill) + Slot 10 (Particle Sort) 
+2. Missing/wrong dependent prepositionfollow up ∅ our JV → follow up onSlot 5 (Translation with preposition focus) 
+3. Morphology error on irregular PVwinded → wound downSlot 4 (Dictation with irregular PVs) 
+4. Russian calque replacing PVrelax myself → wind downSlot 11 (Russian Trap) 
+The Two Killer Verb Families 
+GET family (6 problem PVs): get off (100%), get out of (100%), get through (100%), get across (67%), get through/phone (50%), get over (50%). All confused with each other — particle carries meaning but Artem can't reliably attach the right one. 
+TURN family (3 problem PVs): turned out (100%), turned up (50%), turned down (50%). Three particles → three different meanings. 
+Slot 1 PV Family Drill — Weekly Rotation 
+WeekFamilyPVs to DrillA2 Warm-ups 
+1GETget off, get out of, get through (×2), get across, get overget back, get in, get on, get up 
+2TURNturn out, turn up, turn down + turn off, turn into (missing from quiz)turn on 
+3BRING / COMEbring about, bring forward, bring up + come up with, come across, come roundcome back, come in 
+4SET / TAKEset up, set back, take up + set off, take over (missing from quiz)take off (A2 meaning: remove) 
+5+Repeat from Week 1Same PVs, new sentences, different context— 
+A2 Foundation Layer — Integration Rules 
+Why A2 PVs matter for a B2 learner 
+31 of 40 standard A2 PVs are missing from the quiz. Artem knows them passively but can't always produce them in real time — exercise logs show calques replacing basic PVs. Don't add A2 PVs as standalone quiz questions (too easy). Instead: 
+Slot 1 (PV Family Drill): Start each family drill with 2 A2-level PVs as warm-up items before the B2 targets. 
+Slot 5 (Translation): Include 2–3 sentences requiring A2 PVs (go back, come in, find out, put on, turn off, go on, go out, look for). 
+Slot 9 (Free Write): 2 of the 5 target PVs should be A2 level. 
+Slot 11 (Russian Trap): A2 calques are the primary target (делать фото → take photos; начать заниматься → take up). 
+Quiz Changes — Phase 1 (approved S83) 
+7 gap scaffold questions (pv_s01–pv_s07) to be added. Each parallels a chronic 100% input failure with a gap format using close-distractor particles: 
+IDScaffoldsPVDistractors 
+pv_s01pv_c03take uptook on, took off 
+pv_s02pv_ti71turned outturned up, turned down 
+pv_s03gt09get out ofget off, get over 
+pv_s04pv_c07bring aboutbring forward, bring up 
+pv_s05pv_c08come up withcome across, come round to 
+pv_s06pv_ti17read up ongo over, look into 
+pv_s07tf_21cut down oncut off, cut out 
+Quiz Changes — Phase 2–3 (planned, not yet built) 
+Phase 2: 40 new PVs (Batch 1: give up, find out, sort out, work out, call off, figure out, point out, rule out, end up, take over, go through, put up with, get away with, keep up with, turn off, turn into, show up, build up, step down, check out. Batch 2: wind down, set off, cut through, wear out, look out for, press on, pull over, hold up, fall through, fall behind, break up, break out, come up, come round, go on, go off, cut off, let down, pay off, sign up.) ~80 questions total. 
+Phase 3: Second/third meanings for 15 existing PVs (take off = succeed, break down = negotiations fail, pick up = learn informally, etc.) ~30 questions. 
+Architecture summary 
+Family member opens Claude Project chat → identifies themselves → Claude follows the checklist (Section 1) → runs interactive exercise → generates deeplink via Python → player taps it → quiz app saves to Firebase → Artem analyses exercise + quiz data together. 
+9. Family — Articles Mastery Plan (added S84) 
+Context — why this section exists 
+Deep analysis of family stats (April 2026) revealed articles as the weakest category across the entire family: Ernest 37%, Egor 50%, Nicole 57%, Anna 67%, Artem 75%. Unlike PVs (where the problem was concentrated in Artem's production gap), articles are fundamentally broken for every active player. This section is the reference for Claude during article-focused exercise sessions. Full standalone report: article_diagnostic_2026-04-05.html. 
+Diagnosis Summary 
+MetricArtemAnnaErnestNicole 
+Overall article accuracy75%67%37%57% 
+B1 accuracy83%76%75%61% 
+B2 accuracy71%57%28%0% 
+Unseen article questions2114139115 
+Primary error patterna→the swapPhantom + droppedUncountablesDropped articles 
+Drill stageStage 2–3Stage 1Stage 1–2Stage 1 
+The 5 Error Patterns 
+PatternShareDescriptionExercise target 
+1. a→the swap ~40%Artem's #1Knows article is needed, defaults to "a" when context demands "the" (shared knowledge, second mention, unique referent)Artem Slot 2 (Article Decision Drill, Stage 2–3) 
+2. Phantom articles ~25%All playersInserts a/the before uncountable nouns ("a progress", "the management") or in time expressions ("the next Monday")Ernest Slot 1, Anna Slot 4, Nicole Slot 4 
+3. Preposition+article ~15%Artem, Anna"The X of Y" needs THE, but "in procurement" doesn't. Russian has no equivalent distinction.Artem Slot 2 (mixed into Stage 2–3 items) 
+4. Fixed expressions ~12%All playersArticle choice is lexically frozen — "take ∅ action", "in the saddle", "Board of Directors". Must be memorised as chunks.Artem Slot 3 (translation exercises), quiz aph-series 
+5. Dropped articles ~8%Nicole, ErnestSimply omitting any article. Most basic error — past the omission stage for Artem but still significant for B1 players.Nicole Slot 4, Ernest Slot 1 (Stage 1 binary drill) 
+Research-Based Design Principles for Article Exercises 
+These principles come from the SLA research review (see article diagnostic Section 9). Claude must follow them when running article exercises. 
+1. Master's Binary System — the decision framework 
+All article exercises use Peter Master's (1990) two-question framework as the core scaffold: 
+QuestionAnswerArticle 
+"Am I classifying — saying what kind of thing?"Yesa (singular count) / ∅ (plural, mass) 
+"Am I identifying — saying which specific one?"Yesthe 
+This maps to Artem's proven heuristic: "Do we both know which one?" → THE. Master's 2002 comparative study testing 4 approaches found this binary system showed the most significant improvement. 
+2. Discourse stems, not isolated sentences 
+Brown (1983): 32–70% of article decisions require cross-sentence context. All article drills at Stage 2+ must use two-sentence stems. Sentence 1 establishes the referent; Sentence 2 has the blank. Single-sentence stems are only acceptable for zero-article rules and fixed expressions. 
+3. Russian bridge scaffolds at B1 only 
+For Nicole, Ernest, and Anna, use this bridge in feedback: "Think: would you say этот/тот (this/that one) in Russian? If yes → English needs 'the'. If no → probably 'a' or ∅." ⚠ Caveat (must be stated): "This works for ~60% of 'the' contexts. It does NOT work for: play the piano, the UK, 'the whale is endangered'." 
+At B2+ (Artem, Egor), drop the Russian bridge — use English metalanguage only. The bridge becomes misleading for generic, structural, and conventional uses of "the". 
+4. Start with convergence cells, then mismatch 
+From the Fluctuation Hypothesis (Ionin 2004): Russian speakers get [+def,+spec] and [−def,−spec] mostly right (parameters converge). They fail on [+def,−spec] ("the manager on duty, whoever that is" → they use "a") and [−def,+spec] ("I'm looking for a particular report" → they use "the"). Start each drill with 2 convergence items, then introduce mismatch items. 
+5. Name the pattern, don't just correct 
+After each item, feedback must state: (1) correct answer, (2) which of the 5 patterns it falls under, (3) the pattern-specific explanation. Generic "the answer is THE" feedback is forbidden — it doesn't build the decision-making habit. 
+6. Vary NP complexity 
+REALEC corpus: article omission spikes with pre-modified NPs ("important role" → omits "an"). ~30% of drill items should use adjective + noun stems to test processing automaticity alongside rule knowledge. 
+Per-Player Exercise Integration 
+PlayerSlotStageFocus patternsFrequency 
+ArtemSlot 2 (Article Decision Drill)2–3a→the swap, preposition+article, zero-article1/week (dedicated) + articles embedded in Slots 3 & 8 
+AnnaSlot 4 (Article Error Correction)1Phantom articles, dropped articles1/week 
+ErnestSlot 1 (Article Decision Drill)1–2Uncountable nouns, basic a/the discrimination1/week 
+NicoleSlot 4 (Article Decision Drill)1Dropped articles first, then phantom articles1/week 
+EgorAd hoc (when he asks)2–3Academic article use, generic THEAs requested 
+Fossilisation Warning 
+Articles plateau at B2 — persistent practice required 
+Ionin & Díez-Bedmar (2021) found Russian speakers do not show the same B1→B2 improvement in article accuracy that Spanish speakers do — errors plateau. Chrabaszcz & Jiang (2014) confirmed this even after years of immersion. This means article exercises cannot be a "fix it and move on" project. They must remain a permanent part of every player's weekly plan. The spaced repetition system will resurface article quiz questions, but the exercises guide must keep article drills in rotation indefinitely — even when accuracy reaches target levels.

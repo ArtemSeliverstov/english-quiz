@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings",
+  "memory": {
+    "autoMemoryEnabled": false,
+    "_comment": "Auto-memory disabled per s88 architecture decision. Workflow is mobile-first; auto-memory is laptop-filesystem-only and would not sync across surfaces. Family-related dynamic learnings live in Firestore players/{name}.coach_notes — see references/coach-notes-schema.md."
+  },
+  "plugins": {
+    "firebase": {
+      "enabled": true,
+      "_comment": "Install via Anthropic plugin marketplace. Provides firestore_get_documents, firestore_query, firestore_set, firestore_update, firestore_delete, firebase_realtime_database_get_data (for legacy frozen RTDB reads if needed)."
+    }
+  },
+  "tools": {
+    "_comment": "Default tool permissions. Firebase MCP plugin tools are auto-enabled when plugin loads. Bash/file editing tools always available."
+  }
+}
