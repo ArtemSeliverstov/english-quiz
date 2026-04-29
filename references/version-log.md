@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-04-29 · Session 89
+### v20260429-s89 — Stuck-question fixes from stats review
+
+- Stats review (5 players, all coach_notes empty) flagged 4 high-confidence question issues
+- `pv_c03`: accept `pick up` variant — Artem's logged repeat error matched
+- `pv_c07`: accept `bring in` variant — Artem typed it 4× ("introduce" reading is also valid for the policy stem)
+- `emph_i01`: stem reframed with present-tense lead-in (`I'm genuinely shocked.`) to disambiguate `have I seen` vs `had I seen`
+- `inv03`: exp strengthened with `no sooner…than` / `hardly…when` memorise-pair (Artem 0/3, picks "when" trap)
+- Lower-evidence items (qf03/qf06/qf07, co_ti03, gr_b01, gr_b15, pv_ti71) deferred — MCQ option text not stored, need richer mistake logging first
+- Audit method: cross-referenced `qStats[id].lastWrong` against authoring standards instead of speculating
+
+Q count: 1,872 (unchanged) · Version: v20260429-s89
+
+---
+
 ## 2026-04-29 · Session 88
 ### Phase 1 — Repo restructure for Claude Code
 
