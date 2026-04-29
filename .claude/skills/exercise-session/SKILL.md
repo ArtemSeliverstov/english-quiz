@@ -24,7 +24,9 @@ adopt location-appropriate themes for that session only.
 
 ### Step 1 — Retrieve context
 
-Use `firestore_get_documents("players/{name}")` to read player doc. Extract:
+Run `node tools/get_player.js {name}` via bash to read the player doc. The script
+returns plain JSON with stats and coach_notes pre-converted from Firestore typed-value
+format. Extract:
 - `stats` — per-question history
 - `coach_notes.weak_patterns` — what they're working on
 - `coach_notes.recent_observations` — last few session notes
@@ -53,8 +55,9 @@ Default to home/Bahrain context unless Artem mentioned travel at session start.
 **Generic stems are forbidden** ("the man went to the shop" — never).
 
 Live-log decision:
-- If using Claude Code with Firebase MCP → write each item to `exercise_active/{session_id}` directly
-- If using claude.ai chat → consider whether per-item deeplinks are worth the player's tap fatigue. For sessions <5 items, single end-of-session `?exlog=` deeplink is fine.
+- For now, write a single end-of-session log via `node tools/log_exercise.js` (Step 6 below)
+- Stage 1 live-log (`exercise_active/{session_id}` collection with per-item `?exupd=` updates) is supported by the PWA but not yet wired into `tools/`. Use single-shot logging until the per-item tool is added.
+- If using claude.ai chat (no Claude Code) → fall back to `?exlog=BASE64` deeplink generation per `references/deeplink-schema.md`
 
 ### Step 4 — Post-session feedback
 
@@ -71,9 +74,15 @@ Ask the player how the session felt. Capture in a single short note for `recent_
 ### Step 6 — Persist
 
 **Claude Code path** (preferred):
-1. `firestore_set("players/{name}/exercises/{ts}", { ...summary })`
-2. If active session was started: `firestore_delete("exercise_active/{sid}")`
-3. Update `coach_notes` if anything new emerged — propose to user, wait for confirmation, then `firestore_update("players/{name}", {"coach_notes.recent_observations": new_array, ...})`
+1. Write the exercise summary JSON to a temp file, then run
+   `node tools/log_exercise.js {name} /tmp/exercise.json` — this writes to
+   `players/{name}/exercises/{ts}` and validates the exercise type is canonical
+   (`article_drill` not `error_correction`, etc.)
+2. (Stage 1 live log not yet wired in tools/ — defer; use single end-of-session log for now)
+3. Update `coach_notes` if anything new emerged — propose to user, wait for confirmation,
+   then build a patch JSON and run `node tools/update_coach_notes.js {name} /tmp/patch.json`.
+   The patch supports `weak_patterns_add`, `recent_observations_add`, `engagement_notes`,
+   etc. — see `tools/README.md` for the schema.
 
 **claude.ai chat path** (fallback):
 1. Generate `?exlog=BASE64` deeplink for player to tap

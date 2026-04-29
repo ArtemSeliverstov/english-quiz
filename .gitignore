@@ -1,0 +1,29 @@
+﻿# Credentials and secrets — never commit
+.env
+.env.local
+.env.*.local
+*.pem
+*-key.json
+service_account*.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Local Claude Code state — settings & skills ARE committed; per-machine overrides are not
+.claude/settings.local.json
+.claude/projects/
+.claude/sessions/
+.claude/conversations/
+.claude/cache/
+
+# Local artefacts
+*.log
+/tmp/

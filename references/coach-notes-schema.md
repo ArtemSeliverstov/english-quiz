@@ -57,7 +57,7 @@ content review (restructuring or removal).
 
 **`last_updated_by`** — which surface wrote last. Helps debug cross-surface conflicts.
 Possible values:
-- `claude_code` — Claude Code (mobile or laptop) via Firebase MCP
+- `claude_code` — Claude Code (laptop) via `tools/update_coach_notes.js` bash script (or future Firebase MCP if Firestore document tools become available)
 - `coach_pwa` — future Coach tab in PWA via Firestore JS client
 - `claude_chat` — claude.ai chat (rare — chat can't write directly, but if Artem manually
   edits via Console, mark as this)
@@ -89,7 +89,7 @@ only after a second session confirms.
 At the start of any session for a player:
 
 ```
-1. firestore_get_documents(players/{name})
+1. node tools/get_player.js {name}
 2. Combine top-level stats + coach_notes.{weak_patterns, recent_observations, engagement_notes}
 3. Read references/family-profiles.md for stable profile
 4. → Use combined context to drive session
@@ -134,41 +134,44 @@ field is added to player documents).
 
 After a session where Anna scored 60% and showed slow transformations:
 
-```javascript
-// Proposed change
-const update = {
-  "coach_notes.recent_observations": firebase.firestore.FieldValue.arrayUnion({
-    date: "2026-04-29",
-    session_id: "anna_1730000000000_abc1",
-    note: "Slow on transformations (8 sec avg vs 4 sec on translations). Article decisions improved when stem named the referent (the contract Bapco signed).",
-    author: "claude_code"
-  }),
-  "coach_notes.last_updated": new Date().toISOString(),
-  "coach_notes.last_updated_by": "claude_code"
-};
-// Wait for Artem's confirmation, then apply via firestore_update
+```bash
+# Build the patch
+cat > /tmp/anna_patch.json <<EOF
+{
+  "recent_observations_add": [
+    {
+      "date": "2026-04-29",
+      "session_id": "anna_1730000000000_abc1",
+      "note": "Slow on transformations (8 sec avg vs 4 sec on translations). Article decisions improved when stem named the referent (the contract Bapco signed).",
+      "author": "claude_code"
+    }
+  ]
+}
+EOF
+
+# Apply it (after confirming with user)
+node tools/update_coach_notes.js anna /tmp/anna_patch.json
 ```
 
-The MCP `firestore_update` call uses `updateMask` so only these three sub-fields change.
-Other coach_notes fields (weak_patterns, etc.) remain untouched.
+The script handles read-modify-write internally: fetches current coach_notes, appends
+the new observation, FIFO-caps at 10 entries, sets `last_updated` automatically, and
+writes back via PATCH with `updateMask=coach_notes`. Other player fields are untouched.
 
 ---
 
 ## FIFO cap enforcement
 
-`recent_observations` is capped at 10 entries. When appending an 11th, the client
-must read the array, drop the oldest, append the new, write back:
+`recent_observations` is capped at 10 entries. The `tools/update_coach_notes.js` script
+handles this automatically — it reads current observations, appends new ones, then slices
+to keep only the most recent 10. You don't need to write this logic yourself.
+
+If for some reason you write coach_notes manually (not via the helper script), the
+read-modify-write logic is:
 
 ```javascript
-const doc = await firestore_get_documents("players/anna");
-const obs = doc.coach_notes?.recent_observations || [];
-const new_obs = [...obs.slice(-9), new_entry];  // keep last 9 + add 1 = 10
-await firestore_update("players/anna", {
-  "coach_notes.recent_observations": new_obs,
-  "coach_notes.last_updated": new Date().toISOString(),
-  "coach_notes.last_updated_by": "claude_code"
-});
+const obs = current_coach_notes.recent_observations || [];
+const new_obs = [...obs, new_entry].slice(-10);  // keep last 10
 ```
 
-This is read-modify-write. Concurrent writes from two surfaces could race. Mitigation:
-last-write-wins is acceptable here since observations are advisory, not authoritative.
+This is read-modify-write. Concurrent writes from two surfaces could race — last-write-wins
+is acceptable here since observations are advisory, not authoritative.

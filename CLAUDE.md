@@ -68,13 +68,22 @@ exercise_active/{session_id}            # in-progress sessions (Stage 1 live log
 
 Full schema in `references/firestore-schema.md`. `coach_notes` field detail in `references/coach-notes-schema.md`.
 
-### MCP tool usage (Firebase plugin)
+### Firestore access from Claude Code
 
-- **Read**: `firestore_get_documents` / `firestore_query`
-- **Write**: `firestore_set` (replace) / `firestore_update` (field-level merge)
-- **Delete**: `firestore_delete`
+Google's Firebase MCP server (`firebase mcp` configured in `.mcp.json`) provides
+project/env/security-rules tools but does NOT expose Firestore document CRUD.
+For Firestore data access, Claude Code uses bash scripts in `tools/`:
 
-Always prefer `firestore_update` over `firestore_set` to avoid wiping siblings (see bug log entry on PUT vs PATCH).
+- **Read one player**: `node tools/get_player.js {name}` — returns plain JSON
+- **Read all players**: `node tools/get_all_players.js [--summary]` — for stats reviews
+- **Write exercise**: `node tools/log_exercise.js {name} /tmp/exercise.json`
+- **Update coach_notes**: `node tools/update_coach_notes.js {name} /tmp/patch.json`
+
+See `tools/README.md` for full schemas and examples. The scripts use REST API directly
+with open-write Firestore rules — no auth, no service account.
+
+If Google later adds Firestore document tools to the MCP server, the skills can switch
+to MCP calls. Until then, the bash scripts are the canonical path.
 
 ---
 
@@ -149,7 +158,7 @@ Generic exercise sentences ("the man went to the shop") are **forbidden**. Use r
 
 - Don't write to RTDB. Frozen.
 - Don't move questions to Firestore.
-- Don't use `firestore_set` (full replace) when `firestore_update` (merge) is enough.
+- Don't bypass `tools/update_coach_notes.js` for coach_notes writes (it handles FIFO cap and last_updated automatically).
 - Don't generate generic exercise sentences. Use family context.
 - Don't push without running pre-deploy checks.
 - Don't bump version in only some of the four places.

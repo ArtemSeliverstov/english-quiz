@@ -11,7 +11,7 @@ player.
 
 ## Reads required before starting
 
-1. **Stats source** — either uploaded JSON or `firestore_get_documents("players/{name}")` for each player
+1. **Stats source** — either uploaded JSON or `node tools/get_all_players.js` (one bash call returns all 5 player docs in a single JSON object)
 2. **`references/family-profiles.md`** — for the player's stable profile and focus areas
 3. **`references/coverage-matrix.md`** — for category targets, input share priorities
 4. **`references/coach-notes-schema.md`** — for the update protocol
@@ -20,8 +20,12 @@ player.
 
 ### Step 1 — Pull stats
 
-Claude Code path: `firestore_get_documents("players/{name}")` for each player.
-Read the `stats`, `coach_notes`, and any recent `players/{name}/exercises` history.
+Claude Code path: run `node tools/get_all_players.js` via bash. The script fetches
+all 5 player docs in parallel and returns a single JSON object keyed by player name.
+For a deeper dive into one player, use `node tools/get_player.js {name}`. For
+recent exercise history specifically, the player's exercises subcollection isn't
+wrapped in a tool yet — request a stats run only and ask user to paste exercise
+history if needed.
 
 claude.ai chat path: Artem pastes the Firestore URL or uploads JSON. Read directly.
 
@@ -72,16 +76,21 @@ the relevant skill.
 
 ### Step 6 — Persist confirmed updates
 
-For each confirmed update:
-```
-firestore_update("players/{name}", {
-  "coach_notes.{path}": {new value},
-  "coach_notes.last_updated": new Date().toISOString(),
-  "coach_notes.last_updated_by": "claude_code"
-})
+For each confirmed update, build a patch JSON and apply it:
+
+```bash
+echo '{
+  "weak_patterns_add": ["..."],
+  "recent_observations_add": [{"date": "...", "session_id": "...", "note": "...", "author": "claude_code"}],
+  "engagement_notes": "..."
+}' > /tmp/patch.json
+
+node tools/update_coach_notes.js {player} /tmp/patch.json
 ```
 
-For `recent_observations` (FIFO cap of 10): read-modify-write — slice oldest if at cap.
+The script reads current coach_notes, applies the patch (dedup-merge for arrays,
+FIFO-cap recent_observations at 10), and writes back via PATCH with updateMask.
+`last_updated` and `last_updated_by` are set automatically.
 
 ## Forbidden
 
