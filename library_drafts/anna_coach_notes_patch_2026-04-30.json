@@ -1,0 +1,11 @@
+{
+  "recent_observations_add": [
+    {
+      "date": "2026-04-30",
+      "author": "claude_code",
+      "session_id": "coach_anna_1777566265897",
+      "note": "First Coach tab session — 15-item translation drill, raw score 1/15 but ~5–7 false negatives from typos + article drops on otherwise-valid answers. Pattern feedback fired correctly on 2/15 (clean_for_vacuum, on_next_week). Engaged through all 15 items (avg ~80s, max 154s on tr_anna_001). Confirms existing weak_patterns: typo cluster (Vocabulary input gap), article drops (Grammar mechanics), preposition variants still surface at low n. s90r2 ships article tolerance + per-item save in the engine; content batch should swap to shorter B1 prompts before next session."
+    }
+  ],
+  "engagement_notes": "Engages in bursts; last active 2026-04-30 (Coach tab, full 15-item session). Input-type accuracy ~20pts lower than mcq — keep mcq:gap:input mix at ~50:30:20 to avoid demoralising. RU translation for grammar rules helps. Sessions <50% → reduce complexity per profile. B2 free-translation prompts in the v1 library are too hard at MVP — content should drop to shorter B1 prompts and ignore article scoring (engine already does this in s90r2)."
+}

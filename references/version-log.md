@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-04-30 · Session 90r2
+### v20260430-s90r2 — Coach tab: per-item save + article tolerance
+
+Two engine fixes driven by Anna's first real Coach session
+(`players/anna/exercises/1777566265897`, raw 1/15 with ~5–7 false negatives from typos and article drops):
+
+- **Per-item Firestore upsert**: every `coachSubmitAnswer` now writes the running session to `players/{name}/exercises/{sessionTs}` with `partial: true`. `coachFinishSession` flips it to `partial: false` at the end. Same doc id reused throughout, so partials survive a closed tab / reload / kicked SW. New `planned_total` field captures the intended item count even on partial saves.
+- **Article-tolerant normalize**: `coachNormalize` now strips `a/an/the` before equality comparison. Anna's L1 article-drop was producing false negatives on otherwise-correct answers ("We arrived at court" vs the canonical "We arrived at THE court"). Trade-off — losing definite/indefinite scoring — is intentional for MVP. Pattern-feedback regexes still see the original text so article-specific traps still fire.
+
+Deferred to follow-up: Levenshtein typo tolerance, regex tightening on `jump_in_car_to`/`wait_no_for`, and the bigger ask — replacing the v1 B2 prompts with shorter B1 prompts. Anna's `coach_notes.recent_observations` updated with the session log.
+
+Q count: 1,882 (unchanged) · Version: v20260430-s90r2
+
+---
+
 ## 2026-04-30 · Session 90
 ### v20260430-s90 — Coach tab MVP + Phase 2 docs + Anna translation library
 
