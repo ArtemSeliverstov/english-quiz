@@ -1226,6 +1226,45 @@ decisions) reopened.
 
 ---
 
+### 2026-04-30 — Phase 2B kickoff (CC session, continued)
+
+**Done**:
+- Built `tools/push_library.js` — schema validation (common + per-type +
+  §10 quality bar + regex compile), idempotent meta updates, --dry-run.
+- Firestore security rules updated and checked into the repo. Added
+  permissive blocks for `exercises_library/{document=**}` and
+  `players/{name}/coach_sessions/{sessionId}`. Created top-level
+  `firebase.json`, `firestore.rules`, `.firebaserc` so future rules
+  changes go through `firebase deploy --only firestore:rules` (not the
+  console).
+- Pushed Anna's 15 translation exercises live to
+  `exercises_library/translation/items/tr_anna_001` … `tr_anna_015`.
+  `exercises_library/_meta` initialised with totals + per-player
+  coverage. Round-trip readback verified.
+- Phase 2C prereq partially started: Artem loaded $5 prepaid (not $15)
+  on a fresh console.anthropic.com account as a pilot test. Workspace
+  spend cap should be set to $5 to match the smaller balance — TBD.
+
+**Doc-impacting**:
+- §6.1 schema mentions paths like `exercises_library/{type}/{exercise_id}`.
+  Firestore requires alternating collection/doc segments, so the
+  implementation uses `exercises_library/{type}/items/{exercise_id}`
+  (with `items` as the per-type subcollection name). The `{type}` doc
+  is currently a placeholder; we may add per-type meta to it later. No
+  doc edit — implementation note captured here.
+- §4 Q4 ("$15 prepaid + $15 workspace spend cap"): pilot relaxed to $5
+  for testing. Lock not formally reopened — top up to $15 when the
+  pilot validates the hybrid path.
+
+**Open items now actionable**:
+- §13.1 remaining 2B items: Coach tab UI in `index.html` (chat shell,
+  scoring engine, exercise type picker, stats card), service worker
+  bump, deploy. Library data exists; UI build can begin.
+- §13.2 Phase 2C: complete Anthropic key creation + Cloudflare Worker
+  build once Artem confirms prereq is finalised.
+
+---
+
 *This file lives at `references/phase2-coach-tab.md` in the repo. Updated
 by CC as decisions land in flight. Should be archived once Phase 2
 acceptance (§16) is met, alongside the now-deleted PHASE2_PLAN.md and
