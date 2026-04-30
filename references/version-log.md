@@ -10,6 +10,27 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-04-30 · Session 90
+### v20260430-s90 — Coach tab MVP + Phase 2 docs + Anna translation library
+
+**Coach tab (Phase 2B MVP)** — new 5th tab "🎯 Coach" with stats card (last session, top weak spot, available count), exercise type picker (Translation enabled, others greyed for now, Free Write disabled until 2C), chat-style message renderer, scoring engine (`coachNormalize` + `coachIsMatch` + regex pattern matcher with fallback). Pre-generated translation drills run locally with rich per-pattern feedback — no API call. Reads exercises from `exercises_library/translation/items` filtered by player. Writes session summary to `players/{name}/exercises/{ts}` with `source: 'coach_tab'` and per-item `submitted_answer / matched_pattern_id / escalation_used / time_to_answer_ms`.
+
+**Question bank** — `gi_b04` filled the missing slot in the G&I gerund series (practise + gerund, input type with bracketed complement). `wf_41`–`wf_49` added as `type: 'input'` Word Formation questions covering develop/educate/inform/produce/govern/tradition/expect/understand/convince — first input-type entries in this category, lifts share off literal 0%.
+
+**Phase 2 doc** — new `references/phase2-coach-tab.md` consolidates the full Phase 2 design (Coach tab + Cloudflare Worker proxy schema + library schema + build sequence + parallel tiers + SKILL.md update spec). Locked decisions captured. Predecessor `PHASE2_PLAN.md` superseded.
+
+**Infra** — Firestore security rules checked into the repo (`firestore.rules` + `firebase.json` + `.firebaserc`). Added permissive blocks for `exercises_library/{document=**}` and `players/{name}/coach_sessions/{sessionId}` (same open-write posture as existing `players/exercises`, mitigated by prepaid API ceiling + Anonymous Auth deferred to Phase 3D). New `tools/push_library.js` validates draft schema (common + per-type + ≥3 answers, ≥2 errors, regex compile) and uploads to `exercises_library/{type}/items/{id}` with idempotent meta updates.
+
+**Library** — Anna's first 15 translation exercises drafted to `library_drafts/anna_translation_001-015.json` and pushed live to Firestore. Distribution targets her measured weak_patterns (Grammar mechanics, Vocabulary production, Collocations, Everyday English idioms) plus 4 prepositions per profile-design-intent.
+
+**Skill update** — `skills/exercise-session/SKILL.md` realigned with Phase 2 design: path-specific behaviour (family vs Artem CC), Coach tab note added under "When not to run", logging strategy decision tree replaced.
+
+Smoke-tested locally as Anna: full translation cycle (correct + regex-matched wrong + fallback) including Firestore write of summary; test record cleaned up after.
+
+Q count: 1,882 (+10) · Version: v20260430-s90
+
+---
+
 ## 2026-04-29 · Session 89r3
 ### v20260429-s89r3 — Transform keyword-mask fixes + new pre-deploy audit
 
