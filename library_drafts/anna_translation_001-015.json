@@ -1,0 +1,597 @@
+{
+  "_note": "Anna translation drill — initial 15 exercises for Phase 2B Coach tab MVP. Authored 2026-04-30. Distribution targets her actual measured weak_patterns from coach_notes (Grammar mechanics 44%, Vocabulary production 37%, Collocations 22%, Everyday English idioms) plus 4 prepositions per design-intent profile. Themes: home, padel, neighbours, daily life. Push to exercises_library/translation/{id} via tools/push_library.js (to be built in Phase 2B).",
+  "exercises": [
+    {
+      "id": "tr_anna_001",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["L1_calque", "preposition_substitution", "wait_for"],
+      "source_observation": "Profile-documented L1 swap: 'wait us' instead of 'wait for us'",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Соседи ждут нас на ужин в субботу.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The neighbours are waiting for us for dinner on Saturday",
+        "The neighbours are waiting for us for dinner on Saturday.",
+        "Our neighbours are waiting for us for dinner on Saturday",
+        "The neighbors are waiting for us for dinner on Saturday",
+        "The neighbours are expecting us for dinner on Saturday"
+      ],
+      "common_errors": [
+        {
+          "id": "wait_no_for",
+          "pattern_label": "wait without 'for'",
+          "regex": "\\bwait(s|ing)?\\s+us\\b(?!\\s+for)",
+          "feedback": "Russian 'ждут нас' takes no preposition, but English 'wait' requires 'for'. Compare: 'expect us' (no preposition) vs 'wait for us' (with). Both fit here — pick one. ✗ 'wait us' is the most common Russian-speaker preposition slip."
+        },
+        {
+          "id": "on_saturday_wrong_prep",
+          "pattern_label": "wrong preposition with day of week",
+          "regex": "\\b(in|at)\\s+saturday\\b",
+          "feedback": "Days of the week take 'on' in English: 'on Saturday', 'on Monday'. ✗ 'in Saturday' / 'at Saturday' — Russian 'в субботу' uses one preposition for everything; English splits: 'on' for days, 'in' for months/years, 'at' for clock times."
+        },
+        {
+          "id": "missing_progressive",
+          "pattern_label": "simple instead of progressive",
+          "regex": "\\bneighbo(u)?rs?\\s+wait\\b",
+          "feedback": "Use the present progressive for an action happening now or arranged for a near future event: 'are waiting'. ✗ 'The neighbours wait' (simple) suggests a habit. Russian present tense 'ждут' covers both meanings — English splits them."
+        }
+      ],
+      "fallback_feedback": "That doesn't match. The target uses 'wait for' (with the preposition) or 'expect' (no preposition), in the present progressive ('are waiting' / 'are expecting'), with 'on Saturday' for the day."
+    },
+    {
+      "id": "tr_anna_002",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["L1_calque", "arrive_at"],
+      "source_observation": "Profile-documented L1 swap: 'arrive to' instead of 'arrive at/in'",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы приехали на корт раньше всех.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We arrived at the court before everyone else",
+        "We arrived at the court earlier than everyone else",
+        "We got to the court before everyone else",
+        "We got to the court earlier than everyone else"
+      ],
+      "common_errors": [
+        {
+          "id": "arrive_to",
+          "pattern_label": "arrive to",
+          "regex": "\\barriv\\w+\\s+to\\b",
+          "feedback": "✗ 'arrive to' is the single most common Russian-speaker preposition error. English uses 'arrive at' (a specific place — court, station, airport) or 'arrive in' (a city/country). Russian 'приехать в/на' maps to neither. Alternative verb: 'get to' takes 'to' but it's a different verb."
+        },
+        {
+          "id": "before_all",
+          "pattern_label": "before all (calque)",
+          "regex": "\\bbefore\\s+all\\b",
+          "feedback": "Russian 'раньше всех' translates as 'before everyone' or 'earlier than everyone', not 'before all'. ✗ 'before all' sounds biblical/archaic. Natural: 'before everyone (else)'."
+        }
+      ],
+      "fallback_feedback": "Target verb is 'arrive at the court' or 'get to the court'. Russian 'раньше всех' = 'before everyone (else)' or 'earlier than everyone (else)'."
+    },
+    {
+      "id": "tr_anna_003",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["L1_calque", "depend_on"],
+      "source_observation": "Russian 'зависеть от' → English 'depend on' (not 'depend from')",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Это зависит от погоды.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "It depends on the weather",
+        "That depends on the weather",
+        "It depends on the weather."
+      ],
+      "common_errors": [
+        {
+          "id": "depend_from",
+          "pattern_label": "depend from (calque)",
+          "regex": "\\bdepend(s|ing)?\\s+from\\b",
+          "feedback": "✗ 'depend from' is a direct Russian calque (зависеть от). English fixes the preposition: 'depend on'. Always 'on', never 'from' or 'of'."
+        },
+        {
+          "id": "depend_of",
+          "pattern_label": "depend of",
+          "regex": "\\bdepend(s|ing)?\\s+of\\b",
+          "feedback": "✗ 'depend of' is a French/Spanish-style error. English requires 'depend on'."
+        }
+      ],
+      "fallback_feedback": "Two-word target: 'depends on'. The fixed preposition for 'depend' is always 'on'."
+    },
+    {
+      "id": "tr_anna_004",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["L1_calque", "next_week_zero_article"],
+      "source_observation": "Profile-documented L1 swap: 'at the next week' instead of zero-preposition 'next week'",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "На следующей неделе мы идём в гости к Светлане.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Next week we are going to Svetlana's",
+        "We are going to Svetlana's next week",
+        "Next week we are visiting Svetlana",
+        "We are visiting Svetlana next week",
+        "Next week we are going to visit Svetlana",
+        "We are going to visit Svetlana next week"
+      ],
+      "common_errors": [
+        {
+          "id": "on_next_week",
+          "pattern_label": "preposition before 'next week'",
+          "regex": "\\b(on|in|at)\\s+(the\\s+)?next\\s+week\\b",
+          "feedback": "✗ 'on/in/at next week' — English uses NO preposition with 'next/this/last + time-word': 'next week', 'last Monday', 'this morning'. Russian 'на следующей неделе' has a preposition; English drops it. Just say 'next week'."
+        },
+        {
+          "id": "going_in_guests",
+          "pattern_label": "going in/to guests (calque)",
+          "regex": "\\bgo(ing)?\\s+(in|to)\\s+guests?\\b",
+          "feedback": "✗ Russian 'идти в гости' has no direct English equivalent. Use 'visit someone', 'go to someone's' (apostrophe + s = their place), or 'go to see someone'."
+        }
+      ],
+      "fallback_feedback": "No preposition before 'next week'. For 'идти в гости к Светлане', say 'going to Svetlana's' (= her place) or 'visiting Svetlana'."
+    },
+    {
+      "id": "tr_anna_005",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Grammar", "Tenses"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["tag_question", "grammar_mechanics"],
+      "source_observation": "coach_notes weak_pattern: Grammar mechanics — tag questions 44% over n=63",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Ты ведь любишь падел, правда?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "You like padel, don't you?",
+        "You love padel, don't you?",
+        "You do like padel, don't you?"
+      ],
+      "common_errors": [
+        {
+          "id": "wrong_tag_polarity",
+          "pattern_label": "same-polarity tag",
+          "regex": "\\blike\\s+padel,?\\s+do\\s+you\\b",
+          "feedback": "Tag questions REVERSE the polarity of the main clause. Positive statement → negative tag: 'You like padel, don't you?'. ✗ 'You like padel, do you?' would only work as a surprised reaction ('Oh, you like padel, do you?')."
+        },
+        {
+          "id": "missing_tag",
+          "pattern_label": "no tag question",
+          "regex": "^you\\s+(like|love)\\s+padel\\.?$",
+          "feedback": "Russian 'правда?' / 'ведь' marks a tag question — English uses an inverted auxiliary at the end: 'don't you?', 'right?', 'aren't you?'. The form depends on the main verb's tense and auxiliary."
+        },
+        {
+          "id": "isnt_it_for_you",
+          "pattern_label": "isn't it for personal subject",
+          "regex": "padel,?\\s+isn'?t\\s+it\\b",
+          "feedback": "✗ 'isn't it?' only works when the subject is 'it' or impersonal. With 'you' as subject, the tag uses 'do/don't': 'You like padel, don't you?'. Russian 'правда?' is one universal tag — English picks the auxiliary from the main verb."
+        }
+      ],
+      "fallback_feedback": "Target structure: positive main clause + reversed-polarity tag. Main verb 'like' (present simple) → tag 'don't you?'. Full: 'You like padel, don't you?'."
+    },
+    {
+      "id": "tr_anna_006",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Grammar", "Tenses"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["past_simple_irregular", "grammar_mechanics"],
+      "source_observation": "coach_notes weak_pattern: past simple irregulars within Grammar mechanics 44%",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я купила новую посуду и принесла её домой вчера.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I bought new dishes and brought them home yesterday",
+        "I bought some new dishes and brought them home yesterday",
+        "I bought new tableware and brought it home yesterday",
+        "I bought new crockery and brought it home yesterday"
+      ],
+      "common_errors": [
+        {
+          "id": "buyed_or_bringed",
+          "pattern_label": "regularised past tense",
+          "regex": "\\b(buyed|bringed|broughted|boughted)\\b",
+          "feedback": "✗ 'buy' and 'bring' are irregular: past = 'bought' / 'brought'. Both rhyme but spell differently. Russian regular '-л' ending ('купила', 'принесла') tempts learners to add '-ed' — but these verbs don't take it."
+        },
+        {
+          "id": "dishes_singular",
+          "pattern_label": "dish singular for посуда",
+          "regex": "\\ba\\s+new\\s+dish\\b",
+          "feedback": "Russian 'посуда' is singular (uncountable) but refers to a set. English options: 'dishes' (plural countable), 'tableware' / 'crockery' (uncountable). ✗ 'a new dish' = one specific plate or food item."
+        },
+        {
+          "id": "bring_simple_present",
+          "pattern_label": "bring instead of brought",
+          "regex": "\\band\\s+bring\\s+(it|them)\\b",
+          "feedback": "Coordinated past actions both need past tense: 'bought ... and brought'. ✗ 'bought ... and bring' mixes tenses. Russian 'купила и принесла' is consistent — keep that consistency in English."
+        }
+      ],
+      "fallback_feedback": "Target: 'bought' (irregular past of buy) and 'brought' (irregular past of bring). For 'посуда' use plural 'dishes' or uncountable 'tableware'."
+    },
+    {
+      "id": "tr_anna_007",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Grammar", "Word Order"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["subject_verb_agreement", "grammar_mechanics"],
+      "source_observation": "coach_notes weak_pattern: agreement within Grammar mechanics 44%",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "У моей сестры трое детей, и они все ходят в одну школу.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "My sister has three children and they all go to the same school",
+        "My sister has three kids and they all go to the same school",
+        "My sister has three children, and they all go to the same school",
+        "My sister has three kids and they all attend the same school"
+      ],
+      "common_errors": [
+        {
+          "id": "have_for_third_person",
+          "pattern_label": "have instead of has",
+          "regex": "\\bmy\\s+sister\\s+have\\b",
+          "feedback": "✗ Third-person singular requires '-s': 'My sister HAS' (not 'have'). Russian 'у сестры есть' has no agreement — English makes you mark it on every present-simple verb."
+        },
+        {
+          "id": "u_my_sister_calque",
+          "pattern_label": "literal у-construction",
+          "regex": "^(at|by)\\s+my\\s+sister\\b",
+          "feedback": "✗ Russian 'у моей сестры' has no English equivalent preposition. Restructure with 'have/has': 'My sister has...'. The Russian 'possessor + у' pattern always becomes English 'subject + have/has'."
+        },
+        {
+          "id": "they_goes",
+          "pattern_label": "plural subject + singular verb",
+          "regex": "\\bthey\\s+(all\\s+)?goes\\b",
+          "feedback": "✗ 'they' is plural — verb is 'go' (no -s). Subject-verb agreement: 'he/she/it + verb-s', everyone else + base form."
+        }
+      ],
+      "fallback_feedback": "Target: 'My sister HAS three children/kids and they all GO to the same school'. Watch the third-person 's' on 'has' and the bare plural 'go'."
+    },
+    {
+      "id": "tr_anna_008",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Vocabulary"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["vocabulary_production", "home_context"],
+      "source_observation": "coach_notes weak_pattern: vocabulary production 37% on input — common-word recall",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мне нужно полить цветы и пропылесосить ковёр.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I need to water the flowers and vacuum the carpet",
+        "I need to water the plants and vacuum the carpet",
+        "I have to water the flowers and vacuum the carpet",
+        "I need to water the flowers and hoover the carpet",
+        "I need to water the plants and hoover the carpet"
+      ],
+      "common_errors": [
+        {
+          "id": "pour_for_water",
+          "pattern_label": "pour instead of water (verb)",
+          "regex": "\\bpour\\s+(the\\s+)?(flowers|plants)\\b",
+          "feedback": "✗ 'pour the flowers' — Russian 'полить' translates as the verb 'water' (the noun water becomes a verb): 'water the plants'. 'Pour' takes a liquid as object: 'pour water', not 'pour flowers'."
+        },
+        {
+          "id": "clean_for_vacuum",
+          "pattern_label": "clean instead of vacuum",
+          "regex": "\\bclean\\s+(the\\s+)?carpet\\b",
+          "feedback": "'Clean' is too generic. The specific verb for using a vacuum cleaner is 'vacuum' (US/global) or 'hoover' (UK informal, from the brand). ✗ 'pylesos' has no English cognate; 'vacuum' is the verb."
+        }
+      ],
+      "fallback_feedback": "Two specific verbs needed: 'water the flowers/plants' (полить = use water as verb) and 'vacuum the carpet' (пропылесосить = vacuum as verb)."
+    },
+    {
+      "id": "tr_anna_009",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Vocabulary"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["vocabulary_production", "padel_context"],
+      "source_observation": "coach_notes weak_pattern: vocabulary production 37%",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы выиграли у соседей со счётом 6:3.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We beat the neighbours 6-3",
+        "We beat our neighbours 6-3",
+        "We beat the neighbours six-three",
+        "We won against the neighbours 6-3",
+        "We won 6-3 against the neighbours",
+        "We beat the neighbors 6-3",
+        "We beat the neighbours by 6-3"
+      ],
+      "common_errors": [
+        {
+          "id": "won_neighbours_no_prep",
+          "pattern_label": "won + person without preposition",
+          "regex": "\\bwon\\s+(the|our)?\\s*neighbo(u)?rs\\b",
+          "feedback": "✗ 'won the neighbours' is wrong — 'win' takes a thing (won the match, won a prize) but a person needs 'against' or you switch to 'beat'. Russian 'выиграть у' maps best to: 'beat someone' (no preposition) or 'win against someone'."
+        },
+        {
+          "id": "with_score_calque",
+          "pattern_label": "with the score (calque)",
+          "regex": "\\bwith\\s+(the\\s+)?score\\b",
+          "feedback": "Russian 'со счётом 6:3' translates simply as the score itself: '6-3' (six-three). ✗ 'with the score 6:3' is a literal calque — English drops the framing."
+        }
+      ],
+      "fallback_feedback": "Target verb: 'beat' (no preposition) or 'win against'. Score: just '6-3', no 'with the score' wrapper."
+    },
+    {
+      "id": "tr_anna_010",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Vocabulary"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["vocabulary_production", "false_friend"],
+      "source_observation": "Common false-friend pattern: 'comfortable' vs 'convenient'",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Этот диван очень удобный, и время очень удобное для встречи.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "This sofa is very comfortable and the time is very convenient for the meeting",
+        "This sofa is very comfortable, and the time is very convenient for the meeting",
+        "This sofa is really comfortable and the time is really convenient for the meeting",
+        "This sofa is very comfortable and the time is convenient for the meeting"
+      ],
+      "common_errors": [
+        {
+          "id": "comfortable_for_time",
+          "pattern_label": "comfortable for time/schedule",
+          "regex": "\\btime\\s+is\\s+(very\\s+)?comfortable\\b",
+          "feedback": "✗ 'comfortable time' — Russian 'удобный' covers BOTH meanings, but English splits: 'comfortable' (physical comfort: chair, bed, clothes) vs 'convenient' (suits the schedule, easy to access). A time/place/schedule is 'convenient'. A sofa is 'comfortable'."
+        },
+        {
+          "id": "convenient_for_sofa",
+          "pattern_label": "convenient sofa",
+          "regex": "\\bsofa\\s+is\\s+(very\\s+)?convenient\\b",
+          "feedback": "✗ 'convenient sofa' — physical objects you sit/lie on are 'comfortable' (gives physical ease), not 'convenient' (suits planning/schedule). Russian 'удобный' is one word; English needs you to pick which sense."
+        }
+      ],
+      "fallback_feedback": "Russian 'удобный' splits in English: 'comfortable' (physical — sofa, shoes, bed) vs 'convenient' (timing, location, access). Sofa = comfortable; time = convenient."
+    },
+    {
+      "id": "tr_anna_011",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Collocations"],
+      "expected_difficulty": 4,
+      "linked_question_ids": [],
+      "tags": ["collocation", "make_decision"],
+      "source_observation": "coach_notes weak_pattern: collocation accuracy 22% (n=9)",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мне нужно принять решение до конца недели.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I need to make a decision by the end of the week",
+        "I have to make a decision by the end of the week",
+        "I need to make a decision before the end of the week",
+        "I need to come to a decision by the end of the week",
+        "I need to reach a decision by the end of the week"
+      ],
+      "common_errors": [
+        {
+          "id": "take_decision",
+          "pattern_label": "take a decision (calque)",
+          "regex": "\\btake\\s+(a\\s+)?decision\\b",
+          "feedback": "✗ 'take a decision' — direct calque of Russian 'принять решение'. Standard English collocation is 'MAKE a decision' (or 'reach/come to a decision' for the deliberative sense). 'Take' + decision sounds like translated text."
+        },
+        {
+          "id": "until_for_by",
+          "pattern_label": "until end of week",
+          "regex": "\\buntil\\s+(the\\s+)?end\\s+of\\s+(the\\s+)?week\\b",
+          "feedback": "✗ 'until the end of the week' = continuously up to that point ('I'll be away UNTIL Friday'). For a deadline, use 'BY': 'by the end of the week' = no later than that point. Russian 'до' covers both — English splits."
+        },
+        {
+          "id": "do_decision",
+          "pattern_label": "do a decision",
+          "regex": "\\bdo\\s+(a\\s+)?decision\\b",
+          "feedback": "✗ 'do a decision' — wrong delexical verb. The fixed collocation is 'make a decision'. Mnemonic: you MAKE choices and decisions; you DO tasks and chores."
+        }
+      ],
+      "fallback_feedback": "Two collocations: 'MAKE a decision' (not 'take' or 'do') and 'BY the end of the week' (deadline, not 'until')."
+    },
+    {
+      "id": "tr_anna_012",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Collocations"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["collocation", "do_homework"],
+      "source_observation": "coach_notes weak_pattern: collocation accuracy 22%",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Дочка делает уроки, а я готовлю ужин.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "My daughter is doing her homework and I am cooking dinner",
+        "My daughter is doing her homework while I am cooking dinner",
+        "My daughter is doing her homework, and I am cooking dinner",
+        "My daughter is doing homework and I am making dinner",
+        "My daughter is doing her homework and I am making dinner"
+      ],
+      "common_errors": [
+        {
+          "id": "make_homework",
+          "pattern_label": "make homework (calque)",
+          "regex": "\\bmak(e|es|ing)\\s+(her\\s+)?homework\\b",
+          "feedback": "✗ 'make homework' — direct calque of 'делать уроки'. English uses 'DO homework'. The MAKE/DO split: MAKE for things you create (a cake, a decision, a plan); DO for tasks/chores (homework, the dishes, the laundry)."
+        },
+        {
+          "id": "homeworks_plural",
+          "pattern_label": "plural homeworks",
+          "regex": "\\bhomeworks\\b",
+          "feedback": "✗ 'homeworks' — 'homework' is uncountable in English, no plural -s. Russian 'уроки' looks plural but English keeps 'homework' as a mass noun."
+        },
+        {
+          "id": "cook_for_make_dinner",
+          "pattern_label": "do dinner",
+          "regex": "\\bdo(ing)?\\s+(the\\s+)?dinner\\b",
+          "feedback": "✗ 'doing dinner' — for meals use 'cook dinner' or 'make dinner', not 'do dinner'. The DO/MAKE/COOK split: cook (heat, prepare with a stove) and make (any food preparation including assembly) both fit; 'do' does not."
+        }
+      ],
+      "fallback_feedback": "Two collocations: 'DO homework' (not 'make') and 'COOK/MAKE dinner' (not 'do'). 'Homework' is uncountable — no plural."
+    },
+    {
+      "id": "tr_anna_013",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Everyday English"],
+      "expected_difficulty": 4,
+      "linked_question_ids": [],
+      "tags": ["idiomatic_chunk", "rain_check"],
+      "source_observation": "coach_notes weak_pattern: Everyday English idiomatic chunks (rain check)",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Извини, сегодня не получится — давай перенесём?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Sorry, today won't work — can I take a rain check?",
+        "Sorry, today won't work — can we take a rain check?",
+        "Sorry, today doesn't work — can I take a rain check?",
+        "Sorry, today won't work — let's reschedule",
+        "Sorry, today doesn't work — can we reschedule?",
+        "Sorry, I can't make it today — can I take a rain check?",
+        "Sorry, today is no good — can we reschedule?"
+      ],
+      "common_errors": [
+        {
+          "id": "transfer_for_reschedule",
+          "pattern_label": "transfer instead of reschedule",
+          "regex": "\\btransfer\\s+(it|the\\s+meeting|to)\\b",
+          "feedback": "✗ 'transfer it' is a Russian-style calque of 'перенести'. For appointments/plans, English uses 'reschedule' (formal) or 'take a rain check' (informal — declining now but agreeing to do it later). 'Transfer' = move money or files."
+        },
+        {
+          "id": "dont_get_for_wont_work",
+          "pattern_label": "don't get instead of won't work",
+          "regex": "\\b(i|we)\\s+don'?t\\s+get\\b",
+          "feedback": "✗ 'I don't get' = 'I don't understand' in English. For Russian 'не получится' meaning 'it's not going to work out', say: 'today won't work', 'I can't make it', 'today doesn't work for me'."
+        }
+      ],
+      "fallback_feedback": "Two natural phrasings: 'today won't work' (or 'I can't make it today') for 'не получится', and 'take a rain check' (informal) or 'reschedule' (neutral) for 'давай перенесём'."
+    },
+    {
+      "id": "tr_anna_014",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Everyday English"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["idiomatic_chunk", "getting_on"],
+      "source_observation": "coach_notes weak_pattern: Everyday English idiomatic chunks (getting on)",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Как у вас дела с новой соседкой?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "How are you getting on with the new neighbour?",
+        "How are you getting on with your new neighbour?",
+        "How are you getting along with the new neighbour?",
+        "How are you getting along with your new neighbour?",
+        "How are you getting on with the new neighbor?",
+        "How are things with the new neighbour?",
+        "How are things going with the new neighbour?"
+      ],
+      "common_errors": [
+        {
+          "id": "how_your_things_calque",
+          "pattern_label": "literal how-your-things",
+          "regex": "\\bhow\\s+(are\\s+)?your\\s+(affairs|things)\\b",
+          "feedback": "✗ 'How are your things/affairs' — Russian 'Как у вас дела с' has no direct English equivalent. Idiomatic options: 'How are you getting on/along with X?' (relationship), 'How are things with X?' (general), 'How is it going with X?'."
+        },
+        {
+          "id": "with_new_neighbour_no_prep",
+          "pattern_label": "missing 'with' before person",
+          "regex": "\\bgetting\\s+(on|along)\\s+(the\\s+)?new\\s+neighbo(u)?r\\b",
+          "feedback": "✗ Missing 'with' — the construction is 'get on/along WITH someone'. 'Getting on with the new neighbour' (relationship). Without 'with', 'get on' = board a vehicle (get on the bus)."
+        }
+      ],
+      "fallback_feedback": "Idiomatic: 'How are you getting on/along WITH the new neighbour?' or 'How are things with the new neighbour?'. The phrasal verb 'get on with someone' = have a good relationship."
+    },
+    {
+      "id": "tr_anna_015",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B2",
+      "focus_categories": ["Everyday English"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["idiomatic_chunk", "hop_in"],
+      "source_observation": "coach_notes weak_pattern: Everyday English idiomatic chunks (hop on/in)",
+      "created": "2026-04-30T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Запрыгивай в машину, я тебя подвезу до корта.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Hop in, I'll give you a lift to the court",
+        "Hop in the car, I'll give you a lift to the court",
+        "Hop in the car, I'll drive you to the court",
+        "Jump in, I'll give you a lift to the court",
+        "Hop in, I'll drop you off at the court",
+        "Hop in, I'll drive you to the court",
+        "Hop in the car — I'll give you a lift to the court"
+      ],
+      "common_errors": [
+        {
+          "id": "jump_in_car_to",
+          "pattern_label": "jump into the car (over-literal)",
+          "regex": "\\bjump\\s+into\\s+(the\\s+)?car\\b",
+          "feedback": "✗ 'jump into the car' is literal but non-idiomatic. Native phrasing: 'hop in (the car)' / 'jump in' — informal, friendly, with NO 'into'. 'Hop in' is the standard chunk for inviting someone into your vehicle."
+        },
+        {
+          "id": "bring_for_lift",
+          "pattern_label": "bring you to (calque for подвезти)",
+          "regex": "\\b(bring|carry)\\s+you\\s+to\\b",
+          "feedback": "✗ 'bring you to the court' — Russian 'подвезти' is a phrasal-verb meaning. English options: 'give you a lift', 'drive you', 'drop you off'. 'Bring' implies carrying a thing; 'carry' implies in your arms."
+        }
+      ],
+      "fallback_feedback": "Two informal chunks: 'hop in (the car)' for 'запрыгивай' (no 'into'), and 'give you a lift' / 'drive you' / 'drop you off' for 'подвезти'."
+    }
+  ]
+}
