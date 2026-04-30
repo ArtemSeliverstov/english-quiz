@@ -1265,6 +1265,43 @@ decisions) reopened.
 
 ---
 
+### 2026-04-30 — Coach tab MVP shipped (CC session, continued)
+
+**Done**:
+- Coach tab UI built end-to-end in `index.html` (`v20260430-s90`).
+  5th tab "🎯 Coach" with: stats card (last session, top weak spot,
+  available count), exercise type picker (translation enabled, others
+  greyed in MVP, Free Write disabled until 2C), chat-style message
+  renderer, scoring engine (`coachNormalize` + `coachIsMatch` +
+  `coachMatchPattern`), per-item result capture, Firestore round-trip.
+- Service worker cache key bumped to `eq-v20260430-s90`. Three version
+  locations stamped (HTML meta, header badge, sw.js cache key).
+- Smoke-tested in local browser preview as Anna: full translation
+  drill cycle (correct + wrong-with-regex-match + fallback) including
+  Firestore write of summary at `players/anna/exercises/{ts}` with
+  `source: 'coach_tab'`. Test record cleaned up after.
+
+**Doc-impacting**:
+- §13.1 acceptance ("Anna opens Coach tab, completes 5 translation
+  exercises in a row, sees rich feedback per exercise, sees her score
+  in Firestore") is satisfied locally. Real-Anna-on-real-device
+  validation remains; that's a deploy-and-observe step, not a code step.
+- §8.7 stats card spec said "{n} exercises available for you" reads
+  from `_meta.coverage_by_player[player]`. Implementation reads both
+  `[player]` and `[all]` buckets and sums them, so future "all"-targeted
+  exercises are visible to every player automatically.
+
+**Build sequence status**:
+- §13.1 Phase 2B remaining: deploy (push to GitHub Pages) — pending
+  Artem's go-ahead. Service worker bump landed; pre-deploy checklist
+  remains to run.
+- §13.2 Phase 2C blocked on: Artem confirming Anthropic key creation
+  and handing the key over for Cloudflare secret setup. Worker build
+  itself is unblocked — schema, prompts, validation rules all spec'd
+  in §7.
+
+---
+
 *This file lives at `references/phase2-coach-tab.md` in the repo. Updated
 by CC as decisions land in flight. Should be archived once Phase 2
 acceptance (§16) is met, alongside the now-deleted PHASE2_PLAN.md and
