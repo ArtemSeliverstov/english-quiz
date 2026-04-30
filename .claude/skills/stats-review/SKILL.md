@@ -40,6 +40,47 @@ Per `references/coverage-matrix.md` audit protocol, produce for each player:
 - **Stuck questions**: questions with 100% error rate (candidates for `coach_notes.stuck_questions`)
 - **Quality flags**: questions with ≥60% error rate across 3+ players (candidates for review)
 
+### Step 2.5 — Per-question mistake audit (mandatory for any flagged item)
+
+For any question that becomes a candidate for restructuring (≥3 attempts at <50%,
+or appearing in a cross-player quality flag), pull `qStats[qid].lastWrong` from
+**every** player who has seen it. Use `node tools/get_question_mistakes.js <qid> [<qid>...]`.
+
+The actual mistake is the highest-value signal — diagnosis without it is speculation.
+
+Output as part of the per-player coverage table:
+
+| qid | players seen | accuracy | lastWrong (per player) |
+|---|---|---|---|
+| pv_c07 | artem | 0/4 | artem: "bring in" |
+
+**Caveat**: MCQ stores option index inconsistently — sometimes resolves to text,
+sometimes `<no log>`. When unavailable, mark the diagnosis as `[speculation]`
+(see speculation marking below) and say so in the recommendation.
+
+### Speculation marking — mandatory
+
+Every claim in a stats review must carry an evidence tag. Three levels:
+
+| Tag | When to use |
+|---|---|
+| **[data]** | Direct from a stat field or `lastWrong` log. E.g., "Anna typed `doesn't` 4×" |
+| **[inferred]** | Pattern visible in stats but causation unstated. E.g., "Articles weakness, 233 attempts at 75% — confirms profile" |
+| **[speculation]** | Interpretation beyond what data shows. E.g., "Anna may be abandoning when stems get long" |
+
+Speculation is permitted but **must be tagged**. Untagged claims default to
+[data] — so an unmarked claim that turns out to be a guess is a skill violation.
+
+Apply to:
+- "Persistent patterns" bullets
+- "Action recommendations" — speculate freely about what to *try*, but tag it
+- Proposed `coach_notes` updates — never write a [speculation] into `weak_patterns`;
+  only [data] or [inferred] qualify. [speculation] stays in `recent_observations`
+  and is marked there: `{"note":"[speculation] ..."}`.
+
+Profile updates (`references/family-profiles.md`) require [data] only. Never
+propose a profile edit on inferred or speculative grounds.
+
 ### Step 3 — Synthesize patterns
 
 Look for:

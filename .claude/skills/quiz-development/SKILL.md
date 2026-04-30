@@ -39,10 +39,26 @@ s78 attempt rolled back.)
 
 ### Fixing single questions
 
-1. Find the question by ID. Read it, the surrounding context, the bug log if relevant.
-2. Diagnose the issue (run through `question-authoring-standards.md` checklist mentally).
-3. Show proposed fix — old version → new version diff.
-4. Apply when approved.
+1. **Pull mistake data first**: `node tools/get_question_mistakes.js <qid> [<qid>...]`.
+   Reports `qStats[qid].lastWrong` from every player who's seen it. If unavailable
+   (MCQ index logging gap), note this — diagnoses without the actual error are
+   flagged as `[speculation]` in the audit (see `stats-review` skill for the tag
+   semantics).
+2. Read the question, surrounding context, and bug log.
+3. Diagnose using the **stem sufficiency test** (see
+   `references/question-authoring-standards.md` § "Stem sufficiency test")
+   and the authoring-standards checklist.
+4. Show proposed fix as a table with required columns: **evidence** (direct
+   mistake quote, or `[speculation]` if no log) and **confirmation** (strong /
+   weak / none).
+5. Apply only items at confirmation = strong by default. Items at weak/none
+   require explicit user opt-in or deferral pending better data.
+
+#### Audit output template (required)
+
+| qid | severity | evidence | confirmation | action |
+|---|---|---|---|---|
+| {id} | high/med/low | direct quote OR `[speculation]` | strong / weak / none | {fix or defer} |
 
 ### Category audit
 

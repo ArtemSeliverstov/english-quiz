@@ -168,8 +168,12 @@ After GitHub Pages deploys:
 1. Open the live URL with `?reset=1` on your phone
 2. Confirm version badge shows the new version
 3. Log in as one player, answer one question — verify Firestore write
-4. Refresh, verify stats reload from Firestore correctly
-5. Tap any deeplinks generated this session (if applicable) — verify they work
+4. **Answer one multi-blank question (e.g., `mc01`) end-to-end** — confirm the
+   Next button enables after the last blank. Two distinct s84r4 / s89r2 bugs
+   have produced an identical "Next stuck disabled" symptom; only a real submission
+   exercises both paths.
+5. Refresh, verify stats reload from Firestore correctly
+6. Tap any deeplinks generated this session (if applicable) — verify they work
 
 If anything fails: **revert immediately**.
 

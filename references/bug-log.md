@@ -37,6 +37,11 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Multi-blank questions
 
+### answerMultiBlank `allCorrect` ReferenceError (s89r2)
+**Bug**: Bare `allCorrect` referenced in `answerMultiBlank` (line 4176) on the last-blank submit path. Variable is declared in `recordMultiAnswer`, not in the calling scope — every multi-blank submission threw `ReferenceError: allCorrect is not defined`, aborting before `recordMultiAnswer` could enable Next. Same user-visible symptom as s84r4 (Next button stuck) but a different root cause. Introduced in s80r2 (April 1, 2026); broke every multi-blank question for ~4 weeks until reported.
+**Fix**: One-character correction — use `multiState.allCorrect` (the field set on `renderMulti` and updated in `answerMultiBlank`).
+**Rule**: When two functions share state, prefer the explicit object (`multiState.X`) over a bare identifier — typos resolving to undeclared globals fail silently in non-strict-ish contexts and only surface under live load. Multi-blank questions need a deploy smoke test exercising at least one full submission (see `pre-deploy-checklist.md` § 9).
+
 ### answerMultiBlank re-entry guard (s84r4)
 **Bug**: Mobile double-tap fired `answerMultiBlank` twice for same blank → duplicate result pushed → tried to render blank N+1 (out of bounds) → crashed silently → Next button stayed disabled forever.
 **Fix**: Guard at top of function: `if (!multiState || multiState.results.length !== blankIdx) return;`

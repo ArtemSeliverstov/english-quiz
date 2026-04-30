@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-04-29 · Session 89r2
+### v20260429-s89r2 — Multi-blank Next-button bug fix + skill improvements
+
+- Fixed `answerMultiBlank` ReferenceError that broke every multi-blank submission since s80r2 (April 1) — bare `allCorrect` → `multiState.allCorrect`
+- Symptom (Next button stuck disabled) was identical to s84r4's mobile double-tap bug; root cause was different. Both now documented in `bug-log.md`.
+- `pre-deploy-checklist.md` § 9 now mandates a multi-blank end-to-end smoke test
+- Skills updated post-session 89: `stats-review` mandates per-question mistake audit + speculation tagging; `quiz-development` requires evidence/confirmation columns; `question-authoring-standards.md` adds the "stem sufficiency test"; new helper `tools/get_question_mistakes.js`
+- Confirmed in local preview before push: both all-correct and partial-wrong paths enable Next correctly; `lastWrong` persists as expected
+
+Q count: 1,872 (unchanged) · Version: v20260429-s89r2
+
+---
+
 ## 2026-04-29 · Session 89
 ### v20260429-s89 — Stuck-question fixes from stats review
 

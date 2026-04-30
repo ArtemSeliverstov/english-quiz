@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260429-s89">
+  <meta name="app-version" content="v20260429-s89r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -885,7 +885,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260429-s89</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260429-s89r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -4173,7 +4173,7 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
     const blanksCorrect = multiState.results.filter(Boolean).length;
     const blanksTotal = q.blanks.length;
     const fraction = blanksCorrect / blanksTotal;
-    if (!allCorrect && multiState.wrongChoices && multiState.wrongChoices.length) {
+    if (!multiState.allCorrect && multiState.wrongChoices && multiState.wrongChoices.length) {
       q._lastPlayerAnswer = multiState.wrongChoices.map((v,i) => v !== undefined ? `[${i+1}]:${v}` : null).filter(Boolean).join(', ');
     }
     await recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q);

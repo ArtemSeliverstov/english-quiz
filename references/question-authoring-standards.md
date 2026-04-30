@@ -227,6 +227,30 @@ Run on every new or edited question before adding to the batch.
 - If question passes review, strengthen exp and/or add hint
 - If genuinely ambiguous, fix or drop
 
+### Stem sufficiency test (when the wrong answer is grammatically valid)
+
+When the mistake log shows a learner typing a grammatically-valid alternative,
+do NOT default to "accept variant". First ask:
+
+1. **Does the stem provide enough information to force the intended answer?**
+   - YES → the question is doing its job. Fix is variant acceptance OR a stronger exp.
+   - NO → the stem is under-specified. Fix is to add disambiguating context.
+
+2. **Test by elimination**: read the stem alone (no answer key). Could a
+   competent native speaker write more than one valid answer? If yes, the stem
+   needs work, not the answer list.
+
+**Examples** (from session s89 audit):
+
+| Case | Mistake | Stem disambiguates? | Fix |
+|---|---|---|---|
+| `pv_c03`: "She decided to ___ painting after she retired" / `pick up` typed | both PVs are real synonyms here | NO — but no clean disambiguator exists | Accept variant (genuine ambiguity) |
+| `emph_i01`: "Never ___ such a poorly written contract" / `had I seen` typed | both tenses grammatical in isolation | NO — no temporal anchor | Add anchor (e.g., present-tense lead-in) |
+| `pv_c07`: "policy expected to ___ significant changes" / `bring in` typed | "bring in" = introduce; "bring about" = cause; both fit | NO — register doesn't lock one form | Accept variant (genuine ambiguity) |
+
+The principle: **fix the stem before extending the answer list** unless the stem
+genuinely cannot disambiguate without forcing artificial constraints.
+
 ### Articles — additional checks (S84)
 
 - DISCOURSE STEM: B2+ a→the questions MUST use two-sentence stems (sentence 1 establishes referent, sentence 2 has blank). Single-sentence stems only for zero-article rules and fixed expressions.
