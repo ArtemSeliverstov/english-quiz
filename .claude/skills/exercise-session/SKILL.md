@@ -20,6 +20,19 @@ so it cannot know if the family is travelling. Default to home/Bahrain themes pe
 profile. If Artem mentions travel at session start ("we're in Turkey this week"),
 adopt location-appropriate themes for that session only.
 
+## Path-specific behaviour
+
+**Family path (Anna, Nicole, Ernest)** — the existing 6-step protocol below applies.
+Pre-generated content via library (post-Phase 2C); live AI escalation available;
+bounded scoring per item. Logging is single end-of-session via `tools/log_exercise.js`.
+
+**Artem path** — live and conversational only. No library reuse. CC generates
+exercises on the fly using the authoring quality bar in
+`references/phase2-coach-tab.md` §10 inverted (CC authors during the session, not in
+advance). Logging schema is identical (writes to `players/artem/exercises/{ts}` and
+`players/artem/coach_sessions/`) but the `mode` field on `coach_sessions` is
+`"cc_session"`. No `tokens_used` field (Max-backed, not metered).
+
 ## The 6-step protocol
 
 ### Step 1 — Retrieve context
@@ -54,10 +67,17 @@ For each item, use the player's real-life context themes from `family-profiles.m
 Default to home/Bahrain context unless Artem mentioned travel at session start.
 **Generic stems are forbidden** ("the man went to the shop" — never).
 
-Live-log decision:
-- For now, write a single end-of-session log via `node tools/log_exercise.js` (Step 6 below)
-- Stage 1 live-log (`exercise_active/{session_id}` collection with per-item `?exupd=` updates) is supported by the PWA but not yet wired into `tools/`. Use single-shot logging until the per-item tool is added.
-- If using claude.ai chat (no Claude Code) → fall back to `?exlog=BASE64` deeplink generation per `references/deeplink-schema.md`
+### Logging strategy
+
+Use single end-of-session logging via `tools/log_exercise.js` (Step 6).
+
+Per-item live logging (`?exupd=` deeplinks → `exercise_active` collection) is
+supported by the PWA but currently unused via CC. Reserve for future Phase 2C
+work if an Artem-path live-log proves useful.
+
+claude.ai chat fallback (`?exlog=` deeplink) is now legacy — only relevant if CC
+is unavailable. Phase 2C provides a Coach tab that handles family logging
+natively.
 
 ### Step 4 — Post-session feedback
 
@@ -105,6 +125,12 @@ See `references/deeplink-schema.md` for exact payload format.
 - Player asks but seems stressed or has just done a session
 - Stats show <24h since last session — risk of fatigue
 - Player explicitly cancels mid-session — finalize what's done, persist, stop
+
+Post-Phase 2C: family members (Anna, Nicole, Ernest) typically use the Coach tab
+in the PWA directly, which handles sessions natively. This skill remains as a
+fallback for cases when (a) Coach tab is broken, (b) Artem wants to run a session
+for a family member via CC, or (c) Artem runs his own session. In normal operation
+post-2C, the family path of this skill is rarely invoked.
 
 ## After the session
 
