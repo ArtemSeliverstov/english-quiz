@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260430-s90">
+  <meta name="app-version" content="v20260430-s90r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -920,7 +920,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260430-s90</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260430-s90r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -6647,6 +6647,8 @@ const coachState = {
   startedAt: 0,
   answeredAt: 0,
   sessionStartedAt: 0,
+  sessionTs: 0,           // Firestore doc id reused for per-item upserts so partial sessions survive
+  plannedTotal: 0,        // total exercises in this session (set at start, drives planned_total in upserts)
   sessionResults: [],
   meta: null,
   lastSummary: null,
@@ -6769,6 +6771,8 @@ async function coachStartType(type) {
   coachState.type = type;
   coachState.pool = exercises;
   coachState.sessionStartedAt = Date.now();
+  coachState.sessionTs = Date.now();
+  coachState.plannedTotal = exercises.length;
   coachState.sessionResults = [];
   coachState.current = null;
   document.getElementById('coachPicker').style.display = 'none';
@@ -6840,12 +6844,52 @@ function coachNormalize(s) {
     .replace(/\bcan't\b/g, 'can not')
     .replace(/\bisn't\b/g, 'is not')
     .replace(/\baren't\b/g, 'are not')
-    .replace(/[.!?,;:]+$/, '');
+    // Strip articles before comparison so dropped/added a/an/the don't fail the match.
+    // Trade-off: definite vs indefinite distinction is lost for scoring; intentional per
+    // s90r2 — Anna's L1 article-drop is too noisy to penalise at MVP. Pattern-feedback
+    // regexes still see the original text so article-specific traps still fire.
+    .replace(/\b(a|an|the)\s+/g, '')
+    .replace(/[.!?,;:]+$/, '')
+    .trim();
 }
 
 function coachIsMatch(submitted, correctAnswers) {
   const norm = coachNormalize(submitted);
   return (correctAnswers || []).some(c => coachNormalize(c) === norm);
+}
+
+async function coachUpsertSession({ partial = true } = {}) {
+  // Upsert the running session doc to players/{name}/exercises/{sessionTs}.
+  // Called after every answered item (partial:true) and once more at finish (partial:false).
+  // Reusing the same ts means no duplicate exercise rows; PATCH semantics overwrite the doc.
+  // If currentPlayer or sessionTs aren't set, bail silently.
+  if (!currentPlayer || !coachState.sessionTs || !coachState.sessionResults.length) return;
+  const results = coachState.sessionResults;
+  const total = results.length;
+  const correct = results.filter(r => r.correct).length;
+  const patternIds = [...new Set(results.filter(r => r.matched_pattern_id).map(r => r.matched_pattern_id))];
+  const summaryDoc = {
+    exercise: coachState.type,
+    topic: 'Coach tab',
+    level: 'B2',
+    total,
+    correct,
+    date: new Date().toISOString().slice(0, 10),
+    categories: [],
+    error_types: patternIds,
+    errors: results.filter(r => !r.correct).map(r => `[${r.exercise_id}] ${r.submitted_answer}`).slice(0, 10),
+    items: results,
+    source: 'coach_tab',
+    partial,
+    planned_total: coachState.plannedTotal || total,
+  };
+  try {
+    await fsSet('players/' + currentPlayer + '/exercises/' + coachState.sessionTs, summaryDoc);
+  } catch (e) {
+    // Swallow per-item failures so the UI stays responsive — next answer's upsert will retry.
+    // Final-save failure (partial:false) is surfaced by the caller.
+    if (!partial) throw e;
+  }
 }
 
 function coachMatchPattern(submitted, commonErrors) {
@@ -6904,6 +6948,10 @@ async function coachSubmitAnswer() {
     time_to_answer_ms: ttaMs,
     exercise_version: ex.version || 1,
   });
+  // Upsert running session to Firestore so partials survive a closed tab / reload.
+  // Fire-and-forget — UI doesn't block on the network round-trip; failure is silent
+  // (the next item's upsert will catch up).
+  coachUpsertSession({ partial: true });
   const actionRow = document.getElementById('coachActionRow');
   const moreLeft = coachState.pool.length > 0;
   actionRow.innerHTML = '';
@@ -6920,27 +6968,16 @@ async function coachFinishSession() {
   document.getElementById('coachActionRow').style.display = 'none';
   const results = coachState.sessionResults;
   if (!results.length) { coachShowPicker(); return; }
-  const total = results.length;
   const correct = results.filter(r => r.correct).length;
+  const total = results.length;
   const patternIds = [...new Set(results.filter(r => r.matched_pattern_id).map(r => r.matched_pattern_id))];
-  const ts = Date.now();
-  const summaryDoc = {
-    exercise: coachState.type,
-    topic: 'Coach tab',
-    level: 'B2',
-    total,
-    correct,
-    date: new Date().toISOString().slice(0, 10),
-    categories: [],
-    error_types: patternIds,
-    errors: results.filter(r => !r.correct).map(r => `[${r.exercise_id}] ${r.submitted_answer}`).slice(0, 10),
-    items: results,
-    source: 'coach_tab',
-  };
+  // Final write — flips partial:false on the same doc the per-item upserts have been
+  // writing to. If this throws (network blip on the last save), surface it; the per-item
+  // upserts already preserved the data so nothing is lost.
   try {
-    await fsSet('players/' + currentPlayer + '/exercises/' + ts, summaryDoc);
+    await coachUpsertSession({ partial: false });
   } catch (e) {
-    coachAppendMessage('assistant', '<em>Could not save your session: ' + escapeHtml(e.message) + '</em>');
+    coachAppendMessage('assistant', '<em>Could not finalise your session: ' + escapeHtml(e.message) + ' (your answers are saved as a partial session)</em>');
   }
   const acc = Math.round((correct / total) * 100);
   let msg = `<strong>Session done — ${correct}/${total} (${acc}%).</strong>`;
