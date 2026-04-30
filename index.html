@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260429-s89r3">
+  <meta name="app-version" content="v20260430-s90">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -852,6 +852,41 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 .ex-hc-topic{font-size:.68rem;color:var(--muted);font-style:italic;}
 .ex-hc-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;margin-top:.4rem;overflow:hidden;}
 .ex-hc-fill{height:100%;border-radius:2px;}
+
+/* ── COACH TAB ── */
+.coach-stats-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;margin-bottom:1rem;}
+.coach-stats-line{font-size:.85rem;line-height:1.5;}
+.coach-stats-line.coach-stats-meta{font-size:.75rem;color:var(--muted);}
+.coach-picker{margin-bottom:1rem;}
+.coach-picker-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem;}
+.coach-picker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem;}
+.coach-type-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .8rem;text-align:left;cursor:pointer;color:var(--text);font:inherit;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:.2rem;}
+.coach-type-btn:hover:not(.disabled):not(:disabled){border-color:var(--accent);background:rgba(255,255,255,.03);}
+.coach-type-btn.disabled,.coach-type-btn:disabled{opacity:.4;cursor:not-allowed;}
+.coach-type-name{font-size:.85rem;font-weight:600;}
+.coach-type-count{font-size:.7rem;color:var(--muted);font-family:'DM Mono',monospace;}
+.coach-chat{display:flex;flex-direction:column;gap:.6rem;margin-bottom:.8rem;max-height:60vh;overflow-y:auto;padding:.2rem;}
+.coach-msg{padding:.65rem .85rem;border-radius:12px;font-size:.88rem;line-height:1.55;max-width:90%;animation:fadeIn .25s ease;}
+.coach-msg.assistant{background:rgba(255,255,255,.04);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;}
+.coach-msg.user{background:rgba(111,239,178,.10);border:1px solid rgba(111,239,178,.25);align-self:flex-end;border-bottom-right-radius:4px;color:var(--text);}
+.coach-msg.feedback-correct{background:rgba(111,239,178,.08);border-color:rgba(111,239,178,.3);}
+.coach-msg.feedback-wrong{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.25);}
+.coach-msg-prompt{font-weight:600;margin-bottom:.25rem;}
+.coach-msg-prompt-ru{font-style:italic;font-size:1rem;line-height:1.5;}
+.coach-input-row{display:flex;gap:.5rem;margin-bottom:.6rem;}
+.coach-input-field{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.7rem .9rem;color:var(--text);font:inherit;font-size:.9rem;}
+.coach-input-field:focus{outline:none;border-color:var(--accent);}
+.coach-send-btn{background:var(--accent);color:#0b1220;border:none;border-radius:8px;padding:.7rem 1.1rem;font:inherit;font-weight:600;cursor:pointer;font-size:.85rem;}
+.coach-send-btn:disabled{opacity:.5;cursor:not-allowed;}
+.coach-action-row{display:flex;gap:.5rem;margin-bottom:.6rem;flex-wrap:wrap;}
+.coach-action-row button{flex:1;min-width:140px;padding:.7rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:border-color .15s,background .15s;}
+.coach-action-row button.coach-action-primary{background:var(--accent);color:#0b1220;border-color:var(--accent);font-weight:600;}
+.coach-action-row button:hover{border-color:var(--accent);}
+.coach-action-row button.coach-action-primary:hover{filter:brightness(1.05);}
+.coach-typing{font-size:.8rem;color:var(--muted);font-style:italic;padding:.4rem .85rem;}
+@media(max-width:520px){
+  .coach-picker-grid{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -885,7 +920,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260429-s89r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260430-s90</span></p>
 </header>
 
 <!-- TABS -->
@@ -894,6 +929,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
   <button class="tab" onclick="showTab('stats')">📊 Statistics</button>
   <button class="tab" onclick="showTab('family')">👨‍👩‍👧 Family</button>
   <button class="tab" onclick="showTab('exercises')">📝 Exercises</button>
+  <button class="tab" onclick="showTab('coach')">🎯 Coach</button>
 </div>
 
 <!-- Questions loaded inline -->
@@ -1120,6 +1156,68 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
     <!-- ── HISTORY ── -->
     <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
+
+  </div>
+</div>
+
+<!-- ══ COACH SCREEN ══ -->
+<div id="tab-coach" class="hidden">
+  <div style="max-width:520px;margin:0 auto;">
+
+    <!-- ── STATS CARD ── -->
+    <div id="coachStatsCard" class="coach-stats-card">
+      <div class="coach-stats-line" id="coachLastSession">No sessions yet</div>
+      <div class="coach-stats-line coach-stats-meta" id="coachWeakSpot"></div>
+      <div class="coach-stats-line coach-stats-meta" id="coachAvailable"></div>
+    </div>
+
+    <!-- ── PICKER ── -->
+    <div id="coachPicker" class="coach-picker">
+      <div class="coach-picker-label">Pick what to practise:</div>
+      <div class="coach-picker-grid">
+        <button class="coach-type-btn" data-type="translation" onclick="coachStartType('translation')">
+          <span class="coach-type-name">Translation Drill</span>
+          <span class="coach-type-count" data-count-for="translation">…</span>
+        </button>
+        <button class="coach-type-btn disabled" data-type="article_drill" disabled>
+          <span class="coach-type-name">Articles</span>
+          <span class="coach-type-count" data-count-for="article_drill">0</span>
+        </button>
+        <button class="coach-type-btn disabled" data-type="particle_sort" disabled>
+          <span class="coach-type-name">Particles</span>
+          <span class="coach-type-count" data-count-for="particle_sort">0</span>
+        </button>
+        <button class="coach-type-btn disabled" data-type="error_correction" disabled>
+          <span class="coach-type-name">Error Correction</span>
+          <span class="coach-type-count" data-count-for="error_correction">0</span>
+        </button>
+        <button class="coach-type-btn disabled" data-type="russian_trap" disabled>
+          <span class="coach-type-name">Russian Trap</span>
+          <span class="coach-type-count" data-count-for="russian_trap">0</span>
+        </button>
+        <button class="coach-type-btn disabled" data-type="free_write" disabled title="Live AI — Phase 2C">
+          <span class="coach-type-name">Free Write</span>
+          <span class="coach-type-count">soon</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── CHAT THREAD ── -->
+    <div id="coachChat" class="coach-chat" style="display:none;"></div>
+
+    <!-- ── INPUT ROW ── -->
+    <div id="coachInputRow" class="coach-input-row" style="display:none;">
+      <input type="text" id="coachInputField" class="coach-input-field" placeholder="Type your answer…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button id="coachSendBtn" class="coach-send-btn" onclick="coachSubmitAnswer()">Send</button>
+    </div>
+
+    <!-- ── ACTION ROW (Got it / Explain more) ── -->
+    <div id="coachActionRow" class="coach-action-row" style="display:none;"></div>
+
+    <!-- ── EXIT BUTTON ── -->
+    <div id="coachExitRow" style="display:none;text-align:center;margin-top:1rem;">
+      <button class="btn-outline" onclick="coachExitToPicker()">← Pick another exercise</button>
+    </div>
 
   </div>
 </div>
@@ -3294,7 +3392,7 @@ function renderGreeting() {
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════
 function showTab(name) {
-  ['setup','stats','quiz','results','family','exercises'].forEach(t => {
+  ['setup','stats','quiz','results','family','exercises','coach'].forEach(t => {
     document.getElementById('tab-'+t).classList.add('hidden');
   });
   if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
@@ -3304,6 +3402,7 @@ function showTab(name) {
   if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
   if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
   if (name === 'exercises') { document.querySelectorAll('.tab')[3].classList.add('active'); exLoadHistory(); }
+  if (name === 'coach') { document.querySelectorAll('.tab')[4].classList.add('active'); coachOpenTab(); }
 }
 
 // ══════════════════════════════════════════════
@@ -6202,7 +6301,7 @@ function loadLocalPinOverride(key) {
   window._exlogMode = true; // flag to suppress name picker
   document.addEventListener('DOMContentLoaded', () => {
     // Hide the entire app UI, show a clean save screen
-    document.querySelectorAll('.tabs, #tab-setup, #tab-stats, #tab-family, #tab-exercises').forEach(el => {
+    document.querySelectorAll('.tabs, #tab-setup, #tab-stats, #tab-family, #tab-exercises, #tab-coach').forEach(el => {
       if (el) el.style.display = 'none';
     });
     try {
@@ -6534,6 +6633,342 @@ async function exDeleteEntry(ts) {
     alert('Delete failed: ' + e.message);
   }
 }
+
+// ══════════════════════════════════════════════════════════════
+//  COACH TAB — pre-generated exercises (Phase 2B MVP)
+//  Reads exercises_library/{type}/items, renders chat-style,
+//  scores locally with regex matching, writes results to
+//  players/{name}/exercises/{ts}.
+// ══════════════════════════════════════════════════════════════
+const coachState = {
+  type: null,
+  pool: [],
+  current: null,
+  startedAt: 0,
+  answeredAt: 0,
+  sessionStartedAt: 0,
+  sessionResults: [],
+  meta: null,
+  lastSummary: null,
+};
+
+async function coachOpenTab() {
+  if (!currentPlayer) {
+    document.getElementById('coachLastSession').textContent = 'Sign in first to use Coach.';
+    document.getElementById('coachWeakSpot').textContent = '';
+    document.getElementById('coachAvailable').textContent = '';
+    return;
+  }
+  coachShowPicker();
+  await Promise.all([coachLoadMeta(), coachRenderStatsCard()]);
+}
+
+function coachShowPicker() {
+  document.getElementById('coachPicker').style.display = '';
+  document.getElementById('coachChat').style.display = 'none';
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  document.getElementById('coachExitRow').style.display = 'none';
+  const chat = document.getElementById('coachChat');
+  if (chat) chat.innerHTML = '';
+  coachState.pool = [];
+  coachState.current = null;
+  coachState.type = null;
+}
+
+async function coachLoadMeta() {
+  try {
+    const meta = await fsGet('exercises_library/_meta');
+    coachState.meta = meta;
+    const player = currentPlayer;
+    const cov = (meta && meta.coverage_by_player) || {};
+    const playerCov = cov[player] || {};
+    const allCov = cov.all || {};
+    const TYPES = ['translation','article_drill','particle_sort','error_correction','russian_trap'];
+    let totalAvail = 0;
+    for (const t of TYPES) {
+      const n = (playerCov[t] || 0) + (allCov[t] || 0);
+      totalAvail += n;
+      const el = document.querySelector(`[data-count-for="${t}"]`);
+      if (el) el.textContent = n + ' avail';
+      const btn = document.querySelector(`.coach-type-btn[data-type="${t}"]`);
+      if (btn && t === 'translation') {
+        btn.disabled = (n === 0);
+        btn.classList.toggle('disabled', n === 0);
+      }
+    }
+    document.getElementById('coachAvailable').textContent =
+      totalAvail + ' exercise' + (totalAvail === 1 ? '' : 's') + ' available for you';
+  } catch (e) {
+    document.getElementById('coachAvailable').textContent = '(could not load library)';
+  }
+}
+
+async function coachRenderStatsCard() {
+  const lastEl = document.getElementById('coachLastSession');
+  const weakEl = document.getElementById('coachWeakSpot');
+  try {
+    const docs = await fsList('players/' + currentPlayer + '/exercises');
+    const COACH_TYPES = ['translation','article_drill','particle_sort','error_correction','russian_trap'];
+    const coachLogs = (docs || [])
+      .filter(d => COACH_TYPES.includes(d.exercise) && d.source === 'coach_tab')
+      .map(d => ({ ...d, ts: parseInt(d.id) }))
+      .sort((a, b) => b.ts - a.ts);
+    if (coachLogs.length) {
+      const last = coachLogs[0];
+      const typeName = (last.exercise || '').replace('_', ' ');
+      lastEl.textContent = `Last session: ${last.correct}/${last.total} · ${typeName}`;
+      coachState.lastSummary = last;
+    } else {
+      lastEl.textContent = 'No Coach sessions yet — pick one below to start';
+    }
+  } catch (e) {
+    lastEl.textContent = '';
+  }
+  try {
+    const cats = {};
+    for (const [qid, s] of Object.entries(DB.qStats || {})) {
+      const q = ALL_QUESTIONS.find(x => x.id === qid);
+      if (!q || !s.seen || s.seen < 1) continue;
+      if (!cats[q.cat]) cats[q.cat] = { seen: 0, correct: 0 };
+      cats[q.cat].seen += s.seen;
+      cats[q.cat].correct += s.correct || 0;
+    }
+    let worst = null;
+    for (const [cat, st] of Object.entries(cats)) {
+      if (st.seen < 5) continue;
+      const acc = st.correct / st.seen;
+      if (!worst || acc < worst.acc) worst = { cat, acc, seen: st.seen };
+    }
+    if (worst) {
+      weakEl.textContent = `Top weak spot: ${worst.cat} (${Math.round(worst.acc*100)}%, ${worst.seen} seen)`;
+    } else {
+      weakEl.textContent = '';
+    }
+  } catch (e) {
+    weakEl.textContent = '';
+  }
+}
+
+async function coachStartType(type) {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (type !== 'translation') return; // MVP: translation only
+  let exercises;
+  try {
+    exercises = await fsList('exercises_library/' + type + '/items');
+  } catch (e) {
+    alert('Could not load exercises: ' + e.message);
+    return;
+  }
+  exercises = (exercises || []).filter(ex => ex.target_player === currentPlayer || ex.target_player === 'all');
+  if (!exercises.length) {
+    alert('No ' + type + ' exercises available for you yet.');
+    return;
+  }
+  exercises.sort(() => Math.random() - 0.5);
+  coachState.type = type;
+  coachState.pool = exercises;
+  coachState.sessionStartedAt = Date.now();
+  coachState.sessionResults = [];
+  coachState.current = null;
+  document.getElementById('coachPicker').style.display = 'none';
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachExitRow').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  coachAppendMessage('assistant', `Let's practise <strong>${type.replace('_',' ')}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`);
+  coachNextExercise();
+}
+
+function coachNextExercise() {
+  if (!coachState.pool.length) {
+    coachFinishSession();
+    return;
+  }
+  const ex = coachState.pool.shift();
+  coachState.current = ex;
+  coachState.startedAt = Date.now();
+  if (coachState.type === 'translation') {
+    const idx = coachState.sessionResults.length + 1;
+    const total = idx + coachState.pool.length;
+    coachAppendMessage('assistant',
+      `<div class="coach-msg-prompt">Translate (${idx}/${total}):</div>` +
+      `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_ru)}</div>` +
+      (ex.prompt_en_hint ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">${escapeHtml(ex.prompt_en_hint)}</div>` : '')
+    );
+  }
+  document.getElementById('coachInputRow').style.display = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachAppendMessage(role, html, extraClass) {
+  const chat = document.getElementById('coachChat');
+  if (!chat) return;
+  const div = document.createElement('div');
+  div.className = 'coach-msg ' + role + (extraClass ? ' ' + extraClass : '');
+  div.innerHTML = html;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function coachNormalize(s) {
+  return String(s || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\bwe're\b/g, 'we are')
+    .replace(/\bi'm\b/g, 'i am')
+    .replace(/\byou're\b/g, 'you are')
+    .replace(/\bthey're\b/g, 'they are')
+    .replace(/\bhe's\b/g, 'he is')
+    .replace(/\bshe's\b/g, 'she is')
+    .replace(/\bit's\b/g, 'it is')
+    .replace(/\bdon't\b/g, 'do not')
+    .replace(/\bdoesn't\b/g, 'does not')
+    .replace(/\bdidn't\b/g, 'did not')
+    .replace(/\bwon't\b/g, 'will not')
+    .replace(/\bcan't\b/g, 'can not')
+    .replace(/\bisn't\b/g, 'is not')
+    .replace(/\baren't\b/g, 'are not')
+    .replace(/[.!?,;:]+$/, '');
+}
+
+function coachIsMatch(submitted, correctAnswers) {
+  const norm = coachNormalize(submitted);
+  return (correctAnswers || []).some(c => coachNormalize(c) === norm);
+}
+
+function coachMatchPattern(submitted, commonErrors) {
+  for (const ce of (commonErrors || [])) {
+    if (!ce.regex) continue;
+    try {
+      const re = new RegExp(ce.regex, 'i');
+      if (re.test(submitted)) return ce;
+    } catch (e) { /* skip bad regex */ }
+  }
+  return null;
+}
+
+async function coachSubmitAnswer() {
+  const ex = coachState.current;
+  if (!ex) return;
+  const fld = document.getElementById('coachInputField');
+  const submitted = (fld.value || '').trim();
+  if (!submitted) { fld.focus(); return; }
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  document.getElementById('coachInputRow').style.display = 'none';
+  coachState.answeredAt = Date.now();
+  coachAppendMessage('user', escapeHtml(submitted));
+  const correct = coachIsMatch(submitted, ex.correct_answers);
+  let pattern = null;
+  let feedback;
+  let extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+  if (correct) {
+    feedback = '<strong>✓ Correct!</strong>';
+    if ((ex.correct_answers || []).length > 1) {
+      const others = ex.correct_answers.filter(a => coachNormalize(a) !== coachNormalize(submitted));
+      if (others.length) {
+        feedback += '<div style="margin-top:.35rem;font-size:.78rem;color:var(--muted);">Other valid forms: ' + escapeHtml(others.slice(0, 2).join(' · ')) + '</div>';
+      }
+    }
+  } else {
+    pattern = coachMatchPattern(submitted, ex.common_errors);
+    if (pattern) {
+      feedback = '<strong>Not quite.</strong> ' + escapeHtml(pattern.feedback);
+    } else {
+      feedback = '<strong>Not quite.</strong> ' + escapeHtml(ex.fallback_feedback || '');
+    }
+    if (ex.correct_answers && ex.correct_answers.length) {
+      feedback += '<div style="margin-top:.4rem;font-size:.8rem;"><em>One correct version:</em> ' + escapeHtml(ex.correct_answers[0]) + '</div>';
+    }
+  }
+  coachAppendMessage('assistant', feedback, extraClass);
+  const ttaMs = coachState.answeredAt - coachState.startedAt;
+  coachState.sessionResults.push({
+    exercise_id: ex.id || ex._id,
+    correct,
+    matched_pattern_id: pattern ? pattern.id : null,
+    submitted_answer: submitted,
+    escalation_used: false,
+    time_to_answer_ms: ttaMs,
+    exercise_version: ex.version || 1,
+  });
+  const actionRow = document.getElementById('coachActionRow');
+  const moreLeft = coachState.pool.length > 0;
+  actionRow.innerHTML = '';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'coach-action-primary';
+  nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
+  nextBtn.onclick = () => { actionRow.style.display = 'none'; coachNextExercise(); };
+  actionRow.appendChild(nextBtn);
+  actionRow.style.display = '';
+}
+
+async function coachFinishSession() {
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  const results = coachState.sessionResults;
+  if (!results.length) { coachShowPicker(); return; }
+  const total = results.length;
+  const correct = results.filter(r => r.correct).length;
+  const patternIds = [...new Set(results.filter(r => r.matched_pattern_id).map(r => r.matched_pattern_id))];
+  const ts = Date.now();
+  const summaryDoc = {
+    exercise: coachState.type,
+    topic: 'Coach tab',
+    level: 'B2',
+    total,
+    correct,
+    date: new Date().toISOString().slice(0, 10),
+    categories: [],
+    error_types: patternIds,
+    errors: results.filter(r => !r.correct).map(r => `[${r.exercise_id}] ${r.submitted_answer}`).slice(0, 10),
+    items: results,
+    source: 'coach_tab',
+  };
+  try {
+    await fsSet('players/' + currentPlayer + '/exercises/' + ts, summaryDoc);
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Could not save your session: ' + escapeHtml(e.message) + '</em>');
+  }
+  const acc = Math.round((correct / total) * 100);
+  let msg = `<strong>Session done — ${correct}/${total} (${acc}%).</strong>`;
+  if (patternIds.length) {
+    msg += '<div style="margin-top:.35rem;font-size:.8rem;color:var(--muted);">Patterns to review: ' + patternIds.map(escapeHtml).join(', ') + '</div>';
+  }
+  coachAppendMessage('assistant', msg, correct === total ? 'feedback-correct' : '');
+  document.getElementById('coachExitRow').style.display = '';
+  coachState.current = null;
+}
+
+function coachExitToPicker() {
+  if (coachState.sessionResults.length && coachState.current !== null) {
+    coachFinishSession().then(() => { coachShowPicker(); coachOpenTab(); });
+    return;
+  }
+  coachShowPicker();
+  coachOpenTab();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fld = document.getElementById('coachInputField');
+  if (fld) {
+    fld.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); coachSubmitAnswer(); }
+    });
+  }
+});
 
 </script>
 </body>
