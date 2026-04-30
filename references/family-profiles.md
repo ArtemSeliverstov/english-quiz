@@ -3,9 +3,13 @@
 All five family members are Russian L1 speakers based in Bahrain. Profiles inform
 question targeting, exercise level selection, and stats interpretation.
 
-This file holds **stable** profile data: level, focus areas, communication preferences.
-**Dynamic** observations (recent weak patterns, session preferences, engagement notes)
-live in Firestore — `players/{name}.coach_notes`. See `coach-notes-schema.md`.
+This file holds **design intent**: level, prescriptive Learning Goals (what we want each
+player working on long-term), communication style, exercise themes. Stable, opinionated, curated.
+
+**Measured state** (current weak/strong patterns from stats, recent observations,
+stuck-question IDs, engagement notes) lives in Firestore — `players/{name}.coach_notes`.
+See `coach-notes-schema.md`, including the promotion rule for moving a measured pattern
+into a Learning Goal here (4+ sessions persistence + survives a deliberate intervention).
 
 ---
 
@@ -17,10 +21,10 @@ Finance & strategy executive at Bapco Energies (Bahrain). Targeting VP/Director 
 in O&G / mining / consulting. Most active user. Reviews questions linguistically for
 accuracy alongside being a player.
 
-**Focus**:
+**Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Articles (fossilised L1 interference)
 - Phrasal Verbs (production gap — much stronger on MCQ than input)
-- Emphasis / inversion (recently identified as weak)
+- Emphasis / inversion
 - Business English register
 
 **Communication style for sessions**:
@@ -45,7 +49,7 @@ accuracy alongside being a player.
 Conversational English, daily interaction. Less need for formal register.
 Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
 
-**Focus**:
+**Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Preposition errors (Russian L1 interference: arrive to → at, waiting us → for, at the next week → zero article)
 - Collocations (a documented weak spot)
 - Vocabulary
@@ -76,13 +80,13 @@ Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
 iPad. Currently engaged through Consolidation Mode (S56). B1 accuracy improving but
 fragile.
 
-**Focus**:
+**Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Articles (recognition vs production gap)
 - Word choice
 - Relative clauses
 - Conditionals
 - Irregular verbs
-- Question Formation B1 (auxiliary order, do-support) — 44% across 18 attempts; qf03/qf06/qf07 all at 0% (added 2026-04-30)
+- Question Formation B1 (auxiliary order, do-support)
 
 **Communication style for sessions**:
 - Brief, low-friction session closings
@@ -101,11 +105,9 @@ The player-initiated model is not currently working for her. Approach: do NOT in
 pressure or auto-suggest. Wait for genuine player-initiated requests; lean on Coach tab
 (Phase 2) for self-service initiation.
 
-**Stuck questions** (100% error rate — known): cv03, irvpp07, qf03, qf06, qf07, pf01, pv_b04, lnk03, cp01. Consider
-restructuring or removing.
-
-**Note**: `gi_b04` was previously listed but the qid is missing from `index.html` —
-either restore the question or formally remove this reference. Flagged 2026-04-30; see bug-log.
+**Stuck questions**: tracked in `coach_notes.stuck_questions`. Restructure/remove candidates
+flow from there to `quiz-development` sessions; this profile no longer enumerates qids
+(they drift faster than commits).
 
 ---
 
@@ -115,11 +117,11 @@ either restore the question or formally remove this reference. Flagged 2026-04-3
 
 Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 
-**Focus**:
-- Articles (recognition vs production gap — 100% MCQ vs 50% error correction)
-- Articles uncountable nouns (art11 'a good progress' at 0%, art14 'take the action' at 0%) — specific Russian L1 pattern (added 2026-04-30)
+**Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
+- Articles (recognition vs production gap — historically 100% MCQ vs 50% error correction)
+- Articles with uncountable nouns (Russian L1 pattern)
 - Conditionals
-- Input accuracy 48% (n=29) — improved from 25% baseline but still ~30 pts behind gap-type
+- Input-type scaffolding — input accuracy lags gap-type by ~30 pts
 
 **Communication style for sessions**:
 - Brief, low-friction
@@ -137,10 +139,10 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
 Applying to UK/Western master's. Quiz user only — does NOT do supplementary exercises.
 
-**Focus**:
+**Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Academic vocabulary (IELTS preparation)
-- Articles (persistently weak at 50%)
-- Multi-blank performance is anomalously low (20%) — investigate UI vs knowledge
+- Articles (persistently weak)
+- Multi-blank performance — investigate UI vs knowledge (cross-player anomaly, see Cross-cutting principles)
 
 **Communication style for sessions**: N/A — no exercise sessions for Egor.
 
@@ -176,10 +178,13 @@ Investigate before authoring more multi-blank questions. Flagged 2026-04-30.
 
 ## Profile update protocol
 
-Updates to this file (level changes, focus shifts, new persistent patterns) require:
-1. Pattern confirmed across 2+ sessions
+This file holds **design intent**, not measured state. Updates (level changes,
+new Learning Goals, persona shifts) require:
+
+1. The promotion rule from `coach-notes-schema.md`: pattern persists 4+ sessions
+   AND survives a deliberate intervention before becoming a Learning Goal here
 2. Proposed edit shown for review
 3. Commit only after explicit approval
 
-Casual session-by-session observations go to `coach_notes.recent_observations` instead —
-that's the dynamic layer. This file stays stable.
+Casual session-by-session observations and current measured weaknesses go to
+`coach_notes` (recent_observations / weak_patterns / stuck_questions). This file stays stable.

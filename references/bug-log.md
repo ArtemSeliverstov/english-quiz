@@ -73,6 +73,11 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Question schema / authoring
 
+### `gi_b04` referenced in profile but missing from index.html (flagged 2026-04-30)
+**Bug**: `gi_b04` had 9 cross-player attempts logged in Firestore qStats (Artem 0/2, Anna 1/2, Nicole 0/4, Egor 0/1) and was listed as a known stuck question for Nicole in `family-profiles.md`, but the qid is not present in `ALL_QUESTIONS` in `index.html`. Either deleted in a past edit without scrubbing references, or never authored — but stats accumulated regardless.
+**Fix**: TBD. Either author the question (Gerunds & Infinitives B1) or scrub the qStats entries from all five players via a one-off script. Removed the dangling profile reference in same-day edit.
+**Rule**: When deleting a question from `ALL_QUESTIONS`, scrub Firestore qStats references and any profile/coach_notes mentions in the same change.
+
 ### Stem field name (`stem:` vs `q:`) (s66r4)
 **Bug**: 20 EE questions used `stem:` and `ans:'string value'` on gap. `renderQ` reads `q:` only → `q.q.replace()` on undefined → silent throw → blank card.
 **Fix**: `renderQ` normalises stem→q at runtime. All 20 corrected to `q:` and integer ans (s66r6).

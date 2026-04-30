@@ -125,16 +125,18 @@ The string must be **identical** across the four locations: HTML badge, `sw.js` 
 
 ## Memory model — two layers
 
-Family-related learning lives in two places, never both:
+Family-related learning lives in two places. The split is by **kind**, not just by cadence:
 
-- **GitHub repo (this repo)**: stable facts. Family profiles, schemas, design decisions. Updated by you (or by Claude Code via git commits). Read by all surfaces.
-- **Firestore `players/{name}.coach_notes`**: dynamic per-player observations. Updated during exercise/stats sessions. Read by all surfaces.
+- **GitHub repo (this repo) — design intent**: what we *want* each player to be working on. Level, persona, communication style, exercise themes, **prescriptive learning goals**. Stable, opinionated, curated. Updated via git commit when intent shifts (rarely).
+- **Firestore `players/{name}.coach_notes` — measured state**: what the data *currently shows*. Weak/strong patterns from stats, recent observations, stuck-question IDs, engagement notes. Rolling, mechanical. Updated every session/stats review.
+
+A coach_notes `weak_pattern` only graduates to a profile Learning Goal when it persists across **4+ sessions AND survives a deliberate intervention**. Otherwise it stays in coach_notes. Stuck question IDs live **only** in `coach_notes.stuck_questions` — profiles reference the field but don't enumerate qids.
 
 What does NOT live here:
 - Personal/cross-project context (your role, location, communication preferences) → `claude.ai` user memory
 - Auto-memory (`~/.claude/projects/.../memory/MEMORY.md`) → **disabled**, since workflow is mobile-first and laptop auto-memory wouldn't sync
 
-See `references/coach-notes-schema.md` for the update protocol.
+See `references/coach-notes-schema.md` for the update protocol and promotion rule.
 
 ---
 

@@ -84,6 +84,28 @@ only after a second session confirms.
 
 ---
 
+## Promotion rule — coach_notes → family-profiles.md
+
+`coach_notes.weak_patterns` are **measured state**. `family-profiles.md` Learning Goals
+are **design intent**. They are not the same thing — a measured weakness is not
+automatically a learning goal.
+
+A `weak_pattern` is promoted to a profile Learning Goal only when **both** conditions hold:
+
+1. Persists across **4+ sessions** at consistently low accuracy (<60%), AND
+2. Survives a **deliberate intervention** — a targeted exercise session or quiz-development
+   pass that explicitly addressed the pattern, after which the weakness still reads.
+
+Without the intervention test, you can't tell whether the gap is a real long-term
+priority or just under-exposure. Until both conditions hold, the pattern stays in
+coach_notes only.
+
+Demotion: a profile Learning Goal whose pattern reads ≥75% across 4+ sessions can be
+moved back into coach_notes (or removed entirely if confirmed resolved). Same review
+threshold in reverse.
+
+---
+
 ## Read pattern
 
 At the start of any session for a player:
@@ -121,12 +143,19 @@ field is added to player documents).
 
 ## What does NOT go in coach_notes
 
-- **Stable level/focus/persona** → `family-profiles.md` (this repo)
+- **Stable level/persona/communication style/exercise themes** → `family-profiles.md` (this repo)
+- **Prescriptive Learning Goals** (what we *want* the player working on) → `family-profiles.md` Learning Goals section
 - **Personal/cross-project context about you** (Artem's role, Bahrain, family relationships) → claude.ai userMemories
 - **Per-session full transcript** → `players/{name}/exercises/{ts}` (existing exercise history collection)
 - **Stats numbers** (accuracy %, seen counts, streaks) → existing stats fields in player doc
 
 `coach_notes` is the **interpretive** layer between raw stats and stable profile.
+
+## What lives ONLY in coach_notes (not duplicated in profile)
+
+- `stuck_questions` — qid lists. Profiles may reference the field by name but never enumerate qids.
+- `recent_observations` — rolling FIFO log.
+- `engagement_notes` — current-state engagement string. Stable communication-style preferences live in profile.
 
 ---
 
