@@ -10,6 +10,18 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-04-29 · Session 89r3
+### v20260429-s89r3 — Transform keyword-mask fixes + new pre-deploy audit
+
+- Fixed `emph_i02` (Emphasis): keyword `WHO` was not contained in any accepted `ans` variant → validator blocked every submission. Restructured stem (`It ___ most surprised.`) so the answer must produce `who`.
+- Fixed `tf_16` (Comparisons): `cleverest student` variant was unreachable under keyword `MOST`. Source changed to use `intelligent` (multi-syllable, unambiguously requires analytical superlative).
+- New `tools/check_transform_keywords.js` enforces two rules on all transforms: every accepted variant must contain the keyword (Rule 1), and the keyword must not appear in the stem (Rule 2 / s86 anti-pattern). ~50ms on full bank.
+- Pre-deploy checklist gains Step 2c — runs the new audit unconditionally.
+
+Q count: 1,872 (unchanged) · Version: v20260429-s89r3
+
+---
+
 ## 2026-04-29 · Session 89r2
 ### v20260429-s89r2 — Multi-blank Next-button bug fix + skill improvements
 

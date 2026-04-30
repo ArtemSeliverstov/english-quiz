@@ -50,6 +50,26 @@ Compare against the count from the previous session's commit message or
 
 ---
 
+## 2c. Transform keyword-mask audit
+
+Validates two rules on every `type:'transform'` question:
+- **Rule 1**: every accepted `ans` variant must contain `keyword` (else the
+  runtime check `raw.includes(kw)` blocks all submissions — the question is
+  unreachable for the user).
+- **Rule 2** (s86 anti-pattern): keyword must NOT appear as a word in the stem.
+
+```bash
+node tools/check_transform_keywords.js
+```
+
+Exits non-zero on any violation. ~50ms on the full bank — cheap enough to run
+unconditionally rather than scope to changed questions (catches drift in
+unchanged items, which is how `emph_i02` survived undetected for months).
+
+Past failures: `tf_32` (s86 fix), `emph_i02` and `tf_16` (s89r3 fix).
+
+---
+
 ## 2b. LEVEL_TOTALS and CAT_TOTALS
 
 After any question additions, the coverage constants in two functions must be patched:
