@@ -5,6 +5,8 @@
 *.pem
 *-key.json
 service_account*.json
+worker/.dev.vars
+worker/.wrangler/
 
 # Node
 node_modules/

@@ -1,0 +1,7 @@
+# Template for local Worker development with `wrangler dev`.
+# Copy to .dev.vars (gitignored) and fill in your real values.
+# Production values live in Cloudflare secrets, not here.
+
+ANTHROPIC_API_KEY=sk-ant-api03-EXAMPLE-replace-me
+ALLOWED_ORIGIN=https://artemseliverstov.github.io
+ALLOWED_MODELS=claude-sonnet-4-6,claude-opus-4-7

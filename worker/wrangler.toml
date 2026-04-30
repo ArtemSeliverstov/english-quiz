@@ -1,0 +1,18 @@
+name = "english-quiz-coach"
+main = "index.js"
+compatibility_date = "2026-04-30"
+
+# Workers free tier — 100k requests/day, plenty for family scale.
+# Account is inferred from `wrangler login`; no account_id needed for single-account use.
+
+# Plain-text vars (committed; safe to publish).
+# Update via `wrangler deploy` to change the model whitelist or origin.
+[vars]
+ALLOWED_ORIGIN = "https://artemseliverstov.github.io"
+ALLOWED_MODELS = "claude-sonnet-4-6,claude-opus-4-7"
+
+# Secrets are NOT in this file. Set after first deploy:
+#   cd worker
+#   wrangler secret put ANTHROPIC_API_KEY
+# (Wrangler prompts for the value; it goes straight into Cloudflare's
+# encrypted secret store. The key never enters git or local logs.)
