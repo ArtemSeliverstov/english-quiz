@@ -1,0 +1,368 @@
+{
+  "_note": "Anna v2 translation set — short B1 prompts, single-target, low typo surface. Replaces the v1 (tr_anna_001-015) which proved too hard at MVP (raw 1/15, ~7 false negatives from typos + article drops). Each prompt is 3-5 Russian words; expected English is 3-6 words; one grammatical target per exercise. Article-stripping in s90r2 normalize() means a/an/the variants don't need to be enumerated in correct_answers. Author-tested mentally for typo surface (avoided neighbour, comfortable, daughter, vocabulary, expectations).",
+  "exercises": [
+    {
+      "id": "tr_anna_b01",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "wait_for"],
+      "source_observation": "Single-target B1 replacement post Anna's v1 session — wait + for in isolation, no compound clause",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я жду подругу.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm waiting for a friend",
+        "I am waiting for a friend",
+        "I'm waiting for my friend",
+        "I am waiting for my friend"
+      ],
+      "common_errors": [
+        {
+          "id": "wait_no_for",
+          "pattern_label": "wait without 'for'",
+          "regex": "\\bwait(s|ing|ed)?\\s+(my|your|her|his|our|their|a\\s|an\\s|the\\s|me|you|him|us|them|friend)",
+          "feedback": "Russian 'жду' takes no preposition, but English 'wait' requires 'for'. ✗ 'I'm waiting friend' / 'I'm waiting a friend'. ✓ 'I'm waiting for a friend'."
+        },
+        {
+          "id": "expect_with_for",
+          "pattern_label": "expect + spurious 'for'",
+          "regex": "\\bexpect(s|ing|ed)?\\s+for\\b",
+          "feedback": "Easy mix-up: 'wait FOR' but 'expect' takes NO preposition. ✗ 'expecting for a friend'. ✓ 'expecting a friend'. (Both 'wait for' and 'expect' work for 'жду' — pick one and don't mix.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm waiting for a friend' (or 'expecting a friend'). The verb 'wait' always needs 'for' in English."
+    },
+    {
+      "id": "tr_anna_b02",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "depend_on"],
+      "source_observation": "Single-target B1 — depend on (Russian 'зависит от' calque trap)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Это зависит от тебя.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "It depends on you",
+        "That depends on you",
+        "It depends on you."
+      ],
+      "common_errors": [
+        {
+          "id": "depend_from",
+          "pattern_label": "depend from (calque)",
+          "regex": "\\bdepend(s|ing|ed)?\\s+from\\b",
+          "feedback": "✗ 'depend from' — direct calque of Russian 'зависеть от'. English fixes the preposition: 'depend ON'. Always 'on'."
+        },
+        {
+          "id": "depend_of",
+          "pattern_label": "depend of",
+          "regex": "\\bdepend(s|ing|ed)?\\s+of\\b",
+          "feedback": "✗ 'depend of' is wrong. The fixed preposition is 'depend ON' — never 'of', never 'from'."
+        }
+      ],
+      "fallback_feedback": "Three-word target: 'It depends on you'. The fixed preposition for 'depend' is always 'on'."
+    },
+    {
+      "id": "tr_anna_b03",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "listen_to"],
+      "source_observation": "Single-target B1 — listen to (Russian 'слушаю + acc' has no preposition)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я слушаю музыку.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm listening to music",
+        "I am listening to music",
+        "I listen to music"
+      ],
+      "common_errors": [
+        {
+          "id": "listen_no_to",
+          "pattern_label": "listen without 'to'",
+          "regex": "\\blisten(s|ing|ed)?\\s+music\\b",
+          "feedback": "Russian 'слушать музыку' has no preposition, but English 'listen' always takes 'to'. ✗ 'listen music'. ✓ 'listen TO music'."
+        },
+        {
+          "id": "listen_on",
+          "pattern_label": "listen on (wrong prep)",
+          "regex": "\\blisten(s|ing|ed)?\\s+on\\b",
+          "feedback": "✗ 'listen on' — wrong preposition. The fixed phrase is 'listen TO': 'listen to music', 'listen to the news', 'listen to me'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm listening TO music' (or 'I listen to music'). 'Listen' always needs 'to' before what you're listening to."
+    },
+    {
+      "id": "tr_anna_b04",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "look_for"],
+      "source_observation": "Single-target B1 — look for (vs look at)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я ищу ключи.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm looking for keys",
+        "I'm looking for the keys",
+        "I am looking for keys",
+        "I am looking for the keys",
+        "I'm searching for keys"
+      ],
+      "common_errors": [
+        {
+          "id": "look_at_keys",
+          "pattern_label": "look at (wrong meaning)",
+          "regex": "\\blook(s|ing|ed)?\\s+at\\b",
+          "feedback": "✗ 'look at' = look in someone's direction (visual focus). For 'ищу' (search/seek) use 'look FOR': 'I'm looking for keys' = trying to find them."
+        },
+        {
+          "id": "search_no_for",
+          "pattern_label": "search without 'for'",
+          "regex": "\\bsearch(es|ing|ed)?\\s+(?!for\\b)\\w*keys?\\b",
+          "feedback": "✗ 'search keys' — English 'search' takes 'for' when you mean find: 'searching for keys'. (You can also say 'looking for keys'.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm looking for keys' (or 'searching for keys'). The 'for' is required — without it, 'look' means visual focus, not search."
+    },
+    {
+      "id": "tr_anna_b05",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "think_about"],
+      "source_observation": "Single-target B1 — think about/of (both valid)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я думаю о тебе.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm thinking about you",
+        "I'm thinking of you",
+        "I am thinking about you",
+        "I am thinking of you",
+        "I think about you",
+        "I think of you"
+      ],
+      "common_errors": [
+        {
+          "id": "think_on",
+          "pattern_label": "think on (wrong prep)",
+          "regex": "\\bthink(s|ing|)?\\s+on\\b",
+          "feedback": "✗ 'think on' — wrong preposition. Use 'think ABOUT' or 'think OF' for someone/something."
+        },
+        {
+          "id": "think_for",
+          "pattern_label": "think for (wrong prep)",
+          "regex": "\\bthink(s|ing|)?\\s+for\\b",
+          "feedback": "✗ 'think for' — wrong. Russian 'думать о' maps to English 'think ABOUT' or 'think OF', never 'think for'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm thinking about you' or 'I'm thinking of you' — both correct. Russian 'о' here = 'about' or 'of'."
+    },
+    {
+      "id": "tr_anna_b06",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_time", "on_day"],
+      "source_observation": "Single-target B1 — 'on Saturday' (Russian 'в субботу' uses one preposition for everything)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Увидимся в субботу.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "See you on Saturday",
+        "See you Saturday",
+        "We'll see each other on Saturday",
+        "I'll see you on Saturday",
+        "See you on Saturday."
+      ],
+      "common_errors": [
+        {
+          "id": "in_saturday",
+          "pattern_label": "in Saturday (wrong prep)",
+          "regex": "\\bin\\s+saturday\\b",
+          "feedback": "Days take 'on', not 'in': 'on Saturday', 'on Monday'. ✗ 'in Saturday'. Russian 'в субботу' has one preposition; English splits — 'on' for days, 'in' for months/years, 'at' for clock times."
+        },
+        {
+          "id": "at_saturday",
+          "pattern_label": "at Saturday (wrong prep)",
+          "regex": "\\bat\\s+saturday\\b",
+          "feedback": "✗ 'at Saturday' — 'at' is for clock times (at 7), not days. Days take 'on': 'on Saturday'."
+        }
+      ],
+      "fallback_feedback": "Target: 'See you ON Saturday'. Days of the week always take 'on' in English."
+    },
+    {
+      "id": "tr_anna_b07",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_time", "in_month"],
+      "source_observation": "Single-target B1 — 'in April' (months take 'in')",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я родилась в апреле.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I was born in April",
+        "I was born in April.",
+        "My birthday is in April"
+      ],
+      "common_errors": [
+        {
+          "id": "on_april",
+          "pattern_label": "on/at April (wrong prep)",
+          "regex": "\\b(on|at)\\s+april\\b",
+          "feedback": "Months take 'in', not 'on' or 'at': 'in April', 'in July'. ✗ 'on April'. Russian 'в апреле' uses one preposition; English splits by time unit."
+        },
+        {
+          "id": "born_no_prep",
+          "pattern_label": "born without preposition",
+          "regex": "\\bborn\\s+april\\b",
+          "feedback": "Missing 'in' — months always need a preposition: 'born IN April', not 'born April'. The 'in' is mandatory."
+        }
+      ],
+      "fallback_feedback": "Target: 'I was born IN April'. Months always take 'in' in English."
+    },
+    {
+      "id": "tr_anna_b08",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Collocations"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["collocation", "make_decision"],
+      "source_observation": "Single-target B1 — make a decision (vs Russian 'принять решение' calque to 'take')",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Прими решение.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Make a decision",
+        "Make a decision.",
+        "Make the decision"
+      ],
+      "common_errors": [
+        {
+          "id": "take_decision",
+          "pattern_label": "take a decision (calque)",
+          "regex": "\\btake\\s+(a\\s+|the\\s+|your\\s+)?decision\\b",
+          "feedback": "✗ 'take a decision' — direct calque of Russian 'принять решение'. The standard English collocation is 'MAKE a decision'."
+        },
+        {
+          "id": "do_decision",
+          "pattern_label": "do a decision",
+          "regex": "\\bdo\\s+(a\\s+|the\\s+)?decision\\b",
+          "feedback": "✗ 'do a decision' — wrong delexical verb. Use 'MAKE'. Mnemonic: you MAKE choices and decisions; you DO tasks and chores."
+        }
+      ],
+      "fallback_feedback": "Three-word target: 'Make a decision'. In English the verb is 'MAKE' (not 'take', not 'do')."
+    },
+    {
+      "id": "tr_anna_b09",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Collocations"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["collocation", "do_homework"],
+      "source_observation": "Single-target B1 — do homework (vs Russian 'делать уроки' calque to 'make')",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я делаю уроки.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm doing my homework",
+        "I'm doing homework",
+        "I am doing my homework",
+        "I am doing homework",
+        "I do my homework"
+      ],
+      "common_errors": [
+        {
+          "id": "make_homework",
+          "pattern_label": "make homework (calque)",
+          "regex": "\\bmak(es|ing|e)\\s+(my\\s+|her\\s+|the\\s+|a\\s+)?homework\\b",
+          "feedback": "✗ 'making homework' — Russian 'делать уроки' calques to 'making' but English uses 'DO': 'doing homework'. MAKE for things you create; DO for tasks/chores."
+        },
+        {
+          "id": "homeworks_plural",
+          "pattern_label": "plural homeworks",
+          "regex": "\\bhomeworks\\b",
+          "feedback": "✗ 'homeworks' — 'homework' is uncountable in English, no plural -s. Russian 'уроки' looks plural but 'homework' stays singular."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm DOING my homework' (uncountable — no plural -s)."
+    },
+    {
+      "id": "tr_anna_b10",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Collocations"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["collocation", "cook_dinner", "present_progressive"],
+      "source_observation": "Single-target B1 — cook/make dinner (both valid; tests delexical 'do' anti-pattern + dropped auxiliary)",
+      "created": "2026-04-30T16:40:00Z",
+      "version": 1,
+      "prompt_ru": "Я готовлю ужин.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm cooking dinner",
+        "I'm making dinner",
+        "I am cooking dinner",
+        "I am making dinner",
+        "I cook dinner",
+        "I make dinner"
+      ],
+      "common_errors": [
+        {
+          "id": "do_dinner",
+          "pattern_label": "do dinner (wrong verb)",
+          "regex": "\\bdo(es|ing|)?\\s+(the\\s+)?dinner\\b",
+          "feedback": "✗ 'doing dinner' — for meals use 'cook' or 'make', not 'do'. ✓ 'cooking dinner' / 'making dinner'."
+        },
+        {
+          "id": "missing_aux",
+          "pattern_label": "missing 'am' before -ing",
+          "regex": "^\\s*i\\s+(cooking|making|preparing)\\b",
+          "feedback": "Missing auxiliary 'am' — present continuous needs BE + verb-ing: 'I am cooking' or 'I'm cooking', never just 'I cooking'. (Or use simple present: 'I cook dinner' — also fine.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm cooking dinner' or 'I'm making dinner' (both correct). Don't say 'I cooking' — present continuous needs 'am'."
+    }
+  ]
+}

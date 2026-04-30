@@ -1265,6 +1265,50 @@ decisions) reopened.
 
 ---
 
+### 2026-04-30 — s90r2 + B1 content swap (CC session, continued)
+
+**Done**:
+- Engine fixes shipped as `v20260430-s90r2`: per-item Firestore upsert
+  (`partial: true` on each answer, `partial: false` on finish, same doc id
+  reused so partials survive a closed tab) + article-tolerant
+  `coachNormalize` (strips `a/an/the` before equality comparison).
+- Anna's first real Coach session (`players/anna/exercises/1777566265897`)
+  surfaced: raw 1/15 with ~7 false negatives from typos and article drops;
+  she engaged through all 15 (avg ~80s/item, max 154s); 2 patterns fired
+  correctly (`clean_for_vacuum`, `on_next_week`).
+- Anna's `coach_notes` updated: session log appended; engagement_notes
+  notes "v1 B2 prompts too hard at MVP — content should drop to shorter
+  B1 prompts and ignore article scoring".
+- Content swap: deleted v1 (`tr_anna_001`–`tr_anna_015`) from Firestore;
+  pushed v2 (`tr_anna_b01`–`tr_anna_b10`, 10 short B1 prompts, single-target,
+  3–5 RU words / 3–6 EN words). v1 JSON kept in `library_drafts/` for git
+  history. `_meta.coverage_by_player.anna.translation = 10`.
+
+**v2 design rules** (worth pulling into `references/exercise-types.md` if
+this proves stable):
+- Single grammatical target per prompt (one preposition, one verb, one
+  collocation — never compound).
+- Russian prompt ≤ 5 words; expected English ≤ 6 words.
+- Avoid hard-to-spell vocabulary (neighbour, comfortable, daughter,
+  expectations) so typo surface stays low.
+- Article variants don't need to be enumerated in `correct_answers` —
+  s90r2 normalize() strips them.
+- Pattern regexes target 1–2 known L1 traps per exercise; broad `wait`-
+  style catch-all regexes proved over-specific in v1, so v2 uses tighter
+  alternation lists.
+
+**Open / deferred**:
+- §5 design — should v2 design rules above be promoted into
+  `exercise-types.md`? Defer to next stats review after Anna runs the v2
+  set.
+- Levenshtein typo tolerance still not shipped — wait and see if v2's
+  shorter prompts make it unnecessary.
+- The 3 other exercise types (article_drill / particle_sort /
+  error_correction / russian_trap) stay greyed in the picker; library
+  authoring for those is Tier 2 work.
+
+---
+
 ### 2026-04-30 — Coach tab MVP shipped (CC session, continued)
 
 **Done**:
@@ -1299,6 +1343,70 @@ decisions) reopened.
   and handing the key over for Cloudflare secret setup. Worker build
   itself is unblocked — schema, prompts, validation rules all spec'd
   in §7.
+
+---
+
+### 2026-04-30 — PV ladder coverage analysis (CC session, ahead of Tier 2 PV batch)
+
+**Context**: Artem ran two CC exercise sessions today — `article_drill` (8/10)
+and PV `transform` (5/8). Self-diagnosed at end of PV session: production
+drills feel too steep cold, wants recognition layer first. Engagement note
+captured: PV training ladder is recognition (Smart-mode quiz filter on PV)
+→ particle_sort → transform/free_write. Question raised: does the planned
+PV Batch 1 (§14.2 Tier 2, ~50 items, prefix `pv_p2`) actually deliver the
+ladder?
+
+**Counted current PV bank coverage** (`pv_*` + `gt_*` = 148 items):
+
+| Rung | Format | Count | Share |
+|---|---|---|---|
+| Recognition | MCQ | 5 | 3.4% |
+| Selection | gap-fill | 96 | 65% |
+| Production | input | 47 | 32% |
+
+The recognition rung is critically thin. With only 5 MCQ items, Smart-mode
+quiz filtered to PV produces near-zero recognition warm-up before the
+player hits gap/input items. This is the upstream cause of the production
+failures documented in `coach_notes.weak_patterns` ("phrasal verb production
+input-type 0% on get/bring/take families — gt03, gt10, pv_c03, pv_c07,
+pv_ti17, pv_ti71"): you can't produce what you can't yet recognise.
+
+**Tension in PV2 lock**: §4 PV2 says "CC picks the type mix per PV based on
+existing per-category input share table and observed weakness." Read
+literally, this points toward more **input** (where the documented stuck
+items live). But that's chasing the symptom — the production gap is
+downstream of weak recognition. Adding more input items on a 3.4%-MCQ
+foundation won't fix it.
+
+**Recommendation for the session that picks up Tier 2 PV Batch 1**:
+
+1. **Ladder-pair the 6 stuck PVs explicitly**. For each of the family
+   members get/bring/take particles surfaced in tonight's transform session
+   (across, down to, around to, about, on/over, plus the inv03-adjacent
+   "no sooner...than"), author all three formats — 1 MCQ + 1 gap + 1 input
+   per PV. ~18 items dedicated to ladder completion on the weakest cluster.
+   Use shared `linked_question_ids` across the trio so quiz analytics can
+   track ladder climbing.
+2. **Skew the remaining ~32 items toward MCQ** — target ~20 MCQ, ~8 gap,
+   ~4 input. This rebalances the category toward the missing rung without
+   abandoning the input-gap signal.
+3. **Post-batch projection** (if applied):
+   - MCQ: 5 → ~30 (~15× growth) — Smart-mode quiz becomes a real warm-up tool
+   - Gap: 96 → ~110
+   - Input: 47 → ~57
+
+**Family path implication (Phase 2D)**: Anna/Nicole/Ernest will need
+parallel `particle_sort` library content (selection rung) and eventually
+MCQ-style recognition exercises in Coach tab. Today `exercises_library/`
+holds translation only. The particle_sort schema is spec'd (§6.1.3) but
+zero items exist. When Tier 3 PV expansion lands, mirror the ladder split
+into the library so the Coach tab can deliver the same warm-up→production
+progression natively.
+
+**Decision deferred to Tier 2 session, not locked here**. PV2 is not being
+reopened; this is guidance, not a doc patch to §4. Surfaced in the status
+log so the next CC session reading §1's autonomy mandate sees the analysis
+before drafting the batch.
 
 ---
 
