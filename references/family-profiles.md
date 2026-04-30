@@ -82,6 +82,7 @@ fragile.
 - Relative clauses
 - Conditionals
 - Irregular verbs
+- Question Formation B1 (auxiliary order, do-support) — 44% across 18 attempts; qf03/qf06/qf07 all at 0% (added 2026-04-30)
 
 **Communication style for sessions**:
 - Brief, low-friction session closings
@@ -100,8 +101,11 @@ The player-initiated model is not currently working for her. Approach: do NOT in
 pressure or auto-suggest. Wait for genuine player-initiated requests; lean on Coach tab
 (Phase 2) for self-service initiation.
 
-**Stuck questions** (100% error rate — known): cv03, gi_b04, irvpp07. Consider
+**Stuck questions** (100% error rate — known): cv03, irvpp07, qf03, qf06, qf07, pf01, pv_b04, lnk03, cp01. Consider
 restructuring or removing.
+
+**Note**: `gi_b04` was previously listed but the qid is missing from `index.html` —
+either restore the question or formally remove this reference. Flagged 2026-04-30; see bug-log.
 
 ---
 
@@ -113,8 +117,9 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 
 **Focus**:
 - Articles (recognition vs production gap — 100% MCQ vs 50% error correction)
+- Articles uncountable nouns (art11 'a good progress' at 0%, art14 'take the action' at 0%) — specific Russian L1 pattern (added 2026-04-30)
 - Conditionals
-- Input accuracy is very low (25% on 8 seen) — needs easy-input scaffolding
+- Input accuracy 48% (n=29) — improved from 25% baseline but still ~30 pts behind gap-type
 
 **Communication style for sessions**:
 - Brief, low-friction
@@ -161,6 +166,11 @@ shift exercise themes to that location for the rest of the session.
 
 **The "Current observations" column** that lived in the previous KB is now in Firestore
 `coach_notes.recent_observations`. Read it before any session for that player.
+
+**Multi-blank format anomaly**: All players who've attempted multi-blank questions
+are <55% (Artem 53%/n=55, Anna 50%/n=4, Nicole 17%/n=6, Ernest 6%/n=4, Egor 20%/n=5).
+Cross-player consistency suggests UI/cognitive-load issue rather than knowledge gap.
+Investigate before authoring more multi-blank questions. Flagged 2026-04-30.
 
 ---
 
