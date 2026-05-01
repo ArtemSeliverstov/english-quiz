@@ -93,6 +93,12 @@ Ask the player how the session felt. Capture in a single short note for `recent_
 
 ### Step 6 — Persist
 
+**Always preview in human-readable form before writing.** Show the planned exercise log
+and coach_notes patch as plain bullets — date, type, topic, score, vs baseline, errors
+as prose, observation as a quoted sentence, engagement notes as a quoted sentence. Never
+show raw JSON to the player at the preview stage. Build the JSON files internally only
+after the player approves the human-readable preview. (Preference set by Artem 2026-04-30.)
+
 **Claude Code path** (preferred):
 1. Write the exercise summary JSON to a temp file, then run
    `node tools/log_exercise.js {name} /tmp/exercise.json` — this writes to
@@ -103,6 +109,9 @@ Ask the player how the session felt. Capture in a single short note for `recent_
    then build a patch JSON and run `node tools/update_coach_notes.js {name} /tmp/patch.json`.
    The patch supports `weak_patterns_add`, `recent_observations_add`, `engagement_notes`,
    etc. — see `tools/README.md` for the schema.
+
+   **Note**: on Windows, `/tmp/` is not a valid path. Use `D:/tmp/` or repo-relative
+   `./.tmp/` (gitignored). Create the directory first if it doesn't exist.
 
 **claude.ai chat path** (fallback):
 1. Generate `?exlog=BASE64` deeplink for player to tap
@@ -118,6 +127,9 @@ See `references/deeplink-schema.md` for exact payload format.
 - Auto-suggesting sessions for Nicole (player-initiated only)
 - Pushing through more items when player shows fatigue
 - Naming the grammar rule in hints (gives away the answer)
+- For PV transform items: showing the verb+particle as the keyword (e.g. `GET ACROSS`).
+  Keyword is base verb only (`GET`); the particle is the production challenge. See
+  `references/exercise-types.md` §4 for the rule.
 - Letting Egor's name appear in a session (no exercises for Egor)
 
 ## When not to run

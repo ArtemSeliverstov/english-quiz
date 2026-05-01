@@ -69,6 +69,12 @@ Sentence transformation with a keyword. Same meaning, different structure.
 **Critical authoring rule**: the keyword must NOT appear in the source sentence stem. It
 must be producible only through the player's transformation. (See bug log for tf_32.)
 
+**Phrasal verb keyword rule**: when the target structure is a phrasal verb, the keyword
+is the **base verb only** (e.g. `GET`, `BRING`, `TAKE`) — never the verb+particle pair
+(`GET ACROSS`, `BRING ABOUT`). Showing the particle gives away the production challenge,
+which is exactly the rung being practised. Player must produce the particle from semantic
+understanding. (Set 2026-04-30 after a PV Family Drill leaked `GET ACROSS` as the keyword.)
+
 Example:
 - Source: "I realised the cost only after reviewing the invoice."
 - Keyword: ONLY (must appear in transformed version)
