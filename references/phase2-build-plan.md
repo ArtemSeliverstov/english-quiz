@@ -1150,16 +1150,26 @@ batches, and Tier 2 PV remain queued.
 **Bug fix during session**: `tools/_firestore.js fsGet()` returns
 raw Firestore wire-format docs (with `.fields`), not converted plain
 JS — unlike the client-side `fsGet` in index.html which converts via
-`_fsFromDoc`. The first `_meta` update in `author_anna_s94.js` saw
-the raw doc as effectively empty, overwriting `total_exercises_per_type.translation`
-from 10 to 10 (lost the existing 10). Corrected via direct `fsPatch`
-with `docToPlain`. Author scripts in tools/-pattern should always
-wrap fsGet output in `docToPlain()` before reading nested fields.
+`_fsFromDoc`. The first `_meta` update in `author_anna_s94.js` read
+nested fields as `undefined`, so the `existing + new` increment
+collapsed to `0 + 10`, leaving `total_exercises_per_type.translation`
+at 10 even though the actual `translation/items` count was now 20.
+The 20 items themselves wrote correctly; only the meta totals were
+stale. Corrected via direct `fsPatch` with `docToPlain`. Future
+author scripts using tools/-pattern must wrap `fsGet` output in
+`docToPlain()` before reading nested fields.
 
 **Acceptance state for §4.6**:
-- ✅ Spell Help button live in Coach tab
-- ✅ Spelling Drill exercise type works end-to-end
-- ✅ Typo tolerance prevents false negatives in Translation Drill
+- ✅ Spell Help button live in Coach tab — form opens, Ask/Back
+  buttons wired, capture path writes to `players/{name}/spelling_log/{ts}`
+  (worker call path verified at the request-construction level;
+  end-to-end worker round-trip not exercised in-session because
+  the worker is metered)
+- ✅ Spelling Drill exercise type works end-to-end (preview probe:
+  prompt rendering, retry loop, known-misspelling advance, final
+  attempt advance)
+- ✅ Typo tolerance grades 1-char-off as correct + soft spelling
+  note (preview probe with synthetic 1-char typo on existing item)
 - ⏳ "≥10 spell help captures land in spelling_log during Anna's
    first week of usage post-deploy" — measurable from real usage,
    not testable in this session
@@ -1173,8 +1183,10 @@ wrap fsGet output in `docToPlain()` before reading nested fields.
 - ⏳ Article Drill (~15 items): defers to §4.3 article intervention session
 - ⏳ Russian Trap (~10 items): dependency-gated on Anna's first 2-3
   Spell Help / Free Write sessions per §4.6 sequencing note
-- ✅ Free Write themed prompts already bundled (Anna's 5 themes
-  per D12 are referenced in COACH_FW_STARTERS — verify if missing)
+- ⏳ Free Write themed prompts (D12) — current `COACH_FW_STARTERS`
+  is a single generic list of 8 prompts shared across all players;
+  D12 calls for 5 per-player themed prompts (Anna: home/family/padel/
+  neighbours/routine). Per-player themed list not yet implemented.
 
 **Next session candidates** (per §1 priority):
 - §4.4 learner shell landing + routing — gating surface for testing
