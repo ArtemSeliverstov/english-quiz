@@ -25,13 +25,20 @@
 // the prepaid balance amply covers the extra volume.
 const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem'];
 
-// Players who get error explanations in Russian (per family-profiles.md communication
-// style). Ernest is intentionally NOT included — his profile doesn't specify and we
-// haven't been asked. Easy to extend later.
-const RUSSIAN_EXPLANATION_PLAYERS = ['anna', 'nicole'];
+// The PWA sends `context.coach_language` ('ru' | 'en') derived from each player's
+// FAMILY_MEMBERS profile entry (which mirrors references/family-profiles.md). The
+// Worker treats that field as authoritative.
+//
+// Fallback: if a client sends no `coach_language` (older PWA bundle pre-s91r3),
+// fall back to this hard-coded list so existing live clients don't regress.
+const RUSSIAN_FALLBACK_PLAYERS = ['anna', 'nicole'];
 
-function explainInRussian(player) {
-  return RUSSIAN_EXPLANATION_PLAYERS.includes(player);
+function explainInRussian(ctx) {
+  const cl = ctx && ctx.coach_language;
+  if (cl === 'ru') return true;
+  if (cl === 'en') return false;
+  // Legacy clients (no coach_language field) — fall back to the hard-coded list.
+  return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
 const VALID_MODES = ['free_write', 'escalate'];
 const MAX_BODY_BYTES = 50 * 1024;
@@ -207,7 +214,7 @@ function freeWriteSystemPrompt(ctx) {
     : '(none specified)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
-  const ru = explainInRussian(ctx.player);
+  const ru = explainInRussian(ctx);
 
   const languageBlock = ru
     ? `- **Explain mistakes and grammar rules in Russian.** ${playerName}'s English is intermediate but rule explanations land much better in her L1. Quote her actual English back when pointing out an error, then explain *in Russian* what's wrong and why.
@@ -254,7 +261,7 @@ function escalateSystemPrompt(ctx) {
     ? ex.expected_answers.map(a => `"${a}"`).join(', ')
     : '(none)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
-  const ru = explainInRussian(ctx.player);
+  const ru = explainInRussian(ctx);
 
   const constraintsBlock = ru
     ? `Constraints:

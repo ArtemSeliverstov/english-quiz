@@ -15,7 +15,7 @@ into a Learning Goal here (4+ sessions persistence + survives a deliberate inter
 
 ## Artem 👨
 
-**Player key**: `artem` · **Level**: B2 → C1 · **Defaults**: all levels, `biz: true`
+**Player key**: `artem` · **Level**: B2 → C1 · **Coach language**: `en` · **Defaults**: all levels, `biz: true`
 
 Finance & strategy executive at Bapco Energies (Bahrain). Targeting VP/Director roles
 in O&G / mining / consulting. Most active user. Reviews questions linguistically for
@@ -44,7 +44,7 @@ accuracy alongside being a player.
 
 ## Anna 👩
 
-**Player key**: `anna` · **Level**: B2 · **Defaults**: B1+B2, `biz: false`
+**Player key**: `anna` · **Level**: B2 · **Coach language**: `ru` · **Defaults**: B1+B2, `biz: false`
 
 Conversational English, daily interaction. Less need for formal register.
 Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
@@ -75,7 +75,7 @@ Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
 
 ## Nicole 👧
 
-**Player key**: `nicole` · **Level**: B1 (struggling — use B1 filter only until B1 accuracy ≥ 75%) · **Defaults**: B1 only
+**Player key**: `nicole` · **Level**: B1 (struggling — use B1 filter only until B1 accuracy ≥ 75%) · **Coach language**: `ru` · **Defaults**: B1 only
 
 iPad. Currently engaged through Consolidation Mode (S56). B1 accuracy improving but
 fragile.
@@ -113,7 +113,7 @@ flow from there to `quiz-development` sessions; this profile no longer enumerate
 
 ## Ernest 👦
 
-**Player key**: `ernest` · **Level**: B1/B2 · **Defaults**: B1+B2
+**Player key**: `ernest` · **Level**: B1/B2 · **Coach language**: `en` · **Defaults**: B1+B2
 
 Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 
@@ -127,6 +127,7 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 - Brief, low-friction
 - Prefer error-correction format over MCQ
 - Easy on-ramp for input questions
+- Coach explanations in English (per Artem's call 2026-05-01) — different from Anna/Nicole who get Russian
 
 **Exercise context themes**: school, friends, age-appropriate scenarios.
 
@@ -134,7 +135,7 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 
 ## Egor 🧒
 
-**Player key**: `egor` · **Level**: B2 → C1 · **Defaults**: B2+C1, `biz: false`
+**Player key**: `egor` · **Level**: B2 → C1 · **Coach language**: `en` (N/A — no Coach tab use) · **Defaults**: B2+C1, `biz: false`
 
 Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
 Applying to UK/Western master's. Quiz user only — does NOT do supplementary exercises.

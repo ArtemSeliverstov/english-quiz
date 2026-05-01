@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s91r2">
+  <meta name="app-version" content="v20260501-s91r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -920,7 +920,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s91r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s91r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -5526,16 +5526,20 @@ let familyPollTimer = null;
 //
 //  Then paste the resulting hash string as the pinHash below.
 // ══════════════════════════════════════════════════════════════
+// coachLanguage: language the Coach tab uses for grammar/error explanations
+// (Free Write + Escalate). 'ru' = explain in Russian with English forms quoted;
+// 'en' = explain in English with brief Russian glosses where contrast helps.
+// Source of truth is references/family-profiles.md — keep these fields in sync.
 const FAMILY_MEMBERS = [
-  { key: 'artem',   name: 'Artem',   emoji: '👨', color: '#4a9eff',
+  { key: 'artem',   name: 'Artem',   emoji: '👨', color: '#4a9eff', coachLanguage: 'en',
     pinHash: 'aeb5d182368bc8faff9d186b46adca1c5b308dc80926ca96f8cf3dabe611df5c' },
-  { key: 'anna',    name: 'Anna',    emoji: '👩', color: '#ff6b9d',
+  { key: 'anna',    name: 'Anna',    emoji: '👩', color: '#ff6b9d', coachLanguage: 'ru',
     pinHash: '0e70a832cb7a415716c3ba42776f795a905691b043e81a23895c8588a6268653' },
-  { key: 'ernest',  name: 'Ernest',  emoji: '👦', color: '#4caf50',
+  { key: 'ernest',  name: 'Ernest',  emoji: '👦', color: '#4caf50', coachLanguage: 'en',
     pinHash: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155' },
-  { key: 'nicole',  name: 'Nicole',  emoji: '👧', color: '#d4a94e',
+  { key: 'nicole',  name: 'Nicole',  emoji: '👧', color: '#d4a94e', coachLanguage: 'ru',
     pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
-  { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff',
+  { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff', coachLanguage: 'en',
     pinHash: 'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730' },
 ];
 
@@ -6803,6 +6807,7 @@ function coachBuildContext(extra = {}) {
     player: currentPlayer,
     level: profile.level || 'B2',
     L1: 'Russian',
+    coach_language: profile.coachLanguage || 'en',  // 'ru' or 'en' — Worker uses this to pick explanation language
     focus_categories: profile.focus_categories || [],
     coach_notes: {
       weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
