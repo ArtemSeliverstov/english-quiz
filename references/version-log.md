@@ -10,6 +10,30 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-01 · Session 91
+### v20260501-s91 — Phase 2C: Free Write + Escalate live AI
+
+End of Phase 2C build. The Coach tab now has live-AI tutoring for the family path: Free Write conversation with Sonnet 4.6, and one-shot Escalate ("Hmm, explain more") with Opus 4.7 on top of any pre-generated wrong-answer feedback. Both modes proxy through the Cloudflare Worker shipped earlier today (`https://english-quiz-coach.artem2030.workers.dev`); the API key never enters the PWA bundle or Firestore.
+
+**PWA additions (`index.html`):**
+
+- Free Write button enabled in the picker (was greyed "soon"). Click → bundled starter prompt → multi-turn chat with the Worker → "✓ End session" finalises with `is_session_end:true`, parses `<session_meta>` JSON, writes `players/{name}/coach_sessions/{session_id}` per §6.4, and merges `error_patterns_observed` into `coach_notes.weak_patterns` with a `(coach_session)` tag and FIFO cap at 8.
+- Escalate button on every wrong-answer translation feedback. One-shot: tap → typing indicator → Opus 4.7 deeper explanation as a follow-up assistant message → action row collapses to "Got it — next" only (no second escalate per §8.5). The current item's result gets `escalation_used: true` (already in the per-item upsert from s90r2). A separate `coach_sessions` doc is written with `mode: "escalate"`, the exercise reference, and the patterns observed.
+- Worker call helper with §8.8 failure handling: API_402 disables Free Write/Escalate buttons globally for the rest of the tab session ("Live Coach unavailable — using offline mode"); 5xx gets one retry with backoff; offline disables live AI and shows "offline" on the button; missing Worker URL hides live AI entirely.
+- Soft 20-turn cap on Free Write per §8.6 ("We've covered a lot — wrap up?" nudge after turn 20).
+- Coach reply rendering: minimal Markdown→HTML (bold, italics, bullets, inline code, blockquotes) so Sonnet/Opus formatting reads cleanly in the chat shell.
+- Coach tab now reads `coach_notes` from Firestore at open time and sends `weak_patterns` + `engagement_notes` in every Worker payload as the system-prompt's "About this learner" section. Network state changes (`online`/`offline` events) flip live-AI availability live.
+
+**Smoke-tested in local browser preview** (mocked Worker because CORS blocks `localhost`): full Free Write cycle including `coach_sessions` write + `coach_notes` merge + token tally; Escalate cycle including `escalation_used` flag, separate session log, action-row collapse. Test artefacts cleaned up before deploy.
+
+Worker itself was end-to-end smoke-tested via curl earlier today against the real Anthropic API: free_write returned coherent past-simple feedback (~$0.005), escalate returned 3-pattern Opus breakdown (~$0.022). Total Worker smoke-test spend: ~$0.027.
+
+**Cache observation worth noting**: the current free_write system preamble is ~400 tokens, below Sonnet 4.6's 2048-token minimum cacheable prefix, so the `cache_control` marker is a silent no-op until `coach_notes` data grows. Documented in `worker/README.md`.
+
+Q count: 1,882 (unchanged) · Version: v20260501-s91
+
+---
+
 ## 2026-04-30 · Session 90r2
 ### v20260430-s90r2 — Coach tab: per-item save + article tolerance
 

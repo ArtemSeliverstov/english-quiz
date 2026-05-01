@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260430-s90r2">
+  <meta name="app-version" content="v20260501-s91">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -920,7 +920,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260430-s90r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s91</span></p>
 </header>
 
 <!-- TABS -->
@@ -1195,9 +1195,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Russian Trap</span>
           <span class="coach-type-count" data-count-for="russian_trap">0</span>
         </button>
-        <button class="coach-type-btn disabled" data-type="free_write" disabled title="Live AI — Phase 2C">
+        <button class="coach-type-btn" data-type="free_write" onclick="coachStartFreeWrite()" title="Live AI — chat with the coach about anything you write">
           <span class="coach-type-name">Free Write</span>
-          <span class="coach-type-count">soon</span>
+          <span class="coach-type-count">live AI</span>
         </button>
       </div>
     </div>
@@ -1208,7 +1208,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     <!-- ── INPUT ROW ── -->
     <div id="coachInputRow" class="coach-input-row" style="display:none;">
       <input type="text" id="coachInputField" class="coach-input-field" placeholder="Type your answer…" autocomplete="off" autocorrect="off" spellcheck="false">
-      <button id="coachSendBtn" class="coach-send-btn" onclick="coachSubmitAnswer()">Send</button>
+      <button id="coachSendBtn" class="coach-send-btn" onclick="coachSendDispatch()">Send</button>
     </div>
 
     <!-- ── ACTION ROW (Got it / Explain more) ── -->
@@ -6640,18 +6640,48 @@ async function exDeleteEntry(ts) {
 //  scores locally with regex matching, writes results to
 //  players/{name}/exercises/{ts}.
 // ══════════════════════════════════════════════════════════════
+// ─── Phase 2C config ───
+const COACH_WORKER_URL = 'https://english-quiz-coach.artem2030.workers.dev';
+const COACH_FW_MODEL = 'claude-sonnet-4-6';     // Free Write — high-volume, Sonnet
+const COACH_ESC_MODEL = 'claude-opus-4-7';      // Escalate — one-shot depth, Opus
+const COACH_FW_SOFT_TURN_CAP = 20;              // §8.6 soft cap; UI nudge after this
+const COACH_FW_STARTERS = [
+  'Tell me about your day in English.',
+  'What did you do this weekend?',
+  'Describe your favorite place to relax — what does it look like?',
+  "What's been on your mind this week?",
+  'Tell me about someone in your family — anything you want to share.',
+  'What did you eat for dinner last night? Describe it.',
+  "Describe a recent change in your life — something that's different now.",
+  "What are you looking forward to this month?",
+];
+
 const coachState = {
-  type: null,
+  // Common
+  type: null,             // 'translation' | 'free_write' | null
+  meta: null,
+  lastSummary: null,
+  apiUnavailable: false,  // set true after API_402; hides Free Write/Escalate for the rest of the tab session
+  // Translation flow
   pool: [],
   current: null,
   startedAt: 0,
   answeredAt: 0,
   sessionStartedAt: 0,
-  sessionTs: 0,           // Firestore doc id reused for per-item upserts so partial sessions survive
-  plannedTotal: 0,        // total exercises in this session (set at start, drives planned_total in upserts)
+  sessionTs: 0,
+  plannedTotal: 0,
   sessionResults: [],
-  meta: null,
-  lastSummary: null,
+  // Free Write flow
+  fwMessages: [],         // [{role, content}] sent to the Worker
+  fwTurnCount: 0,
+  fwSessionId: '',        // coach_sessions/{this} doc id (also used as session_id in payload)
+  fwStartedAt: 0,         // Date.now()
+  fwTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  fwModel: '',
+  fwStarter: '',
+  fwBusy: false,          // true while a request is in-flight
+  // Cached coach_notes (loaded at coachOpenTab; sent in context payloads)
+  playerCoachNotes: null,
 };
 
 async function coachOpenTab() {
@@ -6662,7 +6692,35 @@ async function coachOpenTab() {
     return;
   }
   coachShowPicker();
-  await Promise.all([coachLoadMeta(), coachRenderStatsCard()]);
+  await Promise.all([coachLoadMeta(), coachRenderStatsCard(), coachLoadPlayerCoachNotes()]);
+  coachUpdateLiveAIAvailability();
+}
+
+// Read player's current coach_notes once per tab open. Used in Free Write/Escalate
+// payloads to give the Worker the system prompt's "About this learner" context.
+async function coachLoadPlayerCoachNotes() {
+  try {
+    const player = await fsGet('players/' + currentPlayer);
+    coachState.playerCoachNotes = (player && player.coach_notes) || null;
+  } catch (e) {
+    coachState.playerCoachNotes = null;
+  }
+}
+
+// Hide Free Write button if Worker URL isn't set, network is offline, or API balance
+// has been exhausted in this tab session. Pre-generated Translation Drill stays available.
+function coachUpdateLiveAIAvailability() {
+  const fwBtn = document.querySelector('.coach-type-btn[data-type="free_write"]');
+  if (!fwBtn) return;
+  const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  fwBtn.disabled = !liveAvail;
+  fwBtn.classList.toggle('disabled', !liveAvail);
+  const countEl = fwBtn.querySelector('.coach-type-count');
+  if (countEl) {
+    countEl.textContent = !navigator.onLine ? 'offline' :
+                          coachState.apiUnavailable ? 'unavailable' :
+                          !COACH_WORKER_URL ? 'soon' : 'live AI';
+  }
 }
 
 function coachShowPicker() {
@@ -6673,9 +6731,449 @@ function coachShowPicker() {
   document.getElementById('coachExitRow').style.display = 'none';
   const chat = document.getElementById('coachChat');
   if (chat) chat.innerHTML = '';
+  // Reset translation flow
   coachState.pool = [];
   coachState.current = null;
   coachState.type = null;
+  // Reset Free Write flow
+  coachState.fwMessages = [];
+  coachState.fwTurnCount = 0;
+  coachState.fwSessionId = '';
+  coachState.fwStartedAt = 0;
+  coachState.fwTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.fwBusy = false;
+  // Reflect any availability changes (network, API_402)
+  coachUpdateLiveAIAvailability();
+}
+
+// ─── Worker call helper ─────────────────────────────────────────────────────
+// Wraps fetch to the Coach Worker with §8.8 failure handling: API_402 disables
+// live AI for the rest of the tab session; 5xx gets one retry; everything else
+// surfaces an inline error.
+async function coachWorkerCall(payload, { retries = 1, timeoutMs = 30000 } = {}) {
+  if (!COACH_WORKER_URL) {
+    return { ok: false, error_code: 'WORKER_URL_MISSING', error_message: 'Worker URL not configured', retriable: false };
+  }
+  if (!navigator.onLine) {
+    return { ok: false, error_code: 'OFFLINE', error_message: 'Network offline', retriable: true };
+  }
+  let lastErr = null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+      const res = await fetch(COACH_WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal,
+      });
+      clearTimeout(timer);
+      const json = await res.json().catch(() => ({}));
+      if (json && json.ok) return json;
+      // Worker returned a structured error envelope.
+      if (json && json.error_code === 'API_402') {
+        coachState.apiUnavailable = true;
+        coachUpdateLiveAIAvailability();
+        return json;
+      }
+      // Non-retriable validation errors, bail immediately.
+      if (json && json.retriable === false) return json;
+      lastErr = json;
+      // Otherwise (5xx, network blip): one retry per attempt loop with backoff.
+      if (attempt < retries) await new Promise(r => setTimeout(r, 600));
+    } catch (e) {
+      lastErr = { ok: false, error_code: 'WORKER_TIMEOUT', error_message: e.message || 'Network error', retriable: true };
+      if (attempt < retries) await new Promise(r => setTimeout(r, 600));
+    }
+  }
+  return lastErr || { ok: false, error_code: 'WORKER_UNKNOWN', error_message: 'Unknown error', retriable: false };
+}
+
+function coachMakeSessionId(player, mode) {
+  const r = Math.random().toString(36).slice(2, 6);
+  return player + '_' + (mode === 'free_write' ? 'fw' : mode === 'escalate' ? 'esc' : 'sess') + '_' + Date.now() + '_' + r;
+}
+
+// ─── Build the context payload sent to the Worker ───────────────────────────
+function coachBuildContext(extra = {}) {
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const cn = coachState.playerCoachNotes || {};
+  const ctx = {
+    player: currentPlayer,
+    level: profile.level || 'B2',
+    L1: 'Russian',
+    focus_categories: profile.focus_categories || [],
+    coach_notes: {
+      weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
+      engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
+    },
+  };
+  return Object.assign(ctx, extra);
+}
+
+// ─── Free Write flow (§8.6) ────────────────────────────────────────────────
+async function coachStartFreeWrite() {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable) {
+    alert('Live AI is temporarily unavailable. Translation Drill still works.');
+    return;
+  }
+  if (!navigator.onLine) {
+    alert('You appear to be offline. Free Write needs a connection — try Translation Drill.');
+    return;
+  }
+  // Pick a starter prompt and reset state
+  const starter = COACH_FW_STARTERS[Math.floor(Math.random() * COACH_FW_STARTERS.length)];
+  coachState.type = 'free_write';
+  coachState.fwMessages = [];
+  coachState.fwTurnCount = 0;
+  coachState.fwSessionId = coachMakeSessionId(currentPlayer, 'free_write');
+  coachState.fwStartedAt = Date.now();
+  coachState.fwTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.fwModel = COACH_FW_MODEL;
+  coachState.fwStarter = starter;
+  // Switch UI: hide picker, show chat + input + end-session button
+  document.getElementById('coachPicker').style.display = 'none';
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  // Render starter as the assistant's opening message (visual only — not sent to API)
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Free Write</div>` +
+    escapeHtml(starter)
+  );
+  // Show input row + a sticky "End session" button
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowFreeWriteEndRow();
+  document.getElementById('coachExitRow').style.display = 'none'; // exit replaced by end-session
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowFreeWriteEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End session';
+  endBtn.onclick = () => coachFreeWriteEnd();
+  row.appendChild(endBtn);
+  // Soft 20-turn nudge per §8.6
+  if (coachState.fwTurnCount >= COACH_FW_SOFT_TURN_CAP) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "We've covered a lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachFreeWriteSendUserTurn() {
+  const ex = coachState.current; void ex; // unused in FW path
+  if (coachState.type !== 'free_write' || coachState.fwBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.fwBusy = true;
+  fld.value = '';
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  // Push user turn to the message log + render
+  coachState.fwMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  // Typing indicator
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  // POST to Worker
+  const result = await coachWorkerCall({
+    mode: 'free_write',
+    model: coachState.fwModel,
+    messages: coachState.fwMessages,
+    context: coachBuildContext(),
+    session_id: coachState.fwSessionId,
+    is_session_end: false,
+  });
+  // Remove typing indicator
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong'
+    );
+    // Rewind: pop the user turn we pushed; let them retry or end-session.
+    coachState.fwMessages.pop();
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.fwBusy = false;
+    coachShowFreeWriteEndRow();
+    return;
+  }
+  // Render assistant reply, log to message history
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.fwMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.fwTurnCount += 1;
+  // Track token usage
+  const t = result.tokens_used || {};
+  coachState.fwTokensTotal.input += t.input || 0;
+  coachState.fwTokensTotal.output += t.output || 0;
+  coachState.fwTokensTotal.cache_read += t.cache_read || 0;
+  coachState.fwTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.fwModel = result.model_used;
+  // Re-enable input + refresh end-row (which checks the soft cap)
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.fwBusy = false;
+  coachShowFreeWriteEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachFreeWriteEnd() {
+  if (coachState.type !== 'free_write') return;
+  if (coachState.fwBusy) return; // wait for in-flight turn
+  // If no user turns yet, just go back to picker
+  if (!coachState.fwMessages.length) { coachShowPicker(); return; }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.fwBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the session…</span>');
+  // Final call: ask the model to emit <session_meta> via is_session_end:true
+  // Also send a synthetic terminal user turn so the model has something to terminate on.
+  const closingMessages = coachState.fwMessages.concat([{ role: 'user', content: 'That was helpful. Wrap up the session for me.' }]);
+  const result = await coachWorkerCall({
+    mode: 'free_write',
+    model: coachState.fwModel,
+    messages: closingMessages,
+    context: coachBuildContext(),
+    session_id: coachState.fwSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the session: ' + escapeHtml(coachFriendlyError(result)) + ' (your conversation will not be logged)</em>',
+      'feedback-wrong'
+    );
+    coachState.fwBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  // Render the wrap-up text + token tally for transparency
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.fwMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.fwMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.fwTokensTotal.input += t.input || 0;
+  coachState.fwTokensTotal.output += t.output || 0;
+  coachState.fwTokensTotal.cache_read += t.cache_read || 0;
+  coachState.fwTokensTotal.cache_creation += t.cache_creation || 0;
+  // Persist coach_sessions doc + merge weak_patterns (best effort)
+  try {
+    await coachWriteSessionLog({
+      mode: 'free_write',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.fwMessages,
+      model_used: result.model_used || coachState.fwModel,
+      tokens_used: coachState.fwTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed);
+    }
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Session saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  // Token summary line
+  const tot = coachState.fwTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Session tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.fwBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
+}
+
+// ─── Escalate (§8.5) — one-shot deeper explanation on a translation item ────
+async function coachEscalateCurrentItem(prevResult) {
+  // Called from coachSubmitAnswer's action row when the user taps "Explain more".
+  // prevResult is the result object pushed to coachState.sessionResults.
+  if (coachState.apiUnavailable || !navigator.onLine) {
+    alert('Live AI is unavailable right now. The standard feedback above stands.');
+    return;
+  }
+  const ex = coachState.current;
+  if (!ex || !prevResult) return;
+  // Disable the action row while in-flight
+  const actionRow = document.getElementById('coachActionRow');
+  Array.from(actionRow.querySelectorAll('button')).forEach(b => b.disabled = true);
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Thinking through it more deeply…</span>');
+  // Build the escalate context
+  const sessionId = coachMakeSessionId(currentPlayer, 'escalate');
+  const result = await coachWorkerCall({
+    mode: 'escalate',
+    model: COACH_ESC_MODEL,
+    messages: [{ role: 'user', content: 'Please explain in more depth.' }],
+    context: coachBuildContext({
+      exercise: {
+        id: ex.id || ex._id || prevResult.exercise_id,
+        prompt: ex.prompt_ru || '',
+        expected_answers: ex.correct_answers || [],
+        submitted: prevResult.submitted_answer || '',
+        pre_generated_feedback: coachLastFeedbackText() || '',
+      },
+    }),
+    session_id: sessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not get extra explanation: ' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong'
+    );
+    Array.from(actionRow.querySelectorAll('button')).forEach(b => b.disabled = false);
+    return;
+  }
+  // Render deeper response
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  // Mark escalation_used on this result + persist (the per-item upsert)
+  prevResult.escalation_used = true;
+  if (coachState.sessionTs) coachUpsertSession({ partial: true });
+  // Log a separate coach_sessions doc for the escalate (best effort)
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: sessionId,
+      mode: 'escalate',
+      session_metadata: result.session_metadata || null,
+      messages: [
+        { role: 'user', content: 'Please explain in more depth (after wrong submission: ' + (prevResult.submitted_answer || '') + ')' },
+        { role: 'assistant', content: result.content || '' },
+      ],
+      model_used: result.model_used || COACH_ESC_MODEL,
+      tokens_used: result.tokens_used || null,
+      exercise_id: ex.id || ex._id || prevResult.exercise_id,
+      exercise_version: ex.version || prevResult.exercise_version || 1,
+    });
+  } catch (e) { /* swallow — escalate explanation already shown */ }
+  // Replace action row with just "Got it — next" (no second escalate per §8.5)
+  const moreLeft = coachState.pool.length > 0;
+  actionRow.innerHTML = '';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'coach-action-primary';
+  nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
+  nextBtn.onclick = () => { actionRow.style.display = 'none'; coachNextExercise(); };
+  actionRow.appendChild(nextBtn);
+}
+
+// Reads the most recent feedback message (the one the user is escalating from).
+function coachLastFeedbackText() {
+  const chat = document.getElementById('coachChat');
+  if (!chat) return '';
+  // Walk back to find the last assistant feedback message
+  for (let i = chat.children.length - 1; i >= 0; i--) {
+    const c = chat.children[i];
+    if (c.classList.contains('feedback-correct') || c.classList.contains('feedback-wrong')) {
+      return c.innerText.slice(0, 1500);
+    }
+  }
+  return '';
+}
+
+// ─── coach_sessions logging ─────────────────────────────────────────────────
+async function coachWriteSessionLog({ mode, session_metadata, messages, model_used, tokens_used, exercise_id, exercise_version }) {
+  // Free Write path — uses coachState.fwSessionId.
+  return coachWriteSessionLogStandalone({
+    session_id: coachState.fwSessionId || coachMakeSessionId(currentPlayer, mode),
+    mode, session_metadata, messages, model_used, tokens_used, exercise_id, exercise_version,
+  });
+}
+
+async function coachWriteSessionLogStandalone({ session_id, mode, session_metadata, messages, model_used, tokens_used, exercise_id, exercise_version }) {
+  if (!currentPlayer || !session_id) return;
+  const meta = session_metadata || {};
+  const doc = {
+    session_id,
+    player: currentPlayer,
+    mode,
+    exercise_id: exercise_id || null,
+    exercise_version: exercise_version || null,
+    messages: Array.isArray(messages) ? messages : [],
+    error_patterns_observed: Array.isArray(meta.error_patterns_observed) ? meta.error_patterns_observed : [],
+    topics_covered: Array.isArray(meta.topics_covered) ? meta.topics_covered : [],
+    session_summary: typeof meta.session_summary === 'string' ? meta.session_summary : '',
+    tokens_used: tokens_used || null,
+    model_used: model_used || '',
+    created: new Date(coachState.fwStartedAt || Date.now()).toISOString(),
+    ended: new Date().toISOString(),
+  };
+  await fsSet('players/' + currentPlayer + '/coach_sessions/' + session_id, doc);
+}
+
+// Merge new error_patterns_observed into players/{name}.coach_notes.weak_patterns
+// without going through tools/update_coach_notes.js (which is server-side). FIFO cap at 8.
+async function coachMergeWeakPatterns(newPatterns) {
+  if (!Array.isArray(newPatterns) || !newPatterns.length) return;
+  // Read fresh — coachState.playerCoachNotes might be stale after long session
+  let player;
+  try { player = await fsGet('players/' + currentPlayer); } catch (e) { return; }
+  const cn = (player && player.coach_notes) || {};
+  const existing = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
+  // Tag new ones with " (coach_session)" suffix the first time they appear so the source is auditable
+  const merged = [...existing];
+  for (const p of newPatterns) {
+    if (!p) continue;
+    const exists = existing.some(e => typeof e === 'string' && e.toLowerCase().includes(String(p).toLowerCase()));
+    if (!exists) merged.push(p + ' (coach_session)');
+  }
+  // Cap at 8, keep most recent
+  const capped = merged.slice(-8);
+  const newCn = Object.assign({}, cn, {
+    weak_patterns: capped,
+    last_updated: new Date().toISOString(),
+    last_updated_by: 'coach_tab',
+    update_count: (cn.update_count || 0) + 1,
+  });
+  await fsMerge('players/' + currentPlayer, { coach_notes: newCn });
+  coachState.playerCoachNotes = newCn;
+}
+
+// ─── Friendly error text from a Worker error envelope ──────────────────────
+function coachFriendlyError(result) {
+  const code = (result && result.error_code) || 'WORKER_UNKNOWN';
+  switch (code) {
+    case 'API_402': return 'Live Coach is out of credit for now — Translation Drill still works.';
+    case 'WORKER_TIMEOUT': return "Couldn't reach Coach — try again, or end the session.";
+    case 'OFFLINE': return 'You appear to be offline. Reconnect and try again.';
+    case 'WORKER_URL_MISSING': return 'Coach URL not configured.';
+    default:
+      if (code.startsWith('API_5')) return 'Coach is having a moment — try again in a few seconds.';
+      if (code.startsWith('API_')) return 'Coach rejected the request — please reload and try again.';
+      return result && result.error_message ? result.error_message : 'Something went wrong.';
+  }
+}
+
+// Minimal Markdown→HTML for coach replies. Sonnet/Opus often emit **bold**,
+// inline backticks, blockquotes, and bullet lists — render those legibly.
+// NOT a full Markdown parser — escape first, then unescape the markup we want.
+function coachRenderMarkdownLite(text) {
+  let s = escapeHtml(String(text || ''));
+  // Code blocks ```...```
+  s = s.replace(/```([\s\S]*?)```/g, (_, body) => '<pre style="background:rgba(255,255,255,.04);border-radius:6px;padding:.5rem .65rem;overflow-x:auto;font-family:DM Mono,monospace;font-size:.8rem;">' + body + '</pre>');
+  // Inline code `...`
+  s = s.replace(/`([^`\n]+)`/g, '<code style="background:rgba(255,255,255,.06);padding:1px 4px;border-radius:3px;font-family:DM Mono,monospace;font-size:.85em;">$1</code>');
+  // Bold **...**
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  // Italics *...* (single asterisks; avoid greedy match across newlines)
+  s = s.replace(/(^|[^\*])\*([^\*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+  // Headings (### at line start)
+  s = s.replace(/(^|\n)###\s+([^\n]+)/g, '$1<div style="font-weight:600;margin-top:.4rem;">$2</div>');
+  // Bullet lists (line-starting "- ")
+  s = s.replace(/(^|\n)-\s+([^\n]+)/g, '$1<div style="padding-left:1em;text-indent:-.6em;">• $2</div>');
+  // Convert remaining newlines to <br>
+  s = s.replace(/\n/g, '<br>');
+  return s;
 }
 
 async function coachLoadMeta() {
@@ -6811,12 +7309,13 @@ function coachNextExercise() {
 
 function coachAppendMessage(role, html, extraClass) {
   const chat = document.getElementById('coachChat');
-  if (!chat) return;
+  if (!chat) return null;
   const div = document.createElement('div');
   div.className = 'coach-msg ' + role + (extraClass ? ' ' + extraClass : '');
   div.innerHTML = html;
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
+  return div;
 }
 
 function escapeHtml(s) {
@@ -6955,6 +7454,16 @@ async function coachSubmitAnswer() {
   const actionRow = document.getElementById('coachActionRow');
   const moreLeft = coachState.pool.length > 0;
   actionRow.innerHTML = '';
+  // Escalate option (§8.5) — only on wrong answers + only when live AI is reachable.
+  // One-shot: after escalation fires, the row is replaced with just "Got it — next".
+  const lastResult = coachState.sessionResults[coachState.sessionResults.length - 1];
+  const canEscalate = !correct && !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  if (canEscalate && lastResult) {
+    const escBtn = document.createElement('button');
+    escBtn.textContent = '🤔 Hmm, explain more';
+    escBtn.onclick = () => coachEscalateCurrentItem(lastResult);
+    actionRow.appendChild(escBtn);
+  }
   const nextBtn = document.createElement('button');
   nextBtn.className = 'coach-action-primary';
   nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
@@ -6998,13 +7507,22 @@ function coachExitToPicker() {
   coachOpenTab();
 }
 
+// Dispatch send/Enter based on the active flow.
+function coachSendDispatch() {
+  if (coachState.type === 'free_write') return coachFreeWriteSendUserTurn();
+  return coachSubmitAnswer(); // translation default
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const fld = document.getElementById('coachInputField');
   if (fld) {
     fld.addEventListener('keydown', e => {
-      if (e.key === 'Enter') { e.preventDefault(); coachSubmitAnswer(); }
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); coachSendDispatch(); }
     });
   }
+  // Re-evaluate live-AI availability when network state flips
+  window.addEventListener('online', coachUpdateLiveAIAvailability);
+  window.addEventListener('offline', coachUpdateLiveAIAvailability);
 });
 
 </script>

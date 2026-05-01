@@ -149,7 +149,16 @@ Successful response shape:
 ```
 
 On the second turn within the 5-minute cache window, `cache_read` should
-report ~1100 and `input` should drop to the volatile suffix only.
+report a positive value and `input` should drop to the volatile suffix only.
+
+> **Note (s91 smoke-test observation):** The current free_write system
+> preamble renders to ~400 tokens. Sonnet 4.6's minimum cacheable prefix
+> is **2048 tokens** — below that, `cache_control` is a silent no-op
+> (no error, just `cache_read: 0` / `cache_creation: 0` on every turn).
+> The `cache_control` marker is left in the Worker as a no-op cost
+> (zero) so caching kicks in automatically once `coach_notes` data
+> grows the preamble across the threshold. Track this via the
+> `tokens_used.cache_read` field on responses.
 
 Error shape:
 

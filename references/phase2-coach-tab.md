@@ -1309,6 +1309,68 @@ this proves stable):
 
 ---
 
+### 2026-05-01 — Phase 2C shipped (Free Write + Escalate)
+
+**Done — `v20260501-s91`** (the rest of §13.2):
+- Cloudflare Worker built and deployed yesterday at
+  `https://english-quiz-coach.artem2030.workers.dev` per §7. ANTHROPIC_API_KEY
+  set via `wrangler secret put`. Worker validation chain (CORS, origin check,
+  body size, mode/model whitelist, player whitelist) end-to-end-tested against
+  the real Anthropic API: free_write (~$0.005) and escalate (~$0.022) both
+  return coherent feedback with `<session_meta>` extraction working as designed.
+- PWA hookup in `index.html`: Free Write button enabled, multi-turn chat
+  loop, "✓ End session" with `is_session_end:true` finalisation, soft 20-turn
+  cap. Escalate button on every wrong-answer translation feedback (one-shot,
+  per §8.5). Failure handling per §8.8 — API_402 disables live AI for the
+  tab session, 5xx gets one retry with backoff, offline state flips
+  availability, missing Worker URL hides live AI.
+- `coach_sessions/{session_id}` writes per §6.4 for both Free Write and
+  Escalate. Free Write end-of-session merges `error_patterns_observed` into
+  `coach_notes.weak_patterns` with a `(coach_session)` tag and FIFO cap at 8.
+- Coach reply rendering: minimal Markdown→HTML so the chat shell renders
+  Sonnet/Opus output (bold, bullets, inline code, blockquotes) legibly.
+- Smoke-tested locally with a mocked Worker (CORS blocks `localhost`); test
+  artefacts cleaned up.
+
+**Updated decisions (deviations from §7 captured at build time)**:
+- Model strings updated per §15: `claude-sonnet-4-6` for Free Write,
+  `claude-opus-4-7` for Escalate. The §7.4 examples used `4-5` strings
+  pre-current; resolved during the Worker build per Anthropic guidance.
+- §4 Q4 still relaxed to `$5` prepaid balance (pilot). Workspace spend cap
+  at $5 to match.
+
+**Cache observation**: free_write system preamble is currently ~400 tokens,
+below Sonnet 4.6's 2048-token minimum cacheable prefix → `cache_control`
+is a silent no-op until `coach_notes` grows the preamble across the
+threshold. The marker stays in the Worker (zero cost when no-op); we'll see
+caching kick in automatically as `coach_notes` fills out across sessions.
+Documented in `worker/README.md`.
+
+**§16 acceptance status**:
+- [x] SKILL.md updated per §9 (Tier 1 complete)
+- [ ] Anna ≥5 Coach tab sessions over 2 weeks — pending real usage
+- [ ] Nicole ≥3 sessions — pending
+- [ ] Ernest ≥3 sessions — pending
+- [ ] All 5 pre-generated exercise types ≥10 each for one player — pending
+      (currently only translation has content)
+- [ ] Free Write used ≥5 times across the family — pending
+- [ ] At least 3 escalations triggered with logged transcripts — pending
+- [ ] API spend within $5–15/month — pending observation (smoke test ~$0.03 so far)
+- [ ] No claude.ai chat involvement in routine authoring for ≥2 weeks — TBD
+- [x] CC handles all stats reviews and content authoring for Artem's path
+
+Build sequence (§13) is **complete**. Remaining work is observation +
+content authoring (Tier 2) — both gated on real family usage.
+
+**Next session focus** (when family activity warrants):
+- Add library content for the 3 remaining exercise types (article_drill,
+  particle_sort, error_correction, russian_trap) per Tier 2 priorities in §14
+- Review Anna/Nicole/Ernest Coach session data when accumulated; tune
+  v2 translation set and `coach_notes` based on what the data shows
+- Stats review pass when ≥5 family sessions have logged
+
+---
+
 ### 2026-04-30 — Coach tab MVP shipped (CC session, continued)
 
 **Done**:
