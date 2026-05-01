@@ -19,7 +19,11 @@
 // sits after the breakpoint so it doesn't invalidate the cache on normal
 // turns. See shared/prompt-caching.md.
 
-const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest'];
+// 'artem' added in s91-worker-r2 (2026-05-01). Original design (§3, §7.3) excluded
+// Artem from the Worker path — he was meant to use CC for his own sessions. In
+// practice he wants to use Free Write from the PWA too (no laptop required), and
+// the prepaid balance amply covers the extra volume.
+const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem'];
 const VALID_MODES = ['free_write', 'escalate'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;

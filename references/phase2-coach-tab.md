@@ -114,7 +114,7 @@ targets family players exclusively.
 | Q7 | Cost cap | Prepaid balance only. No Worker rate limit, no per-session token caps in code. | Prepaid balance + workspace spend cap is a stronger architectural ceiling than rate limits. |
 | Q8 | Free Write conversation persistence | Per-session standalone (no message history carried across sessions). `coach_notes` is read into the system prompt instead. CC path (Artem) handles its own persistence via CC's session model. | Carryover grows token cost linearly. Persistent learner profile in system prompt gives most of the value at fixed cost. |
 | Q9 | Worker repo location | `worker/` subfolder in main `english-quiz` repo | One git history, easier cross-cutting changes, no cross-repo coordination overhead. |
-| A1 | Architecture | Hybrid: pre-generated default for family + Free Write live AI + escalate-to-AI button. Artem's CC path: live conversational only, no library reuse. | Pre-generated handles bounded exercise types richly; live AI handles unbounded Free Write. Artem's level + CC capabilities make live generation strictly better for him. |
+| A1 | Architecture | Hybrid: pre-generated default for family + Free Write live AI + escalate-to-AI button. Artem can use either CC OR the Worker path (the latter added in s91-worker-r2 — see §17 entry). Library content remains family-only. | Pre-generated handles bounded exercise types richly; live AI handles unbounded Free Write. Artem's CC path remains zero-cost via Max; the Worker path is added for laptop-free / on-the-go convenience. Prepaid balance amply covers the extra volume at family scale. |
 | N1 | Library schema | `exercises_library/{type}/{exercise_id}` per-type subcollections, with type-specific schemas (see §6). Enriched fields for future analysis. | Enables cross-cutting analysis between quiz performance and exercise performance over time. |
 | N2 | Authoring workflow | CC-driven end-to-end via Firebase MCP. No claude.ai chat involvement in routine authoring. | Avoids manual copy-paste and back-and-forth. CC has full Firestore write access. |
 | N3 | Model split | CC path: Opus. Worker `mode: "free_write"`: Sonnet. Worker `mode: "escalate"`: Opus. | Sonnet sufficient for grammar correction at family scale; Opus reserved for "I need more depth" moments. Halves API spend on the volume path. |
@@ -1368,6 +1368,41 @@ content authoring (Tier 2) — both gated on real family usage.
 - Review Anna/Nicole/Ernest Coach session data when accumulated; tune
   v2 translation set and `coach_notes` based on what the data shows
 - Stats review pass when ≥5 family sessions have logged
+
+---
+
+### 2026-05-01 — s91-worker-r2: Artem added to Worker path (decision change)
+
+**Done**: `ALLOWED_PLAYERS` in `worker/index.js` extended from `[anna, nicole,
+ernest]` to include `artem`. Worker redeployed (version
+`332aea40-b76f-4b67-a6c1-4abdab194bd3`). Verified with a real curl as
+`context.player: "artem"` — Sonnet 4.6 returned register-aware C1 feedback
+on a business sentence, acknowledging the nominalization choice as
+intentional rather than a hard error.
+
+**Decision change**: §4 row A1 patched in place. The original lock was
+"Artem's CC path: live conversational only, no library reuse" — meaning
+the Worker was off-limits for Artem and his cost stayed at $0 via Max.
+The relaxation: Artem can now use either CC OR the Worker (his choice
+per session). Library content stays family-only — the only change is
+that Artem's `players/artem/coach_sessions/` will now also accumulate
+Worker-driven sessions. Cost impact at family scale is marginal (prepaid
+$5–15 covers all 4 players easily).
+
+**Why**: practical convenience. Firing up CC is friction when Artem just
+wants to type a paragraph from his phone. The Worker is built and
+working; gating one of four players out of it is design purity at the
+expense of usability.
+
+**No PWA change needed** — `coachBuildContext()` already reads
+`currentPlayer` regardless of who's logged in, and the Free Write button
+was already enabled for everyone in the picker. The 400 was purely a
+Worker-side validation that's now relaxed.
+
+**Cost impact watch**: with 4 players potentially on the Worker (vs 3),
+expected monthly spend roughly doubles vs the original projection.
+Still well within the $5 pilot ceiling at observed usage. Top up to $15
+when usage indicates.
 
 ---
 
