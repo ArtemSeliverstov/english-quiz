@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s92">
+  <meta name="app-version" content="v20260501-s92r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -928,7 +928,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s92</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s92r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -7001,7 +7001,11 @@ async function coachFreeWriteEnd() {
       exercise_version: null,
     });
     if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
-      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed);
+      const summary = (result.session_metadata.session_summary || '').slice(0, 280);
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed, {
+        session_id: coachState.fwSessionId,
+        note: 'Free Write — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (turns: ' + coachState.fwTurnCount + ')',
+      });
     }
   } catch (e) {
     coachAppendMessage('assistant', '<em>Session saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
@@ -7213,25 +7217,43 @@ async function coachWriteSessionLogStandalone({ session_id, mode, session_metada
 }
 
 // Merge new error_patterns_observed into players/{name}.coach_notes.weak_patterns
-// without going through tools/update_coach_notes.js (which is server-side). FIFO cap at 8.
-async function coachMergeWeakPatterns(newPatterns) {
+// + log a recent_observation for the session.
+//
+// Cap at 8 entries TOTAL, but priority-aware: durable entries (those NOT tagged
+// "(coach_session...)") are always kept — they came from stats review with large
+// n and represent trusted signal. Session-tagged entries fight for the remaining
+// slots, newest wins. This fixes the s92 bug where chronological FIFO silently
+// dropped 4 durable stats-derived patterns to make room for 8 single-session
+// signals (issue surfaced when Anna's Apr-30 stats-derived patterns disappeared
+// after one Free Write session).
+async function coachMergeWeakPatterns(newPatterns, sessionContext) {
   if (!Array.isArray(newPatterns) || !newPatterns.length) return;
-  // Read fresh — coachState.playerCoachNotes might be stale after long session
   let player;
   try { player = await fsGet('players/' + currentPlayer); } catch (e) { return; }
   const cn = (player && player.coach_notes) || {};
   const existing = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
-  // Tag new ones with " (coach_session)" suffix the first time they appear so the source is auditable
-  const merged = [...existing];
-  for (const p of newPatterns) {
-    if (!p) continue;
-    const exists = existing.some(e => typeof e === 'string' && e.toLowerCase().includes(String(p).toLowerCase()));
-    if (!exists) merged.push(p + ' (coach_session)');
-  }
-  // Cap at 8, keep most recent
-  const capped = merged.slice(-8);
+  const isSessionTagged = e => typeof e === 'string' && /\(coach_session/i.test(e);
+  const durable = existing.filter(e => !isSessionTagged(e));          // stats-derived; never displaced
+  const sessionTagged = existing.filter(isSessionTagged);             // FIFO among themselves
+  const tag = ' (coach_session ' + new Date().toISOString().slice(0, 10) + ')';
+  const newTagged = newPatterns
+    .filter(p => p && !existing.some(e => typeof e === 'string' && e.toLowerCase().includes(String(p).toLowerCase())))
+    .map(p => p + tag);
+  const allSessionTagged = [...sessionTagged, ...newTagged];
+  const sessionSlots = Math.max(0, 8 - durable.length);
+  const capped = [...durable, ...allSessionTagged.slice(-sessionSlots)];
+  // Append a recent_observation for the session (so the log shows what happened, not just patterns)
+  const recent = Array.isArray(cn.recent_observations) ? cn.recent_observations : [];
+  const obs = {
+    date: new Date().toISOString().slice(0, 10),
+    author: 'coach_tab',
+    session_id: sessionContext?.session_id || coachState.fwSessionId || '',
+    note: sessionContext?.note || ('Coach tab session — patterns observed: ' + newPatterns.join(', ')),
+  };
+  const newRecent = [...recent, obs].slice(-10); // FIFO cap 10
   const newCn = Object.assign({}, cn, {
     weak_patterns: capped,
+    recent_observations: newRecent,
     last_updated: new Date().toISOString(),
     last_updated_by: 'coach_tab',
     update_count: (cn.update_count || 0) + 1,
