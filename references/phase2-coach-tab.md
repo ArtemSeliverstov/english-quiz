@@ -338,10 +338,17 @@ Existing schema retained. New fields added:
 {
   ...existing fields,
   submitted_answer: string,
-  matched_pattern_id: string | null,   // which common_errors.id matched
+  matched_pattern_id: string | null,    // which common_errors.id matched (first attempt)
   escalation_used: boolean,
   time_to_answer_ms: number,
-  exercise_version: number
+  exercise_version: number,
+
+  // s92 active-recall retry (only present when escalation_used is true).
+  // First-attempt `correct` is preserved; retry is tracked separately.
+  escalation_retry_submitted: string | null,
+  escalation_retry_correct: boolean | null,
+  escalation_retry_matched_pattern_id: string | null,
+  escalation_retry_time_ms: number | null
 }
 ```
 
@@ -753,21 +760,23 @@ normalized). Default expectation: regexes use case-insensitive flag.
 Future iteration: Levenshtein distance ≤ 2 to absorb single-character
 typos. Defer until evidence shows typos cause false negatives.
 
-### 8.5 Escalate flow
+### 8.5 Escalate flow (with active-recall retry as of s92)
 
-1. Player taps **[Hmm, explain more 🤔]** after pre-generated feedback
+1. Player taps **[🤔 Hmm, explain more]** after pre-generated wrong-answer feedback
 2. Coach tab shows typing indicator
 3. POST to Worker with `mode: "escalate"`, full context per §7.2
-4. Worker response renders as follow-up "assistant" message in same chat
-   thread
-5. Below it: **[Got it, next →]** (no further escalation; one shot)
-6. On next exercise, write `escalation_used: true` to the result
-7. Worker session logged to `players/{name}/coach_sessions/{session_id}`
-   with `mode: "escalate"`
+4. Worker response renders as a follow-up "assistant" message in the same chat thread
+5. **Immediately after the explanation**, the chat appends "Попробуй ещё раз / Try again" with the original Russian prompt; the input row reappears, routed to the retry handler.
+6. Player submits a retry. The retry is scored against the same `correct_answers` and `common_errors` as the first attempt. Feedback renders inline (correct → "✓ Got it!"; wrong → pattern feedback or fallback + one canonical correct form).
+7. Retry result is recorded on the same per-item row (§6.3): `escalation_retry_submitted`, `escalation_retry_correct`, `escalation_retry_matched_pattern_id`, `escalation_retry_time_ms`. **First-attempt `correct` is NOT overwritten** — first-attempt accuracy stays trackable; retry is a separate signal.
+8. Action row collapses to **[Got it — next →]**. No second escalation, no second retry.
+9. Worker session is logged to `players/{name}/coach_sessions/{session_id}` with `mode: "escalate"`.
 
-If Worker fails: inline error in chat thread: "Couldn't reach Coach right
-now — try again, or move on with the feedback above." Both `[Try again]`
-and `[Got it, next →]` available.
+Why the retry: in s91 Anna escalated on `tr_anna_b01` ("waiting for") and got a thorough Russian explanation, then on the very next run wrote "I'm waiting **a** friend" again — the rule didn't lock in without an immediate active-recall step.
+
+The session-end card (§13.1) reports retried items: "{n} item(s) got the deep explanation, {m} correct on retry."
+
+If Worker fails on the deep-explanation step: inline error in the chat thread; the retry isn't offered (we don't ask for a retry without an explanation in front of it). Player gets [Got it — next] only.
 
 ### 8.6 Free Write flow
 
@@ -1368,6 +1377,41 @@ content authoring (Tier 2) — both gated on real family usage.
 - Review Anna/Nicole/Ernest Coach session data when accumulated; tune
   v2 translation set and `coach_notes` based on what the data shows
 - Stats review pass when ≥5 family sessions have logged
+
+---
+
+### 2026-05-01 — s92: active-recall retry, lighter Free Write, richer session-done
+
+Three observations from Anna's first real session on s91/s91r2/s91r3:
+
+1. She ran the v2 set twice (4/10 → 9/10 — big improvement). On both runs, `tr_anna_b01` ("wait for") tripped the same trap. Escalate gave a thorough Russian explanation but, with no immediate active-recall step, the lesson didn't transfer to the next attempt.
+2. She wasn't sure from the UI whether the session ended after item 10 — the small "Session done" line scrolled past among per-item feedback.
+3. Free Write felt "endless" after just 7 turns — the per-turn "Попробуй сейчас:" pattern read like an indefinite homework treadmill. Soft 20-turn cap was too late.
+
+s92 ships three changes:
+
+**A — richer session-done card** (`coachFinishSession`): replaces the single-line "Session done" with a prominent centred card showing headline, score, elapsed time, retry stats (n items got deep explanation, m correct on retry), and pattern IDs. Action row gets three buttons: `↻ Try this set again` / `✍️ Free Write` (only if live AI reachable) / `← Pick another exercise`. The sticky "← Pick another exercise" exit row is hidden because the action buttons replace it.
+
+**B — Free Write tone** (worker prompt + client soft cap):
+- Worker `freeWriteSystemPrompt` (both `ru` and `en` paths): replaces "Suggest one concrete revision" with "Don't always assign a follow-up rewrite. Sometimes acknowledge the corrected version and let her continue freely or wrap up." Adds an "after ~4–5 exchanges, gently surface the option to wrap up" instruction.
+- `COACH_FW_SOFT_TURN_CAP` dropped from 20 to 8 — the "we've covered a lot — wrap up?" UI nudge appears at turn 8 instead of 20, matching real engagement curves.
+
+**C — active-recall retry on Escalate**: after the deep explanation renders, a "Попробуй ещё раз / Try again" prompt appears with the original Russian sentence, the input row reappears (routed to a retry handler), and the player submits one more attempt. The retry is scored against the same `correct_answers` + `common_errors` and persisted on the same per-item row via four new fields:
+
+```
+escalation_retry_submitted: string | null,
+escalation_retry_correct: boolean | null,
+escalation_retry_matched_pattern_id: string | null,
+escalation_retry_time_ms: number | null
+```
+
+First-attempt `correct` is **not** overwritten — first-attempt accuracy stays as the canonical "did she get it the first time" signal; retry is tracked separately. Action row collapses to "Got it — next" after the retry — no second escalation, no second retry. §6.3 schema and §8.5 flow updated accordingly.
+
+**Smoke-tested in browser preview** (mocked Worker for escalate): wrong submission → escalate → deep explanation rendered → retry prompt with Russian source visible → correct retry submitted → "✓ Got it!" rendered + retry fields populated on prevResult + action row shows only "Got it — next". Done card visually distinct, three action buttons present, retry stats line shown when escalation_used count > 0.
+
+**Decision (rationale)**: §8.5 was originally locked as "one shot, no further escalation". The retry is added because passive explanation alone proved insufficient (the s91 wait-for repeat). It still ends after one retry — the "no second escalation" lock holds.
+
+**Cost impact**: zero net change. Each Escalate is still one Worker call (Opus 4.7); the retry is scored client-side against existing exercise data, no extra API call.
 
 ---
 

@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s91r3">
+  <meta name="app-version" content="v20260501-s92">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -884,6 +884,14 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 .coach-action-row button:hover{border-color:var(--accent);}
 .coach-action-row button.coach-action-primary:hover{filter:brightness(1.05);}
 .coach-typing{font-size:.8rem;color:var(--muted);font-style:italic;padding:.4rem .85rem;}
+.coach-msg.coach-done-card{align-self:stretch;max-width:100%;text-align:center;padding:1rem 1.1rem;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.03);}
+.coach-msg.coach-done-card.feedback-correct{background:rgba(111,239,178,.10);border-color:rgba(111,239,178,.35);}
+.coach-done-headline{font-size:1rem;font-weight:600;margin-bottom:.4rem;}
+.coach-done-score{font-size:1.6rem;font-weight:700;font-family:'DM Mono',monospace;margin-bottom:.3rem;}
+.coach-done-pct{font-size:.95rem;font-weight:500;color:var(--muted);margin-left:.2rem;}
+.coach-done-meta{font-size:.78rem;color:var(--muted);}
+.coach-done-patterns{margin-top:.5rem;font-size:.78rem;line-height:1.7;}
+.coach-done-patterns code{background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;font-family:'DM Mono',monospace;font-size:.85em;display:inline-block;margin:0 .15em;}
 @media(max-width:520px){
   .coach-picker-grid{grid-template-columns:1fr;}
 }
@@ -920,7 +928,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s91r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s92</span></p>
 </header>
 
 <!-- TABS -->
@@ -6648,7 +6656,7 @@ async function exDeleteEntry(ts) {
 const COACH_WORKER_URL = 'https://english-quiz-coach.artem2030.workers.dev';
 const COACH_FW_MODEL = 'claude-sonnet-4-6';     // Free Write — high-volume, Sonnet
 const COACH_ESC_MODEL = 'claude-opus-4-7';      // Escalate — one-shot depth, Opus
-const COACH_FW_SOFT_TURN_CAP = 20;              // §8.6 soft cap; UI nudge after this
+const COACH_FW_SOFT_TURN_CAP = 8;               // soft "wrap up?" nudge — empirically 7+ turns was already feeling endless to Anna (s92)
 const COACH_FW_STARTERS = [
   'Tell me about your day in English.',
   'What did you do this weekend?',
@@ -6684,6 +6692,9 @@ const coachState = {
   fwModel: '',
   fwStarter: '',
   fwBusy: false,          // true while a request is in-flight
+  // Escalate retry flow (s92)
+  escalateRetryActive: false,    // input field routes to coachEscalateRetrySubmit while true
+  escalateRetryStartedAt: 0,
   // Cached coach_notes (loaded at coachOpenTab; sent in context payloads)
   playerCoachNotes: null,
 };
@@ -6746,6 +6757,9 @@ function coachShowPicker() {
   coachState.fwStartedAt = 0;
   coachState.fwTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
   coachState.fwBusy = false;
+  // Reset escalate retry state
+  coachState.escalateRetryActive = false;
+  coachState.escalateRetryStartedAt = 0;
   // Reflect any availability changes (network, API_402)
   coachUpdateLiveAIAvailability();
 }
@@ -7064,14 +7078,94 @@ async function coachEscalateCurrentItem(prevResult) {
       exercise_version: ex.version || prevResult.exercise_version || 1,
     });
   } catch (e) { /* swallow — escalate explanation already shown */ }
-  // Replace action row with just "Got it — next" (no second escalate per §8.5)
-  const moreLeft = coachState.pool.length > 0;
+  // s92 — active recall: prompt for an immediate retry of the same item
+  // (replaces the s91 "one-shot then move on" behaviour). The retry submit
+  // routes through coachEscalateRetrySubmit, which scores against the same
+  // correct_answers + common_errors and persists retry state on prevResult.
+  coachShowEscalateRetry(prevResult);
+}
+
+// s92: active-recall retry after Escalate. Renders a "try again" prompt with
+// the original Russian sentence, then routes the next submit through
+// coachEscalateRetrySubmit. After the retry's feedback, action row collapses
+// to "Got it — next" — no second escalate, no second retry.
+function coachShowEscalateRetry(prevResult) {
+  const ex = coachState.current;
+  if (!ex || !prevResult) return;
+  // Render the retry prompt as an assistant message
+  coachAppendMessage('assistant',
+    '<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Попробуй ещё раз / Try again</div>' +
+    '<div class="coach-msg-prompt-ru">' + escapeHtml(ex.prompt_ru || '') + '</div>'
+  );
+  coachState.escalateRetryActive = true;
+  coachState.escalateRetryStartedAt = Date.now();
+  // Show input row, hide action row
+  document.getElementById('coachInputRow').style.display = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachEscalateRetrySubmit() {
+  if (!coachState.escalateRetryActive) return;
+  const ex = coachState.current;
+  const prevResult = coachState.sessionResults[coachState.sessionResults.length - 1];
+  if (!ex || !prevResult) { coachState.escalateRetryActive = false; return; }
+  const fld = document.getElementById('coachInputField');
+  const submitted = (fld.value || '').trim();
+  if (!submitted) { fld.focus(); return; }
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  document.getElementById('coachInputRow').style.display = 'none';
+  // Echo retry attempt
+  coachAppendMessage('user', escapeHtml(submitted));
+  // Score using the same matchers as the first attempt
+  const correct = coachIsMatch(submitted, ex.correct_answers);
+  let pattern = null;
+  let feedback;
+  let extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+  if (correct) {
+    feedback = '<strong>✓ Got it!</strong>';
+    if ((ex.correct_answers || []).length > 1) {
+      const others = ex.correct_answers.filter(a => coachNormalize(a) !== coachNormalize(submitted));
+      if (others.length) {
+        feedback += '<div style="margin-top:.3rem;font-size:.78rem;color:var(--muted);">Other valid forms: ' + escapeHtml(others.slice(0, 2).join(' · ')) + '</div>';
+      }
+    }
+  } else {
+    pattern = coachMatchPattern(submitted, ex.common_errors);
+    if (pattern) {
+      feedback = '<strong>Не совсем.</strong> ' + escapeHtml(pattern.feedback);
+    } else {
+      feedback = '<strong>Не совсем.</strong> ' + escapeHtml(ex.fallback_feedback || '');
+    }
+    if (ex.correct_answers && ex.correct_answers.length) {
+      feedback += '<div style="margin-top:.4rem;font-size:.8rem;"><em>Правильный вариант:</em> ' + escapeHtml(ex.correct_answers[0]) + '</div>';
+    }
+  }
+  coachAppendMessage('assistant', feedback, extraClass);
+  // Record retry on the first-attempt result; original .correct stays unchanged
+  // (first-attempt accuracy preserved; retry tracked separately).
+  prevResult.escalation_retry_submitted = submitted;
+  prevResult.escalation_retry_correct = correct;
+  prevResult.escalation_retry_time_ms = Date.now() - coachState.escalateRetryStartedAt;
+  prevResult.escalation_retry_matched_pattern_id = pattern ? pattern.id : null;
+  if (coachState.sessionTs) coachUpsertSession({ partial: true });
+  // Collapse to "Got it — next" — no further escalation, no second retry
+  coachState.escalateRetryActive = false;
+  const actionRow = document.getElementById('coachActionRow');
   actionRow.innerHTML = '';
+  const moreLeft = coachState.pool.length > 0;
   const nextBtn = document.createElement('button');
   nextBtn.className = 'coach-action-primary';
   nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
   nextBtn.onclick = () => { actionRow.style.display = 'none'; coachNextExercise(); };
   actionRow.appendChild(nextBtn);
+  actionRow.style.display = '';
 }
 
 // Reads the most recent feedback message (the one the user is escalating from).
@@ -7488,6 +7582,8 @@ async function coachFinishSession() {
   const correct = results.filter(r => r.correct).length;
   const total = results.length;
   const patternIds = [...new Set(results.filter(r => r.matched_pattern_id).map(r => r.matched_pattern_id))];
+  const retried = results.filter(r => r.escalation_used).length;
+  const retriedCorrect = results.filter(r => r.escalation_retry_correct === true).length;
   // Final write — flips partial:false on the same doc the per-item upserts have been
   // writing to. If this throws (network blip on the last save), surface it; the per-item
   // upserts already preserved the data so nothing is lost.
@@ -7497,12 +7593,50 @@ async function coachFinishSession() {
     coachAppendMessage('assistant', '<em>Could not finalise your session: ' + escapeHtml(e.message) + ' (your answers are saved as a partial session)</em>');
   }
   const acc = Math.round((correct / total) * 100);
-  let msg = `<strong>Session done — ${correct}/${total} (${acc}%).</strong>`;
-  if (patternIds.length) {
-    msg += '<div style="margin-top:.35rem;font-size:.8rem;color:var(--muted);">Patterns to review: ' + patternIds.map(escapeHtml).join(', ') + '</div>';
+  const elapsedMs = coachState.sessionStartedAt ? Date.now() - coachState.sessionStartedAt : 0;
+  const elapsedMin = Math.round(elapsedMs / 60000);
+  // Render a prominent done card. Distinct visually from per-item feedback so it reads
+  // as a clear "you're done" signal — fixes the s91 confusion where Anna wasn't sure
+  // whether the session had ended.
+  const tone = correct === total ? 'all-correct' : correct >= Math.ceil(total * 0.7) ? 'good' : 'needs-work';
+  const headline = correct === total ? '🎉 Perfect — all correct!'
+                  : tone === 'good'  ? '✓ Session complete'
+                                     : '✓ Session complete — keep going';
+  let body = `<div class="coach-done-headline">${headline}</div>` +
+             `<div class="coach-done-score">${correct}/${total} <span class="coach-done-pct">(${acc}%)</span>` +
+             (elapsedMin ? ` <span class="coach-done-meta">· ${elapsedMin} min</span>` : '') + `</div>`;
+  if (retried) {
+    body += `<div class="coach-done-meta">${retried} item${retried === 1 ? '' : 's'} got the deep explanation` +
+            (retriedCorrect ? `, ${retriedCorrect} correct on retry` : '') + `</div>`;
   }
-  coachAppendMessage('assistant', msg, correct === total ? 'feedback-correct' : '');
-  document.getElementById('coachExitRow').style.display = '';
+  if (patternIds.length) {
+    body += `<div class="coach-done-patterns"><span class="coach-done-meta">Patterns to review:</span> ` +
+            patternIds.map(p => `<code>${escapeHtml(p)}</code>`).join(' ') + `</div>`;
+  }
+  coachAppendMessage('assistant', body, 'coach-done-card ' + (tone === 'all-correct' ? 'feedback-correct' : ''));
+  // Multi-action row: most useful first
+  const actionRow = document.getElementById('coachActionRow');
+  actionRow.innerHTML = '';
+  const tryAgainBtn = document.createElement('button');
+  tryAgainBtn.textContent = '↻ Try this set again';
+  tryAgainBtn.onclick = () => {
+    actionRow.style.display = 'none';
+    coachStartType(coachState.type || 'translation');
+  };
+  actionRow.appendChild(tryAgainBtn);
+  // Free Write only if live AI is reachable
+  if (COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable) {
+    const fwBtn = document.createElement('button');
+    fwBtn.textContent = '✍️ Free Write';
+    fwBtn.onclick = () => { actionRow.style.display = 'none'; coachStartFreeWrite(); };
+    actionRow.appendChild(fwBtn);
+  }
+  const pickerBtn = document.createElement('button');
+  pickerBtn.textContent = '← Pick another exercise';
+  pickerBtn.onclick = () => { actionRow.style.display = 'none'; coachShowPicker(); coachOpenTab(); };
+  actionRow.appendChild(pickerBtn);
+  actionRow.style.display = '';
+  document.getElementById('coachExitRow').style.display = 'none'; // exit row redundant with action buttons
   coachState.current = null;
 }
 
@@ -7517,6 +7651,7 @@ function coachExitToPicker() {
 
 // Dispatch send/Enter based on the active flow.
 function coachSendDispatch() {
+  if (coachState.escalateRetryActive) return coachEscalateRetrySubmit();
   if (coachState.type === 'free_write') return coachFreeWriteSendUserTurn();
   return coachSubmitAnswer(); // translation default
 }
