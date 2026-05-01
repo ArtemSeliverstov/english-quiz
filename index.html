@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s92r2">
+  <meta name="app-version" content="v20260501-s93">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -928,7 +928,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s92r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s93</span></p>
 </header>
 
 <!-- TABS -->
@@ -3269,6 +3269,8 @@ function defaultData() {
     longestStreak: 0,
     lastPlayedDate: null,
     createdAt: new Date().toISOString(),
+    ui_shell: 'builder',
+    learning_path: null,
   };
 }
 
@@ -3783,6 +3785,56 @@ function renderCatProgress() {
 // ══════════════════════════════════════════════
 //  QUESTION SELECTION ALGORITHM
 // ══════════════════════════════════════════════
+
+// Floor-bouncer auto-lock: questions with seen ≥ 3 and zero correct answers
+// hide for 6 weeks, then resurface (per phase2-build-plan.md §4.1 D5).
+const FLOOR_BOUNCER_LOCK_MS = 6 * 7 * 86400000;
+function isQuestionLocked(id) {
+  const st = DB.qStats && DB.qStats[id];
+  return !!(st && st.locked_until && st.locked_until > Date.now());
+}
+function maybeAutoLockFloorBouncer(id) {
+  const st = DB.qStats && DB.qStats[id];
+  if (!st) return;
+  if (st.seen >= 3 && st.correct === 0) {
+    if (!st.locked_until || st.locked_until < Date.now()) {
+      st.locked_until = Date.now() + FLOOR_BOUNCER_LOCK_MS;
+    }
+  }
+}
+
+// Active-window filter — only fires for ui_shell === 'learner' with a populated
+// learning_path. Builder shell sees no change. Per §4.1 schema + level cap rationale.
+function applyLearnerWindowFilter(pool) {
+  const lp = DB.learning_path;
+  if (DB.ui_shell !== 'learner' || !lp || !Array.isArray(lp.active_categories) || lp.active_categories.length === 0) {
+    return pool;
+  }
+  const LVL = {B1:1,B2:2,C1:3,C2:4};
+  const capNum = lp.level_cap ? (LVL[lp.level_cap] || 99) : 99;
+  const stretch = typeof lp.stretch_allowance === 'number' ? lp.stretch_allowance : 0;
+  const activeSet = new Set(lp.active_categories);
+  const masteredLast = new Map();
+  (lp.mastered_categories || []).forEach(m => {
+    if (m && m.category) masteredLast.set(m.category, m.last_review || m.mastered_date || null);
+  });
+  const SPACED_REVIEW_MS = 30 * 86400000;
+  const now = Date.now();
+  return pool.filter(q => {
+    // Category gate: active OR mastered with last review > 30 days ago
+    const inActive = activeSet.has(q.cat);
+    const lastRev = masteredLast.get(q.cat);
+    const dueForReview = lastRev && (now - new Date(lastRev).getTime() > SPACED_REVIEW_MS);
+    if (!inActive && !dueForReview) return false;
+    // Level gate: q.lvl ≤ level_cap, with stretch_allowance fraction at cap+1.
+    // Probabilistic per-call sampling — converges to ~stretch ratio across sessions.
+    const qLvlNum = LVL[q.lvl] || 2;
+    if (qLvlNum > capNum + 1) return false;
+    if (qLvlNum === capNum + 1 && Math.random() >= stretch) return false;
+    return true;
+  });
+}
+
 function selectQuestions(count) {
   const LEVEL_ORDER = {B1:1,B2:2,C1:3,C2:4};
   const maxLvlNum = LEVEL_ORDER[maxLevel] || 4;
@@ -3790,8 +3842,10 @@ function selectQuestions(count) {
     if (catFilter !== 'All' && q.cat !== catFilter) return false;
     if (!includeBiz && q.biz) return false;
     if ((LEVEL_ORDER[q.lvl] || 2) > maxLvlNum) return false;
+    if (isQuestionLocked(q.id)) return false;
     return true;
   });
+  pool = applyLearnerWindowFilter(pool);
   const qs = pool;
   if (mode === 'random') {
     shuffle(qs);
@@ -4314,6 +4368,7 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   DB.qStats[q.id].lastSeen = Date.now();
   DB.qStats[q.id].consec = allCorrect ? (DB.qStats[q.id].consec||0)+1 : 0;
   if (allCorrect) { delete DB.qStats[q.id].lastWrong; } else if (q._lastPlayerAnswer !== undefined) { DB.qStats[q.id].lastWrong = q._lastPlayerAnswer; }
+  maybeAutoLockFloorBouncer(q.id);
   const cat = q.cat;
   if (!DB.catStats[cat]) DB.catStats[cat] = {seen:0,correct:0};
   DB.catStats[cat].seen++;
@@ -4355,6 +4410,7 @@ async function recordAnswer(correct, q) {
   DB.qStats[q.id].lastSeen = Date.now();
   DB.qStats[q.id].consec = correct ? (DB.qStats[q.id].consec||0)+1 : 0;
   if (correct) { delete DB.qStats[q.id].lastWrong; } else if (q._lastPlayerAnswer !== undefined) { DB.qStats[q.id].lastWrong = q._lastPlayerAnswer; }
+  maybeAutoLockFloorBouncer(q.id);
 
   // per-category
   const cat = q.cat;
@@ -5775,6 +5831,8 @@ async function loadFromFirebase() {
         lastPlayedDate: remote.lastPlayedDate   || null,
         createdAt:      remote.createdAt        || new Date().toISOString(),
         _simpleUI:      remote.simpleUI         === true,
+        ui_shell:       remote.ui_shell        || 'builder',
+        learning_path:  remote.learning_path   || null,
       };
       if (typeof saveData === 'function') await saveData(merged);
       if (typeof DB !== 'undefined') {

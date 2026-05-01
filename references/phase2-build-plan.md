@@ -1012,6 +1012,76 @@ in the doc.
   - §4.1 `next_unlock_options` schema: now array of 4 objects with
     `category` / `pathway` / `rationale`, matching §3.2 D3 + §9
 
+### v20260501-s93 — §4.1 active window plumbing
+
+Build sequence item §4.1 substantially landed. Three slices:
+
+1. **Firestore data layer.** All 5 players now have `ui_shell` (top-level)
+   and `learning_path` (nested object) populated. Anna / Nicole / Ernest
+   carry the confirmed initial windows from the §9 proposals; Artem /
+   Egor carry empty defaults. All 5 still on `ui_shell: "builder"` —
+   no behavior change for current users. Schema interpretation
+   resolved: `ui_shell` lives at player-doc top-level (per §6 + D1
+   wording); `learning_path` nests everything else (no `ui_shell`
+   inside, despite the §4.1 schema diagram redundantly listing it).
+
+2. **PWA logic — additive, behind `ui_shell === 'learner'` gate.**
+   - `defaultData()` carries `ui_shell: 'builder'` and
+     `learning_path: null`
+   - `loadFromFirebase` round-trips both fields from Firestore
+   - `selectQuestions` now applies an active-window filter
+     (`applyLearnerWindowFilter`): when `ui_shell === 'learner'`
+     and `learning_path.active_categories.length > 0`, restricts
+     pool to active categories (or mastered-and-due-for-spaced-review
+     >30d) AND level ≤ `level_cap` with probabilistic
+     `stretch_allowance` sampling at cap+1. Builder shell pool is
+     unchanged.
+   - Mastered-spaced-review gate: 30 days per §4.1.
+
+3. **Floor-bouncer auto-lock — universal, all shells.**
+   - `maybeAutoLockFloorBouncer(id)` fires after every qStats update
+     in `recordAnswer` and `recordMultiAnswer`. Locks the question
+     for 6 weeks (`FLOOR_BOUNCER_LOCK_MS`) when `seen ≥ 3` and
+     `correct === 0`. After the lock expires, if the user gets it
+     wrong again on resurface, the lock re-extends.
+   - `isQuestionLocked(id)` filters locked questions out of the
+     selection pool universally — works on builder shell too.
+
+**Verification (preview, builder DB):**
+- selectQuestions in builder shell returns mixed-category pool
+  (no behavior change)
+- floor-bouncer probe: synthesise seen=3/correct=0 → lock horizon
+  computes to 42 days; isQuestionLocked returns true; pool excludes
+- learner-shell synthetic probe: with active=[Tenses, Articles],
+  cap=B1, stretch=0.10 → returns only Tenses/Articles, mostly B1
+  with ~10% B2 stretch as designed
+
+**Acceptance state for §4.1:**
+- ✅ All 5 players have `learning_path` populated correctly
+- ✅ Floor-bouncer auto-lock works (verified via synthetic probe)
+- ✅ Builder-shell players see no behavioral change (verified)
+- ⏳ "Smart mode for Anna only surfaces questions in her active
+  window" — gated end-to-end test deferred to §4.4 when the learner
+  shell ships and Anna is flipped to `ui_shell: "learner"`. Logic
+  is in place and exercises correctly under synthetic probe.
+- ⏳ "Stats display for Anna only shows active + mastered categories"
+  — defers to §4.4 (learner-shell stats display).
+
+**Coach picker filter (§4.1 acceptance bullet):** not yet wired.
+Coach-tab content surfacing currently has no learner-window gate.
+Tracked as follow-up under §4.1; will land alongside §4.4 learner
+shell since the picker UI itself is a §4.4 surface.
+
+**Next session candidates** (per §1 priority):
+- §4.6 spelling layer (Spell Help button, Spelling Drill schema,
+  typo tolerance) — Tier 1, smaller engineering footprint than
+  §4.4 learner shell
+- §4.4 learner shell landing + routing — Tier 1, the gating
+  surface for testing §4.1 end-to-end
+- §4.5 Anna's library content authoring — Tier 1 content work
+- Tier 2 PV ladder rebalance Batch 1 (Artem/Egor benefit
+  immediately; family gated)
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
