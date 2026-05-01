@@ -1380,6 +1380,59 @@ content authoring (Tier 2) — both gated on real family usage.
 
 ---
 
+### 2026-05-01 — Phase 2C closed, Phase 2D opens (end of CC session)
+
+**§13.2 Phase 2C acceptance — confirmed met:**
+
+| Acceptance criterion | Status |
+|---|---|
+| Anna completes Free Write 5+ turns, logged to `coach_sessions/`, `weak_patterns` updated | ✅ `anna_fw_1777627810661_0aj6` — 7 turns, summary + 9 patterns logged. Merge bug surfaced and fixed (s92r2). |
+| Anna taps Escalate, gets richer explanation, `escalation_used: true` logged | ✅ Two escalates: `anna_esc_1777627342151_d1it` (wait_for), `anna_esc_1777627553834_xmsg` (listen_to). Per-item rows show `escalation_used: true`. |
+| Worker rejects malformed requests | ✅ Verified via curl: CORS preflight, wrong-origin 403, bad mode 400, bad model 400, missing player 400. |
+| API balance observable declining | ✅ `coach_sessions.tokens_used` shows real input/output token counts (FW ~14k, escalate ~1.7k each). Single-digit cents consumed of $5 pilot. |
+
+All §13.2 build items shipped. Phase 2C is complete.
+
+**Today shipped (full chronology, newest first):**
+- `s92r2` — fix coach_notes merge bug (chronological FIFO was silently displacing durable stats-derived patterns; now durable-vs-tagged priority + auto-log recent_observation per session). Anna's coach_notes manually restored: 4 durable + 4 most-distinct session-tagged patterns; engagement_notes captures the headline insight.
+- `s92` — three changes from Anna's first-real-session feedback: active-recall retry on Escalate (one retry of the same item, scored, `escalation_retry_*` fields preserved alongside first-attempt `correct`), Free Write tone softened (worker prompt) + soft-cap nudge dropped 20→8 turns, prominent session-done card with 3-action row.
+- `s91r3` (PWA + worker) — `coach_language` moved from worker constant to player profile data; doc → `FAMILY_MEMBERS` → context payload → worker. Source of truth for language preference is now `family-profiles.md`.
+- `s91-worker-r2` — Artem added to `ALLOWED_PLAYERS` (decision change vs §3 / §4 A1; documented).
+- Worker prompt — Anna + Nicole get Russian explanations; Artem + Ernest get English with Russian glosses.
+- `s91r2` — Coach tab input becomes a multi-line textarea with auto-grow (was single-line; horizontal scroll past 1 line was hostile UX).
+
+**Headline engagement insight — Anna**: Free Write proved to be **the** engagement lever. 12-min self-directed session, finished by choice, organic 7-turn flow. Translation Drill works as warm-up; FW is where she goes deep. Captured in `coach_notes.engagement_notes`. Not promoted to `family-profiles.md` yet (per §6.5 promotion rule: 4+ sessions + survives intervention).
+
+**Total spend today**: ~$0.10–$0.15 of $5 pilot prepaid. Well within budget.
+
+**Open follow-up items (queued for next session)**:
+- (Engineering, optional) Implement frequency × recency for the merge — current is binary durable-vs-tagged, works but spec says full frequency weighting. Defer until patterns over-accumulate.
+- (Content polish) `tr_anna_b04` false negative — should accept "I'm looking for my keys" (currently only accepts "for keys" / "for the keys"). One-line backfill.
+
+---
+
+## Phase 2D — Full coverage (next session)
+
+**§13.3 acceptance criteria:**
+- Each of Anna, Nicole, Ernest has ≥40 exercises across ≥3 types (currently: Anna 10 / 1 type; Nicole 0; Ernest 0)
+- Anna and Nicole logged ≥3 Coach tab sessions over 2 weeks (Anna: 1–2; Nicole: 0)
+- Live API costs within $5–15/month band (on track)
+
+**Recommended starting point** (highest leverage):
+
+1. **Nicole v1 translation set** — 10 short B1 prompts, single-target, Russian explanations (her `coachLanguage: 'ru'`). Themes: K-pop, school, friends. Same recipe as Anna's v2. Unblocks her flywheel; addresses 2D criteria #1 + #2 simultaneously.
+2. **Article drill content (~10–15)** — opens a 2nd exercise type for the family; Articles is in Anna's profile, Ernest's documented gap, Nicole's "recognition vs production gap". Schema in §6.1.2. Adds to all three players' coverage.
+3. **Anna v3 translation set** (if she signals wanting more drills) — she got 9/10 on v2; could handle harder material. Defer until her usage signals more drills wanted (Free Write is current preferred mode).
+
+Tier 2 quiz content (Used To input / B2 Idioms / PV Phase 2 Batch 1) stays deferred — Coach tab is where engagement is happening.
+
+**Session restart notes**:
+- Local mods uncommitted: `references/exercise-types.md`, `.claude/skills/exercise-session/SKILL.md` (pre-existing, not from this session). Decide whether to commit/revert when next session opens.
+- Anna's coach_notes are restored to a sensible state. Future Free Write sessions will auto-log recent_observations and merge weak_patterns priority-aware.
+- Worker version `132038a8` (s92 deploy). PWA version `v20260501-s92r2` live.
+
+---
+
 ### 2026-05-01 — s92: active-recall retry, lighter Free Write, richer session-done
 
 Three observations from Anna's first real session on s91/s91r2/s91r3:
