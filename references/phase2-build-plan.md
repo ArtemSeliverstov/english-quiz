@@ -1082,6 +1082,113 @@ shell since the picker UI itself is a §4.4 surface.
 - Tier 2 PV ladder rebalance Batch 1 (Artem/Egor benefit
   immediately; family gated)
 
+### v20260501-s94 — §4.6 spelling layer + Anna content (substantially complete)
+
+**Scoping note**: Initial intent in prior status entry was to spread
+across §4.4 learner shell, §4.5 content, §4.6 spelling, and Tier 2 PV
+in one session. Negotiated down to a focused §4.6 + Anna content
+slice for proper integration depth — §4.4 learner shell, §4.3 article
+batches, and Tier 2 PV remain queued.
+
+**Shipped**:
+
+1. **Spelling Drill exercise type (D6)** — full implementation:
+   - Schema authored at `exercises_library/spelling_drill/items/{id}`
+     with `prompt_definition_ru`, `prompt_definition_en`, `correct`,
+     `common_misspellings: [{pattern, feedback}]`, `example_sentence`,
+     `source`, `fallback_feedback`
+   - Picker button added to Coach tab; `coachStartType` extended via
+     `COACH_TYPE_TO_LIBRARY` map
+   - Prompt rendering with RU primary cue + EN secondary
+   - Scoring: exact match required; up to 3 attempts per item with
+     "Try again" between; on final attempt or known-misspelling match,
+     correct spelling + example sentence shown; on attempts ≥ 3 with
+     no pattern match, Levenshtein-distance nudge ("one letter off",
+     "two letters off")
+   - Sessions written to `players/{name}/exercises/{ts}` with
+     existing `coachUpsertSession` flow
+
+2. **Translation Drill typo tolerance (D8)** — Levenshtein ≤ 2 from
+   any normalised correct form is accepted; when triggered, feedback
+   shows "✓ Correct — grammar fine" + soft spelling note pointing at
+   the closest correct form. Pattern feedback for known errors
+   continues to fire when exact match fails. `sessionResults` carries
+   `typo_surfaced: true` for downstream pattern analysis.
+
+3. **Spell Help button (D7)** — persistent affordance below the Coach
+   picker. Player types attempt + optional context; Worker called
+   with `mode: 'free_write'` and a structured one-shot user message;
+   reply parsed as line 1 = correct spelling, line 2 = example
+   sentence; (attempted, correct, context, raw_reply) triple logged
+   to `players/{name}/spelling_log/{ts}`. No worker code change
+   needed — repurposes existing `free_write` mode.
+
+4. **Anna content authored** (20 items total):
+   - 10 Spelling Drill items (`sp_anna_b01`–`sp_anna_b10`) targeting
+     her documented weak_patterns (typo cluster, plural-noun
+     omission, article confusions) + predicted L1 traps (silent gh,
+     i-before-e, doubled consonants, -fe → -ves plurals)
+   - 10 Translation Drill items (`tr_anna_b11`–`tr_anna_b20`) at B1,
+     themed per D12 (home, family, padel, neighbours, daily routine).
+     Each carries 2 `common_errors` patterns covering the most
+     likely RU calque traps (calque preposition swaps, missing
+     articles, "play in" vs "play", "in seven" vs "at seven", etc.)
+
+5. **Floor-bouncer auto-lock** (carried from s93) remains universal.
+
+**Verified end-to-end via preview probe**:
+- Spelling drill loads for Anna with 10 items, prompt rendering
+  correct, RU/EN definition split renders as designed
+- Known-misspelling pattern match: advances immediately, shows
+  pattern feedback + correct spelling, no pointless retry
+- Gibberish wrong: 3-attempt retry loop with action row reverting
+  to "Try again" until attempt 3, then final advance
+- Translation typo (1-char off): graded as correct, spelling note
+  surfaces, sessionResult.typo_surfaced=true
+- Spell Help inline form renders, Ask/Back buttons work
+
+**Bug fix during session**: `tools/_firestore.js fsGet()` returns
+raw Firestore wire-format docs (with `.fields`), not converted plain
+JS — unlike the client-side `fsGet` in index.html which converts via
+`_fsFromDoc`. The first `_meta` update in `author_anna_s94.js` saw
+the raw doc as effectively empty, overwriting `total_exercises_per_type.translation`
+from 10 to 10 (lost the existing 10). Corrected via direct `fsPatch`
+with `docToPlain`. Author scripts in tools/-pattern should always
+wrap fsGet output in `docToPlain()` before reading nested fields.
+
+**Acceptance state for §4.6**:
+- ✅ Spell Help button live in Coach tab
+- ✅ Spelling Drill exercise type works end-to-end
+- ✅ Typo tolerance prevents false negatives in Translation Drill
+- ⏳ "≥10 spell help captures land in spelling_log during Anna's
+   first week of usage post-deploy" — measurable from real usage,
+   not testable in this session
+- ⏳ Russian Trap (defers per §4.6 sequencing — needs 2-3 sessions
+   of Anna's Spell Help / Free Write data first)
+- ⏳ Medal display tweak (D9) — unrelated to §4.6, separate slice
+
+**Acceptance state for §4.5 Anna line**:
+- ✅ Translation Drill: 20 items (was 10, added 10 themed)
+- ✅ Spelling Drill: 10 items
+- ⏳ Article Drill (~15 items): defers to §4.3 article intervention session
+- ⏳ Russian Trap (~10 items): dependency-gated on Anna's first 2-3
+  Spell Help / Free Write sessions per §4.6 sequencing note
+- ✅ Free Write themed prompts already bundled (Anna's 5 themes
+  per D12 are referenced in COACH_FW_STARTERS — verify if missing)
+
+**Next session candidates** (per §1 priority):
+- §4.4 learner shell landing + routing — gating surface for testing
+  §4.1/§4.6 end-to-end as a learner-shell experience
+- §4.3 article intervention batch 1 (~25-30 quiz Qs + ~15 article_drill
+  items per family member) — content work
+- §4.6 medal display tweak (D9) — small engineering, completes §4.6
+- §4.5 Nicole library content (translation, spelling, free write
+  prompts) — content work
+- §4.5 Ernest library content (translation, article_drill, error
+  correction) — content work
+- Tier 2 PV ladder rebalance Batch 1 (~50 items) — content work
+  with active-window gating already in place
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated

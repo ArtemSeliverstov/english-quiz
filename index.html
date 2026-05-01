@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s93">
+  <meta name="app-version" content="v20260501-s94">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -884,6 +884,8 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 .coach-action-row button:hover{border-color:var(--accent);}
 .coach-action-row button.coach-action-primary:hover{filter:brightness(1.05);}
 .coach-typing{font-size:.8rem;color:var(--muted);font-style:italic;padding:.4rem .85rem;}
+.coach-spellhelp-btn{margin-top:.6rem;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;background:transparent;border:1px dashed var(--border);border-radius:8px;padding:.55rem .8rem;color:var(--muted);font:inherit;font-size:.82rem;cursor:pointer;transition:border-color .15s,color .15s,background .15s;}
+.coach-spellhelp-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(255,255,255,.03);}
 .coach-msg.coach-done-card{align-self:stretch;max-width:100%;text-align:center;padding:1rem 1.1rem;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.03);}
 .coach-msg.coach-done-card.feedback-correct{background:rgba(111,239,178,.10);border-color:rgba(111,239,178,.35);}
 .coach-done-headline{font-size:1rem;font-weight:600;margin-bottom:.4rem;}
@@ -928,7 +930,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s93</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s94</span></p>
 </header>
 
 <!-- TABS -->
@@ -1187,6 +1189,10 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Translation Drill</span>
           <span class="coach-type-count" data-count-for="translation">…</span>
         </button>
+        <button class="coach-type-btn" data-type="spelling_drill" onclick="coachStartType('spelling_drill')">
+          <span class="coach-type-name">Spelling Drill</span>
+          <span class="coach-type-count" data-count-for="spelling_drill">…</span>
+        </button>
         <button class="coach-type-btn disabled" data-type="article_drill" disabled>
           <span class="coach-type-name">Articles</span>
           <span class="coach-type-count" data-count-for="article_drill">0</span>
@@ -1208,6 +1214,10 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-count">live AI</span>
         </button>
       </div>
+      <button id="spellHelpBtn" class="coach-spellhelp-btn" onclick="coachOpenSpellHelp()" title="Quick spelling lookup with example sentence">
+        <span style="font-size:.95rem;">🔤</span>
+        <span>How do I spell…?</span>
+      </button>
     </div>
 
     <!-- ── CHAT THREAD ── -->
@@ -6932,6 +6942,123 @@ async function coachStartFreeWrite() {
   setTimeout(() => fld.focus(), 80);
 }
 
+// ─── Spell Help (D7) ────────────────────────────────────────────────────────
+// Persistent button on the Coach picker. Player types a word as best they can;
+// system asks the Worker (free_write mode, single-turn) for the correct spelling
+// and one example sentence. The (attempted, correct, context) triple is logged
+// to players/{name}/spelling_log/{ts} for future Spelling Drill authoring (CC
+// reads this in stats review and converts captures into authored items).
+async function coachOpenSpellHelp() {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable) {
+    alert('Live AI is temporarily unavailable. Try again later.');
+    return;
+  }
+  if (!navigator.onLine) {
+    alert('You appear to be offline. Spell Help needs a connection.');
+    return;
+  }
+  // Render an inline form in the chat surface — simpler than a modal.
+  document.getElementById('coachPicker').style.display = 'none';
+  const chat = document.getElementById('coachChat');
+  chat.style.display = '';
+  chat.innerHTML = '';
+  document.getElementById('coachExitRow').style.display = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  document.getElementById('coachInputRow').style.display = 'none';
+  coachState.type = 'spell_help';
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Spell Help</div>` +
+    `<div style="margin-bottom:.4rem;">How do you spell the word? Type your best attempt — I'll give you the correct spelling and an example sentence.</div>` +
+    `<input id="spellHelpAttempt" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="your attempt…" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .8rem;color:var(--text);font:inherit;font-size:.9rem;margin-bottom:.4rem;">` +
+    `<input id="spellHelpContext" type="text" autocomplete="off" placeholder="(optional) what were you writing? e.g. 'a sentence about cooking'" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;color:var(--text);font:inherit;font-size:.82rem;color:var(--muted);">`
+  );
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const askBtn = document.createElement('button');
+  askBtn.className = 'coach-action-primary';
+  askBtn.textContent = '🔤 Ask';
+  askBtn.onclick = () => coachSubmitSpellHelp();
+  row.appendChild(askBtn);
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'Back';
+  cancelBtn.onclick = () => { row.style.display = 'none'; coachShowPicker(); };
+  row.appendChild(cancelBtn);
+  row.style.display = '';
+  setTimeout(() => { const el = document.getElementById('spellHelpAttempt'); if (el) el.focus(); }, 80);
+}
+
+async function coachSubmitSpellHelp() {
+  const attemptEl = document.getElementById('spellHelpAttempt');
+  const contextEl = document.getElementById('spellHelpContext');
+  const attempted = ((attemptEl && attemptEl.value) || '').trim();
+  const context = ((contextEl && contextEl.value) || '').trim();
+  if (!attempted) { if (attemptEl) attemptEl.focus(); return; }
+  if (attemptEl) attemptEl.disabled = true;
+  if (contextEl) contextEl.disabled = true;
+  const row = document.getElementById('coachActionRow');
+  row.style.display = 'none';
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Looking it up…</span>');
+  const userMsg = `Quick spelling lookup. I tried: "${attempted}".${context ? ` Context: ${context}.` : ''} Reply with EXACTLY:\nLine 1: just the correct English spelling on its own (no punctuation, no quotes).\nLine 2: one short example sentence using that word.\nNothing else.`;
+  const result = await coachWorkerCall({
+    mode: 'free_write',
+    model: COACH_FW_MODEL,
+    messages: [{ role: 'user', content: userMsg }],
+    context: coachBuildContext(),
+    session_id: coachMakeSessionId(currentPlayer, 'spell_help'),
+    is_session_end: true,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant', '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>', 'feedback-wrong');
+    const r = document.getElementById('coachActionRow');
+    r.innerHTML = '';
+    const back = document.createElement('button');
+    back.className = 'coach-action-primary';
+    back.textContent = 'Back';
+    back.onclick = () => { r.style.display = 'none'; coachShowPicker(); };
+    r.appendChild(back);
+    r.style.display = '';
+    return;
+  }
+  const reply = String(result.content || '').trim();
+  // Best-effort parse: first non-empty line is the correct spelling, rest is example.
+  const lines = reply.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const correct = (lines[0] || '').replace(/^["']|["']$|[.!?,;:]$/g, '').trim();
+  const example = lines.slice(1).join(' ').trim();
+  // Render
+  coachAppendMessage('assistant',
+    `<div><strong>${escapeHtml(correct || '?')}</strong></div>` +
+    (example ? `<div style="margin-top:.35rem;font-size:.82rem;color:var(--muted);">${escapeHtml(example)}</div>` : '')
+  );
+  // Log capture (fire-and-forget). correct may be empty if parse failed; CC fills in later.
+  const ts = Date.now();
+  const logDoc = {
+    attempted: attempted,
+    correct: correct || null,
+    context: context || null,
+    raw_reply: reply,
+    created: new Date(ts).toISOString(),
+    player: currentPlayer,
+  };
+  fsSet('players/' + currentPlayer + '/spelling_log/' + ts, logDoc).catch(e => {
+    console.warn('spelling_log write failed:', e);
+  });
+  // Action row: ask another or back to picker
+  const r2 = document.getElementById('coachActionRow');
+  r2.innerHTML = '';
+  const again = document.createElement('button');
+  again.className = 'coach-action-primary';
+  again.textContent = '🔤 Ask another';
+  again.onclick = () => coachOpenSpellHelp();
+  r2.appendChild(again);
+  const back = document.createElement('button');
+  back.textContent = 'Back';
+  back.onclick = () => { r2.style.display = 'none'; coachShowPicker(); };
+  r2.appendChild(back);
+  r2.style.display = '';
+}
+
 function coachShowFreeWriteEndRow() {
   const row = document.getElementById('coachActionRow');
   row.innerHTML = '';
@@ -7365,7 +7492,8 @@ async function coachLoadMeta() {
     const cov = (meta && meta.coverage_by_player) || {};
     const playerCov = cov[player] || {};
     const allCov = cov.all || {};
-    const TYPES = ['translation','article_drill','particle_sort','error_correction','russian_trap'];
+    const TYPES = ['translation','spelling_drill','article_drill','particle_sort','error_correction','russian_trap'];
+    const SHIPPED_TYPES = ['translation','spelling_drill'];
     let totalAvail = 0;
     for (const t of TYPES) {
       const n = (playerCov[t] || 0) + (allCov[t] || 0);
@@ -7373,7 +7501,7 @@ async function coachLoadMeta() {
       const el = document.querySelector(`[data-count-for="${t}"]`);
       if (el) el.textContent = n + ' avail';
       const btn = document.querySelector(`.coach-type-btn[data-type="${t}"]`);
-      if (btn && t === 'translation') {
+      if (btn && SHIPPED_TYPES.includes(t)) {
         btn.disabled = (n === 0);
         btn.classList.toggle('disabled', n === 0);
       }
@@ -7390,7 +7518,7 @@ async function coachRenderStatsCard() {
   const weakEl = document.getElementById('coachWeakSpot');
   try {
     const docs = await fsList('players/' + currentPlayer + '/exercises');
-    const COACH_TYPES = ['translation','article_drill','particle_sort','error_correction','russian_trap'];
+    const COACH_TYPES = ['translation','spelling_drill','article_drill','particle_sort','error_correction','russian_trap'];
     const coachLogs = (docs || [])
       .filter(d => COACH_TYPES.includes(d.exercise) && d.source === 'coach_tab')
       .map(d => ({ ...d, ts: parseInt(d.id) }))
@@ -7431,19 +7559,31 @@ async function coachRenderStatsCard() {
   }
 }
 
+// Map UI type → Firestore subcollection. Names line up so this is mostly identity,
+// but kept explicit so future renames / aliases don't break the picker.
+const COACH_TYPE_TO_LIBRARY = {
+  translation: 'translation',
+  spelling_drill: 'spelling_drill',
+};
+const COACH_TYPE_LABEL = {
+  translation: 'translation drill',
+  spelling_drill: 'spelling drill',
+};
+
 async function coachStartType(type) {
   if (!currentPlayer) { alert('Sign in first.'); return; }
-  if (type !== 'translation') return; // MVP: translation only
+  const libCollection = COACH_TYPE_TO_LIBRARY[type];
+  if (!libCollection) return; // unsupported type
   let exercises;
   try {
-    exercises = await fsList('exercises_library/' + type + '/items');
+    exercises = await fsList('exercises_library/' + libCollection + '/items');
   } catch (e) {
     alert('Could not load exercises: ' + e.message);
     return;
   }
   exercises = (exercises || []).filter(ex => ex.target_player === currentPlayer || ex.target_player === 'all');
   if (!exercises.length) {
-    alert('No ' + type + ' exercises available for you yet.');
+    alert('No ' + (COACH_TYPE_LABEL[type] || type) + ' exercises available for you yet.');
     return;
   }
   exercises.sort(() => Math.random() - 0.5);
@@ -7454,11 +7594,15 @@ async function coachStartType(type) {
   coachState.plannedTotal = exercises.length;
   coachState.sessionResults = [];
   coachState.current = null;
+  coachState.attemptCount = 0;          // per-item retry counter (D6 spelling drill nudge)
   document.getElementById('coachPicker').style.display = 'none';
   document.getElementById('coachChat').style.display = '';
   document.getElementById('coachExitRow').style.display = '';
   document.getElementById('coachChat').innerHTML = '';
-  coachAppendMessage('assistant', `Let's practise <strong>${type.replace('_',' ')}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`);
+  const intro = type === 'spelling_drill'
+    ? `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`
+    : `Let's practise <strong>${(COACH_TYPE_LABEL[type] || type)}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`;
+  coachAppendMessage('assistant', intro);
   coachNextExercise();
 }
 
@@ -7470,13 +7614,21 @@ function coachNextExercise() {
   const ex = coachState.pool.shift();
   coachState.current = ex;
   coachState.startedAt = Date.now();
+  coachState.attemptCount = 0; // reset per-item attempt counter
+  const idx = coachState.sessionResults.length + 1;
+  const total = idx + coachState.pool.length;
   if (coachState.type === 'translation') {
-    const idx = coachState.sessionResults.length + 1;
-    const total = idx + coachState.pool.length;
     coachAppendMessage('assistant',
       `<div class="coach-msg-prompt">Translate (${idx}/${total}):</div>` +
       `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_ru)}</div>` +
       (ex.prompt_en_hint ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">${escapeHtml(ex.prompt_en_hint)}</div>` : '')
+    );
+  } else if (coachState.type === 'spelling_drill') {
+    // RU definition is primary cue (Anna/Nicole); EN definition is secondary disambiguator.
+    coachAppendMessage('assistant',
+      `<div class="coach-msg-prompt">Spell it (${idx}/${total}):</div>` +
+      (ex.prompt_definition_ru ? `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_definition_ru)}</div>` : '') +
+      (ex.prompt_definition_en ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">${escapeHtml(ex.prompt_definition_en)}</div>` : '')
     );
   }
   document.getElementById('coachInputRow').style.display = '';
@@ -7539,6 +7691,50 @@ function coachIsMatch(submitted, correctAnswers) {
   return (correctAnswers || []).some(c => coachNormalize(c) === norm);
 }
 
+// Levenshtein distance — small DP. Used for D8 typo tolerance (Translation Drill,
+// post-normalisation) and D6 Spelling Drill late-attempt nudges.
+function coachLevenshtein(a, b) {
+  a = String(a || ''); b = String(b || '');
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = new Array(n + 1);
+  let curr = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+    }
+    [prev, curr] = [curr, prev];
+  }
+  return prev[n];
+}
+
+// Translation-drill grading with typo tolerance (D8). Returns:
+//   { status: 'exact' | 'typo' | 'wrong', closest, distance, exact_match_form }
+// 'typo' fires when Levenshtein distance ≤ 2 from any normalised correct form
+// AND exact match has already failed. Caller surfaces a soft spelling note.
+function coachGradeTranslation(submitted, correctAnswers) {
+  const norm = coachNormalize(submitted);
+  const list = correctAnswers || [];
+  for (const c of list) {
+    if (coachNormalize(c) === norm) {
+      return { status: 'exact', closest: c, distance: 0, exact_match_form: c };
+    }
+  }
+  let best = null;
+  for (const c of list) {
+    const d = coachLevenshtein(norm, coachNormalize(c));
+    if (!best || d < best.distance) best = { closest: c, distance: d };
+  }
+  if (best && best.distance <= 2) {
+    return { status: 'typo', closest: best.closest, distance: best.distance, exact_match_form: null };
+  }
+  return { status: 'wrong', closest: best ? best.closest : null, distance: best ? best.distance : Infinity, exact_match_form: null };
+}
+
 async function coachUpsertSession({ partial = true } = {}) {
   // Upsert the running session doc to players/{name}/exercises/{sessionTs}.
   // Called after every answered item (partial:true) and once more at finish (partial:false).
@@ -7594,31 +7790,112 @@ async function coachSubmitAnswer() {
   document.getElementById('coachSendBtn').disabled = true;
   document.getElementById('coachInputRow').style.display = 'none';
   coachState.answeredAt = Date.now();
+  coachState.attemptCount = (coachState.attemptCount || 0) + 1;
   coachAppendMessage('user', escapeHtml(submitted));
-  const correct = coachIsMatch(submitted, ex.correct_answers);
+
+  let correct = false;
   let pattern = null;
   let feedback;
-  let extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
-  if (correct) {
-    feedback = '<strong>✓ Correct!</strong>';
-    if ((ex.correct_answers || []).length > 1) {
-      const others = ex.correct_answers.filter(a => coachNormalize(a) !== coachNormalize(submitted));
-      if (others.length) {
-        feedback += '<div style="margin-top:.35rem;font-size:.78rem;color:var(--muted);">Other valid forms: ' + escapeHtml(others.slice(0, 2).join(' · ')) + '</div>';
+  let extraClass;
+  let typoSurfaced = false;
+
+  if (coachState.type === 'spelling_drill') {
+    // D6: exact match required; single-character typo nudge only after 2+ failed attempts on same item.
+    const correctSpelling = String(ex.correct || '').trim();
+    const mispattern = (ex.common_misspellings || []).find(m => m && m.pattern && coachNormalize(m.pattern) === coachNormalize(submitted));
+    if (coachNormalize(submitted) === coachNormalize(correctSpelling)) {
+      correct = true;
+      feedback = '<strong>✓ Correct!</strong> <span style="font-family:monospace;">' + escapeHtml(correctSpelling) + '</span>';
+      if (ex.example_sentence) {
+        feedback += '<div style="margin-top:.35rem;font-size:.78rem;color:var(--muted);">' + escapeHtml(ex.example_sentence) + '</div>';
+      }
+    } else {
+      // Wrong. If a known misspelling pattern matches, surface its L1-aware feedback.
+      // Otherwise, on attempts ≥ 3 give a small nudge based on Levenshtein distance.
+      if (mispattern) {
+        feedback = '<strong>Not quite.</strong> ' + escapeHtml(mispattern.feedback || '');
+        pattern = mispattern;
+      } else if (coachState.attemptCount >= 3) {
+        const dist = coachLevenshtein(coachNormalize(submitted), coachNormalize(correctSpelling));
+        if (dist === 1) {
+          feedback = '<strong>Very close — one letter off.</strong>';
+        } else if (dist === 2) {
+          feedback = '<strong>Close — two letters off.</strong>';
+        } else {
+          feedback = '<strong>Not quite.</strong> ' + escapeHtml(ex.fallback_feedback || '');
+        }
+      } else {
+        feedback = '<strong>Not quite — try again.</strong>';
+      }
+    }
+    extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+    // On wrong: show correct only after attempts ≥ 3 to allow real production practice.
+    if (!correct && (coachState.attemptCount >= 3 || mispattern)) {
+      feedback += '<div style="margin-top:.4rem;font-size:.8rem;"><em>Correct spelling:</em> <span style="font-family:monospace;">' + escapeHtml(correctSpelling) + '</span></div>';
+      if (ex.example_sentence) {
+        feedback += '<div style="margin-top:.25rem;font-size:.78rem;color:var(--muted);">' + escapeHtml(ex.example_sentence) + '</div>';
       }
     }
   } else {
-    pattern = coachMatchPattern(submitted, ex.common_errors);
-    if (pattern) {
-      feedback = '<strong>Not quite.</strong> ' + escapeHtml(pattern.feedback);
+    // Translation drill (and default).
+    const grade = coachGradeTranslation(submitted, ex.correct_answers);
+    correct = (grade.status === 'exact' || grade.status === 'typo');
+    typoSurfaced = (grade.status === 'typo');
+    extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+    if (grade.status === 'exact') {
+      feedback = '<strong>✓ Correct!</strong>';
+      if ((ex.correct_answers || []).length > 1) {
+        const others = ex.correct_answers.filter(a => coachNormalize(a) !== coachNormalize(submitted));
+        if (others.length) {
+          feedback += '<div style="margin-top:.35rem;font-size:.78rem;color:var(--muted);">Other valid forms: ' + escapeHtml(others.slice(0, 2).join(' · ')) + '</div>';
+        }
+      }
+    } else if (grade.status === 'typo') {
+      // D8: count as correct, surface a soft spelling note.
+      feedback = '<strong>✓ Correct</strong> — grammar fine.';
+      feedback += '<div style="margin-top:.35rem;font-size:.78rem;color:var(--muted);">Spelling note: <span style="font-family:monospace;">' + escapeHtml(grade.closest) + '</span> — check the small differences.</div>';
     } else {
-      feedback = '<strong>Not quite.</strong> ' + escapeHtml(ex.fallback_feedback || '');
-    }
-    if (ex.correct_answers && ex.correct_answers.length) {
-      feedback += '<div style="margin-top:.4rem;font-size:.8rem;"><em>One correct version:</em> ' + escapeHtml(ex.correct_answers[0]) + '</div>';
+      pattern = coachMatchPattern(submitted, ex.common_errors);
+      if (pattern) {
+        feedback = '<strong>Not quite.</strong> ' + escapeHtml(pattern.feedback);
+      } else {
+        feedback = '<strong>Not quite.</strong> ' + escapeHtml(ex.fallback_feedback || '');
+      }
+      if (ex.correct_answers && ex.correct_answers.length) {
+        feedback += '<div style="margin-top:.4rem;font-size:.8rem;"><em>One correct version:</em> ' + escapeHtml(ex.correct_answers[0]) + '</div>';
+      }
     }
   }
   coachAppendMessage('assistant', feedback, extraClass);
+
+  // Spelling drill allows up to 3 attempts per item before advancing.
+  // Don't record the result until the attempt is final (correct, attempts ≥ 3,
+  // or a known misspelling pattern matched — in which case the correct spelling
+  // is already shown and a retry would just be copy-typing).
+  const isFinal = correct || coachState.type !== 'spelling_drill' || coachState.attemptCount >= 3 || (coachState.type === 'spelling_drill' && pattern);
+  const actionRow = document.getElementById('coachActionRow');
+  actionRow.innerHTML = '';
+
+  if (!isFinal) {
+    // Spelling drill mid-attempt: offer "Try again" without recording.
+    const tryBtn = document.createElement('button');
+    tryBtn.className = 'coach-action-primary';
+    tryBtn.textContent = '↻ Try again';
+    tryBtn.onclick = () => {
+      actionRow.style.display = 'none';
+      const fld = document.getElementById('coachInputField');
+      fld.disabled = false;
+      document.getElementById('coachSendBtn').disabled = false;
+      document.getElementById('coachInputRow').style.display = '';
+      fld.value = '';
+      coachAutoGrowInput();
+      setTimeout(() => fld.focus(), 80);
+    };
+    actionRow.appendChild(tryBtn);
+    actionRow.style.display = '';
+    return;
+  }
+
   const ttaMs = coachState.answeredAt - coachState.startedAt;
   coachState.sessionResults.push({
     exercise_id: ex.id || ex._id,
@@ -7628,18 +7905,18 @@ async function coachSubmitAnswer() {
     escalation_used: false,
     time_to_answer_ms: ttaMs,
     exercise_version: ex.version || 1,
+    typo_surfaced: typoSurfaced || undefined,
+    attempts: coachState.attemptCount > 1 ? coachState.attemptCount : undefined,
   });
   // Upsert running session to Firestore so partials survive a closed tab / reload.
   // Fire-and-forget — UI doesn't block on the network round-trip; failure is silent
   // (the next item's upsert will catch up).
   coachUpsertSession({ partial: true });
-  const actionRow = document.getElementById('coachActionRow');
   const moreLeft = coachState.pool.length > 0;
-  actionRow.innerHTML = '';
   // Escalate option (§8.5) — only on wrong answers + only when live AI is reachable.
-  // One-shot: after escalation fires, the row is replaced with just "Got it — next".
+  // Spelling drill skips escalate (the issue is letter-level, not concept-level).
   const lastResult = coachState.sessionResults[coachState.sessionResults.length - 1];
-  const canEscalate = !correct && !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  const canEscalate = !correct && coachState.type !== 'spelling_drill' && !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
   if (canEscalate && lastResult) {
     const escBtn = document.createElement('button');
     escBtn.textContent = '🤔 Hmm, explain more';
