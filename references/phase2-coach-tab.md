@@ -1371,6 +1371,40 @@ content authoring (Tier 2) — both gated on real family usage.
 
 ---
 
+### 2026-05-01 — Worker behaviour: Russian explanations for Anna + Nicole
+
+**Done**: Worker `freeWriteSystemPrompt` and `escalateSystemPrompt` now branch on
+the player. For `RUSSIAN_EXPLANATION_PLAYERS = ['anna', 'nicole']`, the model is
+instructed to explain mistakes and grammar rules **in Russian**, quoting the
+player's actual English back, with the corrected English form shown verbatim
+(English for forms, Russian for the *why*). For Ernest and Artem the original
+behaviour stays — plain English with brief Russian glosses.
+
+**Why now**: Anna's `family-profiles.md` entry has always said "Claude
+communicates explanations to Anna in Russian when explaining grammar" but the
+Worker prompt was generic ("plain English with brief Russian glosses") for
+everyone. Drift between intent and code, surfaced when Artem asked. Same
+treatment extended to Nicole on request.
+
+**Scope note — Ernest**: intentionally not included. His profile doesn't
+specify a language preference and we weren't asked. Easy one-liner change in
+the Worker (`RUSSIAN_EXPLANATION_PLAYERS` constant) if it turns out he'd
+benefit too.
+
+**Verified**: curl test — Anna's response opens with "Здесь две ошибки с
+прошедшим временем" and quotes *"I go to shop"* in English; Artem's response
+to the same submission stays in English with one Russian aside ("идти →
+пошёл"). Worker version `0854ec44-2acd-4fa0-bc80-62b68b5d3e4f`.
+
+**Cost impact**: zero behavioural change to token consumption. Same model
+(Sonnet 4.6 free_write, Opus 4.7 escalate), same length cap (~150–250 / 200–400
+words). Russian text uses ~2× tokens per character vs Latin in tokenizer terms,
+but the response cap is in words not tokens, and the family-side responses
+average well under cap — net spend stays in the single-digit-cents-per-session
+band.
+
+---
+
 ### 2026-05-01 — s91-worker-r2: Artem added to Worker path (decision change)
 
 **Done**: `ALLOWED_PLAYERS` in `worker/index.js` extended from `[anna, nicole,

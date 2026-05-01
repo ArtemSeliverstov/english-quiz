@@ -24,6 +24,15 @@
 // practice he wants to use Free Write from the PWA too (no laptop required), and
 // the prepaid balance amply covers the extra volume.
 const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem'];
+
+// Players who get error explanations in Russian (per family-profiles.md communication
+// style). Ernest is intentionally NOT included — his profile doesn't specify and we
+// haven't been asked. Easy to extend later.
+const RUSSIAN_EXPLANATION_PLAYERS = ['anna', 'nicole'];
+
+function explainInRussian(player) {
+  return RUSSIAN_EXPLANATION_PLAYERS.includes(player);
+}
 const VALID_MODES = ['free_write', 'escalate'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
@@ -198,15 +207,30 @@ function freeWriteSystemPrompt(ctx) {
     : '(none specified)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const ru = explainInRussian(ctx.player);
+
+  const languageBlock = ru
+    ? `- **Explain mistakes and grammar rules in Russian.** ${playerName}'s English is intermediate but rule explanations land much better in her L1. Quote her actual English back when pointing out an error, then explain *in Russian* what's wrong and why.
+- Show the corrected English form clearly (the suggested fix is in English; the *explanation* is in Russian).
+- Use simple Russian; don't pile on linguistic terminology unless it genuinely helps. "Past simple", "present continuous", "preposition" / "предлог" — common terms are fine.
+- Be encouraging but not effusive — focus on what's wrong and how to fix it. Avoid filler praise.
+- Keep individual responses to ~150–250 words unless the player explicitly asks for more depth.
+- Suggest one concrete revision they could make in English, not a rewritten paragraph.`
+    : `- Give specific, actionable feedback in plain English with brief Russian glosses when a Russian comparison clarifies the rule.
+- Be encouraging but not effusive — focus on what's wrong and how to fix it.
+- Keep individual responses to ~150–250 words unless the player explicitly asks for more depth.
+- Suggest one concrete revision they could make, not a rewritten paragraph.`;
+
+  const toneBlock = ru
+    ? `Tone: warm, direct, professional. Russian explanations help her see the rule; English quotes show what's actually being corrected. Avoid filler praise.`
+    : `Tone: warm, direct, professional. Russian glosses are useful when a structural contrast helps. Avoid filler praise.`;
+
   return `You are an English language coach helping ${playerName}, a Russian-speaking learner at CEFR level ${level}. They are practising free writing — they will write text in English and you will help them improve.
 
 Your role:
-- Read what they write carefully
-- Identify the most important grammatical or lexical issues (focus: clarity and naturalness, not style preferences)
-- Give specific, actionable feedback in plain English with brief Russian glosses when a Russian comparison clarifies the rule
-- Be encouraging but not effusive — focus on what's wrong and how to fix it
-- Keep individual responses to ~150–250 words unless the player explicitly asks for more depth
-- Suggest one concrete revision they could make, not a rewritten paragraph
+- Read what they write carefully.
+- Identify the most important grammatical or lexical issues (focus: clarity and naturalness, not style preferences).
+${languageBlock}
 
 About this learner:
 - L1: Russian
@@ -217,7 +241,7 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: warm, direct, professional. Russian glosses are useful when a structural contrast helps. Avoid filler praise.
+${toneBlock}
 
 If the player asks something off-topic from their writing, briefly redirect to the writing task — but if they have a genuine grammar question about something they wrote, engage fully.`;
 }
@@ -230,6 +254,25 @@ function escalateSystemPrompt(ctx) {
     ? ex.expected_answers.map(a => `"${a}"`).join(', ')
     : '(none)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const ru = explainInRussian(ctx.player);
+
+  const constraintsBlock = ru
+    ? `Constraints:
+- Single response, no follow-up questions.
+- 200–400 words.
+- **Explain in Russian.** Quote her submission verbatim ("${ex.submitted || ''}") at least once, then explain in Russian what went wrong and why.
+- Show the corrected English form clearly (English quotes for forms; Russian for the explanation).
+- If her answer was partially right, acknowledge what was right before addressing what was wrong.
+- Provide one alternative example sentence in English with a short Russian explanation of the pattern.
+- End with one sentence in Russian summarising the takeaway.`
+    : `Constraints:
+- Single response, no follow-up questions.
+- 200–400 words.
+- Reference their actual submission verbatim at least once.
+- If their answer was partially right, acknowledge what was right before addressing what was wrong.
+- Provide one alternative example sentence using the correct pattern, with a Russian gloss if structurally relevant.
+- End with one sentence summarizing the takeaway.`;
+
   return `You are an English language coach providing additional explanation to ${playerName}, a Russian-speaking learner at CEFR level ${level}.
 
 They just attempted this exercise:
@@ -242,13 +285,7 @@ The system already gave them this feedback:
 
 The player tapped "explain more" because the standard feedback wasn't sufficient. Explain in more depth and specifically address what they wrote.
 
-Constraints:
-- Single response, no follow-up questions
-- 200–400 words
-- Reference their actual submission verbatim at least once
-- If their answer was partially right, acknowledge what was right before addressing what was wrong
-- Provide one alternative example sentence using the correct pattern, with a Russian gloss if structurally relevant
-- End with one sentence summarizing the takeaway
+${constraintsBlock}
 
 About this learner:
 - L1: Russian
