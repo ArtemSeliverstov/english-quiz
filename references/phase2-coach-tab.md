@@ -1371,6 +1371,35 @@ content authoring (Tier 2) — both gated on real family usage.
 
 ---
 
+### 2026-05-01 — coach_language moves to player profile (s91r3)
+
+**Done**: The language preference (Russian vs English explanations) moved
+from a hard-coded Worker constant to per-player profile data.
+`FAMILY_MEMBERS` in `index.html` and the corresponding `family-profiles.md`
+entries now both carry a `coachLanguage` / "Coach language" field.
+`coachBuildContext()` sends it as `context.coach_language`; the Worker's
+`explainInRussian(ctx)` reads it directly. The hard-coded list stays only
+as a backwards-compat fallback for any client still on a pre-s91r3 bundle.
+
+**Why**: the prior arrangement had design intent (the doc) and
+implementation (the Worker constant) in two places, with no enforced
+sync. Moving the field into profile data closes that loop — the doc is
+now the source of truth, the PWA mirrors it, the Worker reads what's
+sent.
+
+**Decisions captured along the way**:
+- Ernest stays on English (Artem's explicit call). His profile note
+  flags this so it isn't ambiguous later — he could plausibly benefit
+  from Russian (same L1 as Anna/Nicole), but the call was English.
+- Egor marked `coachLanguage: 'en'` but with N/A note — he doesn't use
+  the Coach tab.
+
+**Verified via curl**: new payloads with `coach_language: 'ru'|'en'`
+route correctly; legacy payloads (no field) still get the fallback path.
+Worker version `7b47aea4-f3ee-4315-acc0-5bdeb3db86f5`.
+
+---
+
 ### 2026-05-01 — Worker behaviour: Russian explanations for Anna + Nicole
 
 **Done**: Worker `freeWriteSystemPrompt` and `escalateSystemPrompt` now branch on
