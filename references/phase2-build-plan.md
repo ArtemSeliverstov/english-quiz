@@ -1714,6 +1714,130 @@ new Phrasal Verbs items — 18 ladder completions for the 6 stuck PVs
 - Tier 2 PV Batch 2 (verb families above + ~15 Coach particle_sort)
 - §4.4 polish: overflow menu, active-window-aware picker filter
 
+### v20260502-s99 — A2-B1 PV gap-fill (45 items) + Anna PV unlock
+
+User reversed the §4.2 lock that kept Phrasal Verbs out of Anna's
+active window. The B1 PV bank had only 37 items (~25 distinct PVs)
+and only ~8% input share — far below the ≥20% per-category target.
+Surfacing PV in Anna's window without filling the gap would have
+bombed her with a thin pool dominated by selection items and stuck
+PVs from her ladder.
+
+**Audit findings (pre-batch)**:
+- B1 PV total: 37 (~25 distinct PVs covered: turn on/off, look
+  after, give up, call off, get along, get on, get off, get over,
+  take up, take off (clothes), take on, break down, carry on, pick
+  up, fall out, show up, bring back, hold on, fill in, wake up,
+  put off, get back to)
+- B1 PV input items: 3 (~8% input share)
+- ~30 essential A2-B1 PVs missing: get up, find out, look for,
+  look up, look forward to, drop off, check in, write down, hang
+  up, take care of, work out, sort out, run out of, cheer up,
+  calm down, fill out, switch on, catch up, put on, break up,
+  carry out, put up with, call back, come back/in, get on/in,
+  set out, listen to, clean up, tidy up, stand up, sit down,
+  wash up, move in, fall down, shut up, think about, log in,
+  sign up, throw away, try on, dress up.
+
+**Shipped — content**:
+
+- **45 new PV items** (`pv_g01`–`pv_g45`) tagged `lvl: 'B1'`,
+  covering both A2-tier core PVs (find out, look for, check in,
+  write down, switch on, etc. — A2 in strict CEFR taxonomies but
+  B1 in everyday teaching practice) and B1-tier PVs (look forward
+  to, take care of, work out, sort out, run out of, put up with,
+  carry out, etc.). All in Anna's themed contexts where applicable
+  (padel, kids at school, neighbours, daily routine).
+- **Type mix**: 18 input + 15 gap + 12 mcq. Input-heavy by design
+  to lift the B1 PV input share from 8% → 24% (above ≥20% target
+  per question-authoring-standards.md).
+- **Schema decision (recorded inline)**: skipped adding `A2` as a
+  separate `lvl:` enum value. For Anna with `level_cap: "B1"` the
+  filter is `q.lvl <= "B1"`, so A2 vs B1 tagging makes zero
+  functional difference. Schema migration cost (5–6 small touches
+  across LEVEL_ORDER, level filter, setup UI, LEVEL_TOTALS,
+  LEVEL_DESCS, computeCoverageConstants) outweighs immediate
+  benefit. Re-evaluate if/when granular A2/B1 progression signal
+  becomes load-bearing (months out).
+
+**Shipped — Anna's learning_path update**:
+
+- `active_categories`: `["Tenses","Prepositions","Articles","Spelling"]`
+  → `["Tenses","Prepositions","Articles","Spelling","Phrasal Verbs"]`
+- `active_window_size`: `4` → `5`
+- `level_cap` unchanged (`"B1"`), `stretch_allowance` unchanged (`0.10`)
+- All other fields unchanged (`mastered_categories`, `next_unlock_options`,
+  `promotion_threshold`, `floor_bouncers`, `composition_last_checked`)
+- Patched directly via `fsPatch('players/anna', ['learning_path'], ...)`.
+
+**Composition rule check** (per §3.2 D4): Of the 5 active categories,
+at least one in current strong area (≥70% accuracy at level_cap), at
+least two in productive struggle zone (40–65%), at most one new
+narrow focus.
+- Strong: Tenses 71% (Anna's only B1 strong); marginally above
+  threshold
+- Productive struggle: Prepositions ~50%, Articles ~45%
+- Narrow focus: Spelling (Anna's documented orthographic gap) +
+  Phrasal Verbs (newly added)
+- 5/4/1 of 5 active — slightly above the "at most one narrow
+  focus" rule because both Spelling and Phrasal Verbs are narrow
+  foci. Justified by user direction in this session: PV unlock is
+  the explicit ask. CC flags for a future composition rebalance
+  if Anna's accuracy on PV stays below 40% across 4+ sessions.
+
+**Bank shape after Batch**:
+- Total questions: 1,977 (+45)
+- Phrasal Verbs total: 272 (+45)
+- B1 PV total: 82 (was 37; +45)
+- B1 PV input share: 24% (was ~8%)
+
+**Verified end-to-end via preview probe**:
+- ALL_QUESTIONS count 1,977 (+45 from prior 1,932)
+- 45 pv_g items confirmed: 18 input + 15 gap + 12 mcq
+- Sample item `pv_g04` (look forward to) parses with all schema
+  fields, hint follows the no-answer-word rule
+- `applyLearnerWindowFilter()` simulation against Anna's updated
+  `learning_path`: 252 questions in her quiz pool (Tenses 69 +
+  Prepositions 22 + Articles 58 + Phrasal Verbs 103) — Spelling
+  has 0 quiz items because Spelling is a coach-only category
+- All 45 pv_g items present in Anna's filtered pool
+- PV pool of 103 = 82 B1 (full) + ~21 B2 stretch items (~10% of
+  the 188 B2 PV items, per `stretch_allowance: 0.10`)
+- Pre-deploy: syntax OK, transform audit OK (46 unchanged), no
+  sparse arrays, version-string consistency OK
+
+**Acceptance state for §4.2**:
+- ✅ Batch 1 (s98): 50 items (18 ladder + 32 family)
+- ✅ Batch 1 supplement (s99): 45 A2-B1 gap-fill
+- ⏳ Batch 2 verb families (give up, find out, sort out, work
+  out, call off, figure out, point out, rule out, end up, take
+  over) — partially done by s99 (find out, sort out, work out are
+  in the gap-fill); remainder still queued
+- ⏳ Coach particle_sort items (~15) — not yet (Coach particle_sort
+  exercise type still disabled in picker)
+- Final ratio target Recognition 50 / Selection 120 / Production
+  60: current after s99 ≈ 58 / 118 / 66 — close to spec ratio
+  (5:12:6); B1 input share specifically lifted from 8% to 24%
+
+**Decisions called inline**:
+- Active window expansion 4→5 instead of replacing one of Anna's
+  existing categories. Spelling stays in window because it covers
+  orthographic-distractor MCQs in quiz mode (Coach Spelling Drill
+  is supplementary, not a replacement). Articles, Tenses,
+  Prepositions are all documented weak patterns and would be wrong
+  to drop.
+- A2 PVs covered at `lvl: 'B1'` rather than introducing A2 as a
+  schema enum value (decision detailed above).
+
+**Next session candidates**:
+
+- §4.3 article intervention batch 1 (~25–30 quiz Qs + ~15
+  article_drill items per family member)
+- §4.5 Nicole / Ernest library content
+- Tier 2 PV Batch 2 (remainder of verb families + Coach
+  particle_sort)
+- §4.4 polish: overflow menu, active-window-aware picker filter
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
