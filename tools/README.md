@@ -79,6 +79,23 @@ Patch format supports add/remove for arrays:
 `recent_observations` is FIFO-capped at 10 (oldest dropped). `last_updated` and
 `last_updated_by` set automatically. See `references/coach-notes-schema.md`.
 
+### `log_coach_session.js` — write a Coach chat session (Free Write style)
+
+```bash
+node log_coach_session.js artem ./session.json
+cat session.json | node log_coach_session.js artem -
+node log_coach_session.js artem ./session.json --dry-run
+```
+
+Writes to `players/{name}/coach_sessions/{session_id}` — the chat-archive
+collection (separate from `exercises`). Used by the `free-write` CC skill.
+Auto-generates `session_id` in the format `{player}_fw_{ts}_{rand}` matching
+the PWA convention. Tags `source: 'cc_session'` so analytics can distinguish
+CC-driven from PWA-driven Free Writes.
+
+Schema mirrors the PWA's `coachWriteSessionLogStandalone` — see the script
+header for the full session JSON shape.
+
 ## Shared library
 
 `_firestore.js` — typed-value JSON converters and HTTP wrappers. Imported by all

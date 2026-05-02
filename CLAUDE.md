@@ -47,6 +47,7 @@ When standards in references conflict with this CLAUDE.md, **references win**.
 | Skill | Triggers |
 |---|---|
 | `exercise-session` | "this is X, let's do exercises", "давай упражнения", any exercise request for a named player |
+| `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side Free Write for **Artem only** (other family members use the PWA) |
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
 | `deploy-build` | "deploy", "ship it", "push the changes", any pre-deploy validation |
