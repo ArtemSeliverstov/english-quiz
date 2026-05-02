@@ -50,6 +50,18 @@ Compare against the count from the previous session's commit message or
 
 ---
 
+## 2b. Question schema lint
+
+Catches the silent-bug class: wrong `ans` type, mismatched multi blanks, hints on gap/mcq, missing required fields, duplicate IDs.
+
+```bash
+node tools/lint_questions.js
+```
+
+Runs in <500ms on the full bank. Exits non-zero on any issue. Same script runs in CI on every push.
+
+---
+
 ## 2c. Transform keyword-mask audit
 
 Validates two rules on every `type:'transform'` question:
@@ -140,19 +152,21 @@ are acceptable; identical type+stem are not.
 
 ## 7. Version string consistency
 
-The version string `vYYYYMMDD-sN` must appear identically in **four** places:
+The version string `vYYYYMMDD-tN` must appear identically in **four** places:
 
 1. HTML version badge (search for previous version string in `index.html`)
-2. Service worker cache key in `sw.js` (`CACHE = 'eq-vYYYYMMDD-sN'`)
+2. Service worker cache key in `sw.js` (`CACHE = 'eq-vYYYYMMDD-tN'`)
 3. Version constant (if any) in `index.html`
 4. Git commit message prefix
+
+Counter convention: the `s` series ran s1–s100; from t1 onward use the `t` prefix. Past sessions remain at their original `sN` tags — don't retag them. New sessions increment the `t` counter. Same-session rebuilds append `r2`, `r3`.
 
 Mismatch causes silent bugs:
 - Stale SW cache key = browser serves old JS regardless of new HTML (root cause s66r1–r4 blank card bug)
 - Mismatched badge = users don't know they have the latest
 
 ```bash
-grep -nE "v202[0-9]{5}-s[0-9]+(r[0-9]+)?" index.html sw.js
+grep -nE "v202[0-9]{5}-[st][0-9]+(r[0-9]+)?" index.html sw.js
 ```
 
 All hits should show the same version string.
@@ -166,7 +180,7 @@ Once everything above passes:
 ```bash
 git add -A
 git status  # final visual check
-git commit -m "vYYYYMMDD-sN: <one-line summary>
+git commit -m "vYYYYMMDD-tN: <one-line summary>
 
 - bullet 1
 - bullet 2

@@ -17,6 +17,22 @@ Auth: open writes via `firestore.rules`. No service account, no token, no setup.
 
 ## Scripts
 
+### `lint_questions.js` — schema lint for ALL_QUESTIONS
+
+```bash
+node tools/lint_questions.js
+```
+
+Validates the question bank against `references/question-schema.md`. Catches duplicate IDs, missing required fields, wrong `ans` type for gap/mcq, multi blank count mismatches, hints on gap/mcq/multi, and missing hints on input. <500ms on the full bank. Run in CI on every push to main.
+
+### `check_transform_keywords.js` — transform keyword/stem rules
+
+```bash
+node tools/check_transform_keywords.js
+```
+
+Validates the two transform rules: every accepted `ans` variant contains `keyword`, and `keyword` is not a whole word in the stem. Run in CI.
+
 ### `get_player.js` — fetch one player's doc
 
 ```bash

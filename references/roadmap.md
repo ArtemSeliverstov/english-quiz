@@ -8,7 +8,7 @@ What's next, what's deferred. Ordered by category, not strict priority.
 
 | # | What | Estimate | Why |
 |---|---|---|---|
-| 1 | Anonymous Auth migration: tighten Firestore rules from open writes to `request.auth != null`. Each device gets a UID. | 1 session | Security hardening. Current open-write posture is project-ID obscurity only. |
+| 1 | App Check (or worker-as-gatekeeper) for Firestore writes. Current rules are append-only-leaning (delete forbidden everywhere except `exercise_active`); reads + create/update still unauthenticated. | 3-5h | Closes the remaining "anyone can spam writes" hole. Anonymous Auth was deferred (browser-scoped UID = lockout on localStorage clear). App Check needs the Firebase SDK or manual token injection — pair with worker rewrite. |
 | 2 | Live log UI: "Active session" card on Exercises tab, shown when `exercise_active` doc exists for current player. Progress bar, cancel button. | 0.5 session | Stage 1.5 — infrastructure exists, UI doesn't. |
 | 3 | 30-day RTDB sunset: after 2026-05-28, delete RTDB data via Firebase Console. Keep `rtdb_backup_<ts>.json` indefinitely. | — | Cleanup. Frozen RTDB is harmless but noisy. |
 | 4 | Phase 2: Coach tab in PWA + Cloudflare Worker for API key proxy. Family-facing exercise interface. | 3-4 sessions | Self-service exercises for family on their own phones. |

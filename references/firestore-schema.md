@@ -133,29 +133,13 @@ The PWA's `_fsValue` / `_fsFromValue` / `_fsToDoc` / `_fsFromDoc` helpers in `in
 
 ## Security rules
 
-Posture: open writes (`allow write: if true`). Same as previous RTDB. Project-ID
-obscurity is the only protection.
+Posture: append-only-leaning. Reads and create/update writes stay open (no auth — the PWA uses raw fetch and tools/*.js use the REST API directly), but `delete` is forbidden on player docs and all subcollections except `exercise_active`. The `exercises` subcollection is write-once.
 
-```
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /players/{playerName} {
-      allow read, write: if true;
-      match /exercises/{timestamp} {
-        allow read, write: if true;
-      }
-    }
-    match /exercise_active/{sessionId} {
-      allow read, write: if true;
-    }
-    match /{document=**} {
-      allow read, write: if false;
-    }
-  }
-}
-```
+Live rules in `firestore.rules`. Threat closed: wholesale "wipe player stats" via direct REST DELETE. Recovery path for any remaining drift: weekly Firestore backup committed by `.github/workflows/backup.yml` to the `backups` branch.
 
-Roadmap item: tighten to `request.auth != null` with Anonymous Auth (Phase 2 hardening).
+App Check is deferred — the PWA uses raw `fetch()` (no Firebase SDK), so token injection would require either bundling the SDK (chunky) or wrapping every Firestore call manually. The `tools/*.js` scripts and the GitHub Actions backup also can't produce App Check tokens. Reconsider once a worker-as-gatekeeper centralises writes.
+
+Deploy: `firebase deploy --only firestore:rules`.
 
 ---
 

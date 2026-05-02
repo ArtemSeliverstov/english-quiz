@@ -1,0 +1,18 @@
+﻿# Default: normalize text files to LF in repo, native on checkout
+* text=auto eol=lf
+
+# Explicit text files
+*.md   text eol=lf
+*.json text eol=lf
+*.js   text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+
+# Binary - don't touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.gif binary
+*.pdf binary
+*.zip binary

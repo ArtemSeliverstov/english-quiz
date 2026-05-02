@@ -15,11 +15,12 @@ allowlist permits `*.googleapis.com` (covers Firestore) but not `*.firebasedatab
 (RTDB). Firestore reachable from Claude Code web sandbox; RTDB is not. Migration enables
 direct writes from Claude Code without local laptop dependency.
 
-### Open writes (project-ID obscurity only)
-Both pre-s87 RTDB and post-s87 Firestore use unauthenticated open writes (`allow read, write: if true`).
-Roadmap item: tighten to `request.auth != null` with Anonymous Auth. Deferred because
-each device would need UID setup, deeplink handlers need auth state, and the family
-is small enough that obscurity-by-project-ID is acceptable interim.
+### Append-only-leaning Firestore rules (post-t5)
+Migrated from `allow read, write: if true` to per-collection rules forbidding `delete` on player docs and most subcollections, with the `exercises` subcollection write-once. Reads and create/update remain unauthenticated. Closes the "anyone with the project ID can wipe stats" hole at the rules layer. Recovery path: weekly Firestore backup branch via GitHub Actions.
+
+App Check was the original plan but was deferred: the PWA uses raw `fetch()` (no Firebase SDK), and `tools/*.js` + the GitHub Actions backup also can't produce App Check tokens — token injection would be a multi-hour rewrite of every write path. Reconsider once a worker-as-gatekeeper centralises writes.
+
+Anonymous Auth was a separate earlier proposal, also deferred: ties stats to a browser-scoped UID (lost on localStorage clear), and would require migrating existing player docs to claim a UID.
 
 ### Subcollection for exercises
 Exercises stored as Firestore subcollection `players/{name}/exercises/{ts}` rather
@@ -146,9 +147,10 @@ The deploy.html flow is gone. Claude Code pushes `index.html` and `sw.js` direct
 Reason: Claude Code now active, GitHub OAuth available, mobile workflow primary.
 Saves ~5 min per deploy. Standard git multi-file commits handle atomicity.
 
-### Version stamping format `vYYYYMMDD-sN`
+### Version stamping format `vYYYYMMDD-tN`
 Identical across HTML badge, SW cache key, version constant, git commit message.
 Inconsistency causes silent bugs (cache doesn't refresh, deploys point at wrong version).
+Counter: `s1`–`s100` ran historically; `t1` onward is current. Same-session rebuilds append `r2`, `r3`.
 
 ### Knowledge base in markdown (post-Phase 1)
 HTML KB deprecated as the source of truth. Markdown files in `references/` are now

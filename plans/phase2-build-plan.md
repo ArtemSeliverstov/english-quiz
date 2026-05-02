@@ -4,8 +4,8 @@
 **Owner**: Artem · primary execution surface: Claude Code (laptop)
 **Predecessor**: `phase2-coach-tab.md` (Phase 2A–2C, now archived as
 historical record). This document carries forward Phase 2D and beyond.
-**Companion docs**: `learning-system-design.md` (philosophy),
-`stats-interpretation-guide.md` (CC stats reference).
+**Companion docs**: `docs/learning-system-design.md` (philosophy),
+`references/stats-interpretation-guide.md` (CC stats reference).
 
 This is the active build document for Phase 2D. It contains the build
 sequence, content authoring targets, schemas, decisions amended from the
@@ -15,7 +15,7 @@ between sessions.
 
 If something is ambiguous when CC reads this, that's a doc bug — flag it
 and patch the doc rather than guess. If a build decision conflicts with
-the philosophy in `learning-system-design.md`, surface it to Artem rather
+the philosophy in `docs/learning-system-design.md`, surface it to Artem rather
 than silently override.
 
 The document avoids calendar references. Work proceeds as fast as it
@@ -169,7 +169,7 @@ players/{name}/learning_path:
 - Stats display (§4.4) renders only active and mastered categories for
   learner shell; locked categories don't appear.
 
-**Level cap rationale**: per `learning-system-design.md` §3 (orthographic-fluency
+**Level cap rationale**: per `docs/learning-system-design.md` §3 (orthographic-fluency
 profile), category-level access without level constraint causes B1 players
 to encounter B2 content within nominally-active categories — defeating
 the active window's overwhelm-reduction purpose. Level cap operates within
@@ -603,7 +603,7 @@ Tier 1 before Tier 2 etc.
 | PV ladder rebalance Batch 1 (§4.2 step 1-2, ~50 items) | Ships to library; surfaces for Artem/Egor in Smart mode immediately, gated for Anna/Nicole. |
 | Article intervention first batch (§4.3, ~25-30 quiz items + ~15 article_drill per player) | Ships in batches; surfaces per active window. |
 | Quiz orthography additions (§4.7, ~60 items) | Surfaces in Anna's window as "Spelling". |
-| B2 Idioms (~15 items, from predecessor doc Tier 2) | Fills genuine level hole; can later seed Russian Trap exercises. **Note**: this is a new B2 category authored from scratch with proper distractors — distinct from the structurally-compromised B1 Everyday Idioms category (see `stats-interpretation-guide.md` §9). Author with form-shortcut diagnostic in mind. |
+| B2 Idioms (~15 items, from predecessor doc Tier 2) | Fills genuine level hole; can later seed Russian Trap exercises. **Note**: this is a new B2 category authored from scratch with proper distractors — distinct from the structurally-compromised B1 Everyday Idioms category (see `references/stats-interpretation-guide.md` §9). Author with form-shortcut diagnostic in mind. |
 | Used To input (~7 items, from predecessor doc Tier 2) | 6.3% input share — highest priority among gap-fill. |
 | Word Formation input cleanup (any remaining gaps from s87 work) | If applicable per CC's review of current state. |
 
@@ -615,7 +615,7 @@ Tier 1 before Tier 2 etc.
 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations) (~60 items) | Authored against observed weakness from CC + family Coach data. |
 | Additional library content as active windows expand for Anna/Nicole/Ernest | Author against unlock events as they happen. |
 | Coach particle_sort full coverage (~15 items per player) | Per family member as PV enters their active window. |
-| **MCQ distractor audit Pass 1 (triage)** — single session, ~30 min | Sample 5-10 MCQ items per category across the bank's 27 categories. For each sample, apply the form-shortcut diagnostic from `stats-interpretation-guide.md` §9: can the correct answer be identified from option form alone (length asymmetry, register asymmetry, obvious grammar errors visible without semantic processing)? Output: per-category trust rating table (clean / needs-fuller-audit / structurally-compromised). Everyday Idioms is presumed structurally-compromised and provides the calibration anchor. |
+| **MCQ distractor audit Pass 1 (triage)** — single session, ~30 min | Sample 5-10 MCQ items per category across the bank's 27 categories. For each sample, apply the form-shortcut diagnostic from `references/stats-interpretation-guide.md` §9: can the correct answer be identified from option form alone (length asymmetry, register asymmetry, obvious grammar errors visible without semantic processing)? Output: per-category trust rating table (clean / needs-fuller-audit / structurally-compromised). Everyday Idioms is presumed structurally-compromised and provides the calibration anchor. |
 | **MCQ distractor audit Pass 2 (full audit of flagged categories)** | Sizing TBD per Pass 1 output. Question-by-question audit of categories Pass 1 flags as compromised or needs-fuller-audit. For each flagged question, document whether form-shortcut is present and what the re-engineering scope would be (distractor rewrite vs full question rewrite). Defer this item until Pass 1 lands. |
 | **Everyday Idioms category re-engineering** | Known structurally-compromised per stats-interpretation-guide §9. ~80 items requiring distractor rewrite (plausible options of similar length and register, no obvious-wrong distractor) or selective full rewrite where distractors can't be salvaged. Sizing depends on Pass 2 audit. Authored against Anna's productive vocabulary needs once she resumes the category at corrected calibration. |
 
@@ -728,7 +728,7 @@ without coming back to chat.
   MCQ structure permits identification of correct answers from option
   form alone (one short/natural, one over-formal, one obviously wrong),
   without parsing idiom meaning. Do NOT use Everyday Idioms as the
-  strong-area anchor in Anna's window. See `stats-interpretation-guide.md`
+  strong-area anchor in Anna's window. See `references/stats-interpretation-guide.md`
   §9 (Categories with structural caveats) and §5.3 Tier 3 for the
   category re-engineering work item. Default proposal (revised):
   Prepositions (B1, productive struggle), Articles (B1, productive
@@ -955,8 +955,8 @@ in the doc.
 - Phase 2A–2C history archived in predecessor `phase2-coach-tab.md`
 - Phase 3 housekeeping items from PHASE2_PLAN.md and predecessor doc
   carried forward to §11; Live Log Stage 1.5 marked superseded
-- Three companion docs live: `learning-system-design.md` (philosophy),
-  this document (build), `stats-interpretation-guide.md` (stats reference)
+- Three companion docs live: `docs/learning-system-design.md` (philosophy),
+  this document (build), `references/stats-interpretation-guide.md` (stats reference)
 - All locked decisions in §3 captured; amendments to predecessor doc
   flagged in §3.1
 - CC picks up next unstarted item per §1 autonomy mandate
@@ -2623,6 +2623,6 @@ particle_sort 15, error_correction 15. Coverage by player picks up
 
 ---
 
-*This file lives at `references/phase2-build-plan.md` in the repo. Updated
+*This file lives at `plans/phase2-build-plan.md` in the repo. Updated
 by CC as decisions land in flight. Should be archived once Phase 2D
 acceptance (§8) is met, alongside the predecessor `phase2-coach-tab.md`.*

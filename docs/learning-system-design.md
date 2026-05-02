@@ -2,7 +2,7 @@
 
 **Status**: living document · drafted in claude.ai chat session
 **Owner**: Artem · primary execution surface: Claude Code (laptop)
-**Companion docs**: `phase2-build-plan.md` (operational sequence), `stats-interpretation-guide.md` (CC reference for stats reviews)
+**Companion docs**: `plans/phase2-build-plan.md` (operational sequence), `references/stats-interpretation-guide.md` (CC reference for stats reviews)
 
 This document captures the *philosophy* behind the family English learning
 system — why it looks the way it does, what audiences it serves, what we
@@ -487,5 +487,5 @@ authoritative on philosophy, not on operational detail.
 
 ---
 
-*This file lives at `references/learning-system-design.md` in the repo.
-Companion docs: `phase2-build-plan.md`, `stats-interpretation-guide.md`.*
+*This file lives at `docs/learning-system-design.md` in the repo.
+Companion docs: `plans/phase2-build-plan.md`, `references/stats-interpretation-guide.md`.*

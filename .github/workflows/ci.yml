@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax check tools and worker
+        run: |
+          for f in tools/*.js worker/index.js; do
+            if [ -f "$f" ]; then
+              node --check "$f" || exit 1
+            fi
+          done
+
+      - name: Question schema lint
+        run: node tools/lint_questions.js
+
+      - name: Transform keyword lint
+        run: node tools/check_transform_keywords.js
+
+      - name: Doc word caps
+        run: |
+          # Caps from references/doc-style.md. Drift past these means the
+          # net-no-increase rule slipped — slim before merging.
+          fail=0
+          check() {
+            local cap=$1 file=$2
+            if [ -f "$file" ]; then
+              local n=$(wc -w < "$file")
+              if [ "$n" -gt "$cap" ]; then
+                echo "FAIL: $file = $n words (cap $cap)"
+                fail=1
+              else
+                echo "OK:   $file = $n words (cap $cap)"
+              fi
+            fi
+          }
+          check 500 CLAUDE.md
+          for f in .claude/skills/*/SKILL.md; do check 600 "$f"; done
+          exit $fail
+
+      - name: Version string consistency
+        run: |
+          # Three canonical locations must hold the same version string.
+          # Historical references in comments are ignored.
+          META_VER=$(grep -oE '<meta name="app-version" content="v202[0-9]{5}-[st][0-9]+(r[0-9]+)?"' index.html | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
+          BADGE_VER=$(grep -oE 'id="hdr-ver"[^>]*>v202[0-9]{5}-[st][0-9]+(r[0-9]+)?' index.html | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
+          CACHE_VER=$(grep -oE "CACHE='eq-v202[0-9]{5}-[st][0-9]+(r[0-9]+)?'" sw.js | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
+
+          echo "meta:  $META_VER"
+          echo "badge: $BADGE_VER"
+          echo "cache: $CACHE_VER"
+
+          if [ -z "$META_VER" ] || [ -z "$BADGE_VER" ] || [ -z "$CACHE_VER" ]; then
+            echo "FAIL: one of the three version locations is missing"
+            exit 1
+          fi
+          if [ "$META_VER" != "$BADGE_VER" ] || [ "$META_VER" != "$CACHE_VER" ]; then
+            echo "FAIL: version string mismatch across canonical locations"
+            exit 1
+          fi
+          echo "OK: version $META_VER consistent"

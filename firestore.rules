@@ -1,27 +1,64 @@
 rules_version = '2';
+
+// Append-only-leaning rules. Reads stay open; writes stay open for the PWA
+// and tools/*.js, but `delete` is locked everywhere except `exercise_active`
+// (which legitimately needs cleanup), and `exercises` is write-once.
+//
+// Threat model: the project ID is visible in the PWA bundle, so the Firestore
+// endpoint is reachable from anywhere. The pre-existing `if true` rule meant
+// anyone could wipe player documents. These rules keep PWA + tools/* working
+// while closing that hole. Backups land in the `backups` branch weekly via
+// .github/workflows/backup.yml as the recovery path.
+//
+// Deploy: `firebase deploy --only firestore:rules` (requires firebase CLI
+// auth as a project owner). Verify in Firebase Console → Firestore → Rules.
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
     match /players/{playerName} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if false;
+
+      // Exercise history — write-once. Once logged, never modified or deleted.
       match /exercises/{exerciseId} {
-        allow read, write: if true;
+        allow read: if true;
+        allow create: if true;
+        allow update, delete: if false;
       }
+
       match /coach_sessions/{sessionId} {
-        allow read, write: if true;
+        allow read: if true;
+        allow create, update: if true;
+        allow delete: if false;
       }
+
       match /spelling_log/{ts} {
-        allow read, write: if true;
+        allow read: if true;
+        allow create, update: if true;
+        allow delete: if false;
       }
+
       match /medals_history/{weekIso} {
-        allow read, write: if true;
+        allow read: if true;
+        allow create, update: if true;
+        allow delete: if false;
       }
     }
+
+    // In-progress sessions (Stage 1 live-log). Cleaned up after the session
+    // ends, so delete must remain permitted.
     match /exercise_active/{sessionId} {
       allow read, write: if true;
     }
+
+    // Exercise library (admin-managed). Locked at the rules layer; writes
+    // happen via tools/push_library.js with a service account if needed.
     match /exercises_library/{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
+
     match /{document=**} {
       allow read, write: if false;
     }
