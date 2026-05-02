@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-s97r2">
+  <meta name="app-version" content="v20260502-s98">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -777,6 +777,14 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .lh-medals-delta{margin-top:.2rem;font-size:.78rem;color:var(--green,#6fefb2);font-weight:600;min-height:0;}
 .lh-medals-delta:empty{display:none;}
 
+/* D9 — newly-earned medal callout on session-end card */
+.res-new-medal{background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(245,158,11,.08));border:1px solid rgba(251,191,36,.35);border-radius:10px;padding:.8rem 1rem;margin:.75rem 0 .5rem;text-align:left;}
+.res-new-medal-headline{font-size:.92rem;font-weight:700;color:var(--accent);margin-bottom:.5rem;}
+.res-new-medal-list{display:flex;flex-wrap:wrap;gap:.4rem;}
+.res-new-medal-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .6rem;background:var(--surface);border:1px solid var(--border);border-radius:18px;font-size:.82rem;color:var(--text);}
+.res-new-medal-icon{font-size:1.05rem;}
+.res-new-medal-tier{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+
 /* ── LEARNER STATS PANEL (§4.4) ── */
 #learner-stats-panel{max-width:520px;margin:0 auto;padding:.5rem;}
 .ls-section{margin-top:1.4rem;}
@@ -984,7 +992,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s97r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s98</span></p>
 </header>
 
 <!-- TABS -->
@@ -1389,6 +1397,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     <div class="score-ring" id="res-ring"><div class="score-num" id="res-score"></div></div>
     <h2 id="res-title"></h2>
     <p id="res-msg"></p>
+    <div id="res-new-medal" class="res-new-medal" style="display:none;"></div>
     <div id="res-pb" style="display:none;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:.7rem 1rem;margin:.75rem 0 .5rem;font-size:.82rem;color:#34d399;line-height:1.7;"></div>
     <div id="res-insight" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:.6rem .9rem;margin:.75rem 0 .5rem;font-size:.82rem;color:#fbbf24;line-height:1.5;"></div>
     <div id="res-fix-btn-wrap" style="display:none;margin-bottom:.75rem;">
@@ -3293,7 +3302,59 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'idom_b12',type:'gap',cat:'Idioms',lvl:'B2',biz:true,q:'The ten complaints we\'ve received are just ___ — the real problem is much bigger.',ans:0,opts:['the tip of the iceberg','once in a blue moon','the ball in our court','a bitter pill'],exp:'<strong>The tip of the iceberg</strong> = the small visible part of a much larger problem. Like an iceberg, most of the issue is hidden. ✗ <em>Once in a blue moon</em> = very rarely — unrelated. Common in business and journalism: <em>These losses are just the tip of the iceberg.</em>'},
 {id:'idom_b13',type:'gap',cat:'Idioms',lvl:'B2',biz:true,q:'We don\'t have much time — let\'s ___ and talk about the main issue.',ans:0,opts:['cut to the chase','sit on the fence','break the ice','beat around the bush'],exp:'<strong>Cut to the chase</strong> = stop talking about less important things and get to the main point. ✗ <em>Beat around the bush</em> = the opposite — avoiding the point. ✗ <em>Sit on the fence</em> = avoid taking a side. Useful in presentations and meetings.'},
 {id:'idom_b14',type:'gap',cat:'Idioms',lvl:'B2',biz:false,q:'His message sounded positive, but you need to ___ — he\'s clearly not happy.',ans:0,opts:['read between the lines','cut to the chase','spill the beans','bite the bullet'],exp:'<strong>Read between the lines</strong> = understand the hidden or implied meaning behind what is literally said or written. ✗ <em>Cut to the chase</em> = get to the point directly. ✗ <em>Spill the beans</em> = reveal a secret. Reading between the lines requires inference.'},
-{id:'idom_b15',type:'gap',cat:'Idioms',lvl:'B2',biz:false,q:'New employees sometimes find it hard to ___ in a large team.',ans:0,opts:['break the ice','cut to the chase','bite the bullet','spill the beans'],exp:'<strong>Break the ice</strong> = do or say something that helps people relax and start communicating in an unfamiliar situation. ✗ <em>Cut to the chase</em> = skip to the main point. ✗ <em>Bite the bullet</em> = endure something unpleasant. Breaking the ice is about social ease, not avoiding discomfort.'}];
+{id:'idom_b15',type:'gap',cat:'Idioms',lvl:'B2',biz:false,q:'New employees sometimes find it hard to ___ in a large team.',ans:0,opts:['break the ice','cut to the chase','bite the bullet','spill the beans'],exp:'<strong>Break the ice</strong> = do or say something that helps people relax and start communicating in an unfamiliar situation. ✗ <em>Cut to the chase</em> = skip to the main point. ✗ <em>Bite the bullet</em> = endure something unpleasant. Breaking the ice is about social ease, not avoiding discomfort.'},
+// ── PV LADDER COMPLETION (s98) — 6 stuck PVs × 3 rungs (mcq/gap/input) — linked for ladder-pair tracking
+{id:'pv_l01_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'get off' mean in: 'You get off at Trafalgar Square — that's the closest stop'?",ans:0,opts:['Leave the bus or train at that stop','Take a different bus there','Skip that stop completely'],exp:'<strong>Get off</strong> a bus/train/bicycle = leave it at a stop. ✗ <em>Get out</em> works for cars/taxis (enclosed vehicles). Russian <em>выйти</em> does not distinguish, but English uses <em>get off</em> for public transport.',linked_question_ids:['pv_l01_g','pv_l01_i']},
+{id:'pv_l01_g',type:'gap',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:'She thanked the driver and got ___ the bus at her usual stop.',ans:0,opts:['off','out','down','away'],exp:'<strong>Get off</strong> a bus/train/bicycle. ✗ <em>Get out</em> = exit a car or taxi (enclosed). ✗ <em>Get down</em> is colloquial for descending. Russian <em>выйти</em> covers all these — English distinguishes by vehicle type.',linked_question_ids:['pv_l01_m','pv_l01_i']},
+{id:'pv_l01_i',type:'input',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:'Excuse me, do I ___ at this station for the British Museum, or the next one?',hint:'phrasal verb: leave a train at a station (2 words — present simple)',ans:'get off',exp:'<strong>Get off</strong> a bus, train, or bike. Russian <em>выйти</em> does not distinguish, so learners reach for <em>go out</em> or <em>get out</em>. ✗ <em>Get out</em> is for cars/taxis, not trains.',linked_question_ids:['pv_l01_m','pv_l01_g']},
+{id:'pv_l02_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'got through' mean in: 'Somehow she got through the worst week of her job'?",ans:0,opts:['Survived and endured it','Avoided going to work','Made it longer than expected'],exp:'<strong>Get through</strong> a difficult period = survive or endure it until it ends. <em>Get through the exams / through a tough week.</em> ✗ <em>Get over</em> = recover after it has ended (retrospective). Russian <em>пережить</em> covers both — context decides.',linked_question_ids:['pv_l02_g','pv_l02_i']},
+{id:'pv_l02_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"I don't know how I'll ___ all this work before Friday.",ans:0,opts:['get through','get over','get past','get along'],exp:'<strong>Get through</strong> work or a difficult period = endure or complete it. ✗ <em>Get over</em> = recover after something ended, not while it is happening. ✗ <em>Get past</em> = move beyond — less idiomatic for workload.',linked_question_ids:['pv_l02_m','pv_l02_i']},
+{id:'pv_l02_i',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'I had a lot of doubts during that period, but my family helped me ___ it.',hint:'phrasal verb: survive or endure a difficult time (2 words — bare infinitive)',ans:'get through',exp:'<strong>Get through</strong> a difficult period = survive while it lasts. ✗ <em>Get over</em> = recover after. Russian <em>пережить</em> does not separate the two senses — English distinguishes by whether the trouble is ongoing or past.',linked_question_ids:['pv_l02_m','pv_l02_g']},
+{id:'pv_l03_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'read up on' mean in: 'Before the interview, I read up on the company history'?",ans:0,opts:['Studied the topic carefully in advance','Mentioned it briefly to others','Wrote a summary of it'],exp:'<strong>Read up on</strong> = study a topic in detail to prepare. <em>Read up on the company / on the new tax rules.</em> ✗ <em>Read through</em> = scan a document quickly, not deep study. The <em>on</em> is obligatory — the topic follows.',linked_question_ids:['pv_l03_g','pv_l03_i']},
+{id:'pv_l03_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'Could you ___ the new safety regulations before tomorrow morning?',ans:0,opts:['read up on','read through','read off','read into'],exp:'<strong>Read up on</strong> = study a topic thoroughly to prepare. ✗ <em>Read through</em> = scan a document linearly, not deep study. ✗ <em>Read into</em> = interpret beyond what was said. ✗ <em>Read off</em> = announce names from a list.',linked_question_ids:['pv_l03_m','pv_l03_i']},
+{id:'pv_l03_i',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"She spent her flight ___ the local culture so she'd be ready when she landed.",hint:'phrasal verb: study a subject thoroughly to prepare (3 words — gerund)',ans:'reading up on',exp:'<strong>Read up on</strong> = study to prepare. The <em>on</em> is obligatory before the topic. ✗ <em>Read through</em> = scan; lacks the prep-for-action meaning. Russian <em>изучить заранее</em> has no exact particle equivalent.',linked_question_ids:['pv_l03_m','pv_l03_g']},
+{id:'pv_l04_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'took up' mean in: 'After retirement she took up gardening and now spends every morning in the garden'?",ans:0,opts:['Started doing it as a hobby','Stopped doing it','Bought tools for it'],exp:'<strong>Take up</strong> + activity = start a new hobby or pursuit. <em>Take up painting / take up running.</em> ✗ <em>Take on</em> = accept a responsibility (work, project). ✗ <em>Take over</em> = assume control of. Russian <em>заняться</em> maps best to <em>take up</em>.',linked_question_ids:['pv_l04_g','pv_l04_i']},
+{id:'pv_l04_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"He's been so stressed at work that he decided to ___ yoga to relax.",ans:0,opts:['take up','take on','take over','take out'],exp:'<strong>Take up</strong> + hobby = start a new activity. ✗ <em>Take on</em> = accept additional work or responsibility. ✗ <em>Take over</em> = assume control of (a company, role). ✗ <em>Take out</em> = remove or invite on a date.',linked_question_ids:['pv_l04_m','pv_l04_i']},
+{id:'pv_l04_i',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"She wants to ___ photography this year — she's already bought a camera.",hint:'phrasal verb: start a new hobby (2 words — bare infinitive)',ans:'take up',exp:'<strong>Take up</strong> a new hobby. ✗ <em>Take on</em> = accept a duty/work, wrong register for hobbies. ✗ <em>Take over</em> = assume control. Russian <em>заняться</em> matches well — но не путать с <em>взять на себя</em>.',linked_question_ids:['pv_l04_m','pv_l04_g']},
+{id:'pv_l05_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'brought about' mean in: 'The new policy brought about real changes in how the team works'?",ans:0,opts:['Caused the changes to happen','Reversed the previous changes','Postponed making any changes'],exp:'<strong>Bring about</strong> = cause to happen, lead to a result. <em>Bring about change / a revolution.</em> ✗ <em>Bring up</em> = raise a topic in conversation, unrelated. ✗ <em>Bring in</em> = introduce formally; <em>bring about</em> emphasises the resulting change.',linked_question_ids:['pv_l05_g','pv_l05_i']},
+{id:'pv_l05_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'The negotiations were difficult, but they did ___ a workable agreement.',ans:0,opts:['bring about','bring up','bring along','bring back'],exp:'<strong>Bring about</strong> = cause a result to happen. ✗ <em>Bring up</em> = mention a topic in talk. ✗ <em>Bring along</em> = take with you. ✗ <em>Bring back</em> = return something or revive (memories).',linked_question_ids:['pv_l05_m','pv_l05_i']},
+{id:'pv_l05_i',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'Years of campaigning finally helped ___ the law that protects whistleblowers today.',hint:'phrasal verb: cause to happen (2 words — bare infinitive)',ans:'bring about',exp:'<strong>Bring about</strong> a change/result = cause it. Russian <em>привести к</em> + dative captures the meaning. ✗ <em>Bring up</em> = raise a topic. ✗ <em>Bring in</em> = introduce (formal launch), close but emphasises the launch act not the resulting change.',linked_question_ids:['pv_l05_m','pv_l05_g']},
+{id:'pv_l06_m',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'turned out' mean in: 'I worried about the trip for weeks, but it turned out to be the best holiday of my life'?",ans:0,opts:['Resulted or proved to be','Was cancelled at the last minute','Cost more than expected'],exp:'<strong>Turn out</strong> = result or prove to be. <em>It turned out well / turned out to be wrong / turned out that nobody knew.</em> ✗ <em>Work out</em> = produce a successful resolution through effort; close meaning but specifically about effort/calculation.',linked_question_ids:['pv_l06_g','pv_l06_i']},
+{id:'pv_l06_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'The renovation was much harder than we expected, but the kitchen ___ beautifully.',ans:0,opts:['turned out','turned over','turned in','turned up'],exp:'<strong>Turn out</strong> = end up looking or being a certain way; result. ✗ <em>Turn over</em> = flip or transfer. ✗ <em>Turn up</em> = arrive unexpectedly or appear. ✗ <em>Turn in</em> = submit or go to bed.',linked_question_ids:['pv_l06_m','pv_l06_i']},
+{id:'pv_l06_i',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'Nobody expected the rainy day to be fun, but it ___ great in the end.',hint:'phrasal verb: result, prove to be (2 words — past simple)',ans:'turned out',exp:'<strong>Turn out</strong> = result, prove to be. <em>It turned out fine.</em> Russian <em>оказаться</em> matches. ✗ <em>Worked out</em> = produced a successful resolution through effort, slightly different sense.',linked_question_ids:['pv_l06_m','pv_l06_g']},
+// ── PV FAMILY COVERAGE (s98) — Batch 1: 20 MCQ + 8 gap + 4 input across GET/BRING/TURN/SET/COME/TAKE
+{id:'pv_f01',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'get along' mean in: 'My brother and I get along really well — we never argue'?",ans:0,opts:['Have a friendly relationship','Spend a lot of time apart','Compete with each other'],exp:'<strong>Get along (with)</strong> = have a good relationship. <em>I get along with my colleagues.</em> ✗ <em>Get on with</em> means the same in UK English; <em>get along</em> is more common in US/neutral. Russian <em>ладить с</em> matches.'},
+{id:'pv_f02',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'got away with' mean in: 'He got away with submitting the report a day late, but only this once'?",ans:0,opts:['Avoided punishment for it','Was praised for the timing','Refused to do it'],exp:'<strong>Get away with</strong> = avoid punishment or consequences for a wrong action. ✗ <em>Get away</em> alone (no <em>with</em>) = escape/take a holiday. ✗ <em>Get over</em> = recover. Russian <em>сойти с рук</em> idiom matches the meaning.'},
+{id:'pv_f03',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:true,q:"What does 'get back to' mean in: 'I will get back to you tomorrow with the final numbers'?",ans:0,opts:['Reply or respond later','Meet again in person','Send the message again'],exp:'<strong>Get back to (someone)</strong> = reply later, usually after checking something. <em>I will get back to you on that.</em> ✗ <em>Get back</em> alone = return physically. ✗ <em>Get to (someone)</em> = annoy or affect emotionally — different sense.'},
+{id:'pv_f04',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'getting into' mean in: 'She is getting into the habit of running every morning'?",ans:0,opts:['Starting to develop the habit','Avoiding the habit','Stopping the habit'],exp:'<strong>Get into</strong> + habit/routine = start developing it regularly. ✗ <em>Get out of</em> = escape a habit. ✗ <em>Take up</em> covers hobbies but is less natural with <em>habit</em>. Russian <em>войти в привычку</em> matches.'},
+{id:'pv_f05',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'brought up' mean in: 'Nobody brought up the budget issue at the meeting, even though everyone was thinking about it'?",ans:0,opts:['Mentioned or raised the topic','Brought a document about it','Postponed discussing it'],exp:'<strong>Bring up</strong> = mention or introduce a topic in conversation. ✗ <em>Bring about</em> = cause to happen — different sense. ✗ <em>Raise</em> is a synonym. Also: <em>bring up a child</em> = raise a child — context-dependent.'},
+{id:'pv_f06',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'bring forward' mean in: 'They had to bring forward the launch by two weeks because of competitor pressure'?",ans:0,opts:['Move it to an earlier date','Push it to a later date','Cancel it entirely'],exp:'<strong>Bring forward</strong> = move to an earlier date than originally planned. ✗ <em>Put off</em> / <em>postpone</em> = move to a later date — opposite. ✗ <em>Bring out</em> = release a product. Russian <em>перенести на более ранний срок</em> matches.'},
+{id:'pv_f07',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'brought back' mean in: 'That song really brought back memories of our summer in Spain'?",ans:0,opts:['Made me remember them','Recorded them again','Put them in writing'],exp:'<strong>Bring back</strong> + memories = cause to remember, evoke. <em>Bring back childhood / bring back emotions.</em> ✗ <em>Bring up</em> would be wrong here — <em>bring up</em> mentions a topic, not evokes memory. Russian <em>навеять воспоминания</em>.'},
+{id:'pv_f08',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'turned down' mean in: 'She turned down the job offer because the salary was too low'?",ans:0,opts:['Refused or rejected it','Accepted it conditionally','Renegotiated it'],exp:'<strong>Turn down</strong> = reject, refuse (an offer, request, application). ✗ <em>Turn off</em> = stop a device or repel someone emotionally. ✗ <em>Turn away</em> = refuse entry. Russian <em>отклонить</em> matches.'},
+{id:'pv_f09',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'turned into' mean in: 'The empty warehouse has turned into a popular co-working space'?",ans:0,opts:['Was transformed into','Was demolished to make','Was located near'],exp:'<strong>Turn into</strong> = transform or change into. <em>Caterpillar turns into a butterfly.</em> ✗ <em>Turn out</em> = result/prove to be (без активной трансформации). Russian <em>превратиться в</em> matches directly.'},
+{id:'pv_f10',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'turn up' mean in: 'I waited an hour, but he never turned up'?",ans:0,opts:['Arrive or appear','Make a phone call','Send an apology'],exp:'<strong>Turn up</strong> = arrive (often unexpectedly or late). <em>He turned up at the party uninvited.</em> ✗ <em>Show up</em> is a near-synonym. ✗ <em>Turn out</em> = result. ✗ <em>Turn into</em> = transform.'},
+{id:'pv_f11',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'set up' mean in: 'They set up the meeting for next Tuesday at 10am'?",ans:0,opts:['Arranged or scheduled it','Cancelled it','Postponed it indefinitely'],exp:'<strong>Set up</strong> = arrange, organise (a meeting, business, system). <em>Set up an account / a company.</em> ✗ <em>Set off</em> = start a journey or trigger an alarm. ✗ <em>Set out</em> = begin a journey or state intentions.'},
+{id:'pv_f12',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'set off' mean in: 'We set off at dawn to beat the traffic'?",ans:0,opts:['Started the journey','Cancelled the journey','Returned from the journey'],exp:'<strong>Set off</strong> = begin a journey. <em>We set off for Madrid at 6am.</em> Also: <em>set off an alarm/fireworks</em> = trigger. ✗ <em>Set up</em> = arrange/organise. ✗ <em>Set out</em> overlaps but emphasises intention/destination.'},
+{id:'pv_f13',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'set aside' mean in: 'We try to set aside an hour every Friday for team feedback'?",ans:0,opts:['Reserve or allocate it specifically','Cancel it','Discuss it informally'],exp:'<strong>Set aside</strong> + time/money = reserve, allocate for a purpose. <em>Set aside savings / set aside time.</em> ✗ <em>Set up</em> = arrange. ✗ <em>Put aside</em> is a near-synonym. Russian <em>отложить</em> matches the time/money sense.'},
+{id:'pv_f14',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'came across' mean in: 'I came across an old photo of us from school'?",ans:0,opts:['Found it by chance','Was looking for it','Showed it to others'],exp:'<strong>Come across</strong> = find unexpectedly. <em>I came across an interesting article.</em> Also: <em>come across as</em> = give an impression. ✗ <em>Come up</em> = arise. ✗ <em>Come into</em> = inherit/receive.'},
+{id:'pv_f15',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'came up with' mean in: 'The team came up with a clever solution to the supply problem'?",ans:0,opts:['Invented or thought of it','Voted to reject it','Postponed deciding on it'],exp:'<strong>Come up with</strong> = invent, think of (an idea, plan, solution). ✗ <em>Come across</em> = find by chance. ✗ <em>Come up</em> alone = arise/be mentioned. ✗ <em>Come down to</em> = boil down to.'},
+{id:'pv_f16',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'comes down to' mean in: 'Whether the project succeeds comes down to whether we can hire the right team'?",ans:0,opts:['Depends fundamentally on','Has been delayed by','Was decided against'],exp:'<strong>Come down to</strong> = depend essentially on; reduce to a single core factor. <em>It all comes down to money.</em> ✗ <em>Come up with</em> = invent. ✗ <em>Come up</em> = arise. Russian <em>сводится к</em> matches.'},
+{id:'pv_f17',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'came up' mean in: 'A few questions came up during the audit that we hadn't anticipated'?",ans:0,opts:['Arose or were raised','Were officially closed','Were postponed'],exp:'<strong>Come up</strong> = arise, emerge, be raised. <em>An issue came up.</em> ✗ <em>Come up with</em> needs the <em>with</em> (= invent). ✗ <em>Come across</em> = find by chance. ✗ <em>Come around</em> = be persuaded.'},
+{id:'pv_f18',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'takes after' mean in: 'My daughter really takes after her grandmother — same calm, same patience'?",ans:0,opts:['Resembles in personality or looks','Was raised by','Spends time with'],exp:'<strong>Take after</strong> + family member = resemble (looks or personality). <em>She takes after her father.</em> ✗ <em>Take to</em> = grow to like. ✗ <em>Take over</em> = assume control. Russian <em>пойти в</em> + acc. matches.'},
+{id:'pv_f19',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"What does 'taking it in' mean in: 'There's so much new information that I'm still taking it in'?",ans:0,opts:['Mentally absorbing or processing it','Writing it down','Sharing it with others'],exp:'<strong>Take in</strong> = mentally absorb, understand. <em>I need time to take in the news.</em> Also: <em>take someone in</em> = deceive (different sense). ✗ <em>Take on</em> = accept a duty. ✗ <em>Take over</em> = assume control.'},
+{id:'pv_f20',type:'mcq',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:"What does 'really took off' mean in: 'After a slow start, the product really took off in the second quarter'?",ans:0,opts:['Became suddenly successful','Was withdrawn from sale','Required more support'],exp:'<strong>Take off</strong> (intransitive) = suddenly become successful or popular. Also: planes <em>take off</em> = depart. ✗ <em>Take over</em> = assume control. ✗ <em>Take up</em> = start a hobby. Russian <em>пойти в гору</em> idiom matches.'},
+{id:'pv_f21',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'It took her months to ___ the disappointment of not getting the promotion.',ans:0,opts:['get over','get through','get past','get along'],exp:'<strong>Get over</strong> = recover after a difficult event has ended (retrospective). ✗ <em>Get through</em> = endure while it is happening. ✗ <em>Get past</em> = move beyond physically/emotionally — close, but <em>get over</em> is the standard for emotional recovery.'},
+{id:'pv_f22',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"After two months at the new job, she's finally starting to ___ the rhythm of it.",ans:0,opts:['get into','get over','get along with','get back to'],exp:'<strong>Get into</strong> + situation/routine = adapt to, become engaged with. ✗ <em>Get over</em> = recover after. ✗ <em>Get back to</em> = resume after a break. ✗ <em>Get along with</em> = relate well to (people).'},
+{id:'pv_f23',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'The company plans to ___ a new line of eco-friendly products this autumn.',ans:0,opts:['bring out','bring up','bring along','bring forward'],exp:'<strong>Bring out</strong> + product = release, launch publicly. ✗ <em>Bring up</em> = mention a topic. ✗ <em>Bring along</em> = take with you. ✗ <em>Bring forward</em> = move to an earlier date — different sense.'},
+{id:'pv_f24',type:'gap',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"Don't forget to ___ the lights when you leave the office.",ans:0,opts:['turn off','turn down','turn up','turn out'],exp:'<strong>Turn off</strong> a device = switch off. ✗ <em>Turn down</em> = reduce volume/temperature, or refuse an offer. ✗ <em>Turn up</em> = increase, or arrive. ✗ <em>Turn out</em> = result/prove to be — usually intransitive.'},
+{id:'pv_f25',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'A delay in approvals could ___ the project launch by several weeks.',ans:0,opts:['set back','set off','set up','set aside'],exp:'<strong>Set back</strong> + project/plan = delay or hinder. <em>The flood set us back two weeks.</em> ✗ <em>Set off</em> = start a journey/trigger alarm. ✗ <em>Set up</em> = arrange. ✗ <em>Set aside</em> = reserve.'},
+{id:'pv_f26',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'Her new novel is going to ___ next month — I have already pre-ordered it.',ans:0,opts:['come out','come up','come around','come across'],exp:'<strong>Come out</strong> = be released, published. <em>The film comes out in May.</em> ✗ <em>Come up</em> = arise (a topic). ✗ <em>Come across</em> = find by chance. ✗ <em>Come around</em> = be persuaded, or visit.'},
+{id:'pv_f27',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'Could you ___ his contact details so I can call him later?',ans:0,opts:['take down','take in','take after','take over'],exp:'<strong>Take down</strong> + information = write down, note. <em>Take down a number / take down notes.</em> ✗ <em>Take in</em> = absorb mentally, or deceive. ✗ <em>Take after</em> = resemble. ✗ <em>Take over</em> = assume control.'},
+{id:'pv_f28',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'When the founder retires next year, his daughter is expected to ___ the family business.',ans:0,opts:['take over','take after','take up','take in'],exp:'<strong>Take over</strong> = assume control of (a company, role, country). ✗ <em>Take after</em> = resemble (a relative). ✗ <em>Take up</em> = start a hobby/activity. ✗ <em>Take in</em> = absorb information or deceive.'},
+{id:'pv_f29',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'He thought he could ___ skipping the meeting, but the manager noticed immediately.',hint:'phrasal verb: avoid punishment for a wrong action (3 words — bare infinitive)',ans:'get away with',exp:'<strong>Get away with</strong> = avoid punishment for a wrong action. ✗ <em>Get away</em> alone (no <em>with</em>) = escape/take a holiday. Russian <em>сойти с рук</em> idiom matches. The <em>with</em> is obligatory before the action.'},
+{id:'pv_f30',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:"This song always ___ memories of my school days — I can't help smiling.",hint:'phrasal verb: cause memories to return (2 words — present simple, third-person)',ans:'brings back',exp:'<strong>Bring back</strong> + memories/feelings = cause to return, evoke. ✗ <em>Bring up</em> = mention a topic — wrong here. ✗ <em>Take back</em> = retract or return physically — different sense. Russian <em>навевать</em> matches.'},
+{id:'pv_f31',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'The new CEO managed to ___ the failing branch in less than six months.',hint:'phrasal verb: reverse a failing situation, transform it (2 words — bare infinitive)',ans:'turn around',exp:'<strong>Turn around</strong> = reverse a bad situation, make a failing thing succeed. <em>Turn around the company / turn around the team.</em> ✗ <em>Turn over</em> = flip, or transfer; <em>turnover</em> as noun = revenue. ✗ <em>Turn out</em> = result/prove to be.'},
+{id:'pv_f32',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'They needed ten minutes alone to ___ a workable compromise.',hint:'phrasal verb: invent or think of (3 words — bare infinitive)',ans:'come up with',exp:'<strong>Come up with</strong> = invent, devise (an idea, plan, solution). ✗ <em>Come up</em> alone = arise/be mentioned. ✗ <em>Come across</em> = find by chance. The <em>with</em> is obligatory before the idea.'}];
 
 let TOTAL = 0;
 let LEVEL_TOTALS = {};
@@ -5269,17 +5330,36 @@ async function finishSession() {
 
   await saveData(DB);
 
-  // U5: Check for newly earned badges
-  checkNewBadges();
+  // U5: Check for newly earned badges (returns positive-only list per D9 asymmetry)
+  const newlyEarned = checkNewBadges();
   await saveData(DB); // save badge state
 
-  showResults(sessionScore, sessionQs.length, pct);
+  showResults(sessionScore, sessionQs.length, pct, newlyEarned);
 }
 
-function showResults(score, total, pct) {
+function showResults(score, total, pct, newlyEarnedBadges) {
   showTab('results');
   document.getElementById('res-ring').style.setProperty('--pct', pct + '%');
   document.getElementById('res-score').textContent = `${score}/${total}`;
+  // D9 — newly-earned medal callout on session-end card. Asymmetric: positive
+  // transitions only (handled upstream by checkNewBadges). Always rendered when
+  // present, both shells; the toast continues to fire too.
+  const medalEl = document.getElementById('res-new-medal');
+  if (medalEl) {
+    const list = (newlyEarnedBadges || []);
+    if (list.length) {
+      const order = {'🥇':0,'🥈':1,'🥉':2};
+      const sorted = list.slice().sort((a, b) => (order[a.medal] || 9) - (order[b.medal] || 9));
+      const levelNames = { '🥇':'Gold', '🥈':'Silver', '🥉':'Bronze' };
+      const items = sorted.map(b =>
+        `<span class="res-new-medal-pill"><span class="res-new-medal-icon">${b.medal}</span>${escapeHtml(b.cat)} <span class="res-new-medal-tier">${levelNames[b.medal] || ''}</span></span>`
+      ).join('');
+      medalEl.innerHTML = `<div class="res-new-medal-headline">🎉 New medal${sorted.length === 1 ? '' : 's'} earned</div><div class="res-new-medal-list">${items}</div>`;
+      medalEl.style.display = '';
+    } else {
+      medalEl.style.display = 'none';
+    }
+  }
   let title, msg;
   if (pct >= 90) { title = 'Excellent! 🎉'; msg = 'Outstanding! Your English grammar is at a high level.'; }
   else if (pct >= 75) { title = 'Great job! 👏'; msg = 'Strong performance. A few areas to review.'; }
@@ -5726,24 +5806,28 @@ function renderBadgeShelf() {
   ).join('');
 }
 
+// Medal rank used for asymmetric D9 display: only surface upward transitions
+// (no badge → bronze, bronze → silver, silver → gold, etc.). Downgrades stay
+// silent in both shells.
+const MEDAL_RANK = { '🥉': 1, '🥈': 2, '🥇': 3 };
 function checkNewBadges() {
   const current = computeBadges(DB.catStats);
   const prev = DB.badges || {};
-  const newBadges = [];
+  const positive = [];
   Object.entries(current).forEach(([cat, medal]) => {
-    if (prev[cat] !== medal) {
-      newBadges.push({ cat, medal });
-    }
+    const prevRank = MEDAL_RANK[prev[cat]] || 0;
+    const curRank = MEDAL_RANK[medal] || 0;
+    if (curRank > prevRank) positive.push({ cat, medal });
   });
   // Save current badges
   DB.badges = current;
-  // Show toast for first new badge (most important one)
-  if (newBadges.length > 0) {
+  if (positive.length > 0) {
     // Sort: gold first
     const order = {'🥇':0,'🥈':1,'🥉':2};
-    newBadges.sort((a,b) => (order[a.medal]||9) - (order[b.medal]||9));
-    showBadgeToast(newBadges[0]);
+    positive.sort((a,b) => (order[a.medal]||9) - (order[b.medal]||9));
+    showBadgeToast(positive[0]);
   }
+  return positive;
 }
 
 function showBadgeToast(badge) {
@@ -8338,11 +8422,12 @@ function coachNextExercise() {
       (ex.prompt_en_hint ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">${escapeHtml(ex.prompt_en_hint)}</div>` : '')
     );
   } else if (coachState.type === 'spelling_drill') {
-    // RU definition is primary cue (Anna/Nicole); EN definition is secondary disambiguator.
+    // RU cue only — recall + spelling, not just typing the EN hint that used to
+    // sit underneath. The `prompt_definition_en` field is left in the data so CC
+    // can still review items, but it's not surfaced to the player.
     coachAppendMessage('assistant',
       `<div class="coach-msg-prompt">Spell it (${idx}/${total}):</div>` +
-      (ex.prompt_definition_ru ? `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_definition_ru)}</div>` : '') +
-      (ex.prompt_definition_en ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">${escapeHtml(ex.prompt_definition_en)}</div>` : '')
+      (ex.prompt_definition_ru ? `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_definition_ru)}</div>` : '')
     );
   }
   document.getElementById('coachInputRow').style.display = '';

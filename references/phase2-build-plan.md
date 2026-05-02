@@ -1599,6 +1599,121 @@ hint / answer mismatches. b09 was the only ambiguous case.
 - §4.4 polish: newly-earned-medal callout on done card, overflow
   menu, `active_categories`-aware Coach picker filter
 
+### v20260502-s98 — §4.4 medal callout + Tier 2 PV ladder rebalance Batch 1
+
+Two threads bundled: §4.4 closeout (newly-earned-medal callout on the
+session-end card with D9 asymmetry baked in) and §4.2 Batch 1 (50
+new Phrasal Verbs items — 18 ladder completions for the 6 stuck PVs
++ 32 family coverage skewed to MCQ).
+
+**Shipped — engineering**:
+
+1. **`checkNewBadges` → asymmetric, returns positive transitions**.
+   New `MEDAL_RANK` map ranks 🥉=1, 🥈=2, 🥇=3. Loop now compares
+   `MEDAL_RANK[prev[cat]]` vs `MEDAL_RANK[current]` and only pushes
+   to the surfaced list when `cur > prev`. Downgrades (🥇→🥈,
+   silver-loss-to-bronze, badge-loss) stay silent in both shells.
+   The toast continues to fire for the top positive transition.
+   Function now returns the positive list so callers can render it.
+2. **`finishSession` captures the list** and passes to `showResults`.
+3. **`showResults(score, total, pct, newlyEarnedBadges)`** renders the
+   list inside a new `#res-new-medal` zone on the session-end card —
+   amber-tinted gradient block, headline ("🎉 New medal earned" /
+   "New medals earned" plural-aware), and one pill per medal with
+   tier label. Hidden when nothing was earned.
+4. **CSS** for `.res-new-medal*` classes (gradient, pill style).
+
+**Shipped — content (Phrasal Verbs Batch 1)**:
+
+- **18 ladder completions** — 6 stuck PVs × 3 rungs (MCQ + gap +
+  input) with `linked_question_ids` cross-references for future
+  ladder-pair tracking. Targets the production gap diagnosed in
+  Artem's Apr 30 transform session: get off (gt03), get through
+  (gt10), read up on (pv_ti17), take up (pv_c03), bring about
+  (pv_c07), turn out (pv_ti71). Each PV now has a recognition
+  (MCQ "what does X mean here?"), selection (gap "which particle
+  fits"), and production (input) item, all linked.
+- **32 family coverage items** — 20 MCQ + 8 gap + 4 input across
+  GET, BRING, TURN, SET, COME, TAKE families. MCQ-skewed because
+  the diagnosis is recognition-substrate-thin under a thick
+  selection layer. Real-life contexts (business decisions, Bahrain
+  family life, project launches, news headlines) avoid the generic
+  "the man went to the shop" anti-pattern. IDs `pv_f01`–`pv_f32`.
+
+**Bank shape after Batch 1**:
+- Total questions: 1,932 (+50)
+- Phrasal Verbs total: 227 (+50)
+- New PV type mix from these 50: 26 MCQ + 14 gap + 10 input (skewed
+  toward recognition per §4.2 ratio target 5:12:6)
+- New `linked_question_ids` field introduced (PWA does not yet read
+  it; metadata for future ladder-pair tracking)
+
+**Verified end-to-end via preview probe**:
+- ALL_QUESTIONS count 1,932 (+50 from prior 1,882)
+- 18 ladder items present (`pv_l0[1-6]_[mgi]`), 32 family items
+  present (`pv_f0[1-9]|pv_f[12][0-9]|pv_f3[0-2]`)
+- Sample MCQ `pv_l01_m` parses cleanly with all schema fields,
+  including `linked_question_ids: ['pv_l01_g','pv_l01_i']`
+- Synthetic medal callout: simulated bronze-then-silver Articles
+  promotion + bronze Tenses promotion → callout renders "🎉 New
+  medals earned" with two pills "🥈 Articles SILVER" + "🥉 Tenses
+  BRONZE"
+- Synthetic asymmetry: Articles 🥇→🥈 demotion → not surfaced;
+  Tenses 0→🥉 promotion → surfaced. D9 rule honoured.
+- Pre-deploy: syntax OK, version-string consistency OK, transform
+  audit OK (46 transform Qs unchanged), no sparse arrays, level
+  totals sum to 1,932 (B1=602, B2=988, C1=326, C2=16).
+- No console errors.
+
+**Active-window implications honoured**:
+- Phrasal Verbs is not in Anna's `learning_path.active_categories`
+  (active = Tenses/Prepositions/Articles/Spelling), so the new PV
+  content is invisible to her in the learner-shell quiz filter.
+  Authored content sits in the bank for Artem and Egor (open pool)
+  and waits for Nicole/Ernest active-window unlocks.
+
+**Acceptance state for §4.2**:
+- ✅ Batch 1 shipped (50 items: 18 ladder + 32 family)
+- ⏳ Batch 2 verb families (give up, find out, sort out, work out,
+  call off, figure out, point out, rule out, end up, take over) —
+  not yet
+- ⏳ Coach particle_sort items (~15) — not yet (Coach exercise type
+  not enabled in the picker yet)
+- ⏳ Final ratio target Recognition 50 / Selection 120 / Production 60
+  not reached: current after Batch 1 is approximately 46 / 103 /
+  48 — Batch 2 closes the rest
+
+**Decisions called inline**:
+- ID prefix for ladder completions: `pv_l0[1-6]_[mgi]` (l=ladder,
+  numbered 01-06 for the 6 PVs, suffix m/g/i for rung). Considered
+  using PV-name in the id for readability (e.g. `pv_lad_getoff_m`)
+  but went with shorter index-based scheme to keep the bank
+  consistent with existing `gt##` / `br##` short forms.
+- ID prefix for family coverage: `pv_f0[1-9]` / `pv_f[12][0-9]` /
+  `pv_f3[0-2]` (f=family Batch 1, sequential). Future Batch 2 can
+  reuse `pv_f` continuing from `pv_f33`.
+- `linked_question_ids` field added but not yet wired into the
+  PWA. Forward-looking metadata; the spec asked for it. PWA can
+  start reading it in a follow-up slice (e.g. for ladder-pair stats
+  reporting in stats reviews).
+
+**Acceptance state for §4.4 (final closeout)**:
+- ✅ D9 newly-earned-medal callout on session-end card (asymmetric)
+- ⏳ Overflow menu (history / achievements / settings / switch
+  player) — still deferred
+- ⏳ `active_categories`-aware Coach picker filter (current cut is
+  count-based) — still deferred; meaningful when Nicole/Ernest
+  library content lands
+
+**Next session candidates**:
+
+- §4.3 article intervention batch 1 (~25–30 quiz Qs + ~15
+  article_drill items per family member)
+- §4.5 Nicole library content
+- §4.5 Ernest library content
+- Tier 2 PV Batch 2 (verb families above + ~15 Coach particle_sort)
+- §4.4 polish: overflow menu, active-window-aware picker filter
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
