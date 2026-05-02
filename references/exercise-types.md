@@ -75,6 +75,14 @@ is the **base verb only** (e.g. `GET`, `BRING`, `TAKE`) — never the verb+parti
 which is exactly the rung being practised. Player must produce the particle from semantic
 understanding. (Set 2026-04-30 after a PV Family Drill leaked `GET ACROSS` as the keyword.)
 
+**Half-credit scoring rule**: award 0.5 when the **target structure** (e.g. correct
+particle in PV transform) is produced but adjacent grammar leaks (tense drift,
+preposition omission, agreement). This separates "production gap" from "load drift" —
+both worth logging but they imply different next sessions. Record full marks and half
+marks distinctly in `meta.scoring_note`. (Set 2026-05-02 after a PV transform session
+where particle-correct/tense-wrong items would have lost diagnostic granularity if
+scored as full misses.)
+
 Example:
 - Source: "I realised the cost only after reviewing the invoice."
 - Keyword: ONLY (must appear in transformed version)

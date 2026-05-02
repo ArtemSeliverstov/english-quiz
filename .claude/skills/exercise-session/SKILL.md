@@ -47,6 +47,11 @@ format. Extract:
 
 Combine with stable profile from `family-profiles.md`.
 
+**Apply engagement-notes from the first reply, not just during item delivery.**
+Stated style preferences (concision, format, length) are binding from message 1.
+If you don't match them from the open, you're already off-protocol — the player
+will have to pushback before you've even started Step 2. Draft and trim before sending.
+
 ### Step 2 — Select exercise type
 
 Match player's profile + recent weak patterns + (for Artem) slot plan.
@@ -59,6 +64,12 @@ ambiguity.
 `error_correction`). `particle_sort` for particle sorts (NOT `transform`). Slot-matching
 depends on exact values.
 
+**Two-stage PV format** (Artem default, validated 2026-05-02): 10 `particle_sort`
+items as warm-up + 5 `transform` items on the same verb families. Log as **two
+separate exercise entries** — different `exercise` types keep stats and
+slot-matching clean. Use this whenever the session targets PV production; it
+honours Artem's recognition→production ladder rule.
+
 ### Step 3 — Run session
 
 Present items one at a time. Score each. Build error pattern map.
@@ -66,6 +77,20 @@ Present items one at a time. Score each. Build error pattern map.
 For each item, use the player's real-life context themes from `family-profiles.md`.
 Default to home/Bahrain context unless Artem mentioned travel at session start.
 **Generic stems are forbidden** ("the man went to the shop" — never).
+
+**L1 fallback for grammar trap explanations.** Even for English-default players
+(coach_language=`en`), switch to L1 (Russian) when the player asks for a deeper
+explanation on an error — especially L1 interference patterns (Russian
+direct-object → English preposition, fossilised article calques, particle
+semantics that don't map to Russian intuition). Don't pre-switch unprompted; do
+switch on request.
+
+**Two-stage sessions: deliberate retest of recognition misses.** When running
+the recognition→production ladder, **at least one production item must retest
+a recognition miss** from the warm-up. Confirms whether the gap is real or a
+single slip. If the player gets it right on retest → log as "recognition slip,
+production fine". If wrong both times → log as confirmed stuck pattern (high
+priority for next session).
 
 ### Logging strategy
 
