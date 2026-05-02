@@ -2263,6 +2263,218 @@ quiz Q fixes for cross-player failures) becomes a Batch 1.5 follow-up.
 - §4.4 polish: overflow menu, active-window-aware Coach picker filter,
   mid-quiz exit affordance for learner shell
 
+### v20260502-t3 — §4.3 Batch 1.5 + §4.5 error_correction engine + Ernest content
+
+Two threads bundled: §4.3 follow-up (Ernest's article_drill batch + 8 in-place
+quiz Q fixes for cross-player failures) and §4.5 next slice (error_correction
+Coach type wired up + Ernest's first error_correction batch). Net: Ernest
+now has the same engine surface as Anna, with content targeted at his
+documented weak patterns (articles × uncountable, conditionals will/would
+calques, present perfect for life experience, `close the lights` calque).
+
+**Shipped — engineering**:
+
+1. **`error_correction` registered as a Coach type**:
+   - Picker button enabled; routes to `coachStartType('error_correction')`
+   - `COACH_TYPE_TO_LIBRARY['error_correction'] = 'error_correction'`,
+     `COACH_TYPE_LABEL['error_correction'] = 'error correction'`
+   - Intro: "I'll show you N sentences, each with one mistake. Type the
+     corrected version — full sentence or just the fixed part."
+2. **Typed input UX** (vs chip): error_correction reuses the existing
+   textarea + send button (same as translation). The teaching value is
+   spotting AND producing the fix; chip UX wouldn't fit.
+3. **Word-boundary scoring** via new `coachECPhraseMatch(haystack, phrase)`:
+   - Builds `\b{regex-escaped phrase}\b` and tests against haystack
+   - Substring containment is unsafe — `error_span: "see"` would
+     false-positive against `"have seen"` (caught during preview verify)
+   - Both `containsFix` and `stillContainsError` now use word-boundary
+     matching
+4. **`coachECNormalize`** — same as `coachNormalize` but does NOT strip
+   articles. Articles are frequently the error itself (e.g. `"a good progress"`
+   → `"good progress"`), so the article-stripping in `coachNormalize` would
+   collapse the wrong/right forms together. Trade-off: article variation
+   in unrelated parts of the sentence becomes intolerant — acceptable
+   since each item targets one specific error.
+5. **Scoring rule**:
+   - `containsFix` = phrase-match `correct_replacement` in submitted
+   - `stillContainsError` = phrase-match `error_span` in submitted
+   - `correct = containsFix && !stillContainsError`
+   - On wrong + still-contains-error: feedback hints "The original error
+     is still there. Look for: <em>{error_span}</em>."
+   - Always shows full corrected sentence + reasoning, even on correct —
+     same teaching philosophy as article_drill.
+6. **`matched_pattern_id`** = `error_type` (e.g. `uncountable_phantom`,
+   `will_in_if_clause`, `preposition_calque`) — flows into the existing
+   "Patterns to review" zone on the done card.
+
+**Shipped — content (Ernest article_drill, 15 items)**:
+
+- IDs `ad_ernest_b01`–`ad_ernest_b15`, level B1, target_player ernest
+- Distribution skewed toward Pattern 2 (phantom_article, 5 items) per
+  Ernest's coach_notes weak pattern (`articles — uncountable nouns at 0%`):
+  - a_the_swap (1): 4 items (b01–b04)
+  - phantom_article (2): 5 items (b05–b09; includes the canonical
+    `progress` / `information` / `homework` uncountable triad)
+  - prep_article (3): 2 items (b10–b11)
+  - fixed_expression (4): 2 items (b12–b13)
+  - dropped_article (5): 2 items (b14–b15)
+- Themes: school, basketball, friends, sports, gym, books — per
+  family-profiles.md Ernest section
+- EN-language reasoning (Ernest's coach language since 2026-05-01)
+
+**Shipped — content (Ernest error_correction, 15 items)**:
+
+- IDs `ec_ernest_b01`–`ec_ernest_b15`, level B1, target_player ernest
+- Distribution by error_type aligned with his active window + measured
+  weaknesses:
+  - Articles × uncountable (5 items): b01 progress, b02 information,
+    b03 phantom `the next Friday`, b04 dropped profession article,
+    b05 fixed-phrase `take an action`
+  - Conditionals (3 items): b06 + b08 1st-conditional `will` in if-clause,
+    b07 2nd-conditional `would` in if-clause (Russian double-conditional
+    calque)
+  - Tenses (3 items): b09 `was to London` → `have been to`, b10 present
+    simple → continuous, b11 repeated experience → present perfect
+  - Phrasal verbs / calques (1): b12 `close the lights` → `turn off`
+    (logged in Ernest's coach_notes from prior session)
+  - Articles uncountable plural (1): b13 `homeworks` → `homework`
+  - Prepositions (2): b14 `waiting my friend` → `waiting for`, b15
+    `arrived to gym` → `arrived at`
+- Each item carries `error_type` for stats aggregation.
+
+**Shipped — content (8 in-place quiz Q fixes in ALL_QUESTIONS)**:
+
+Per the diagnostic Phase 1B "fix 15 cross-player failure questions"
+backlog item. 8 high-impact fixes shipped this session; the remaining
+~7 (mc09, mc12, etc.) deferred to Batch 1.6.
+
+| ID | Before | After |
+|---|---|---|
+| `art11` | MCQ `Which is correct?` (3 sentences with `progress`) | gap with explicit Russian L1 note about countable `прогресс` |
+| `art14` | gap, exp lacked contrastive structure | gap, exp now contrasts `take ∅ action` (general) vs `take the action` (specific) + Russian `принять меры` calque note |
+| `art15` | MCQ `Which is correct?` (3 sentences with `under review`) | gap, exp lists other zero-article phrases (`under construction`, `in progress`) + Russian `на рассмотрении` note |
+| `art19` | MCQ `Which is correct?` (Director appointment) | gap with options `[a, the, an, —]`, exp emphasises first-mention rule + dropped-article L1 trap |
+| `aph32` | MCQ `Which is correct?` (`at a stage`) | gap with options `[the, a, —]`, exp contrasts `at a stage` (indefinite) vs `at the planning stage` (definite + named) |
+| `art_b08` | gap, exp ambiguous on lunch routine vs lunch event | gap, exp now distinguishes `have ∅ lunch` (routine) vs `have a quick lunch` (event) with Russian `обедать` calque trap |
+| `art_c03` | gap, exp covered the salt shaker case | gap, exp tightens Russian L1 note about `соль` lacking article cue + the heuristic "Do we both know which one?" |
+| `mc14` | multi 4-blank, intro listed rules but no Russian L1 callout | multi 4-blank, intro restructured as numbered rules + explicit Russian-L1 note about governing-body article-drop pattern |
+
+All 8 are in-place edits — IDs preserved, `qStats` history intact.
+
+Multi-blank format anomaly (cross-player <55%, family-profiles.md noted)
+is NOT solved by content fixes alone — it's a UI/cognitive-load issue.
+The mc14 fix adds scaffolding but the deeper investigation remains in
+the §4.4 polish bucket. mc09 / mc12 deferred to Batch 1.6 since splitting
+them into gap-pairs would orphan their qStats history (a bigger decision).
+
+**Bank shape after t3**: 1,984 questions (unchanged from t2 — no new
+items, only in-place edits to 8). Library: translation 40, spelling 20,
+article_drill 30, error_correction 15.
+
+**Verified end-to-end via preview probe (Ernest real Firestore data)**:
+
+- Ernest learner-shell load: `learning_path.active_categories`
+  `[Tenses, Articles, Conditionals, Phrasal Verbs, Vocabulary, Relative
+  Clauses]`, level_cap B1, ui_shell `learner` ✓
+- Picker (Ernest): 4 visible buttons — Translation 10, **Articles 15**
+  (newly available), **Error Correction 15** (newly available), Free
+  Write. Spelling / Particles / Russian Trap correctly hidden.
+- Article drill on `ad_ernest_b05` (`I made ___ good progress in maths`,
+  correct=`—`): submitted wrong `a` → ✗ + uncountable reasoning + Russian
+  `прогресс` calque note, `matched_pattern_id: phantom_article`.
+- Error correction `coachECPhraseMatch` unit cases (all pass):
+  - `('have seen this film', 'see')` → false (no false-positive on
+    substring of `"seen"`)
+  - `('have seen this film', 'have seen')` → true
+  - `('went into Paris', 'to')` → false (no false-positive inside
+    `"into"`)
+  - `('good progress', 'a good progress')` → false (full phrase needed)
+  - `('have been to', 'have been to')` → true (just-the-fix submission)
+- Error correction full session: tested 3 items end-to-end with full
+  corrected sentence — `ec_ernest_b15` arrive-at, `ec_ernest_b01`
+  progress, `ec_ernest_b11` present-perfect — all graded correct, full
+  corrected sentence + reasoning shown, `matched_pattern_id` recorded
+  per error_type. Done card surfaced 12 distinct patterns including
+  `uncountable_phantom`, `will_in_if_clause`, `would_in_if_clause`,
+  `preposition_calque`, `phrasal_verb_calque`,
+  `present_simple_for_repeated_experience`,
+  `past_simple_for_life_experience`.
+- Quiz fixes verified: `art11` / `art14` / `art15` / `art19` / `aph32` /
+  `art_b08` / `art_c03` all read as `type: 'gap'` with sane `opts` and
+  `ans` (integer). `mc14` retains `type: 'multi'` with 4 blanks and the
+  new intro renders.
+- Builder regression (Artem): tab bar visible, learner home hidden,
+  `ui_shell: builder`, no console errors.
+
+**Pre-deploy**:
+- syntax OK, transform audit OK (46 transforms unchanged), no sparse
+  arrays, single-declaration check OK, version-string consistency OK
+  (v20260502-t3 in HTML badge × 2 + sw.js cache key).
+
+**Bug surfaced + fixed inline**: First implementation of error_correction
+scoring used plain `.includes()` substring containment. Preview probe
+caught the false-positive: `error_span: "see"` would match inside
+`"have seen"`, marking the correct answer as wrong. Fixed via
+`coachECPhraseMatch` with regex word boundaries. Six unit cases (covering
+substring traps `see/seen` and `to/into`, partial-fix scenarios, just-
+the-fix scenarios) all green after the fix. Lesson captured: any
+error-correction-style scoring must use word-boundary matching, not
+substring.
+
+**Acceptance state for §4.3**:
+- ✅ article_drill engine wired (s/t2)
+- ✅ Anna article_drill batch (s/t2)
+- ✅ Anna Phase 1 art_s scaffold quiz Qs (s/t2)
+- ✅ Ernest article_drill batch (this session)
+- ✅ 8 cross-player quiz Q fixes (this session)
+- ⏳ Nicole article_drill (~15 items) — Articles not in her current
+  active window; can be authored but won't surface until window opens
+- ⏳ Remaining ~7 cross-player fixes (mc09, mc12, art_b08 has been done,
+  others) — Batch 1.6
+- ⏳ Phase 2A–2F new question batches (~75 items) — multi-session
+  pipeline
+- ⏳ Phase 3 advanced contexts + C1 precision — long-term
+
+**Acceptance state for §4.5 (Ernest line)**:
+- ✅ Ernest Translation Drill (10 items, s100)
+- ✅ Ernest article_drill (15 items, this session)
+- ✅ Ernest Error Correction (15 items, this session)
+- ✅ Ernest Free Write themed prompts (s97 D12)
+- ⏳ Russian Trap exercise type — Ernest profile doesn't flag this as
+  a primary need; defers indefinitely
+
+**Decisions called inline** (not in §3 locks):
+
+- **Word-boundary regex over substring matching** for error_correction
+  scoring. Substring is fast and simple but breaks on common cases (`see`
+  inside `seen`, `to` inside `into`, `in` inside `into`). The
+  regex-escape + `\b...\b` cost is negligible (<0.1ms per item).
+- **Always show the full corrected sentence + reasoning**, even on
+  correct answers. Same philosophy as article_drill — the teaching
+  point is the *rule*, not the right/wrong outcome.
+- **Reuse typed input UX** for error_correction (vs chip/button). Spotting
+  AND producing the fix is the practice; chip UX would short-circuit the
+  production half.
+- **Skip mc09 / mc12 from cross-player fixes this session.** Splitting
+  4-blank multi questions into 2-blank gap pairs would create new IDs
+  and orphan stat history. The mc14 in-place intro+exp strengthening is
+  the safe template; mc09/mc12 deserve a dedicated multi-blank UX
+  investigation before splitting.
+
+**Next session candidates**:
+
+- §4.3 Batch 1.6 — Nicole article_drill (15 items, gated on window
+  unlock) + remaining ~7 cross-player quiz Q fixes (mc09, mc12, others
+  identified during review)
+- Multi-blank UI investigation — cross-player <55% on multi format is
+  flagged in family-profiles.md as a UI/cognitive-load issue, not a
+  knowledge gap. Worth a dedicated slice (split mc-series into gap
+  pairs OR add a "one blank at a time" stepper UI for multi).
+- Tier 2 PV Batch 2 (verb families remainder + ~15 Coach particle_sort
+  items + particle_sort engine wiring — same shape as article_drill)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter,
+  mid-quiz exit affordance for learner shell
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated

@@ -1,0 +1,335 @@
+{
+  "_note": "Ernest article_drill batch 1 — 15 items at B1, distribution weighted toward phantom_article (5) per Ernest's measured weak pattern from coach_notes ('articles — uncountable nouns at 0%'). Themes: school, basketball, friends, sports, books, gym. EN coach language (Ernest's profile setting since 2026-05-01). Single-blank scenes; chip UX (a/an/the/—). Reasoning shown after every answer.",
+  "exercises": [
+    {
+      "id": "ad_ernest_b01",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "I bought a new basketball yesterday. {1} ball is much better than my old one.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention. The ball was introduced with 'a' (any new basketball) — once it's known to both of us, switch to 'the'. Russian 'мяч' gives no marker, so this swap is the highest-frequency error."
+        }
+      ],
+      "fallback_feedback": "Second-mention rule: introduce with 'a', refer back with 'the'."
+    },
+    {
+      "id": "ad_ernest_b02",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "situational_unique"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "We arrived at the school gym and waited for {1} coach to arrive.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Situational unique. Once 'the school gym' is established, 'the coach' means the one for that team — both of us know which. Heuristic: 'Do we both know which one?' → yes → THE."
+        }
+      ],
+      "fallback_feedback": "Once a place is established, people and things at that place take 'the'."
+    },
+    {
+      "id": "ad_ernest_b03",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "inherited_specificity"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "I'm reading {1} first chapter of a really good book.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Inherited specificity. Even though we just introduced the book with 'a', 'first chapter' is inherently unique within it. Pattern: ordinals (first, second, last) + N + of usually take 'the'."
+        }
+      ],
+      "fallback_feedback": "first/second/last + N + of [specific Y] → 'the N'."
+    },
+    {
+      "id": "ad_ernest_b04",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "shared_knowledge"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "Did you tell {1} guys about Saturday's training?",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Shared knowledge — 'the guys' = our friend group, the basketball team — both of us know which. Heuristic: 'Do we both know which ones?' → yes → THE."
+        }
+      ],
+      "fallback_feedback": "Specific people we both know about take 'the'."
+    },
+    {
+      "id": "ad_ernest_b05",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "uncountable", "ernest_weak_pattern"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "I made {1} good progress in maths this term.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "'Progress' is uncountable in English — no 'a/an', even with an adjective. Russian 'прогресс' is countable, so 'a good progress' is a direct calque. ✓ 'made good progress' / 'made significant progress' / 'made great progress'."
+        }
+      ],
+      "fallback_feedback": "Uncountable nouns (progress, advice, information) take no 'a/an' — even with an adjective."
+    },
+    {
+      "id": "ad_ernest_b06",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "uncountable"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "Can you give me {1} information about the school trip?",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "'Information' is uncountable — no 'a/an', no plural. Russian 'информация' is countable in some uses, so 'an information' is a calque trap. ✓ 'some information' / 'a piece of information'."
+        }
+      ],
+      "fallback_feedback": "Information / advice / news / homework / progress — all uncountable, no 'a/an'."
+    },
+    {
+      "id": "ad_ernest_b07",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "uncountable"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "I have {1} homework to do tonight.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "'Homework' is uncountable — no 'a/an', no plural ('homeworks' doesn't exist). Russian 'домашнее задание' is countable, so 'a homework' is a direct calque. ✓ 'some homework' / 'a lot of homework' / 'two hours of homework'."
+        }
+      ],
+      "fallback_feedback": "Homework is uncountable. ✗ a homework / homeworks. ✓ some homework / a lot of homework."
+    },
+    {
+      "id": "ad_ernest_b08",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "time_expression"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "We're having a basketball match {1} next Friday.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "next/last + day/time = no article. ✗ 'the next Friday' / 'a next Friday'. ✓ 'next Friday' / 'last Saturday' / 'next week'."
+        }
+      ],
+      "fallback_feedback": "Time expressions with next/last take zero article."
+    },
+    {
+      "id": "ad_ernest_b09",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "abstract_general"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "{1} school can be tough sometimes, but I like it.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "Abstract noun in general sense — 'school' here means school-as-an-experience, no article. Russian 'школа' sits naturally as a subject, which makes the urge to add 'the' feel right but it's wrong for the general meaning."
+        }
+      ],
+      "fallback_feedback": "Abstract / institutional nouns in general sense (life, school, music) take no article."
+    },
+    {
+      "id": "ad_ernest_b10",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["prep_article", "in_month"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "Our school year ends in {1} June.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "prep_article",
+          "reasoning": "Months take no article after 'in'. ✗ 'in the June' / 'in a June'. ✓ 'in June' / 'in summer' / 'in 2026'."
+        }
+      ],
+      "fallback_feedback": "in + month / season / year = no article on the time word."
+    },
+    {
+      "id": "ad_ernest_b11",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["prep_article", "of_institution"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "The first day of {1} school is always a bit nerve-wracking.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "prep_article",
+          "reasoning": "'School' here is the institutional sense (the experience of school), no article. The phrase 'first day of school' is a fixed idiom. ✓ 'first day of school' / 'last day of school' / 'after school'."
+        }
+      ],
+      "fallback_feedback": "Idiomatic 'X of school' (first day of, end of) keeps zero on 'school'."
+    },
+    {
+      "id": "ad_ernest_b12",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["fixed_expression", "take_action"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "We need to take {1} action to clean up the gym after training.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "fixed_expression",
+          "reasoning": "'Take action' is a fixed phrase — no article. ✗ 'take the action' / 'take an action'. Other zero-article fixed phrases: 'make progress', 'give advice', 'reach agreement'."
+        }
+      ],
+      "fallback_feedback": "Fixed phrases (take action, make progress, give advice) carry zero article."
+    },
+    {
+      "id": "ad_ernest_b13",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["fixed_expression", "institution"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "I have a maths exam at {1} school tomorrow morning.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "fixed_expression",
+          "reasoning": "'At school' (as a student / the institution sense) takes zero article. Same with 'at work', 'at home', 'at university'. ⚠ 'at the school' would mean physically at the school building (e.g. as a visitor)."
+        }
+      ],
+      "fallback_feedback": "Institution role sense (at school, at work, in hospital) takes zero article."
+    },
+    {
+      "id": "ad_ernest_b14",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["dropped_article", "profession"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "My older brother is {1} engineer at a tech company.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "an",
+          "pattern": "dropped_article",
+          "reasoning": "Professions take 'a/an' — classifying A (saying what kind of person). ✗ 'is engineer' (calque from Russian 'Он инженер'). ✓ 'is an engineer' / 'is a teacher' / 'is a doctor'. ('engineer' starts with a vowel sound → 'an'.)"
+        }
+      ],
+      "fallback_feedback": "Person + 'is' + a/an + profession. Russian drops the article — English requires it."
+    },
+    {
+      "id": "ad_ernest_b15",
+      "type": "article_drill",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["dropped_article", "first_mention"],
+      "created": "2026-05-02T19:00:00Z",
+      "version": 1,
+      "sentence_template": "My best friend got {1} new bike for his birthday.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "a",
+          "pattern": "dropped_article",
+          "reasoning": "First mention of a singular countable noun — needs 'a'. ✗ 'got new bike' (Russian 'получил новый велосипед' has no article). ✓ 'got a new bike'. Heuristic: 'Do we both know which one?' → no, it's new info → A."
+        }
+      ],
+      "fallback_feedback": "First mention of a singular countable noun needs 'a' (or 'an' before vowel sounds)."
+    }
+  ]
+}

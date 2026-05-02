@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-t2">
+  <meta name="app-version" content="v20260502-t3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -995,7 +995,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t3</span></p>
 </header>
 
 <!-- TABS -->
@@ -1332,9 +1332,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Particles</span>
           <span class="coach-type-count" data-count-for="particle_sort">0</span>
         </button>
-        <button class="coach-type-btn disabled" data-type="error_correction" disabled>
+        <button class="coach-type-btn" data-type="error_correction" onclick="coachStartType('error_correction')">
           <span class="coach-type-name">Error Correction</span>
-          <span class="coach-type-count" data-count-for="error_correction">0</span>
+          <span class="coach-type-count" data-count-for="error_correction">…</span>
         </button>
         <button class="coach-type-btn disabled" data-type="russian_trap" disabled>
           <span class="coach-type-name">Russian Trap</span>
@@ -2008,15 +2008,15 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'art08',type:'mcq',cat:'Articles',lvl:'B2',biz:true,q:'Which is correct?',ans:2,opts:['She was appointed the CEO last year.','She was appointed a CEO last year.','She was appointed CEO last year.'],exp:'<strong>No article</strong> before a title/role immediately after <em>appointed, elected, named, made, crowned</em>. ✗ <em>She was appointed the director</em> — wrong when the role is treated as a unique designation. Compare: <em>she is the director</em> (describing her current role) vs <em>she was appointed director</em> (the act of appointing).'},
 {id:'art09',type:'mcq',cat:'Articles',lvl:'B2',biz:true,q:'Which is correct in a business email?',ans:1,opts:['I am writing in response to a email of 14 February.','I am writing in response to the email of 14 February.','I am writing in response to email of 14 February.'],exp:'<strong>The</strong> when something is uniquely identifiable by date or reference. <em>The email of 14 February</em> = one specific email. ✗ An email of 14 February treats it as non-specific.'},
 {id:'art10',type:'gap',cat:'Articles',lvl:'B2',biz:false,q:'This is ___ most complex deal we have worked on.',ans:0,opts:['the','a','—'],exp:'<strong>The</strong> before superlatives — always. <em>The most complex, the best, the largest.</em> ✗ A most complex deal is never correct. Superlatives identify a unique item — the is obligatory.'},
-{id:'art11',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:2,opts:['We made the good progress last quarter.','We made a good progress last quarter.','We made good progress last quarter.'],exp:'<strong>No article</strong> with <em>progress</em> (always uncountable). ✗ <em>The progress is good</em> — only use <em>the</em> when referring to specific previously mentioned progress. ✗ <em>Progresses</em> — does not exist. <em>Make progress, good progress, significant progress</em> — all without article.'},
+{id:'art11',type:'gap',cat:'Articles',lvl:'B2',biz:false,q:'We made ___ good progress last quarter.',ans:0,opts:['—','a','the'],exp:'<strong>No article</strong> with <em>progress</em> — uncountable in English, even with an adjective. ✗ <em>a good progress</em> (calque from Russian <em>хороший прогресс</em>). ✗ <em>the good progress</em> unless referring to specific previously-mentioned progress. ✓ <em>make good progress / significant progress / great progress</em> — all without article.'},
 {id:'art12',type:'gap',cat:'Articles',lvl:'B2',biz:false,q:'___ success of the project depends on the quality of the team.',ans:0,opts:['The','A','—'],exp:'<strong>The</strong> when a noun is followed by <em>of + specific noun</em>: the success of the project. The of-phrase makes it identifiable. ✗ A success of the project is wrong.'},
 {id:'art13',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:1,opts:['We need to reach the agreement by Friday.','We need to reach an agreement by Friday.','We need to reach agreement by Friday.'],exp:'<strong>Reach an agreement</strong> — fixed collocation; <em>an</em> for a non-specific outcome. ✗ Reach the agreement implies a specific deal already known to both parties.'},
-{id:'art14',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'Please take ___ action on this matter before the end of the week.',ans:0,opts:['—','the','an'],exp:'<strong>Take action</strong> — zero article. Verb + noun collocations treat the noun as part of the verb phrase: make progress, give approval. ✗ Take the action / take an action both sound unnatural.'},
-{id:'art15',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:2,opts:['The project is currently under the review.','The project is currently under a review.','The project is currently under review.'],exp:'<strong>Under review</strong> — zero article. Fixed phrases: under construction, in progress, in development. ✗ Under the review / under a review both break the fixed expression.'},
+{id:'art14',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'Please take ___ action on this matter before the end of the week.',ans:0,opts:['—','the','an'],exp:'<strong>Take ∅ action</strong> — fixed phrase, zero article. ✗ <em>take the action</em> would mean a specific known action — but here it\'s general. ✗ <em>take an action</em> (Russian <em>принять меры</em> calques as plural; English fixes singular zero-article). Other zero-article fixed phrases: <em>make progress, give advice, reach agreement</em> — memorise as chunks, can\'t be derived from rules.'},
+{id:'art15',type:'gap',cat:'Articles',lvl:'B2',biz:false,q:'The project is currently under ___ review.',ans:0,opts:['—','the','a'],exp:'<strong>Under ∅ review</strong> — fixed phrase, zero article. Other zero-article phrases with <em>under/in</em>: <em>under construction, in progress, in development, in production</em>. ✗ <em>under the review</em> / <em>under a review</em> both break the fixed expression. Russian <em>на рассмотрении</em> uses a preposition + noun without article cue, so it\'s easy to add one in English.'},
 {id:'art16',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'I am writing on ___ behalf of the management committee.',ans:0,opts:['—','the','a'],exp:'<strong>On behalf of</strong> — zero article. The article goes with the noun that follows: <em>on behalf of the company</em>. ✗ On a behalf / on the behalf are never correct.'},
 {id:'art17',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:2,opts:['Please respond by the email.','Please respond by an email.','Please respond by email.'],exp:'<strong>By email / by phone</strong> — zero article with communication methods. Adding an article changes the meaning: by the train = a specific train. ✗ Russian learners add the here by analogy.'},
 {id:'art18',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'The matter is of ___ highest priority.',ans:0,opts:['the','a','—'],exp:'<strong>Of the highest priority</strong> — superlative requires <em>the</em>. Same pattern: of the utmost importance, of the greatest concern. ✗ Of a highest priority is wrong.'},
-{id:'art19',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:1,opts:['We are pleased to announce the appointment of Director of Operations.','We are pleased to announce the appointment of a Director of Operations.','We are pleased to announce the appointment of the Director of Operations.'],exp:'<strong>A Director</strong> when introducing a new role — non-specific. <strong>The Director</strong> = the unique known holder. ✗ The new Director in a hiring announcement implies the person is already identified.'},
+{id:'art19',type:'gap',cat:'Articles',lvl:'B2',biz:false,q:'We are pleased to announce the appointment of ___ Director of Operations.',ans:0,opts:['a','the','an','—'],exp:'<strong>A Director</strong> — first mention of a new role, non-specific. ✗ <em>the Director</em> would imply the person is already known. ✗ <em>announce the appointment of Director</em> (dropped article — Russian <em>назначение Директора</em> has no article cue). ✓ <em>a Director of Operations</em> when the role is being introduced for the first time.'},
 {id:'art20',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:0,opts:['The chairman is in charge of the board.','The chairman is in the charge of the board.','The chairman is in a charge of the board.'],exp:'<strong>In charge of</strong> — fixed phrase, no article before <em>charge.</em> ✗ <em>In the charge of</em> = under someone\'s supervision (different preposition, different meaning). ✗ <em>In a charge of</em> — does not exist. Fixed phrases with <em>in</em> often drop the article: <em>in charge of, in control of, in favour of.</em>'},
 {id:'art21',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'The new policy is in ___ line with current regulations.',ans:0,opts:['—','the','a'],exp:'<strong>In line with</strong> — zero article. Fixed phrase meaning consistent with. The article goes with the noun after: <em>in line with the policy</em>. ✗ In the line with is incorrect.'},
 {id:'art22',type:'mcq',cat:'Articles',lvl:'B2',biz:false,q:'Which is correct?',ans:1,opts:['I have question about the contract.','I have a question about the contract.','I have the question about the contract.'],exp:'<strong>A question</strong> — countable noun, first mention → indefinite article. ✗ <em>The question</em> at first introduction implies shared knowledge that does not yet exist. ✗ <em>Question</em> without article — singular countable nouns require an article. Once the question has been mentioned: <em>the question is whether…</em>'},
@@ -2033,7 +2033,7 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'mc11',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'I am writing with reference to ___ meeting held on ___ 15 March and ___ matters discussed therein.',intro:'Specific events identified by date take <em>the</em>. Dates themselves never take an article. Matters from a specific identified event take <em>the</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:0,opts:['the','a','—']}],exp:'• <em>The</em> meeting — specific meeting (identified by date)<br>• <em>—</em> 15 March — dates never take an article<br>• <em>The</em> matters — specific matters from that meeting'},
 {id:'mc12',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'___ construction of ___ pipeline will commence following ___ receipt of ___ necessary permits.',intro:'Specific infrastructure projects take <em>the</em>. Assets introduced for the first time take <em>a</em>. Specific conditional events take <em>the</em>. Specific required items take <em>the</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:1,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']}],exp:'• <strong>The</strong> construction — specific project<br>• <strong>A</strong> pipeline — first mention<br>• <strong>The</strong> receipt — specific event<br>• <strong>The</strong> necessary permits — specific.<br>✗ A construction is wrong — the project is already known.'},
 {id:'mc13',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'___ objective of ___ project is to increase ___ efficiency and reduce ___ costs by 15%.',intro:'Project goals and objectives take <em>the</em> when specific. Abstract qualities and general cost categories take no article.',blanks:[{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'• <strong>The</strong> objective — this project\'s specific goal<br>• <strong>The</strong> project — already known<br>• — efficiency — abstract uncountable<br>• — costs — general plural.<br>✗ An efficiency is wrong — abstract qualities used generally take no article.'},
-{id:'mc14',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'___ board resolved that ___ appointment of ___ independent auditor be put to ___ vote.',intro:'Governing bodies take <em>the</em>. Specific actions being resolved take <em>the</em>. Non-specific professional roles take <em>an</em>. First-mention procedural actions take <em>a</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:1,opts:['the','an','—']},{ans:1,opts:['the','a','—']}],exp:'• <strong>The</strong> board — unique governing body<br>• <strong>The</strong> appointment — specific action<br>• <strong>An</strong> independent auditor — any qualified person<br>• <strong>A</strong> vote — first mention.<br>✗ The independent auditor implies one specific person already chosen.'},
+{id:'mc14',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'___ board resolved that ___ appointment of ___ independent auditor be put to ___ vote.',intro:'<strong>4-blank scene — take blanks one at a time.</strong> Rules: (1) Unique governing body → <em>the</em> (the board). (2) Specific just-resolved action → <em>the</em> (the appointment we decided). (3) Non-specific role being introduced → <em>an</em> (any qualified auditor). (4) First-mention procedural event → <em>a</em> (a vote). <em>Russian-L1 note</em>: governing bodies (совет, правление) drop the article in Russian — defaulting to zero in English produces a dropped-article error.',blanks:[{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:1,opts:['the','an','—']},{ans:1,opts:['the','a','—']}],exp:'• <strong>The</strong> board — unique governing body<br>• <strong>The</strong> appointment — specific action<br>• <strong>An</strong> independent auditor — any qualified person, not yet identified<br>• <strong>A</strong> vote — first mention of a procedural event.<br>✗ <em>The independent auditor</em> would imply a specific person already chosen — but the appointment is what\'s being voted on.'},
 {id:'mc15',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ success of ___ merger depends on ___ integration of ___ two companies\' systems and ___ alignment of ___ corporate cultures.',intro:'Final challenge: possessives replace articles throughout. All specific named processes and entities take <em>the</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'• All specific named entities: <strong>the</strong> success, merger, integration, two companies<br>• — corporate cultures — general concept.<br>Possessives replace articles throughout.<br>✗ Most common error: using a for first-mentioned specific entities.'},
 {id:'fc01',type:'mcq',cat:'Conditionals',lvl:'B2',biz:false,q:'Which is correct?',ans:1,opts:['If it will rain, we cancel the trip.','If it rains, we will cancel the trip.','If it rains, we would cancel the trip.'],exp:'<strong>First conditional: if + present simple, will + base verb.</strong> Never use <em>will</em> in the if-clause. The if-clause uses present simple to describe the future condition: <em>if it rains</em> (not <em>if it will rain</em>).'},
 {id:'fc02',type:'gap',cat:'Conditionals',lvl:'B2',biz:true,q:'If you ___ the deadline, the client ___ very unhappy.',ans:0,opts:['miss / will be','will miss / will be','miss / would be'],exp:'<strong>First conditional:</strong> if + present simple (<em>miss</em>), will + base verb (<em>will be</em>). Both errors are common: putting <em>will</em> in the if-clause, or using <em>would</em> in the result clause (which makes it second conditional — hypothetical).'},
@@ -2387,12 +2387,12 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'art_b05',type:'mcq',cat:'Articles',lvl:'B1',biz:false,q:'Which is correct for talking about things in general?',ans:2,opts:['The dogs are loyal animals.','A dog is loyal animal.','Dogs are loyal animals.'],exp:'<strong>Zero article + plural noun</strong> for general statements: dogs are loyal = all dogs. The dogs = specific dogs. ✗ Russian learners add <em>the</em> to generalisations, or use <em>a dog is loyal</em> — which refers to one specific dog.'},
 {id:'art_b06',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'He plays ___ guitar every evening.',ans:0,opts:['the','a','—'],exp:'<strong>Musical instruments</strong> take <em>the</em>: <em>play the piano / the violin / the guitar.</em> ✗ <em>Play piano</em> (no article) — used only in American English informally. ✗ <em>Play a guitar</em> = implies one of many, not standard for general skill. This is a fixed rule — always <em>the</em> with instruments in British English.'},
 {id:'art_b07',type:'mcq',cat:'Articles',lvl:'B1',biz:false,q:'Which sentence is correct?',ans:0,opts:['The sun rises in the east.','A sun rises in the east.','Sun rises in the east.'],exp:'<strong>Unique things</strong> take <em>the</em>: <em>the sun, the moon, the earth, the sky, the internet.</em> ✗ <em>A sun / a moon</em> — only used in fiction (other planets, other moons). ✗ <em>Sun rises</em> (no article) — article cannot be omitted with unique nouns. When there is only one of something in the shared universe, use <em>the.</em>'},
-{id:'art_b08',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'We had ___ lunch at a small café near the office.',ans:0,opts:['—','a','the'],exp:'<strong>Zero article with meals</strong> as routine activities: have breakfast, have lunch. Add an article to describe the meal itself: <em>a big breakfast, the breakfast we had</em>. ✗ Russian learners often say have a breakfast — treating the routine as a countable event.'},
+{id:'art_b08',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'We had ___ lunch at a small café near the office.',ans:0,opts:['—','a','the'],exp:'<strong>Have ∅ lunch</strong> — meals as routine activities take zero article. ✓ <em>have breakfast / have lunch / have dinner</em>. ⚠ Use <em>a</em> only when describing the meal as an event, not the routine: <em>have a quick lunch / have a business lunch</em>. ✗ Russian <em>обедать</em> can calque to "have a lunch" — the routine sense drops the article in English.'},
 {id:'art_b09',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'Which is correct? He wants to be ___.',ans:1,opts:['the engineer','an engineer','engineer'],exp:'<strong>An</strong> before jobs starting with a vowel sound: <em>an engineer, an architect, an accountant, an officer.</em> ✗ <em>A engineer</em> — <em>a</em> is used before consonant sounds only. The rule is phonetic — based on the first sound, not the first letter: <em>a university</em> (starts with /j/ sound) but <em>an umbrella</em> (starts with vowel sound).'},
 {id:'art_b10',type:'mcq',cat:'Articles',lvl:'B1',biz:false,q:'Which pair uses articles correctly?',ans:0,opts:['I need a pen. Have you seen the pen I left here?','I need the pen. Have you seen a pen I left here?','I need a pen. Have you seen a pen I left here?'],exp:'<strong>A</strong> for first mention, <strong>the</strong> for second. ✗ Russian learners commonly use <em>the</em> on first mention — the object feels specific to them — or omit both articles entirely.'},
 {id:'art_c01',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'I saw ___ dog in the park. ___ dog was barking at everyone.',ans:0,opts:['a / The','the / A','a / A','the / The'],exp:'<strong>First mention</strong> uses <em>a</em> (new, unspecified). <strong>Second mention</strong> uses <em>the</em> (now known, specific). This is the core a/the contrast. Russian has no articles, so learners must learn to track whether the listener already knows which thing is being referred to.'},
 {id:'art_c02',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'She\'s ___ engineer. She works for ___ large company in Dubai.',ans:0,opts:['an / a','a / an','the / a','an / the'],exp:'<strong>An</strong> before vowel sounds: <em>an engineer, an hour, an MBA.</em> <strong>A</strong> before consonant sounds: <em>a large company, a unit, a university.</em> The rule is about the sound, not the letter — ✗ <em>a engineer</em> is wrong because <em>engineer</em> starts with a vowel sound.'},
-{id:'art_c03',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'Can you pass ___ salt, please?',ans:0,opts:['the','a','some','—'],exp:'<strong>The salt</strong> — the salt shaker is on the table, visible and known to both speakers. When context makes the referent obvious (the salt on the table, the door, the light), use <em>the.</em> ✗ <em>A salt</em> is wrong — salt is uncountable. ✗ <em>Some salt</em> would work but only if you\'re asking for an indefinite quantity, not the specific shaker.'},
+{id:'art_c03',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'Can you pass ___ salt, please?',ans:0,opts:['the','a','some','—'],exp:'<strong>Pass the salt</strong> — situational unique, the specific salt on the table both of us can see. Heuristic: "Do we both know which one?" → yes → THE. Russian <em>соль</em> gives no article cue, so it\'s easy to drop or pick "a/some". ✗ <em>a salt</em> (salt is uncountable). ✗ <em>some salt</em> would work for an indefinite quantity, not the visible shaker.'},
 {id:'art_c04',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'I love music. ___ jazz is my favourite genre.',ans:0,opts:['—','The','A','Some'],exp:'<strong>No article</strong> with plural or uncountable nouns used in a general sense: <em>I love music. Jazz is great. Dogs are loyal.</em> ✗ <em>The jazz</em> would mean a specific jazz performance or recording you both know about. Russian speakers often add <em>the</em> when generalising — a common article error.'},
 {id:'art_c05',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'He is ___ best student in the class.',ans:0,opts:['the','a','an','—'],exp:'<strong>Superlatives always take the</strong>: <em>the best, the most interesting, the tallest.</em> There is only one "best" in the class — it is a unique referent. ✗ <em>A best</em> is ungrammatical. This rule is consistent and has no exceptions.'},
 {id:'art_c06',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'She plays ___ piano beautifully.',ans:0,opts:['the','a','—','an'],exp:'<strong>The + musical instruments</strong> when describing playing: <em>play the piano, the guitar, the violin.</em> This is a fixed convention in English. ✗ No article (<em>plays piano</em>) is sometimes heard informally but <em>the piano</em> is standard. Russian uses no article, so this convention must be learned explicitly.'},
@@ -2832,7 +2832,7 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'aph29',type:'mcq',cat:'Articles',lvl:'B2',biz:true,q:'Which is correct?',ans:2,opts:['We are at threshold of a new era in digital finance.','We are at a threshold of a new era in digital finance.','We are at the threshold of a new era in digital finance.'],exp:'<strong>At the threshold of</strong> — always the in idiomatic use. ✗ At a threshold works literally but not in this idiom. Compare: on the brink / verge / cusp of — all require the.'},
 {id:'aph30',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'The company was on ___ cusp of its biggest breakthrough in a decade.',ans:0,opts:['the','a','—'],exp:'<strong>On the cusp of</strong> — always the. ✗ On a cusp treats it as one of many; on cusp of drops the article. Compare: on the brink / verge / cusp / edge of — all require the.'},
 {id:'aph31',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'The industry is at ___ turning point — nothing will be the same after this.',ans:0,opts:['a','the','—'],exp:'At a turning point — use a because this is the first mention and not yet the specific turning point we have been discussing. Compare: at the turning point (= the specific one we already talked about). Turning point is countable and indefinite here.'},
-{id:'aph32',type:'mcq',cat:'Articles',lvl:'B2',biz:true,q:'Which is correct?',ans:1,opts:['We are at the stage where costs must be cut.','We are at a stage where costs must be cut.','We are at stage where costs must be cut.'],exp:'At a stage where — use a because stage is indefinite (one point in a process, not the final or specific one). Compare: at the final stage, at the planning stage (no article with adjective + stage in fixed expressions).'},
+{id:'aph32',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'We are at ___ stage where costs must be cut.',ans:1,opts:['the','a','—'],exp:'<strong>At a stage</strong> — indefinite, one point in a process (not the final or unique one). ✗ <em>at the stage where</em> implies a specific known stage. ✗ <em>at stage</em> (dropped article — Russian-L1 calque). Compare: <em>at the planning stage / at the final stage</em> — definite, named.'},
 {id:'aph33',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'After years of stagnation, the sector has reached ___ point of no return.',ans:0,opts:['a','the','—'],exp:'A point of no return — first mention, indefinite. Use a: reached a point of no return, reached a critical juncture. Compare: at the point of no return (= the specific moment already established). Here it is introduced for the first time.'},
 {id:'aph34',type:'mcq',cat:'Articles',lvl:'B2',biz:true,q:'Which is correct?',ans:0,opts:['The company is in the process of restructuring its operations.','The company is in a process of restructuring its operations.','The company is in process of restructuring its operations.'],exp:'<strong>In the process of</strong> — always the. ✗ In process of (no article) is wrong in English. Contrast: by process of elimination — a different fixed phrase without the.'},
 {id:'aph35',type:'gap',cat:'Articles',lvl:'B2',biz:true,q:'We are at ___ crossroads, but we have been here before and found a way forward.',ans:0,opts:['a','the','—'],exp:'<strong>At a crossroads</strong> — use a here (a non-specific critical moment). ✗ At the crossroads implies one specific, previously identified decision point. This is an exception — unlike most fixed phrases, this one uses a.'},
@@ -8477,11 +8477,13 @@ const COACH_TYPE_TO_LIBRARY = {
   translation: 'translation',
   spelling_drill: 'spelling_drill',
   article_drill: 'article_drill',
+  error_correction: 'error_correction',
 };
 const COACH_TYPE_LABEL = {
   translation: 'translation drill',
   spelling_drill: 'spelling drill',
   article_drill: 'article drill',
+  error_correction: 'error correction',
 };
 
 async function coachStartType(type, opts) {
@@ -8536,6 +8538,8 @@ async function coachStartType(type, opts) {
     intro = `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`;
   } else if (type === 'article_drill') {
     intro = `Let's practise <strong>articles</strong>. I'll show you ${exercises.length} short scene${exercises.length === 1 ? '' : 's'} — tap <em>a</em> / <em>an</em> / <em>the</em> / <em>—</em> for each blank. The dash <em>—</em> means "no article".`;
+  } else if (type === 'error_correction') {
+    intro = `Let's spot some errors. I'll show you ${exercises.length} sentence${exercises.length === 1 ? '' : 's'}, each with one mistake. Type the corrected version — full sentence or just the fixed part.`;
   } else {
     intro = `Let's practise <strong>${(COACH_TYPE_LABEL[type] || type)}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`;
   }
@@ -8579,6 +8583,13 @@ function coachNextExercise() {
     );
     coachShowArticleChips();
     return;
+  } else if (coachState.type === 'error_correction') {
+    // Show the incorrect sentence; player types the corrected sentence (or just the fix).
+    coachAppendMessage('assistant',
+      `<div class="coach-msg-prompt">Find and fix the error (${idx}/${total}):</div>` +
+      `<div class="coach-msg-prompt-en">${escapeHtml(ex.incorrect_sentence || '')}</div>` +
+      `<div style="font-size:.75rem;color:var(--muted);margin-top:.3rem;">Type the corrected sentence or just the fix.</div>`
+    );
   }
   document.getElementById('coachInputRow').style.display = '';
   document.getElementById('coachActionRow').style.display = 'none';
@@ -8713,6 +8724,30 @@ function coachNormalize(s) {
 function coachIsMatch(submitted, correctAnswers) {
   const norm = coachNormalize(submitted);
   return (correctAnswers || []).some(c => coachNormalize(c) === norm);
+}
+
+// Error-correction normalize — same as coachNormalize but does NOT strip articles
+// (articles are frequently the error itself, so they must be preserved for scoring).
+function coachECNormalize(s) {
+  return String(s || '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[.!?,;:]+$/, '')
+    .trim();
+}
+
+// Word-boundary phrase match. Substring is unsafe for error_correction since
+// error_span "see" would false-match inside "seen". Builds \b...\b regex with
+// regex-escaped phrase. Both args expected pre-normalized via coachECNormalize.
+function coachECPhraseMatch(haystack, phrase) {
+  if (!phrase) return false;
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try {
+    return new RegExp('\\b' + escaped + '\\b').test(haystack);
+  } catch (e) {
+    return haystack.includes(phrase); // fallback if regex construction fails
+  }
 }
 
 // Levenshtein distance — small DP. Used for D8 typo tolerance (Translation Drill,
@@ -8859,6 +8894,30 @@ async function coachSubmitAnswer() {
       if (ex.example_sentence) {
         feedback += '<div style="margin-top:.25rem;font-size:.78rem;color:var(--muted);">' + escapeHtml(ex.example_sentence) + '</div>';
       }
+    }
+  } else if (coachState.type === 'error_correction') {
+    // Player types the corrected sentence or just the fix. Score by word-boundary
+    // regex match (substring is unsafe — error_span "see" would match inside "seen").
+    // Normalize keeps articles, since articles are often the error itself.
+    const errorSpan = coachECNormalize(ex.error_span || '');
+    const correctReplacement = coachECNormalize(ex.correct_replacement || '');
+    const submittedNorm = coachECNormalize(submitted);
+    const containsFix = correctReplacement && coachECPhraseMatch(submittedNorm, correctReplacement);
+    const stillContainsError = errorSpan && coachECPhraseMatch(submittedNorm, errorSpan);
+    correct = containsFix && !stillContainsError;
+    extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+    pattern = ex.error_type ? { id: ex.error_type } : null;
+    const fullCorrectSentence = String(ex.incorrect_sentence || '').replace(ex.error_span || '', ex.correct_replacement || '');
+    if (correct) {
+      feedback = '<strong>✓ Correct!</strong>';
+    } else if (stillContainsError) {
+      feedback = '<strong>✗ Not quite.</strong> The original error is still there. Look for: <em>' + escapeHtml(ex.error_span || '') + '</em>.';
+    } else {
+      feedback = '<strong>✗ Not quite.</strong>';
+    }
+    feedback += '<div style="margin-top:.35rem;font-size:.85rem;"><em>Correct version:</em> ' + escapeHtml(fullCorrectSentence) + '</div>';
+    if (ex.reasoning) {
+      feedback += '<div style="margin-top:.4rem;font-size:.8rem;">' + escapeHtml(ex.reasoning) + '</div>';
     }
   } else {
     // Translation drill (and default).
