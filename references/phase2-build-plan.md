@@ -1201,6 +1201,128 @@ author scripts using tools/-pattern must wrap `fsGet` output in
 - Tier 2 PV ladder rebalance Batch 1 (~50 items) — content work
   with active-window gating already in place
 
+### v20260502-s95 — §4.4 learner shell landing + routing (MVP slice)
+
+Anna is the first player on `ui_shell: "learner"`. App-open now lands her
+on a single-button surface that picks the next exercise for her, instead
+of the builder Setup screen with five mode toggles and category chips.
+
+**Shipped**:
+
+1. **`tab-home` markup** — five vertical zones per §4.4:
+   - Greeting: "Hi Anna 👋" + sub-line ("Welcome back · 🔥 N-day streak")
+   - Primary "Start practice" button + secondary hint ("we'll pick what
+     to practise")
+   - "Practising today" zone — pills for any family member whose
+     `lastPlayedDate === today`; empty-state copy "Be the first one
+     today — start a session"
+   - "Last time" zone — narrative line built from the most recent
+     `coach_sessions` doc (Free Write turn count) → fallback to most
+     recent `players/{name}/exercises/{ts}` (set type + raw score) →
+     fallback to most recent quiz session in local `DB.sessions`
+   - "Medals" zone — gold/silver/bronze counts from existing
+     `computeBadges(catStats)`; "View →" routes to stats tab
+2. **Primary-action routing** (`homeStartPractice`) per §4.4 priority
+   list — simplified for MVP: try Translation Drill if library has items
+   for the player; fallback to Free Write. Steps 1 (resume partial set)
+   and 2 (Spell Help threshold) are deferred — the data-layer plumbing
+   for "captures since last spelling session" doesn't exist yet, and
+   resume-partial needs a separate slice to design the resume UX.
+3. **Shell switching plumbing** — `isLearnerShell()` gates `showLearnerHome()`
+   in two places: (a) the early IIFE (uses cached IndexedDB `ui_shell` for
+   hot-load no-flash) and (b) the post-`loadFromFirebase` block in
+   `DOMContentLoaded` (canonical state once Firebase resolves). `showTab`
+   now knows about `'home'` and is safe against missing tab elements.
+4. **Tab-bar visibility** — `.tabs` is `display: none` while learner home
+   is the active surface; restored when the player taps "Practice
+   something else" (routes to Coach tab) or the medals "View →" link
+   (routes to Stats).
+5. **Anna flipped to `ui_shell: "learner"`** in Firestore via direct
+   `fsPatch` against `players/anna`. Other family members remain on
+   `'builder'` — Nicole and Ernest stay on builder until Anna's
+   experience is validated in real usage.
+
+**Verified end-to-end via preview probe**:
+
+- Builder regression: Artem load → tab bar visible, setup tab visible,
+  no console errors
+- Anna fresh-load (cleared IndexedDB, localStorage `quizPlayerKey =
+  "anna"`) → loadFromFirebase pulls `ui_shell: "learner"` → home tab
+  visible, tabs hidden, all four zones populated correctly
+- Family pull empty-state: with no one logged in today, shows "Be the
+  first one today — start a session"
+- Last-time narrative: pulled from Anna's most recent
+  `players/anna/exercises/{ts}` and rendered as "Last set: translation
+  — 4/5."
+- Medal count: "1 🥉" matches Anna's actual `catStats` per `computeBadges`
+- "Start practice" tap: hides home, hides tab bar, shows Coach surface,
+  loads `coachStartType('translation')` with Anna's 20-item drill
+  (matches §4.5 content shipped in s94)
+- "Practice something else" tap: home hidden, tab bar restored, Coach
+  picker visible
+- "View →" on medals: tab bar restored, Stats tab visible
+
+**Acceptance state for §4.4**:
+- ✅ Anna can navigate from app open to in-progress Translation Drill
+  (or Free Write fallback) in 2 taps. Auto-pick removes the picker step
+  for the default path.
+- ⏳ Nicole can navigate from app open to in-progress translation in 2
+  taps — Nicole still on builder shell; ships when her library content
+  lands (§4.5 Nicole line)
+- ⏳ Stats display rework (active / mastered / coming-next sections,
+  no locked) — not yet, learner shell still routes to the existing
+  builder-shell stats tab via "View →"
+- ⏳ Coach picker filtering by active window — picker still shows all
+  authored types when player taps "Practice something else"
+- ⏳ Builder-shell players see no change in any surface — verified
+  for Artem; Egor untouched
+- ⏳ D9 asymmetric medal display — count rendered, no positive-delta
+  annotation yet
+- ⏳ medals_history weekly snapshot — schema not yet created (no
+  `players/{name}/medals_history` writes)
+- ⏳ D11 family card with avatars/initials — current implementation
+  uses emoji + first name pill, no per-player avatar colour ring
+  (matches the family-tab pill style; refine when D9/D11 land)
+- ⏳ D12 themed Free Write starter prompts — fallback Free Write still
+  uses generic `COACH_FW_STARTERS` shared list
+
+**Deferred from this slice** (carried to next §4.4 follow-up):
+
+- Step 1 of primary-action routing (resume partial Translation set)
+- Step 2 of primary-action routing (Spell Help threshold) — needs
+  a counter for "unique words captured since last spelling drill
+  session" before the priority can fire
+- Stats display rework
+- Coach picker active-window filter
+- Medal display D9 asymmetry + medals_history snapshot
+- Themed Free Write prompts (D12)
+- Overflow menu in learner shell (history / achievements / settings /
+  switch player) — currently the existing tabs bar reappears when the
+  player taps "Practice something else" or "View →"; full overflow
+  menu deferred until learner-shell stats / settings rework
+
+**Bug surfaced during session**: none.
+
+**Decision called inline** (not in §3 locks): family-pull pill style
+matches existing family-tab pill (emoji + first name). The doc spec
+calls for "small avatars/initials"; reused the existing convention to
+ship faster. Refinable when D11 lands properly (probably alongside D9
+medal asymmetry as a single visual pass).
+
+**Next session candidates**:
+
+- §4.4 follow-up: routing steps 1+2 (resume partial, Spell Help
+  threshold), stats display rework, Coach picker active-window filter,
+  D9 medal asymmetry + medals_history snapshot, D12 themed Free Write
+  prompts. Bundle of small engineering items completes §4.4.
+- §4.3 article intervention batch 1 (~25–30 quiz Qs + ~15 article_drill
+  items per family member) — content work
+- §4.5 Nicole library content (translation, spelling, free write
+  prompts) — content work; gates Nicole's flip to learner shell
+- §4.5 Ernest library content (translation, article_drill, error
+  correction) — content work; gates Ernest's flip to learner shell
+- Tier 2 PV ladder rebalance Batch 1 (~50 items)
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated

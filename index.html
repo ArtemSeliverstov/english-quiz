@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260501-s94">
+  <meta name="app-version" content="v20260502-s95">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -754,6 +754,37 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .simple-ui-toggle input:checked+.simple-ui-slider::before{transform:translateX(16px);}
 /* iPad-friendly card width */
 @media(min-width:481px){.simple-setup{max-width:500px;margin:0 auto;}.simple-cards{max-width:460px;}}
+
+/* ── LEARNER HOME (§4.4) ── */
+.lh-wrap{max-width:520px;margin:0 auto;padding:.5rem;}
+.lh-greet{font-family:'Playfair Display',serif;font-size:1.55rem;line-height:1.25;margin:1.2rem 0 .35rem;color:var(--text);}
+.lh-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.5;min-height:1.2rem;}
+.lh-primary{display:block;width:100%;padding:1.05rem 1.4rem;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent),#f59e0b);color:#0c0c0c;font:inherit;font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.01em;box-shadow:0 4px 16px rgba(251,191,36,.18);transition:transform .12s,box-shadow .15s;}
+.lh-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(251,191,36,.28);}
+.lh-primary:active{transform:translateY(0);}
+.lh-primary-hint{display:block;font-size:.78rem;font-weight:500;opacity:.75;margin-top:.25rem;}
+.lh-other{display:block;text-align:center;margin-top:.85rem;font-size:.82rem;color:var(--muted);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;padding:.4rem;}
+.lh-other:hover{color:var(--text);}
+.lh-zone{margin-top:1.6rem;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:.95rem 1.05rem;}
+.lh-zone-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.55rem;font-weight:600;}
+.lh-family-row{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;}
+.lh-family-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:.82rem;color:var(--text);}
+.lh-family-pill .lh-fp-emoji{font-size:.95rem;}
+.lh-family-empty{font-size:.82rem;color:var(--muted);font-style:italic;}
+.lh-lasttime{font-size:.88rem;color:var(--text);line-height:1.5;}
+.lh-medals{display:flex;align-items:center;justify-content:space-between;}
+.lh-medals-count{font-size:1.05rem;color:var(--text);}
+.lh-medals-link{font-size:.78rem;color:var(--muted);text-decoration:none;cursor:pointer;border:none;background:none;font:inherit;padding:0;}
+.lh-medals-link:hover{color:var(--text);}
+.lh-overflow{position:absolute;top:.7rem;right:.7rem;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;font-size:1.1rem;color:var(--muted);cursor:pointer;line-height:1;}
+.lh-overflow:hover{color:var(--text);border-color:var(--accent);}
+.lh-header-spacer{position:relative;min-height:1px;}
+@media(max-width:480px){
+  .lh-wrap{padding:.25rem;}
+  .lh-greet{font-size:1.35rem;}
+  .lh-primary{padding:.95rem 1.1rem;font-size:1.02rem;}
+  .lh-zone{padding:.85rem .9rem;}
+}
 .cat-toggle-btn{display:none;padding:.3rem .8rem;border:1px dashed var(--border);border-radius:20px;
   background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;margin-top:.4rem;
   transition:color .2s;}
@@ -930,7 +961,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260501-s94</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s95</span></p>
 </header>
 
 <!-- TABS -->
@@ -943,6 +974,41 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 </div>
 
 <!-- Questions loaded inline -->
+
+<!-- ══ LEARNER HOME (§4.4) — shown only when ui_shell === 'learner' ══ -->
+<div id="tab-home" class="hidden">
+  <div class="lh-wrap">
+    <div class="lh-header-spacer"></div>
+    <div id="lh-greet" class="lh-greet">Hi 👋</div>
+    <div id="lh-sub" class="lh-sub"></div>
+
+    <button id="lh-primary" class="lh-primary" onclick="homeStartPractice()">
+      Start practice
+      <span id="lh-primary-hint" class="lh-primary-hint"></span>
+    </button>
+    <button class="lh-other" onclick="homePracticeOther()">Practice something else →</button>
+
+    <div class="lh-zone" id="lh-family-zone">
+      <div class="lh-zone-label">Practising today</div>
+      <div id="lh-family-row" class="lh-family-row">
+        <span class="lh-family-empty">Loading…</span>
+      </div>
+    </div>
+
+    <div class="lh-zone" id="lh-lasttime-zone" style="display:none;">
+      <div class="lh-zone-label">Last time</div>
+      <div id="lh-lasttime" class="lh-lasttime"></div>
+    </div>
+
+    <div class="lh-zone lh-medals" id="lh-medals-zone" style="display:none;">
+      <div>
+        <div class="lh-zone-label" style="margin-bottom:.2rem;">Medals</div>
+        <div id="lh-medals-count" class="lh-medals-count">—</div>
+      </div>
+      <button class="lh-medals-link" onclick="homeOpenStats()">View →</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══ SETUP SCREEN ══ -->
 <div id="tab-setup" style="display:none;">
@@ -3355,7 +3421,15 @@ function toggleBiz() {
   // Questions are inline — compute constants and show setup
   computeCoverageConstants();
   buildCategoryChips();
-  document.getElementById('tab-setup').style.display = '';
+  // §4.4 — for learner shell players, the landing is `tab-home`, not `tab-setup`.
+  // Local cache may already have ui_shell === 'learner' from a previous session;
+  // honour that to avoid a flash of the builder setup screen on hot loads.
+  if (DB && DB.ui_shell === 'learner') {
+    document.getElementById('tab-setup').style.display = 'none';
+    showLearnerHome();
+  } else {
+    document.getElementById('tab-setup').style.display = '';
+  }
   renderStats();
   renderGreeting();
 })();
@@ -3412,11 +3486,14 @@ function renderGreeting() {
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════
 function showTab(name) {
-  ['setup','stats','quiz','results','family','exercises','coach'].forEach(t => {
-    document.getElementById('tab-'+t).classList.add('hidden');
+  ['home','setup','stats','quiz','results','family','exercises','coach'].forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    if (el) el.classList.add('hidden');
   });
   if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
-  document.getElementById('tab-'+name).classList.remove('hidden');
+  if (name === 'home')  { renderLearnerHome(); }
+  const target = document.getElementById('tab-'+name);
+  if (target) target.classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
   if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
@@ -3752,6 +3829,225 @@ async function toggleSimpleUI(playerKey, enabled) {
   } catch(e) {
     console.warn('toggleSimpleUI failed:', e);
   }
+}
+
+// ══════════════════════════════════════════════
+//  LEARNER HOME (§4.4) — landing surface for ui_shell === 'learner'
+// ══════════════════════════════════════════════
+function isLearnerShell() {
+  return DB && DB.ui_shell === 'learner';
+}
+
+function showLearnerHome() {
+  // Hides all other surfaces, hides tab bar, shows tab-home.
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = 'none';
+  showTab('home');
+}
+
+function renderLearnerHome() {
+  const name = capFirst(DB.displayName || currentPlayer || '');
+
+  // Zone 1: greeting
+  const greetEl = document.getElementById('lh-greet');
+  if (greetEl) greetEl.textContent = 'Hi ' + name + ' 👋';
+
+  const subEl = document.getElementById('lh-sub');
+  if (subEl) {
+    const streak = DB.currentStreak || 0;
+    const lastPlayed = DB.lastPlayedDate || null;
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    let sub = '';
+    if (!lastPlayed) sub = 'Ready when you are.';
+    else if (lastPlayed === today) sub = 'Good to see you back today.';
+    else if (lastPlayed === yesterday) sub = 'Welcome back — yesterday counts.';
+    else {
+      const daysAgo = Math.round((Date.now() - new Date(lastPlayed).getTime()) / 86400000);
+      sub = daysAgo <= 7 ? ('Welcome back — ' + daysAgo + ' days since last time.') : 'Welcome back — great to see you again.';
+    }
+    if (streak >= 3) sub += ' · 🔥 ' + streak + '-day streak';
+    else if (streak >= 1) sub += ' · 🔥 ' + streak + '-day streak';
+    subEl.textContent = sub;
+  }
+
+  // Zone 1b: primary action hint (set after we know what would be queued).
+  // Cheap synchronous hint based on session history; full routing decides at click.
+  const hintEl = document.getElementById('lh-primary-hint');
+  if (hintEl) {
+    hintEl.textContent = 'we’ll pick what to practise';
+  }
+
+  // Zone 2: family pull — reuse the family-poll fetch path
+  renderLearnerFamilyPull();
+
+  // Zone 3: last-time line
+  renderLearnerLastTime();
+
+  // Zone 4: medal count
+  renderLearnerMedals();
+}
+
+async function renderLearnerFamilyPull() {
+  const row = document.getElementById('lh-family-row');
+  if (!row) return;
+  try {
+    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).map(m => m.key);
+    const today = new Date().toISOString().slice(0, 10);
+    const results = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
+    const todayList = [];
+    playerKeys.forEach((k, i) => {
+      const p = results[i];
+      if (!p) return;
+      if (p.lastPlayedDate === today) {
+        const member = FAMILY_MEMBERS.find(m => m.key === k);
+        const emoji = member && member.emoji ? member.emoji : '👤';
+        const display = (p.displayName || (member && member.name) || k);
+        todayList.push({ key: k, emoji, name: capFirst(String(display).split(' ')[0]) });
+      }
+    });
+    if (todayList.length === 0) {
+      row.innerHTML = '<span class="lh-family-empty">Be the first one today — start a session.</span>';
+      return;
+    }
+    row.innerHTML = todayList.map(t =>
+      '<span class="lh-family-pill"><span class="lh-fp-emoji">' + t.emoji + '</span>' + escapeHtml(t.name) + '</span>'
+    ).join('');
+  } catch (e) {
+    row.innerHTML = '<span class="lh-family-empty">—</span>';
+  }
+}
+
+async function renderLearnerLastTime() {
+  const zone = document.getElementById('lh-lasttime-zone');
+  const line = document.getElementById('lh-lasttime');
+  if (!zone || !line) return;
+  let text = '';
+
+  // Try most recent coach_sessions doc
+  try {
+    const coachSess = await fsList('players/' + currentPlayer + '/coach_sessions').catch(() => []);
+    if (coachSess && coachSess.length) {
+      const latest = coachSess.slice().sort((a, b) => {
+        const ta = a && a.ended_at ? new Date(a.ended_at).getTime() : 0;
+        const tb = b && b.ended_at ? new Date(b.ended_at).getTime() : 0;
+        return tb - ta;
+      })[0];
+      if (latest && latest.mode === 'free_write') {
+        const turns = latest.turn_count || latest.turns || 0;
+        text = 'You wrote with the coach for ' + turns + ' turn' + (turns === 1 ? '' : 's') + '.';
+      }
+    }
+  } catch (e) { /* fall through */ }
+
+  // Fall back to most recent exercise
+  if (!text) {
+    try {
+      const exs = await fsList('players/' + currentPlayer + '/exercises').catch(() => []);
+      if (exs && exs.length) {
+        const latest = exs.slice().sort((a, b) => {
+          const ta = a && a.completed_at ? new Date(a.completed_at).getTime() : 0;
+          const tb = b && b.completed_at ? new Date(b.completed_at).getTime() : 0;
+          return tb - ta;
+        })[0];
+        if (latest) {
+          const ex = latest.exercise || latest.type || 'a set';
+          const friendly = String(ex).replace(/_/g, ' ');
+          if (latest.correct != null && latest.total) {
+            text = 'Last set: ' + friendly + ' — ' + latest.correct + '/' + latest.total + '.';
+          } else {
+            text = 'Last set: ' + friendly + '.';
+          }
+        }
+      }
+    } catch (e) { /* fall through */ }
+  }
+
+  // Last fallback: most recent quiz session
+  if (!text && DB.sessions && DB.sessions[0]) {
+    const s = DB.sessions[0];
+    if (s.pct != null && s.questions != null) {
+      text = 'Last quiz: ' + s.pct + '% across ' + s.questions + ' questions.';
+    }
+  }
+
+  if (text) {
+    line.textContent = text;
+    zone.style.display = '';
+  } else {
+    zone.style.display = 'none';
+  }
+}
+
+function renderLearnerMedals() {
+  const zone = document.getElementById('lh-medals-zone');
+  const countEl = document.getElementById('lh-medals-count');
+  if (!zone || !countEl) return;
+  const badges = (typeof computeBadges === 'function') ? computeBadges(DB.catStats) : {};
+  const entries = Object.values(badges);
+  const gold = entries.filter(v => v === '🥇').length;
+  const silver = entries.filter(v => v === '🥈').length;
+  const bronze = entries.filter(v => v === '🥉').length;
+  const total = gold + silver + bronze;
+  if (total === 0) {
+    zone.style.display = 'none';
+    return;
+  }
+  const parts = [];
+  if (gold) parts.push(gold + ' 🥇');
+  if (silver) parts.push(silver + ' 🥈');
+  if (bronze) parts.push(bronze + ' 🥉');
+  countEl.textContent = parts.join('  ·  ');
+  zone.style.display = '';
+}
+
+// Primary-action routing per §4.4. Simplified for s95:
+//   1. (deferred) resume partial Translation
+//   2. (deferred) Spell Help threshold
+//   3. Translation Drill if library has items for this player
+//   4. Free Write fallback with a starter prompt
+async function homeStartPractice() {
+  const btn = document.getElementById('lh-primary');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+  try {
+    // Step 3: try translation
+    let translationItems = [];
+    try {
+      const all = await fsList('exercises_library/translation/items');
+      translationItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+    } catch (e) { /* ignore — fallback to free write */ }
+
+    // Reveal Coach surface; learner shell keeps tab bar hidden so the Coach
+    // picker / chat is the only visible surface.
+    const tabsBar = document.querySelector('.tabs');
+    if (tabsBar) tabsBar.style.display = 'none';
+    document.getElementById('tab-home').classList.add('hidden');
+    const coachTab = document.getElementById('tab-coach');
+    if (coachTab) coachTab.classList.remove('hidden');
+    if (typeof coachOpenTab === 'function') coachOpenTab();
+
+    if (translationItems.length > 0) {
+      if (typeof coachStartType === 'function') await coachStartType('translation');
+    } else {
+      if (typeof coachStartFreeWrite === 'function') await coachStartFreeWrite();
+    }
+  } finally {
+    if (btn) { btn.disabled = false; btn.style.opacity = ''; }
+  }
+}
+
+function homePracticeOther() {
+  // Reveal full UI: bring tab bar back and route to Coach picker.
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = '';
+  showTab('coach');
+}
+
+function homeOpenStats() {
+  // Reveal tab bar + go to stats so the player can see medals / per-cat detail.
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = '';
+  showTab('stats');
 }
 
 function toggleCatProgress() {
@@ -6454,6 +6750,12 @@ document.addEventListener('DOMContentLoaded', () => {
       startFamilyPoll();
       exCleanupStale();
       checkSimpleUI();
+      // §4.4 — Learner shell takes over the landing surface.
+      if (typeof isLearnerShell === 'function' && isLearnerShell()) {
+        const tabSetup = document.getElementById('tab-setup');
+        if (tabSetup) tabSetup.style.display = 'none';
+        showLearnerHome();
+      }
       // One-time streak credit for Nicole: app failed to save her Mar 19 session.
       // Condition is very specific — only fires once, on her device, today.
       if (currentPlayer === 'nicole'
