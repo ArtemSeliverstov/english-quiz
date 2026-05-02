@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-s95">
+  <meta name="app-version" content="v20260502-s96">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -961,7 +961,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s95</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s96</span></p>
 </header>
 
 <!-- TABS -->
@@ -4050,6 +4050,16 @@ function homeOpenStats() {
   showTab('stats');
 }
 
+// Return to learner-home from inside the Coach surface (post-session done card,
+// mid-session exit). Hides tabs again, resets coach state, re-renders home so
+// the "Last time" / "Family" zones reflect the session that just finished.
+function homeReturnFromCoach() {
+  if (typeof coachShowPicker === 'function') coachShowPicker();
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = 'none';
+  showLearnerHome();
+}
+
 function toggleCatProgress() {
   const inner = document.getElementById('cat-progress-inner');
   const chev = document.getElementById('cat-progress-chevron');
@@ -7079,6 +7089,29 @@ async function coachOpenTab() {
   coachShowPicker();
   await Promise.all([coachLoadMeta(), coachRenderStatsCard(), coachLoadPlayerCoachNotes()]);
   coachUpdateLiveAIAvailability();
+  coachApplyShellLayout();
+}
+
+// Hide picker types with zero available items in learner shell, so the picker
+// reads as a small focused menu rather than a wall of disabled buttons. Builder
+// shell keeps the disabled-but-visible style so Artem can see what's coming.
+function coachApplyShellLayout() {
+  const picker = document.getElementById('coachPicker');
+  if (!picker) return;
+  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
+  picker.querySelectorAll('.coach-type-btn').forEach(btn => {
+    const type = btn.dataset.type;
+    const countEl = btn.querySelector('.coach-type-count');
+    const txt = countEl ? countEl.textContent.trim() : '';
+    // Free Write availability is governed by coachUpdateLiveAIAvailability — leave alone.
+    if (type === 'free_write') { btn.style.display = ''; return; }
+    if (!learner) { btn.style.display = ''; return; }
+    // Hide if disabled (no library content) or count parses to zero.
+    const numMatch = txt.match(/^(\d+)/);
+    const count = numMatch ? parseInt(numMatch[1], 10) : NaN;
+    const hide = btn.disabled || count === 0;
+    btn.style.display = hide ? 'none' : '';
+  });
 }
 
 // Read player's current coach_notes once per tab open. Used in Free Write/Escalate
@@ -8290,20 +8323,33 @@ async function coachFinishSession() {
     fwBtn.onclick = () => { actionRow.style.display = 'none'; coachStartFreeWrite(); };
     actionRow.appendChild(fwBtn);
   }
-  const pickerBtn = document.createElement('button');
-  pickerBtn.textContent = '← Pick another exercise';
-  pickerBtn.onclick = () => { actionRow.style.display = 'none'; coachShowPicker(); coachOpenTab(); };
-  actionRow.appendChild(pickerBtn);
+  const learnerShell = (typeof isLearnerShell === 'function') && isLearnerShell();
+  if (learnerShell) {
+    const homeBtn = document.createElement('button');
+    homeBtn.textContent = '🏠 Back home';
+    homeBtn.onclick = () => { actionRow.style.display = 'none'; homeReturnFromCoach(); };
+    actionRow.appendChild(homeBtn);
+  } else {
+    const pickerBtn = document.createElement('button');
+    pickerBtn.textContent = '← Pick another exercise';
+    pickerBtn.onclick = () => { actionRow.style.display = 'none'; coachShowPicker(); coachOpenTab(); };
+    actionRow.appendChild(pickerBtn);
+  }
   actionRow.style.display = '';
   document.getElementById('coachExitRow').style.display = 'none'; // exit row redundant with action buttons
   coachState.current = null;
 }
 
 function coachExitToPicker() {
+  const learnerShell = (typeof isLearnerShell === 'function') && isLearnerShell();
   if (coachState.sessionResults.length && coachState.current !== null) {
-    coachFinishSession().then(() => { coachShowPicker(); coachOpenTab(); });
+    coachFinishSession().then(() => {
+      if (learnerShell) { homeReturnFromCoach(); return; }
+      coachShowPicker(); coachOpenTab();
+    });
     return;
   }
+  if (learnerShell) { homeReturnFromCoach(); return; }
   coachShowPicker();
   coachOpenTab();
 }

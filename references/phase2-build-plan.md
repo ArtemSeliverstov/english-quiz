@@ -1323,6 +1323,81 @@ medal asymmetry as a single visual pass).
   correction) — content work; gates Ernest's flip to learner shell
 - Tier 2 PV ladder rebalance Batch 1 (~50 items)
 
+### v20260502-s96 — §4.4 follow-up: Coach picker filter + post-session route
+
+Two follow-on UX gaps from s95 closed: the picker showed four greyed-out
+disabled buttons even though Anna can't use any of them yet, and the
+post-session done card terminated in "← Pick another exercise" which
+sends the player back into the same picker rather than the home she
+came from.
+
+**Shipped**:
+
+1. **`coachApplyShellLayout()`** — runs after `coachLoadMeta()` finishes
+   populating per-type counts. In learner shell, hides any picker
+   button that is `disabled` or has a count of 0; builder shell is
+   unchanged (still shows greyed-out coming-soon types so Artem can see
+   what's queued). Free Write is exempt (its availability is governed
+   by `coachUpdateLiveAIAvailability()` — network / API_402 / Worker
+   URL gating). Anna's picker now shows three buttons: Translation
+   Drill (20 avail), Spelling Drill (10 avail), Free Write (live AI).
+2. **Post-session "🏠 Back home"** — `coachFinishSession` action row
+   ends with "🏠 Back home" instead of "← Pick another exercise" when
+   `isLearnerShell()` is true. Tapping routes through
+   `homeReturnFromCoach()` which re-renders the learner-home zones (so
+   "Last time" updates with the session that just finished) and hides
+   the tab bar again. Builder-shell action row is unchanged.
+3. **`homeReturnFromCoach()`** — small helper next to the other
+   `home*` functions. Resets coach state via `coachShowPicker()`,
+   hides `.tabs`, calls `showLearnerHome()`. Used by the back-home
+   button and by `coachExitToPicker()` mid-session-exit path.
+4. **`coachExitToPicker()` learner-shell branch** — when the player
+   taps the "← Pick another exercise" exit row mid-session in learner
+   shell, the partial session is finalised and the player is routed
+   to home (not back to the picker). Same routing for the no-session
+   case. Builder shell unchanged.
+
+**Verified end-to-end via preview probe**:
+
+- Learner shell picker (Anna): only Translation, Spelling, Free Write
+  visible; Articles / Particles / Error Correction / Russian Trap
+  hidden (zero counts) rather than disabled-but-shown
+- Builder shell picker (Artem): all 7 types visible including the
+  zero-count disabled ones — coming-soon visibility preserved
+- Learner shell post-session done card: action row shows three
+  buttons — "↻ Try this set again", "✍️ Free Write", "🏠 Back home"
+- Tap "🏠 Back home" → home visible, coach hidden, tabs bar hidden,
+  greeting still rendered
+- Builder shell post-session done card: action row ends with
+  "← Pick another exercise" (unchanged)
+- No console errors
+
+**Acceptance state for §4.4 (incremental update from s95)**:
+- ✅ Coach picker filtering — visibility-only cut (hide disabled or
+  zero-count types in learner shell). Does not yet read
+  `learning_path.active_categories`; the proper active-window-aware
+  filter is still deferred — currently the count-based filter is a
+  good proxy because Anna's library content is the only thing in scope.
+- ✅ Post-session routing back to learner home
+
+**Deferred (still on the §4.4 follow-up bundle list)**:
+- Routing steps 1+2 (resume partial Translation, Spell Help threshold)
+- Stats display rework (active / mastered / coming-next sections)
+- Coach picker active-window-aware filtering — current cut hides by
+  count only, not by `active_categories` membership; once §4.5 fills
+  Nicole/Ernest libraries, "active categories only" will start to
+  matter
+- D9 medal asymmetry + medals_history snapshot
+- Themed Free Write prompts (D12)
+- Overflow menu
+
+**Next session candidates** (unchanged from s95):
+
+- §4.4 follow-up bundle (remaining items above)
+- §4.3 article intervention batch 1
+- §4.5 Nicole / Ernest library content
+- Tier 2 PV ladder rebalance Batch 1
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
