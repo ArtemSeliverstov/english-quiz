@@ -1,0 +1,373 @@
+{
+  "_note": "Nicole v1 translation set — 10 items at B1, RU coach language, themed K-pop / school / friends / weekend / birthday. Targets her active_categories Prepositions / Irregular Verbs / Vocabulary. Distribution: 4 Prepositions, 6 Irregular Verbs (with kid-relevant vocabulary themes layered on). Russian feedback for grammar explanations per profile. Article-stripping in coachNormalize means a/an/the variants don't need to be enumerated.",
+  "exercises": [
+    {
+      "id": "tr_nicole_b01",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_fixed_phrase", "listen_to", "kpop"],
+      "source_observation": "Listen + to fixed preposition. Russian 'слушать музыку' has no preposition — calque drops 'to'. K-pop themed per profile.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я слушаю мою любимую песню.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm listening to my favourite song",
+        "I am listening to my favourite song",
+        "I'm listening to my favorite song",
+        "I listen to my favourite song",
+        "I'm listening to my favourite song."
+      ],
+      "common_errors": [
+        {
+          "id": "listen_no_to",
+          "pattern_label": "listen без 'to'",
+          "regex": "\\blisten(s|ing|ed)?\\s+(my|his|her|the|a\\s|an\\s|favourite|favorite|song|music)",
+          "feedback": "В русском «слушать музыку» — без предлога. В английском глагол 'listen' всегда требует 'to': ✓ 'listen TO music', ✗ 'listen music'."
+        },
+        {
+          "id": "listen_on",
+          "pattern_label": "listen on (неправильный предлог)",
+          "regex": "\\blisten(s|ing|ed)?\\s+on\\b",
+          "feedback": "✗ 'listen on' — неправильный предлог. После 'listen' всегда 'to': listen TO music, listen TO me."
+        }
+      ],
+      "fallback_feedback": "Цель: 'I'm listening TO my favourite song'. Глагол 'listen' всегда требует 'to'."
+    },
+    {
+      "id": "tr_nicole_b02",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs", "Vocabulary"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "buy_bought", "kpop"],
+      "source_observation": "Past simple of 'buy' = 'bought' (irregular). K-pop album context — Nicole's measurable theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Она купила новый альбом BTS.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "She bought a new BTS album",
+        "She bought a new album by BTS",
+        "She bought a new BTS album.",
+        "She bought the new BTS album"
+      ],
+      "common_errors": [
+        {
+          "id": "buyed",
+          "pattern_label": "buyed (регулярное прошедшее)",
+          "regex": "\\bbuyed\\b",
+          "feedback": "✗ 'buyed' не существует. Глагол 'buy' неправильный: buy → BOUGHT → bought. Запоминаем форму как одно слово."
+        },
+        {
+          "id": "buy_present_for_past",
+          "pattern_label": "buy вместо bought",
+          "regex": "\\bshe\\s+buy(s)?\\s+(a\\s+|the\\s+|new\\s+)",
+          "feedback": "Здесь нужно прошедшее время — 'купила'. 'She buys' = настоящее. ✓ 'She bought' = прошедшее (неправильный глагол)."
+        }
+      ],
+      "fallback_feedback": "Цель: 'She BOUGHT a new BTS album'. Прошедшее время 'buy' = 'bought' (неправильный глагол, запоминаем)."
+    },
+    {
+      "id": "tr_nicole_b03",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "see_saw_seen", "kpop"],
+      "source_observation": "Past simple 'see' = 'saw'. Common confusion saw/seen (no auxiliary in past simple). K-pop concert theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы видели крутой концерт вчера.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We saw a great concert yesterday",
+        "We saw an amazing concert yesterday",
+        "We saw a cool concert yesterday",
+        "Yesterday we saw a great concert",
+        "We saw a great concert yesterday."
+      ],
+      "common_errors": [
+        {
+          "id": "seen_no_aux",
+          "pattern_label": "seen без have",
+          "regex": "^\\s*we\\s+seen\\b",
+          "feedback": "✗ 'We seen' — 'seen' это причастие, ему нужен 'have' / 'had': 'We have seen'. Для простого прошедшего используем 'saw': ✓ 'We saw a concert'."
+        },
+        {
+          "id": "seed",
+          "pattern_label": "seed вместо saw",
+          "regex": "\\b(we|i|they)\\s+seed\\b",
+          "feedback": "✗ 'seed' не существует как форма прошедшего. 'see' неправильный: see → SAW → seen. Прошедшее = 'saw'."
+        }
+      ],
+      "fallback_feedback": "Цель: 'We SAW a great concert yesterday'. 'See' неправильный глагол: see → saw → seen. В простом прошедшем = 'saw' (без have)."
+    },
+    {
+      "id": "tr_nicole_b04",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["preposition_location", "on_street", "friends"],
+      "source_observation": "'live on a street' — Russian 'жить на улице' calques to 'in/at street' but English uses ON. Best-friend theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Моя лучшая подруга живёт на моей улице.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "My best friend lives on my street",
+        "My best friend lives on the same street",
+        "My best friend lives on my street.",
+        "My best friend lives on the street"
+      ],
+      "common_errors": [
+        {
+          "id": "in_street",
+          "pattern_label": "in street (калька)",
+          "regex": "\\bliv(es|ing|ed)?\\s+in\\s+(my\\s+|the\\s+|same\\s+)?street\\b",
+          "feedback": "✗ 'live in street' — это калька с русского «на улице». В английском с 'street' используем 'ON': ✓ 'live ON my street'."
+        },
+        {
+          "id": "at_street",
+          "pattern_label": "at street (калька)",
+          "regex": "\\bliv(es|ing|ed)?\\s+at\\s+(my\\s+|the\\s+|same\\s+)?street\\b",
+          "feedback": "✗ 'live at street' — 'at' нужен для конкретного адреса (at 5 Main Street). Для названия улицы в общем смысле — 'ON': 'on my street'."
+        }
+      ],
+      "fallback_feedback": "Цель: 'My best friend lives ON my street'. С 'street' в английском всегда 'on', не 'in' и не 'at'."
+    },
+    {
+      "id": "tr_nicole_b05",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs", "Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "go_went", "by_transport", "school"],
+      "source_observation": "Past simple 'go' = 'went' + 'by bus' (transport preposition). Russian 'на автобусе' calques to 'on/in bus'. School theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я ехала в школу на автобусе.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I went to school by bus",
+        "I took the bus to school",
+        "I went to school by bus.",
+        "I went to school on the bus"
+      ],
+      "common_errors": [
+        {
+          "id": "goed",
+          "pattern_label": "goed (регулярное прошедшее)",
+          "regex": "\\bgoed\\b",
+          "feedback": "✗ 'goed' не существует. 'go' неправильный: go → WENT → gone. Прошедшее = 'went'."
+        },
+        {
+          "id": "in_bus_calque",
+          "pattern_label": "in bus / on a bus вместо by bus",
+          "regex": "\\bgo(ne|es|ing|)?\\s+to\\s+school\\s+in\\s+(a\\s+|the\\s+)?bus\\b",
+          "feedback": "✗ 'in bus' — калька с «на автобусе». Способ передвижения = 'BY' без артикля: ✓ 'by bus', 'by car', 'by train'. (Можно сказать 'on the bus' если говоришь о конкретном автобусе.)"
+        }
+      ],
+      "fallback_feedback": "Цель: 'I WENT to school BY bus'. 'go' → 'went' (неправильный); способ передвижения = 'by' без артикля."
+    },
+    {
+      "id": "tr_nicole_b06",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_location", "at_school", "friends"],
+      "source_observation": "'at school' (general activity) vs 'in school' (US English / inside the building). Russian 'в школе' calques to 'in school'. Daily routine theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы видимся в школе каждый день.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We see each other at school every day",
+        "We meet at school every day",
+        "We see each other at school every day.",
+        "We meet up at school every day"
+      ],
+      "common_errors": [
+        {
+          "id": "in_school_meet",
+          "pattern_label": "meet/see in school (калька)",
+          "regex": "\\b(meet|see)\\s+(each\\s+other\\s+)?in\\s+school\\b",
+          "feedback": "✗ 'meet in school' — калька с «в школе». Когда говорим о школе как о деятельности или месте, где учимся — 'AT school': ✓ 'meet AT school', 'study AT school'."
+        },
+        {
+          "id": "on_school",
+          "pattern_label": "on school (неправильный предлог)",
+          "regex": "\\b(meet|see)\\s+(each\\s+other\\s+)?on\\s+school\\b",
+          "feedback": "✗ 'on school' — неправильно. С 'school' (как с местом учёбы) используем 'AT': 'at school'."
+        }
+      ],
+      "fallback_feedback": "Цель: 'We see each other / meet AT school every day'. С 'school' (как с местом учёбы) — 'at', не 'in'."
+    },
+    {
+      "id": "tr_nicole_b07",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "write_wrote", "songs", "friends"],
+      "source_observation": "Past simple 'write' = 'wrote'. Common error 'writed'. Songs/friends theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я написала песню для подруги.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I wrote a song for my friend",
+        "I wrote a song for my best friend",
+        "I wrote a song for a friend",
+        "I wrote a song for my friend."
+      ],
+      "common_errors": [
+        {
+          "id": "writed",
+          "pattern_label": "writed (регулярное прошедшее)",
+          "regex": "\\bwrited\\b",
+          "feedback": "✗ 'writed' не существует. 'write' неправильный: write → WROTE → written. Прошедшее = 'wrote'."
+        },
+        {
+          "id": "wrote_to_friend",
+          "pattern_label": "wrote ... to friend (вместо for)",
+          "regex": "\\bwr(o|i)te\\s+a\\s+song\\s+to\\b",
+          "feedback": "✗ 'wrote a song TO my friend' — 'to' = направление (письмо кому). Когда пишем песню/стих в честь кого-то, используем 'FOR': ✓ 'wrote a song FOR my friend' (в подарок, посвящение)."
+        }
+      ],
+      "fallback_feedback": "Цель: 'I WROTE a song FOR my friend'. 'write' → 'wrote' (неправильный); 'for' — для кого, в подарок."
+    },
+    {
+      "id": "tr_nicole_b08",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "tell_told", "indirect_object", "friends"],
+      "source_observation": "Past simple 'tell' = 'told' + indirect object 'me' without 'to'. Russian dative 'мне' has no preposition; English splits 'tell me' (no to) vs 'say to me'.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Она рассказала мне секрет.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "She told me a secret",
+        "She told me her secret",
+        "She told me a secret.",
+        "She told me the secret"
+      ],
+      "common_errors": [
+        {
+          "id": "telled",
+          "pattern_label": "telled (регулярное)",
+          "regex": "\\btelled\\b",
+          "feedback": "✗ 'telled' не существует. 'tell' неправильный: tell → TOLD → told. Прошедшее = 'told'."
+        },
+        {
+          "id": "told_to_me",
+          "pattern_label": "told to me (калька с дательного)",
+          "regex": "\\btold\\s+to\\s+me\\b",
+          "feedback": "✗ 'told to me' — калька с русского «мне» (дательный). После 'tell' идёт прямой объект без 'to': ✓ 'told ME'. ('Say' требует 'to': 'said TO me' — но 'tell' нет.)"
+        },
+        {
+          "id": "said_me",
+          "pattern_label": "said me (без to)",
+          "regex": "\\bsaid\\s+me\\b",
+          "feedback": "✗ 'said me' — у 'say' наоборот: 'said TO me' (с предлогом). Но проще запомнить: для «рассказала мне» используем 'TOLD me' (без 'to')."
+        }
+      ],
+      "fallback_feedback": "Цель: 'She TOLD me a secret'. 'tell' → 'told' (неправильный); после 'tell' идёт 'me' без 'to'."
+    },
+    {
+      "id": "tr_nicole_b09",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Irregular Verbs", "Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "give_gave", "for_birthday", "friends"],
+      "source_observation": "Past simple 'give' = 'gave' + 'for my birthday' (Russian 'на день рождения' calques to 'on'). Birthday/friends theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Друзья подарили мне подарок на день рождения.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "My friends gave me a present for my birthday",
+        "My friends gave me a gift for my birthday",
+        "My friends gave a present to me for my birthday",
+        "My friends gave me a present for my birthday."
+      ],
+      "common_errors": [
+        {
+          "id": "gived_gaved",
+          "pattern_label": "gived / gaved",
+          "regex": "\\b(gived|gaved)\\b",
+          "feedback": "✗ 'gived' / 'gaved' не существуют. 'give' неправильный: give → GAVE → given. Прошедшее = 'gave'."
+        },
+        {
+          "id": "on_birthday",
+          "pattern_label": "on my birthday (калька)",
+          "regex": "\\b(present|gift)\\s+on\\s+(my\\s+|the\\s+)?birthday\\b",
+          "feedback": "✗ 'present on my birthday' — калька с «на день рождения». В английском с 'birthday' (как поводом) используем 'FOR': ✓ 'a present FOR my birthday'. ('On my birthday' = 'в день моего рождения' — другой смысл, во время дня рождения.)"
+        }
+      ],
+      "fallback_feedback": "Цель: 'My friends GAVE me a present FOR my birthday'. 'give' → 'gave' (неправильный); 'for my birthday' = в подарок к дню рождения."
+    },
+    {
+      "id": "tr_nicole_b10",
+      "type": "translation",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["preposition_time", "on_day", "weekend", "friends"],
+      "source_observation": "'on Friday' — days take 'on'. Russian 'в пятницу' uses one preposition for everything; English splits on/in/at.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Увидимся в пятницу.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "See you on Friday",
+        "I'll see you on Friday",
+        "We'll see each other on Friday",
+        "See you on Friday."
+      ],
+      "common_errors": [
+        {
+          "id": "in_friday",
+          "pattern_label": "in Friday (калька)",
+          "regex": "\\bin\\s+friday\\b",
+          "feedback": "✗ 'in Friday' — калька с «в пятницу». В английском с днями недели — 'ON': ✓ 'on Friday', 'on Monday'. (in — для месяцев и годов, at — для часов.)"
+        },
+        {
+          "id": "at_friday",
+          "pattern_label": "at Friday (неправильный предлог)",
+          "regex": "\\bat\\s+friday\\b",
+          "feedback": "✗ 'at Friday' — 'at' для времени (at 7 o'clock), не для дней. Дни недели всегда с 'ON': 'on Friday'."
+        }
+      ],
+      "fallback_feedback": "Цель: 'See you ON Friday'. Дни недели всегда с 'on'; 'in' для месяцев/годов, 'at' для часов."
+    }
+  ]
+}

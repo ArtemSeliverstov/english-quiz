@@ -38,10 +38,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fsGet, fsSet, docToPlain, PLAYERS } = require('./_firestore');
+const { fsGet, fsSet, fsList, docToPlain, PLAYERS } = require('./_firestore');
 
 const VALID_TYPES = [
-  'translation', 'article_drill', 'particle_sort',
+  'translation', 'spelling_drill', 'article_drill', 'particle_sort',
   'error_correction', 'russian_trap'
 ];
 
@@ -55,6 +55,7 @@ const COMMON_REQUIRED = [
 
 const TYPE_REQUIRED = {
   translation: ['prompt_ru', 'correct_answers', 'common_errors', 'fallback_feedback'],
+  spelling_drill: ['prompt_definition_ru', 'prompt_definition_en', 'correct', 'common_misspellings', 'example_sentence', 'fallback_feedback', 'source'],
   article_drill: ['sentence_template', 'blanks'],
   particle_sort: ['sentence', 'base_verb', 'correct_particles', 'distractor_particles', 'meaning', 'reasoning'],
   error_correction: ['incorrect_sentence', 'error_span', 'correct_replacement', 'error_type', 'reasoning'],
@@ -171,13 +172,8 @@ async function main() {
       (perPlayerTypeCounts[ex.target_player][ex.type] || 0) + 1;
   }
 
-  // Read existing meta to merge counts for OTHER types not in this draft
+  // Read existing meta — only used to preserve schema_version + non-overwritten coverage entries.
   const prevMeta = await readMeta();
-  const mergedPerType = { ...(prevMeta?.total_exercises_per_type || {}), ...perTypeCounts };
-  const mergedPerPlayer = { ...(prevMeta?.coverage_by_player || {}) };
-  for (const [player, byType] of Object.entries(perPlayerTypeCounts)) {
-    mergedPerPlayer[player] = { ...(mergedPerPlayer[player] || {}), ...byType };
-  }
 
   console.log(`Draft: ${path.basename(absPath)}`);
   console.log(`  Exercises: ${exercises.length}`);
@@ -209,8 +205,34 @@ async function main() {
   }
   process.stdout.write('\n');
 
-  // Update meta
-  const newMeta = buildMetaUpdate(prevMeta, mergedPerType, mergedPerPlayer);
+  // Recompute meta from authoritative on-disk state across ALL types & players.
+  // This avoids the "draft overwrites prior author's totals" bug — prev impl
+  // did `{...prev, ...thisDraft}` which clobbered other-author counts.
+  const trueTotalPerType = {};
+  const trueCoverageByPlayer = {};
+  for (const t of VALID_TYPES) {
+    let items;
+    try {
+      items = await fsList(`exercises_library/${t}/items`, { pageSize: 300 });
+    } catch (e) {
+      // Subcollection may not exist yet — skip silently.
+      items = [];
+    }
+    if (items.length) {
+      trueTotalPerType[t] = items.length;
+      for (const it of items) {
+        const p = it.target_player;
+        if (!p) continue;
+        if (!trueCoverageByPlayer[p]) trueCoverageByPlayer[p] = {};
+        trueCoverageByPlayer[p][t] = (trueCoverageByPlayer[p][t] || 0) + 1;
+      }
+    }
+  }
+  const newMeta = buildMetaUpdate(prevMeta, trueTotalPerType, trueCoverageByPlayer);
+  // buildMetaUpdate spreads coverage_by_player onto prev — but prev may carry
+  // stale entries for items deleted off-disk. Replace coverage map outright.
+  newMeta.coverage_by_player = trueCoverageByPlayer;
+  newMeta.total_exercises_per_type = trueTotalPerType;
   await fsSet('exercises_library/_meta', newMeta);
 
   console.log(JSON.stringify({

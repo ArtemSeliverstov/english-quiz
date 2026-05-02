@@ -1,0 +1,232 @@
+{
+  "_note": "Nicole v1 spelling drill set — 10 high-frequency B1 words, focused on Russian L1 spelling traps (silent letters, doubled consonants, ie/ei cluster, calque from cyrillic phonetics). Russian prompt definitions per Nicole's RU coach lang. All items source: predicted_l1_trap.",
+  "exercises": [
+    {
+      "id": "sp_nicole_b01",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["ie_cluster", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "друг или подруга — близкий человек",
+      "prompt_definition_en": "a person you know well and like",
+      "correct": "friend",
+      "common_misspellings": [
+        {"pattern": "freind", "feedback": "Правило 'i перед e, кроме после c': в 'friend' — i ПЕРЕД e. ✓ friend, ✗ freind."},
+        {"pattern": "frend", "feedback": "Пропущена 'i': в слове friend пять букв в середине — 'rie'. ✓ friend."}
+      ],
+      "example_sentence": "My best friend goes to my school.",
+      "fallback_feedback": "Запоминаем: f-r-i-e-n-d (i ПЕРЕД e). Правило 'ie' работает почти всегда, кроме после 'c' (receive)."
+    },
+    {
+      "id": "sp_nicole_b02",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["doubled_letters", "silent_letters", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "красивый, прекрасный",
+      "prompt_definition_en": "very pretty or attractive",
+      "correct": "beautiful",
+      "common_misspellings": [
+        {"pattern": "beatiful", "feedback": "Не хватает 'u': в слове beautiful есть редкий узор 'eau'. ✓ beautiful, ✗ beatiful."},
+        {"pattern": "beutiful", "feedback": "Порядок букв 'eau', не 'eu': b-EAU-tiful. ✓ beautiful."},
+        {"pattern": "beautifull", "feedback": "В конце ОДНА 'l', не две: ✓ beautiful, ✗ beautifull."}
+      ],
+      "example_sentence": "She has a beautiful voice.",
+      "fallback_feedback": "Запоминаем по слогам: BEAU-ti-ful. 'eau' произносится как 'ью', одна 'l' в конце."
+    },
+    {
+      "id": "sp_nicole_b03",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["silent_letters", "days_of_week", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "среда (день недели)",
+      "prompt_definition_en": "the day between Tuesday and Thursday",
+      "correct": "Wednesday",
+      "common_misspellings": [
+        {"pattern": "Wensday", "feedback": "Пропущена 'd': в Wednesday есть невидимая 'd' в середине. Произносится «уэнздэй», но пишется WED-NES-DAY."},
+        {"pattern": "Wednsday", "feedback": "Пропущена 'e' между 'd' и 'n': ✓ WED-nes-day. Совет: разбей на части 'Wed-nes-day' и запомни как трёхсложное слово."},
+        {"pattern": "wednesday", "feedback": "Дни недели в английском всегда пишутся с заглавной буквы: ✓ Wednesday, не wednesday."}
+      ],
+      "example_sentence": "We have English class on Wednesday.",
+      "fallback_feedback": "Wed-nes-day. Произносим «уэнздэй», но пишем буква в букву: W-e-d-n-e-s-d-a-y. Дни недели — всегда с большой буквы."
+    },
+    {
+      "id": "sp_nicole_b04",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["doubled_letters", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "завтра",
+      "prompt_definition_en": "the day after today",
+      "correct": "tomorrow",
+      "common_misspellings": [
+        {"pattern": "tomorow", "feedback": "Не хватает второй 'r': ✓ tomo-RR-ow (двойная r). Запомни: одна 'm', две 'r'."},
+        {"pattern": "tommorow", "feedback": "Наоборот: одна 'm' (НЕ две), две 'r'. ✓ to-mo-rr-ow."},
+        {"pattern": "tommorrow", "feedback": "В tomorrow ОДНА 'm' (одна), но ДВЕ 'r'. Подсказка: 'to-mo-RR-ow' — двойная r как в 'morrow' (старое слово 'утро')."}
+      ],
+      "example_sentence": "I'll see you tomorrow at school.",
+      "fallback_feedback": "Запомни шаблон: t-o-m-o-r-r-o-w. ОДНА 'm', ДВЕ 'r'."
+    },
+    {
+      "id": "sp_nicole_b05",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["compound_word", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "потому что",
+      "prompt_definition_en": "for the reason that",
+      "correct": "because",
+      "common_misspellings": [
+        {"pattern": "becouse", "feedback": "Не 'ou', а 'au': ✓ be-CAUSE (как 'cause' = причина). Слово состоит из be + cause."},
+        {"pattern": "becuase", "feedback": "Перепутаны 'a' и 'u': правильный порядок 'au', не 'ua'. ✓ be-c-A-U-se."},
+        {"pattern": "becose", "feedback": "Пропущена 'au' — нужны обе буквы: ✓ be-CAUSE. Запомни: be + cause (причина) = because."}
+      ],
+      "example_sentence": "I was late because I missed the bus.",
+      "fallback_feedback": "Запомни через корень: be + CAUSE (причина) = because. b-e-c-a-u-s-e."
+    },
+    {
+      "id": "sp_nicole_b06",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["ie_cluster", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "верить, считать",
+      "prompt_definition_en": "to think something is true",
+      "correct": "believe",
+      "common_misspellings": [
+        {"pattern": "beleive", "feedback": "Правило 'i перед e, кроме после c': в believe — i ПЕРЕД e. ✓ bel-IE-ve, ✗ bel-EI-ve."},
+        {"pattern": "belive", "feedback": "Не хватает 'e': после 'i' нужно 'e' — ✓ believe, не belive."}
+      ],
+      "example_sentence": "I believe she's telling the truth.",
+      "fallback_feedback": "be-l-i-e-v-e. Помни правило 'ie': в believe — i перед e (нет 'c' перед, значит ie). То же самое в friend, piece, achieve."
+    },
+    {
+      "id": "sp_nicole_b07",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque_phonetic", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "школа (где учатся дети)",
+      "prompt_definition_en": "a place where children go to learn",
+      "correct": "school",
+      "common_misspellings": [
+        {"pattern": "skool", "feedback": "В английском после 's' не пишем 'k' — пишем 'ch' (даже если звучит как «к»): ✓ s-c-h-o-o-l. Это калька с русской «школы»."},
+        {"pattern": "scool", "feedback": "Пропущена 'h': в school после 'sc' идёт ОБЯЗАТЕЛЬНАЯ 'h'. ✓ s-c-h-o-o-l."},
+        {"pattern": "scholl", "feedback": "В конце ОДНА 'l', не две: ✓ school, ✗ scholl."}
+      ],
+      "example_sentence": "We go to school by bus every morning.",
+      "fallback_feedback": "Запомни: s-c-h-o-o-l. Звучит «скул», но пишется с 'ch' (как chemist, character). Двойная 'o', одна 'l'."
+    },
+    {
+      "id": "sp_nicole_b08",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["silent_letters", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "одежда (вещи, которые носим)",
+      "prompt_definition_en": "things you wear, like shirts and trousers",
+      "correct": "clothes",
+      "common_misspellings": [
+        {"pattern": "close", "feedback": "✗ 'close' = «близкий» или «закрывать» — другое слово. ✓ 'CLOTHES' = одежда (с 'th' в середине)."},
+        {"pattern": "cloths", "feedback": "✗ 'cloths' = тряпки (множ. от 'cloth'). ✓ 'CLOTHES' = одежда — с 'e' перед 's'."},
+        {"pattern": "clothers", "feedback": "✗ 'clothers' не существует. Правильно: c-l-o-t-h-e-s (без 'r')."}
+      ],
+      "example_sentence": "I'm buying new clothes for the K-pop concert.",
+      "fallback_feedback": "Запомни: c-l-o-t-h-e-s. Звучит почти как «клоуз», но пишется с 'th' (как 'mother'). НЕ путать с 'close' (закрывать/близкий)."
+    },
+    {
+      "id": "sp_nicole_b09",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["doubled_letters", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "счастливый, радостный",
+      "prompt_definition_en": "feeling pleased and joyful",
+      "correct": "happy",
+      "common_misspellings": [
+        {"pattern": "hapy", "feedback": "Не хватает второй 'p': ✓ ha-PP-y (двойная 'p'). Короткие слова с гласной + согласной часто удваивают согласную."},
+        {"pattern": "happi", "feedback": "В конце пишется 'y', не 'i': ✓ happy, ✗ happi. (Но во множественном/других формах: happier, happiest — здесь y → i.)"}
+      ],
+      "example_sentence": "I'm so happy you came to my party!",
+      "fallback_feedback": "h-a-p-p-y. ДВЕ 'p' в середине, 'y' в конце. То же правило в slippy, snappy."
+    },
+    {
+      "id": "sp_nicole_b10",
+      "type": "spelling_drill",
+      "target_player": "nicole",
+      "level": "B1",
+      "focus_categories": ["Spelling"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["silent_letters", "high_frequency"],
+      "source": "predicted_l1_trap",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_definition_ru": "сюрприз (неожиданное событие или подарок)",
+      "prompt_definition_en": "an unexpected event or gift",
+      "correct": "surprise",
+      "common_misspellings": [
+        {"pattern": "suprise", "feedback": "Не хватает первой 'r': ✓ sur-prise. Звучит как «сэпрайз» (первая 'r' еле слышна), но пишется ОБЯЗАТЕЛЬНО с двумя 'r'."},
+        {"pattern": "surprize", "feedback": "В английском пишется 's', не 'z': ✓ surpriSE, ✗ surpriZE. (Это британское и американское написание одинаковы.)"},
+        {"pattern": "surprice", "feedback": "Не 'ce', а 'se' в конце: ✓ surpri-SE, ✗ surpri-CE."}
+      ],
+      "example_sentence": "It was a big surprise when she got tickets!",
+      "fallback_feedback": "s-u-r-p-r-i-s-e. ДВЕ буквы 'r' (первая еле слышна, но пишется), 's' в конце (не 'z'/'c')."
+    }
+  ]
+}

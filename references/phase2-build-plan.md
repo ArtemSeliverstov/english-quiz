@@ -1838,6 +1838,140 @@ narrow focus.
   particle_sort)
 - §4.4 polish: overflow menu, active-window-aware picker filter
 
+### s100 — §4.5 Nicole + Ernest library content + shell flips
+
+Phase 2 restart-readiness moved to "all three family-shell players
+live on learner shell". Nicole and Ernest joined Anna on `ui_shell:
+"learner"` after their Coach libraries got their first content batches.
+
+**Shipped — content (30 items via tools/push_library.js)**:
+
+- **Nicole Translation Drill** (`tr_nicole_b01`–`b10`, 10 items, B1, RU
+  coach lang): targets her `learning_path.active_categories`
+  [Prepositions, Irregular Verbs, Vocabulary] with K-pop / school /
+  friends / weekend / birthday themes per profile. Distribution: 4
+  Prepositions (listen+to, on street, at school, on Friday), 6
+  Irregular Verbs (bought, saw, went, wrote, told, gave) with kid
+  vocabulary woven in. Russian feedback for grammar explanations.
+- **Nicole Spelling Drill** (`sp_nicole_b01`–`b10`, 10 items, B1, RU):
+  high-frequency teen words targeting Russian L1 spelling traps —
+  friend (ie cluster), beautiful (eau / doubled), Wednesday (silent d),
+  tomorrow (one m / two r), because (au not ou), believe (ie), school
+  (sk- vs sch-), clothes (silent th vs close), happy (doubled p),
+  surprise (silent first r). All `source: predicted_l1_trap`.
+- **Ernest Translation Drill** (`tr_ernest_b01`–`b10`, 10 items, B1, EN
+  coach lang): weighted toward his measured weak pattern Articles ×
+  uncountable nouns (3 items: information / advice / progress — the
+  exact 'a good progress' calque called out in his coach_notes).
+  Other 7 items cover Tenses (present perfect life experience, present
+  continuous), Conditionals (1st + 2nd, both 'will/would in if-clause'
+  Russian-L1 traps), Phrasal Verbs (turn off + 'close the lights'
+  calque), Vocabulary (won + sport theme), Relative Clauses (who vs
+  which/what for people). Short prompts to stay gentle on his input-
+  scaffolding gap.
+
+Free Write themed prompts for both already shipped in s97 (D12
+`COACH_FW_STARTERS_BY_PLAYER` map — Nicole K-pop/school/friends/weekend/
+songs, Ernest school/sports/weekend/books/friends).
+
+**Shipped — Firestore**:
+
+- `players/nicole.ui_shell`: builder → learner
+- `players/ernest.ui_shell`: builder → learner
+- 10 docs at `exercises_library/translation/items/tr_nicole_b*`
+- 10 docs at `exercises_library/spelling_drill/items/sp_nicole_b*`
+- 10 docs at `exercises_library/translation/items/tr_ernest_b*`
+- `exercises_library/_meta`: total_exercises_per_type now
+  `{translation: 40, spelling_drill: 20}`; coverage_by_player covers
+  anna / nicole / ernest
+
+**Shipped — engineering (tools/push_library.js)**:
+
+- `spelling_drill` added to `VALID_TYPES` + `TYPE_REQUIRED` so Anna's
+  ad-hoc s94 `author_anna_s94.js` flow no longer needs to bypass the
+  shared push tool.
+- **Bug fix surfaced inline**: prior _meta logic computed
+  `{...prev, ...thisDraft}` for `total_exercises_per_type` —
+  multi-author drafts (e.g. Nicole's translation push after Anna's
+  20 items existed) clobbered prior author counts. After Nicole's
+  10-item push, totals would have read `{translation: 10}` instead
+  of 30. Replaced with authoritative recomputation: after writing
+  this draft's items, fsList every type's `items` subcollection and
+  rebuild meta from on-disk state. Idempotent and self-healing
+  against stale entries.
+
+**Acceptance state for §4.5**:
+
+- ✅ Anna line (s94 prior): Translation 20 + Spelling 10 + Free Write
+  prompts; Article Drill + Russian Trap deferred per §4.6 sequencing
+- ✅ Nicole line: Translation 10 + Spelling 10 + Free Write prompts;
+  Article Drill remains deferred (Articles not in her active window)
+- ✅ Ernest Translation 10 + Free Write prompts
+- ⏳ Ernest Article Drill (~15 items): defers to §4.3 article
+  intervention session — engine wiring also needed (`COACH_TYPE_TO_LIBRARY`
+  currently only maps `translation` and `spelling_drill`; `article_drill`
+  picker entry exists but disabled)
+- ⏳ Ernest Error Correction (~15 items): same — engine support not
+  in place for `error_correction` Coach type
+- ⏳ Russian-language content verified for Nicole — items pushed; live
+  acceptance ("verified" in spec sense) waits for Nicole's first real
+  session against the new content
+
+**Verified end-to-end via preview probe**:
+
+- Nicole flow: localStorage `quizPlayerKey="nicole"` + IndexedDB clear
+  → home renders "Hi Nicole 👋", active_categories
+  [Prepositions, Irregular Verbs, Vocabulary], window_size 3, level_cap
+  B1; "Practice something else" → picker shows 3 visible buttons
+  (Translation 10 avail, Spelling 10 avail, Free Write live AI) with
+  the other 4 types correctly hidden by `coachApplyShellLayout`;
+  Translation Drill loaded with `plannedTotal: 10`, first item
+  `tr_nicole_b01` ("Я слушаю мою любимую песню."), `target_player:
+  "nicole"`.
+- Ernest flow: localStorage `quizPlayerKey="ernest"` + force-load
+  Ernest's Firestore doc → home renders "Hi Ernest 👋", active_categories
+  [Tenses, Articles, Conditionals, Phrasal Verbs, Vocabulary, Relative
+  Clauses], window_size 6, level_cap B1; "Practising today" pills show
+  Artem + Nicole; "Last time: error correction — 3/6"; Medals 1 🥉.
+  Picker shows 2 visible buttons (Translation 10 avail, Free Write —
+  no Spelling button because Ernest has zero spelling content,
+  matching the `coachApplyShellLayout` count-based filter); Translation
+  Drill loaded with `plannedTotal: 10`, first item `tr_ernest_b08`
+  ("Не забудь выключить свет."), `target_player: "ernest"`.
+- `coachPickFreeWriteStarter('ernest')` returned the sports prompt
+  ("Tell me about a sport you play or watch — why do you like it?"),
+  confirming the s97 D12 themed-starter map still wires for Ernest.
+- No console errors across either flow.
+
+**Bug surfaced inline (preview-only, not user-facing)**: cross-player
+verification was tricky because `loadFromFirebase`'s totalAnswered
+guard (line 6561) blocks remote merge when `remote.totalAnswered <
+local.totalAnswered`. With Nicole at 830 answers and Ernest at 241,
+switching local IndexedDB from Nicole to Ernest leaves the in-memory
+`DB` carrying Nicole's `learning_path` even after a player-key change,
+unless the page does a full hard reload AND IndexedDB delete actually
+completes. Worked around by calling `fsGet('players/ernest')` directly
+and `Object.assign(DB, …)`. The guard is correct production behavior
+(prevents stale local from clobbering newer remote) — flagged as a
+"verification quirk" not a bug. If profile-switching ever becomes a
+user-facing flow, the guard needs a "different player" override.
+
+**No runtime code change in this session** — all work happens in
+Firestore (library content + ui_shell flips) and tools/. `index.html`
+and `sw.js` untouched. No version bump; commit goes in plain
+(non-`v*-s*`) form.
+
+**Next session candidates**:
+
+- §4.3 article intervention batch 1 — both content (article_drill
+  items for all three family-shell players, ~15 each) AND engine
+  wiring (`COACH_TYPE_TO_LIBRARY` map + scoring + picker)
+- §4.5 follow-up: Ernest Error Correction — content + engine wiring
+- Tier 2 PV Batch 2 (remainder of verb families + ~15 Coach
+  particle_sort)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter
+  (currently visibility-by-count only)
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated

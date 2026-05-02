@@ -1,0 +1,376 @@
+{
+  "_note": "Ernest v1 translation set — 10 items at B1, EN coach language, themed school / sports / friends per profile. Targets his active_categories (Tenses, Articles, Conditionals, Phrasal Verbs, Vocabulary, Relative Clauses) with weight on Articles uncountable nouns (his measured 0% weak pattern). Short prompts to stay gentle on his input-scaffolding gap (input accuracy lags gap-type by ~30 pts). English explanations with Russian-L1-source called out where the trap is calque-driven.",
+  "exercises": [
+    {
+      "id": "tr_ernest_b01",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["uncountable_noun", "no_article", "school"],
+      "source_observation": "'information' is uncountable in English — never takes 'a/an', no plural -s. Targets Ernest's documented weak pattern (uncountable nouns at 0%). School theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мне нужна информация о проекте.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I need information about the project",
+        "I need some information about the project",
+        "I need information on the project",
+        "I need information about the project."
+      ],
+      "common_errors": [
+        {
+          "id": "an_information",
+          "pattern_label": "an/a information (calque from Russian countable)",
+          "regex": "\\b(an|a)\\s+information\\b",
+          "feedback": "Russian L1 trap: 'информация' is countable in Russian, but English 'information' is UNCOUNTABLE — no 'a/an', no plural -s. ✓ 'I need information' / 'some information', ✗ 'an information' / 'informations'."
+        },
+        {
+          "id": "informations",
+          "pattern_label": "informations (plural)",
+          "regex": "\\binformations\\b",
+          "feedback": "✗ 'informations' — 'information' has NO plural form in English. To count it, use 'pieces of information' or 'some information'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I need information about the project'. 'information' is uncountable in English — no a/an, no plural -s. Same applies to: advice, news, knowledge, furniture."
+    },
+    {
+      "id": "tr_ernest_b02",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["uncountable_noun", "no_article", "friends"],
+      "source_observation": "'advice' is uncountable in English. Russian 'совет' is countable — direct calque produces 'an advice'. Friends theme (giving advice).",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Он дал мне хороший совет.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "He gave me good advice",
+        "He gave me some good advice",
+        "He gave me a piece of good advice",
+        "He gave me good advice."
+      ],
+      "common_errors": [
+        {
+          "id": "an_advice",
+          "pattern_label": "an/a (good) advice (calque)",
+          "regex": "\\b(an|a)\\s+(good\\s+|great\\s+|nice\\s+)?advice\\b",
+          "feedback": "Russian L1 trap: 'совет' is countable, but English 'advice' is UNCOUNTABLE — no 'a/an'. ✓ 'good advice' / 'a piece of advice'. ✗ 'a good advice' / 'an advice'."
+        },
+        {
+          "id": "advices",
+          "pattern_label": "advices (plural)",
+          "regex": "\\badvices\\b",
+          "feedback": "✗ 'advices' — 'advice' has no plural in English. To count: 'pieces of advice'."
+        }
+      ],
+      "fallback_feedback": "Target: 'He gave me good advice' (or 'a piece of good advice' to count one). 'advice' is uncountable — no 'a', no plural."
+    },
+    {
+      "id": "tr_ernest_b03",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["uncountable_noun", "no_article", "school"],
+      "source_observation": "'progress' is uncountable. Common Ernest error — 'a good progress' was specifically called out in his coach_notes weak_patterns. School achievement theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы достигли хорошего прогресса в школе.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We made good progress at school",
+        "We've made good progress at school",
+        "We have made good progress at school",
+        "We made a lot of progress at school"
+      ],
+      "common_errors": [
+        {
+          "id": "a_progress",
+          "pattern_label": "a (good) progress (calque)",
+          "regex": "\\b(an|a)\\s+(good\\s+|great\\s+)?progress\\b",
+          "feedback": "Russian L1 trap: 'прогресс' is countable, but English 'progress' is UNCOUNTABLE. ✓ 'made good progress' / 'a lot of progress', ✗ 'a good progress'."
+        },
+        {
+          "id": "do_progress",
+          "pattern_label": "do progress (wrong collocation)",
+          "regex": "\\bdo(es|ing|ne)?\\s+(good\\s+|some\\s+)?progress\\b",
+          "feedback": "✗ 'do progress' — wrong verb. The collocation is 'MAKE progress' (not 'do'). ✓ 'made progress', 'making progress'."
+        }
+      ],
+      "fallback_feedback": "Target: 'We made good progress at school'. 'progress' is uncountable (no 'a'); the verb is 'MAKE progress' (not 'do')."
+    },
+    {
+      "id": "tr_ernest_b04",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Tenses"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["present_perfect", "life_experience"],
+      "source_observation": "Present perfect for life experience (have been + count). Russian uses past simple ('был два раза'), so direct calque gives wrong tense. Bahrain-Dubai context.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я был в Дубае два раза.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I have been to Dubai twice",
+        "I've been to Dubai twice",
+        "I have visited Dubai twice",
+        "I've visited Dubai twice",
+        "I have been to Dubai two times"
+      ],
+      "common_errors": [
+        {
+          "id": "was_in_dubai",
+          "pattern_label": "I was in Dubai (past simple calque)",
+          "regex": "\\bi\\s+was\\s+in\\s+dubai\\b",
+          "feedback": "Russian L1 trap: «был» = past simple in Russian, but for life experience (how many times in your life) English uses PRESENT PERFECT. ✓ 'I have been to Dubai twice'. (Past simple 'I was in Dubai' is fine if you mean a specific past time: 'I was in Dubai last year'.)"
+        },
+        {
+          "id": "been_in_dubai",
+          "pattern_label": "have been IN Dubai (wrong prep for travel)",
+          "regex": "\\b(have|'ve|has|'s)\\s+been\\s+in\\s+dubai\\b",
+          "feedback": "For travel/visit experience, use 'been TO': ✓ 'have been TO Dubai'. 'Been in' suggests location at a moment, not a visit."
+        }
+      ],
+      "fallback_feedback": "Target: 'I have been to Dubai twice' (or 'I've been to Dubai twice'). Present perfect for life-experience count; preposition 'to' for places visited."
+    },
+    {
+      "id": "tr_ernest_b05",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Tenses"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["present_continuous", "sports"],
+      "source_observation": "Present continuous for action happening now. Russian 'играет' is ambiguous (simple or continuous); English requires BE + V-ing for 'right now'. Sports theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Он играет в футбол прямо сейчас.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "He is playing football right now",
+        "He's playing football right now",
+        "He's playing football at the moment",
+        "He is playing football right now."
+      ],
+      "common_errors": [
+        {
+          "id": "plays_now",
+          "pattern_label": "He plays ... right now (simple for 'now')",
+          "regex": "\\bhe\\s+plays\\s+football\\s+(right\\s+now|now|at\\s+the\\s+moment)\\b",
+          "feedback": "✗ 'He plays right now' — present simple is for habits/repeats, not for 'right now'. For an action happening AT THIS MOMENT use present continuous: ✓ 'He is playing right now'."
+        },
+        {
+          "id": "missing_aux_be",
+          "pattern_label": "missing 'is' before -ing",
+          "regex": "^\\s*he\\s+playing\\s+football\\b",
+          "feedback": "Missing auxiliary 'is' — present continuous needs BE + V-ing: ✓ 'He IS playing' or 'He's playing'. Never just 'He playing'."
+        },
+        {
+          "id": "play_in_football",
+          "pattern_label": "play in football (calque)",
+          "regex": "\\bplay(s|ing)?\\s+in\\s+football\\b",
+          "feedback": "Russian L1 trap: 'играть В футбол' calques to 'play IN football'. English uses NO preposition: ✓ 'play football', ✗ 'play in football'."
+        }
+      ],
+      "fallback_feedback": "Target: 'He IS playing football right now'. 'right now' = present continuous (BE + V-ing); no preposition before 'football'."
+    },
+    {
+      "id": "tr_ernest_b06",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Conditionals"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["first_conditional", "weather"],
+      "source_observation": "1st conditional: if + present, will + base. Russian uses future in both clauses ('если пойдёт дождь, мы останемся'); English never uses 'will' in the if-clause.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Если завтра пойдёт дождь, мы останемся дома.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "If it rains tomorrow, we'll stay home",
+        "If it rains tomorrow, we will stay home",
+        "If it rains tomorrow, we'll stay at home",
+        "We'll stay home if it rains tomorrow",
+        "If it rains tomorrow we'll stay home"
+      ],
+      "common_errors": [
+        {
+          "id": "will_in_if",
+          "pattern_label": "will/'ll inside if-clause (calque)",
+          "regex": "\\bif\\s+it\\s+(will\\s+rain|'ll\\s+rain)\\b",
+          "feedback": "Russian L1 trap: «если пойдёт» uses future, but English RULE: NEVER use 'will' after 'if' in conditionals. ✓ 'If it RAINS tomorrow' (present), ✗ 'If it will rain'. Will only goes in the main clause."
+        },
+        {
+          "id": "stay_at_home_no_will",
+          "pattern_label": "main clause without will",
+          "regex": "\\bif\\s+it\\s+rains\\s+tomorrow,?\\s+we\\s+stay\\s+(home|at home)\\b",
+          "feedback": "The main clause needs 'will' (or 'll) for a future result: ✓ 'we WILL stay' / 'we'll stay'. Without 'will' it sounds like a habit, not a future plan."
+        }
+      ],
+      "fallback_feedback": "Target: 'If it RAINS tomorrow, we'll STAY home'. 1st conditional rule: if + PRESENT, WILL + base. Never put 'will' in the if-clause."
+    },
+    {
+      "id": "tr_ernest_b07",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Conditionals"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["second_conditional", "hypothetical"],
+      "source_observation": "2nd conditional: if + past simple, would + base. Russian 'если бы у меня было' calques to 'if I would have' (would in if-clause).",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Если бы у меня было больше времени, я бы выучил испанский.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "If I had more time, I would learn Spanish",
+        "If I had more time, I'd learn Spanish",
+        "I would learn Spanish if I had more time",
+        "I'd learn Spanish if I had more time",
+        "If I had more time I would learn Spanish"
+      ],
+      "common_errors": [
+        {
+          "id": "would_in_if",
+          "pattern_label": "would/'d in if-clause (calque from 'если бы')",
+          "regex": "\\bif\\s+i\\s+(would|'d)\\s+(have|had)\\b",
+          "feedback": "Russian L1 trap: «если бы» feels like 'would' to Russians, but English RULE: NEVER use 'would' after 'if'. ✓ 'If I HAD more time' (past simple), ✗ 'If I would have'. 'Would' only goes in the main clause."
+        },
+        {
+          "id": "have_in_if",
+          "pattern_label": "if I have (present, wrong tense for hypothetical)",
+          "regex": "\\bif\\s+i\\s+have\\s+more\\s+time,?\\s+i\\s+(would|'d)\\b",
+          "feedback": "For a hypothetical/imaginary situation use PAST SIMPLE in the if-clause: ✓ 'If I HAD more time' (= I don't have it now). 'If I have' would be a real possibility, but 'would' in main clause signals it's hypothetical — needs 'had'."
+        }
+      ],
+      "fallback_feedback": "Target: 'If I HAD more time, I WOULD learn Spanish'. 2nd conditional rule: if + PAST SIMPLE, WOULD + base. Never put 'would' in the if-clause."
+    },
+    {
+      "id": "tr_ernest_b08",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "turn_off", "separable", "school"],
+      "source_observation": "'turn off' separable PV. School/home context. Tests both inseparable production ('turn off the lights') and separable variant ('turn the lights off').",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Не забудь выключить свет.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Don't forget to turn off the lights",
+        "Don't forget to turn the lights off",
+        "Don't forget to switch off the lights",
+        "Don't forget to switch the lights off",
+        "Don't forget to turn the light off",
+        "Don't forget to turn off the light"
+      ],
+      "common_errors": [
+        {
+          "id": "close_lights",
+          "pattern_label": "close the lights (calque)",
+          "regex": "\\bclos(e|ing)\\s+(the\\s+)?lights?\\b",
+          "feedback": "Russian L1 trap: «выключить» feels like 'close' to Russians (closing a switch), but English uses 'TURN OFF' or 'SWITCH OFF' for lights/devices. ✗ 'close the lights', ✓ 'turn off the lights'."
+        },
+        {
+          "id": "off_no_aux",
+          "pattern_label": "off the lights (missing 'turn')",
+          "regex": "^\\s*don't\\s+forget\\s+to\\s+off\\s+\\b",
+          "feedback": "✗ 'off the lights' — 'off' alone is a preposition, not a verb. You need a verb in front: ✓ 'TURN off' or 'SWITCH off'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Don't forget to TURN OFF the lights' (or 'turn the lights off' — both work because 'turn off' is separable)."
+    },
+    {
+      "id": "tr_ernest_b09",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["irregular_past", "win_won", "sports"],
+      "source_observation": "'win' irregular past = 'won'. Common error 'winned'. Tests 'win the match' collocation (vs 'win at' / 'win in').",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы выиграли матч вчера.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We won the match yesterday",
+        "We won the game yesterday",
+        "We won yesterday's match",
+        "We won the match yesterday."
+      ],
+      "common_errors": [
+        {
+          "id": "winned",
+          "pattern_label": "winned (regular past)",
+          "regex": "\\bwinned\\b",
+          "feedback": "✗ 'winned' doesn't exist. 'win' is irregular: win → WON → won. Past tense = 'won' (rhymes with 'one')."
+        },
+        {
+          "id": "won_at_match",
+          "pattern_label": "won AT/IN the match (wrong prep)",
+          "regex": "\\bwon\\s+(at|in)\\s+the\\s+(match|game)\\b",
+          "feedback": "Russian L1 trap: 'выиграть В' or 'выиграть НА' calques to 'win at/in'. English uses NO preposition with the match itself: ✓ 'won the match'. ('Win at' is OK with skills: 'win at chess'.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'We WON the match yesterday'. 'win' → 'won' (irregular); no preposition before 'the match'."
+    },
+    {
+      "id": "tr_ernest_b10",
+      "type": "translation",
+      "target_player": "ernest",
+      "level": "B1",
+      "focus_categories": ["Relative Clauses"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["relative_clause", "who_for_people", "friends"],
+      "source_observation": "Subject relative clause with 'who' for people. Russian 'который' covers all relatives; English splits who/which/that. Friends theme.",
+      "created": "2026-05-02T16:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мальчик, который сидит рядом со мной, мой друг.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The boy who sits next to me is my friend",
+        "The boy that sits next to me is my friend",
+        "The boy who sits beside me is my friend",
+        "The boy who sits next to me is my friend."
+      ],
+      "common_errors": [
+        {
+          "id": "which_for_person",
+          "pattern_label": "which for a person",
+          "regex": "\\b(the\\s+)?boy\\s+which\\s+sits?\\b",
+          "feedback": "Russian L1 trap: 'который' = both who/which in Russian, but English splits — use 'WHO' (or 'that') for PEOPLE, 'which' (or 'that') for THINGS. ✓ 'the boy WHO sits', ✗ 'the boy which sits'."
+        },
+        {
+          "id": "what_for_relative",
+          "pattern_label": "what as relative pronoun",
+          "regex": "\\b(the\\s+)?boy\\s+what\\s+sits?\\b",
+          "feedback": "✗ 'the boy what sits' — 'what' is not a relative pronoun for people in standard English. Use 'WHO' (or 'that') for people: ✓ 'the boy who sits'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The boy WHO sits next to me is my friend'. 'who' for people, 'which' for things, 'that' works for both."
+    }
+  ]
+}
