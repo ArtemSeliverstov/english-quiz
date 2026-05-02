@@ -1534,6 +1534,71 @@ needing to read `captured_at`.
 - §4.4 leftover polish: newly-earned-medal callout, overflow menu,
   active-window-aware Coach picker filter
 
+### v20260502-s97r2 — three live-usage bug fixes
+
+Anna found three real bugs once she was using the s97 build for actual
+practice. All three fixed in one same-session rebuild.
+
+**Bugs fixed**:
+
+1. **"← Pick another exercise" routed home in learner shell**.
+   The s96 change to `coachExitToPicker` made every learner-shell exit
+   (mid-session AND post-session) route to home, but the button is
+   labelled "Pick another exercise" — Anna correctly expected it to
+   show the picker. Reverted the learner-shell branches in
+   `coachExitToPicker`; it now shows the picker like builder, with
+   tabs still hidden so the player stays inside the coach surface.
+   Added a "← Back home" link inside the picker (visible in learner
+   shell only, surfaced by `coachApplyShellLayout()`) so the player
+   can escape without finishing a drill. `homePracticeOther` updated
+   to keep tabs hidden in learner shell — the picker's own back-home
+   link is the escape, not the global tab bar.
+
+2. **Medal delta flickered between renders**. `renderLearnerMedals`
+   read the most recent `medals_history` snapshot, computed
+   `current - latest`, then lazily wrote a new snapshot for the
+   current week. Subsequent renders read the just-written snapshot as
+   "latest" → delta zero → annotation disappeared. Anna saw "+2
+   medals this week" once, then it vanished after navigating back
+   home. Fixed: filter `medals_history` to exclude the current ISO
+   week before picking "latest" for delta computation. The annotation
+   is now stable across renders within a week.
+
+3. **`sp_anna_b09` EN hint contradicted the answer**. The Spelling
+   Drill item had RU prompt "обычно" with EN definition
+   "normally, in most cases" and answer "usually". Anna typed
+   "normally" (literally suggested by the EN hint) and was marked
+   wrong. The Russian word "обычно" is genuinely ambiguous between
+   usually/normally/typically; the EN disambiguator must point at the
+   target answer, not a synonym. Patched in Firestore via direct
+   `fsPatch` to `prompt_definition_en: "usually, in most cases"`.
+
+**Verified end-to-end via preview probe**:
+
+- Mid-session exit row tap: lands on picker (3 visible types,
+  back-home link surfaced), tabs stay hidden, home stays hidden.
+- Picker back-home link tap: returns to learner home, tabs hidden.
+- Medal delta with W17 (0 bronze) prior + W18 (1 bronze) current: two
+  consecutive `renderLearnerMedals()` calls both render
+  "🌱 +1 🥉 this week" — stable.
+- Medal delta with only the current-week snapshot: empty (no
+  comparison data). Correct.
+- `sp_anna_b09` Firestore doc verified to read `correct: "usually"`,
+  `prompt_definition_en: "usually, in most cases"`,
+  `prompt_definition_ru: "обычно"` — RU + EN both point at the same
+  English answer.
+
+**Audit done inline**: scanned all 10 sp_anna_b items for similar EN
+hint / answer mismatches. b09 was the only ambiguous case.
+
+**Next session candidates** (unchanged from s97):
+
+- §4.3 article intervention batch 1
+- §4.5 Nicole / Ernest library content
+- Tier 2 PV ladder rebalance Batch 1
+- §4.4 polish: newly-earned-medal callout on done card, overflow
+  menu, `active_categories`-aware Coach picker filter
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated

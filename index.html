@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-s97">
+  <meta name="app-version" content="v20260502-s97r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -984,7 +984,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s97</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s97r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -1338,6 +1338,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <span style="font-size:.95rem;">🔤</span>
         <span>How do I spell…?</span>
       </button>
+      <button id="coachBackHomeLink" class="lh-other" style="display:none;margin-top:.5rem;" onclick="homeReturnFromCoach()">← Back home</button>
     </div>
 
     <!-- ── CHAT THREAD ── -->
@@ -4068,15 +4069,23 @@ async function renderLearnerMedals() {
   // D9 asymmetric delta + lazy weekly snapshot.
   try {
     const history = await fsList('players/' + currentPlayer + '/medals_history').catch(() => []);
-    const sorted = (history || []).slice().sort((a, b) =>
-      String(b.week_iso || b.id || '').localeCompare(String(a.week_iso || a.id || ''))
-    );
-    const latest = sorted[0] || null;
-    if (latest && deltaEl) {
+    const week = homeIsoWeekString(new Date());
+    // Delta compares against the most recent snapshot from a *previous* ISO week.
+    // If we used the latest snapshot unconditionally, the lazy write below would
+    // capture the current state and subsequent renders would compare current to
+    // current → delta zero, killing the annotation (s97 flicker bug).
+    const priorSorted = (history || [])
+      .filter(h => (h.week_iso || h.id) && (h.week_iso || h.id) !== week)
+      .slice()
+      .sort((a, b) =>
+        String(b.week_iso || b.id || '').localeCompare(String(a.week_iso || a.id || ''))
+      );
+    const prior = priorSorted[0] || null;
+    if (prior && deltaEl) {
       const d = {
-        gold: current.gold - (latest.gold_count || 0),
-        silver: current.silver - (latest.silver_count || 0),
-        bronze: current.bronze - (latest.bronze_count || 0),
+        gold: current.gold - (prior.gold_count || 0),
+        silver: current.silver - (prior.silver_count || 0),
+        bronze: current.bronze - (prior.bronze_count || 0),
       };
       const dParts = [];
       if (d.gold > 0) dParts.push('+' + d.gold + ' 🥇');
@@ -4085,7 +4094,6 @@ async function renderLearnerMedals() {
       if (dParts.length) deltaEl.textContent = '🌱 ' + dParts.join('  ·  ') + ' this week';
     }
     // Lazy snapshot: write a new entry once per ISO week.
-    const week = homeIsoWeekString(new Date());
     const haveThisWeek = (history || []).some(h => (h.week_iso || h.id) === week);
     if (!haveThisWeek) {
       const snap = {
@@ -4223,9 +4231,11 @@ async function homeStartPractice() {
 }
 
 function homePracticeOther() {
-  // Reveal full UI: bring tab bar back and route to Coach picker.
+  // Learner shell: stay inside the coach surface (picker has its own back-home link).
+  // Builder shell: reveal tabs as before.
   const tabsBar = document.querySelector('.tabs');
-  if (tabsBar) tabsBar.style.display = '';
+  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
+  if (tabsBar) tabsBar.style.display = learner ? 'none' : '';
   showTab('coach');
 }
 
@@ -7438,6 +7448,8 @@ async function coachOpenTab() {
 // Hide picker types with zero available items in learner shell, so the picker
 // reads as a small focused menu rather than a wall of disabled buttons. Builder
 // shell keeps the disabled-but-visible style so Artem can see what's coming.
+// Also surfaces the "← Back home" link inside the picker for learner shell so
+// the player can escape the coach surface without finishing a drill.
 function coachApplyShellLayout() {
   const picker = document.getElementById('coachPicker');
   if (!picker) return;
@@ -7455,6 +7467,8 @@ function coachApplyShellLayout() {
     const hide = btn.disabled || count === 0;
     btn.style.display = hide ? 'none' : '';
   });
+  const backLink = document.getElementById('coachBackHomeLink');
+  if (backLink) backLink.style.display = learner ? '' : 'none';
 }
 
 // Read player's current coach_notes once per tab open. Used in Free Write/Escalate
@@ -8706,15 +8720,12 @@ async function coachFinishSession() {
 }
 
 function coachExitToPicker() {
-  const learnerShell = (typeof isLearnerShell === 'function') && isLearnerShell();
+  // "← Pick another exercise" should always show the picker, regardless of shell.
+  // (Learner shell keeps the tab bar hidden; the picker has its own back-home link.)
   if (coachState.sessionResults.length && coachState.current !== null) {
-    coachFinishSession().then(() => {
-      if (learnerShell) { homeReturnFromCoach(); return; }
-      coachShowPicker(); coachOpenTab();
-    });
+    coachFinishSession().then(() => { coachShowPicker(); coachOpenTab(); });
     return;
   }
-  if (learnerShell) { homeReturnFromCoach(); return; }
   coachShowPicker();
   coachOpenTab();
 }
