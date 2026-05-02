@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-s96">
+  <meta name="app-version" content="v20260502-s97">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -774,6 +774,29 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .lh-lasttime{font-size:.88rem;color:var(--text);line-height:1.5;}
 .lh-medals{display:flex;align-items:center;justify-content:space-between;}
 .lh-medals-count{font-size:1.05rem;color:var(--text);}
+.lh-medals-delta{margin-top:.2rem;font-size:.78rem;color:var(--green,#6fefb2);font-weight:600;min-height:0;}
+.lh-medals-delta:empty{display:none;}
+
+/* ── LEARNER STATS PANEL (§4.4) ── */
+#learner-stats-panel{max-width:520px;margin:0 auto;padding:.5rem;}
+.ls-section{margin-top:1.4rem;}
+.ls-section:first-child{margin-top:.6rem;}
+.ls-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.55rem;font-weight:600;}
+.ls-card-list{display:flex;flex-direction:column;gap:.55rem;}
+.ls-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;cursor:pointer;transition:border-color .15s,background .15s;}
+.ls-card:hover{border-color:var(--accent);}
+.ls-card-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;}
+.ls-card-name{font-size:.95rem;font-weight:600;color:var(--text);}
+.ls-card-meta{font-size:.75rem;color:var(--muted);}
+.ls-card-fill{margin-top:.5rem;height:4px;border-radius:2px;background:var(--surface);overflow:hidden;}
+.ls-card-fill-inner{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),#f59e0b);transition:width .3s;}
+.ls-card-detail{display:none;margin-top:.6rem;padding-top:.55rem;border-top:1px dashed var(--border);font-size:.8rem;color:var(--muted);line-height:1.5;}
+.ls-card.expanded .ls-card-detail{display:block;}
+.ls-card-mastered{background:rgba(111,239,178,.06);border-color:rgba(111,239,178,.25);}
+.ls-card-coming{background:var(--surface);border-style:dashed;}
+.ls-card-pathway{display:inline-block;font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:10px;background:rgba(251,191,36,.12);color:var(--accent);margin-right:.4rem;font-weight:700;}
+.ls-card-pathway.broaden{background:rgba(167,139,250,.12);color:#a78bfa;}
+.ls-empty{font-size:.82rem;color:var(--muted);font-style:italic;padding:.5rem .25rem;}
 .lh-medals-link{font-size:.78rem;color:var(--muted);text-decoration:none;cursor:pointer;border:none;background:none;font:inherit;padding:0;}
 .lh-medals-link:hover{color:var(--text);}
 .lh-overflow{position:absolute;top:.7rem;right:.7rem;background:transparent;border:1px solid var(--border);border-radius:8px;width:34px;height:34px;font-size:1.1rem;color:var(--muted);cursor:pointer;line-height:1;}
@@ -961,7 +984,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s96</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s97</span></p>
 </header>
 
 <!-- TABS -->
@@ -1004,6 +1027,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <div>
         <div class="lh-zone-label" style="margin-bottom:.2rem;">Medals</div>
         <div id="lh-medals-count" class="lh-medals-count">—</div>
+        <div id="lh-medals-delta" class="lh-medals-delta"></div>
       </div>
       <button class="lh-medals-link" onclick="homeOpenStats()">View →</button>
     </div>
@@ -1096,6 +1120,35 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <!-- ══ STATS SCREEN ══ -->
 <div id="tab-stats" class="hidden">
+
+  <!-- Learner-shell stats panel (§4.4) — shown only when ui_shell === 'learner'.
+       Renders active / mastered / coming-next from learning_path. The full
+       builder-shell sections below are hidden in that case. -->
+  <div id="learner-stats-panel" style="display:none;">
+    <div class="ls-section">
+      <div class="ls-label">Active categories</div>
+      <div id="ls-active" class="ls-card-list">
+        <div class="ls-empty">Loading…</div>
+      </div>
+    </div>
+    <div class="ls-section">
+      <div class="ls-label">Mastered</div>
+      <div id="ls-mastered" class="ls-card-list">
+        <div class="ls-empty">No mastered categories yet — keep going!</div>
+      </div>
+    </div>
+    <div class="ls-section">
+      <div class="ls-label">Coming next</div>
+      <div id="ls-coming" class="ls-card-list">
+        <div class="ls-empty">—</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.25rem;">
+      <button class="lh-other" onclick="homeReturnFromStats()">← Back home</button>
+    </div>
+  </div>
+
+  <div id="builder-stats-wrap">
   <div id="level-inference-banner" style="display:none;border-radius:10px;padding:.85rem 1.1rem;margin-bottom:1rem;font-size:.88rem;line-height:1.5;"></div>
 
   <!-- U2: Hero card — actionable next step -->
@@ -1158,6 +1211,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     </div>
     <div class="weak-list" id="weak-list"></div>
   </div>
+  </div><!-- /#builder-stats-wrap -->
 </div>
 
 
@@ -3979,43 +4033,164 @@ async function renderLearnerLastTime() {
   }
 }
 
-function renderLearnerMedals() {
+// ISO week string for medals_history doc id (e.g. "2026-W18").
+function homeIsoWeekString(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const day = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNum = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return d.getUTCFullYear() + '-W' + String(weekNum).padStart(2, '0');
+}
+
+async function renderLearnerMedals() {
   const zone = document.getElementById('lh-medals-zone');
   const countEl = document.getElementById('lh-medals-count');
+  const deltaEl = document.getElementById('lh-medals-delta');
   if (!zone || !countEl) return;
   const badges = (typeof computeBadges === 'function') ? computeBadges(DB.catStats) : {};
   const entries = Object.values(badges);
-  const gold = entries.filter(v => v === '🥇').length;
-  const silver = entries.filter(v => v === '🥈').length;
-  const bronze = entries.filter(v => v === '🥉').length;
-  const total = gold + silver + bronze;
-  if (total === 0) {
-    zone.style.display = 'none';
-    return;
-  }
+  const current = {
+    gold: entries.filter(v => v === '🥇').length,
+    silver: entries.filter(v => v === '🥈').length,
+    bronze: entries.filter(v => v === '🥉').length,
+  };
+  const total = current.gold + current.silver + current.bronze;
+  if (total === 0) { zone.style.display = 'none'; if (deltaEl) deltaEl.textContent = ''; return; }
   const parts = [];
-  if (gold) parts.push(gold + ' 🥇');
-  if (silver) parts.push(silver + ' 🥈');
-  if (bronze) parts.push(bronze + ' 🥉');
+  if (current.gold) parts.push(current.gold + ' 🥇');
+  if (current.silver) parts.push(current.silver + ' 🥈');
+  if (current.bronze) parts.push(current.bronze + ' 🥉');
   countEl.textContent = parts.join('  ·  ');
   zone.style.display = '';
+  if (deltaEl) deltaEl.textContent = '';
+
+  // D9 asymmetric delta + lazy weekly snapshot.
+  try {
+    const history = await fsList('players/' + currentPlayer + '/medals_history').catch(() => []);
+    const sorted = (history || []).slice().sort((a, b) =>
+      String(b.week_iso || b.id || '').localeCompare(String(a.week_iso || a.id || ''))
+    );
+    const latest = sorted[0] || null;
+    if (latest && deltaEl) {
+      const d = {
+        gold: current.gold - (latest.gold_count || 0),
+        silver: current.silver - (latest.silver_count || 0),
+        bronze: current.bronze - (latest.bronze_count || 0),
+      };
+      const dParts = [];
+      if (d.gold > 0) dParts.push('+' + d.gold + ' 🥇');
+      if (d.silver > 0) dParts.push('+' + d.silver + ' 🥈');
+      if (d.bronze > 0) dParts.push('+' + d.bronze + ' 🥉');
+      if (dParts.length) deltaEl.textContent = '🌱 ' + dParts.join('  ·  ') + ' this week';
+    }
+    // Lazy snapshot: write a new entry once per ISO week.
+    const week = homeIsoWeekString(new Date());
+    const haveThisWeek = (history || []).some(h => (h.week_iso || h.id) === week);
+    if (!haveThisWeek) {
+      const snap = {
+        week_iso: week,
+        gold_count: current.gold,
+        silver_count: current.silver,
+        bronze_count: current.bronze,
+        captured_at: new Date().toISOString(),
+      };
+      fsSet('players/' + currentPlayer + '/medals_history/' + week, snap).catch(() => {});
+    }
+  } catch (e) {
+    if (deltaEl) deltaEl.textContent = '';
+  }
 }
 
-// Primary-action routing per §4.4. Simplified for s95:
-//   1. (deferred) resume partial Translation
-//   2. (deferred) Spell Help threshold
+// Primary-action routing per §4.4:
+//   1. Resume partial Translation if found and <24h old
+//   2. Spell Help threshold ≥5 unique captures since last drill → Spelling Drill
 //   3. Translation Drill if library has items for this player
 //   4. Free Write fallback with a starter prompt
+const SPELL_HELP_THRESHOLD = 5;
+const PARTIAL_RESUME_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+async function homeFindPartialTranslation(player) {
+  try {
+    const exs = await fsList('players/' + player + '/exercises').catch(() => []);
+    let best = null;
+    for (const ex of (exs || [])) {
+      if (!ex || ex.exercise !== 'translation') continue;
+      if (ex.partial !== true) continue;
+      const total = ex.total || 0;
+      const planned = ex.planned_total || total;
+      if (total === 0 || total >= planned) continue;
+      const ts = parseInt(ex.id, 10);
+      if (!Number.isFinite(ts)) continue;
+      if (Date.now() - ts > PARTIAL_RESUME_MAX_AGE_MS) continue;
+      if (!best || ts > best.ts) best = { ts, doc: ex };
+    }
+    if (!best) return null;
+    const completedIds = new Set();
+    for (const it of (best.doc.items || [])) {
+      if (it && it.exercise_id) completedIds.add(it.exercise_id);
+    }
+    return { sessionTs: best.ts, completedIds, completedItems: best.doc.items || [] };
+  } catch (e) {
+    return null;
+  }
+}
+
+async function homeCountSpellHelpSinceLastDrill(player) {
+  // Find most recent spelling_drill session ts (Firestore doc id is the ts).
+  let lastDrillTs = 0;
+  try {
+    const exs = await fsList('players/' + player + '/exercises').catch(() => []);
+    for (const ex of (exs || [])) {
+      if (ex && ex.exercise === 'spelling_drill') {
+        const t = parseInt(ex.id, 10);
+        if (Number.isFinite(t) && t > lastDrillTs) lastDrillTs = t;
+      }
+    }
+  } catch (e) { /* ignore */ }
+  // Count unique attempted words in spelling_log with id > lastDrillTs.
+  try {
+    const logs = await fsList('players/' + player + '/spelling_log').catch(() => []);
+    const unique = new Set();
+    for (const l of (logs || [])) {
+      const t = parseInt(l.id, 10);
+      if (!Number.isFinite(t) || t <= lastDrillTs) continue;
+      const word = (l.attempted || '').trim().toLowerCase();
+      if (word) unique.add(word);
+    }
+    return unique.size;
+  } catch (e) {
+    return 0;
+  }
+}
+
 async function homeStartPractice() {
   const btn = document.getElementById('lh-primary');
   if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
   try {
-    // Step 3: try translation
+    // Step 1: detect partial Translation Drill (<24h old) and prep resume.
+    const partial = await homeFindPartialTranslation(currentPlayer);
+
+    // Step 2: Spell Help threshold check (skipped if resuming).
+    let spellingItems = [];
+    if (!partial) {
+      const spellHelpCaptures = await homeCountSpellHelpSinceLastDrill(currentPlayer);
+      if (spellHelpCaptures >= SPELL_HELP_THRESHOLD) {
+        try {
+          const all = await fsList('exercises_library/spelling_drill/items');
+          spellingItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+        } catch (e) { /* fall through */ }
+      }
+    }
+
+    // Step 3: translation — only checked if no resume + no spelling threshold.
     let translationItems = [];
-    try {
-      const all = await fsList('exercises_library/translation/items');
-      translationItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
-    } catch (e) { /* ignore — fallback to free write */ }
+    if (!partial && spellingItems.length === 0) {
+      try {
+        const all = await fsList('exercises_library/translation/items');
+        translationItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+      } catch (e) { /* ignore — fallback to free write */ }
+    }
 
     // Reveal Coach surface; learner shell keeps tab bar hidden so the Coach
     // picker / chat is the only visible surface.
@@ -4026,7 +4201,18 @@ async function homeStartPractice() {
     if (coachTab) coachTab.classList.remove('hidden');
     if (typeof coachOpenTab === 'function') coachOpenTab();
 
-    if (translationItems.length > 0) {
+    if (partial) {
+      const ok = await coachStartType('translation', {
+        resumeSessionTs: partial.sessionTs,
+        completedIds: partial.completedIds,
+        completedItems: partial.completedItems,
+      });
+      if (ok !== false) return;
+      // Resume covered the whole library — fall through to fresh routing.
+    }
+    if (spellingItems.length > 0) {
+      if (typeof coachStartType === 'function') await coachStartType('spelling_drill');
+    } else if (translationItems.length > 0) {
       if (typeof coachStartType === 'function') await coachStartType('translation');
     } else {
       if (typeof coachStartFreeWrite === 'function') await coachStartFreeWrite();
@@ -4044,9 +4230,11 @@ function homePracticeOther() {
 }
 
 function homeOpenStats() {
-  // Reveal tab bar + go to stats so the player can see medals / per-cat detail.
+  // Learner shell: stats panel has its own "← Back home" link, so keep tabs hidden.
+  // Builder shell: reveal tabs as before so the player can navigate freely.
   const tabsBar = document.querySelector('.tabs');
-  if (tabsBar) tabsBar.style.display = '';
+  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
+  if (tabsBar) tabsBar.style.display = learner ? 'none' : '';
   showTab('stats');
 }
 
@@ -4058,6 +4246,102 @@ function homeReturnFromCoach() {
   const tabsBar = document.querySelector('.tabs');
   if (tabsBar) tabsBar.style.display = 'none';
   showLearnerHome();
+}
+
+function homeReturnFromStats() {
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = 'none';
+  showLearnerHome();
+}
+
+// Render the learner-shell stats panel: active categories with soft accuracy fill,
+// mastered (date-tagged), and coming-next (1 deepen + up to 3 broaden) per §4.4 D3.
+// Locked categories are not surfaced. Tapping a card toggles a detail line with
+// raw counts for transparency.
+function renderLearnerStats() {
+  const lp = (DB && DB.learning_path) || {};
+  const cs = DB.catStats || {};
+  const activeEl = document.getElementById('ls-active');
+  const masteredEl = document.getElementById('ls-mastered');
+  const comingEl = document.getElementById('ls-coming');
+
+  // ── Active ──
+  const active = Array.isArray(lp.active_categories) ? lp.active_categories : [];
+  if (!active.length) {
+    activeEl.innerHTML = '<div class="ls-empty">No active categories yet — your path is being set up.</div>';
+  } else {
+    activeEl.innerHTML = active.map(cat => {
+      const s = cs[cat] || { seen: 0, correct: 0 };
+      const pct = s.seen > 0 ? Math.round((s.correct / s.seen) * 100) : null;
+      const fill = pct == null ? 0 : Math.max(0, Math.min(100, pct));
+      const meta = s.seen > 0 ? (s.seen + ' attempt' + (s.seen === 1 ? '' : 's')) : 'No attempts yet';
+      const detail = s.seen > 0
+        ? ('Accuracy: ' + pct + '% · ' + s.correct + '/' + s.seen + ' correct')
+        : 'Pick "Start practice" on home to begin.';
+      return '<div class="ls-card" onclick="this.classList.toggle(\'expanded\')">'
+        + '<div class="ls-card-row">'
+        +   '<div class="ls-card-name">' + escapeHtml(cat) + '</div>'
+        +   '<div class="ls-card-meta">' + escapeHtml(meta) + '</div>'
+        + '</div>'
+        + '<div class="ls-card-fill"><div class="ls-card-fill-inner" style="width:' + fill + '%"></div></div>'
+        + '<div class="ls-card-detail">' + escapeHtml(detail) + '</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  // ── Mastered ──
+  const mastered = Array.isArray(lp.mastered_categories) ? lp.mastered_categories : [];
+  if (!mastered.length) {
+    masteredEl.innerHTML = '<div class="ls-empty">No mastered categories yet — keep going!</div>';
+  } else {
+    masteredEl.innerHTML = mastered.map(m => {
+      const cat = m && m.category ? m.category : (typeof m === 'string' ? m : '?');
+      const dateRaw = m && m.mastered_date ? m.mastered_date : '';
+      let when = '';
+      if (dateRaw) {
+        const t = new Date(dateRaw).getTime();
+        if (Number.isFinite(t)) {
+          const days = Math.round((Date.now() - t) / 86400000);
+          if (days < 1) when = 'today';
+          else if (days < 7) when = days + ' day' + (days === 1 ? '' : 's') + ' ago';
+          else if (days < 30) when = Math.round(days / 7) + ' week' + (days < 14 ? '' : 's') + ' ago';
+          else when = Math.round(days / 30) + ' month' + (days < 60 ? '' : 's') + ' ago';
+        }
+      }
+      const ret = m && m.retention_score != null ? Math.round(m.retention_score * 100) + '% retention' : '';
+      const meta = [when, ret].filter(Boolean).join(' · ');
+      return '<div class="ls-card ls-card-mastered">'
+        + '<div class="ls-card-row">'
+        +   '<div class="ls-card-name">✓ ' + escapeHtml(cat) + '</div>'
+        +   '<div class="ls-card-meta">' + escapeHtml(meta || 'mastered') + '</div>'
+        + '</div></div>';
+    }).join('');
+  }
+
+  // ── Coming next ──
+  const coming = Array.isArray(lp.next_unlock_options) ? lp.next_unlock_options : [];
+  if (!coming.length) {
+    comingEl.innerHTML = '<div class="ls-empty">—</div>';
+  } else {
+    // Show 1 deepen + up to 3 broaden (D3). Don't promise a chooser UI here yet —
+    // that's the unlock-event surface which lands when a category masters.
+    const sorted = coming.slice().sort((a, b) =>
+      (a.pathway === 'deepen' ? 0 : 1) - (b.pathway === 'deepen' ? 0 : 1)
+    );
+    comingEl.innerHTML = sorted.map(opt => {
+      const cat = opt && opt.category ? opt.category : '?';
+      const path = opt && opt.pathway ? opt.pathway : 'broaden';
+      const why = opt && opt.rationale ? opt.rationale : '';
+      const tag = '<span class="ls-card-pathway' + (path === 'broaden' ? ' broaden' : '') + '">'
+        + (path === 'deepen' ? 'deepen' : 'broaden') + '</span>';
+      return '<div class="ls-card ls-card-coming" onclick="this.classList.toggle(\'expanded\')">'
+        + '<div class="ls-card-row">'
+        +   '<div class="ls-card-name">' + tag + escapeHtml(cat) + '</div>'
+        + '</div>'
+        + (why ? '<div class="ls-card-detail">' + escapeHtml(why) + '</div>' : '')
+        + '</div>';
+    }).join('');
+  }
 }
 
 function toggleCatProgress() {
@@ -5525,6 +5809,19 @@ function toggleFullStats() {
 }
 
 function renderStats() {
+  // §4.4 — learner shell: show simplified active/mastered/coming-next panel.
+  // Builder shell sees the full grid below as before.
+  const learnerPanel = document.getElementById('learner-stats-panel');
+  const builderWrap = document.getElementById('builder-stats-wrap');
+  if ((typeof isLearnerShell === 'function') && isLearnerShell()) {
+    if (learnerPanel) learnerPanel.style.display = '';
+    if (builderWrap) builderWrap.style.display = 'none';
+    renderLearnerStats();
+    return;
+  } else {
+    if (learnerPanel) learnerPanel.style.display = 'none';
+    if (builderWrap) builderWrap.style.display = '';
+  }
   renderStatsHero();
   renderLevelInference();
   renderCoverage();
@@ -7047,6 +7344,52 @@ const COACH_FW_STARTERS = [
   "Describe a recent change in your life — something that's different now.",
   "What are you looking forward to this month?",
 ];
+// D12 — themed starters per player. Anchors Free Write in personally-relevant
+// vocabulary instead of leaking generic into the conversation. 5 prompts each.
+// Falls back to COACH_FW_STARTERS if no player match.
+const COACH_FW_STARTERS_BY_PLAYER = {
+  anna: [
+    "Tell me about your home — what's your favourite room and why?",
+    "What did your family do together last weekend?",
+    "Describe what happened in your last padel game.",
+    "Tell me about your neighbours — what are they like?",
+    "Walk me through your morning routine — from waking up to leaving the house.",
+  ],
+  nicole: [
+    "Who's your favourite K-pop group right now and why?",
+    "Tell me about your best friend at school — what do you do together?",
+    "What's something interesting that happened at school this week?",
+    "What do you usually do on weekends?",
+    "Describe a song you love — what makes it special?",
+  ],
+  ernest: [
+    "What's been the most interesting thing at school recently?",
+    "Tell me about a sport you play or watch — why do you like it?",
+    "What did you do last weekend that you enjoyed?",
+    "Tell me about a book you've read — what was it about?",
+    "Describe one of your friends — what makes them a good friend?",
+  ],
+  artem: [
+    "Tell me about a recent business decision you've been weighing — what's the trade-off?",
+    "Where did you travel last and what stood out about it?",
+    "Describe your last good cycling ride — route, weather, how you felt.",
+    "What's the project you're most invested in right now? What's the next milestone?",
+    "Pick something in the news this week and tell me what you think about it.",
+  ],
+  egor: [
+    "Some people think technology improves education while others say it distracts students. What's your view?",
+    "Describe a place you'd recommend a tourist visit and explain why.",
+    "Compare studying in a group vs studying alone — which is more effective for you?",
+    "Discuss the advantages and disadvantages of working from home.",
+    "Talk about a skill you'd like to learn and why.",
+  ],
+};
+function coachPickFreeWriteStarter(player) {
+  const list = (COACH_FW_STARTERS_BY_PLAYER[player] && COACH_FW_STARTERS_BY_PLAYER[player].length)
+    ? COACH_FW_STARTERS_BY_PLAYER[player]
+    : COACH_FW_STARTERS;
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 const coachState = {
   // Common
@@ -7245,8 +7588,8 @@ async function coachStartFreeWrite() {
     alert('You appear to be offline. Free Write needs a connection — try Translation Drill.');
     return;
   }
-  // Pick a starter prompt and reset state
-  const starter = COACH_FW_STARTERS[Math.floor(Math.random() * COACH_FW_STARTERS.length)];
+  // Pick a starter prompt (D12: themed per player) and reset state
+  const starter = coachPickFreeWriteStarter(currentPlayer);
   coachState.type = 'free_write';
   coachState.fwMessages = [];
   coachState.fwTurnCount = 0;
@@ -7905,7 +8248,8 @@ const COACH_TYPE_LABEL = {
   spelling_drill: 'spelling drill',
 };
 
-async function coachStartType(type) {
+async function coachStartType(type, opts) {
+  opts = opts || {};
   if (!currentPlayer) { alert('Sign in first.'); return; }
   const libCollection = COACH_TYPE_TO_LIBRARY[type];
   if (!libCollection) return; // unsupported type
@@ -7917,28 +8261,49 @@ async function coachStartType(type) {
     return;
   }
   exercises = (exercises || []).filter(ex => ex.target_player === currentPlayer || ex.target_player === 'all');
+  // Resume mode: filter out items already answered in the partial session.
+  const resuming = !!(opts.resumeSessionTs && opts.completedIds);
+  if (resuming) {
+    exercises = exercises.filter(ex => !opts.completedIds.has(ex.id));
+  }
   if (!exercises.length) {
+    if (resuming) {
+      // Partial covered the whole library — fall through to caller for fallback.
+      return false;
+    }
     alert('No ' + (COACH_TYPE_LABEL[type] || type) + ' exercises available for you yet.');
-    return;
+    return false;
   }
   exercises.sort(() => Math.random() - 0.5);
   coachState.type = type;
   coachState.pool = exercises;
   coachState.sessionStartedAt = Date.now();
-  coachState.sessionTs = Date.now();
-  coachState.plannedTotal = exercises.length;
-  coachState.sessionResults = [];
+  if (resuming) {
+    coachState.sessionTs = opts.resumeSessionTs;
+    coachState.sessionResults = (opts.completedItems || []).slice();
+    coachState.plannedTotal = exercises.length + coachState.sessionResults.length;
+  } else {
+    coachState.sessionTs = Date.now();
+    coachState.sessionResults = [];
+    coachState.plannedTotal = exercises.length;
+  }
   coachState.current = null;
   coachState.attemptCount = 0;          // per-item retry counter (D6 spelling drill nudge)
   document.getElementById('coachPicker').style.display = 'none';
   document.getElementById('coachChat').style.display = '';
   document.getElementById('coachExitRow').style.display = '';
   document.getElementById('coachChat').innerHTML = '';
-  const intro = type === 'spelling_drill'
-    ? `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`
-    : `Let's practise <strong>${(COACH_TYPE_LABEL[type] || type)}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`;
+  let intro;
+  if (resuming) {
+    intro = `Picking up where you left off — ${coachState.sessionResults.length} done, ${exercises.length} to go.`;
+  } else if (type === 'spelling_drill') {
+    intro = `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`;
+  } else {
+    intro = `Let's practise <strong>${(COACH_TYPE_LABEL[type] || type)}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`;
+  }
   coachAppendMessage('assistant', intro);
   coachNextExercise();
+  return true;
 }
 
 function coachNextExercise() {

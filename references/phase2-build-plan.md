@@ -1398,6 +1398,142 @@ came from.
 - §4.5 Nicole / Ernest library content
 - Tier 2 PV ladder rebalance Batch 1
 
+### v20260502-s97 — §4.4 follow-up bundle: routing 1+2, D9, D12, stats rework
+
+The remainder of the §4.4 bundle landed in one cohesive slice. Five
+sub-features that each touched the learner shell, deployed together so
+Anna's experience moves from "bare landing + auto-pick" to a fully
+populated learner shell with smarter routing, themed live-AI prompts,
+positive-only medal annotations, and a simplified stats surface.
+
+**Shipped**:
+
+1. **D12 — themed Free Write prompts**:
+   `COACH_FW_STARTERS_BY_PLAYER` map, 5 per player. Anna gets
+   home/family/padel/neighbours/morning routine; Nicole K-pop/school/
+   friends/weekend/songs; Ernest school/sports/weekend/books/friends;
+   Artem business/travel/cycling/current project/news take; Egor IELTS
+   discussion-style. New `coachPickFreeWriteStarter()` helper called
+   from `coachStartFreeWrite`. Falls back to the generic 8-prompt
+   `COACH_FW_STARTERS` for unknown players.
+2. **Routing step 2 — Spell Help threshold (`SPELL_HELP_THRESHOLD = 5`)**:
+   `homeCountSpellHelpSinceLastDrill(player)` reads `players/{name}/
+   exercises` for the most recent `spelling_drill` doc id, then counts
+   unique `attempted` words in `players/{name}/spelling_log` with id >
+   that timestamp. When ≥5, `homeStartPractice` routes to Spelling
+   Drill before Translation. Resets to zero each time Anna completes a
+   spelling drill (the "since last drill" window slides forward).
+3. **Routing step 1 — resume partial Translation Drill**:
+   `homeFindPartialTranslation(player)` scans `players/{name}/exercises`
+   for the most recent `partial: true` translation session that is
+   < 24h old and has `total < planned_total`. `coachStartType` now
+   accepts `{ resumeSessionTs, completedIds, completedItems }` opts:
+   reuses the original sessionTs (so the upsert overwrites the same
+   doc), pre-fills `coachState.sessionResults` with the completed
+   items, and filters new items to skip already-answered ones. Intro
+   message reads "Picking up where you left off — N done, M to go."
+   Returns `false` if the partial covered the whole library (caller
+   falls through to fresh routing). 24h staleness threshold is
+   `PARTIAL_RESUME_MAX_AGE_MS`.
+4. **D9 medal display asymmetry + medals_history snapshot**:
+   `renderLearnerMedals` is now async; it reads
+   `players/{name}/medals_history`, finds the latest by
+   `week_iso` (or doc id), and computes `current - latest` per medal
+   tier. Only positive deltas annotate (e.g. "🌱 +1 🥉 this week");
+   zero/negative renders empty. Lazy snapshot writes
+   `players/{name}/medals_history/{week_iso}` (doc id is ISO week,
+   computed via new `homeIsoWeekString` helper) once per ISO week —
+   first home render of the week creates the snapshot. New CSS:
+   `.lh-medals-delta` (green, hidden when empty).
+5. **Stats display rework for learner shell (§4.4 spec)**:
+   New `<div id="learner-stats-panel">` inside `#tab-stats` with three
+   sections — Active categories, Mastered, Coming next. Existing
+   builder content wrapped in `<div id="builder-stats-wrap">`.
+   `renderStats()` branches on `isLearnerShell()`: shows the new panel
+   and hides builder wrap, calls `renderLearnerStats()`. The new panel:
+   - Active: card per `learning_path.active_categories` entry. Soft
+     accuracy fill (gradient bar, no percentage by default), recent
+     attempts count, tap-to-expand for raw numbers.
+   - Mastered: card per `mastered_categories` entry with relative date
+     ("3 days ago", "2 weeks ago"), green-tinted style. Empty state:
+     "No mastered categories yet — keep going!".
+   - Coming next: cards from `next_unlock_options`, sorted with
+     `pathway: "deepen"` first; pathway pill (amber for deepen, purple
+     for broaden) + tap-to-expand rationale. No locked section.
+   - "← Back home" button at bottom routes via new
+     `homeReturnFromStats()` helper. `homeOpenStats()` keeps tabs
+     hidden in learner shell so the panel is the only surface.
+
+**Schema additions deployed**:
+- `firestore.rules` — added open read/write for
+  `players/{name}/spelling_log/{ts}` (overdue from s94 — Anna's
+  spelling_log writes were silently failing on HTTP 403 before this)
+  and `players/{name}/medals_history/{week_iso}` (new in s97).
+  Deployed via `firebase deploy --only firestore:rules`.
+
+**Verified end-to-end via preview probe (Anna real Firestore data)**:
+
+- Slice A: per-player starter map populated (5 each); `coachPickFreeWriteStarter('anna')` returned a padel-themed prompt; unknown player falls back to generic.
+- Slice B: `homeCountSpellHelpSinceLastDrill('anna')` returned 0 (no captures yet — rules now permit writes for future captures).
+- Slice C: `homeFindPartialTranslation('anna')` returned a 9h-old partial with 1/20 done; `homeStartPractice` resumed it cleanly — same `sessionTs` (1777665127229), `sessionResults.length === 1`, `plannedTotal === 20`, intro reads "Picking up where you left off — 1 done, 19 to go".
+- Slice D: `medals_history` snapshot wrote `2026-W18 / bronze 1`; positive-delta annotation renders "🌱 +1 🥉 this week" when current > latest snapshot; renders empty when equal/negative.
+- Slice E: learner stats panel populated 4 active categories (Tenses 59 attempts, Prepositions 20, Articles 47, Spelling 0), empty mastered state, 4 coming-next options sorted with deepen first; "← Back home" routes to learner home with tabs hidden.
+- Builder regression (Artem): home hidden, setup visible, tabs bar visible; stats tab shows builder grid (learner panel hidden); no console errors.
+
+**Acceptance state for §4.4**:
+- ✅ Anna in-progress Translation Drill resume in 2 taps
+- ✅ Coach picker filtering by available content (s96)
+- ✅ Stats display shows only active + mastered for learner-shell
+  players (locked categories never surface)
+- ✅ D9 medal asymmetric display + medals_history weekly snapshot
+- ✅ D12 themed Free Write per-player starters
+- ⏳ Builder-shell players see no change in any surface — verified for
+  Artem; Egor untouched
+- ⏳ Stats display tap-to-reveal precise percentages — currently
+  implemented as tap-to-expand on cards (shows raw counts in detail
+  line); doc spec calls this out as an option, current cut matches
+- ⏳ Coach picker active-window-aware filtering (filter by
+  `learning_path.active_categories` membership, not just count) —
+  still deferred; visibility-only filter from s96 is sufficient for
+  Anna because all her library content is by definition in scope, but
+  becomes meaningful when Nicole/Ernest content lands
+- ⏳ Newly-earned medals call-out in session-end card (D9 spec
+  mentions it; current cut only annotates the home count)
+- ⏳ Overflow menu in learner shell (history / achievements /
+  settings / switch player) — still deferred; current shell uses
+  Stats panel + Practice something else as the two escape hatches
+
+**Deferred (post-§4.4)**:
+
+- Newly-earned-medal callout on done card
+- Coach picker `active_categories`-aware filter
+- Overflow menu (history / achievements / settings / switch player)
+- Tap-on-mastered/active-card to drill into category — currently
+  expands inline; deeper drill-in (full per-question breakdown,
+  history) is the existing builder-shell view, not yet exposed in
+  learner shell
+
+**Bug surfaced during session**: Firestore rules were missing entries
+for `spelling_log` (overdue from s94 — silent failure since deploy)
+and `medals_history` (would have failed on first write). Added both,
+deployed rules, verified writes/reads succeed for Anna.
+
+**Decision called inline**: medals_history doc id format is the ISO
+week string (e.g. "2026-W18"). Considered alternatives (ts-based id,
+auto-id) but ISO week makes the deduplication-per-week logic trivial
+(`haveThisWeek = history.some(h => h.id === currentWeek)`) without
+needing to read `captured_at`.
+
+**Next session candidates**:
+
+- §4.3 article intervention batch 1 (~25–30 quiz Qs + ~15 article_drill
+  items per family member) — content work
+- §4.5 Nicole library content — gates Nicole's flip to learner shell
+- §4.5 Ernest library content — gates Ernest's flip to learner shell
+- Tier 2 PV ladder rebalance Batch 1
+- §4.4 leftover polish: newly-earned-medal callout, overflow menu,
+  active-window-aware Coach picker filter
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
