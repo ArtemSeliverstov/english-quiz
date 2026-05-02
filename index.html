@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-t3">
+  <meta name="app-version" content="v20260502-t4">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -995,7 +995,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t3</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t4</span></p>
 </header>
 
 <!-- TABS -->
@@ -1328,9 +1328,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Articles</span>
           <span class="coach-type-count" data-count-for="article_drill">…</span>
         </button>
-        <button class="coach-type-btn disabled" data-type="particle_sort" disabled>
+        <button class="coach-type-btn" data-type="particle_sort" onclick="coachStartType('particle_sort')">
           <span class="coach-type-name">Particles</span>
-          <span class="coach-type-count" data-count-for="particle_sort">0</span>
+          <span class="coach-type-count" data-count-for="particle_sort">…</span>
         </button>
         <button class="coach-type-btn" data-type="error_correction" onclick="coachStartType('error_correction')">
           <span class="coach-type-name">Error Correction</span>
@@ -8477,12 +8477,14 @@ const COACH_TYPE_TO_LIBRARY = {
   translation: 'translation',
   spelling_drill: 'spelling_drill',
   article_drill: 'article_drill',
+  particle_sort: 'particle_sort',
   error_correction: 'error_correction',
 };
 const COACH_TYPE_LABEL = {
   translation: 'translation drill',
   spelling_drill: 'spelling drill',
   article_drill: 'article drill',
+  particle_sort: 'particle sort',
   error_correction: 'error correction',
 };
 
@@ -8538,6 +8540,8 @@ async function coachStartType(type, opts) {
     intro = `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`;
   } else if (type === 'article_drill') {
     intro = `Let's practise <strong>articles</strong>. I'll show you ${exercises.length} short scene${exercises.length === 1 ? '' : 's'} — tap <em>a</em> / <em>an</em> / <em>the</em> / <em>—</em> for each blank. The dash <em>—</em> means "no article".`;
+  } else if (type === 'particle_sort') {
+    intro = `Let's practise <strong>phrasal-verb particles</strong>. I'll show you ${exercises.length} sentence${exercises.length === 1 ? '' : 's'} with the verb stem in place — tap the particle that fits the meaning.`;
   } else if (type === 'error_correction') {
     intro = `Let's spot some errors. I'll show you ${exercises.length} sentence${exercises.length === 1 ? '' : 's'}, each with one mistake. Type the corrected version — full sentence or just the fixed part.`;
   } else {
@@ -8582,6 +8586,19 @@ function coachNextExercise() {
       `<div class="coach-msg-prompt-en ad-sentence">${rendered}</div>`
     );
     coachShowArticleChips();
+    return;
+  } else if (coachState.type === 'particle_sort') {
+    // Single-blank PV scene with per-item particle chips (1 correct + N distractors).
+    // Sentence uses {1} for the particle slot. base_verb is shown for context only —
+    // the player picks the particle that completes the PV with the intended meaning.
+    const tmpl = String(ex.sentence || '');
+    const rendered = escapeHtml(tmpl).replace(/\{1\}/g, '<span class="ad-blank">_____</span>');
+    coachAppendMessage('assistant',
+      `<div class="coach-msg-prompt">Pick the particle (${idx}/${total}):</div>` +
+      `<div class="coach-msg-prompt-en ad-sentence">${rendered}</div>` +
+      (ex.meaning ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">Meaning: ${escapeHtml(ex.meaning)}</div>` : '')
+    );
+    coachShowParticleChips();
     return;
   } else if (coachState.type === 'error_correction') {
     // Show the incorrect sentence; player types the corrected sentence (or just the fix).
@@ -8659,6 +8676,98 @@ async function coachSubmitArticleAnswer(choice) {
     exercise_id: ex.id || ex._id,
     correct,
     matched_pattern_id: blank.pattern || null,
+    submitted_answer: choice,
+    escalation_used: false,
+    time_to_answer_ms: ttaMs,
+    exercise_version: ex.version || 1,
+  });
+  coachUpsertSession({ partial: true });
+
+  actionRow.innerHTML = '';
+  const moreLeft = coachState.pool.length > 0;
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'coach-action-primary';
+  nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
+  nextBtn.onclick = () => { actionRow.style.display = 'none'; coachNextExercise(); };
+  actionRow.appendChild(nextBtn);
+  actionRow.style.display = '';
+}
+
+// Particle-sort UX: per-item chip set (correct + distractors, shuffled). Tap = submit.
+// Single attempt per item; reasoning always shown afterward (correct or wrong).
+function coachShowParticleChips() {
+  document.getElementById('coachInputRow').style.display = 'none';
+  const actionRow = document.getElementById('coachActionRow');
+  actionRow.innerHTML = '';
+  const ex = coachState.current || {};
+  const correct = Array.isArray(ex.correct_particles) ? ex.correct_particles : [];
+  const distractors = Array.isArray(ex.distractor_particles) ? ex.distractor_particles : [];
+  // Combined chip set, deduped and shuffled. Use only the FIRST correct as the canonical
+  // chip if there are multiple acceptable particles — distractors must not collide.
+  const chipSet = [];
+  const seen = new Set();
+  for (const p of correct.concat(distractors)) {
+    const key = String(p || '').toLowerCase().trim();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    chipSet.push(p);
+  }
+  // Fisher-Yates shuffle so the correct chip isn't always at index 0.
+  for (let i = chipSet.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [chipSet[i], chipSet[j]] = [chipSet[j], chipSet[i]];
+  }
+  for (const c of chipSet) {
+    const btn = document.createElement('button');
+    btn.className = 'coach-action-primary ad-chip';
+    btn.textContent = c;
+    btn.onclick = () => coachSubmitParticleAnswer(c);
+    actionRow.appendChild(btn);
+  }
+  actionRow.style.display = '';
+}
+
+function coachNormParticleChoice(s) {
+  return String(s == null ? '' : s).toLowerCase().trim();
+}
+
+async function coachSubmitParticleAnswer(choice) {
+  const ex = coachState.current;
+  if (!ex) return;
+  const actionRow = document.getElementById('coachActionRow');
+  // Disable chips immediately so a double-tap doesn't double-submit.
+  actionRow.querySelectorAll('button').forEach(b => b.disabled = true);
+  coachState.answeredAt = Date.now();
+  coachState.attemptCount = 1;
+  coachAppendMessage('user', escapeHtml(choice));
+
+  const correctList = (ex.correct_particles || []).map(coachNormParticleChoice);
+  const submitted = coachNormParticleChoice(choice);
+  const correct = correctList.includes(submitted);
+  const extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+
+  const canonical = (ex.correct_particles && ex.correct_particles[0]) || '';
+  const verb = ex.base_verb || '';
+  const fullPV = verb && canonical ? `${verb} ${canonical}` : canonical;
+
+  let feedback = correct
+    ? `<strong>✓ Correct.</strong> <em>${escapeHtml(fullPV)}</em>`
+    : `<strong>✗ Not quite.</strong> The answer is <strong>${escapeHtml(fullPV)}</strong>.`;
+  if (ex.reasoning) {
+    feedback += `<div style="margin-top:.4rem;font-size:.8rem;">${escapeHtml(ex.reasoning)}</div>`;
+  } else if (!correct && ex.fallback_feedback) {
+    feedback += `<div style="margin-top:.4rem;font-size:.8rem;">${escapeHtml(ex.fallback_feedback)}</div>`;
+  }
+  coachAppendMessage('assistant', feedback, extraClass);
+
+  const ttaMs = coachState.answeredAt - coachState.startedAt;
+  // matched_pattern_id = base_verb + '_' + canonical particle (e.g. 'figure_out').
+  // Lets stats roll up by PV-as-unit, matching how article_drill rolls up by pattern.
+  const patternId = (verb && canonical) ? (verb + '_' + canonical).toLowerCase().replace(/\s+/g, '_') : null;
+  coachState.sessionResults.push({
+    exercise_id: ex.id || ex._id,
+    correct,
+    matched_pattern_id: patternId,
     submitted_answer: choice,
     escalation_used: false,
     time_to_answer_ms: ttaMs,

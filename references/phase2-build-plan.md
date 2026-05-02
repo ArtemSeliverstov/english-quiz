@@ -2458,20 +2458,166 @@ substring.
 - **Skip mc09 / mc12 from cross-player fixes this session.** Splitting
   4-blank multi questions into 2-blank gap pairs would create new IDs
   and orphan stat history. The mc14 in-place intro+exp strengthening is
-  the safe template; mc09/mc12 deserve a dedicated multi-blank UX
-  investigation before splitting.
+  the safe template. Note: the cognitive-load practice need that mc09/
+  mc12/mc14 originally carried is now met by the **article_drill Coach
+  type** (one article at a time, chip UX, reasoning per item) shipped
+  in t2 — so these legacy multi items are stat carriers, not the primary
+  practice path. No multi-blank UI investigation is needed for articles.
 
 **Next session candidates**:
 
 - §4.3 Batch 1.6 — Nicole article_drill (15 items, gated on window
-  unlock) + remaining ~7 cross-player quiz Q fixes (mc09, mc12, others
-  identified during review)
-- Multi-blank UI investigation — cross-player <55% on multi format is
-  flagged in family-profiles.md as a UI/cognitive-load issue, not a
-  knowledge gap. Worth a dedicated slice (split mc-series into gap
-  pairs OR add a "one blank at a time" stepper UI for multi).
+  unlock) + remaining ~7 cross-player quiz Q fixes (excluding mc09/mc12
+  — see decision above; their practice path is article_drill)
 - Tier 2 PV Batch 2 (verb families remainder + ~15 Coach particle_sort
   items + particle_sort engine wiring — same shape as article_drill)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter,
+  mid-quiz exit affordance for learner shell
+
+### v20260502-t4 — §4.2/§4.6 particle_sort engine + Artem's first 15 items
+
+Vertical slice: Coach `particle_sort` exercise type wired end-to-end and
+shipped with 15 Artem-targeted items covering the Batch 2 PV verb families
+(figure/point/rule/work/call/end/take/find/sort/give × out/up/over/on/off)
+plus 5 Batch 1 family extensions (set/bring/come/take/turn × up/with/on/down).
+Artem now has the same `chip-UX exercise type` surface for phrasal verbs that
+Anna has for articles.
+
+**Shipped — engineering**:
+
+1. **`particle_sort` registered as a Coach type**:
+   - Picker button enabled (was `disabled`); routes to
+     `coachStartType('particle_sort')`
+   - `COACH_TYPE_TO_LIBRARY['particle_sort'] = 'particle_sort'`,
+     `COACH_TYPE_LABEL['particle_sort'] = 'particle sort'`
+   - Intro: "I'll show you N sentences with the verb stem in place — tap
+     the particle that fits the meaning."
+2. **Per-item chip UX** (vs fixed chip set used by article_drill):
+   particle_sort chips are item-specific (1 correct + N distractors,
+   shuffled via Fisher-Yates per item). Trade-off vs fixed-set article
+   chips: per-item authoring overhead, but each item gets pedagogically-
+   tuned distractors (e.g. for `figure out`: `up/in/off` rather than
+   a one-size-fits-all set). For PVs, this matters — wrong-particle
+   distractors carry the teaching point.
+3. **`coachShowParticleChips()`** dedupes correct + distractor lists
+   (case-insensitive), shuffles, renders chips. The first-correct chip
+   stays as canonical even when `correct_particles` has multiple
+   acceptable particles.
+4. **`coachSubmitParticleAnswer(choice)`**:
+   - Match against `correct_particles` (array — supports items where
+     2+ particles are acceptable)
+   - Show "✓ Correct. <em>{verb} {particle}</em>" or "✗ Not quite. The
+     answer is <strong>{verb} {particle}</strong>." with full reasoning
+     surfaced in both cases
+   - `matched_pattern_id` = `base_verb + '_' + canonical_particle`,
+     space-collapsed (so multi-word base verbs like `come up` + `with`
+     yield `come_up_with`) — flows into Patterns-to-review
+5. **`coachNormParticleChoice`** = lowercase + trim. No article-stripping
+   needed (single-word particles).
+6. **Sentence template uses `{1}` placeholder** (same convention as
+   article_drill) — renders as `<span class="ad-blank">_____</span>`,
+   reusing existing CSS for visual consistency.
+
+**Shipped — content (Artem particle_sort, 15 items)**:
+
+- IDs `ps_artem_b01`–`ps_artem_b15`, level B2, target_player artem
+- Distribution by PV family:
+  - **Batch 2 verbs (10)**: figure_out (b01), point_out (b02), rule_out
+    (b03), work_out (b04), call_off (b05), end_up (b06), take_over (b07),
+    find_out (b08), sort_out (b09), give_up (b10)
+  - **Batch 1 family extensions (5)**: set_up (b11), bring_up (b12),
+    come_up_with (b13), take_on (b14), turn_down (b15)
+- Themes per Artem profile: business meetings, O&G operations, finance,
+  cycling, Bahrain settings (sandstorm warning, JV partner, customs
+  paperwork on rig moves, planning meetings, supplier disputes)
+- 4 chips per item (1 correct + 3 distractors). Distractor strategy:
+  particles that pair with the same `base_verb` under a different
+  meaning (e.g. `take on` vs `take over` vs `take up`) — making the
+  contrast itself the teaching point.
+
+**Bank shape after t4**: 1,984 questions (unchanged — library-only
+session). Library: translation 40, spelling 20, article_drill 30,
+particle_sort 15, error_correction 15. Coverage by player picks up
+`artem.particle_sort = 15` (artem's first targeted Coach content; he had
+0 before, since prior batches were Anna/Nicole/Ernest-targeted).
+
+**Verified end-to-end via preview probe (Artem real Firestore data)**:
+
+- Coach picker (Artem builder shell): Particles button shows `15 avail`,
+  enabled, visible. ✓
+- `coachStartType('particle_sort')` → 15 items shuffled into pool,
+  `coachState.plannedTotal = 15`, intro text rendered. ✓
+- First item (`ps_artem_b01`): "We need to figure _____ the root cause
+  before the next planning meeting." Chips: `[in, out, up, off]` (shuffled).
+  Meaning shown below sentence. Input row hidden, chips visible. ✓
+- Wrong submission ('in') → `feedback-wrong` class, "✗ Not quite. The
+  answer is **figure out**." + reasoning. `matched_pattern_id: 'figure_out'`.
+  ✓
+- Correct submission ('on' for `ps_artem_b14` take_on) → `feedback-correct`
+  class, "✓ Correct. *take on*" + reasoning. `matched_pattern_id: 'take_on'`.
+  ✓
+- Multi-word base_verb test (`ps_artem_b13` come_up + with) →
+  `matched_pattern_id: 'come_up_with'` (space-collapse logic working). ✓
+- Firestore session write: `players/artem/exercises/{ts}` populated
+  after each item. After 3 items: `total: 3`, `correct: 2`,
+  `exercise: 'particle_sort'`, `partial: true`, `planned_total: 15`,
+  `error_types: ['figure_out', 'take_on', 'come_up_with']` (deduped).
+  ✓
+- Stats card on Coach tab post-session: "Last session: 2/3 · particle
+  sort" — new exercise type rolls up correctly. ✓
+- Learner-shell regression (simulated via `DB.ui_shell = 'learner'`):
+  Anna (no particle_sort items targeted at her) sees Particles button
+  hidden by `coachApplyShellLayout` (count=0 → hide). error_correction
+  also hidden (Anna has 0). Her visible buttons: translation,
+  spelling_drill, article_drill, free_write. ✓
+
+**Pre-deploy**:
+- syntax OK, ALL_QUESTIONS count 1,984 (unchanged), transform audit OK
+  (46 transforms unchanged), no sparse arrays, single-declaration check
+  OK, version-string consistency OK (v20260502-t4 in HTML meta + HTML
+  badge + sw.js cache key).
+
+**Decisions called inline** (not in §3 locks):
+
+- **Per-item distractor sets** rather than a fixed chip set
+  (a/an/the/— style). Articles are a closed set of 4; particles span
+  20+ in active English. Item-specific distractors let each PV's chips
+  reflect the *trap* (figure-out vs figure-in is the teaching point;
+  showing irrelevant `over/across/down` chips would dilute it).
+- **Reuse `.ad-blank` / `.ad-chip` / `.ad-sentence` CSS classes** for
+  particle_sort. Same visual treatment is correct — both are single-
+  blank decision drills. Adding `.ps-*` aliases would be premature.
+- **Always show full reasoning** even on correct answers — same
+  philosophy as article_drill / error_correction. The teaching value
+  of particle_sort is the contrast (`take on` vs `take over` vs `take
+  up`), not just the right/wrong outcome.
+- **Target Artem first**, not Anna (despite Anna having PV in her active
+  window since s99). Artem is at B2 with PV in active window AND uses
+  builder shell (no count-based hiding). Anna's PV window is fresh —
+  she'd benefit but her current focus is the gap-fill bridge, not the
+  per-particle decision drill yet. Anna/Ernest particle_sort batches
+  are Batch 2 follow-up, not gating.
+
+**Acceptance state for §4.2**:
+- ✅ Batch 1 (s98): 50 items
+- ✅ Batch 1 supplement (s99): 45 A2-B1 gap-fill
+- ⏳ Batch 2 verb families remainder — partially covered by quiz
+  content already shipped, but explicit Batch 2 quiz batch (~30 items)
+  still queued
+- ✅ Coach particle_sort engine (this session)
+- ✅ Coach particle_sort first 15 items (this session, Artem-targeted)
+- ⏳ Coach particle_sort coverage for Anna (PV active), Ernest/Nicole
+  (PV not yet active) — gated on per-player content authoring
+
+**Next session candidates**:
+
+- §4.2 Batch 2 quiz content (give up, call off, figure out, point out,
+  rule out, end up, take over remainder — ~30 items in MCQ + gap + input
+  mix to bring 5:12:6 ratio fully on target)
+- particle_sort items for Anna (~15, B1, themed: home/padel/neighbours/
+  daily routine; lower-difficulty PVs from her unlocked pool)
+- §4.3 Batch 1.6 — Nicole article_drill (gated on window unlock) +
+  remaining ~7 cross-player quiz Q fixes (excluding mc09/mc12)
 - §4.4 polish: overflow menu, active-window-aware Coach picker filter,
   mid-quiz exit affordance for learner shell
 
