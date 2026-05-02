@@ -114,12 +114,14 @@ Sequence:
 1. Edit `index.html` and `sw.js` directly in repo
 2. Bump version in three places (HTML badge, sw.js cache key, version constant in index.html)
 3. Run pre-deploy checklist (`references/pre-deploy-checklist.md`)
-4. `git add -A && git commit -m "vYYYYMMDD-sN: <summary>" && git push`
+4. `git add -A && git commit -m "vYYYYMMDD-tN: <summary>" && git push`
 5. Wait ~60 seconds for GitHub Pages to publish
 6. Verify at `artemseliverstov.github.io/english-quiz?reset=1` (busts SW cache)
 
-The version string format is `vYYYYMMDD-sN` (e.g. `v20260428-s87`). Same-session rebuilds: append `r2`, `r3`.
+The version string format is `vYYYYMMDD-tN` (e.g. `v20260502-t1`). Same-session rebuilds: append `r2`, `r3`.
 The string must be **identical** across the four locations: HTML badge, `sw.js` cache key, version constant in index.html, and the git commit message prefix.
+
+**Counter convention**: the `s` series ran s1–s100; from t1 onward use the `t` prefix. Past sessions remain at their original `sN` tags — don't retag them. New sessions increment the `t` counter.
 
 ---
 

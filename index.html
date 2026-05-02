@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-s99">
+  <meta name="app-version" content="v20260502-t1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -992,7 +992,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-s99</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t1</span></p>
 </header>
 
 <!-- TABS -->
@@ -4287,36 +4287,33 @@ async function homeStartPractice() {
     const partial = await homeFindPartialTranslation(currentPlayer);
 
     // Step 2: Spell Help threshold check (skipped if resuming).
-    let spellingItems = [];
+    let useSpelling = false;
     if (!partial) {
       const spellHelpCaptures = await homeCountSpellHelpSinceLastDrill(currentPlayer);
       if (spellHelpCaptures >= SPELL_HELP_THRESHOLD) {
         try {
           const all = await fsList('exercises_library/spelling_drill/items');
-          spellingItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+          const items = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+          if (items.length) useSpelling = true;
         } catch (e) { /* fall through */ }
       }
     }
 
-    // Step 3: translation — only checked if no resume + no spelling threshold.
-    let translationItems = [];
-    if (!partial && spellingItems.length === 0) {
-      try {
-        const all = await fsList('exercises_library/translation/items');
-        translationItems = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
-      } catch (e) { /* ignore — fallback to free write */ }
-    }
-
-    // Reveal Coach surface; learner shell keeps tab bar hidden so the Coach
-    // picker / chat is the only visible surface.
+    // Hide home + tabs ahead of any branch — common across all routes.
     const tabsBar = document.querySelector('.tabs');
     if (tabsBar) tabsBar.style.display = 'none';
     document.getElementById('tab-home').classList.add('hidden');
-    const coachTab = document.getElementById('tab-coach');
-    if (coachTab) coachTab.classList.remove('hidden');
-    if (typeof coachOpenTab === 'function') coachOpenTab();
 
+    const revealCoach = () => {
+      const coachTab = document.getElementById('tab-coach');
+      if (coachTab) coachTab.classList.remove('hidden');
+      if (typeof coachOpenTab === 'function') coachOpenTab();
+    };
+
+    // Step 3: Resume in-progress Translation Drill (top priority — keeps a
+    // commitment alive across sessions).
     if (partial) {
+      revealCoach();
       const ok = await coachStartType('translation', {
         resumeSessionTs: partial.sessionTs,
         completedIds: partial.completedIds,
@@ -4325,16 +4322,78 @@ async function homeStartPractice() {
       if (ok !== false) return;
       // Resume covered the whole library — fall through to fresh routing.
     }
-    if (spellingItems.length > 0) {
+
+    // Step 4: Spelling Drill (intervention triggered by Spell Help threshold).
+    if (useSpelling) {
+      revealCoach();
       if (typeof coachStartType === 'function') await coachStartType('spelling_drill');
-    } else if (translationItems.length > 0) {
-      if (typeof coachStartType === 'function') await coachStartType('translation');
-    } else {
-      if (typeof coachStartFreeWrite === 'function') await coachStartFreeWrite();
+      return;
     }
+
+    // Step 5: Quiz — daily default. Smart mode + applyLearnerWindowFilter
+    // keeps the pool inside active_categories + level_cap. Coach drills
+    // (Translation, Particles, etc.) remain accessible via "Practice
+    // something else" picker for variety.
+    const quizStarted = await homeStartQuiz();
+    if (quizStarted) return;
+
+    // Step 6: Free Write fallback — fires only if Quiz pool was empty
+    // (active_categories has zero unlocked questions, which shouldn't
+    // happen with the current §3 composition rule but kept for safety).
+    revealCoach();
+    if (typeof coachStartFreeWrite === 'function') await coachStartFreeWrite();
   } finally {
     if (btn) { btn.disabled = false; btn.style.opacity = ''; }
   }
+}
+
+// Programmatic Smart Quiz launch for learner shell. Bypasses the Setup
+// tab UI (which is hidden in learner shell) and seeds the globals with
+// learner-appropriate defaults. Returns true if a quiz session started,
+// false if the active-window-filtered pool was empty.
+async function homeStartQuiz() {
+  mode = 'smart';
+  catFilter = 'All';
+  maxLevel = 'C2';      // applyLearnerWindowFilter clamps to learning_path.level_cap
+  includeBiz = true;
+  const COUNT = 10;
+  const pool = selectQuestions(COUNT);
+  if (!pool || pool.length === 0) return false;
+
+  // Ensure surfaces are in the right state — home/tabs already hidden by
+  // the caller (homeStartPractice), but be defensive in case this is
+  // called from other paths in the future.
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = 'none';
+  document.getElementById('tab-home').classList.add('hidden');
+
+  // Mirror startQuiz's session state setup without the Setup-UI reads.
+  sessionQs = pool;
+  cur = 0; sessionScore = 0; sessionAnswered = []; streak = 0;
+  lastSessionSettings = { mode, cat: catFilter, maxLvl: maxLevel, biz: includeBiz, count: COUNT };
+  // Also push count into the (hidden) Setup slider so quickReplay's
+  // builder-style state restore continues to work cleanly.
+  const slider = document.getElementById('q-count');
+  if (slider) slider.value = COUNT;
+  const banner = document.getElementById('gi-banner');
+  if (banner) banner.className = 'gi-mode-banner';
+  showTab('quiz');
+  renderQ();
+  return true;
+}
+
+// Return-to-home from the quiz Results screen in learner shell. Hides
+// the quiz/results/setup surfaces, keeps the tab bar hidden, re-renders
+// the learner home so the "Last time" zone reflects the just-finished
+// session.
+function homeReturnFromQuiz() {
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = 'none';
+  ['quiz','results','setup'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.classList.add('hidden');
+  });
+  if (typeof showLearnerHome === 'function') showLearnerHome();
 }
 
 function homePracticeOther() {
@@ -5493,6 +5552,27 @@ function showResults(score, total, pct, newlyEarnedBadges) {
     div.innerHTML = `<span>${mark}</span><span>Q${i+1} [${a.cat}]: ${a.q.replace(/<[^>]+>/g,'').slice(0,70)}${a.q.length > 70 ? '…' : ''}</span>`;
     rw.appendChild(div);
   });
+
+  // Learner shell: replace the builder action row with home-aware actions.
+  // Builder defaults stay rendered in markup so the static page stays correct
+  // for builder-shell players; we override only when the learner shell is
+  // active. This block is also responsible for restoring builder defaults
+  // if the player switched shells mid-session (defensive — shouldn't happen).
+  const ra = document.querySelector('#tab-results .result-actions');
+  if (ra) {
+    const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
+    if (learner) {
+      ra.innerHTML =
+        '<button class="btn btn-primary" onclick="homeReturnFromQuiz()">🏠 Back home</button>' +
+        '<button class="btn-outline" onclick="quickReplay()">↻ Same set again</button>' +
+        '<button class="btn-outline" onclick="homeOpenStats()">📈 View stats</button>';
+    } else {
+      ra.innerHTML =
+        '<button class="btn btn-primary" onclick="quickReplay()">↻ Same Again</button>' +
+        '<button class="btn-outline" onclick="showTab(\'setup\')">New Session</button>' +
+        '<button class="btn-outline" onclick="showTab(\'stats\')">View Stats</button>';
+    }
+  }
 }
 
 // U4: Quick replay

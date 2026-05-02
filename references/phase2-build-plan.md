@@ -84,6 +84,7 @@ then this section's amendments and additions.
 |---|---|---|
 | **PV2** (CC picks gap/input/MCQ mix per PV based on existing per-category input share table and observed weakness) | CC picks the type mix per PV per the PV ladder rebalance specification (§4.2), weighted toward recognition rungs. The original lock pointed toward more input items where stuck patterns lived; the rebalance recognizes that those input failures are downstream of a missing recognition substrate, and the right intervention is more MCQ items, not more input items. | The 3.4% MCQ → 32% input inverted pyramid (Apr 30 status log) is a substrate problem, not a retrieval-practice problem. Adding more input drills on a thin recognition foundation perpetuates the production gap. |
 | **A1** (Hybrid: pre-generated default for family + Free Write live AI + escalate-to-AI button. Artem can use either CC OR the Worker path. Library content remains family-only.) | Carries forward unchanged. Phase 2D adds player-specific scoping of *which* library content surfaces for which learner-shell player via the active window model (§4.1). Library content is still family-only in the sense that Artem doesn't read from it; the change is intra-family scoping. | Active windows are about player-side surfacing, not library construction. |
+| **A6** (§4.4 primary action routing was Coach-only — Translation Drill / Spelling Drill / Free Write fallback) | Quiz inserted as priority step 3 (between Spelling Drill and Free Write). Quiz uses Smart mode + `applyLearnerWindowFilter` so the pool respects `learning_path.active_categories` and `level_cap` automatically. Fresh Translation Drill removed from primary routing — still accessible via "Practice something else →" picker. Resume-partial-Translation stays at top priority (a commitment in flight is more urgent than a fresh default). | Coach has 10–30 items per family-shell player; Quiz has ~2,000 questions filtered to the active window. Treating Coach as the primary daily practice burns through library content in days, leaving Free Write as the default — a worse experience than mixed-format Quiz. Coach is correctly framed as targeted intervention (calque drills, orthographic fragility) layered on top of Quiz background practice. |
 
 ### 3.2 New locks for Phase 2D
 
@@ -1837,6 +1838,124 @@ narrow focus.
 - Tier 2 PV Batch 2 (remainder of verb families + Coach
   particle_sort)
 - §4.4 polish: overflow menu, active-window-aware picker filter
+
+### v20260502-t1 — Quiz inserted into learner-shell routing (A6)
+
+Counter restart: the `t` series begins here. Prior session counter
+(`sN`) ran s1–s100; new sessions are `t1`, `t2`, … with the same
+`vYYYYMMDD-{counter}` format and the same identical-across-the-four-
+locations rule. No technical reason — clean cut.
+
+The big "Start practice" button in learner shell now routes to the
+grammar Quiz as the daily default, not the Coach. Coach exercises
+remain available via "Practice something else →" picker. See A6 in
+§3.1 for the locked rationale.
+
+**Shipped — engineering (`index.html` + `sw.js` only)**:
+
+1. **`homeStartQuiz()`** — programmatic Smart-mode quiz launch for
+   learner shell. Bypasses the Setup tab UI (which is hidden), seeds
+   `mode='smart'`, `catFilter='All'`, `maxLevel='C2'`, `includeBiz=true`,
+   count=10. `selectQuestions(10)` returns from the active-window-and-
+   level-cap-filtered pool via the existing `applyLearnerWindowFilter`
+   from s93. Returns `false` if the pool is empty (caller falls
+   through to Free Write); returns `true` once the quiz is rendered.
+   Sets `lastSessionSettings` so `quickReplay()` works correctly
+   afterward — also pushes `count` into the (hidden) `q-count` slider
+   so any builder-style state restore stays clean.
+
+2. **`homeReturnFromQuiz()`** — small helper next to other `home*`
+   functions. Hides `tab-quiz` / `tab-results` / `tab-setup`, keeps
+   `.tabs` bar hidden, calls `showLearnerHome()` so the home zones
+   re-render with the just-finished session reflected in "Last time".
+
+3. **`homeStartPractice` restructured**. Routing order is now:
+   1. Resume partial Translation Drill (<24h, in progress)
+   2. Spelling Drill (Spell Help threshold ≥5 captures)
+   3. **Quiz** (NEW — Smart mode + active window filter)
+   4. Free Write (fallback when Quiz pool is empty)
+
+   Fresh Translation Drill is no longer a primary route — it's a
+   picker-only choice now. The reveal-coach-surface side effect was
+   factored into a `revealCoach()` closure so each branch only fires
+   it when needed (Quiz path skips it entirely; Free Write path uses
+   it). Home + tabs hide once at the top of the function.
+
+4. **`showResults` action-row override**. Builder shell still
+   renders the static markup defaults ("↻ Same Again" / "New Session"
+   / "View Stats"). Learner shell replaces the row at render time with
+   home-aware actions: "🏠 Back home" (primary) → `homeReturnFromQuiz`,
+   "↻ Same set again" → `quickReplay`, "📈 View stats" → `homeOpenStats`
+   (which opens the §4.4 learner stats panel and keeps tabs hidden).
+   Builder defaults restore explicitly in the `else` branch so a
+   shell switch mid-session doesn't strand learner buttons in builder
+   shell.
+
+**Verified end-to-end via preview probe (Nicole real Firestore data)**:
+
+- Fresh load: `quizPlayerKey="nicole"` + IndexedDB clear + localStorage
+  backup wipe → loadFromFirebase pulls Nicole's `learning_path` cleanly
+  (active_categories `[Prepositions, Irregular Verbs, Vocabulary]`,
+  level_cap B1, totalAnswered 830 — matches Firestore).
+- "Start practice" tap → no partial Translation, no Spell Help threshold
+  → routes to Quiz. `sessionQs.length === 10`, mode `smart`, progress
+  label "Question 1 of 10". Pool composition: Irregular Verbs ×6,
+  Vocabulary ×3, Prepositions ×1 (all three categories from her active
+  window); levels B1 ×9 + B2 ×1 (≈10% stretch allowance — exactly per
+  spec).
+- `tab-quiz` visible, `tab-home` hidden, `tab-coach` hidden, `.tabs`
+  bar `display: none` — clean transition.
+- Mocked sessionAnswered (alternating right/wrong) + finishSession →
+  results screen renders with the learner action row: "🏠 Back home"
+  (primary) + "↻ Same set again" + "📈 View stats". Score "5/10".
+- `homeReturnFromQuiz()` tap → home visible, results hidden, tabs
+  still hidden, greeting + zones intact.
+- Builder regression (Artem): force-loaded Artem's player doc with
+  `ui_shell: "builder"`, ran startQuiz + finishSession → results action
+  row renders builder defaults ("↻ Same Again" / "New Session" / "View
+  Stats"); tabs bar restored. No console errors.
+
+**Pre-deploy**:
+- syntax OK, transform audit clean (46 transforms unchanged), version-
+  string consistency OK (v20260502-t1 in both `index.html` and
+  `sw.js`; legacy reference to `v20260428-s87` retained as a comment
+  marking the RTDB→Firestore migration cutover).
+
+**Acceptance state for §4.4 (incremental update from s100)**:
+- ✅ Big-button routing covers Quiz + Coach for learner shell
+- ⏳ Newly-earned-medal callout on done card — already done (s98)
+- ⏳ Active-window-aware Coach picker filter (filter by
+  `active_categories` membership, not just count) — still deferred;
+  meaningful when Nicole/Ernest accumulate more Coach content
+- ⏳ Overflow menu (history / achievements / settings / switch player)
+  — still deferred
+
+**Decision called inline** (not in §3 locks): Quiz session length =
+fixed 10 in learner shell. Builder shell continues to honour the
+`q-count` slider (5–30). Hardcoded 10 because (a) it matches the
+Translation Drill / Spelling Drill default, so all Coach + Quiz
+sessions in learner shell have the same shape, and (b) the slider UI
+isn't reachable from learner shell anyway. Re-evaluate if a player
+asks for longer or shorter sessions.
+
+**Mid-session quiz exit not added.** A learner-shell player who taps
+"Start practice" but wants to bail mid-quiz has no escape hatch
+short of refreshing the page — same as the builder shell, but
+without the tab bar to navigate elsewhere. Quiz sessions are 10
+questions / ~5 min so the friction is bounded; revisit if Anna /
+Nicole / Ernest report it.
+
+**Next session candidates**:
+
+- §4.3 article intervention batch 1 (~25–30 quiz Qs + ~15 article_drill
+  items per family member) — content + engine wiring (article_drill
+  Coach type)
+- §4.5 Ernest Error Correction (~15 items) — content + engine wiring
+- Tier 2 PV Batch 2 (verb families + Coach particle_sort)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter,
+  mid-quiz exit affordance for learner shell
+
+---
 
 ### s100 — §4.5 Nicole + Ernest library content + shell flips
 
