@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-t1">
+  <meta name="app-version" content="v20260502-t2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -946,6 +946,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 .coach-action-row button:hover{border-color:var(--accent);}
 .coach-action-row button.coach-action-primary:hover{filter:brightness(1.05);}
 .coach-typing{font-size:.8rem;color:var(--muted);font-style:italic;padding:.4rem .85rem;}
+.ad-sentence{font-size:1rem;line-height:1.7;margin-top:.2rem;}
+.ad-blank{display:inline-block;min-width:3.6em;text-align:center;padding:0 .25em;border-bottom:2px dashed var(--accent);font-family:'DM Mono',monospace;letter-spacing:.05em;color:var(--accent);}
+.coach-action-row button.ad-chip{flex:0 1 auto;min-width:3.4em;padding:.6rem 1.1rem;font-size:1rem;font-family:'DM Mono',monospace;letter-spacing:.04em;}
 .coach-spellhelp-btn{margin-top:.6rem;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;background:transparent;border:1px dashed var(--border);border-radius:8px;padding:.55rem .8rem;color:var(--muted);font:inherit;font-size:.82rem;cursor:pointer;transition:border-color .15s,color .15s,background .15s;}
 .coach-spellhelp-btn:hover{border-color:var(--accent);color:var(--text);background:rgba(255,255,255,.03);}
 .coach-msg.coach-done-card{align-self:stretch;max-width:100%;text-align:center;padding:1rem 1.1rem;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.03);}
@@ -992,7 +995,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t1</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t2</span></p>
 </header>
 
 <!-- TABS -->
@@ -1321,9 +1324,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Spelling Drill</span>
           <span class="coach-type-count" data-count-for="spelling_drill">…</span>
         </button>
-        <button class="coach-type-btn disabled" data-type="article_drill" disabled>
+        <button class="coach-type-btn" data-type="article_drill" onclick="coachStartType('article_drill')">
           <span class="coach-type-name">Articles</span>
-          <span class="coach-type-count" data-count-for="article_drill">0</span>
+          <span class="coach-type-count" data-count-for="article_drill">…</span>
         </button>
         <button class="coach-type-btn disabled" data-type="particle_sort" disabled>
           <span class="coach-type-name">Particles</span>
@@ -3400,7 +3403,14 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'pv_g42',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'try on' mean in: 'Could I try on these shoes in size 8?'",ans:0,opts:['Wear them briefly to test the fit','Buy them immediately','Compare them to others'],exp:'<strong>Try on</strong> + clothes = wear briefly to test fit/look. ✗ <em>Try out</em> = test something new (a tool, a recipe). ✗ <em>Try for</em> = make an attempt to achieve. Russian <em>примерить</em>.'},
 {id:'pv_g43',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:true,q:"What does 'turned me off' mean in: 'His tone really turned me off the whole project'?",ans:0,opts:['Made me lose interest','Made me very enthusiastic','Made me work harder'],exp:'<strong>Turn (someone) off</strong> + thing = make them lose interest in. ✗ <em>Turn off</em> a device = switch off (different sense, same form). ✗ <em>Put off</em> is a near-synonym for losing interest. Russian <em>отбить охоту</em>.'},
 {id:'pv_g44',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:true,q:"What does 'sets out' mean in: 'The proposal sets out three options for the team'?",ans:0,opts:['Presents or describes them clearly','Removes them from consideration','Combines them into one'],exp:'<strong>Set out</strong> + plan/options = present formally, lay out. <em>Set out the agenda / set out the steps.</em> ✗ <em>Set up</em> = arrange/establish. ✗ <em>Set aside</em> = reserve. Different sense from <em>set out on a journey</em>.'},
-{id:'pv_g45',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'dressed up' mean in: 'Everyone dressed up for the wedding — suits, dresses, the works'?",ans:0,opts:['Wore formal or fancy clothes','Came late to the event','Brought their own outfits'],exp:'<strong>Dress up</strong> = wear formal/fancy clothes for an occasion; or wear a costume. ✗ <em>Dress down</em> = wear casual clothes. ✗ <em>Dress up as</em> = wear a costume of. Russian <em>нарядиться</em>.'}];
+{id:'pv_g45',type:'mcq',cat:'Phrasal Verbs',lvl:'B1',biz:false,q:"What does 'dressed up' mean in: 'Everyone dressed up for the wedding — suits, dresses, the works'?",ans:0,opts:['Wore formal or fancy clothes','Came late to the event','Brought their own outfits'],exp:'<strong>Dress up</strong> = wear formal/fancy clothes for an occasion; or wear a costume. ✗ <em>Dress down</em> = wear casual clothes. ✗ <em>Dress up as</em> = wear a costume of. Russian <em>нарядиться</em>.'},
+{id:'art_s01',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'I bought a new phone yesterday. ___ phone has a great camera.',ans:0,opts:['the','a','an','—'],exp:'<strong>Second mention.</strong> Once a noun is introduced with <em>a</em>, switch to <em>the</em> on every later mention — both speaker and listener now know which phone. Heuristic: "Do we both know which one?" → yes → THE. Russian bridge: like <em>этот</em> for the known item.'},
+{id:'art_s02',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'We arrived at the hotel and asked ___ receptionist for our keys.',ans:0,opts:['the','a','an','—'],exp:'<strong>Situational unique.</strong> Once "the hotel" is established, "the receptionist" means the one working there — both of us know which one. Heuristic: "Do we both know which one?" → yes → THE.'},
+{id:'art_s03',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'I am reading ___ first chapter of a really good book.',ans:0,opts:['the','a','an','—'],exp:'<strong>Inherited specificity.</strong> Even though we just introduced the book with <em>a</em>, "first chapter" is inherently unique within it. Pattern: ordinals (first, second, last) + N + <em>of</em> usually take <em>the</em>.'},
+{id:'art_s04',type:'input',cat:'Articles',lvl:'B1',biz:false,q:"Don't forget to call ___ doctor about your appointment.",hint:'(1 word: a / an / the / – for no article)',ans:['the','The'],exp:'<strong>Shared knowledge.</strong> "The doctor" = your usual doctor — both of us know which one. Russian <em>врач</em> gives no article marker, so it\'s easy to drop. Heuristic: "Do we both know which one?" → yes → THE.'},
+{id:'art_s05',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'After the long drive, we were tired and ordered ___ pizza for dinner.',ans:0,opts:['a','the','an','—'],exp:'<strong>First mention.</strong> The pizza is being introduced — any pizza, not a known one. Heuristic: "Do we both know which one?" → no, any pizza → A. Once it\'s on the table, it becomes "the pizza".'},
+{id:'art_s06',type:'multi',cat:'Articles',lvl:'B1',biz:false,q:'I met ___ new colleague at the gym last week. ___ colleague said she lives near us.',blanks:[{opts:['a','an','the','—'],ans:0},{opts:['The','A','An','—'],ans:0}],exp:'<strong>a → the contrast.</strong> First blank: new person being introduced → <em>a</em>. Second blank: now we both know which colleague → <em>the</em>. This is the core a→the swap pattern — Russian has no equivalent, so tracking reference across sentences is a new operation.'},
+{id:'art_s07',type:'gap',cat:'Articles',lvl:'B1',biz:false,q:'We need to take ___ action before the situation gets worse.',ans:0,opts:['—','the','a','an'],exp:'<strong>Fixed phrase: take action.</strong> No article. ✗ <em>take the action</em> / <em>take an action</em>. Other zero-article fixed phrases: <em>make progress, give advice, reach agreement.</em> These can\'t be derived from rules — memorise as chunks.'}];
 
 let TOTAL = 0;
 let LEVEL_TOTALS = {};
@@ -8466,10 +8476,12 @@ async function coachRenderStatsCard() {
 const COACH_TYPE_TO_LIBRARY = {
   translation: 'translation',
   spelling_drill: 'spelling_drill',
+  article_drill: 'article_drill',
 };
 const COACH_TYPE_LABEL = {
   translation: 'translation drill',
   spelling_drill: 'spelling drill',
+  article_drill: 'article drill',
 };
 
 async function coachStartType(type, opts) {
@@ -8522,6 +8534,8 @@ async function coachStartType(type, opts) {
     intro = `Picking up where you left off — ${coachState.sessionResults.length} done, ${exercises.length} to go.`;
   } else if (type === 'spelling_drill') {
     intro = `Let's practise <strong>spelling</strong>. I'll show you ${exercises.length} word${exercises.length === 1 ? '' : 's'} — type the English spelling for each.`;
+  } else if (type === 'article_drill') {
+    intro = `Let's practise <strong>articles</strong>. I'll show you ${exercises.length} short scene${exercises.length === 1 ? '' : 's'} — tap <em>a</em> / <em>an</em> / <em>the</em> / <em>—</em> for each blank. The dash <em>—</em> means "no article".`;
   } else {
     intro = `Let's practise <strong>${(COACH_TYPE_LABEL[type] || type)}</strong>. I'll give you ${exercises.length} item${exercises.length === 1 ? '' : 's'}. Translate each into English.`;
   }
@@ -8555,6 +8569,16 @@ function coachNextExercise() {
       `<div class="coach-msg-prompt">Spell it (${idx}/${total}):</div>` +
       (ex.prompt_definition_ru ? `<div class="coach-msg-prompt-ru">${escapeHtml(ex.prompt_definition_ru)}</div>` : '')
     );
+  } else if (coachState.type === 'article_drill') {
+    // Single-blank scene with a/an/the/— chips. Sentence template uses {1} for the blank.
+    const tmpl = String(ex.sentence_template || '');
+    const rendered = escapeHtml(tmpl).replace(/\{1\}/g, '<span class="ad-blank">_____</span>');
+    coachAppendMessage('assistant',
+      `<div class="coach-msg-prompt">Choose the article (${idx}/${total}):</div>` +
+      `<div class="coach-msg-prompt-en ad-sentence">${rendered}</div>`
+    );
+    coachShowArticleChips();
+    return;
   }
   document.getElementById('coachInputRow').style.display = '';
   document.getElementById('coachActionRow').style.display = 'none';
@@ -8564,6 +8588,81 @@ function coachNextExercise() {
   fld.disabled = false;
   document.getElementById('coachSendBtn').disabled = false;
   setTimeout(() => fld.focus(), 80);
+}
+
+// Article-drill UX: chip buttons replace the textarea/send. Tap = submit instantly.
+// Single attempt per item; reasoning always shown afterward (correct or wrong) — the
+// teaching point is decision-making under ambiguity, not motor skill.
+function coachShowArticleChips() {
+  document.getElementById('coachInputRow').style.display = 'none';
+  const actionRow = document.getElementById('coachActionRow');
+  actionRow.innerHTML = '';
+  const choices = ['a', 'an', 'the', '—'];
+  for (const c of choices) {
+    const btn = document.createElement('button');
+    btn.className = 'coach-action-primary ad-chip';
+    btn.textContent = c;
+    btn.onclick = () => coachSubmitArticleAnswer(c);
+    actionRow.appendChild(btn);
+  }
+  actionRow.style.display = '';
+}
+
+function coachNormArticleChoice(s) {
+  const t = String(s == null ? '' : s).toLowerCase().trim();
+  if (t === '' || t === '-' || t === '—' || t === '0' || t === 'no' || t === 'none' || t === 'no article') return '—';
+  if (t === 'a') return 'a';
+  if (t === 'an') return 'an';
+  if (t === 'the') return 'the';
+  return t; // unknown — let comparison fail
+}
+
+async function coachSubmitArticleAnswer(choice) {
+  const ex = coachState.current;
+  if (!ex) return;
+  const actionRow = document.getElementById('coachActionRow');
+  // Disable chips immediately so a double-tap doesn't double-submit.
+  actionRow.querySelectorAll('button').forEach(b => b.disabled = true);
+  coachState.answeredAt = Date.now();
+  coachState.attemptCount = 1;
+  coachAppendMessage('user', escapeHtml(choice));
+
+  const blank = (ex.blanks && ex.blanks[0]) || {};
+  const correctAns = coachNormArticleChoice(blank.correct);
+  const submitted = coachNormArticleChoice(choice);
+  const correct = submitted === correctAns;
+  const extraClass = correct ? 'feedback-correct' : 'feedback-wrong';
+
+  let feedback = correct
+    ? '<strong>✓ Correct.</strong>'
+    : `<strong>✗ Not quite.</strong> The answer is <strong>${escapeHtml(correctAns)}</strong>.`;
+  if (blank.reasoning) {
+    feedback += `<div style="margin-top:.4rem;font-size:.8rem;">${escapeHtml(blank.reasoning)}</div>`;
+  } else if (!correct && ex.fallback_feedback) {
+    feedback += `<div style="margin-top:.4rem;font-size:.8rem;">${escapeHtml(ex.fallback_feedback)}</div>`;
+  }
+  coachAppendMessage('assistant', feedback, extraClass);
+
+  const ttaMs = coachState.answeredAt - coachState.startedAt;
+  coachState.sessionResults.push({
+    exercise_id: ex.id || ex._id,
+    correct,
+    matched_pattern_id: blank.pattern || null,
+    submitted_answer: choice,
+    escalation_used: false,
+    time_to_answer_ms: ttaMs,
+    exercise_version: ex.version || 1,
+  });
+  coachUpsertSession({ partial: true });
+
+  actionRow.innerHTML = '';
+  const moreLeft = coachState.pool.length > 0;
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'coach-action-primary';
+  nextBtn.textContent = moreLeft ? 'Got it — next →' : 'Got it — finish session';
+  nextBtn.onclick = () => { actionRow.style.display = 'none'; coachNextExercise(); };
+  actionRow.appendChild(nextBtn);
+  actionRow.style.display = '';
 }
 
 function coachAppendMessage(role, html, extraClass) {

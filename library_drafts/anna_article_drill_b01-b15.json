@@ -1,0 +1,335 @@
+{
+  "_note": "Anna article_drill batch 1 — 15 items at B1, distributed across the 5-pattern taxonomy from article_diagnostic_2026-04-05.html: a_the_swap (5), phantom_article (4), prep_article (2), fixed_expression (2), dropped_article (2). Themes: home, family, padel, neighbours, daily routine, kids. Single-blank scenes; player taps a/an/the/— chip. Reasoning shown after every answer (correct or wrong). Patterns are recorded in matched_pattern_id for stats aggregation.",
+  "exercises": [
+    {
+      "id": "ad_anna_b01",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "We bought a new sofa last week. {1} sofa is really comfortable.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention. Once a noun is introduced with 'a', switch to 'the' on every later mention — both speaker and listener now know which sofa. Russian 'диван' gives no marker, so this swap is the highest-frequency error."
+        }
+      ],
+      "fallback_feedback": "Second-mention rule: introduce with 'a', refer back with 'the'."
+    },
+    {
+      "id": "ad_anna_b02",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "situational_unique"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "I went to the padel club yesterday. {1} courts were really busy.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Situational unique — once you mention 'the padel club', both of us know which courts (the ones at that club). Heuristic: 'Do we both know which one?' → yes → THE."
+        }
+      ],
+      "fallback_feedback": "Once a place is established, things at that place take 'the' (the courts, the entrance, the bar)."
+    },
+    {
+      "id": "ad_anna_b03",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "inherited_specificity"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Tell {1} kids that dinner is ready.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Your specific kids — both speaker and listener know which kids. 'The' marks definite reference. Russian 'детям' gives no article cue, so it's easy to drop or substitute."
+        }
+      ],
+      "fallback_feedback": "When the noun refers to specific known people, use 'the'."
+    },
+    {
+      "id": "ad_anna_b04",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "shared_knowledge"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Did you talk to {1} neighbours about the noise last night?",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Shared knowledge — 'the neighbours' means our specific neighbours, not just any neighbours. Heuristic: 'Do we both know which ones?' → yes → THE."
+        }
+      ],
+      "fallback_feedback": "Specific people we both know about take 'the'."
+    },
+    {
+      "id": "ad_anna_b05",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "I made a smoothie this morning. {1} smoothie was really refreshing.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention. Introduced with 'a' (any smoothie), referred back with 'the' (now we both know which one — the one I just made)."
+        }
+      ],
+      "fallback_feedback": "a → the on every reference back to the same noun."
+    },
+    {
+      "id": "ad_anna_b06",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "uncountable"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Can you give me {1} advice about cooking lamb?",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "'Advice' is uncountable in English — no 'a/an', no plural. Russian 'совет' is countable, so 'give me an advice' is a direct calque. ✓ 'give me advice' / 'give me some advice' / 'give me a piece of advice'."
+        }
+      ],
+      "fallback_feedback": "Uncountable nouns (advice, information, progress, news) take no 'a/an'."
+    },
+    {
+      "id": "ad_anna_b07",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "time_expression"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "We're going to the beach {1} next Saturday.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "next/last + day or time = no article. ✗ 'the next Saturday' / 'a next Saturday'. ✓ 'next Saturday' / 'last Monday' / 'next week'."
+        }
+      ],
+      "fallback_feedback": "Time expressions with next/last take zero article."
+    },
+    {
+      "id": "ad_anna_b08",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "abstract_general"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "{1} life in Bahrain is calm and easy.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "Abstract noun in general sense — 'life' here means life-in-general, no article. Russian 'жизнь' sits naturally as a subject, which makes the urge to add 'the' feel right, but it's wrong for the general meaning."
+        }
+      ],
+      "fallback_feedback": "Abstract nouns used generically (life, love, happiness, music) take no article."
+    },
+    {
+      "id": "ad_anna_b09",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phantom_article", "habitual"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "We always have a barbecue on {1} Friday evenings.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "phantom_article",
+          "reasoning": "Days of the week in plural + habitual events = no article. ✗ 'on the Friday evenings' / 'on a Friday evening' (for a habit). ✓ 'on Fridays' / 'on Friday evenings'."
+        }
+      ],
+      "fallback_feedback": "Habitual time expressions (on Mondays, in the evenings) take no article on the day."
+    },
+    {
+      "id": "ad_anna_b10",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["prep_article", "in_month"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Our new neighbours moved in {1} March.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "prep_article",
+          "reasoning": "Months take no article after 'in'. ✗ 'in the March' / 'in a March'. ✓ 'in March' / 'in April' / 'in summer'."
+        }
+      ],
+      "fallback_feedback": "in + month / season / year = no article on the time word."
+    },
+    {
+      "id": "ad_anna_b11",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["prep_article", "of_uncountable"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "I really like the smell of {1} coffee in the morning.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "prep_article",
+          "reasoning": "'Coffee' here is uncountable/general — the smell of coffee-in-general, not any specific coffee. Pattern: 'the [N] of [uncountable Y]' keeps zero article on Y. ✓ 'the taste of milk', 'the sound of music'."
+        }
+      ],
+      "fallback_feedback": "When the second noun is uncountable and general, it stays bare."
+    },
+    {
+      "id": "ad_anna_b12",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["fixed_expression", "make_progress"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Sasha is making {1} good progress at school.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "fixed_expression",
+          "reasoning": "'Make progress' is a fixed phrase — no article, even with an adjective in front. ✗ 'make a good progress' (calque from Russian 'хороший прогресс'). ✓ 'make good progress' / 'make great progress' / 'make slow progress'."
+        }
+      ],
+      "fallback_feedback": "Fixed phrases (make progress, take action, give advice) carry zero article."
+    },
+    {
+      "id": "ad_anna_b13",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["fixed_expression", "institution"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "Sasha goes to {1} school by bus every morning.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "fixed_expression",
+          "reasoning": "'Go to school' (as a student, the institution sense) takes zero article. Same with 'go to work' / 'go to bed' / 'go to church'. ⚠ 'go to the school' would mean visiting the building (e.g. to pick someone up)."
+        }
+      ],
+      "fallback_feedback": "Institutions in role sense (school, work, hospital, prison) take zero article."
+    },
+    {
+      "id": "ad_anna_b14",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["dropped_article", "profession"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "My husband is {1} engineer.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "an",
+          "pattern": "dropped_article",
+          "reasoning": "Professions take 'a/an' — this is 'classifying A' (saying what kind of person). ✗ 'is engineer' (direct calque from Russian 'Он инженер'). ✓ 'is an engineer' / 'is a teacher' / 'is a doctor'. (Vowel sound → 'an'.)"
+        }
+      ],
+      "fallback_feedback": "She/he is + a/an + profession. Russian drops the article — English requires it."
+    },
+    {
+      "id": "ad_anna_b15",
+      "type": "article_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["dropped_article", "first_mention"],
+      "created": "2026-05-02T18:00:00Z",
+      "version": 1,
+      "sentence_template": "There is {1} new café on our street.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "a",
+          "pattern": "dropped_article",
+          "reasoning": "First mention of a singular countable noun — needs 'a'. ✗ 'there is new café' (Russian 'есть новое кафе' has no article). ✓ 'there is a new café'. Heuristic: 'Do we both know which one?' → no, it's new info → A."
+        }
+      ],
+      "fallback_feedback": "Introducing a new singular countable noun requires 'a' (or 'an' before vowel sounds)."
+    }
+  ]
+}

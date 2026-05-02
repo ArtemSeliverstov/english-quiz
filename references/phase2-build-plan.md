@@ -2091,6 +2091,178 @@ and `sw.js` untouched. No version bump; commit goes in plain
 - §4.4 polish: overflow menu, active-window-aware Coach picker filter
   (currently visibility-by-count only)
 
+### v20260502-t2 — §4.3 article intervention Batch 1 vertical slice (engine + Anna content)
+
+The `article_drill` Coach exercise type went live end-to-end. Anna is the
+first player with article_drill content. Scope was negotiated down from the
+full Batch 1 spec (~25–30 quiz Qs + ~45 article_drill items across 3 family
+members) to a focused vertical slice: engine wiring + Anna's 15 items + 7
+Phase 1 scaffold quiz Qs. Cross-player content (Nicole/Ernest article_drill,
+quiz Q fixes for cross-player failures) becomes a Batch 1.5 follow-up.
+
+**Shipped — engineering**:
+
+1. **`article_drill` registered as a Coach type**:
+   - Picker button enabled (was `disabled`); routes to
+     `coachStartType('article_drill')`
+   - `COACH_TYPE_TO_LIBRARY['article_drill'] = 'article_drill'`,
+     `COACH_TYPE_LABEL['article_drill'] = 'article drill'`
+   - Intro string explains chip UX: "tap *a* / *an* / *the* / *—* for each
+     blank. The dash *—* means 'no article'."
+2. **Chip-button input UX** (vs typed). Tap = instant submit; replaces the
+   textarea/send. Single attempt per item — decision-drill, not motor skill.
+   - `coachShowArticleChips()` injects 4 chip buttons into `coachActionRow`
+     (a / an / the / —)
+   - `.ad-chip` CSS: monospace, fixed-width chips, left-aligned via
+     `flex:0 1 auto`
+3. **Sentence rendering with styled blank**:
+   - `sentence_template` uses `{1}` token; renderer replaces with
+     `<span class="ad-blank">_____</span>`
+   - `.ad-blank` CSS: dashed-underline accent, monospace, signals
+     "fill this in"
+4. **Scoring** (`coachSubmitArticleAnswer`):
+   - Normalises both sides via `coachNormArticleChoice` so any of
+     `'—' | '-' | '' | '0' | 'no' | 'none' | 'no article'` collapses
+     to the canonical `'—'`
+   - On correct: ✓ + reasoning (always shown — the teaching point IS the
+     reasoning, not the answer)
+   - On wrong: ✗ + correct answer + reasoning
+   - `matched_pattern_id` records the diagnostic 5-pattern tag
+     (`a_the_swap` / `phantom_article` / `prep_article` /
+     `fixed_expression` / `dropped_article`) — flows into the existing
+     "Patterns to review" zone on the done card
+5. **No mid-attempt retry** — single attempt per item, then "Got it →
+   next" / "finish session". The spelling-drill 3-attempt loop is
+   deliberately not extended here.
+
+**Shipped — content (Anna article_drill, 15 items)**:
+
+- IDs `ad_anna_b01`–`ad_anna_b15`, level B1, target_player anna
+- Distribution across the 5-pattern taxonomy from the diagnostic doc:
+  - a_the_swap (Pattern 1, ~40% of errors): 5 items (b01, b02, b03, b04, b05)
+  - phantom_article (Pattern 2, ~25%): 4 items (b06, b07, b08, b09)
+  - prep_article (Pattern 3, ~15%): 2 items (b10, b11)
+  - fixed_expression (Pattern 4, ~12%): 2 items (b12, b13)
+  - dropped_article (Pattern 5, ~8%): 2 items (b14, b15)
+- Anna's documented themes: home/sofa, padel club, kids dinner,
+  neighbours noise, smoothie morning, advice cooking lamb, beach next
+  Saturday, life in Bahrain, Friday barbecue, neighbours moved in March,
+  smell of coffee, Sasha making progress, Sasha goes to school by bus,
+  husband is engineer, new café on our street.
+- Pattern-specific reasoning carries an L1 note where relevant
+  (Russian *совет* countable, *диван* genderless, *Он инженер* article-
+  less, etc.) — extension of D6 spelling-drill "predicted L1 trap"
+  pattern but for article rules.
+- Pushed via `tools/push_library.js`. `_meta` recomputed authoritatively
+  to `{translation: 40, spelling_drill: 20, article_drill: 15}`.
+
+**Shipped — content (7 art_s scaffold quiz Qs in ALL_QUESTIONS)**:
+
+- Phase 1 scaffold series from the diagnostic. All B1, biz:false,
+  cat:'Articles' — neutral context so they reach Anna (B1 cap), Ernest
+  (B1 cap, when his Articles window opens), and the broader bank.
+- Type mix: 5 gap, 1 input, 1 multi (`art_s06` — the a/the contrast pair
+  is the canonical multi-blank exemplar of the Pattern 1 swap)
+- Targets: second mention (s01, s05), situational unique (s02),
+  inherited specificity (s03), shared knowledge (s04), first-mention
+  reinforcement (s05), a→the contrast within sentences (s06), zero-
+  article fixed phrase (s07).
+- Each `exp` field embeds the "Do we both know which one?" heuristic
+  per the diagnostic Phase 1 design rule, with Russian L1 bridge
+  (*этот / тот* / explicit no-article L1 callouts) at this B1 level.
+
+**Bank shape after t2**:
+- Total questions: 1,984 (+7 from prior 1,977)
+- Articles total: ~159 (152 baseline + 7 art_s)
+- Levels: B1 +7 (all art_s items at B1)
+
+**Verified end-to-end via preview probe (Anna real Firestore data)**:
+
+- Picker (Anna learner shell): 4 visible buttons — Translation 20,
+  Spelling 10, **Articles 15** (newly active), Free Write. Particles /
+  Error Correction / Russian Trap correctly hidden by the s96 zero-count
+  filter.
+- Article drill start: `coachStartType('article_drill')` loaded 15 items,
+  intro rendered, first item shows blank with chips below; textarea
+  hidden.
+- Correct submission (`a` for `ad_anna_b15` "There is ___ new café"):
+  ✓ feedback + reasoning ("First mention of a singular countable
+  noun…"), `matched_pattern_id: dropped_article`, "Got it → next"
+  advances.
+- Wrong submission (`a` for `ad_anna_b04` correct=`the`): ✗ feedback +
+  "The answer is **the**" + shared-knowledge reasoning, `matched_
+  pattern_id: a_the_swap` recorded.
+- Zero-article chip: `—` for `ad_anna_b13` correct=`—` (Sasha goes to
+  school) → graded correct, `matched_pattern_id: fixed_expression`.
+- Full session: 14/15 correct in one minute; done card renders "Patterns
+  to review: dropped_article, a_the_swap, fixed_expression, prep_article,
+  phantom_article" — all 5 surfaced.
+- art_s quiz Qs: all 7 present in `applyLearnerWindowFilter(ALL_QUESTIONS,
+  Anna's DB)` output. Filtered pool size 244. art_s06 multi schema
+  validated: 2 ___ tokens, 2 blanks entries, blank0 ans=0 (`a`), blank1
+  ans=0 (`The`).
+- Builder regression (Artem): tab bar visible, learner home hidden,
+  picker still shows article_drill button (now 0 avail for Artem since
+  Anna-only content). No console errors anywhere.
+
+**Pre-deploy**:
+- syntax OK, transform audit OK (46 transforms unchanged), no sparse
+  arrays, single-declaration check OK, version-string consistency OK
+  (v20260502-t2 in HTML badge × 2 + sw.js cache key).
+
+**Acceptance state for §4.3**:
+- ✅ article_drill engine wired end-to-end (Coach type, picker, scoring,
+  pattern recording, done-card patterns flow)
+- ✅ Anna's article_drill batch shipped (15 items, 5-pattern coverage)
+- ✅ Phase 1 scaffold quiz Qs shipped (7 art_s items, Pattern 1 a→the swap
+  scaffolds + zero-article anchor)
+- ⏳ Ernest article_drill (~15 items) — defers to Batch 1.5 follow-up;
+  engine ready to receive content as soon as items land
+- ⏳ Nicole article_drill (~15 items) — Articles not in her current
+  active window, so her items can be authored but won't surface until
+  her window includes Articles
+- ⏳ Phase 1 cross-player failure quiz fixes (~15 items: art14, art15,
+  art11, art_b08, art_c03, mc12, mc14, etc.) — content review pass,
+  separate slice
+- ⏳ Phase 2 batches 2A–2F (~75 new questions) — multi-session content
+  pipeline
+- ⏳ Phase 3 advanced contexts + C1 precision (~20) — long-term
+
+**Decisions called inline** (not in §3 locks):
+
+- **Single-blank items with discourse context** rather than multi-blank
+  scenes. The diagnostic Stage 3 spec ("4–6 blanks across sentences")
+  is deferred. Single blank avoids new UI for blank-by-blank entry,
+  keeps per-item feedback fast, and still supports two-sentence
+  discourse stems (which is the highest-impact research finding from
+  the diagnostic). Multi-blank can be added when Anna's accuracy on
+  single-blank items plateaus.
+- **Chip UX over typed input** for article_drill. Articles are a
+  decision exercise — typing adds motor friction without pedagogical
+  gain. Other types (translation, spelling) keep typed input where the
+  motor act IS the practice.
+- **Always show reasoning, even on correct answers.** The teaching
+  point is the rule, not the right/wrong outcome. Russian speakers can
+  guess "the" correctly without internalising why; surfacing the
+  reasoning every time fixes that.
+- **Zero-article canonical form is `'—'`** (em dash). Normalises any of
+  `-`, ``, `0`, `no`, `none`, `no article` to `—` for both correct
+  values and submissions. Matches the existing quiz article option
+  convention (`opts: [..., '—']`).
+
+**Next session candidates**:
+
+- §4.3 Batch 1.5 — Ernest's 15 article_drill items + Phase 1 cross-
+  player failure quiz fixes (art14, art15, art11, art_b08, art_c03,
+  mc12, mc14, etc.). Engine is now ready, so Ernest can flip to
+  learner-shell content the moment items land.
+- §4.5 Ernest Error Correction (~15 items) — content + engine wiring
+  (`COACH_TYPE_TO_LIBRARY` extension + scoring branch in
+  `coachSubmitAnswer`)
+- Tier 2 PV Batch 2 (verb families + Coach particle_sort)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter,
+  mid-quiz exit affordance for learner shell
+
 ---
 
 *This file lives at `references/phase2-build-plan.md` in the repo. Updated
