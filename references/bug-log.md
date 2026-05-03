@@ -8,6 +8,11 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Architecture / sync
 
+### Cross-player contamination — Nicole/Artem (2026-05-02)
+**Bug**: Nicole's `players/nicole` Firestore doc was overwritten with a copy of Artem's data (identical `qStats` keys + `lastSeen`, `totalAnswered`, `recentSessions[1..9]`); only one genuine 2026-05-02 quiz session and `coach_notes` survived.
+**Fix**: Restored from frozen RTDB baseline + the one genuine session. Daily Firestore backups now run via `.github/workflows/backup.yml` to a separate `backups` branch. `tools/_firestore.js` `fsSet` refuses player-root replaces without explicit opt-in.
+**Rule**: see `plans/data-integrity-plan.md` for the full prevention/recovery plan (P0 done, P1 + P2 + PWA root-cause audit queued).
+
 ### PUT vs PATCH — Firestore equivalent (s87)
 **Bug**: Firestore PATCH without `updateMask` replaces the entire document, wiping any field not in the request body — same family as RTDB's PUT-vs-PATCH issue from s72.
 **Fix**: PWA `fsMerge()` helper uses `updateMask.fieldPaths=field1&...` for partial updates.

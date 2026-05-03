@@ -24,9 +24,22 @@ Cleanup pass after the 2026-05-02 Nicole contamination postmortem.
 
 Live PWA loaded clean post-deploy: version badge `v20260503-t7`, no console errors, `exStartActive` / `exFinalize` / `exDeeplinkToast` / `exCleanupStale` all `undefined`.
 
-`firestore.rules` change is committed but not yet deployed — needs `firebase deploy --only firestore:rules` separately.
+`firestore.rules` change is committed but not yet deployed — needs `firebase deploy --only firestore:rules` separately. **Update**: deployed by Artem later in the session.
 
 Q count: 1,984 (unchanged) · Version: v20260503-t7
+
+### Session t7 follow-ups (no version bump — tooling/docs only)
+
+Nine commits after the deploy, all tooling and discipline:
+
+- **Daily Firestore backup pipeline (data-integrity P0)**. New `tools/backup_players.js` snapshots each player's doc + `exercises` + `coach_sessions` subcollections to `backups/YYYY-MM-DD/{player}.json`. `.github/workflows/backup.yml` switched from weekly to daily, points at the new script. Snapshots commit to the orphan `backups` branch (separate from main, not Pages-served). First snapshot pushed via manual trigger; cron fires 03:00 UTC daily. RTDB sunset (~2026-05-28) was the deadline.
+- **Schema-alignment Tracks 1+2+3.** `firestore-schema.md` now defines the canonical rich shape for `players/{name}/exercises/{ts}` (per-item `items[]`, `tta_stats`, `auto_suspected`, `matched_pattern_id`). `tools/log_exercise.js` accepts `items[]` with per-item validation, computes integrity flags at write time, defaults `source: cc_session`. `exercise-session/SKILL.md` directs CC to populate the same fields PWA Coach tab does (no asymmetry).
+- **Write-path defense (P2).** `tools/_firestore.js` `fsSet` now refuses player-root replaces unless explicitly opted in (`opts.allowPlayerReplace` or `ALLOW_PLAYER_REPLACE=1`). The 2026-05-02 contamination was a full-document replace; this guard catches that vector for any future tools/ caller.
+- **`get_all_players.js -S` flag** for stats review — fetches `exercises` and `coach_sessions` subcollections alongside player docs, surfaces `auto_suspected` and `tta_mean` in default summary so dubious sessions are visible at a glance. `stats-review` SKILL canonical command updated.
+- **Profile rule cherry-picked from a remote CC exercise session** (`5b54803`): Artem stems use operational/hallway register, not pitch-deck.
+- **`exercise-session` SKILL fetches `coach_notes` only**, not the full player doc (~150 KB qStats blew past the remote CC tool-output buffer). One-line fix.
+- **`exercise-session/SKILL.md` slimmed back under 600w cap** after the Track-1 expansion pushed it to 629w (CI failed; rich-shape JSON example moved to firestore-schema.md, SKILL retains capture rules only).
+- **Nicole's player doc restored** from the still-live RTDB (frozen since 2026-04-28 per s87). Contaminated Firestore values wiped, RTDB baseline (780 answered, 480 correct, 39 sessions, 481 qids) merged with the genuine 2026-05-02 session on top. `coach_notes` was preserved through contamination because it's only written by `update_coach_notes.js`, not the play loop.
 
 ---
 

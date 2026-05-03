@@ -43,6 +43,18 @@ to move.
 No auto-memory because workflow is mobile-first (auto-memory is laptop-only filesystem).
 See `coach-notes-schema.md`.
 
+### Don't move profile content to Firestore (t7)
+Considered moving the changeable parts of `family-profiles.md` (themes, authoring rules, learning goals) to Firestore for friction-free updates. Rejected. The high-cadence stuff is already in `coach_notes`; what's left in the file changes 5–10 times per quarter total across all 5 players. Two reasons to keep it: (a) git provides diff/blame/history that Firestore lacks; (b) the promotion rule (4-session persistence + intervention) is precisely the gate that prevented Nicole-style single-session noise from rewriting design intent. The friction is one merge per ~5 weeks via GitHub mobile or chat — a cost worth paying for the audit trail.
+
+### Hard-remove deeplinks over soft-deprecate (t7)
+Considered marking `?exlog=` / `?exstart=` / `?exupd=` / `?exfin=` deprecated and leaving the handlers in `index.html` for ~30 days. Rejected in favour of immediate removal: zero deeplink writes in 14 days of subcollection scans, claude.ai chat is now read-only-leaning, the handlers carry no operational benefit. Removed ~187 lines of code, eliminated `exercise_active` collection rule, simplified the canonical write paths to two (Coach tab + `tools/log_exercise.js`).
+
+### Daily backup, per-player file layout, orphan branch (t7)
+GHA backup workflow runs daily (was weekly), captures full subcollections (was player doc only), and writes one file per player per day at `backups/YYYY-MM-DD/{player}.json` on an orphan `backups` branch. Per-player matches the restore mental model (a future Nicole-style incident is a one-file diff). Orphan branch keeps backups out of GitHub Pages serving. Daily over weekly because the recovery worst-case is "one missing day" instead of "up to one week".
+
+### `fsSet` refuse-player-replace (t7)
+`tools/_firestore.js` now blocks `fsSet('players/{name}', ...)` unless explicitly opted in. The 2026-05-02 contamination was a full-document replace via the play loop; while the play loop doesn't go through `_firestore.js`, future tools/ scripts could trigger the same pattern. Defense-in-depth, with `opts.allowPlayerReplace` or `ALLOW_PLAYER_REPLACE=1` for legitimate restore use cases.
+
 ---
 
 ## Pedagogy

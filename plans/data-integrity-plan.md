@@ -24,9 +24,13 @@ Root cause: not confirmed. Most likely a PWA bug in the player-switch + write pa
 
 ---
 
-## P0 — Daily backup before RTDB sunsets
+## P0 — Daily backup before RTDB sunsets ✅ DONE (t7)
 
-Build a snapshot pipeline so a future contamination is recoverable from a local file rather than a soon-to-die legacy database.
+`tools/backup_players.js` ships, `.github/workflows/backup.yml` runs daily 03:00 UTC and commits to the orphan `backups` branch. Per-player layout: `backups/YYYY-MM-DD/{player}.json` includes the player doc + `exercises` + `coach_sessions` subcollections. First snapshot live as of 2026-05-03. P2 below also shipped (write-path defense in `_firestore.js`).
+
+The remaining items in this plan (P1 integrity check, P1 PWA root-cause audit) are still open.
+
+### Original plan
 
 ### Action
 
@@ -85,7 +89,11 @@ Either (a) the bug is found and fixed in `index.html`, or (b) it isn't, and we a
 
 ---
 
-## P2 — Schema validation in `tools/_firestore.js`
+## P2 — Schema validation in `tools/_firestore.js` ✅ DONE (t7)
+
+`fsSet` refuses `players/{name}` root replaces unless `opts.allowPlayerReplace` or `ALLOW_PLAYER_REPLACE=1`. Subcollection writes (`players/{name}/exercises/{ts}`, `coach_sessions/{sid}`) unaffected. The fsPatch warning ideas from the original plan were dropped — the existing dotted field-path pattern in `update_coach_notes.js` doesn't need extra guards.
+
+### Original plan
 
 A defensive layer inside our own write path. Doesn't help against PWA writes (they don't use this), but ensures `tools/` can't become a future contamination source.
 
