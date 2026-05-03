@@ -9,14 +9,14 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Reads
 
-- `node tools/get_all_players.js` — one call returns all 5 player docs (or use uploaded JSON if Artem pasted one)
+- `node tools/get_all_players.js -S` — all 5 player docs + their `exercises` and `coach_sessions` subcollections (or use uploaded JSON if Artem pasted one)
 - `references/family-profiles.md` — stable profile and focus areas
 - `references/coverage-matrix.md` — category targets, input share priorities
 - `references/coach-notes-schema.md` — update protocol and promotion rule
 
 ## Workflow
 
-**1. Pull stats.** Run `get_all_players.js`. For one player deep-dive: `get_player.js {name}`. Exercise subcollection isn't tool-wrapped yet — request a stats run only or ask user to paste history.
+**1. Pull stats.** Run `get_all_players.js -S` for all 5 docs + subcollections. For one player deep-dive: `get_player.js {name}`. Filter out `auto_suspected: true` sessions before pattern aggregation.
 
 **2. Coverage review per player** (mandatory). For each: category breakdown (count, level distribution, accuracy), type distribution, trends vs prior session if available, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error rate), quality flags (≥60% error across 3+ players).
 

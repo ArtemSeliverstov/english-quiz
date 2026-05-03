@@ -46,12 +46,18 @@ Used at the start of an exercise session to load player context (stats + coach_n
 ### `get_all_players.js` — fetch all 5 players in parallel
 
 ```bash
-node get_all_players.js                  # full data, all 5 players
-node get_all_players.js --summary        # top-level metrics only
+node get_all_players.js                          # full data, all 5 players
+node get_all_players.js --summary                # top-level metrics only
 node get_all_players.js --field coach_notes
+node get_all_players.js -S                       # add exercises + coach_sessions subcollections
+node get_all_players.js -S --full-items          # include raw items[]/messages[]
 ```
 
-Used at the start of a stats review.
+Used at the start of a stats review. Pass `--include-subcollections` (`-S`)
+to read Coach-tab and CC exercise activity — the player doc's
+`recentSessions` only captures legacy quiz-tab activity. Per-exercise
+summary surfaces `auto_suspected` and `tta_mean` so dubious sessions are
+visible without `--full-items`.
 
 Per-player parallel fetches — never `/players` bulk fetch (truncates silently;
 see `references/bug-log.md`).
