@@ -1,0 +1,145 @@
+{
+  "exercises": [
+    {
+      "id": "sp_anna_b11",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["double_consonant", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "необходимый, обязательный",
+      "prompt_definition_en": "needed; must be done",
+      "correct": "necessary",
+      "common_misspellings": [
+        { "pattern": "necesary", "feedback": "Close — but it's a double 'ss', not single 's'. The double letter is in the middle: ne-CES-sary." },
+        { "pattern": "neccessary", "feedback": "Close — only ONE 'c', then double 'ss'. Pattern: ne-c-essary, then double 's': ne-CES-sary." },
+        { "pattern": "necessery", "feedback": "Last syllable is '-ary', not '-ery'. Necess-ARY." }
+      ],
+      "example_sentence": "It is necessary to bring your passport.",
+      "fallback_feedback": "Spelled n-e-c-e-s-s-a-r-y. One 'c', double 's', ending '-ary'.",
+      "source": "predicted_l1_trap"
+    },
+    {
+      "id": "sp_anna_b12",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["double_consonant", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "другой, разный, не такой же",
+      "prompt_definition_en": "not the same",
+      "correct": "different",
+      "common_misspellings": [
+        { "pattern": "diferent", "feedback": "Close — but it's double 'ff' in the middle: di-FF-erent." },
+        { "pattern": "differente", "feedback": "No final 'e' in English. Just 'different'." },
+        { "pattern": "diffrent", "feedback": "Close — don't drop the 'e' in the middle: dif-fer-ent (three syllables)." }
+      ],
+      "example_sentence": "These two pictures look different.",
+      "fallback_feedback": "Spelled d-i-f-f-e-r-e-n-t. Double 'ff', then 'erent'.",
+      "source": "predicted_l1_trap"
+    },
+    {
+      "id": "sp_anna_b13",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["vowel_drop", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "интересный (что-то, что хочется узнать или посмотреть)",
+      "prompt_definition_en": "engaging; making you want to know more",
+      "correct": "interesting",
+      "common_misspellings": [
+        { "pattern": "intresting", "feedback": "Don't drop the second 'e' — it's IN-TER-EST-ing (four syllables, all vowels written)." },
+        { "pattern": "interestin", "feedback": "Missing final 'g'. The -ing ending always keeps the 'g': interestinG." },
+        { "pattern": "intersting", "feedback": "Missing the 'e' between 'inter' and 'sting'. Inter-EST-ing." }
+      ],
+      "example_sentence": "That book was really interesting.",
+      "fallback_feedback": "Spelled i-n-t-e-r-e-s-t-i-n-g. Four syllables: in-ter-est-ing. Don't drop the middle 'e'."
+    , "source": "predicted_l1_trap"
+    },
+    {
+      "id": "sp_anna_b14",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["loanword_ru_diverge", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "ресторан (место, где едят)",
+      "prompt_definition_en": "place where you go to eat a meal",
+      "correct": "restaurant",
+      "common_misspellings": [
+        { "pattern": "restorant", "feedback": "Russian 'ресторан' has 'o', but English 'restaurant' has 'AU' — silent 'u' after the 'a'." },
+        { "pattern": "restaraunt", "feedback": "Letters in wrong order — it's res-tau-rant (au, not au+a)." },
+        { "pattern": "restaurnt", "feedback": "Missing the 'a' before 'nt'. Spelled res-tau-r-A-nt." },
+        { "pattern": "restourant", "feedback": "It's 'au' (rest-AU-rant), not 'ou'." }
+      ],
+      "example_sentence": "We had dinner at an Italian restaurant.",
+      "fallback_feedback": "Spelled r-e-s-t-a-u-r-a-n-t. The tricky part is the silent 'u' after 'a': rest-AU-rant.",
+      "source": "predicted_l1_trap"
+    },
+    {
+      "id": "sp_anna_b15",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["british_us_variant", "loanword_ru_diverge", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "любимый (то, что нравится больше всего)",
+      "prompt_definition_en": "the one you like the best",
+      "correct": "favourite",
+      "common_misspellings": [
+        { "pattern": "favorit", "feedback": "Russian 'фаворит' is shorter. English needs 'favOURite' (British) or 'favorite' (American). Both end in '-ite'." },
+        { "pattern": "favourate", "feedback": "Ends in '-ite', not '-ate'. Fav-our-ITE." },
+        { "pattern": "favoirite", "feedback": "Letters in wrong order — it's 'favourite' (fav-OUR-ite), not 'favoirite'." },
+        { "pattern": "favorite", "feedback": "Accepted (American spelling). British/standard for our family is 'favourite' with 'u'." }
+      ],
+      "example_sentence": "Blue is my favourite colour.",
+      "fallback_feedback": "Spelled f-a-v-o-u-r-i-t-e (British) or f-a-v-o-r-i-t-e (American). Either works — but always ends in '-ite', never '-it' or '-ate'.",
+      "source": "predicted_l1_trap"
+    },
+    {
+      "id": "sp_anna_b16",
+      "type": "spelling_drill",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Spelling", "Vocabulary"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["loanword_ru_diverge", "silent_letter", "predicted_l1_trap"],
+      "created": "2026-05-03T11:05:00Z",
+      "version": 1,
+      "prompt_definition_ru": "удобный, комфортный",
+      "prompt_definition_en": "physically nice to wear, sit on, or be in",
+      "correct": "comfortable",
+      "common_misspellings": [
+        { "pattern": "komfortable", "feedback": "Starts with 'c', not 'k'. Russian 'комфортный' uses 'к', but English uses 'C': COM-fort-able." },
+        { "pattern": "comfortble", "feedback": "Don't drop the 'a'. It's com-fort-ABLE (three syllables, ending '-able')." },
+        { "pattern": "comforteble", "feedback": "Ends in '-able', not '-eble'. The suffix is always '-able' here." },
+        { "pattern": "confortable", "feedback": "Missing 'm' — it's COM-fort-able, not 'con-fort-able'." }
+      ],
+      "example_sentence": "This chair is very comfortable.",
+      "fallback_feedback": "Spelled c-o-m-f-o-r-t-a-b-l-e. Starts with 'c' (not 'k'), ends in '-able' (not '-eble').",
+      "source": "predicted_l1_trap"
+    }
+  ]
+}

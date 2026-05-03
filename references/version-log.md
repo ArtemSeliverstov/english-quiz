@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-03 · Library content — Anna russian_trap + spelling_drill expansion (no version bump)
+
+Stats-review-driven content batch for Anna. No engine change, content-only.
+
+- **russian_trap × 8** (`rt_anna_b01-b08`) — first items in this type for any player. Seeded by today's stats-review L1 calque cluster (4–5 sessions in last 7d): wait_for, listen_to, depend_on (preposition swaps), make_decision/do_homework (verb-noun collocations), on_last_week / on_next_week / in_a_week (time prepositions). Each item carries 2+ regex `common_errors`, explicit `calque_trap` field labelling the L1→L2 transfer mechanism, and short isolated prompts (3–6 words target) — different modality from translation drill which uses fuller sentences with context. Three of these surface forms (wait_for, listen_to, depend_on) already had translation items (tr_anna_b01-b03) and re-fired in stats anyway → russian_trap is the active-recall second exposure.
+- **spelling_drill +6 items** (`sp_anna_b11-b16`) — necessary, different, interesting, restaurant, favourite, comfortable. Sources: predicted L1 traps (Anna's `players/anna/spelling_log` is empty — Spell Help has not been used yet; switch sourcing once captures land). Brings Anna's spelling_drill total from 10 → 16, into the §4.5 plan target band of 15–20.
+- **Coverage now**: Anna translation 20, spelling_drill 16, article_drill 15, russian_trap 8. `_meta.last_authored: 2026-05-03T10:53:22Z`.
+- Drafts kept at `library_drafts/anna_russian_trap_b01-b08.json` and `library_drafts/anna_spelling_drill_b11-b16.json` for re-push or audit.
+
+Q count (quiz bank): 1,984 (unchanged) · No deploy.
+
+---
+
 ## 2026-05-03 · Session t7
 ### v20260503-t7 — Hard-remove deeplinks + data-flow doc
 

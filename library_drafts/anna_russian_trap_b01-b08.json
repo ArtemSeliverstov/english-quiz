@@ -1,0 +1,285 @@
+{
+  "exercises": [
+    {
+      "id": "rt_anna_b01",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "verb_no_prep_ru", "wait_for"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'жду + accusative' has no preposition; English 'wait' always takes 'for' before its object.",
+      "prompt_ru": "Жду тебя.",
+      "correct_answers": [
+        "I'm waiting for you",
+        "I am waiting for you",
+        "I'm waiting for you.",
+        "I am waiting for you."
+      ],
+      "common_errors": [
+        {
+          "id": "wait_no_for",
+          "pattern_label": "wait without 'for'",
+          "regex": "\\bwait(s|ing|ed)?\\s+(you|me|him|her|us|them|a\\s|an\\s|the\\s|my|your|his|our|their)",
+          "feedback": "✗ 'wait you' is a direct calque of Russian 'жду тебя'. English 'wait' always needs 'for' before the person/thing. ✓ 'wait FOR you'."
+        },
+        {
+          "id": "wait_after",
+          "pattern_label": "wait after (wrong prep)",
+          "regex": "\\bwait(s|ing|ed)?\\s+after\\b",
+          "feedback": "✗ 'wait after' — wrong preposition. The fixed phrase is 'wait FOR': wait for you, wait for the bus, wait for me."
+        }
+      ],
+      "fallback_feedback": "Two-word target: 'waiting for you'. The verb 'wait' always needs 'for' before its object — never drop it."
+    },
+    {
+      "id": "rt_anna_b02",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "verb_no_prep_ru", "listen_to"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'слушать + accusative' has no preposition; English 'listen' always takes 'to' before its object.",
+      "prompt_ru": "Слушай меня.",
+      "correct_answers": [
+        "Listen to me",
+        "Listen to me.",
+        "Please listen to me",
+        "Please listen to me."
+      ],
+      "common_errors": [
+        {
+          "id": "listen_no_to",
+          "pattern_label": "listen without 'to'",
+          "regex": "\\blisten(s|ing|ed)?\\s+(me|you|him|her|us|them|music|the)",
+          "feedback": "✗ 'listen me' is a direct calque of Russian 'слушай меня'. English 'listen' always needs 'to' before what/who you're listening to. ✓ 'listen TO me'."
+        },
+        {
+          "id": "listen_on",
+          "pattern_label": "listen on (wrong prep)",
+          "regex": "\\blisten(s|ing|ed)?\\s+on\\b",
+          "feedback": "✗ 'listen on' — wrong preposition. The fixed phrase is 'listen TO': listen to me, listen to music, listen to the news."
+        }
+      ],
+      "fallback_feedback": "Three-word target: 'Listen to me'. 'Listen' always needs 'to' before the object — no exceptions."
+    },
+    {
+      "id": "rt_anna_b03",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "preposition_swap", "depend_on"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'зависит от' translates literally to 'depend from' — the fixed English preposition is always 'on', never 'from' or 'of'.",
+      "prompt_ru": "Это зависит от погоды.",
+      "correct_answers": [
+        "It depends on the weather",
+        "It depends on the weather.",
+        "That depends on the weather",
+        "That depends on the weather."
+      ],
+      "common_errors": [
+        {
+          "id": "depend_from",
+          "pattern_label": "depend from (calque)",
+          "regex": "\\bdepend(s|ing|ed)?\\s+from\\b",
+          "feedback": "✗ 'depend from' — direct calque of Russian 'зависеть от'. English fixes the preposition: 'depend ON'. Always 'on'."
+        },
+        {
+          "id": "depend_of",
+          "pattern_label": "depend of",
+          "regex": "\\bdepend(s|ing|ed)?\\s+of\\b",
+          "feedback": "✗ 'depend of' is wrong. The fixed preposition is 'depend ON' — never 'of', never 'from'."
+        }
+      ],
+      "fallback_feedback": "Target: 'It depends on the weather'. 'Depend' always pairs with 'on' in English — the Russian 'от' does not transfer."
+    },
+    {
+      "id": "rt_anna_b04",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Vocabulary", "Collocations"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["calque", "verb_noun_collocation", "make_decision"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'принять решение' uses 'take' literally; English collocation is 'MAKE a decision' (British 'take a decision' exists but is rare and formal — for B1 use 'make').",
+      "prompt_ru": "Мне нужно принять решение.",
+      "correct_answers": [
+        "I need to make a decision",
+        "I need to make a decision.",
+        "I have to make a decision",
+        "I have to make a decision."
+      ],
+      "common_errors": [
+        {
+          "id": "take_decision",
+          "pattern_label": "take a decision (calque)",
+          "regex": "\\btake\\s+(a\\s+|the\\s+|my\\s+)?decision\\b",
+          "feedback": "✗ 'take a decision' is a direct calque of 'принять решение'. The standard English collocation is 'MAKE a decision'. (British formal sometimes uses 'take', but 'make' is the safe default.)"
+        },
+        {
+          "id": "do_decision",
+          "pattern_label": "do a decision",
+          "regex": "\\b(do|did|done|doing|does)\\s+(a\\s+|the\\s+)?decision\\b",
+          "feedback": "✗ 'do a decision' — wrong verb. English uses 'MAKE a decision', never 'do'."
+        }
+      ],
+      "fallback_feedback": "Target: 'make a decision' (not 'take' or 'do'). Russian 'принять решение' uses 'take', but English fixes this collocation with 'make'."
+    },
+    {
+      "id": "rt_anna_b05",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Vocabulary", "Collocations"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["calque", "verb_noun_collocation", "do_homework"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'делать домашнее задание' uses 'делать' (do/make); English collocation is 'DO homework', not 'make homework'.",
+      "prompt_ru": "Я делаю домашнее задание.",
+      "correct_answers": [
+        "I'm doing my homework",
+        "I am doing my homework",
+        "I'm doing my homework.",
+        "I do my homework",
+        "I'm doing homework"
+      ],
+      "common_errors": [
+        {
+          "id": "make_homework",
+          "pattern_label": "make homework (calque)",
+          "regex": "\\b(make|making|makes|made)\\s+(my\\s+|the\\s+|a\\s+)?homework\\b",
+          "feedback": "✗ 'make homework' — Russian 'делать' splits into 'make' (create) vs 'do' (perform). For homework, the fixed verb is 'DO': 'do my homework', 'doing homework'."
+        },
+        {
+          "id": "homework_plural",
+          "pattern_label": "homeworks (plural)",
+          "regex": "\\bhomeworks\\b",
+          "feedback": "✗ 'homeworks' — 'homework' is uncountable in English. No plural form: 'do my homework' (no -s)."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm doing my homework'. Use 'DO homework' (not 'make'). Note: 'homework' is uncountable — never 'homeworks'."
+    },
+    {
+      "id": "rt_anna_b06",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "time_preposition", "last_week"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'на прошлой неделе' uses 'на' (on); English uses NO preposition with 'last week' / 'last month' / 'last year'.",
+      "prompt_ru": "Я ходила туда на прошлой неделе.",
+      "correct_answers": [
+        "I went there last week",
+        "I went there last week.",
+        "I was there last week",
+        "I was there last week."
+      ],
+      "common_errors": [
+        {
+          "id": "on_last_week",
+          "pattern_label": "on last week (calque)",
+          "regex": "\\bon\\s+last\\s+(week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\\b",
+          "feedback": "✗ 'on last week' is a direct calque of 'на прошлой неделе'. English uses NO preposition before 'last week/month/year': just 'last week', 'last Monday'."
+        },
+        {
+          "id": "in_last_week",
+          "pattern_label": "in last week",
+          "regex": "\\bin\\s+last\\s+(week|month|year)\\b",
+          "feedback": "✗ 'in last week' — also wrong. English uses NO preposition with 'last week': 'I went there LAST WEEK' (nothing before 'last')."
+        }
+      ],
+      "fallback_feedback": "Target: 'last week' (no preposition). English drops the preposition entirely with last/next/this + week/month/year."
+    },
+    {
+      "id": "rt_anna_b07",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "time_preposition", "next_week"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'на следующей неделе' uses 'на' (on); English uses NO preposition with 'next week' / 'next month' / 'next year'.",
+      "prompt_ru": "Увидимся на следующей неделе.",
+      "correct_answers": [
+        "See you next week",
+        "See you next week.",
+        "I'll see you next week",
+        "I will see you next week"
+      ],
+      "common_errors": [
+        {
+          "id": "on_next_week",
+          "pattern_label": "on next week (calque)",
+          "regex": "\\bon\\s+next\\s+(week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\\b",
+          "feedback": "✗ 'on next week' is a direct calque of 'на следующей неделе'. English uses NO preposition: 'see you NEXT WEEK'."
+        },
+        {
+          "id": "in_next_week",
+          "pattern_label": "in next week",
+          "regex": "\\bin\\s+next\\s+(week|month|year)\\b",
+          "feedback": "✗ 'in next week' — wrong. English uses NO preposition with 'next week': just 'next week', 'next month'."
+        }
+      ],
+      "fallback_feedback": "Target: 'next week' (no preposition). Same rule as 'last week' — English drops the preposition with next/last/this + week/month/year."
+    },
+    {
+      "id": "rt_anna_b08",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Prepositions", "Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["calque", "time_preposition", "in_a_week", "article_drop"],
+      "created": "2026-05-03T11:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'через неделю' translates as 'in a week' — English requires the indefinite article 'a' before the time period (Russian has no article). Common error: 'in week' (article drop).",
+      "prompt_ru": "Мы вернёмся через неделю.",
+      "correct_answers": [
+        "We'll be back in a week",
+        "We will be back in a week",
+        "We'll be back in a week.",
+        "We'll return in a week"
+      ],
+      "common_errors": [
+        {
+          "id": "in_week_no_article",
+          "pattern_label": "in week (article drop)",
+          "regex": "\\bin\\s+week\\b",
+          "feedback": "✗ 'in week' is missing the article. English requires 'a' before the time period: 'in A week', 'in A month', 'in AN hour'. Russian 'через неделю' has no article — English does."
+        },
+        {
+          "id": "after_week",
+          "pattern_label": "after a week (wrong prep for future)",
+          "regex": "\\bafter\\s+(a\\s+)?week\\b",
+          "feedback": "✗ 'after a week' usually marks a past sequence ('after a week, he left'). For future ('through/in N time from now'), use 'in a week': 'We'll be back IN a week'."
+        }
+      ],
+      "fallback_feedback": "Target: 'in a week' (with 'a'). English needs the indefinite article before the time period — Russian doesn't, but English always does."
+    }
+  ]
+}
