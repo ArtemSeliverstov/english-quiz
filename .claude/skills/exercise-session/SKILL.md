@@ -28,41 +28,13 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **5. Get player feedback.** One short sentence for `recent_observations`.
 
-**6. Persist.** Always preview the planned writes in human-readable form first — date, type, topic, score, errors as prose, observation as a quoted sentence. Never show raw JSON to the player at preview. Build JSON internally only after approval.
+**6. Persist.** Preview the planned writes in human-readable form first — date, type, topic, score, errors as prose, observation as a quoted sentence. Never show raw JSON at preview.
 
-Build the rich shape — `source: "cc_session"`, plus `items[]` with one entry per scored item. **Populate every field that's not legitimately N/A** so CC and Coach-tab data align:
+Build the rich shape per `references/firestore-schema.md`: `source: "cc_session"` and one `items[]` entry per scored item. CC-specific capture:
 
-```jsonc
-{
-  "exercise": "translation",
-  "topic": "RU→EN prepositions",
-  "level": "B2",
-  "total": 8,
-  "correct": 5,
-  "source": "cc_session",
-  "items": [
-    {
-      "exercise_id": null,                   // null is correct for CC (no library version)
-      "submitted_answer": "I have been waiting...",
-      "correct": true,
-      "matched_pattern_id": "preposition_for_duration",  // wrong items: the pattern slug
-      "time_to_answer_ms": 4200,             // delta from when the item was shown
-      "exercise_version": null,              // null is correct for CC-authored items
-      "escalation_used": false
-    }
-  ],
-  "categories": ["Prepositions"],
-  "error_types": ["preposition_calque"],
-  "errors": ["arrived to → arrived at (item 2)"]
-}
-```
-
-**Capture rules**:
-- `time_to_answer_ms`: at session start, record `Date.now()` via Bash (`node -e 'console.log(Date.now())'`); after each user reply, capture `Date.now()` again and store the delta. Rough is fine — `auto_suspected` only fires below 500ms mean.
-- `matched_pattern_id`: when an item is wrong, set a snake_case slug describing the error. Use the same vocabulary as `error_types[]` aggregation (e.g. `a_the_swap`, `dropped_article`, `wait_no_for`, `take_decision`). Same slug per-item; the union lands in `error_types[]`.
-- `exercise_id`, `exercise_version`: null for CC-authored items — these track library versions, which CC sessions don't use.
-
-Schema reference: `references/firestore-schema.md`.
+- `time_to_answer_ms`: `Date.now()` via Bash at item start + after the reply; rough is fine (auto_suspected uses 500ms threshold).
+- `matched_pattern_id` (wrong items): snake_case slug, same vocabulary as `error_types[]` (e.g. `a_the_swap`, `wait_no_for`).
+- `exercise_id`, `exercise_version`: `null` — these point at library versions; CC items don't have them.
 
 ```bash
 node tools/log_exercise.js {name} <exercise.json>     # exercises/{ts}
