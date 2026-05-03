@@ -85,6 +85,7 @@ then this section's amendments and additions.
 | **PV2** (CC picks gap/input/MCQ mix per PV based on existing per-category input share table and observed weakness) | CC picks the type mix per PV per the PV ladder rebalance specification (§4.2), weighted toward recognition rungs. The original lock pointed toward more input items where stuck patterns lived; the rebalance recognizes that those input failures are downstream of a missing recognition substrate, and the right intervention is more MCQ items, not more input items. | The 3.4% MCQ → 32% input inverted pyramid (Apr 30 status log) is a substrate problem, not a retrieval-practice problem. Adding more input drills on a thin recognition foundation perpetuates the production gap. |
 | **A1** (Hybrid: pre-generated default for family + Free Write live AI + escalate-to-AI button. Artem can use either CC OR the Worker path. Library content remains family-only.) | Carries forward unchanged. Phase 2D adds player-specific scoping of *which* library content surfaces for which learner-shell player via the active window model (§4.1). Library content is still family-only in the sense that Artem doesn't read from it; the change is intra-family scoping. | Active windows are about player-side surfacing, not library construction. |
 | **A6** (§4.4 primary action routing was Coach-only — Translation Drill / Spelling Drill / Free Write fallback) | Quiz inserted as priority step 3 (between Spelling Drill and Free Write). Quiz uses Smart mode + `applyLearnerWindowFilter` so the pool respects `learning_path.active_categories` and `level_cap` automatically. Fresh Translation Drill removed from primary routing — still accessible via "Practice something else →" picker. Resume-partial-Translation stays at top priority (a commitment in flight is more urgent than a fresh default). | Coach has 10–30 items per family-shell player; Quiz has ~2,000 questions filtered to the active window. Treating Coach as the primary daily practice burns through library content in days, leaving Free Write as the default — a worse experience than mixed-format Quiz. Coach is correctly framed as targeted intervention (calque drills, orthographic fragility) layered on top of Quiz background practice. |
+| **A7** (§4.4 single "Start practice" button — A6 had it routing primarily to Quiz) | Two buttons on the learner-shell landing instead of one. **Primary (gold) "Start practice"** routes to Coach exercises by priority order (translation → article_drill → particle_sort → error_correction → spelling_drill), with Free Write as the always-available fallback. **Secondary (subtle) "Start quiz"** routes directly to the Smart-mode quiz that A6 had wired into the primary path. **Tertiary text-link "Practice something else →"** stays as the fine-grained Coach picker escape hatch. | A6 was supply-side reasoning: rationing Coach use against Quiz capacity. Real-life signal from the family contradicts it — Quiz is the *boring* path; the engagement-positive surfaces are Free Write and the chip-UX drills. Engagement trumps supply, because if the player stops opening the app, supply doesn't matter. The two-button layout keeps Quiz one tap away (so A6's supply concern is mitigated, not ignored), and lets the player self-route to drill mode when they want it instead of being silently routed there as the default. The supply problem is the right thing to fix by authoring more Coach content faster (already on §4.5/§4.6/§4.7 roadmap), not by burying the engaging surface behind a click. |
 
 ### 3.2 New locks for Phase 2D
 
@@ -320,10 +321,12 @@ preserved unchanged; learner shell is additive rendering branches.
 
 Three vertical zones, top to bottom:
 
-*Zone 1 — Greeting and primary action.*
+*Zone 1 — Greeting and primary actions.*
 - Top line: "Hi {name} 👋" (or themed greeting for Nicole, e.g., emoji-rich)
-- Single large button: "Start practice"
-- Tapping routes intelligently per the routing logic below
+- **Primary button (gold) "Start practice"** — routes to Coach exercises (engaging surface). Hint: "free write, drills — we'll pick"
+- **Secondary button (subtle) "Start quiz"** — routes directly to Smart-mode quiz (10 grammar questions). Hint: "10 grammar questions"
+- **Tertiary text link "Practice something else →"** — opens Coach picker for fine-grained type selection
+- Two-button split locked in §3.1 A7. The default is the engaging surface; quiz is one tap away when the player wants drill.
 
 *Zone 2 — Family pull (D11).*
 - "Practicing today: [name1, name2, ...]" with small avatars/initials
@@ -342,24 +345,26 @@ Three vertical zones, top to bottom:
 No tabs visible at top level. Overflow menu (three lines or "More" in a
 corner) reveals: history, achievements, settings, switch player.
 
-**Primary action routing logic**:
+**Primary action routing logic** (revised per §3.1 A7, t6):
 
-When the player taps "Start practice", the system picks the next exercise
-in this priority order:
+When the player taps **"Start practice"**, the system picks a Coach
+exercise in this priority order:
 
-1. If there's an unfinished Translation Drill set (partial, not finished),
-   resume it.
-2. If Spell Help has captured ≥5 unique words since the last Spelling Drill
-   session, offer Spelling Drill.
-3. If the player hasn't done a translation set today AND active window
-   contains categories with translation library content, start a
-   Translation Drill set.
-4. Otherwise, offer Free Write with a themed starter prompt.
+1. Resume in-progress Translation Drill (commitment in flight).
+2. Spelling Drill if Spell Help captured ≥5 words since last drill.
+3. Iterate `[translation, article_drill, particle_sort, error_correction, spelling_drill]` —
+   probe library count for `target_player == currentPlayer || 'all'`,
+   start the first type with items available.
+4. Free Write fallback (always available, live AI).
+5. Last resort: Quiz (only if Free Write is unavailable).
 
-The system does not ask the player to choose. It picks. The player can
-override via a small "Practice something else" link below the primary
-button, which reveals the Coach picker (filtered to active window
-content only).
+When the player taps **"Start quiz"**, the system goes directly to a
+Smart-mode quiz of 10 questions filtered by `learning_path.active_categories`
++ `level_cap`. Empty pool falls back to Free Write so the player isn't
+stranded.
+
+The "Practice something else →" link still opens the Coach picker for
+explicit type selection.
 
 **Coach picker (learner shell)**:
 
@@ -2620,6 +2625,120 @@ particle_sort 15, error_correction 15. Coverage by player picks up
   remaining ~7 cross-player quiz Q fixes (excluding mc09/mc12)
 - §4.4 polish: overflow menu, active-window-aware Coach picker filter,
   mid-quiz exit affordance for learner shell
+
+### v20260502-t6 — §4.4 two-button landing (engagement-first; A7 amendment)
+
+A6 (t1) put Quiz on the primary "Start practice" button as the daily default.
+Real-life signal from the family: Quiz is the boring path; Free Write and the
+chip-UX drills are what they actually want to open. **A7 (this session) splits
+the landing into two buttons** — primary "Start practice" → Coach; secondary
+"Start quiz" → Quiz. Quiz stays one tap away (so A6's supply concern is
+mitigated), but it's no longer the silent default.
+
+**Shipped — engineering (`index.html` + `sw.js` only)**:
+
+1. **HTML**: added `#lh-quiz` button between `#lh-primary` and the
+   `Practice something else →` text link. Wires to `homeStartQuizFromHome()`.
+2. **CSS**: new `.lh-secondary` class — full-width button, surface background
+   + 1px border, slightly muted vs primary (gold gradient). Same hover
+   pattern (translate-up, accent border on hover). Plus `.lh-secondary-hint`
+   for the small subtitle.
+3. **`homeStartPractice` restructured**. Routing is now Coach-priority:
+   1. Resume partial Translation Drill
+   2. Spelling Drill (Spell Help threshold ≥5)
+   3. **Iterate `[translation, article_drill, particle_sort, error_correction, spelling_drill]`** —
+      probe `fsList(...)` to count items for `target_player == currentPlayer || 'all'`,
+      start the first type with non-zero items
+   4. Free Write fallback (always available)
+   5. Last resort: Quiz (only if Free Write unavailable)
+4. **`homeStartQuizFromHome()`** — new wrapper for the secondary button.
+   Hides home + tabs, calls existing `homeStartQuiz()` from t1, falls back
+   to Free Write if pool empty so the button never strands the player.
+5. **Hint copy**: primary hint = "free write, drills — we'll pick"; quiz
+   hint = "10 grammar questions". Sets the mental model on first sight.
+
+**Routing-loop alert-suppression**:
+
+The naïve "iterate types and call `coachStartType`" approach would stack
+five `alert('Could not load exercises')` dialogs in sequence whenever
+library reads fail (e.g. firestore.rules block — see Open items below).
+Solution: **probe library counts directly via `fsList` with try/catch
+before calling `coachStartType`**. Skip type silently when probe fails or
+returns 0 items. Only call `coachStartType` once we know it has items —
+and treat anything other than `=== true` as failure (`undefined` was
+silently exiting the loop on the first 403 in the initial implementation,
+caught during preview verify).
+
+**Verified end-to-end via preview probe (Ernest)**:
+
+- Home renders both buttons. Primary "Start practice" + hint, secondary
+  "Start quiz" + hint, tertiary "Practice something else →" link. ✓
+- "Start quiz" tap → quiz tab visible, home hidden, `sessionQs.length === 10`,
+  `mode === 'smart'` (existing `homeStartQuiz` behaviour from t1, unchanged). ✓
+- "Start practice" tap with healthy `fsList` (mocked to return 10 Ernest
+  translation items) → Coach tab visible, `coachState.type === 'translation'`,
+  `plannedTotal === 10`, `pool.length === 9` (popped first item). ✓
+- "Start practice" tap with all `fsList(exercises_library/...)` returning
+  HTTP 403 (the current live state — see Open items below) → loop probes
+  all 5 types, all skip silently, falls through to Free Write fallback,
+  `coachState.type === 'free_write'`, `fwSessionId` set. No alerts shown. ✓
+- Empty-pool "Start quiz" path falls back to Free Write same way (so the
+  secondary button never strands the player either). ✓
+
+**Pre-deploy**:
+- syntax OK, transform audit OK (46 transforms unchanged), lint_questions
+  OK (1,984 questions clean), version-string consistency OK (v20260502-t6
+  in HTML meta + HTML badge + sw.js cache key).
+
+**Decisions called inline** (locked as A7 in §3.1):
+
+- **Primary = Coach, secondary = Quiz** — engagement-first front door.
+  A6's supply argument was content-economics; the real signal is that Quiz
+  silently routing as the default suppresses engagement.
+- **Probe before invoke** for the COACH_PRIORITY iteration — avoids alert
+  cascade when library reads fail.
+- **Both buttons fall back to Free Write when their primary path fails** —
+  no dead-end taps. Free Write is the always-available floor.
+- **Hint copy is action-led, not feature-led** ("we'll pick", "10 grammar
+  questions"), matches the simple-card-language pattern from setup screens.
+
+**Acceptance state for §4.4**:
+- ✅ Two-button landing (this session)
+- ✅ Active-window-aware Quiz (s95 + t1)
+- ✅ Coach picker with type-aware routing (s95–s100)
+- ⏳ Active-window-aware Coach picker filter (filter buttons by
+  `active_categories` membership) — still queued
+- ⏳ Overflow menu (history / achievements / settings / switch player)
+  — still queued
+- ⏳ Mid-quiz exit affordance (still no escape from a 10-question quiz
+  short of refresh; bounded but worth revisiting)
+
+**Open items surfaced (not introduced) by this session**:
+
+- **`firestore.rules` 403 on `exercises_library/...`**. The t5 rules update
+  added `match /exercises_library/{document=**} { allow read, write: if false; }`
+  which blocks the PWA Coach tab from listing library content. Comment in
+  `firestore.rules` says "writes happen via tools/push_library.js with a
+  service account if needed" but `push_library.js` uses anonymous REST
+  writes via `_firestore.js`, not a service account — so writes will also
+  break once these rules are deployed. The `(deployed separately via
+  firebase CLI)` note in the t5 commit message suggests the rules may not
+  be live yet; need to confirm before next deploy. **Fix needed before
+  shipping any Coach work**: change to `allow read: if true; allow write:
+  if false;` so the PWA can list items and `tools/push_library.js` is
+  the controlled-write path (rule trusts the open-write convention for
+  authoring; reads were never the threat).
+
+**Next session candidates**:
+
+- **Fix `firestore.rules` `exercises_library` read access** — gating issue
+  for any future Coach work. Open `read: true`, leave `write: false` (or
+  open) per the threat model in the file header.
+- §4.3 Batch 1.6 — Nicole article_drill + remaining cross-player quiz Q
+  fixes
+- particle_sort items for Anna (~15, B1, themed)
+- §4.4 polish: overflow menu, active-window-aware Coach picker filter,
+  mid-quiz exit
 
 ---
 
