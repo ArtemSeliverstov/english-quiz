@@ -112,10 +112,10 @@ firestore_query("players/{playerName}/exercises", orderBy: "date desc", limit: 2
 | `exercise_id` | yes | Library item id, or `null` for CC-authored |
 | `submitted_answer` | yes | What the player typed/picked. Field name is canonical — old `?exfin=` deeplinks used `given`; not used anymore |
 | `correct` | yes | Boolean |
-| `matched_pattern_id` | no | When the marker fired a known pattern |
-| `time_to_answer_ms` | no | Coach tab always sets it; CC may approximate from chat turn timestamps |
-| `exercise_version` | no | For library items, the version of the prompt at answer time |
-| `escalation_used` | no | True when the player used the "Hmm, explain more" path |
+| `matched_pattern_id` | yes on wrong items | Snake_case slug. Aligned vocabulary across surfaces — same slugs as `error_types[]` (e.g. `a_the_swap`, `dropped_article`, `wait_no_for`). PWA library items carry the slug in `blanks[].pattern`. |
+| `time_to_answer_ms` | yes | Coach tab measures it directly; CC captures via Bash `Date.now()` calls at item boundaries. Rough timings (sub-second imprecision) are fine — `auto_suspected` uses a 500ms threshold. |
+| `exercise_version` | when applicable | Library items: the version of the prompt at answer time. CC-authored items: `null` (no library version exists). |
+| `escalation_used` | yes | True when the player used the "Hmm, explain more" path. CC sessions: always `false` (no escalate path). |
 
 **Integrity flags**:
 - `tta_stats` is computed at write time when `items[]` has timing on ≥5 items (ignored otherwise).

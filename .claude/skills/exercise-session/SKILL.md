@@ -30,7 +30,7 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **6. Persist.** Always preview the planned writes in human-readable form first — date, type, topic, score, errors as prose, observation as a quoted sentence. Never show raw JSON to the player at preview. Build JSON internally only after approval.
 
-Build the rich shape (`source: "cc_session"`, plus `items[]` with one entry per scored item):
+Build the rich shape — `source: "cc_session"`, plus `items[]` with one entry per scored item. **Populate every field that's not legitimately N/A** so CC and Coach-tab data align:
 
 ```jsonc
 {
@@ -42,13 +42,14 @@ Build the rich shape (`source: "cc_session"`, plus `items[]` with one entry per 
   "source": "cc_session",
   "items": [
     {
-      "exercise_id": null,                   // CC-authored
+      "exercise_id": null,                   // null is correct for CC (no library version)
       "submitted_answer": "I have been waiting...",
       "correct": true,
-      "time_to_answer_ms": 4200,             // optional: chat turn delta
+      "matched_pattern_id": "preposition_for_duration",  // wrong items: the pattern slug
+      "time_to_answer_ms": 4200,             // delta from when the item was shown
+      "exercise_version": null,              // null is correct for CC-authored items
       "escalation_used": false
     }
-    // ...
   ],
   "categories": ["Prepositions"],
   "error_types": ["preposition_calque"],
@@ -56,7 +57,12 @@ Build the rich shape (`source: "cc_session"`, plus `items[]` with one entry per 
 }
 ```
 
-Schema details: `references/firestore-schema.md` (canonical rich shape).
+**Capture rules**:
+- `time_to_answer_ms`: at session start, record `Date.now()` via Bash (`node -e 'console.log(Date.now())'`); after each user reply, capture `Date.now()` again and store the delta. Rough is fine — `auto_suspected` only fires below 500ms mean.
+- `matched_pattern_id`: when an item is wrong, set a snake_case slug describing the error. Use the same vocabulary as `error_types[]` aggregation (e.g. `a_the_swap`, `dropped_article`, `wait_no_for`, `take_decision`). Same slug per-item; the union lands in `error_types[]`.
+- `exercise_id`, `exercise_version`: null for CC-authored items — these track library versions, which CC sessions don't use.
+
+Schema reference: `references/firestore-schema.md`.
 
 ```bash
 node tools/log_exercise.js {name} <exercise.json>     # exercises/{ts}
