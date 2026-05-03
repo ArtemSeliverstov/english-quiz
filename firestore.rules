@@ -53,10 +53,17 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    // Exercise library (admin-managed). Locked at the rules layer; writes
-    // happen via tools/push_library.js with a service account if needed.
+    // Exercise library. Reads must stay open — the PWA Coach picker lists
+    // library content via fsList from the browser without auth. Writes stay
+    // open too because tools/push_library.js writes via the same anonymous
+    // REST path. Threat surface: anyone with the project ID can wipe library
+    // content. Acceptable because (a) library_drafts/*.json in the repo is
+    // the source of truth — every push is reproducible from disk, and
+    // (b) the weekly backups workflow snapshots state. Re-evaluate if
+    // push_library.js migrates to a service-account write path; at that
+    // point lock writes to `if false`.
     match /exercises_library/{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
 
     match /{document=**} {
