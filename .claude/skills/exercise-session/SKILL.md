@@ -10,7 +10,7 @@ Structured supplementary exercise session for one named player. Family path (Ann
 ## Reads
 
 - `references/family-profiles.md` — player's level, focus, communication style, themes
-- `node tools/get_player.js {name}` — stats + `coach_notes`
+- `node tools/get_player.js {name} --field coach_notes` — coach_notes only; raw qStats (~150 KB for Artem) is not needed — `weak_patterns` is already the distilled signal
 - `references/exercise-types.md` — type definitions and selection criteria
 - `references/weekly-slots.md` — Artem only
 
