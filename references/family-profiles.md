@@ -36,6 +36,7 @@ accuracy alongside being a player.
 **Exercise context themes**:
 - Default: business meetings, O&G operations, finance, strategy, Bahrain settings
 - Cycling and sports as recurring fallback
+- Avoid pitch-deck register (step-change, unit costs across upstream, strategy review). Use operational/hallway English — "never got around to it last quarter," "contractor's pushing back," "let's crack on."
 - If Artem mentions travel at session start ("we're in Turkey this week"), shift to location-appropriate scenarios for that session
 
 **Weekly slot plan**: see `weekly-slots.md`.
