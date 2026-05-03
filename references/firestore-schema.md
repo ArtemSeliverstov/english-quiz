@@ -67,6 +67,62 @@ Subcollection. One document per supplementary exercise session. `timestamp` is `
 firestore_query("players/{playerName}/exercises", orderBy: "date desc", limit: 20)
 ```
 
+#### Canonical rich shape
+
+```jsonc
+{
+  "exercise": "translation",
+  "topic": "RU→EN prepositions",
+  "level": "B2",
+  "total": 8,
+  "correct": 5,
+  "date": "2026-04-29",
+  "source": "coach_tab",          // or "cc_session"
+  "partial": false,
+  "planned_total": 8,
+
+  "items": [
+    {
+      "exercise_id": "tr_anna_b04",   // library id, or null for CC-authored
+      "submitted_answer": "I have been waiting for you...",
+      "correct": true,
+      "matched_pattern_id": "preposition_for_duration",
+      "time_to_answer_ms": 4200,
+      "exercise_version": 1,
+      "escalation_used": false
+    }
+  ],
+
+  "categories": ["Prepositions"],
+  "error_types": ["preposition_calque"],
+  "errors": ["arrived to → arrived at (item 2)"],
+
+  "tta_stats": { "mean": 4100, "median": 3800, "min": 1200, "max": 9400, "n": 8 },
+  "auto_suspected": false,
+
+  "chat_url": "https://claude.ai/chat/abc123",
+  "meta": {}
+}
+```
+
+**Per-item fields** (inside `items[]`):
+
+| Field | Required | Notes |
+|---|---|---|
+| `exercise_id` | yes | Library item id, or `null` for CC-authored |
+| `submitted_answer` | yes | What the player typed/picked. Field name is canonical — old `?exfin=` deeplinks used `given`; not used anymore |
+| `correct` | yes | Boolean |
+| `matched_pattern_id` | no | When the marker fired a known pattern |
+| `time_to_answer_ms` | no | Coach tab always sets it; CC may approximate from chat turn timestamps |
+| `exercise_version` | no | For library items, the version of the prompt at answer time |
+| `escalation_used` | no | True when the player used the "Hmm, explain more" path |
+
+**Integrity flags**:
+- `tta_stats` is computed at write time when `items[]` has timing on ≥5 items (ignored otherwise).
+- `auto_suspected: true` when `tta_stats.mean < 500ms` over ≥5 items — flags suspected auto-play / answer-leak.
+
+**Sparse legacy**: pre-Track-3 rows from `tools/log_exercise.js` may omit `items[]`, `tta_stats`, `auto_suspected`. Readers treat absence as legacy, not a violation.
+
 ---
 
 ### `players/{playerName}/coach_sessions/{sessionId}`

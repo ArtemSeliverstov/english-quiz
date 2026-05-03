@@ -30,12 +30,40 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **6. Persist.** Always preview the planned writes in human-readable form first — date, type, topic, score, errors as prose, observation as a quoted sentence. Never show raw JSON to the player at preview. Build JSON internally only after approval.
 
+Build the rich shape (`source: "cc_session"`, plus `items[]` with one entry per scored item):
+
+```jsonc
+{
+  "exercise": "translation",
+  "topic": "RU→EN prepositions",
+  "level": "B2",
+  "total": 8,
+  "correct": 5,
+  "source": "cc_session",
+  "items": [
+    {
+      "exercise_id": null,                   // CC-authored
+      "submitted_answer": "I have been waiting...",
+      "correct": true,
+      "time_to_answer_ms": 4200,             // optional: chat turn delta
+      "escalation_used": false
+    }
+    // ...
+  ],
+  "categories": ["Prepositions"],
+  "error_types": ["preposition_calque"],
+  "errors": ["arrived to → arrived at (item 2)"]
+}
+```
+
+Schema details: `references/firestore-schema.md` (canonical rich shape).
+
 ```bash
 node tools/log_exercise.js {name} <exercise.json>     # exercises/{ts}
 node tools/update_coach_notes.js {name} <patch.json>  # if patterns evolved
 ```
 
-The log script validates the canonical exercise type. The notes script handles FIFO-cap on `recent_observations` and sets `last_updated` automatically. See `tools/README.md` and `references/coach-notes-schema.md`.
+`log_exercise.js` validates the per-item shape, computes `tta_stats` and `auto_suspected` at write time. Sparse rows (no `items[]`) are accepted with a warning during transition. The notes script handles FIFO-cap on `recent_observations` automatically. See `tools/README.md` and `references/coach-notes-schema.md`.
 
 ## When not to run
 
