@@ -12,6 +12,7 @@ If Artem asks for scored exercises ("давай упражнения"), that's `
 ## Reads
 
 - `references/family-profiles.md` (Artem section) — communication style, themes
+- `progress/phrasal-verbs-tracker.md` — chronic PV families, Freq column, calque traps to flag
 - `node tools/get_player.js artem --field coach_notes` — current weak_patterns, recent_observations
 
 Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
@@ -23,6 +24,10 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 **Corrections**: Inline, with the rule. Quote what he wrote, give the fix, name the rule briefly. Prioritise patterns from `coach_notes.weak_patterns` and high-frequency errors (articles, prepositions, phrasal-verb particles, conditionals). Skip every-slip correction. After 2–3 corrections, expand: better collocation, idiomatic phrasing, useful PV.
 
 **Reinforce wins**: when he handles a documented weak pattern correctly, name it ("✓ uncountable handled — exactly the pattern you've been working on").
+
+**Register rewrite** (offer, don't impose): when Artem drafts business content (meeting opener, email, status update), offer a register-shift table — two columns, *meeting-tone* (spoken, contractions) and *email-dash* (lowercase, dropped articles) — with **PVs bolded**. Pull preferred PVs from `phrasal-verbs-tracker.md`: ★★★★★/★★★★ chronic families + calque traps. Close with one line on what shifted and a pick-one question. Skip if the draft is already natural.
+
+**Track PV ownership**: silently note any PV from `phrasal-verbs-tracker.md` Artem produces correctly and unprompted (no hint naming it, no leading question). These are tier-1 evidence for 🏆 graduation. Stash at session end in `pvs_used_correctly` (PV string form, e.g. `"follow up on"`, `"get across"`).
 
 **Length**: Default 15–25 minutes / ~12–20 exchanges. Stop on natural close, fatigue, or "let's wrap".
 
@@ -40,6 +45,7 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
   "messages": [...],
   "error_patterns_observed": ["..."],
   "topics_covered": ["..."],
+  "pvs_used_correctly": ["..."],
   "session_summary": "..."
 }
 ```

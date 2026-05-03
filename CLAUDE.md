@@ -44,6 +44,16 @@ When standards in references conflict with this CLAUDE.md, **references win**.
 
 ---
 
+## Progress trackers — user-facing reports
+
+Living documents the user reads. Refreshed by skills, not authoritative doctrine.
+
+| File | Owner | Refreshed by |
+|---|---|---|
+| `progress/phrasal-verbs-tracker.md` | Artem | `stats-review` (per-PV status + Freq) |
+
+---
+
 ## Skills (auto-load by trigger)
 
 | Skill | Triggers |

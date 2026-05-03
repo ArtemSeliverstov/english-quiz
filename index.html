@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260503-t7">
+  <meta name="app-version" content="v20260503-t8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -999,7 +999,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260503-t7</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260503-t8</span></p>
 </header>
 
 <!-- TABS -->
@@ -3041,6 +3041,10 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'pv11',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'She ___ a new business while raising two children.',ans:0,opts:['set up','set off','set out'],exp:'<strong>Set up</strong> = establish or start (a business, system, meeting). ✗ Set off = begin a journey or trigger something. ✗ Set out = begin a journey with a purpose. Only <em>set up</em> collocates with "business".'},
 {id:'pv12',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'The terms of the agreement ___ clearly in Clause 4.',ans:0,opts:['are set out','are set up','are set off'],exp:'<strong>Set out (passive)</strong> = describe or explain in detail, especially in a formal document. ✗ Set up = establish. ✗ Set off = trigger. <em>Set out</em> in writing = state something systematically.'},
 {id:'pv13',type:'input',cat:'Phrasal Verbs',lvl:'B2',biz:false,hard:true,q:'She tried to ___ her idea but nobody in the room understood.',hint:'communicate successfully to others (2 words)',ans:'get across',exp:'<strong>Get across</strong> = make an idea understood by others. <em>She couldn\'t get her point across.</em> ✗ Get through = contact someone by phone, or survive difficulty. The focus here is whether the idea was received.'},
+{id:'pv_a01_get_across_g',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'I tried to ___ how urgent the cash issue is, but the board kept changing the subject.',ans:0,opts:['get across','get over','get through','get out'],exp:'<strong>Get across</strong> = communicate an idea so it\'s understood. ✗ <em>Get over</em> = recover from. ✗ <em>Get through</em> = survive difficulty / contact by phone. ✗ <em>Get out</em> = leave / be revealed. The particle <em>across</em> signals reaching another mind — communication, not escape or recovery.'},
+{id:'pv_a02_turn_down_split',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'They made a strong offer, but the head of trading ___ it ___ — the terms didn\'t fit our risk appetite.',ans:0,opts:['turned ... down','turned ... off','turned ... away','turned ... over'],exp:'<strong>Turn down</strong> = reject (an offer, application, request). Object splits: <em>turned the offer down, turned it down.</em> ✗ <em>Turn off</em> = switch off a device, or repel emotionally — not used for offers. ✗ <em>Turn away</em> = refuse entry to a person at a door. ✗ <em>Turn over</em> = flip / hand over to police / generate revenue.'},
+{id:'pv_a03_turn_out_disambig',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'The vendor everyone praised ___ to be a complete disaster on delivery.',ans:0,opts:['turned out','turned up','turned in','turned over'],exp:'<strong>Turn out + to be</strong> = prove to be after the fact, often surprisingly. ✗ <em>Turn up</em> = arrive / appear physically. ✗ <em>Turn in</em> = submit / go to bed. ✗ <em>Turn over</em> = generate revenue / flip. The fixed pattern <em>turned out to be X</em> always reads "was revealed as X".'},
+{id:'pv_a04_follow_up_on',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'I\'ll follow up ___ this in tomorrow\'s meeting — I want a firm answer.',ans:0,opts:['on','with','about','to'],exp:'<strong>Follow up ON something</strong> = revisit a topic to push it forward. The preposition <em>on</em> is obligatory when the object is the topic. ✗ <em>Follow up WITH someone</em> = the person you contact (different slot): <em>I\'ll follow up ON the budget WITH finance.</em> ✗ <em>About</em> works after talk/ask but not after follow up. ✗ <em>To</em> isn\'t used. Full pattern: <em>follow up ON [topic] WITH [person]</em>.'},
 {id:'pv14',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:true,q:'We need to ___ the figures before the board presentation.',ans:0,opts:['go over','go through','go off'],exp:'<strong>Go over</strong> = review or check carefully. ✗ Go through = examine from start to finish or experience something (longer, more thorough). For a pre-meeting check of one item, <em>go over</em> is more natural. ✗ Go off = explode.'},
 {id:'pv15',type:'gap',cat:'Phrasal Verbs',lvl:'B2',biz:false,q:'The rain ___ just as we were leaving the park.',ans:0,opts:['came down','came on','came off'],exp:'<strong>Come down</strong> = rain or snow falls. <em>The rain came down heavily.</em> ✗ Come on = hurry or begin. ✗ Come off = detach or succeed. <em>Come down</em> is the natural collocation for precipitation.'},
 {id:'refl01',type:'gap',cat:'Grammar',lvl:'B1',biz:false,q:'She burned ___ on the hot stove.',ans:0,opts:['herself','himself','itself','themselves'],exp:'Reflexive pronouns: <strong>myself / yourself / himself / herself / itself / ourselves / themselves</strong>. Use when the subject and object are the same person. ✗ <em>He hurt him</em> (him = someone else) → ✓ <em>He hurt himself</em> (he = himself, same person). Russian uses <em>себя</em> for all persons — in English each person has its own form.'},
@@ -8192,6 +8196,7 @@ async function coachWriteSessionLogStandalone({ session_id, mode, session_metada
     messages: Array.isArray(messages) ? messages : [],
     error_patterns_observed: Array.isArray(meta.error_patterns_observed) ? meta.error_patterns_observed : [],
     topics_covered: Array.isArray(meta.topics_covered) ? meta.topics_covered : [],
+    pvs_used_correctly: Array.isArray(meta.pvs_used_correctly) ? meta.pvs_used_correctly : [],
     session_summary: typeof meta.session_summary === 'string' ? meta.session_summary : '',
     tokens_used: tokens_used || null,
     model_used: model_used || '',

@@ -1,0 +1,89 @@
+{
+  "_note": "Artem russian_trap b01-b02 — focused drill on the look_for / look_after PV pair confusion surfaced in 2026-05-03 A1-A2 production test (item #4: 'looked after for keys'). Two items, one each direction of the contrast: 'искать' → look for (NOT look after), and 'присматривать (за)' → look after (NOT look for). Both directions trap the same particle-meaning swap. Short prompts, biz/family context.",
+  "exercises": [
+    {
+      "id": "rt_artem_b01",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["pv_pair_confusion", "look_for", "particle_swap"],
+      "created": "2026-05-03T15:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'искать' = search → English 'look FOR' (NOT 'look after'). The look_for/look_after pair shares base verb 'look' but particles split into opposite domains: 'for' = search, 'after' = take care of. Failure mode: blending into 'look after for X'.",
+      "prompt_ru": "Я ищу свой телефон.",
+      "correct_answers": [
+        "I'm looking for my phone",
+        "I am looking for my phone",
+        "I'm looking for my phone.",
+        "I am looking for my phone."
+      ],
+      "common_errors": [
+        {
+          "id": "look_after_swap",
+          "pattern_label": "look after (caregiving) instead of look for (search)",
+          "regex": "\\blook(s|ing|ed)?\\s+after\\b",
+          "feedback": "✗ 'Look after' = take care of (children, pets, the office while away). For 'искать' = search → 'look FOR'. ✓ 'looking FOR my phone'. The two PVs are a particle-swap trap: same base 'look', opposite meanings. Don't blend them into 'look after for'."
+        },
+        {
+          "id": "look_after_for_blend",
+          "pattern_label": "look after for (hybrid blend)",
+          "regex": "\\blook(s|ing|ed)?\\s+after\\s+for\\b",
+          "feedback": "✗ 'Look after for' is a blend of two different PVs. Pick one: 'look FOR' (search) OR 'look after' (take care of). Russian 'искать' = search → only 'look FOR'."
+        },
+        {
+          "id": "look_no_prep",
+          "pattern_label": "look without preposition",
+          "regex": "\\blook(s|ing|ed)?\\s+(my|your|his|her|the|a\\s|an\\s)\\s*\\w*\\s*phone",
+          "feedback": "✗ 'Looking my phone' — 'look' as a search verb needs 'for'. ✓ 'looking FOR my phone'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm looking for my phone.' Russian 'искать' always maps to 'look FOR' — never 'look after', never bare 'look'."
+    },
+    {
+      "id": "rt_artem_b02",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["pv_pair_confusion", "look_after", "particle_swap"],
+      "created": "2026-05-03T15:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'присматривать за' / 'ухаживать за' = take care of → English 'look AFTER' (NOT 'look for'). Mirror of rt_artem_b01: same base verb, opposite particle. Locks the contrast in both directions.",
+      "prompt_ru": "Кто будет присматривать за детьми вечером?",
+      "correct_answers": [
+        "Who'll look after the kids in the evening",
+        "Who will look after the kids in the evening",
+        "Who's going to look after the kids in the evening",
+        "Who is going to look after the kids in the evening",
+        "Who'll look after the children in the evening",
+        "Who will look after the children in the evening"
+      ],
+      "common_errors": [
+        {
+          "id": "look_for_swap",
+          "pattern_label": "look for (search) instead of look after (care)",
+          "regex": "\\blook(s|ing|ed)?\\s+for\\s+(the\\s+)?(kids|children)\\b",
+          "feedback": "✗ 'Look for the kids' = search for them (as if they're missing). For 'присматривать за' = take care of → 'look AFTER'. ✓ 'look AFTER the kids'. This is the mirror of the искать/look-for trap: same base, opposite particle, opposite meaning."
+        },
+        {
+          "id": "watch_calque",
+          "pattern_label": "watch (literal calque)",
+          "regex": "\\bwatch(es|ing|ed)?\\s+(the\\s+)?(kids|children)\\b",
+          "feedback": "'Watch the kids' is OK informal English (American-leaning), but the standard PV for 'присматривать за' is 'look AFTER'. Reach for the PV first."
+        },
+        {
+          "id": "take_care_calque",
+          "pattern_label": "take care without 'of'",
+          "regex": "\\btake\\s+care\\s+(the\\s+)?(kids|children)\\b",
+          "feedback": "✗ 'Take care the kids' — missing 'of'. ✓ 'take care OF the kids'. But the target PV here is the simpler 'look AFTER'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Who'll look after the kids in the evening?' Russian 'присматривать за' always maps to 'look AFTER' — never 'look for' (that's search)."
+    }
+  ]
+}

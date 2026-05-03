@@ -10,6 +10,30 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-03 · Session t8
+### v20260503-t8 — PV tracker + 🏆 graduation rule + Artem foundation drills
+
+End-to-end PV mastery scaffold for Artem. New per-PV tracker, super-rank concept, drills based on a live cold-production test, and tooling to compute streaks.
+
+- **`progress/` folder** added — separate from `references/` (Claude's KB). New canonical doc `progress/phrasal-verbs-tracker.md`: full A1–C1 PV inventory (148 PV-meanings) with Status, Freq (★★★★★ → ★ derived from CEFR + business-exec context), Quiz coverage, Notes. Single master table sorted Freq DESC then alphabetical so lagging high-priority items surface immediately.
+- **🏆 super-rank** — new graduation rule on top of 🟢: ≥3 cold-production wins across ≥2 distinct formats, no failure during streak. Decay on failure only (no time-decay). Tier 1 evidence = unprompted PV use in free-write; tiers 2–3 = russian_trap and translation drills. Quiz `gap`/`mcq`/`particle_sort` excluded — recognition, not production.
+- **A1–A2 production test** run live with Artem (10 prompts cold). Result: 7/10 PV-correct. Three A2 PVs flagged ⚠ A2 production-weak: *go on* (substituted with non-PV "happening"), *look for* (confused with *look after*), *go back/come back* (direction trap). All three got dedicated drill items.
+- **Quiz amendments × 4** in `index.html`: `pv_a01_get_across_g` (gap-scaffold for chronic input), `pv_a02_turn_down_split` (split-form gap with turn off/away/over distractors), `pv_a03_turn_out_disambig` (turn out vs up/in/over), `pv_a04_follow_up_on` (preposition gap). Inserted right after `pv13` (the chronic get_across input). Targets the 5 chronic ★★★★★ PVs the existing Phase 1 plan didn't cover.
+- **Exercise library × 5** authored and pushed to Firestore via `push_library.js`: `artem_translation_b01-b03.json` (3 items targeting the 3 weak A2 PVs from the test) + `artem_russian_trap_b01-b02.json` (2 items locking the look_for ↔ look_after pair from both directions). Live in `exercises_library/{translation,russian_trap}/items/`.
+- **Worker prompt extended** (`worker/index.js`) — `sessionEndInstructions(mode, ctx)` now player-aware. Artem-only Free Write sessions get an extra `pvs_used_correctly: ["..."]` field in `<session_meta>` schema. **Not yet deployed** — needs `wrangler deploy` from `worker/` separately.
+- **Coach tab write** (`index.html`) — `coachWriteSessionLogStandalone` now persists `pvs_used_correctly` to `players/{name}/coach_sessions/{id}`. One-line addition.
+- **`tools/pv_cold_streak.js`** (new, 326 lines) — computes per-PV streak from `coach_sessions[].pvs_used_correctly` + `exercises[].items[]` (translation + russian_trap). Output: sorted table (graduated → building → regressing → unstable) or single-PV deep-dive with event timeline. Use during stats-review.
+- **Free-write SKILL** updated: silently track PVs Artem produces unprompted; log in `pvs_used_correctly` at session end. Register-rewrite paragraph compressed by ~75 words to make budget. Reads `progress/phrasal-verbs-tracker.md`.
+- **Stats-review SKILL** updated to read the tracker; refresh protocol step 2 now references the streak script.
+- **Schema doc** (`references/firestore-schema.md`) — added `pvs_used_correctly` row to `coach_sessions` field table (writer: free-write skill + Coach tab Artem-only).
+- **CLAUDE.md** — new "Progress trackers" section above Skills, points to `progress/phrasal-verbs-tracker.md` (refreshed at stats-review).
+
+Q count: 1988 (+4) · Version: v20260503-t8
+
+Worker change ships separately via `wrangler deploy` — until then, only CC-side free-write feeds the streak counter.
+
+---
+
 ## 2026-05-03 · Library content — Anna russian_trap + spelling_drill expansion (no version bump)
 
 Stats-review-driven content batch for Anna. No engine change, content-only.

@@ -118,6 +118,17 @@ Patch format supports add/remove for arrays:
 `recent_observations` is FIFO-capped at 10 (oldest dropped). `last_updated` and
 `last_updated_by` set automatically. See `references/coach-notes-schema.md`.
 
+### `pv_cold_streak.js` — per-PV cold-production streak tracker (Artem)
+
+```bash
+node tools/pv_cold_streak.js artem                  # full table, sorted by status
+node tools/pv_cold_streak.js artem --pv "get across"  # event timeline + streak math
+node tools/pv_cold_streak.js artem --graduated        # only 🏆 / near-🏆 PVs
+node tools/pv_cold_streak.js artem --json             # machine-readable
+```
+
+Computes the streak rule from `progress/phrasal-verbs-tracker.md` (🏆 = ≥3 cold wins across ≥2 formats, no failures during streak). Reads `coach_sessions[].pvs_used_correctly` (tier 1) and `exercises[].items[]` of type translation/russian_trap (tiers 2–3). Recognition formats (gap/mcq/particle_sort) and quiz `input` qStats are excluded — see script header for v2 notes. Use during `stats-review` to refresh tracker Status column and bump qualifying PVs from 🟢 to 🏆.
+
 ### `log_coach_session.js` — write a Coach chat session (Free Write style)
 
 ```bash

@@ -201,7 +201,7 @@ function buildSystemBlocks(mode, context, isSessionEnd) {
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
   if (isSessionEnd) {
-    blocks.push({ type: 'text', text: sessionEndInstructions(mode) });
+    blocks.push({ type: 'text', text: sessionEndInstructions(mode, context) });
   }
   return blocks;
 }
@@ -305,15 +305,22 @@ ${weakPatterns}
 Tone: warm, direct, slightly more pedagogical than free_write mode.`;
 }
 
-function sessionEndInstructions(mode) {
+function sessionEndInstructions(mode, ctx) {
   if (mode === 'free_write') {
+    // Artem-only: track PVs produced correctly and unprompted as tier-1 evidence
+    // for 🏆 graduation in progress/phrasal-verbs-tracker.md.
+    const isArtem = ctx && ctx.player === 'artem';
+    const pvField = isArtem ? `\n  "pvs_used_correctly": ["pv_string_1", ...],` : '';
+    const pvNote = isArtem
+      ? `\n\nFor "pvs_used_correctly": list any phrasal verbs Artem produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "follow up on", "get across", "come up with", "sort out". This is tier-1 evidence for PV graduation tracking. Empty array if none qualify.`
+      : '';
     return `Append a JSON block at the very end of your message wrapped in <session_meta>...</session_meta> tags containing:
 {
   "error_patterns_observed": ["pattern_id_1", ...],
-  "topics_covered": ["topic_1", ...],
+  "topics_covered": ["topic_1", ...],${pvField}
   "session_summary": "Two-sentence recap."
 }
-Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".`;
+Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".${pvNote}`;
   }
   return `Append a JSON block at the very end wrapped in <session_meta>...</session_meta>:
 {

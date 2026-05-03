@@ -1,0 +1,125 @@
+{
+  "_note": "Artem translation b01-b03 — first 3 items for next Translate RU→EN slot. Targets the 3 A2 PVs that failed cold production in the 2026-05-03 foundation test: go on (substituted with 'happening'), look for (confused with 'look after'), come back (wrong direction — used 'go back' from destination POV). Business context where natural. Articles stripped by normalize() in s90r2.",
+  "exercises": [
+    {
+      "id": "tr_artem_b01",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "go_on", "pv_substitution_trap"],
+      "source_observation": "2026-05-03 A1-A2 production test #3: substituted non-PV 'happening' for target 'going on'. PV-avoidance pattern.",
+      "created": "2026-05-03T15:00:00Z",
+      "version": 1,
+      "prompt_ru": "Что происходит на встрече?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "What's going on in the meeting",
+        "What is going on in the meeting",
+        "What's going on at the meeting",
+        "What is going on at the meeting"
+      ],
+      "common_errors": [
+        {
+          "id": "happening_substitute",
+          "pattern_label": "non-PV substitute (happening)",
+          "regex": "\\bwhat'?s?\\s+(is\\s+)?happen(s|ing|ed)?\\b",
+          "feedback": "✓ 'What's happening' is grammatical English, but the target PV is 'going on'. In meetings/teams the PV form is the natural register: 'what's going on with the timeline?', 'something's going on with the budget'. You substituted a non-PV — that's the avoidance pattern we're drilling out."
+        },
+        {
+          "id": "taking_place",
+          "pattern_label": "formal substitute",
+          "regex": "\\b(what'?s?|what is)\\s+taking\\s+place\\b",
+          "feedback": "'Taking place' is correct but overly formal for a meeting. Target the conversational PV: 'going on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'What's going on in the meeting?' The PV is 'go on' (= happen, be in progress). Practise reaching for it instead of 'happening'."
+    },
+    {
+      "id": "tr_artem_b02",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "look_for", "pv_pair_confusion"],
+      "source_observation": "2026-05-03 A1-A2 test #4: produced 'looked after for keys' — blend of 'look for' (search) and 'look after' (care for). Particle confusion within same base verb.",
+      "created": "2026-05-03T15:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я ищу твой имейл с прошлой недели.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm looking for your email from last week",
+        "I am looking for your email from last week",
+        "I'm looking for the email from last week",
+        "I am looking for the email from last week"
+      ],
+      "common_errors": [
+        {
+          "id": "look_after_swap",
+          "pattern_label": "look after (caregiving) instead of look for (search)",
+          "regex": "\\blook(s|ing|ed)?\\s+after\\b",
+          "feedback": "✗ 'Look after' = take care of (children, pets, plants). Russian 'искать' = search for, which is 'look FOR'. Fix the particle: ✓ 'looking FOR your email'. The PV pair is the trap — same base verb, opposite domains."
+        },
+        {
+          "id": "look_no_prep",
+          "pattern_label": "look without preposition",
+          "regex": "\\blook(s|ing|ed)?\\s+(your|my|his|her|the|a\\s|an\\s)\\s*\\w*\\s*email",
+          "feedback": "✗ 'Looking your email' — English 'look' as a search verb requires 'for'. ✓ 'looking FOR your email'."
+        },
+        {
+          "id": "search_no_for",
+          "pattern_label": "search without preposition",
+          "regex": "\\bsearch(es|ing|ed)?\\s+(your|my|his|her|the|a\\s|an\\s)\\s*\\w*\\s*email",
+          "feedback": "'Search' takes 'for' too: 'searching FOR your email'. But the target PV here is 'look for' — practise that one."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm looking for your email from last week.' PV is 'look for' (search). Don't confuse with 'look after' (take care of)."
+    },
+    {
+      "id": "tr_artem_b03",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "come_back", "directionality_trap"],
+      "source_observation": "2026-05-03 A1-A2 test #1 + #10: used 'go back' / 'come back' from wrong speaker POV. Russian 'вернуться' is single verb; English splits by destination POV.",
+      "created": "2026-05-03T15:00:00Z",
+      "version": 1,
+      "prompt_ru": "Возвращайся скорее, мы тебя ждём.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Come back soon, we're waiting for you",
+        "Come back soon, we are waiting for you",
+        "Come back soon, we're waiting",
+        "Come back quickly, we're waiting for you"
+      ],
+      "common_errors": [
+        {
+          "id": "go_back_wrong_pov",
+          "pattern_label": "go back (wrong direction)",
+          "regex": "\\bgo\\s+back\\s+soon\\b",
+          "feedback": "✗ 'Go back' is wrong here. The 'we're waiting for you' anchors the speaker AT the destination — the listener is moving TOWARD the speaker. Use ✓ 'COME back'. Rule: come back = toward speaker; go back = away from speaker."
+        },
+        {
+          "id": "return_too_formal",
+          "pattern_label": "return (overly formal)",
+          "regex": "\\breturn\\s+(soon|quickly|fast|home|back)\\b",
+          "feedback": "'Return' is correct but formal/written register. In spoken/casual: 'come back'."
+        },
+        {
+          "id": "wait_no_for",
+          "pattern_label": "wait without 'for'",
+          "regex": "\\bwait(s|ing|ed)?\\s+you\\b",
+          "feedback": "✗ 'waiting you' — direct calque of 'ждём тебя'. English 'wait' always needs 'for'. ✓ 'waiting FOR you'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Come back soon, we're waiting for you.' Speaker is at the destination → 'come back'. If speaker were elsewhere → 'go back'."
+    }
+  ]
+}

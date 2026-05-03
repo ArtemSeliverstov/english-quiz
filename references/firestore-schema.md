@@ -134,6 +134,7 @@ Subcollection. One document per Free Write / coach chat session (no per-item sco
 | `mode` | string | Coach tab, `tools/log_coach_session.js` | stats-review, free-write skill | `free_write` \| `cc_session` \| `escalate` |
 | `messages` | array | both writers | stats-review | Transcript |
 | `error_patterns_observed`, `topics_covered` | arrays | both writers | stats-review | Pattern tags + topics |
+| `pvs_used_correctly` | array of strings | free-write skill, Coach tab (Artem only) | stats-review, `phrasal-verbs-tracker.md` refresh | PVs Artem produced correctly and unprompted; tier-1 evidence for 🏆 graduation |
 | `session_summary` | string | both writers | stats-review | One-paragraph summary |
 | `created`, `ended` | string | both writers | both readers | ISO timestamps |
 | `source` | string | `log_coach_session.js` only | stats-review | `cc_session` distinguishes CC- from PWA-driven |
