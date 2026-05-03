@@ -29,3 +29,8 @@ Thumbs.db
 # Local artefacts
 *.log
 /tmp/
+
+# Local backup snapshots — production backups go to the `backups` branch via
+# .github/workflows/backup.yml. Anything in this directory on `main` is a
+# manual run (e.g. tools/backup_players.js without --remote) and stays local.
+backups/

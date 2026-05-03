@@ -10,8 +10,9 @@ rules_version = '2';
 // while closing that hole. Backups land in the `backups` branch weekly via
 // .github/workflows/backup.yml as the recovery path.
 //
-// Deploy: `firebase deploy --only firestore:rules` (requires firebase CLI
-// auth as a project owner). Verify in Firebase Console → Firestore → Rules.
+// Deploy: `cd D:/Claude/english-quiz-repo && firebase deploy --only firestore:rules`
+// (requires firebase CLI auth as a project owner). Verify in Firebase Console →
+// Firestore → Rules.
 
 service cloud.firestore {
   match /databases/{database}/documents {

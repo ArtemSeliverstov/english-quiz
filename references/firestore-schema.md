@@ -131,7 +131,7 @@ Live rules in `firestore.rules`. Threat closed: wholesale "wipe player stats" vi
 
 App Check is deferred — the PWA uses raw `fetch()` (no Firebase SDK), so token injection would require either bundling the SDK (chunky) or wrapping every Firestore call manually. The `tools/*.js` scripts and the GitHub Actions backup also can't produce App Check tokens. Reconsider once a worker-as-gatekeeper centralises writes.
 
-Deploy: `firebase deploy --only firestore:rules`.
+Deploy: `cd D:/Claude/english-quiz-repo && firebase deploy --only firestore:rules`.
 
 ---
 

@@ -67,6 +67,23 @@ Writes to `players/{name}/exercises/{Date.now()}`. Validates exercise type
 (must use canonical names — `article_drill` not `error_correction`). JSON
 shape per `references/firestore-schema.md` (exercises subcollection).
 
+### `backup_players.js` — daily Firestore snapshot
+
+```bash
+node backup_players.js                       # write today's snapshot
+node backup_players.js --date 2026-05-03
+node backup_players.js --player anna         # single player
+node backup_players.js --dry-run             # summary only, no write
+```
+
+Writes one self-contained JSON per player to `backups/YYYY-MM-DD/{player}.json`,
+each containing the player doc + the full `exercises` and `coach_sessions`
+subcollections. Recovery source after the RTDB sunset (~2026-05-28). See
+`plans/data-integrity-plan.md` for the full rationale.
+
+`backups/` is `.gitignore`d on `main` — production snapshots go to the
+`backups` orphan branch via `.github/workflows/backup.yml`.
+
 ### `update_coach_notes.js` — apply a patch to coach_notes
 
 ```bash
