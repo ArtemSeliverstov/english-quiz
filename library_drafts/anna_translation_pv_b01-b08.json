@@ -1,0 +1,303 @@
+{
+  "_note": "Anna PV-focused translation set — 8 short B1 prompts targeting her ★★★★★ tier from progress/phrasal-verbs-tracker-anna.md (find out, pick up, take out, turn off, put on, get up, hurry up, look for). Anna's v1 prep set proved short prompts (3-6 words RU → 3-7 words EN) work; this batch follows that. Common errors target Russian L1 calques specific to each PV. Article-stripping in s90r2 normalize() means a/an/the variants don't need to be enumerated.",
+  "exercises": [
+    {
+      "id": "tr_anna_pv_b01",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "find_out"],
+      "source_observation": "★★★★★ in Anna's tracker, never tested in production. Russian 'узнать' calques to 'know' — drill the find_out form.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Узнаю завтра.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'll find out tomorrow",
+        "I will find out tomorrow",
+        "I'll find out tomorrow."
+      ],
+      "common_errors": [
+        {
+          "id": "know_for_find_out",
+          "pattern_label": "know substituted for find out",
+          "regex": "\\bi\\s+(will|'ll)\\s+know\\s+tomorrow\\b",
+          "feedback": "Russian 'узнать' covers both 'find out' (discover) and 'know' (have knowledge). For 'Узнаю завтра' = I'll discover the answer tomorrow, use the PV: ✓ 'I'll find out tomorrow'. ✗ 'I will know tomorrow' = I'll have the knowledge tomorrow (different meaning, also unnatural)."
+        },
+        {
+          "id": "no_subject_calque",
+          "pattern_label": "zero-subject (Russian calque)",
+          "regex": "^\\s*(will\\s+|'ll\\s+)?find\\s+out\\s+tomorrow\\b",
+          "feedback": "✗ Missing subject — Russian 'Узнаю завтра' drops the subject 'я'. English requires it: ✓ 'I'll find out tomorrow' (or 'I will find out tomorrow'). Even short imperatives keep the subject in declarative sentences."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'll find out tomorrow.' Russian 'узнать' = find out (discover) — use the PV, don't substitute 'know'. And keep the subject 'I'."
+    },
+    {
+      "id": "tr_anna_pv_b02",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "pick_up"],
+      "source_observation": "★★★★★ in Anna's tracker — daily family logistics. Russian 'забрать' often calques to 'take from'.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Заберёшь детей из школы?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Will you pick up the kids from school",
+        "Can you pick up the kids from school",
+        "Will you pick the kids up from school",
+        "Will you pick up the children from school",
+        "Can you pick up the children from school"
+      ],
+      "common_errors": [
+        {
+          "id": "take_from_calque",
+          "pattern_label": "take from (literal calque)",
+          "regex": "\\b(will|can|could|would)\\s+you\\s+take\\s+(the\\s+)?(kids|children)\\s+from\\b",
+          "feedback": "✗ 'Take the kids from school' — direct calque of Russian 'забрать из'. English idiom for collecting people/things from a place: ✓ 'pick up the kids'. The PV 'pick up' carries the meaning of collecting from a location."
+        },
+        {
+          "id": "get_from_calque",
+          "pattern_label": "get from (close but not idiomatic)",
+          "regex": "\\b(will|can|could|would)\\s+you\\s+get\\s+(the\\s+)?(kids|children)\\s+from\\b",
+          "feedback": "'Get the kids from school' is understandable but not the natural choice. ✓ 'pick up the kids from school' is the standard PV for this scenario."
+        }
+      ],
+      "fallback_feedback": "Target: 'Will you pick up the kids from school?' Russian 'забрать' = collect from a place → 'pick up' (not 'take from')."
+    },
+    {
+      "id": "tr_anna_pv_b03",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "take_out"],
+      "source_observation": "★★★★★ in Anna's tracker — daily home life. Russian 'вынести' (carry out) is close to literal — drill the PV form.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Вынеси мусор, пожалуйста.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Take out the trash please",
+        "Take out the rubbish please",
+        "Please take out the trash",
+        "Please take out the rubbish",
+        "Take the trash out please",
+        "Take the rubbish out please"
+      ],
+      "common_errors": [
+        {
+          "id": "carry_out_calque",
+          "pattern_label": "carry out (literal calque)",
+          "regex": "\\bcarry\\s+out\\s+(the\\s+)?(trash|rubbish|garbage)\\b",
+          "feedback": "✗ 'Carry out the trash' — direct calque of Russian 'вынести'. 'Carry out' in English means 'execute / perform' (carry out a plan, carry out research). For removing trash, use ✓ 'take out the trash'."
+        },
+        {
+          "id": "take_no_out",
+          "pattern_label": "take without out",
+          "regex": "\\btake\\s+(the\\s+)?(trash|rubbish|garbage)\\b(?!\\s+out)",
+          "feedback": "✗ 'Take the trash' is incomplete — needs the particle. ✓ 'Take out the trash' or 'take the trash out' (separable PV)."
+        }
+      ],
+      "fallback_feedback": "Target: 'Take out the trash, please.' The PV is 'take out' (separable). Russian 'вынести' ≠ 'carry out' — that's the trap."
+    },
+    {
+      "id": "tr_anna_pv_b04",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "turn_off", "calque_close"],
+      "source_observation": "★★★★★ in Anna's tracker. Russian 'выключить' sometimes calques to 'close' (closing a circuit metaphor). Drill the standard 'turn off' / 'switch off'.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Выключи свет.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Turn off the light",
+        "Switch off the light",
+        "Turn the light off",
+        "Switch the light off",
+        "Turn off the lights",
+        "Switch off the lights"
+      ],
+      "common_errors": [
+        {
+          "id": "close_light_calque",
+          "pattern_label": "close the light (calque)",
+          "regex": "\\bclose\\s+(the\\s+)?light\\b",
+          "feedback": "✗ 'Close the light' — Russian L1 calque (выключить ≈ closing a circuit). English doesn't say this. ✓ 'Turn off the light' or 'switch off the light'. 'Close' in English is for doors, windows, books, accounts — not devices."
+        },
+        {
+          "id": "off_no_verb",
+          "pattern_label": "off without turn/switch",
+          "regex": "^\\s*off\\s+(the\\s+)?light\\b",
+          "feedback": "✗ 'Off the light' is incomplete — English needs the verb. ✓ 'Turn off' or 'switch off' the light."
+        }
+      ],
+      "fallback_feedback": "Target: 'Turn off the light' or 'Switch off the light.' Russian 'выключить' = turn off / switch off — never 'close' for devices."
+    },
+    {
+      "id": "tr_anna_pv_b05",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "put_on"],
+      "source_observation": "★★★★★ in Anna's tracker — clothes/makeup daily. 'Wear' vs 'put on' is the action/state distinction Russian doesn't mark.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Надень куртку, холодно.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Put on a jacket, it's cold",
+        "Put on the jacket, it's cold",
+        "Put a jacket on, it's cold",
+        "Put on a jacket, it is cold"
+      ],
+      "common_errors": [
+        {
+          "id": "wear_for_put_on",
+          "pattern_label": "wear (state) for put on (action)",
+          "regex": "\\bwear\\s+(a\\s+|the\\s+)?jacket\\b",
+          "feedback": "'Wear a jacket' = the state of having it on (e.g. 'I wear a jacket every day'). 'Надень' is an action — about to put it on right now. ✓ 'Put on a jacket'. The PV signals the action of dressing."
+        },
+        {
+          "id": "dress_for_put_on",
+          "pattern_label": "dress (overly formal)",
+          "regex": "\\bdress\\s+(in\\s+)?(a\\s+|the\\s+)?jacket\\b",
+          "feedback": "✗ 'Dress in a jacket' is overly formal/awkward. Use the everyday PV: ✓ 'Put on a jacket'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Put on a jacket, it's cold.' For the *action* of dressing → 'put on'. For the *state* of being dressed → 'wear'. Russian 'надеть' = the action."
+    },
+    {
+      "id": "tr_anna_pv_b06",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "get_up", "wake_up_pair"],
+      "source_observation": "★★★★★ A1 foundation. Pair-confusion with 'wake up' — wake up = stop sleeping, get up = leave the bed.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я встаю в семь.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I get up at seven",
+        "I get up at 7",
+        "I get up at seven o'clock",
+        "I get up at 7 o'clock"
+      ],
+      "common_errors": [
+        {
+          "id": "wake_up_for_get_up",
+          "pattern_label": "wake up for get up (pair confusion)",
+          "regex": "\\bi\\s+wake\\s+up\\s+at\\b",
+          "feedback": "'Wake up' = stop sleeping (you can wake up and stay in bed). 'Get up' = leave the bed and start the day. Russian 'вставать' = get up (the action of getting out of bed). ✓ 'I get up at seven'."
+        },
+        {
+          "id": "rise_formal",
+          "pattern_label": "rise (overly formal)",
+          "regex": "\\bi\\s+rise\\s+at\\b",
+          "feedback": "'Rise at seven' is correct but very formal/literary. Everyday: ✓ 'I get up at seven'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I get up at seven.' 'Get up' = leave the bed (action). 'Wake up' = stop sleeping (different — you can wake up and stay in bed)."
+    },
+    {
+      "id": "tr_anna_pv_b07",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "hurry_up"],
+      "source_observation": "★★★★★ — family/kids urgency. Russian 'торопиться' tends to drop the 'up' in English.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Поторопись, опаздываем!",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Hurry up, we're late",
+        "Hurry up, we are late",
+        "Hurry up, we're going to be late",
+        "Hurry up, we'll be late"
+      ],
+      "common_errors": [
+        {
+          "id": "hurry_no_up",
+          "pattern_label": "hurry without up",
+          "regex": "^\\s*hurry,\\s+we\\b",
+          "feedback": "'Hurry, we're late' is OK but the more natural everyday form is the PV: ✓ 'Hurry up, we're late!' The particle 'up' adds the urgency / call-to-action that matches Russian 'поторопись'."
+        },
+        {
+          "id": "be_fast_calque",
+          "pattern_label": "be fast (calque)",
+          "regex": "\\bbe\\s+(fast|quick),\\s+we\\b",
+          "feedback": "✗ 'Be fast' is a Russian L1 calque (быстрее). English idiom: ✓ 'Hurry up'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Hurry up, we're late!' The PV is 'hurry up' — keep the particle 'up' for the urgency."
+    },
+    {
+      "id": "tr_anna_pv_b08",
+      "type": "translation",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["phrasal_verb", "look_for", "look_after_pair"],
+      "source_observation": "★★★★★ — most common Anna PV. The look_for ↔ look_after pair confusion is well-documented; this drill targets the search direction.",
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я ищу очки.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm looking for my glasses",
+        "I am looking for my glasses",
+        "I'm looking for the glasses",
+        "I am looking for the glasses"
+      ],
+      "common_errors": [
+        {
+          "id": "look_after_swap",
+          "pattern_label": "look after (caregiving) instead of look for",
+          "regex": "\\blook(s|ing|ed)?\\s+after\\s+(my\\s+|the\\s+)?glasses\\b",
+          "feedback": "✗ 'Look after my glasses' = take care of them (caregiving). For 'искать' = search → ✓ 'looking FOR my glasses'. The pair is a particle-swap trap: same base 'look', opposite meanings."
+        },
+        {
+          "id": "look_no_prep",
+          "pattern_label": "look without preposition",
+          "regex": "\\blook(s|ing|ed)?\\s+(my\\s+|the\\s+)?glasses\\b(?!\\s+(for|after))",
+          "feedback": "✗ 'Looking my glasses' — 'look' as a search verb needs 'for'. ✓ 'looking FOR my glasses'."
+        },
+        {
+          "id": "search_no_for",
+          "pattern_label": "search without preposition",
+          "regex": "\\bsearch(es|ing|ed)?\\s+(my\\s+|the\\s+)?glasses\\b",
+          "feedback": "'Search' takes 'for' too: 'searching FOR my glasses'. Target PV here is 'look for' — practise that one."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm looking for my glasses.' Russian 'искать' always maps to 'look FOR' — never 'look after' (that's caregiving)."
+    }
+  ]
+}

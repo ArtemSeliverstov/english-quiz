@@ -1,0 +1,149 @@
+{
+  "_note": "Anna PV-focused russian_trap set — 4 items locking PV pair confusions and L1 calques specific to her family/daily-life register. Mirrors the look_for/look_after structure that was authored for Artem (rt_artem_b01-b02), plus pick_up vs take and turn_off vs close.",
+  "exercises": [
+    {
+      "id": "rt_anna_pv_b01",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["pv_pair_confusion", "look_for", "particle_swap"],
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'искать' = search → English 'look FOR' (NOT 'look after'). The look_for / look_after pair shares base verb 'look' but particles split into opposite domains: 'for' = search, 'after' = take care of. Failure mode: blending into 'look after for X' or substituting 'look after' when meaning 'search'.",
+      "prompt_ru": "Я ищу телефон.",
+      "correct_answers": [
+        "I'm looking for my phone",
+        "I am looking for my phone",
+        "I'm looking for the phone",
+        "I am looking for the phone"
+      ],
+      "common_errors": [
+        {
+          "id": "look_after_swap",
+          "pattern_label": "look after (caregiving) instead of look for (search)",
+          "regex": "\\blook(s|ing|ed)?\\s+after\\b",
+          "feedback": "✗ 'Look after' = take care of (children, pets, the house). For 'искать' = search → 'look FOR'. ✓ 'looking FOR my phone'. The two PVs are a particle-swap trap: same base 'look', opposite meanings."
+        },
+        {
+          "id": "look_no_prep",
+          "pattern_label": "look without preposition",
+          "regex": "\\blook(s|ing|ed)?\\s+(my|your|his|her|the|a\\s|an\\s)\\s*phone\\b",
+          "feedback": "✗ 'Looking my phone' — 'look' as a search verb needs 'for'. ✓ 'looking FOR my phone'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm looking for my phone.' Russian 'искать' always maps to 'look FOR' — never 'look after', never bare 'look'."
+    },
+    {
+      "id": "rt_anna_pv_b02",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["pv_pair_confusion", "look_after", "particle_swap"],
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'присматривать за' / 'смотреть за' = take care of → English 'look AFTER' (NOT 'look for'). Mirror of rt_anna_pv_b01: same base verb, opposite particle. Family scenario locks the contrast in the caregiving direction.",
+      "prompt_ru": "Кто посмотрит за детьми вечером?",
+      "correct_answers": [
+        "Who'll look after the kids in the evening",
+        "Who will look after the kids in the evening",
+        "Who's going to look after the kids in the evening",
+        "Who is going to look after the kids in the evening",
+        "Who'll look after the children in the evening",
+        "Who will look after the children in the evening"
+      ],
+      "common_errors": [
+        {
+          "id": "look_for_swap",
+          "pattern_label": "look for (search) instead of look after (care)",
+          "regex": "\\blook(s|ing|ed)?\\s+for\\s+(the\\s+)?(kids|children)\\b",
+          "feedback": "✗ 'Look for the kids' = search for them (as if they're missing). For 'смотреть за' / 'присматривать за' = take care of → 'look AFTER'. ✓ 'look AFTER the kids'. Mirror of the искать/look-for trap: same base, opposite particle."
+        },
+        {
+          "id": "watch_close",
+          "pattern_label": "watch (close but not the target PV)",
+          "regex": "\\bwatch(es|ing|ed)?\\s+(the\\s+)?(kids|children)\\b",
+          "feedback": "'Watch the kids' is acceptable AmE conversational, but the standard PV for 'смотреть за / присматривать за' is 'look AFTER'. Practise the PV form."
+        }
+      ],
+      "fallback_feedback": "Target: 'Who'll look after the kids in the evening?' Russian 'смотреть за / присматривать за' = 'look AFTER' — never 'look for' (that's search)."
+    },
+    {
+      "id": "rt_anna_pv_b03",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "B1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["calque", "pick_up", "забрать_calque"],
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'забрать (откуда-то)' = collect/take from a place. The literal calque is 'take from X', but English idiom for collecting people, kids, packages, groceries from a location is 'pick up'. 'Take from school' sounds like removal/extraction; 'pick up from school' is the natural collection idiom.",
+      "prompt_ru": "Заберёшь Машу из садика?",
+      "correct_answers": [
+        "Will you pick up Masha from kindergarten",
+        "Can you pick up Masha from kindergarten",
+        "Will you pick Masha up from kindergarten",
+        "Can you pick Masha up from kindergarten"
+      ],
+      "common_errors": [
+        {
+          "id": "take_from_calque",
+          "pattern_label": "take from (literal calque)",
+          "regex": "\\b(will|can|could|would)\\s+you\\s+take\\s+masha\\s+from\\b",
+          "feedback": "✗ 'Take Masha from kindergarten' — direct calque of Russian 'забрать из'. The English idiom is ✓ 'pick up Masha' (separable: 'pick Masha up'). 'Pick up' carries the meaning of collection from a location; 'take from' implies removal."
+        },
+        {
+          "id": "get_from_close",
+          "pattern_label": "get from (close but not idiomatic)",
+          "regex": "\\b(will|can|could|would)\\s+you\\s+get\\s+masha\\s+from\\b",
+          "feedback": "'Get Masha from kindergarten' is understandable but not the natural choice. ✓ 'pick up Masha' is the standard PV for collecting kids from school/nursery."
+        }
+      ],
+      "fallback_feedback": "Target: 'Will you pick up Masha from kindergarten?' Russian 'забрать (откуда-то)' = 'pick up' — the English collection idiom. 'Take from' is too literal."
+    },
+    {
+      "id": "rt_anna_pv_b04",
+      "type": "russian_trap",
+      "target_player": "anna",
+      "level": "A2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 1,
+      "linked_question_ids": [],
+      "tags": ["calque", "turn_off", "close_calque"],
+      "created": "2026-05-03T18:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'выключить' is sometimes calqued to English 'close' (closing a circuit metaphor — 'закрыть цепь'). Standard English for devices: 'turn off' or 'switch off'. 'Close the TV' / 'close the light' are recognisable Russian-L1 errors. 'Close' in English is for doors, windows, books, accounts — not devices.",
+      "prompt_ru": "Выключи телевизор.",
+      "correct_answers": [
+        "Turn off the TV",
+        "Switch off the TV",
+        "Turn the TV off",
+        "Switch the TV off",
+        "Turn off the television",
+        "Switch off the television"
+      ],
+      "common_errors": [
+        {
+          "id": "close_tv_calque",
+          "pattern_label": "close the TV (calque)",
+          "regex": "\\bclose\\s+(the\\s+)?(tv|television)\\b",
+          "feedback": "✗ 'Close the TV' — Russian L1 calque (выключить ≈ closing a circuit). English doesn't say this. ✓ 'Turn off the TV' or 'switch off the TV'. 'Close' in English is for doors, windows, books, accounts — never devices."
+        },
+        {
+          "id": "off_no_verb",
+          "pattern_label": "off without verb",
+          "regex": "^\\s*off\\s+(the\\s+)?(tv|television)\\b",
+          "feedback": "✗ 'Off the TV' is incomplete — English needs the verb. ✓ 'Turn off' or 'switch off' the TV."
+        }
+      ],
+      "fallback_feedback": "Target: 'Turn off the TV' or 'Switch off the TV.' Russian 'выключить' = turn off / switch off. Never 'close' for devices — that's a Russian-L1 calque."
+    }
+  ]
+}

@@ -97,6 +97,9 @@ function validate(session, player) {
   if (session.topics_covered && !Array.isArray(session.topics_covered)) {
     throw new Error('topics_covered must be an array if provided');
   }
+  if (session.pvs_used_correctly && !Array.isArray(session.pvs_used_correctly)) {
+    throw new Error('pvs_used_correctly must be an array if provided');
+  }
 }
 
 async function main() {
@@ -123,6 +126,7 @@ async function main() {
     messages: Array.isArray(session.messages) ? session.messages : [],
     error_patterns_observed: Array.isArray(session.error_patterns_observed) ? session.error_patterns_observed : [],
     topics_covered: Array.isArray(session.topics_covered) ? session.topics_covered : [],
+    pvs_used_correctly: Array.isArray(session.pvs_used_correctly) ? session.pvs_used_correctly : [],
     session_summary: typeof session.session_summary === 'string' ? session.session_summary : '',
     tokens_used: session.tokens_used == null ? null : session.tokens_used,
     model_used: session.model_used || '',

@@ -13,7 +13,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 - `references/family-profiles.md` — stable profile and focus areas
 - `references/coverage-matrix.md` — category targets, input share priorities
 - `references/coach-notes-schema.md` — update protocol and promotion rule
-- `progress/phrasal-verbs-tracker.md` — Artem-only; refresh per-PV status when his stats are reviewed (see refresh protocol at bottom of that file)
+- `progress/phrasal-verbs-tracker.md` (Artem) and `progress/phrasal-verbs-tracker-anna.md` (Anna) — refresh per-PV status when that player's stats are reviewed; methodology in Artem's file (see refresh protocol at bottom)
 
 ## Workflow
 

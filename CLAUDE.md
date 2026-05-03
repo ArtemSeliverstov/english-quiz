@@ -50,7 +50,8 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 
 | File | Owner | Refreshed by |
 |---|---|---|
-| `progress/phrasal-verbs-tracker.md` | Artem | `stats-review` (per-PV status + Freq) |
+| `progress/phrasal-verbs-tracker.md` | Artem (B1–C1, business + cycling) | `stats-review` (per-PV status + Freq) |
+| `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
 
 ---
 

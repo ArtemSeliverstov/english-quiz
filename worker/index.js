@@ -307,20 +307,20 @@ Tone: warm, direct, slightly more pedagogical than free_write mode.`;
 
 function sessionEndInstructions(mode, ctx) {
   if (mode === 'free_write') {
-    // Artem-only: track PVs produced correctly and unprompted as tier-1 evidence
-    // for 🏆 graduation in progress/phrasal-verbs-tracker.md.
-    const isArtem = ctx && ctx.player === 'artem';
-    const pvField = isArtem ? `\n  "pvs_used_correctly": ["pv_string_1", ...],` : '';
-    const pvNote = isArtem
-      ? `\n\nFor "pvs_used_correctly": list any phrasal verbs Artem produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "follow up on", "get across", "come up with", "sort out". This is tier-1 evidence for PV graduation tracking. Empty array if none qualify.`
-      : '';
+    // pvs_used_correctly is tier-1 evidence for 🏆 graduation tracking in
+    // progress/phrasal-verbs-tracker*.md. Artem (B1–C1) and Anna (A1–B1) have
+    // active trackers; Nicole and Ernest will get one when their PV focus
+    // crystallises. Cheap to emit for all players — empty array if none qualify.
     return `Append a JSON block at the very end of your message wrapped in <session_meta>...</session_meta> tags containing:
 {
   "error_patterns_observed": ["pattern_id_1", ...],
-  "topics_covered": ["topic_1", ...],${pvField}
+  "topics_covered": ["topic_1", ...],
+  "pvs_used_correctly": ["pv_string_1", ...],
   "session_summary": "Two-sentence recap."
 }
-Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".${pvNote}`;
+Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".
+
+For "pvs_used_correctly": list any phrasal verbs the learner produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "look for", "find out", "pick up", "follow up on", "get across". Empty array if none qualify.`;
   }
   return `Append a JSON block at the very end wrapped in <session_meta>...</session_meta>:
 {

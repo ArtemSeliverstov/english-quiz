@@ -34,6 +34,21 @@ Worker change ships separately via `wrangler deploy` — until then, only CC-sid
 
 ---
 
+## 2026-05-03 · Anna PV scaffold (no version bump)
+
+Doc + library + worker source changes following the stats-review for Anna's PV tracker. Sister piece to today's t8 deploy (which built the Artem PV tracker + 🏆 graduation rule).
+
+- New `progress/phrasal-verbs-tracker-anna.md` — A1–B1 inventory (69 PVs), sorted by Freq DESC for Anna's family/Bahrain context. 5 rows populated from her current quiz qStats (turn on, get up, get over, break down all ⚪ at n=1; look up 🟠 at n=2). *come across* (B2, 0/3) flagged as out-of-scope chronic. Stats observations capture her 4% PV-bank engagement and 4 deferred candidate adds.
+- `get into` (★★★, n=2 baseline) and `put off` (★★★★, n=1 baseline) added to the Anna tracker based on touched-but-not-listed observation.
+- 8 translation drills (`anna_translation_pv_b01-b08`) + 4 russian_trap drills (`anna_russian_trap_pv_b01-b04`) authored, targeting her ★★★★★ tier (find out, pick up, take out, turn off, put on, get up, hurry up, look for) and the look_for/look_after pair confusion. Pushed to `exercises_library/`.
+- Worker `sessionEndInstructions` no longer Artem-gated — `pvs_used_correctly` emitted for all 4 players. Anna/Nicole/Ernest PWA Free Write sessions now feed the streak counter. Worker version `85bab1dd` live on Cloudflare. Smoke-tested with Anna context (6 PVs picked up correctly, response in Russian per her `coach_language`).
+- `tools/log_coach_session.js` passes through `pvs_used_correctly` for CC-side parity.
+- `CLAUDE.md` + stats-review SKILL reference both trackers.
+
+Q count: 1988 (unchanged) · No deploy of `index.html` / `sw.js`. Worker shipped via `wrangler deploy`.
+
+---
+
 ## 2026-05-03 · Library content — Anna russian_trap + spelling_drill expansion (no version bump)
 
 Stats-review-driven content batch for Anna. No engine change, content-only.

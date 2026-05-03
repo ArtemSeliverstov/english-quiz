@@ -270,9 +270,8 @@ async function main() {
     console.error(`Unknown player "${args.player}". Valid: ${PLAYERS.join(', ')}`);
     process.exit(1);
   }
-  if (args.player !== 'artem') {
-    console.error(`Note: only Artem has a PV tracker. Other players will return empty data.`);
-  }
+  // Trackers exist for Artem (B1–C1) and Anna (A1–B1) as of 2026-05-03.
+  // Other players don't yet have one; their results will return raw data only.
 
   const [coachEvents, exerciseEvents] = await Promise.all([
     ingestCoachSessions(args.player),
