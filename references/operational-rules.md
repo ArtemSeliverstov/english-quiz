@@ -15,6 +15,7 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 - **Don't generate `deploy.html`.** The flow is direct git push. → `design-decisions.md` (Direct git push)
 - **Don't bring up sensitive memory items unless the user does first.**
 - **Don't change a write path or surface without updating `docs/data-flow.md`.** Inventory + diagrams + pre-redesign checklist live there. → `docs/data-flow.md`
+- **After editing any capped doc, run `wc -w <file>` before committing.** Caps from `doc-style.md`; CI will fail otherwise. → `doc-style.md`
 
 ## Invariants
 
