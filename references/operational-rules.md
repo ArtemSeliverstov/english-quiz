@@ -11,9 +11,10 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 - **Don't push without running the pre-deploy checklist.** → `pre-deploy-checklist.md`
 - **Don't bump the version in only some of the four places.** It must be identical across HTML badge, `sw.js` cache key, version constant, git commit prefix. → `pre-deploy-checklist.md` §7
 - **Don't write to Firestore via direct REST from session code.** Use `tools/log_exercise.js` / `tools/update_coach_notes.js`. → `firestore-schema.md`, `tools/README.md`
-- **Don't attempt to delete Firestore documents** in `players/*` or its subcollections (except `exercise_active/*`). Rules forbid it; the request will fail. → `firestore.rules`
+- **Don't attempt to delete Firestore documents** in `players/*` or its subcollections. Rules forbid it; the request will fail. → `firestore.rules`
 - **Don't generate `deploy.html`.** The flow is direct git push. → `design-decisions.md` (Direct git push)
 - **Don't bring up sensitive memory items unless the user does first.**
+- **Don't change a write path or surface without updating `docs/data-flow.md`.** Inventory + diagrams + pre-redesign checklist live there. → `docs/data-flow.md`
 
 ## Invariants
 

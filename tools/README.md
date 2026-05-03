@@ -64,8 +64,8 @@ cat exercise.json | node log_exercise.js anna -
 ```
 
 Writes to `players/{name}/exercises/{Date.now()}`. Validates exercise type
-(must use canonical names — `article_drill` not `error_correction`). See
-`references/deeplink-schema.md` for the JSON shape.
+(must use canonical names — `article_drill` not `error_correction`). JSON
+shape per `references/firestore-schema.md` (exercises subcollection).
 
 ### `update_coach_notes.js` — apply a patch to coach_notes
 

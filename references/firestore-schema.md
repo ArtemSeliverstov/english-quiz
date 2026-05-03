@@ -15,17 +15,20 @@ The data model in Cloud Firestore. Active as of v20260428-s87.
 
 One document per family member. Player keys are lowercase: `artem`, `anna`, `nicole`, `ernest`, `egor`.
 
-| Field | Type | Purpose |
-|---|---|---|
-| `name` | string | Display name |
-| `pin` | string | 4-digit PIN |
-| `emoji` | string | Avatar emoji |
-| `stats` | map | Per-question stats: `{questionId: {seen, correct, lastSeen, lastWrong, consec}}` |
-| `settings` | map | Per-player UI settings (level, mode, business flag) |
-| `streak` | number | Current daily streak |
-| `lastActive` | string | ISO date string |
-| `lastExerciseDate` | string | ISO date of most recent supplementary exercise |
-| `coach_notes` | map | **NEW (post-s87)** — dynamic learner observations. See `coach-notes-schema.md`. |
+| Field | Type | Writer | Reader | Purpose |
+|---|---|---|---|---|
+| `name` | string | bootstrap | PWA, tools | Display name |
+| `pin` | string | PWA (Change PIN) | PWA | 4-digit PIN |
+| `emoji` | string | bootstrap | PWA | Avatar emoji |
+| `qStats` | map | PWA play loop | PWA, stats-review, weak-mode selector | Per-question stats: `{qid: {seen, correct, lastSeen, lastWrong, consec, wrong}}` |
+| `catStats` | map | PWA play loop | PWA, stats-review | Per-category rollup |
+| `lvlStats` | map | PWA play loop | PWA, stats-review | Per-level rollup |
+| `recentSessions` | array | PWA play loop | PWA, stats-review | Last 10 quiz sessions (FIFO) |
+| `totalAnswered`, `totalCorrect`, `totalSessions`, `currentStreak`, `longestStreak` | number | PWA play loop | PWA stats card | Headline aggregates |
+| `lastPlayedDate` | string | PWA play loop | PWA | YYYY-MM-DD of last session |
+| `learning_path` | map | PWA promotion logic | PWA, learner shell | Active categories, mastery, level cap |
+| `ui_shell` | string | PWA settings, bootstrap | PWA | `learner` \| `builder` |
+| `coach_notes` | map | `tools/update_coach_notes.js` only | exercise-session, stats-review, free-write skills | Dynamic learner observations. See `coach-notes-schema.md`. |
 
 **Write semantics**: always use `firestore_update` (PATCH with `updateMask`), never `firestore_set` for partial updates. PUT-style replace wipes any field not in the request body — same family of bug as RTDB's PUT-vs-PATCH issue from s72.
 
@@ -42,21 +45,22 @@ PATCH /v1/projects/artem-grammar-hub/databases/(default)/documents/players/{play
 
 Subcollection. One document per supplementary exercise session. `timestamp` is `Date.now()` as a string.
 
-| Field | Type | Purpose |
-|---|---|---|
-| `exercise` | string | Type: `translation` \| `free_write` \| `error_correction` \| `transform` \| `dictation` \| `conversation` \| `article_drill` \| `particle_sort` |
-| `topic` | string | Brief description |
-| `level` | string | `B1` \| `B2` \| `C1` |
-| `total` | number | Total items |
-| `correct` | number | Correct items |
-| `date` | string | YYYY-MM-DD |
-| `categories` | array of strings | Exact quiz category names |
-| `error_types` | array of strings | Cross-session error pattern tags |
-| `errors` | array of strings | Per-item error descriptions |
-| `chat_url` | string | Claude chat URL for traceability |
-| `meta` | map | Optional extras |
+| Field | Type | Writer | Reader | Purpose |
+|---|---|---|---|---|
+| `exercise` | string | Coach tab, `tools/log_exercise.js` | stats-review, history tab | Type: `translation` \| `free_write` \| `error_correction` \| `transform` \| `dictation` \| `conversation` \| `article_drill` \| `particle_sort` |
+| `topic` | string | both writers | both readers | Brief description |
+| `level` | string | both writers | both readers | `B1` \| `B2` \| `C1` |
+| `total`, `correct` | number | both writers | both readers | Item counts |
+| `date` | string | both writers | both readers | YYYY-MM-DD |
+| `source` | string | both writers | stats-review | `coach_tab` \| `cc_session` |
+| `partial`, `planned_total` | bool, number | Coach tab | stats-review | Set when session ended mid-pool |
+| `items` | array of maps | Coach tab; `log_exercise.js` once schema-alignment Track 3 ships | stats-review, history tab | Per-item detail. Sparse pre-rich rows omit. |
+| `categories`, `error_types`, `errors` | arrays | both writers | stats-review | Aggregated tags + per-item descriptions |
+| `tta_stats`, `auto_suspected` | map, bool | Coach tab; CC after Track 3 | stats-review (integrity flag) | Time-to-answer aggregates and auto-play suspicion |
+| `chat_url` | string | both writers (optional) | history tab | Claude chat URL for traceability |
+| `meta` | map | both writers | — | Optional extras |
 
-**Why subcollection (not nested map)**: nested maps in Firestore have a 1MB document size limit. Subcollection has no such limit. Decided in s87.
+**Why subcollection (not nested map)**: nested maps in Firestore have a 1MB document size limit.
 
 **Read pattern**:
 ```
@@ -65,32 +69,20 @@ firestore_query("players/{playerName}/exercises", orderBy: "date desc", limit: 2
 
 ---
 
-### `exercise_active/{sessionId}`
+### `players/{playerName}/coach_sessions/{sessionId}`
 
-Top-level collection. In-progress exercise sessions (Stage 1 live log).
+Subcollection. One document per Free Write / coach chat session (no per-item scores).
 
-`sessionId` format: `{playerName}_{Date.now()}_{rand4chars}` — e.g. `anna_1730000000000_abc1`.
+| Field | Type | Writer | Reader | Purpose |
+|---|---|---|---|---|
+| `mode` | string | Coach tab, `tools/log_coach_session.js` | stats-review, free-write skill | `free_write` \| `cc_session` \| `escalate` |
+| `messages` | array | both writers | stats-review | Transcript |
+| `error_patterns_observed`, `topics_covered` | arrays | both writers | stats-review | Pattern tags + topics |
+| `session_summary` | string | both writers | stats-review | One-paragraph summary |
+| `created`, `ended` | string | both writers | both readers | ISO timestamps |
+| `source` | string | `log_coach_session.js` only | stats-review | `cc_session` distinguishes CC- from PWA-driven |
 
-| Field | Type | Purpose |
-|---|---|---|
-| `player` | string | Player key |
-| `exercise` | string | Type (same enum as `exercises`) |
-| `topic` | string | Brief description |
-| `level` | string | B1 / B2 / C1 |
-| `started_at` | string | ISO timestamp |
-| `total_planned` | number | Expected item count |
-| `items` | array of maps | Per-item: `{stem, given, correct, ts, note}` |
-| `final` | boolean | False during session, true when complete |
-| `chat_url` | string | Claude chat URL |
-
-**Lifecycle**:
-1. Create with `final: false`, empty `items` array
-2. As items answered: read-modify-write to append (Firestore REST has limited array-element updateMask; full array replacement is the cleanest path)
-3. On finalize: copy to `players/{name}/exercises/{ts}`, then delete the active doc
-
-**Why top-level (not nested under players)**: simpler rule paths, easier to query "all active sessions" if a "Family is doing exercises right now" view is added later.
-
-**Cleanup**: any active doc older than 24h is stale (session abandoned). The PWA's startup logic runs `exCleanupStale()` to delete them.
+`sessionId` format: `{player}_{prefix}_{ts}_{rand}` where prefix is `fw` (free_write), `esc` (escalate), or `sess`.
 
 ---
 
@@ -149,7 +141,6 @@ Deploy: `firebase deploy --only firestore:rules`.
 |---|---|---|
 | Player root | `/players/{name}` | `players/{name}` (collection/doc) |
 | Exercise list | `/players/{name}/exercises/{ts}` (deep map) | `players/{name}/exercises/{ts}` (subcollection) |
-| Active session | (didn't exist) | `exercise_active/{sessionId}` |
 | Atomic write | PATCH at root with nested key | PATCH with `updateMask` |
 | Read all exercises | `GET /players/{name}/exercises.json` | `GET /players/{name}/exercises` (paginated) |
 | Bulk read all players | `GET /players.json` (truncates silently — never use) | List collection: `GET /players` (proper pagination) |
@@ -161,6 +152,6 @@ RTDB endpoint `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app`
 
 ## Naming conventions
 
-- Collection names: lowercase plural — `players`, `exercises`, `exercise_active`
+- Collection names: lowercase plural — `players`, `exercises`, `coach_sessions`
 - Document IDs: lowercase snake_case for known IDs (`artem`); `Date.now()` ms as string for timestamps
 - Field names: camelCase to match existing JS conventions

@@ -10,6 +10,26 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-03 · Session t7
+### v20260503-t7 — Hard-remove deeplinks + data-flow doc
+
+Cleanup pass after the 2026-05-02 Nicole contamination postmortem.
+
+- Hard-removed all four deeplink paths (`?exlog=`, `?exstart=`, `?exupd=`, `?exfin=`) from `index.html` — handlers, helpers, toast, and `_exlogMode` branch all gone (~187 lines). `exercise_active` collection now unused; Firestore rule for it removed.
+- Deleted `references/deeplink-schema.md`. Routing entry removed from `CLAUDE.md`. Secondary mentions cleaned in `README_FIRST.md`, `references/exercise-types.md`, `tools/README.md`.
+- `references/firestore-schema.md` reorganised: writer/reader columns added on every field group; `exercise_active` section removed; `coach_sessions` section added.
+- New `docs/data-flow.md` — surface inventory + 5 Mermaid sequence diagrams (incl. the shared-device contamination flow) + pre-redesign checklist. Referenced from a new line in `references/operational-rules.md`.
+- `plans/schema-alignment-plan.md` rewritten: 5 tracks → 3 (deeplink alignment dropped from scope).
+- `plans/data-integrity-plan.md` moved out of `references/` (lifecycle: it's a plan, not operational KB).
+
+Live PWA loaded clean post-deploy: version badge `v20260503-t7`, no console errors, `exStartActive` / `exFinalize` / `exDeeplinkToast` / `exCleanupStale` all `undefined`.
+
+`firestore.rules` change is committed but not yet deployed — needs `firebase deploy --only firestore:rules` separately.
+
+Q count: 1,984 (unchanged) · Version: v20260503-t7
+
+---
+
 ## 2026-05-01 · Session 91
 ### v20260501-s91 — Phase 2C: Free Write + Escalate live AI
 

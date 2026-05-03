@@ -1,8 +1,8 @@
 rules_version = '2';
 
 // Append-only-leaning rules. Reads stay open; writes stay open for the PWA
-// and tools/*.js, but `delete` is locked everywhere except `exercise_active`
-// (which legitimately needs cleanup), and `exercises` is write-once.
+// and tools/*.js, but `delete` is locked everywhere and `exercises` is
+// write-once.
 //
 // Threat model: the project ID is visible in the PWA bundle, so the Firestore
 // endpoint is reachable from anywhere. The pre-existing `if true` rule meant
@@ -45,12 +45,6 @@ service cloud.firestore {
         allow create, update: if true;
         allow delete: if false;
       }
-    }
-
-    // In-progress sessions (Stage 1 live-log). Cleaned up after the session
-    // ends, so delete must remain permitted.
-    match /exercise_active/{sessionId} {
-      allow read, write: if true;
     }
 
     // Exercise library. Reads must stay open — the PWA Coach picker lists

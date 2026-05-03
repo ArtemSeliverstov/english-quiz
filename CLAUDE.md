@@ -27,7 +27,6 @@ The KB is the authoritative source. CLAUDE.md is only a routing layer.
 | `references/family-profiles.md` | Any session involving a player. Stable level/focus per person. Includes the family one-line table. |
 | `references/exercise-types.md` | Running exercises. Defines the 8 exercise types. |
 | `references/weekly-slots.md` | Artem's planned weekly schedule. |
-| `references/deeplink-schema.md` | Generating `?exlog=` / `?exupd=` / `?exfin=` deeplinks. |
 | `references/question-schema.md` | Authoring questions or editing existing ones. |
 | `references/question-authoring-standards.md` | Writing q/exp/hint fields. |
 | `references/pre-deploy-checklist.md` | Before any push to main. Includes the deploy workflow and version-stamp invariant. |

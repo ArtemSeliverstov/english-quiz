@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260502-t6">
+  <meta name="app-version" content="v20260503-t7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -999,7 +999,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260502-t6</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260503-t7</span></p>
 </header>
 
 <!-- TABS -->
@@ -6411,74 +6411,6 @@ async function fsList(parentPath, pageSize = 100) {
   return docs;
 }
 
-// ---------- Stage 1: live exercise log (exercise_active collection) ----------
-function exMakeSessionId(player) {
-  const r = Math.random().toString(36).slice(2, 6);
-  return `${player}_${Date.now()}_${r}`;
-}
-async function exStartActive(player, opts = {}) {
-  const sid = opts.session_id || exMakeSessionId(player);
-  const doc = {
-    player,
-    session_id: sid,
-    exercise: opts.exercise || 'unknown',
-    topic: opts.topic || '',
-    level: opts.level || 'B1',
-    started_at: new Date().toISOString(),
-    total_planned: opts.total_planned || 0,
-    items: [],
-    final: false,
-    chat_url: opts.chat_url || '',
-  };
-  await fsSet(`exercise_active/${sid}`, doc);
-  return sid;
-}
-async function exAppendItem(session_id, item) {
-  const doc = await fsGet(`exercise_active/${session_id}`);
-  if (!doc) throw new Error(`Active session ${session_id} not found`);
-  const items = Array.isArray(doc.items) ? doc.items : [];
-  items.push({ ...item, ts: new Date().toISOString() });
-  await fsMerge(`exercise_active/${session_id}`, { items });
-  return items.length;
-}
-async function exFinalize(session_id) {
-  const doc = await fsGet(`exercise_active/${session_id}`);
-  if (!doc) throw new Error(`Active session ${session_id} not found`);
-  const player = doc.player;
-  const ts = String(Date.now());
-  const items = doc.items || [];
-  const total = items.length;
-  const correct = items.filter(it => it.correct === true).length;
-  const final_doc = {
-    exercise: doc.exercise,
-    topic: doc.topic,
-    level: doc.level,
-    total,
-    correct,
-    date: new Date().toISOString().slice(0, 10),
-    chat_url: doc.chat_url,
-    items,
-    finalized_from_session: session_id,
-  };
-  await fsSet(`players/${player}/exercises/${ts}`, final_doc);
-  await fsDelete(`exercise_active/${session_id}`);
-  return ts;
-}
-async function exCleanupStale() {
-  try {
-    const docs = await fsList('exercise_active');
-    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    for (const d of docs) {
-      const t = new Date(d.started_at).getTime();
-      if (t < cutoff) {
-        await fsDelete(`exercise_active/${d.id}`);
-      }
-    }
-  } catch (e) {
-    console.warn('Active session cleanup failed:', e.message);
-  }
-}
-
 // Poll family data every 30 seconds (REST has no real-time listener)
 let familyPollTimer = null;
 
@@ -7223,111 +7155,8 @@ function loadLocalPinOverride(key) {
 // ══════════════════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════════════════
-// ── LIVE LOG DEEPLINK HANDLERS (exstart / exupd / exfin) ──
-(function() {
-  const params = new URLSearchParams(location.search);
-
-  if (params.has('exstart')) {
-    try {
-      const data = JSON.parse(atob(params.get('exstart')));
-      const player = data._player;
-      delete data._player;
-      exStartActive(player, data).then(sid => {
-        showToast(`Started session ${sid.slice(-4)}`);
-        setTimeout(() => location.replace(location.pathname), 2000);
-      }).catch(e => showToast('exstart failed: ' + e.message));
-    } catch(e) { showToast('exstart failed: ' + e.message); }
-    return;
-  }
-
-  if (params.has('exupd')) {
-    try {
-      const data = JSON.parse(atob(params.get('exupd')));
-      const sid = data.session_id;
-      delete data.session_id;
-      exAppendItem(sid, data).then(n => {
-        showToast(`Item ${n} logged`);
-        setTimeout(() => location.replace(location.pathname), 1500);
-      }).catch(e => showToast('exupd failed: ' + e.message));
-    } catch(e) { showToast('exupd failed: ' + e.message); }
-    return;
-  }
-
-  if (params.has('exfin')) {
-    try {
-      const data = JSON.parse(atob(params.get('exfin')));
-      exFinalize(data.session_id).then(ts => {
-        showToast(`Session finalized → ${ts}`);
-        setTimeout(() => location.replace(location.pathname), 2500);
-      }).catch(e => showToast('exfin failed: ' + e.message));
-    } catch(e) { showToast('exfin failed: ' + e.message); }
-    return;
-  }
-})();
-
-// ── EXERCISE DEEPLINK HANDLER (runs before name picker) ──
-(function() {
-  const exParam = new URLSearchParams(location.search).get('exlog');
-  if (!exParam) return;
-  window._exlogMode = true; // flag to suppress name picker
-  document.addEventListener('DOMContentLoaded', () => {
-    // Hide the entire app UI, show a clean save screen
-    document.querySelectorAll('.tabs, #tab-setup, #tab-stats, #tab-family, #tab-exercises, #tab-coach').forEach(el => {
-      if (el) el.style.display = 'none';
-    });
-    try {
-      const json = decodeURIComponent(escape(atob(exParam)));
-      const data = JSON.parse(json);
-      const player = data._player;
-      if (!player) throw new Error('No player in link data');
-      delete data._player;
-      if (!data.date) data.date = new Date().toISOString().slice(0,10);
-      if (data.correct != null && data.total) data.score = +(data.correct / data.total).toFixed(3);
-      const ts = String(Date.now());
-      // Show saving indicator
-      exDeeplinkToast('⏳ Saving ' + player + ' exercise…', 'success');
-      // Dupe-check then save via Firestore subcollection
-      fsList('players/' + player + '/exercises').then(existing => {
-        const isDup = existing.some(ex =>
-          ex && ex.date === data.date && ex.exercise === data.exercise &&
-          ex.topic === data.topic && ex.score === data.score
-        );
-        if (isDup) {
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('⚠️ Duplicate detected (same date/exercise/topic/score). Not saved.', 'error');
-          setTimeout(() => { location.href = location.pathname; }, 3500);
-          return;
-        }
-        fsSet('players/' + player + '/exercises/' + ts, data).then(() => {
-          const pct = Math.round((data.score||0)*100);
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-          setTimeout(() => { location.href = location.pathname; }, 2500);
-        }).catch(e => {
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('❌ ' + e.message, 'error');
-        });
-      }).catch(() => {
-        // If dupe-check fails, save anyway
-        fsSet('players/' + player + '/exercises/' + ts, data).then(() => {
-          const pct = Math.round((data.score||0)*100);
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('✅ Saved! ' + (player.charAt(0).toUpperCase()+player.slice(1)) + ' · ' + (data.exercise||'').replace(/_/g,' ') + ' · ' + pct + '%', 'success');
-          setTimeout(() => { location.href = location.pathname; }, 2500);
-        }).catch(e => {
-          document.querySelectorAll('.ex-deeplink-toast').forEach(el => el.remove());
-          exDeeplinkToast('❌ ' + e.message, 'error');
-        });
-      });
-    } catch(e) {
-      exDeeplinkToast('❌ Bad link: ' + e.message, 'error');
-    }
-    history.replaceState(null, '', location.pathname);
-  });
-})();
-
 document.addEventListener('DOMContentLoaded', () => {
-  if (!currentPlayer && !window._exlogMode) {
+  if (!currentPlayer) {
     setTimeout(showNamePicker, 600);
   } else {
     // Load any locally saved PIN override (from Change PIN)
@@ -7343,7 +7172,6 @@ document.addEventListener('DOMContentLoaded', () => {
       window._fbLoadComplete = true;
       if (loaded) setFbStatus('online', '✅ Progress loaded from server');
       startFamilyPoll();
-      exCleanupStale();
       checkSimpleUI();
       // §4.4 — Learner shell takes over the landing surface.
       if (typeof isLearnerShell === 'function' && isLearnerShell()) {
@@ -7429,19 +7257,6 @@ if ('serviceWorker' in navigator) {
       .then(reg => { reg.update(); console.log('SW registered, scope:', reg.scope); })
       .catch(err => console.log('SW not registered (offline mode unavailable):', err.message));
   });
-}
-
-
-function exDeeplinkToast(msg, type) {
-  const el = document.createElement('div');
-  el.className = 'ex-deeplink-toast';
-  el.style.cssText = 'position:fixed;top:1rem;left:50%;transform:translateX(-50%);z-index:9999;padding:.75rem 1.2rem;border-radius:10px;font-family:DM Sans,sans-serif;font-size:.85rem;font-weight:600;max-width:90%;text-align:center;animation:fadeIn .3s ease;';
-  el.style.background = type === 'success' ? 'rgba(111,239,178,.15)' : 'rgba(255,107,107,.15)';
-  el.style.border = '1px solid ' + (type === 'success' ? 'rgba(111,239,178,.3)' : 'rgba(255,107,107,.3)');
-  el.style.color = type === 'success' ? '#6fefb2' : '#ff6b6b';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .5s'; setTimeout(() => el.remove(), 500); }, 4000);
 }
 
 // ══════════════════════════════════════════════

@@ -168,9 +168,9 @@ Every exercise session, regardless of type, follows this sequence. The
    what to adjust next time.
 5. **Get player feedback**: ask the player how the session felt. Capture in
    `recent_observations`.
-6. **Persist**: write to Firestore. For Claude Code: direct write to
-   `players/{name}/exercises/{ts}`. For claude.ai chat: generate `?exfin=BASE64`
-   deeplink. Update `coach_notes.recent_observations` if anything new emerged.
+6. **Persist**: write to Firestore via `tools/log_exercise.js` →
+   `players/{name}/exercises/{ts}`. Update `coach_notes.recent_observations`
+   if anything new emerged.
 
 ---
 

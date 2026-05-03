@@ -25,7 +25,6 @@ phase1_skills_bundle/
 │   ├── family-profiles.md                 ← stable per-player profiles
 │   ├── coach-notes-schema.md              ← Firestore dynamic memory layer
 │   ├── exercise-types.md                  ← 8 canonical exercise types + protocol
-│   ├── deeplink-schema.md                 ← exlog/exupd/exfin payloads
 │   ├── pre-deploy-checklist.md            ← canonical pre-push validation
 │   ├── question-schema.md                 ← schema per type, ID conventions
 │   ├── question-authoring-standards.md    ← type hierarchy + per-question checklist
