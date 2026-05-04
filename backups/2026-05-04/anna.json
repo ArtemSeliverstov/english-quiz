@@ -1,0 +1,4689 @@
+{
+  "_meta": {
+    "snapshotTs": "2026-05-04T06:11:12.023Z",
+    "player": "anna"
+  },
+  "doc": {
+    "qStats": {
+      "mo02": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773138980685,
+        "correct": 0
+      },
+      "gn01": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773224693832,
+        "wrong": 1
+      },
+      "lkr02": {
+        "correct": 1,
+        "lastSeen": 1772619858024,
+        "wrong": 0,
+        "seen": 1
+      },
+      "sv_b03": {
+        "lastSeen": 1773146664293,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "eo03": {
+        "wrong": 0,
+        "lastSeen": 1773126231640,
+        "correct": 1,
+        "seen": 1
+      },
+      "ee14": {
+        "wrong": 3,
+        "lastSeen": 1776794742029,
+        "seen": 3,
+        "consec": 0,
+        "lastWrong": "get in",
+        "correct": 0
+      },
+      "voc48": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "break",
+        "lastSeen": 1776069132228,
+        "wrong": 2,
+        "seen": 2
+      },
+      "sayt05": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1776795193621,
+        "consec": 0,
+        "lastWrong": "said",
+        "correct": 1
+      },
+      "pf01": {
+        "correct": 2,
+        "consec": 2,
+        "seen": 3,
+        "lastSeen": 1774855661343,
+        "wrong": 1
+      },
+      "sv_b01": {
+        "correct": 2,
+        "lastSeen": 1773500768787,
+        "wrong": 0,
+        "seen": 2
+      },
+      "aa03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773126714977,
+        "correct": 1
+      },
+      "na03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773051024967,
+        "correct": 1
+      },
+      "gr_b03": {
+        "lastSeen": 1774683262921,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "enou01": {
+        "wrong": 0,
+        "lastSeen": 1773127504786,
+        "correct": 1,
+        "seen": 1
+      },
+      "reflby09": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1776069001900,
+        "consec": 1,
+        "correct": 1
+      },
+      "lnk02": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1776695769354,
+        "consec": 1,
+        "correct": 1
+      },
+      "ppf01": {
+        "correct": 1,
+        "consec": 1,
+        "lastSeen": 1776794703643,
+        "wrong": 0,
+        "seen": 1
+      },
+      "art15": {
+        "wrong": 1,
+        "lastSeen": 1772617142342,
+        "correct": 0,
+        "seen": 1
+      },
+      "gr_b13": {
+        "lastSeen": 1773126829236,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ap04": {
+        "wrong": 0,
+        "lastSeen": 1773146570735,
+        "correct": 1,
+        "seen": 1
+      },
+      "tr01": {
+        "seen": 1,
+        "lastSeen": 1773500820462,
+        "correct": 0,
+        "wrong": 1
+      },
+      "rc_b08": {
+        "correct": 2,
+        "lastSeen": 1773050824175,
+        "wrong": 0,
+        "seen": 2
+      },
+      "wt02": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772619346552,
+        "correct": 1
+      },
+      "ut_b06": {
+        "correct": 1,
+        "lastSeen": 1773126346275,
+        "wrong": 0,
+        "seen": 1
+      },
+      "rs_ti06": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773050495566,
+        "seen": 1
+      },
+      "cu01": {
+        "seen": 2,
+        "wrong": 2,
+        "lastSeen": 1776069211656,
+        "consec": 0,
+        "lastWrong": "exercises",
+        "correct": 0
+      },
+      "rc_b04": {
+        "correct": 1,
+        "lastSeen": 1774683309027,
+        "wrong": 0,
+        "seen": 1
+      },
+      "mn02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773127149748,
+        "seen": 1
+      },
+      "gadj04": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772769149864,
+        "correct": 1
+      },
+      "ee05": {
+        "seen": 2,
+        "lastSeen": 1774262358258,
+        "correct": 2,
+        "wrong": 0
+      },
+      "art07": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772615326954,
+        "wrong": 0
+      },
+      "inf_b04": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 0,
+        "lastSeen": 1776068958933,
+        "seen": 1
+      },
+      "rc_b15": {
+        "seen": 1,
+        "lastSeen": 1772616873564,
+        "correct": 1,
+        "wrong": 0
+      },
+      "sc03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773126129976,
+        "correct": 1
+      },
+      "ee01": {
+        "lastSeen": 1776695844135,
+        "wrong": 0,
+        "seen": 3,
+        "correct": 3,
+        "consec": 2
+      },
+      "irv18": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773209014174
+      },
+      "sv11": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772619200741,
+        "wrong": 0
+      },
+      "fu01": {
+        "consec": 1,
+        "correct": 2,
+        "seen": 4,
+        "wrong": 2,
+        "lastSeen": 1776068882592
+      },
+      "ptc06": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 0,
+        "lastSeen": 1774762835208,
+        "seen": 1
+      },
+      "pp_pr01": {
+        "correct": 1,
+        "lastSeen": 1773126874169,
+        "wrong": 0,
+        "seen": 1
+      },
+      "aph28": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772616596276,
+        "seen": 1
+      },
+      "bf02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773128348315,
+        "wrong": 1
+      },
+      "art_b02": {
+        "wrong": 0,
+        "lastSeen": 1773225046765,
+        "correct": 1,
+        "seen": 1
+      },
+      "md03": {
+        "consec": 0,
+        "lastWrong": "It is not much different if we use option A or B.",
+        "correct": 0,
+        "wrong": 2,
+        "lastSeen": 1775913723469,
+        "seen": 2
+      },
+      "pv_b11": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1776068729708,
+        "consec": 1,
+        "correct": 1
+      },
+      "adv04": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773128240693,
+        "correct": 1
+      },
+      "tr02": {
+        "correct": 0,
+        "consec": 0,
+        "lastSeen": 1774762512983,
+        "wrong": 1,
+        "seen": 1
+      },
+      "pt_b03": {
+        "correct": 1,
+        "lastSeen": 1773128334262,
+        "wrong": 0,
+        "seen": 1
+      },
+      "lm09": {
+        "wrong": 1,
+        "lastSeen": 1772619580401,
+        "correct": 0,
+        "seen": 1
+      },
+      "ee11": {
+        "correct": 0,
+        "lastSeen": 1774258139362,
+        "wrong": 2,
+        "seen": 2
+      },
+      "irv08": {
+        "consec": 2,
+        "correct": 2,
+        "wrong": 0,
+        "lastSeen": 1776692878506,
+        "seen": 2
+      },
+      "art_b20": {
+        "seen": 1,
+        "lastSeen": 1773128427937,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ps01": {
+        "seen": 1,
+        "lastSeen": 1773224614644,
+        "correct": 1,
+        "wrong": 0
+      },
+      "pv_b09": {
+        "wrong": 1,
+        "lastSeen": 1774683340900,
+        "correct": 0,
+        "seen": 1
+      },
+      "gx06": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773049705365,
+        "wrong": 1
+      },
+      "bf01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773050749778
+      },
+      "ap15": {
+        "wrong": 0,
+        "lastSeen": 1773146518623,
+        "correct": 1,
+        "seen": 1
+      },
+      "tg32": {
+        "correct": 1,
+        "lastSeen": 1773209353917,
+        "wrong": 0,
+        "seen": 1
+      },
+      "rc06": {
+        "lastSeen": 1772619264051,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "qf30": {
+        "wrong": 0,
+        "lastSeen": 1773126418388,
+        "correct": 1,
+        "seen": 1
+      },
+      "rc08": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772616703849
+      },
+      "irv26": {
+        "seen": 1,
+        "lastSeen": 1773050353736,
+        "correct": 1,
+        "wrong": 0
+      },
+      "gadj05": {
+        "correct": 1,
+        "lastSeen": 1772769065541,
+        "wrong": 0,
+        "seen": 1
+      },
+      "tg06": {
+        "wrong": 0,
+        "lastSeen": 1772619316876,
+        "correct": 1,
+        "seen": 1
+      },
+      "si03": {
+        "seen": 1,
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773500666204
+      },
+      "ut02": {
+        "consec": 1,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1774762541054
+      },
+      "ie03": {
+        "wrong": 0,
+        "lastSeen": 1773128001274,
+        "correct": 1,
+        "seen": 1
+      },
+      "fy01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772615289415
+      },
+      "art_i18": {
+        "lastSeen": 1774337875799,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "dc04": {
+        "seen": 1,
+        "lastSeen": 1774683571309,
+        "correct": 0,
+        "wrong": 1
+      },
+      "gadj09": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772769164038
+      },
+      "pr_ti09": {
+        "lastSeen": 1773049931157,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "pa09": {
+        "wrong": 1,
+        "lastSeen": 1773050877132,
+        "correct": 1,
+        "seen": 2
+      },
+      "pv_b04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773224935000,
+        "seen": 1
+      },
+      "fu02": {
+        "correct": 1,
+        "lastSeen": 1774683688896,
+        "wrong": 0,
+        "seen": 1
+      },
+      "art_c04": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773146424539,
+        "wrong": 0
+      },
+      "pt_b02": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773208908339,
+        "correct": 1
+      },
+      "uto04": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773126962121,
+        "correct": 0
+      },
+      "aph13": {
+        "lastSeen": 1773050970654,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "fo02": {
+        "lastSeen": 1773050955809,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "gi_b05": {
+        "wrong": 0,
+        "lastSeen": 1773126981721,
+        "correct": 1,
+        "seen": 1
+      },
+      "pr_ti08": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773126324603,
+        "wrong": 0
+      },
+      "mc09": {
+        "seen": 2,
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1773050811556
+      },
+      "art_i01": {
+        "correct": 2,
+        "lastSeen": 1774683670275,
+        "wrong": 0,
+        "seen": 2
+      },
+      "tg40": {
+        "lastWrong": "meeting",
+        "consec": 0,
+        "correct": 0,
+        "wrong": 2,
+        "lastSeen": 1776794982861,
+        "seen": 2
+      },
+      "voc03": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773209104855
+      },
+      "lnk05": {
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1773224739860,
+        "seen": 2
+      },
+      "an03": {
+        "correct": 1,
+        "lastSeen": 1773128388037,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ee21": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1774262498415,
+        "wrong": 1
+      },
+      "op02": {
+        "seen": 3,
+        "lastSeen": 1776794848655,
+        "wrong": 3,
+        "correct": 0,
+        "lastWrong": "honest / dishonest",
+        "consec": 0
+      },
+      "gn03": {
+        "lastSeen": 1776794916452,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastWrong": "When a doctor finishes his/her shift, he/she should log his/her hours.",
+        "consec": 0
+      },
+      "aph12": {
+        "correct": 1,
+        "lastSeen": 1773050607287,
+        "wrong": 1,
+        "seen": 2
+      },
+      "ben01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773128063547
+      },
+      "en02": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 1,
+        "lastSeen": 1776068718139,
+        "seen": 2
+      },
+      "irvpp20": {
+        "lastSeen": 1776069085963,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "consec": 1
+      },
+      "irv10": {
+        "correct": 0,
+        "lastSeen": 1773224864695,
+        "wrong": 1,
+        "seen": 1
+      },
+      "reflby08": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1774338036933,
+        "wrong": 0
+      },
+      "irv02": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 1,
+        "lastSeen": 1776068617510,
+        "seen": 2
+      },
+      "ap13": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773126577009
+      },
+      "lkr10": {
+        "wrong": 0,
+        "lastSeen": 1773050162253,
+        "correct": 2,
+        "seen": 2
+      },
+      "pr02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773500750567,
+        "wrong": 1
+      },
+      "qf02": {
+        "correct": 1,
+        "lastSeen": 1773127124462,
+        "wrong": 0,
+        "seen": 1
+      },
+      "gadj01": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772769136417,
+        "wrong": 1
+      },
+      "cr05": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1774683365220,
+        "wrong": 0
+      },
+      "ap11": {
+        "lastSeen": 1776694930399,
+        "wrong": 1,
+        "seen": 2,
+        "correct": 1,
+        "consec": 1
+      },
+      "pv_b06": {
+        "lastSeen": 1773500760260,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ei02": {
+        "seen": 1,
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773126737655
+      },
+      "sk03": {
+        "lastSeen": 1773126931363,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "aph27": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773126000388,
+        "seen": 1
+      },
+      "gi_b03": {
+        "lastSeen": 1776692842413,
+        "wrong": 1,
+        "seen": 3,
+        "correct": 2,
+        "consec": 1
+      },
+      "ptc03": {
+        "seen": 1,
+        "lastSeen": 1773905133680,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mc03": {
+        "seen": 1,
+        "lastSeen": 1773500612198,
+        "correct": 0,
+        "wrong": 1
+      },
+      "adj_i06": {
+        "lastSeen": 1776695657934,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "interesting"
+      },
+      "pp_ap06": {
+        "lastSeen": 1776692854559,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "consec": 1
+      },
+      "sc04": {
+        "wrong": 0,
+        "lastSeen": 1773050132832,
+        "correct": 1,
+        "seen": 1
+      },
+      "gi_c22": {
+        "wrong": 0,
+        "lastSeen": 1776695821277,
+        "seen": 1,
+        "consec": 1,
+        "correct": 1
+      },
+      "pf_a02": {
+        "correct": 0,
+        "lastSeen": 1773049804683,
+        "wrong": 1,
+        "seen": 1
+      },
+      "voc50": {
+        "consec": 2,
+        "correct": 2,
+        "wrong": 0,
+        "lastSeen": 1776695403456,
+        "seen": 2
+      },
+      "wt12": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772619872732
+      },
+      "mp02": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 0,
+        "lastSeen": 1776795133052,
+        "seen": 1
+      },
+      "art_b03": {
+        "seen": 1,
+        "lastSeen": 1773127525410,
+        "correct": 1,
+        "wrong": 0
+      },
+      "zc04": {
+        "wrong": 0,
+        "lastSeen": 1773050901175,
+        "correct": 1,
+        "seen": 1
+      },
+      "tc05": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773209167457,
+        "wrong": 0
+      },
+      "co_i02": {
+        "lastSeen": 1776069237047,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "consec": 1
+      },
+      "ut04": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1773050455839,
+        "wrong": 0
+      },
+      "wt18": {
+        "seen": 3,
+        "wrong": 1,
+        "lastSeen": 1773209155709,
+        "correct": 2
+      },
+      "id05": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773209316198,
+        "seen": 1
+      },
+      "pp_pr04": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773500715332,
+        "seen": 1
+      },
+      "ar05": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773050539367
+      },
+      "qf07": {
+        "lastSeen": 1774683118366,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "id02": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773209289821,
+        "correct": 0
+      },
+      "eq02": {
+        "lastSeen": 1773050038426,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "tr03": {
+        "lastWrong": "People have been starting to prefer streaming. / People started to prefer streaming.",
+        "consec": 0,
+        "correct": 1,
+        "seen": 3,
+        "wrong": 2,
+        "lastSeen": 1776068569566
+      },
+      "gx12": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 1,
+        "lastSeen": 1776695436313,
+        "wrong": 0
+      },
+      "wt05": {
+        "consec": 0,
+        "lastWrong": "that",
+        "correct": 0,
+        "wrong": 2,
+        "lastSeen": 1776695153679,
+        "seen": 2
+      },
+      "tg49": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772615057710,
+        "seen": 1
+      },
+      "co_b04": {
+        "wrong": 0,
+        "lastSeen": 1773146506230,
+        "correct": 1,
+        "seen": 1
+      },
+      "ut2_07": {
+        "correct": 0,
+        "lastWrong": "used to",
+        "consec": 0,
+        "seen": 1,
+        "lastSeen": 1776695892157,
+        "wrong": 1
+      },
+      "gs03": {
+        "seen": 2,
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1773127628356
+      },
+      "art_c01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774683587562
+      },
+      "av01": {
+        "wrong": 1,
+        "lastSeen": 1773209203196,
+        "correct": 0,
+        "seen": 1
+      },
+      "ee22": {
+        "lastSeen": 1776068811989,
+        "wrong": 2,
+        "seen": 4,
+        "correct": 2,
+        "lastWrong": "Yes the game was close.",
+        "consec": 0
+      },
+      "sayt08": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 2,
+        "lastSeen": 1776695125893,
+        "wrong": 1
+      },
+      "are02": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1774682861756,
+        "correct": 0
+      },
+      "psc09": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773224592341
+      },
+      "tc_hw03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773209119595,
+        "correct": 1
+      },
+      "lkc09": {
+        "lastSeen": 1773050090017,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "lnk08": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773208902525,
+        "wrong": 0
+      },
+      "et01": {
+        "seen": 1,
+        "lastSeen": 1772619707524,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mm10": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773126555227,
+        "wrong": 1
+      },
+      "pperf03": {
+        "seen": 1,
+        "lastSeen": 1772619888641,
+        "correct": 0,
+        "wrong": 1
+      },
+      "ga10": {
+        "wrong": 2,
+        "correct": 0,
+        "lastSeen": 1773126690854,
+        "seen": 2
+      },
+      "pa03": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772769076373
+      },
+      "ei01": {
+        "wrong": 1,
+        "lastSeen": 1773126511799,
+        "correct": 0,
+        "seen": 1
+      },
+      "ep03": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772619298462
+      },
+      "lm01": {
+        "seen": 2,
+        "wrong": 2,
+        "lastSeen": 1773049549446,
+        "correct": 0
+      },
+      "cr04": {
+        "seen": 1,
+        "lastSeen": 1773127221693,
+        "correct": 0,
+        "wrong": 1
+      },
+      "gx09": {
+        "wrong": 0,
+        "lastSeen": 1773049902010,
+        "correct": 1,
+        "seen": 1
+      },
+      "voc46": {
+        "wrong": 1,
+        "lastSeen": 1774683401893,
+        "correct": 0,
+        "seen": 1
+      },
+      "nm10": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773146599875
+      },
+      "cn03": {
+        "seen": 1,
+        "lastSeen": 1772616513713,
+        "correct": 1,
+        "wrong": 0
+      },
+      "sayt02": {
+        "lastSeen": 1773208990139,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "sayt04": {
+        "lastSeen": 1774763049741,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "consec": 0
+      },
+      "ep02": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773146749932,
+        "correct": 0
+      },
+      "co03": {
+        "lastSeen": 1773209406021,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "pv_b02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773128047936,
+        "seen": 1
+      },
+      "ti02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773208745149,
+        "seen": 1
+      },
+      "nb01": {
+        "correct": 1,
+        "lastSeen": 1773208752368,
+        "wrong": 0,
+        "seen": 1
+      },
+      "hw03": {
+        "lastSeen": 1776068646714,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastWrong": "I have one friend with whom I play squash.",
+        "consec": 0
+      },
+      "aa04": {
+        "wrong": 0,
+        "lastSeen": 1773051069530,
+        "correct": 1,
+        "seen": 1
+      },
+      "gr_b09": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773128446127,
+        "wrong": 0
+      },
+      "ut01": {
+        "lastSeen": 1774338225660,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "adj_i01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1774683503850,
+        "correct": 1
+      },
+      "fm03": {
+        "correct": 2,
+        "lastSeen": 1774683171770,
+        "wrong": 2,
+        "seen": 4
+      },
+      "qu02": {
+        "seen": 1,
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773208961747
+      },
+      "pv_a02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773049915253,
+        "wrong": 1
+      },
+      "vo05": {
+        "correct": 1,
+        "lastSeen": 1773500845662,
+        "wrong": 0,
+        "seen": 1
+      },
+      "irv40": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1774762874990,
+        "consec": 1,
+        "correct": 1
+      },
+      "gc02": {
+        "consec": 0,
+        "correct": 0,
+        "wrong": 3,
+        "lastSeen": 1774762563075,
+        "seen": 3
+      },
+      "pv_c14": {
+        "seen": 2,
+        "lastSeen": 1776694947679,
+        "wrong": 1,
+        "correct": 1,
+        "consec": 1
+      },
+      "ev05": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772615036812,
+        "seen": 1
+      },
+      "aph04": {
+        "seen": 1,
+        "lastSeen": 1773050918720,
+        "correct": 1,
+        "wrong": 0
+      },
+      "gadj02": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772769100775,
+        "seen": 1
+      },
+      "adv02": {
+        "wrong": 0,
+        "lastSeen": 1773146492261,
+        "correct": 1,
+        "seen": 1
+      },
+      "pa06": {
+        "correct": 0,
+        "lastSeen": 1772768983308,
+        "wrong": 1,
+        "seen": 1
+      },
+      "eo01": {
+        "seen": 2,
+        "lastSeen": 1776795110168,
+        "wrong": 2,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "We are interested in each others' cultures."
+      },
+      "co_ti03": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "not",
+        "seen": 2,
+        "lastSeen": 1775913766377,
+        "wrong": 2
+      },
+      "irv20": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773127773075,
+        "correct": 0
+      },
+      "gs02": {
+        "seen": 2,
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1773500558596
+      },
+      "al03": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1776695362316,
+        "consec": 1,
+        "correct": 1
+      },
+      "pa01": {
+        "seen": 1,
+        "lastSeen": 1772769029361,
+        "correct": 1,
+        "wrong": 0
+      },
+      "et03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773126844797,
+        "seen": 1
+      },
+      "gadj07": {
+        "wrong": 3,
+        "lastSeen": 1776794869425,
+        "seen": 3,
+        "lastWrong": "really",
+        "consec": 0,
+        "correct": 0
+      },
+      "rc_b03": {
+        "lastSeen": 1774337994996,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "mv05": {
+        "seen": 1,
+        "lastSeen": 1772615939733,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ps03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773127411188,
+        "correct": 1
+      },
+      "ee09": {
+        "lastSeen": 1776068857158,
+        "wrong": 1,
+        "seen": 2,
+        "correct": 1,
+        "consec": 1
+      },
+      "st05": {
+        "seen": 1,
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773146465443
+      },
+      "aph10": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 1,
+        "lastSeen": 1776795312787,
+        "wrong": 0
+      },
+      "mp03": {
+        "lastSeen": 1773127724600,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "c1_v12": {
+        "lastSeen": 1773209337247,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "lki02": {
+        "lastSeen": 1776695085472,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "despite this"
+      },
+      "sv_b05": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773049957829,
+        "seen": 1
+      },
+      "gr_b04": {
+        "correct": 2,
+        "consec": 2,
+        "seen": 3,
+        "lastSeen": 1776695757235,
+        "wrong": 1
+      },
+      "ss01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773127937905,
+        "correct": 1
+      },
+      "ee03": {
+        "seen": 2,
+        "lastSeen": 1774855498661,
+        "wrong": 2,
+        "correct": 0,
+        "consec": 0
+      },
+      "co_ti05": {
+        "seen": 2,
+        "wrong": 2,
+        "correct": 0,
+        "lastSeen": 1773049858054
+      },
+      "pa02": {
+        "lastSeen": 1773126356827,
+        "correct": 2,
+        "wrong": 0,
+        "seen": 2
+      },
+      "cc02": {
+        "correct": 1,
+        "lastSeen": 1773126094162,
+        "wrong": 0,
+        "seen": 1
+      },
+      "gt07": {
+        "seen": 2,
+        "wrong": 0,
+        "lastSeen": 1773500567816,
+        "correct": 2
+      },
+      "pa05": {
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1773127273368,
+        "wrong": 1
+      },
+      "pp_pr02": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1776795292237,
+        "consec": 1,
+        "correct": 1
+      },
+      "tg12": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 1,
+        "lastSeen": 1776695142428,
+        "wrong": 0
+      },
+      "tc_hw01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774337901173
+      },
+      "sv01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772615357977,
+        "correct": 1
+      },
+      "el03": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1772615138219,
+        "correct": 0
+      },
+      "fw02": {
+        "lastSeen": 1773146615524,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "mm05": {
+        "lastSeen": 1772616555462,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "wt07": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773126018066,
+        "correct": 0
+      },
+      "zc08": {
+        "consec": 0,
+        "lastWrong": "will not be",
+        "correct": 0,
+        "seen": 2,
+        "wrong": 2,
+        "lastSeen": 1776695636201
+      },
+      "fy03": {
+        "correct": 1,
+        "lastWrong": "I had a fun at the party. / She's very funning.",
+        "consec": 0,
+        "lastSeen": 1776795024419,
+        "wrong": 2,
+        "seen": 3
+      },
+      "pspp04": {
+        "lastSeen": 1773128032630,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ev03": {
+        "correct": 0,
+        "lastSeen": 1774682902994,
+        "wrong": 1,
+        "seen": 1
+      },
+      "fy02": {
+        "lastSeen": 1776068975138,
+        "wrong": 1,
+        "seen": 2,
+        "correct": 1,
+        "consec": 1
+      },
+      "rb02": {
+        "lastSeen": 1772616230474,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "ee26": {
+        "wrong": 0,
+        "lastSeen": 1774258056571,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_b08": {
+        "lastSeen": 1774682923597,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "iq01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1774683414215,
+        "correct": 1
+      },
+      "art_b15": {
+        "wrong": 0,
+        "lastSeen": 1774762578660,
+        "seen": 2,
+        "consec": 1,
+        "correct": 2
+      },
+      "irvpp04": {
+        "lastSeen": 1773500793775,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "kn02": {
+        "wrong": 1,
+        "lastSeen": 1773126802760,
+        "correct": 0,
+        "seen": 1
+      },
+      "art_c10": {
+        "wrong": 0,
+        "lastSeen": 1773209083596,
+        "correct": 1,
+        "seen": 1
+      },
+      "ee27": {
+        "lastSeen": 1774855512164,
+        "wrong": 1,
+        "seen": 3,
+        "correct": 2,
+        "consec": 1
+      },
+      "irv15": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774338121895,
+        "seen": 1
+      },
+      "ee29": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1774258220942,
+        "correct": 1
+      },
+      "mm04": {
+        "seen": 1,
+        "lastSeen": 1776068914444,
+        "wrong": 0,
+        "correct": 1,
+        "consec": 1
+      },
+      "art_d10": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1774683615849,
+        "wrong": 0
+      },
+      "ee12": {
+        "lastSeen": 1774258178781,
+        "correct": 1,
+        "wrong": 1,
+        "seen": 2
+      },
+      "reflop07": {
+        "correct": 1,
+        "consec": 1,
+        "lastSeen": 1774762674059,
+        "wrong": 0,
+        "seen": 1
+      },
+      "gadj08": {
+        "seen": 1,
+        "lastSeen": 1772769233640,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mm03": {
+        "correct": 1,
+        "consec": 1,
+        "lastSeen": 1774762940939,
+        "wrong": 1,
+        "seen": 2
+      },
+      "irv21": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773126308783,
+        "correct": 1
+      },
+      "cp01": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773146636609,
+        "seen": 1
+      },
+      "aph35": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "the",
+        "lastSeen": 1776695690858,
+        "wrong": 2,
+        "seen": 2
+      },
+      "ap03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773146434006,
+        "correct": 1
+      },
+      "irv34": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 1,
+        "lastSeen": 1776068775332,
+        "wrong": 0
+      },
+      "co04": {
+        "seen": 2,
+        "lastSeen": 1776695178700,
+        "wrong": 2,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "was"
+      },
+      "ee18": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773985850770,
+        "seen": 1
+      },
+      "aph01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773209147346,
+        "correct": 1
+      },
+      "ee06": {
+        "lastSeen": 1774683252021,
+        "correct": 1,
+        "wrong": 2,
+        "seen": 3
+      },
+      "wt09": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772619820854,
+        "correct": 1
+      },
+      "co_b05": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 2,
+        "lastSeen": 1776794811885,
+        "seen": 3
+      },
+      "pp_ap13": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772619478230,
+        "wrong": 1
+      },
+      "ee20": {
+        "seen": 1,
+        "lastSeen": 1774262315799,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mvp04": {
+        "seen": 1,
+        "lastSeen": 1773050846469,
+        "correct": 0,
+        "wrong": 1
+      },
+      "ee30": {
+        "seen": 1,
+        "lastSeen": 1773986025831,
+        "correct": 1,
+        "wrong": 0
+      },
+      "aph16": {
+        "wrong": 1,
+        "lastSeen": 1773501011856,
+        "correct": 0,
+        "seen": 1
+      },
+      "irv14": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773224668228
+      },
+      "zc02": {
+        "correct": 1,
+        "lastSeen": 1772616041924,
+        "wrong": 0,
+        "seen": 1
+      },
+      "dc03": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 1,
+        "lastSeen": 1776695738034,
+        "seen": 2
+      },
+      "pv05": {
+        "wrong": 3,
+        "lastSeen": 1776692808420,
+        "seen": 3,
+        "consec": 0,
+        "lastWrong": "up",
+        "correct": 0
+      },
+      "ss02": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773126260191,
+        "wrong": 0
+      },
+      "ee25": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 3,
+        "lastSeen": 1774763032272,
+        "wrong": 2
+      },
+      "sayt03": {
+        "lastSeen": 1776068943299,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastWrong": "said",
+        "consec": 0
+      },
+      "bf03": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774683484476
+      },
+      "sp02": {
+        "correct": 1,
+        "lastSeen": 1773050830826,
+        "wrong": 0,
+        "seen": 1
+      },
+      "gi_b04": {
+        "seen": 2,
+        "lastSeen": 1773049829424,
+        "correct": 1,
+        "wrong": 1
+      },
+      "lkc10": {
+        "seen": 1,
+        "lastSeen": 1773126856842,
+        "correct": 0,
+        "wrong": 1
+      },
+      "irvpp05": {
+        "seen": 1,
+        "lastSeen": 1774762791322,
+        "wrong": 0,
+        "correct": 1,
+        "consec": 1
+      },
+      "irv32": {
+        "wrong": 1,
+        "lastSeen": 1773126667026,
+        "correct": 0,
+        "seen": 1
+      },
+      "ptc07": {
+        "correct": 1,
+        "lastSeen": 1773049991410,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ee15": {
+        "wrong": 0,
+        "lastSeen": 1774257979203,
+        "correct": 1,
+        "seen": 1
+      },
+      "gi_i03": {
+        "lastWrong": "to",
+        "consec": 0,
+        "correct": 0,
+        "wrong": 1,
+        "lastSeen": 1776795154597,
+        "seen": 1
+      },
+      "qt03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1774683470738,
+        "wrong": 0
+      },
+      "ee07": {
+        "wrong": 0,
+        "lastSeen": 1774262414090,
+        "correct": 2,
+        "seen": 2
+      },
+      "pa10": {
+        "correct": 1,
+        "lastSeen": 1772769011683,
+        "wrong": 0,
+        "seen": 1
+      },
+      "tc02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773050771167,
+        "wrong": 1
+      },
+      "pp_b03": {
+        "lastSeen": 1773224583156,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ex05": {
+        "lastSeen": 1776069197689,
+        "wrong": 3,
+        "seen": 3,
+        "correct": 0,
+        "lastWrong": "ended",
+        "consec": 0
+      },
+      "sayt01": {
+        "seen": 1,
+        "lastSeen": 1773224963281,
+        "correct": 1,
+        "wrong": 0
+      },
+      "si02": {
+        "seen": 2,
+        "lastSeen": 1773127610874,
+        "correct": 1,
+        "wrong": 1
+      },
+      "ar02": {
+        "lastSeen": 1773051004859,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "pp_pc02": {
+        "seen": 1,
+        "lastSeen": 1773146765095,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mn01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773208725538,
+        "wrong": 0
+      },
+      "cp06": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "an more",
+        "seen": 2,
+        "lastSeen": 1776069160032,
+        "wrong": 2
+      },
+      "mvp01": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773500638660,
+        "seen": 1
+      },
+      "irvpp13": {
+        "lastSeen": 1773905171566,
+        "correct": 2,
+        "wrong": 0,
+        "seen": 2
+      },
+      "na04": {
+        "lastSeen": 1772617009133,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "irvpp16": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773126194934,
+        "seen": 1
+      },
+      "ut2_06": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773126288257,
+        "seen": 1
+      },
+      "fc05": {
+        "consec": 0,
+        "lastWrong": "If he doesn't apologise, she would not forgive him.",
+        "correct": 0,
+        "seen": 2,
+        "wrong": 2,
+        "lastSeen": 1776695507193
+      },
+      "pspp07": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1773126143386
+      },
+      "irv27": {
+        "correct": 0,
+        "lastSeen": 1773905104236,
+        "wrong": 2,
+        "seen": 2
+      },
+      "zc09": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773500991498,
+        "correct": 0
+      },
+      "pa07": {
+        "wrong": 1,
+        "lastSeen": 1776794759941,
+        "seen": 2,
+        "consec": 1,
+        "correct": 1
+      },
+      "ob03": {
+        "lastSeen": 1772615106109,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "tc01": {
+        "lastSeen": 1773126608344,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "enou03": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1774855462939,
+        "consec": 0,
+        "correct": 0
+      },
+      "gadj03": {
+        "seen": 1,
+        "lastSeen": 1772769188004,
+        "correct": 1,
+        "wrong": 0
+      },
+      "asl04": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772617177415,
+        "correct": 1
+      },
+      "ut2_03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772616018173,
+        "correct": 1
+      },
+      "ee02": {
+        "consec": 1,
+        "correct": 3,
+        "seen": 3,
+        "wrong": 0,
+        "lastSeen": 1776069278051
+      },
+      "pr_ti11": {
+        "correct": 1,
+        "lastSeen": 1772616334569,
+        "wrong": 0,
+        "seen": 1
+      },
+      "gc03": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "He was nervous.",
+        "seen": 1,
+        "lastSeen": 1776068503982,
+        "wrong": 1
+      },
+      "mv02": {
+        "lastWrong": "might",
+        "consec": 0,
+        "correct": 0,
+        "wrong": 3,
+        "lastSeen": 1776794774459,
+        "seen": 3
+      },
+      "gr_b01": {
+        "consec": 0,
+        "lastWrong": "doesn't",
+        "correct": 0,
+        "seen": 4,
+        "wrong": 4,
+        "lastSeen": 1776795180234
+      },
+      "sayt06": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773208999274
+      },
+      "tg27": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773050562240,
+        "seen": 1
+      },
+      "ti04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773049755093,
+        "seen": 1
+      },
+      "pp_ap09": {
+        "lastSeen": 1776695866252,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "in"
+      },
+      "irv25": {
+        "wrong": 1,
+        "lastSeen": 1774683542670,
+        "correct": 0,
+        "seen": 1
+      },
+      "pv_ti05": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1773500891219,
+        "seen": 1
+      },
+      "ee23": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773985820656,
+        "correct": 1
+      },
+      "aph22": {
+        "wrong": 0,
+        "lastSeen": 1773049380211,
+        "correct": 1,
+        "seen": 1
+      },
+      "mvp08": {
+        "lastSeen": 1772619372398,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "aph03": {
+        "seen": 1,
+        "lastSeen": 1772619632591,
+        "correct": 1,
+        "wrong": 0
+      },
+      "irv12": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1773049420541,
+        "wrong": 1
+      },
+      "caus08": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773127006374,
+        "correct": 0
+      },
+      "gsp01": {
+        "seen": 2,
+        "lastSeen": 1776695720448,
+        "wrong": 1,
+        "correct": 1,
+        "consec": 0,
+        "lastWrong": "I try to avoid it so I will not stuck with one preposition."
+      },
+      "irv04": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1773208976486
+      },
+      "voc06": {
+        "wrong": 1,
+        "lastSeen": 1773209258196,
+        "correct": 0,
+        "seen": 1
+      },
+      "lkc25": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1774683093391,
+        "seen": 1
+      },
+      "pv_c05": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773208837413
+      },
+      "sa03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773224949021,
+        "seen": 1
+      },
+      "art_b06": {
+        "seen": 2,
+        "lastSeen": 1776069267733,
+        "wrong": 2,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "—"
+      },
+      "psc05": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1773050186633,
+        "wrong": 0
+      },
+      "gr_b15": {
+        "lastSeen": 1776795070641,
+        "wrong": 3,
+        "seen": 3,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "went"
+      },
+      "pspp03": {
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "have been",
+        "lastSeen": 1776069218808,
+        "wrong": 2,
+        "seen": 2
+      },
+      "dc05": {
+        "lastSeen": 1772616779044,
+        "correct": 0,
+        "wrong": 1,
+        "seen": 1
+      },
+      "pp_ex03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773146410519,
+        "wrong": 0
+      },
+      "aph29": {
+        "wrong": 0,
+        "lastSeen": 1773050526775,
+        "correct": 1,
+        "seen": 1
+      },
+      "psc01": {
+        "lastSeen": 1776695875574,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "consec": 1
+      },
+      "pt_b05": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772617168807
+      },
+      "art_c08": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1774682971388,
+        "correct": 1
+      },
+      "pppc04": {
+        "seen": 1,
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772619845989
+      },
+      "nm07": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773125986778,
+        "correct": 0
+      },
+      "pperf05": {
+        "seen": 1,
+        "lastSeen": 1772616391080,
+        "correct": 1,
+        "wrong": 0
+      },
+      "nb03": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773127666579
+      },
+      "dc02": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773127805618
+      },
+      "pa08": {
+        "correct": 1,
+        "consec": 1,
+        "seen": 2,
+        "lastSeen": 1774762740378,
+        "wrong": 1
+      },
+      "pp_pc01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772617119418
+      },
+      "qf01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772616412316,
+        "correct": 1
+      },
+      "aph19": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773050442700
+      },
+      "voc12": {
+        "correct": 2,
+        "consec": 1,
+        "seen": 2,
+        "lastSeen": 1774762821375,
+        "wrong": 0
+      },
+      "irvpp07": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773224561528,
+        "correct": 1
+      },
+      "cp_i01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774338189318
+      },
+      "st01": {
+        "wrong": 1,
+        "lastSeen": 1776695670804,
+        "seen": 2,
+        "consec": 1,
+        "correct": 1
+      },
+      "art06": {
+        "consec": 0,
+        "lastWrong": "—",
+        "correct": 0,
+        "wrong": 1,
+        "lastSeen": 1776694961648,
+        "seen": 1
+      },
+      "adv01": {
+        "consec": 1,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1776695454902
+      },
+      "an01": {
+        "correct": 0,
+        "lastSeen": 1774683655562,
+        "wrong": 1,
+        "seen": 1
+      },
+      "pp_i02": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773127113709
+      },
+      "mv01": {
+        "correct": 1,
+        "consec": 1,
+        "lastSeen": 1774762682797,
+        "wrong": 0,
+        "seen": 1
+      },
+      "psc07": {
+        "correct": 2,
+        "consec": 1,
+        "lastSeen": 1776068832671,
+        "wrong": 0,
+        "seen": 2
+      },
+      "art_b22": {
+        "lastSeen": 1773208917624,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "wf_29": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1774682839600,
+        "correct": 0
+      },
+      "gt05": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773128185610,
+        "seen": 1
+      },
+      "qu03": {
+        "lastSeen": 1773224523328,
+        "correct": 0,
+        "wrong": 2,
+        "seen": 2
+      },
+      "sv_b06": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773050620383
+      },
+      "gadj06": {
+        "correct": 1,
+        "lastSeen": 1772769211007,
+        "wrong": 0,
+        "seen": 1
+      },
+      "pa04": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1773127598981
+      },
+      "art12": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1773050867231,
+        "wrong": 2
+      },
+      "art_b01": {
+        "correct": 1,
+        "lastSeen": 1772615162740,
+        "wrong": 0,
+        "seen": 1
+      },
+      "caus03": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773126390617,
+        "correct": 0
+      },
+      "cp03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772619800977,
+        "correct": 1
+      },
+      "pp_ap19": {
+        "wrong": 0,
+        "lastSeen": 1773126245280,
+        "correct": 1,
+        "seen": 1
+      },
+      "ee17": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 1,
+        "lastSeen": 1776068928563,
+        "seen": 2
+      },
+      "wh03": {
+        "correct": 0,
+        "lastSeen": 1774683295812,
+        "wrong": 1,
+        "seen": 1
+      },
+      "tag04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774682913478,
+        "seen": 1
+      },
+      "ei03": {
+        "lastSeen": 1773050987300,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "vo01": {
+        "correct": 1,
+        "lastSeen": 1773146626376,
+        "wrong": 0,
+        "seen": 1
+      },
+      "yr02": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772615340884
+      },
+      "tt01": {
+        "consec": 1,
+        "correct": 1,
+        "wrong": 1,
+        "lastSeen": 1776068596359,
+        "seen": 2
+      },
+      "irv19": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1774338162942,
+        "seen": 1
+      },
+      "art_c12": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773224751187
+      },
+      "nb02": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1776795206456,
+        "consec": 1,
+        "correct": 1
+      },
+      "pt_b01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773128017655,
+        "wrong": 0
+      },
+      "gr_b02": {
+        "lastSeen": 1776695215905,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "consec": 0,
+        "lastWrong": "did"
+      },
+      "tg42": {
+        "seen": 1,
+        "wrong": 1,
+        "lastSeen": 1773126820563,
+        "correct": 0
+      },
+      "tag02": {
+        "wrong": 3,
+        "lastSeen": 1774762553573,
+        "seen": 3,
+        "consec": 0,
+        "correct": 0
+      },
+      "nc03": {
+        "lastWrong": "It's not that difficult as I expect.",
+        "consec": 0,
+        "correct": 0,
+        "seen": 2,
+        "wrong": 2,
+        "lastSeen": 1776068670950
+      },
+      "irvpp10": {
+        "wrong": 1,
+        "lastSeen": 1774337861439,
+        "correct": 1,
+        "seen": 2
+      },
+      "pp_i04": {
+        "wrong": 0,
+        "lastSeen": 1773209209518,
+        "correct": 2,
+        "seen": 2
+      },
+      "nc01": {
+        "lastSeen": 1772619512905,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "mft06": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1773050283349,
+        "wrong": 0
+      },
+      "cv03": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1772619777920,
+        "correct": 1
+      },
+      "su01": {
+        "correct": 1,
+        "consec": 1,
+        "lastSeen": 1776692939551,
+        "wrong": 0,
+        "seen": 1
+      },
+      "irv01": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773905358885,
+        "seen": 1
+      },
+      "pp_b01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1773209023078,
+        "correct": 1
+      },
+      "ae02": {
+        "correct": 0,
+        "lastWrong": "effect",
+        "consec": 0,
+        "seen": 2,
+        "lastSeen": 1776795257280,
+        "wrong": 2
+      },
+      "sy01": {
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1773209370307,
+        "seen": 2
+      }
+    },
+    "emoji": "👩",
+    "longestStreak": 3,
+    "totalAnswered": 530,
+    "ui_shell": "learner",
+    "coach_notes": {
+      "stuck_questions": [],
+      "last_updated": "2026-05-03T10:38:28.344Z",
+      "engagement_notes": "Engages in bursts; latest 2026-05-01. **Free Write is the engagement lever** — 12-min self-directed sessions, finished by choice, wants the AI to ask her to retry. Translation Drill works as warm-up; FW is where she goes deep. RU explanations confirmed helpful (s91r2). Soft-cap nudge at turn 8 (s92) keeps it bounded. Input-type accuracy ~20pts lower than mcq — mix mcq:gap:input ~50:30:20 in quiz tab. Sessions <50% → reduce complexity (still applies for translation drill, less so for FW which is intrinsically motivating).",
+      "last_updated_by": "claude_code",
+      "recent_observations": [
+        {
+          "note": "Stats sweep: Articles 62% (n=45) — stronger than profile suggests, deprioritise vs Grammar/Vocab. Prepositions 70% — already solid. Real gaps are Grammar mechanics (44%) and Vocab production (37%). Profile focus list NOT yet updated — pending more sessions to confirm.",
+          "author": "claude_code",
+          "session_id": "stats_review_2026-04-30",
+          "date": "2026-04-30"
+        },
+        {
+          "note": "First Coach tab session — 15-item translation drill, raw score 1/15 but ~5–7 false negatives from typos + article drops on otherwise-valid answers. Pattern feedback fired correctly on 2/15 (clean_for_vacuum, on_next_week). Engaged through all 15 items (avg ~80s, max 154s on tr_anna_001). Confirms existing weak_patterns: typo cluster (Vocabulary input gap), article drops (Grammar mechanics), preposition variants still surface at low n. s90r2 ships article tolerance + per-item save in the engine; content batch should swap to shorter B1 prompts before next session.",
+          "author": "claude_code",
+          "date": "2026-04-30",
+          "session_id": "coach_anna_1777566265897"
+        },
+        {
+          "date": "2026-05-01",
+          "author": "claude_code",
+          "session_id": "coach_anna_2026-05-01_fw+drills",
+          "note": "First post-s91r2 session: ran v2 translation set twice (4/10 → 9/10), escalated on 2 items (wait_for, listen_to), then 12-min Free Write about painting an agave. Free Write proved highly engaging — 7 organic exchanges, finished by choice. ENGAGEMENT INSIGHT: Free Write is the lever for Anna; she stays in it longer than translation drills and self-directs. Wait_for trap re-fired on next attempt despite escalation — this drove the s92 active-recall retry (passive explanation alone wasn't enough). NB: in s91-bugged merge, durable weak_patterns from stats review were displaced by session-tagged ones; restored here, fix shipped in s92r2."
+        },
+        {
+          "date": "2026-05-03",
+          "session_id": "stats_review_2026-05-03",
+          "author": "claude_code",
+          "note": "[data] 12 Coach-tab sessions over 5 days (04-30→05-03). Retry mechanic confirmed working — both 4→9/10 and 6→11/20 dropped most errors. L1 calque cluster dominant signal: wait_for re-fired in 4 separate sessions despite per-session resolution → memory not consolidating across sessions. Recommend dedicated anti-calque micro-drill (gap-fill, focused on 6 surface forms) outside translation context."
+        },
+        {
+          "note": "[speculation] 04-30 16:30 session logged as 0/16 with zero error_types and partial=false — likely abandoned, not a true zero. May be a Coach-tab partial-state bug worth checking.",
+          "author": "claude_code",
+          "session_id": "stats_review_2026-05-03",
+          "date": "2026-05-03"
+        }
+      ],
+      "strong_patterns": [],
+      "weak_patterns": [
+        "Grammar mechanics at B1 (tag questions, agreement, past simple irregulars) — 44% over 63 attempts",
+        "vocabulary recall on input — production gap (37% Vocabulary, 45% input-type overall)",
+        "collocation accuracy (22% n=9, small sample but consistent)",
+        "Everyday English idiomatic chunks (getting on, hop on/in, rain check)",
+        "plural_noun_omission (coach_session 2026-05-01)",
+        "article_a_an_confusion (coach_session 2026-05-01)",
+        "there_is_there_are_confusion (coach_session 2026-05-01)",
+        "its_vs_its_apostrophe (coach_session 2026-05-01)",
+        "L1 calque cluster (verb+prep + time prepositions + verb+noun): wait_for, listen_to, depend_on, take_decision, make_homework, on/in last/next week. 6+ surface forms across 4 of 5 sessions in last week. Retry mechanic isolates → mostly cleared after 1 retry but re-fires next session → durable, needs explicit anti-calque drill."
+      ]
+    },
+    "updatedAt": 1776795331426,
+    "createdAt": "2026-03-04T09:01:22.915Z",
+    "learning_path": {
+      "stretch_allowance": 0.1,
+      "mastered_categories": [],
+      "next_unlock_options": [
+        {
+          "pathway": "deepen",
+          "rationale": "Closest to mastery in active window (71% n=59); B2 perfect/continuous variants are the natural depth step",
+          "category": "Tenses"
+        },
+        {
+          "pathway": "broaden",
+          "rationale": "41% n=17 — productive struggle, high-utility B1, not yet in window",
+          "category": "Conditionals"
+        },
+        {
+          "category": "Modal Verbs",
+          "rationale": "50% n=12 — fills coach_notes Grammar mechanics gap with a discrete handle",
+          "pathway": "broaden"
+        },
+        {
+          "category": "Adjectives",
+          "pathway": "broaden",
+          "rationale": "58% n=31 — anchors descriptive output for Free Write themed prompts"
+        }
+      ],
+      "floor_bouncers": [],
+      "level_cap": "B1",
+      "promotion_threshold": {
+        "accuracy": 0.8,
+        "min_attempts": 20,
+        "window_days": 14
+      },
+      "composition_last_checked": "2026-05-01T14:12:52.109Z",
+      "active_categories": [
+        "Tenses",
+        "Prepositions",
+        "Articles",
+        "Spelling",
+        "Phrasal Verbs",
+        "Adjectives"
+      ],
+      "active_window_size": 6
+    },
+    "catStats": {
+      "Tenses": {
+        "correct": 42,
+        "seen": 59
+      },
+      "Everyday English": {
+        "correct": 26,
+        "seen": 44
+      },
+      "Articles": {
+        "seen": 47,
+        "correct": 30
+      },
+      "Relative Clauses": {
+        "seen": 16,
+        "correct": 12
+      },
+      "Modal Verbs": {
+        "correct": 6,
+        "seen": 12
+      },
+      "Idioms": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Collocations": {
+        "seen": 9,
+        "correct": 2
+      },
+      "Conditionals": {
+        "seen": 17,
+        "correct": 7
+      },
+      "Quantifiers": {
+        "seen": 3,
+        "correct": 2
+      },
+      "Prepositions": {
+        "correct": 14,
+        "seen": 20
+      },
+      "Word Choice": {
+        "seen": 9,
+        "correct": 5
+      },
+      "Passive Voice": {
+        "correct": 0,
+        "seen": 3
+      },
+      "Question Formation": {
+        "seen": 5,
+        "correct": 4
+      },
+      "Phrasal Verbs": {
+        "correct": 9,
+        "seen": 15
+      },
+      "Grammar": {
+        "correct": 53,
+        "seen": 106
+      },
+      "Reported Speech": {
+        "seen": 12,
+        "correct": 5
+      },
+      "Used To": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Gerunds & Infinitives": {
+        "seen": 27,
+        "correct": 18
+      },
+      "Adjectives": {
+        "seen": 31,
+        "correct": 18
+      },
+      "Irregular Verbs": {
+        "correct": 4,
+        "seen": 4
+      },
+      "Word Formation": {
+        "seen": 1,
+        "correct": 0
+      },
+      "Linking Words": {
+        "seen": 17,
+        "correct": 11
+      },
+      "Comparisons": {
+        "correct": 7,
+        "seen": 14
+      },
+      "Word Order": {
+        "correct": 5,
+        "seen": 6
+      },
+      "Vocabulary": {
+        "correct": 18,
+        "seen": 49
+      }
+    },
+    "lvlStats": {
+      "C1": {
+        "correct": 9,
+        "seen": 20
+      },
+      "B1": {
+        "seen": 344,
+        "correct": 207
+      },
+      "B2": {
+        "correct": 84,
+        "seen": 166
+      }
+    },
+    "currentStreak": 2,
+    "color": "#ff6b9d",
+    "totalSessions": 33,
+    "recentSessions": [
+      {
+        "lvlBreakdown": {
+          "B1": {
+            "correct": 4,
+            "seen": 12
+          },
+          "B2": {
+            "seen": 8,
+            "correct": 3
+          }
+        },
+        "pct": 35,
+        "catBreakdown": {
+          "Vocabulary": {
+            "seen": 4,
+            "correct": 0
+          },
+          "Tenses": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Everyday English": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Comparisons": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Quantifiers": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Reported Speech": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Grammar": {
+            "seen": 3,
+            "correct": 0
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Modal Verbs": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Adjectives": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 1
+          }
+        },
+        "mode": "smart",
+        "total": 20,
+        "score": 7,
+        "date": "2026-04-21T18:15:31.407Z"
+      },
+      {
+        "pct": 55,
+        "catBreakdown": {
+          "Linking Words": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Conditionals": {
+            "seen": 2,
+            "correct": 0
+          },
+          "Word Order": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Prepositions": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Comparisons": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 3
+          },
+          "Used To": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Everyday English": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Tenses": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Articles": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Gerunds & Infinitives": {
+            "seen": 3,
+            "correct": 3
+          },
+          "Adjectives": {
+            "correct": 0,
+            "seen": 1
+          }
+        },
+        "lvlBreakdown": {
+          "B2": {
+            "seen": 9,
+            "correct": 4
+          },
+          "B1": {
+            "seen": 11,
+            "correct": 7
+          }
+        },
+        "score": 11,
+        "date": "2026-04-20T14:38:15.808Z",
+        "total": 20,
+        "mode": "smart"
+      },
+      {
+        "lvlBreakdown": {
+          "B2": {
+            "seen": 6,
+            "correct": 2
+          },
+          "B1": {
+            "correct": 2,
+            "seen": 4
+          }
+        },
+        "pct": 40,
+        "catBreakdown": {
+          "Reported Speech": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Prepositions": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Phrasal Verbs": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Grammar": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Conditionals": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Linking Words": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Relative Clauses": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Articles": {
+            "correct": 0,
+            "seen": 1
+          }
+        },
+        "mode": "smart",
+        "total": 10,
+        "score": 4,
+        "date": "2026-04-20T14:27:32.078Z"
+      },
+      {
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 3
+          }
+        },
+        "catBreakdown": {
+          "Quantifiers": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Irregular Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Comparisons": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Everyday English": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Tenses": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Vocabulary": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Articles": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          }
+        },
+        "pct": 30,
+        "mode": "smart",
+        "total": 10,
+        "date": "2026-04-13T08:34:40.132Z",
+        "score": 3
+      },
+      {
+        "score": 8,
+        "date": "2026-04-13T08:30:08.569Z",
+        "total": 10,
+        "mode": "smart",
+        "pct": 80,
+        "catBreakdown": {
+          "Everyday English": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Tenses": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Quantifiers": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Reported Speech": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Vocabulary": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 1
+          }
+        },
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 8
+          }
+        }
+      },
+      {
+        "date": "2026-04-13T08:26:17.283Z",
+        "score": 5,
+        "total": 10,
+        "mode": "smart",
+        "catBreakdown": {
+          "Word Choice": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Grammar": {
+            "seen": 3,
+            "correct": 0
+          },
+          "Phrasal Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Tenses": {
+            "correct": 1,
+            "seen": 3
+          },
+          "Irregular Verbs": {
+            "correct": 2,
+            "seen": 2
+          }
+        },
+        "pct": 50,
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 5
+          }
+        }
+      },
+      {
+        "score": 6,
+        "date": "2026-03-30T07:27:42.757Z",
+        "mode": "smart",
+        "total": 10,
+        "pct": 60,
+        "catBreakdown": {
+          "Vocabulary": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Everyday English": {
+            "correct": 2,
+            "seen": 3
+          },
+          "Tenses": {
+            "correct": 2,
+            "seen": 3
+          }
+        },
+        "lvlBreakdown": {
+          "B1": {
+            "correct": 6,
+            "seen": 10
+          }
+        }
+      },
+      {
+        "mode": "smart",
+        "total": 10,
+        "score": 9,
+        "date": "2026-03-29T05:44:12.606Z",
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 9
+          }
+        },
+        "pct": 90,
+        "catBreakdown": {
+          "Grammar": {
+            "seen": 4,
+            "correct": 4
+          },
+          "Vocabulary": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Tenses": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Everyday English": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Adjectives": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Reported Speech": {
+            "seen": 1,
+            "correct": 0
+          }
+        }
+      },
+      {
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 6
+          }
+        },
+        "catBreakdown": {
+          "Vocabulary": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Modal Verbs": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Tenses": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Grammar": {
+            "correct": 2,
+            "seen": 4
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 1
+          }
+        },
+        "pct": 60,
+        "mode": "smart",
+        "total": 10,
+        "date": "2026-03-29T05:38:04.261Z",
+        "score": 6
+      },
+      {
+        "date": "2026-03-28T07:41:30.162Z",
+        "score": 7,
+        "mode": "smart",
+        "total": 10,
+        "catBreakdown": {
+          "Vocabulary": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Comparisons": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Adjectives": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Tenses": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Question Formation": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Grammar": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Articles": {
+            "correct": 3,
+            "seen": 3
+          }
+        },
+        "pct": 70,
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 10,
+            "correct": 7
+          }
+        }
+      }
+    ],
+    "totalCorrect": 300,
+    "displayName": "Anna",
+    "lastPlayedDate": "2026-04-21"
+  },
+  "exercises": [
+    {
+      "score": 0.8,
+      "feedback": "about right",
+      "date": "2026-03-27",
+      "items": [
+        {
+          "severity": "ok",
+          "ok": true,
+          "target": "We walked around the old town all day and we we were exhausted",
+          "n": 1
+        },
+        {
+          "severity": "ok",
+          "note": "minor: 'at the next week' corrected to 'next week'",
+          "target": "next week (no article)",
+          "n": 2,
+          "ok": true
+        },
+        {
+          "severity": "ok",
+          "target": "I bought some beautiful things",
+          "note": "minor: 'have bought' → 'bought'; spelling",
+          "n": 3,
+          "ok": true
+        },
+        {
+          "ok": true,
+          "severity": "ok",
+          "target": "I bought some beautiful things (colourful)",
+          "n": 4
+        },
+        {
+          "response": "waiting us",
+          "severity": "minor",
+          "note": "missing preposition: wait FOR someone",
+          "target": "waiting for us",
+          "n": 5,
+          "ok": false
+        }
+      ],
+      "chat_url": "https://claude.ai/chat/23dc5f72-5756-4d5b-ab99-2bf7544a69e4",
+      "level": "B1",
+      "topic": "travel Turkey",
+      "categories": [
+        "Collocations",
+        "Tenses",
+        "Prepositions"
+      ],
+      "exercise": "translation",
+      "total": 5,
+      "error_types": [
+        "prepositions",
+        "tenses",
+        "articles"
+      ],
+      "correct": 4,
+      "errors": [
+        "arrive to us → arrive / join us",
+        "at the next week → next week",
+        "have bought → bought",
+        "waiting us → waiting for us"
+      ],
+      "_id": "1774590922764"
+    },
+    {
+      "topic": "travel Turkey",
+      "categories": [
+        "Collocations",
+        "Tenses",
+        "Prepositions"
+      ],
+      "exercise": "translation",
+      "total": 5,
+      "error_types": [
+        "prepositions",
+        "tenses",
+        "articles"
+      ],
+      "correct": 4,
+      "errors": [
+        "arrive to us → arrive / join us",
+        "at the next week → next week",
+        "have bought → bought",
+        "waiting us → waiting for us"
+      ],
+      "score": 0.8,
+      "feedback": "about right",
+      "date": "2026-03-27",
+      "items": [
+        {
+          "target": "We walked around the old town all day and we we were exhausted",
+          "n": 1,
+          "ok": true,
+          "severity": "ok"
+        },
+        {
+          "severity": "ok",
+          "ok": true,
+          "target": "next week (no article)",
+          "note": "minor: 'at the next week' corrected to 'next week'",
+          "n": 2
+        },
+        {
+          "severity": "ok",
+          "ok": true,
+          "n": 3,
+          "target": "I bought some beautiful things",
+          "note": "minor: 'have bought' → 'bought'; spelling"
+        },
+        {
+          "ok": true,
+          "severity": "ok",
+          "target": "I bought some beautiful things (colourful)",
+          "n": 4
+        },
+        {
+          "severity": "minor",
+          "response": "waiting us",
+          "ok": false,
+          "n": 5,
+          "note": "missing preposition: wait FOR someone",
+          "target": "waiting for us"
+        }
+      ],
+      "chat_url": "https://claude.ai/chat/23dc5f72-5756-4d5b-ab99-2bf7544a69e4",
+      "level": "B1",
+      "_id": "1774597053595"
+    },
+    {
+      "total": 15,
+      "items": [
+        {
+          "exercise_id": "tr_anna_010",
+          "submitted_answer": "This sofa is very comfortabl and this time is very good for meeting",
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 99827
+        },
+        {
+          "submitted_answer": "It depends on the weather",
+          "exercise_id": "tr_anna_003",
+          "time_to_answer_ms": 19258,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "exercise_id": "tr_anna_008",
+          "submitted_answer": "I need water my flower and clean the carpet",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": "clean_for_vacuum",
+          "correct": false,
+          "time_to_answer_ms": 48457
+        },
+        {
+          "submitted_answer": "The dother is doing her homework and I'm cooking a diner",
+          "exercise_id": "tr_anna_012",
+          "time_to_answer_ms": 136310,
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "submitted_answer": "I need fined a decision till the weekend",
+          "exercise_id": "tr_anna_011",
+          "time_to_answer_ms": 50939,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null
+        },
+        {
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 71051,
+          "exercise_id": "tr_anna_006",
+          "submitted_answer": "I bought new dishes and brough it home yestoday"
+        },
+        {
+          "submitted_answer": "We win the game with neibous with scour 6;3",
+          "exercise_id": "tr_anna_009",
+          "time_to_answer_ms": 73467,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null
+        },
+        {
+          "submitted_answer": "We arrived at court earlier than other",
+          "exercise_id": "tr_anna_002",
+          "time_to_answer_ms": 86462,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false
+        },
+        {
+          "exercise_id": "tr_anna_014",
+          "submitted_answer": "How are you get on with your  new neirbour",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 127486
+        },
+        {
+          "time_to_answer_ms": 92857,
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "My neirbour has three children and all of them  study at the same school",
+          "exercise_id": "tr_anna_007"
+        },
+        {
+          "submitted_answer": "At the next week we are going to visit Svetlana",
+          "exercise_id": "tr_anna_004",
+          "time_to_answer_ms": 58422,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": "on_next_week",
+          "correct": false
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 71996,
+          "exercise_id": "tr_anna_005",
+          "submitted_answer": "Do you like pudl, don't you"
+        },
+        {
+          "exercise_id": "tr_anna_013",
+          "submitted_answer": "Sorry today i'm busy let get up",
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 94447
+        },
+        {
+          "exercise_id": "tr_anna_001",
+          "submitted_answer": "Neigbours are expecting for dinner on saturday",
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 154736
+        },
+        {
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 30503,
+          "exercise_id": "tr_anna_015",
+          "submitted_answer": "Jump in the car, i'll drive you to the court"
+        }
+      ],
+      "error_types": [
+        "clean_for_vacuum",
+        "on_next_week"
+      ],
+      "date": "2026-04-30",
+      "exercise": "translation",
+      "topic": "Coach tab",
+      "categories": [],
+      "errors": [
+        "[tr_anna_010] This sofa is very comfortabl and this time is very good for meeting",
+        "[tr_anna_008] I need water my flower and clean the carpet",
+        "[tr_anna_012] The dother is doing her homework and I'm cooking a diner",
+        "[tr_anna_011] I need fined a decision till the weekend",
+        "[tr_anna_006] I bought new dishes and brough it home yestoday",
+        "[tr_anna_009] We win the game with neibous with scour 6;3",
+        "[tr_anna_002] We arrived at court earlier than other",
+        "[tr_anna_014] How are you get on with your  new neirbour",
+        "[tr_anna_007] My neirbour has three children and all of them  study at the same school",
+        "[tr_anna_004] At the next week we are going to visit Svetlana"
+      ],
+      "source": "coach_tab",
+      "level": "B2",
+      "correct": 1,
+      "_id": "1777566265897"
+    },
+    {
+      "topic": "Coach tab",
+      "categories": [],
+      "exercise": "translation",
+      "total": 16,
+      "error_types": [],
+      "correct": 0,
+      "errors": [
+        "[tr_anna_010] X",
+        "[tr_anna_011] Y",
+        "[tr_anna_001] z",
+        "[tr_anna_006] z",
+        "[tr_anna_014] z",
+        "[tr_anna_002] z",
+        "[tr_anna_012] z",
+        "[tr_anna_007] z",
+        "[tr_anna_015] z",
+        "[tr_anna_008] z"
+      ],
+      "date": "2026-04-30",
+      "partial": false,
+      "items": [
+        {
+          "exercise_id": "tr_anna_010",
+          "submitted_answer": "X",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 1649
+        },
+        {
+          "exercise_id": "tr_anna_011",
+          "submitted_answer": "Y",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 1059
+        },
+        {
+          "exercise_id": "tr_anna_001",
+          "submitted_answer": "z",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 997
+        },
+        {
+          "submitted_answer": "z",
+          "exercise_id": "tr_anna_006",
+          "time_to_answer_ms": 1004,
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "time_to_answer_ms": 1008,
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "z",
+          "exercise_id": "tr_anna_014"
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 998,
+          "exercise_id": "tr_anna_002",
+          "submitted_answer": "z"
+        },
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 999,
+          "exercise_id": "tr_anna_012",
+          "submitted_answer": "z"
+        },
+        {
+          "exercise_id": "tr_anna_007",
+          "submitted_answer": "z",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 1006
+        },
+        {
+          "time_to_answer_ms": 1000,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "submitted_answer": "z",
+          "exercise_id": "tr_anna_015"
+        },
+        {
+          "exercise_id": "tr_anna_008",
+          "submitted_answer": "z",
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 1001
+        },
+        {
+          "submitted_answer": "z",
+          "exercise_id": "tr_anna_009",
+          "time_to_answer_ms": 1002,
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "time_to_answer_ms": 990,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "submitted_answer": "z",
+          "exercise_id": "tr_anna_003"
+        },
+        {
+          "exercise_id": "tr_anna_005",
+          "submitted_answer": "z",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 995
+        },
+        {
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 1008,
+          "exercise_id": "tr_anna_004",
+          "submitted_answer": "z"
+        },
+        {
+          "exercise_id": "tr_anna_013",
+          "submitted_answer": "z",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 21005
+        },
+        {
+          "exercise_id": "tr_anna_013",
+          "submitted_answer": "z",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 24820
+        }
+      ],
+      "planned_total": 15,
+      "level": "B2",
+      "source": "coach_tab",
+      "_id": "1777566636129"
+    },
+    {
+      "exercise": "translation",
+      "categories": [],
+      "topic": "Coach tab",
+      "error_types": [
+        "take_decision",
+        "wait_no_for",
+        "depend_of",
+        "make_homework",
+        "listen_no_to"
+      ],
+      "total": 10,
+      "correct": 4,
+      "errors": [
+        "[tr_anna_b04] I'm looking for my keys",
+        "[tr_anna_b08] Take decision",
+        "[tr_anna_b01] I'm waiting the friend",
+        "[tr_anna_b02] It depends of you",
+        "[tr_anna_b09] I'm make a  homework",
+        "[tr_anna_b03] I'm listening music"
+      ],
+      "items": [
+        {
+          "exercise_id": "tr_anna_b05",
+          "submitted_answer": "I'm thinking about you",
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 40849
+        },
+        {
+          "exercise_id": "tr_anna_b04",
+          "submitted_answer": "I'm looking for my keys",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 89110
+        },
+        {
+          "exercise_id": "tr_anna_b08",
+          "submitted_answer": "Take decision",
+          "correct": false,
+          "matched_pattern_id": "take_decision",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 25987
+        },
+        {
+          "submitted_answer": "I was born in April",
+          "exercise_id": "tr_anna_b07",
+          "time_to_answer_ms": 21168,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "time_to_answer_ms": 25248,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I'm cooking the dinner",
+          "exercise_id": "tr_anna_b10"
+        },
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 72835,
+          "exercise_id": "tr_anna_b06",
+          "submitted_answer": "See you on Saturday"
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": "wait_no_for",
+          "escalation_used": true,
+          "exercise_version": 1,
+          "time_to_answer_ms": 17869,
+          "exercise_id": "tr_anna_b01",
+          "submitted_answer": "I'm waiting the friend"
+        },
+        {
+          "time_to_answer_ms": 26257,
+          "correct": false,
+          "matched_pattern_id": "depend_of",
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "It depends of you",
+          "exercise_id": "tr_anna_b02"
+        },
+        {
+          "time_to_answer_ms": 24330,
+          "correct": false,
+          "matched_pattern_id": "make_homework",
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I'm make a  homework",
+          "exercise_id": "tr_anna_b09"
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": "listen_no_to",
+          "escalation_used": true,
+          "exercise_version": 1,
+          "time_to_answer_ms": 31572,
+          "exercise_id": "tr_anna_b03",
+          "submitted_answer": "I'm listening music"
+        }
+      ],
+      "date": "2026-05-01",
+      "partial": false,
+      "planned_total": 10,
+      "source": "coach_tab",
+      "level": "B2",
+      "_id": "1777626990861"
+    },
+    {
+      "total": 10,
+      "error_types": [
+        "wait_no_for"
+      ],
+      "exercise": "translation",
+      "topic": "Coach tab",
+      "categories": [],
+      "errors": [
+        "[tr_anna_b01] I'm waiting a friend"
+      ],
+      "correct": 9,
+      "items": [
+        {
+          "exercise_id": "tr_anna_b01",
+          "submitted_answer": "I'm waiting a friend",
+          "correct": false,
+          "matched_pattern_id": "wait_no_for",
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 18267
+        },
+        {
+          "time_to_answer_ms": 16515,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I'm doing my homework",
+          "exercise_id": "tr_anna_b09"
+        },
+        {
+          "exercise_id": "tr_anna_b02",
+          "submitted_answer": "It depends on you",
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 12256
+        },
+        {
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 15451,
+          "exercise_id": "tr_anna_b08",
+          "submitted_answer": "Make a decision"
+        },
+        {
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 16666,
+          "exercise_id": "tr_anna_b06",
+          "submitted_answer": "See you on Saturday"
+        },
+        {
+          "exercise_id": "tr_anna_b03",
+          "submitted_answer": "I'm listening to music",
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 36882
+        },
+        {
+          "submitted_answer": "I'm looking for keys",
+          "exercise_id": "tr_anna_b04",
+          "time_to_answer_ms": 19657,
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "time_to_answer_ms": 14849,
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "submitted_answer": "I'm cooking a dinner",
+          "exercise_id": "tr_anna_b10"
+        },
+        {
+          "exercise_id": "tr_anna_b05",
+          "submitted_answer": "I'm thinking about you",
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 16626
+        },
+        {
+          "submitted_answer": "I was born in April",
+          "exercise_id": "tr_anna_b07",
+          "time_to_answer_ms": 20080,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        }
+      ],
+      "partial": false,
+      "date": "2026-05-01",
+      "source": "coach_tab",
+      "level": "B2",
+      "planned_total": 10,
+      "_id": "1777627585700"
+    },
+    {
+      "total": 2,
+      "error_types": [],
+      "topic": "Coach tab",
+      "categories": [],
+      "exercise": "spelling_drill",
+      "errors": [
+        "[sp_anna_b08] neighbor",
+        "[sp_anna_b06] still still wrong"
+      ],
+      "correct": 0,
+      "date": "2026-05-01",
+      "partial": true,
+      "items": [
+        {
+          "correct": false,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 316,
+          "exercise_id": "sp_anna_b08",
+          "submitted_answer": "neighbor"
+        },
+        {
+          "exercise_id": "sp_anna_b06",
+          "attempts": 3,
+          "submitted_answer": "still still wrong",
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 4998
+        }
+      ],
+      "level": "B2",
+      "source": "coach_tab",
+      "planned_total": 10,
+      "_id": "1777665104489"
+    },
+    {
+      "categories": [],
+      "topic": "Coach tab",
+      "exercise": "translation",
+      "error_types": [],
+      "total": 1,
+      "correct": 1,
+      "errors": [],
+      "date": "2026-05-02",
+      "partial": false,
+      "items": [
+        {
+          "exercise_id": "tr_anna_b08",
+          "submitted_answer": "Make a decisioe",
+          "exercise_version": 1,
+          "correct": true,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "typo_surfaced": true,
+          "time_to_answer_ms": 664
+        }
+      ],
+      "planned_total": 20,
+      "level": "B2",
+      "source": "coach_tab",
+      "_id": "1777665127229"
+    },
+    {
+      "partial": false,
+      "date": "2026-05-02",
+      "items": [
+        {
+          "correct": false,
+          "matched_pattern_id": "singular_bedroom",
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 48689,
+          "exercise_id": "tr_anna_b12",
+          "submitted_answer": "We have two bedroom and one bathroom"
+        },
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 20995,
+          "exercise_id": "tr_anna_b04",
+          "submitted_answer": "I'm looking keys"
+        },
+        {
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": "on_last_week",
+          "time_to_answer_ms": 244674,
+          "exercise_id": "tr_anna_b17",
+          "submitted_answer": "Naighbors moved up on last week"
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 15799,
+          "exercise_id": "tr_anna_b05",
+          "submitted_answer": "I;m thinking about you"
+        },
+        {
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 20003,
+          "exercise_id": "tr_anna_b07",
+          "submitted_answer": "I was born in April"
+        },
+        {
+          "time_to_answer_ms": 13081,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": "take_decision",
+          "submitted_answer": "Take a decision",
+          "exercise_id": "tr_anna_b08"
+        },
+        {
+          "time_to_answer_ms": 22316,
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "submitted_answer": "See you on Saturday",
+          "exercise_id": "tr_anna_b06"
+        },
+        {
+          "time_to_answer_ms": 67968,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": true,
+          "submitted_answer": "I met our new neighbor in the morning",
+          "exercise_id": "tr_anna_b18"
+        },
+        {
+          "submitted_answer": "The dother is playing with her friends in the yard",
+          "exercise_id": "tr_anna_b14",
+          "time_to_answer_ms": 65845,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false
+        },
+        {
+          "exercise_id": "tr_anna_b03",
+          "submitted_answer": "I'm listening music",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": "listen_no_to",
+          "time_to_answer_ms": 26105
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": "in_week",
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 31370,
+          "exercise_id": "tr_anna_b15",
+          "submitted_answer": "I'm playing puddle two times per week"
+        },
+        {
+          "submitted_answer": "I'm doing my homework",
+          "exercise_id": "tr_anna_b09",
+          "time_to_answer_ms": 20876,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "time_to_answer_ms": 48264,
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I am is tired after exisizes",
+          "exercise_id": "tr_anna_b16"
+        },
+        {
+          "submitted_answer": "I wake up at seven o'clock in the morning",
+          "exercise_id": "tr_anna_b19",
+          "time_to_answer_ms": 175750,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false
+        },
+        {
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 31632,
+          "exercise_id": "tr_anna_b10",
+          "submitted_answer": "I'm cooking a dinner"
+        },
+        {
+          "submitted_answer": "My hasbend work in a offis",
+          "exercise_id": "tr_anna_b13",
+          "time_to_answer_ms": 28339,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false
+        },
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 33194,
+          "exercise_id": "tr_anna_b11",
+          "submitted_answer": "I'm cooking a dinner at the kitchen"
+        },
+        {
+          "time_to_answer_ms": 24177,
+          "correct": false,
+          "matched_pattern_id": "wait_no_for",
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I'm waiting a friend",
+          "exercise_id": "tr_anna_b01"
+        },
+        {
+          "exercise_id": "tr_anna_b20",
+          "submitted_answer": "We go to a park on the weekend",
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 42265
+        },
+        {
+          "exercise_id": "tr_anna_b02",
+          "submitted_answer": "It depends on you",
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 14370
+        }
+      ],
+      "planned_total": 20,
+      "level": "B2",
+      "source": "coach_tab",
+      "categories": [],
+      "topic": "Coach tab",
+      "exercise": "translation",
+      "error_types": [
+        "singular_bedroom",
+        "on_last_week",
+        "take_decision",
+        "listen_no_to",
+        "in_week",
+        "wait_no_for"
+      ],
+      "total": 20,
+      "correct": 6,
+      "errors": [
+        "[tr_anna_b12] We have two bedroom and one bathroom",
+        "[tr_anna_b04] I'm looking keys",
+        "[tr_anna_b17] Naighbors moved up on last week",
+        "[tr_anna_b05] I;m thinking about you",
+        "[tr_anna_b08] Take a decision",
+        "[tr_anna_b14] The dother is playing with her friends in the yard",
+        "[tr_anna_b03] I'm listening music",
+        "[tr_anna_b15] I'm playing puddle two times per week",
+        "[tr_anna_b16] I am is tired after exisizes",
+        "[tr_anna_b19] I wake up at seven o'clock in the morning"
+      ],
+      "_id": "1777693046098"
+    },
+    {
+      "errors": [
+        "[tr_anna_b11] I'm cooking dinner at the kitchen",
+        "[tr_anna_b15] I play puddle twise on a week",
+        "[tr_anna_b01] I'm waiting a friend",
+        "[tr_anna_b13] My husband works in an ofice",
+        "[tr_anna_b16] After a training l'm very tired",
+        "[tr_anna_b03] I'm listenings for  music",
+        "[tr_anna_b20] On weekend we go to the park",
+        "[tr_anna_b17] A neighbors moved on last week",
+        "[tr_anna_b14] The daughter  is playing with her friends in the yard"
+      ],
+      "correct": 11,
+      "error_types": [
+        "wait_no_for",
+        "on_last_week"
+      ],
+      "total": 20,
+      "exercise": "translation",
+      "categories": [],
+      "topic": "Coach tab",
+      "source": "coach_tab",
+      "level": "B2",
+      "planned_total": 20,
+      "items": [
+        {
+          "submitted_answer": "I'm cooking dinner at the kitchen",
+          "exercise_id": "tr_anna_b11",
+          "time_to_answer_ms": 34821,
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 56571,
+          "exercise_id": "tr_anna_b15",
+          "submitted_answer": "I play puddle twise on a week"
+        },
+        {
+          "exercise_id": "tr_anna_b01",
+          "submitted_answer": "I'm waiting a friend",
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": "wait_no_for",
+          "time_to_answer_ms": 14889
+        },
+        {
+          "submitted_answer": "It depends on you",
+          "exercise_id": "tr_anna_b02",
+          "time_to_answer_ms": 12172,
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "submitted_answer": "I'm doing my homework",
+          "exercise_id": "tr_anna_b09",
+          "time_to_answer_ms": 54616,
+          "correct": true,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1
+        },
+        {
+          "time_to_answer_ms": 44884,
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "My husband works in an ofice",
+          "exercise_id": "tr_anna_b13"
+        },
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 24983,
+          "exercise_id": "tr_anna_b08",
+          "submitted_answer": "Make a decision"
+        },
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 22227,
+          "exercise_id": "tr_anna_b07",
+          "submitted_answer": "I was born in April"
+        },
+        {
+          "time_to_answer_ms": 57058,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "submitted_answer": "I met our new neighbor in the morning",
+          "exercise_id": "tr_anna_b18"
+        },
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 41115,
+          "exercise_id": "tr_anna_b16",
+          "submitted_answer": "After a training l'm very tired"
+        },
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": true,
+          "time_to_answer_ms": 24018,
+          "exercise_id": "tr_anna_b06",
+          "submitted_answer": "See you on Saturday"
+        },
+        {
+          "time_to_answer_ms": 52525,
+          "correct": false,
+          "matched_pattern_id": null,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "submitted_answer": "I'm listenings for  music",
+          "exercise_id": "tr_anna_b03"
+        },
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 23592,
+          "exercise_id": "tr_anna_b05",
+          "submitted_answer": "I'm thinking about you"
+        },
+        {
+          "submitted_answer": "On weekend we go to the park",
+          "exercise_id": "tr_anna_b20",
+          "time_to_answer_ms": 41890,
+          "correct": false,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null
+        },
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 18954,
+          "exercise_id": "tr_anna_b04",
+          "submitted_answer": "I'm looking for  a keys"
+        },
+        {
+          "time_to_answer_ms": 32291,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": true,
+          "submitted_answer": "I wake up at seven in the morning",
+          "exercise_id": "tr_anna_b19"
+        },
+        {
+          "submitted_answer": "A neighbors moved on last week",
+          "exercise_id": "tr_anna_b17",
+          "time_to_answer_ms": 48055,
+          "correct": false,
+          "matched_pattern_id": "on_last_week",
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 34532,
+          "exercise_id": "tr_anna_b12",
+          "submitted_answer": "We have two bedrooms and one bathroom"
+        },
+        {
+          "submitted_answer": "I'm cooking a dinner",
+          "exercise_id": "tr_anna_b10",
+          "time_to_answer_ms": 14029,
+          "correct": true,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false
+        },
+        {
+          "exercise_id": "tr_anna_b14",
+          "submitted_answer": "The daughter  is playing with her friends in the yard",
+          "correct": false,
+          "matched_pattern_id": null,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "time_to_answer_ms": 88221
+        }
+      ],
+      "partial": false,
+      "date": "2026-05-02",
+      "_id": "1777694403248"
+    },
+    {
+      "planned_total": 3,
+      "source": "coach_tab",
+      "level": "B2",
+      "items": [
+        {
+          "correct": true
+        },
+        {
+          "correct": false
+        },
+        {
+          "correct": true
+        }
+      ],
+      "date": "2026-05-02",
+      "partial": false,
+      "correct": 2,
+      "errors": [
+        "[undefined] undefined"
+      ],
+      "exercise": "translation",
+      "categories": [],
+      "topic": "Coach tab",
+      "error_types": [],
+      "total": 3,
+      "_id": "1777695818203"
+    },
+    {
+      "partial": false,
+      "date": "2026-05-02",
+      "items": [
+        {
+          "correct": true
+        },
+        {
+          "correct": false
+        }
+      ],
+      "planned_total": 2,
+      "level": "B2",
+      "source": "coach_tab",
+      "categories": [],
+      "topic": "Coach tab",
+      "exercise": "translation",
+      "error_types": [],
+      "total": 2,
+      "correct": 1,
+      "errors": [
+        "[undefined] undefined"
+      ],
+      "_id": "1777695838018"
+    },
+    {
+      "total": 1,
+      "error_types": [],
+      "exercise": "spelling_drill",
+      "topic": "Coach tab",
+      "categories": [],
+      "errors": [],
+      "correct": 1,
+      "items": [
+        {
+          "exercise_id": "sp_anna_b09",
+          "submitted_answer": "Usually",
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 22666
+        }
+      ],
+      "partial": false,
+      "date": "2026-05-02",
+      "source": "coach_tab",
+      "level": "B2",
+      "planned_total": 10,
+      "_id": "1777697270563"
+    },
+    {
+      "correct": 0,
+      "errors": [
+        "[tr_anna_b11] I' am cooking a dinner at the kitchen"
+      ],
+      "topic": "Coach tab",
+      "categories": [],
+      "exercise": "translation",
+      "total": 1,
+      "error_types": [],
+      "planned_total": 20,
+      "level": "B2",
+      "source": "coach_tab",
+      "partial": true,
+      "date": "2026-05-03",
+      "items": [
+        {
+          "escalation_used": false,
+          "exercise_version": 1,
+          "matched_pattern_id": null,
+          "correct": false,
+          "time_to_answer_ms": 76244,
+          "exercise_id": "tr_anna_b11",
+          "submitted_answer": "I' am cooking a dinner at the kitchen"
+        }
+      ],
+      "_id": "1777804245382"
+    },
+    {
+      "date": "2026-05-03",
+      "partial": true,
+      "items": [
+        {
+          "correct": false,
+          "escalation_used": false,
+          "exercise_version": 1,
+          "time_to_answer_ms": 21649,
+          "exercise_id": "sp_anna_b08",
+          "submitted_answer": "Neighbor"
+        }
+      ],
+      "level": "B2",
+      "source": "coach_tab",
+      "planned_total": 16,
+      "error_types": [],
+      "total": 1,
+      "categories": [],
+      "topic": "Coach tab",
+      "exercise": "spelling_drill",
+      "errors": [
+        "[sp_anna_b08] Neighbor"
+      ],
+      "correct": 0,
+      "_id": "1777807413182"
+    },
+    {
+      "planned_total": 16,
+      "level": "B2",
+      "source": "coach_tab",
+      "date": "2026-05-03",
+      "partial": true,
+      "items": [
+        {
+          "correct": true,
+          "exercise_version": 1,
+          "escalation_used": false,
+          "matched_pattern_id": null,
+          "time_to_answer_ms": 8104,
+          "exercise_id": "sp_anna_b06",
+          "submitted_answer": "Knives"
+        }
+      ],
+      "correct": 1,
+      "errors": [],
+      "topic": "Coach tab",
+      "categories": [],
+      "exercise": "spelling_drill",
+      "total": 1,
+      "error_types": [],
+      "_id": "1777807831493"
+    }
+  ],
+  "coach_sessions": [
+    {
+      "session_id": "anna_esc_1777627342151_d1it",
+      "session_summary": "Learner omitted obligatory preposition 'for' after 'wait' (L1 transfer from transitive Russian 'ждать') and used definite 'the' for first-mention indefinite noun.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Please explain in more depth (after wrong submission: I'm waiting the friend)"
+        },
+        {
+          "role": "assistant",
+          "content": "Давайте разберём вашу попытку: **\"I'm waiting the friend\"**.\n\nХорошие новости: вы правильно выбрали время — Present Continuous (*I'm waiting*) идеально подходит, потому что действие происходит прямо сейчас. Это именно то, что передаёт русское «жду» в данном контексте. 👍\n\nТеперь о двух проблемах:\n\n**1. Пропущен предлог \"for\".**\nВ русском глагол «ждать» — переходный, он управляет винительным падежом напрямую: ждать (кого?) подругу. В английском глагол *to wait* так не работает — он почти всегда требует предлог **for** перед объектом:\n- ✓ \"I'm waiting **for** a friend.\"\n- ✗ \"I'm waiting a friend.\"\n- ✗ \"I'm waiting the friend.\" ← ваш вариант\n\nЗапомните формулу: **wait + for + кого/что вы ждёте**.\n\n**2. Артикль \"the\" вместо \"a\".**\nВы написали *the friend*, но в исходном предложении «подругу» — это любая подруга, слушатель её ещё не знает. В таких случаях по-английски нужен неопределённый артикль **a**:\n- \"a friend\" = какая-то подруга (вводим впервые)\n- \"the friend\" = та самая подруга (уже известная из контекста)\n\nПоскольку в русском артиклей нет, легко поставить *the* по привычке или наугад. Правило: если вы упоминаете кого-то/что-то впервые и это «один из многих» — ставьте **a/an**.\n\n**Полный правильный вариант:** \"I'm waiting for a friend.\" Также допустимо \"I'm waiting for my friend\", если подразумевается «моя подруга».\n\n**Ещё один пример с той же конструкцией:**\n- \"She's waiting for the bus.\" — Она ждёт автобус.\n  Здесь *the bus*, потому что имеется в виду конкретный автобус (например, её маршрут). Заметьте — **for** на месте, как и должно быть.\n\nСравните также:\n- \"I'm looking **for** my keys.\" (искать — тоже с *for*)\n- \"I'm listening **to** music.\" (слушать — с *to*)\n\nАнглийские глаголы часто «приклеены» к своим предлогам, и это нужно заучивать парами.\n\n**Итог:** глагол *wait* всегда требует предлога **for** перед объектом, а для нового упоминания человека используйте артикль **a**, а не **the**."
+        }
+      ],
+      "error_patterns_observed": [
+        "missing_preposition_after_verb",
+        "article_misuse_the_vs_a"
+      ],
+      "created": "2026-05-01T09:22:40.638Z",
+      "mode": "escalate",
+      "ended": "2026-05-01T09:22:40.638Z",
+      "model_used": "claude-opus-4-7",
+      "topics_covered": [],
+      "exercise_id": "tr_anna_b01",
+      "tokens_used": {
+        "output": 963,
+        "input": 782,
+        "cache_read": 0,
+        "cache_creation": 0
+      },
+      "player": "anna",
+      "exercise_version": 1,
+      "_id": "anna_esc_1777627342151_d1it"
+    },
+    {
+      "exercise_id": "tr_anna_b03",
+      "topics_covered": [],
+      "tokens_used": {
+        "cache_read": 0,
+        "cache_creation": 0,
+        "input": 734,
+        "output": 866
+      },
+      "player": "anna",
+      "exercise_version": 1,
+      "error_patterns_observed": [
+        "missing_preposition_listen_to"
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Please explain in more depth (after wrong submission: I'm listening music)"
+        },
+        {
+          "role": "assistant",
+          "content": "Хорошо, Анна, давай разберём подробнее.\n\nТы написала **\"I'm listening music\"**. Хорошая новость: грамматическая структура времени Present Continuous у тебя построена правильно — \"I'm listening\" (am + V-ing) идеально передаёт смысл «я слушаю прямо сейчас». Это именно та форма, которую нужно использовать здесь. 👍\n\nПроблема только в одном: пропущен предлог **\"to\"**.\n\n### Почему так?\n\nВ русском языке глагол «слушать» — переходный, он управляет винительным падежом напрямую: *слушать (что?) музыку*. Никакого предлога не нужно.\n\nВ английском глагол **\"listen\"** работает иначе — он **непереходный** и всегда требует предлог **\"to\"** перед объектом:\n\n- ❌ \"I'm listening music\"\n- ✅ **\"I'm listening to music\"**\n\nМожно представить это так: английский глагол \"listen\" сам по себе означает просто «находиться в процессе слушания» (как «прислушиваться»). Чтобы указать, *к чему* ты прислушиваешься, нужен мостик — предлог \"to\".\n\n⚠️ Не путай с глаголом **\"hear\"** — он переходный, как русское «слышать», и работает без предлога: *\"I hear music\"* («Я слышу музыку»).\n\n### Ещё пример того же паттерна:\n\n- **\"She's listening to the radio.\"** — Она слушает радио.\n- **\"We listened to the teacher carefully.\"** — Мы внимательно слушали учителя.\n\nЗапомни формулу: **listen + to + (что/кого слушаешь)**. Этот предлог обязателен всегда, когда после \"listen\" идёт объект.\n\nКстати, похожие «обязательные предлоги» есть и у других английских глаголов, где русский обходится без них:\n- **\"wait FOR\"** someone — ждать кого-то\n- **\"look AT\"** something — смотреть на что-то (хотя тут и в русском есть «на»)\n- **\"reply TO\"** a message — ответить на сообщение\n\n### Итог\n\n**Главное: после \"listen\" всегда ставь \"to\" перед тем, что слушаешь — это фиксированная коллокация, которую нужно просто запомнить.**"
+        }
+      ],
+      "session_summary": "Learner omitted the obligatory preposition 'to' after 'listen' due to L1 transfer — Russian 'слушать' is transitive and takes a direct object without a preposition.",
+      "session_id": "anna_esc_1777627553834_xmsg",
+      "model_used": "claude-opus-4-7",
+      "ended": "2026-05-01T09:26:09.431Z",
+      "created": "2026-05-01T09:26:09.431Z",
+      "mode": "escalate",
+      "_id": "anna_esc_1777627553834_xmsg"
+    },
+    {
+      "session_id": "anna_fw_1777627810661_0aj6",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I want to finish my artwork"
+        },
+        {
+          "role": "assistant",
+          "content": "Хорошее начало! Одно предложение — уже повод поговорить о языке.\n\n---\n\n**Что написала Анна:**\n> \"I want to finish my artwork\"\n\nТехнически предложение правильное — грамматика в порядке. ✓\n\n---\n\n**Но давай сделаем его более естественным:**\n\nВ разговорном английском часто добавляют контекст — *когда*, *почему*, *что мешает*. Это делает текст живым.\n\nНапример:\n- \"I want to finish my artwork **by the end of the week**.\"\n- \"I want to finish my artwork, **but I keep putting it off**.\"\n- \"I **really need to** finish my artwork.\"\n\n---\n\n**Твоё задание:**\n\nНапиши 3–5 предложений о своей работе (artwork). Например:\n- Что это такое?\n- Давно ли ты над ней работаешь?\n- Что осталось сделать?\n\nНе думай слишком долго — пиши как есть, я помогу исправить! 🎨"
+        },
+        {
+          "role": "user",
+          "content": "I start this painting two month ago"
+        },
+        {
+          "role": "assistant",
+          "content": "**Что написала Анна:**\n> \"I start this painting two month ago\"\n\nЗдесь две ошибки:\n\n---\n\n**1. \"I start\" → \"I started\"**\n\nСлово *ago* — сигнал, что действие случилось в прошлом и закончилось. Значит, нужен **past simple**.\nГлагол *start* в past simple — **started** (правильный глагол, просто добавь *-ed*).\n\n---\n\n**2. \"two month\" → \"two months\"**\n\nВ русском языке после числительных слово меняет падеж, но не всегда стоит во множественном числе. В английском всё проще: два и больше — всегда множественное число.\n✓ *two months, three weeks, five days*\n\n---\n\n**Исправленный вариант:**\n> \"I started this painting **two months** ago.\"\n\n---\n\n**Попробуй сейчас:**\nНапиши следующее предложение — например, почему ты начала эту картину, или что на ней изображено. Я жду! 🎨"
+        },
+        {
+          "role": "user",
+          "content": "I had same new canvas. I decided to drow something intreresting on it. My sister brought me a lot of oil paints"
+        },
+        {
+          "role": "assistant",
+          "content": "**Что написала Анна:**\n\nТри предложения — отлично, продолжай!\n\n---\n\n**Ошибки:**\n\n**1. \"I had same new canvas\" → \"I had a new canvas\"**\n\n\"Same\" (тот же самый) здесь не подходит по смыслу. Скорее всего, ты имела в виду просто *a new canvas* — неопределённый артикль, потому что холст упоминается впервые.\n\n---\n\n**2. \"to drow\" → \"to draw\" / \"to paint\"**\n\nНебольшая опечатка, но важный момент: когда работаешь с красками, обычно говорят **paint**, а не *draw*.\n- *draw* — рисовать карандашом, ручкой (линии)\n- *paint* — рисовать красками, кистью\n\n✓ *\"I decided to paint something interesting on it.\"*\n\n---\n\n**3. \"intreresting\" → \"interesting\"**\n\nПросто опечатка, но запомни написание: **inter-est-ing**.\n\n---\n\n**Предложение про сестру — отлично!** ✓\n> \"My sister brought me a lot of oil paints.\" — грамматически верно, естественно звучит.\n\n---\n\n**Попробуй сейчас:**\nНапиши, что именно ты решила нарисовать (paint). Что изображено на картине?"
+        },
+        {
+          "role": "user",
+          "content": "It here are a lot exotic plant in Bahrayn. Once I saw a agave"
+        },
+        {
+          "role": "assistant",
+          "content": "**Что написала Анна:**\n\n---\n\n**Ошибки:**\n\n**1. \"It here are a lot exotic plant\" → \"There are a lot of exotic plants in Bahrain\"**\n\nСразу несколько моментов:\n- Конструкция \"there is/there are\" — не \"it here are\". По-русски \"есть\" = по-английски **there is/are**.\n- После *a lot of* нужен предлог **of**: *a lot **of** exotic plants*\n- *plant* → **plants** (множественное число, их много)\n\n---\n\n**2. \"Once I saw a agave\" → \"Once I saw an agave\"**\n\nПеред словами, начинающимися на гласную букву (*a, e, i, o, u*), артикль **a** меняется на **an**.\n✓ *an agave, an apple, an orange*\n\n---\n\n**3. \"Bahrayn\" → \"Bahrain\"**\n\nАнглийское написание страны — **Bahrain**.\n\n---\n\n**Исправленный вариант:**\n> \"There are a lot of exotic plants in Bahrain. Once I saw an agave.\"\n\n---\n\n**Попробуй сейчас:**\nРасскажи больше об агаве — как она выглядела, где ты её увидела? Одно-два предложения! 🌵"
+        },
+        {
+          "role": "user",
+          "content": "This plant has flower only once per it's life. When it get flower it died. A flower usually get 5 or 6 meter"
+        },
+        {
+          "role": "assistant",
+          "content": "**Что написала Анна:**\n\nИнтересный факт! Продолжай.\n\n---\n\n**Ошибки:**\n\n**1. \"it get flower\" и \"it died\" → \"it flowers/blooms, it dies\"**\n\nЭто описание общего факта (не прошлого события), значит нужен **present simple**.\n- *get flower* — неестественное сочетание. Говорят **bloom** или **flower** (глагол).\n- \"it died\" → **it dies** (present simple, общий факт)\n\n✓ *\"When it blooms, it dies.\"*\n\n---\n\n**2. \"it's\" → \"its\"**\n\n- **it's** = it is (сокращение)\n- **its** = его/её (притяжательное местоимение)\n\n✓ *\"only once in its life\"*\n\nКстати, *per* здесь звучит немного формально/технически — лучше **in**.\n\n---\n\n**3. \"A flower usually get 5 or 6 meter\" → \"The flower usually grows 5 or 6 metres tall\"**\n\n- *get* → **grows** (более естественный глагол для роста растений)\n- *meter* → **metres** (множественное число)\n- Добавь **tall**, чтобы было понятно, что речь о высоте\n\n---\n\n**Попробуй сейчас:**\nПерепиши одно предложение: *\"When it get flower it died\"* — используй present simple и глагол *bloom*."
+        },
+        {
+          "role": "user",
+          "content": "When it blooms, it dies"
+        },
+        {
+          "role": "assistant",
+          "content": "Отлично — именно так! ✓\n\n> \"When it blooms, it dies.\"\n\nСтруктура правильная, present simple использован верно в обоих глаголах.\n\n---\n\n**Продолжай рассказ!**\n\nТы упомянула, что рисуешь агаву на холсте. Расскажи — на каком этапе сейчас картина? Что уже сделано, что ещё осталось?"
+        },
+        {
+          "role": "user",
+          "content": "That was helpful. Wrap up the session for me."
+        },
+        {
+          "role": "assistant",
+          "content": "**Итоги сессии:**\n\nТы написала связный текст о своей картине — это главное. Вот что отработали сегодня:\n\n---\n\n**Повторяющиеся моменты, на которые стоит обратить внимание:**\n\n- **Past simple** — *start → started* (сигнал: слово *ago*)\n- **There is / There are** — не \"it here are\"\n- **a → an** перед гласными — *an agave*\n- **its vs it's** — притяжательное vs сокращение\n- **Present simple для общих фактов** — *it blooms, it dies*\n- **Collocations с растениями** — *paint* (не draw), *bloom* (не get flower), *grows tall*\n\n---\n\n**Один совет на следующий раз:**\n\nКогда описываешь природу или процессы — используй present simple. Это твой инструмент для фактов и привычек.\n\n---\n\nХорошая работа сегодня. До следующего раза! 🎨"
+        }
+      ],
+      "session_summary": "Anna wrote a short connected text about her painting of an agave plant, producing 6–7 sentences of free writing. Key recurring issues were tense selection (past simple, present simple), article use (a/an, there are), and collocation accuracy (paint vs draw, bloom vs get flower).",
+      "error_patterns_observed": [
+        "past_simple_omission",
+        "plural_noun_omission",
+        "article_a_an_confusion",
+        "article_zero_for_definite",
+        "there_is_there_are_confusion",
+        "its_vs_its_apostrophe",
+        "tense_simplification",
+        "collocation_accuracy",
+        "preposition_omission"
+      ],
+      "created": "2026-05-01T09:30:10.661Z",
+      "mode": "free_write",
+      "ended": "2026-05-01T09:42:50.350Z",
+      "model_used": "claude-sonnet-4-6",
+      "topics_covered": [
+        "past_simple",
+        "present_simple_for_general_facts",
+        "articles",
+        "there_is_there_are",
+        "possessive_pronouns",
+        "collocations_nature_vocabulary"
+      ],
+      "exercise_id": null,
+      "tokens_used": {
+        "cache_read": 0,
+        "cache_creation": 0,
+        "input": 11542,
+        "output": 2371
+      },
+      "player": "anna",
+      "exercise_version": null,
+      "_id": "anna_fw_1777627810661_0aj6"
+    }
+  ]
+}
