@@ -63,6 +63,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 | `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side Free Write for **Artem only** (other family members use the PWA) |
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
+| `routing-audit` | "audit landing", "check routing", "are X being routed correctly", "is COUNT/N items justified", "review batch sizes" — learner-shell CTA + batch-size alignment |
 | `deploy-build` | "deploy", "ship it", "push the changes", any pre-deploy validation |
 
 Skills orchestrate; they don't repeat reference content.

@@ -129,6 +129,19 @@ node tools/pv_cold_streak.js artem --json             # machine-readable
 
 Computes the streak rule from `progress/phrasal-verbs-tracker.md` (🏆 = ≥3 cold wins across ≥2 formats, no failures during streak). Reads `coach_sessions[].pvs_used_correctly` (tier 1) and `exercises[].items[]` of type translation/russian_trap (tiers 2–3). Recognition formats (gap/mcq/particle_sort) and quiz `input` qStats are excluded — see script header for v2 notes. Use during `stats-review` to refresh tracker Status column and bump qualifying PVs from 🟢 to 🏆.
 
+### `get_library_meta.js` — exercises_library coverage per player
+
+```bash
+node tools/get_library_meta.js              # full _meta doc
+node tools/get_library_meta.js --coverage   # coverage_by_player only
+node tools/get_library_meta.js --totals     # total_exercises_per_type only
+```
+
+Reads `exercises_library/_meta` and decodes the Firestore wrapper. Used by
+the `routing-audit` skill to enumerate per-player Coach drill pool sizes —
+the value that determines coach session length, since `coachStartType`
+runs the entire targeted library with no sub-sampling.
+
 ### `log_coach_session.js` — write a Coach chat session (Free Write style)
 
 ```bash
