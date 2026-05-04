@@ -10,6 +10,27 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-04 · Session t1
+### v20260504-t1 — Routing-audit fixes: recency rotation + cooldown + per-player COUNT
+
+First run of the new `routing-audit` skill (cherry-picked from a remote branch earlier today). Targets Anna's "same exercises again and again" complaint at both layers — which Coach type gets surfaced on Practice press, and which items show up inside a type — plus per-player Quiz size mismatches found in the audit.
+
+- **Recency-rotated Practice picker** (`homeStartPractice` Step 5): replaces the first-with-content `COACH_PRIORITY` walk that pinned Anna to Translation forever. Now pulls every type the player has content for, sorts by oldest last-completion ts (never-done first), starts the least-recently-done one. Tie-break = original COACH_PRIORITY order. Two new helpers: `coachListLastCompletionTs`, `coachListRecentCorrectIds`.
+- **7-day item cooldown** inside `coachStartType`: hides items the player solved correctly in the last week, falls back to the full pool if filtering would leave fewer than 3 items. Cycles items back after a week — fresh material first, no items dropped permanently.
+- **Per-player Quiz COUNT** (`QUIZ_COUNT_BY_PLAYER`): anna 10 / nicole 20 / ernest 20 / default 10. Their median completed quiz total is 20 (n=10 / n=8); the hardcoded 10 was ending their sessions early. `lh-quiz-hint` copy now reads from `quizCountFor(currentPlayer)`.
+- **Partial-resume floor** (`PARTIAL_RESUME_MIN_TOTAL = 3`): `homeFindPartialTranslation` no longer auto-resumes 1/15 stubs from abandoned sessions.
+- **Per-player Free Write soft-turn cap** (`COACH_FW_SOFT_TURN_CAP_BY_PLAYER`): ernest=12 (his FW turn distribution [2,4,8,12] hit the default 8 right at his typical session length).
+- **Anna spelling_drill cap 16→10** via `COACH_PLANNED_TOTAL_OVERRIDES`: 3 of 4 runs partial — planned_total was over her stamina.
+- **Firestore — Anna `learning_path`**: dropped Articles (62%, flagged for deprioritisation in the 2026-04-30 observation); now 4 cats / window 4, matching the design-doc target. An earlier audit proposal had broadened her window; rolled back after Artem flagged it conflicted with the active-window-narrowing model.
+
+Russian-trap engine + picker enable deferred — 14 items exist but no Coach engine wired; tracked as a follow-up task.
+
+Validated via Claude Preview (preview_eval): all new constants/helpers loaded, no console errors, version badge reads `v20260504-t1`.
+
+Q count: 1988 (unchanged) · Version: v20260504-t1
+
+---
+
 ## 2026-05-03 · Session t8
 ### v20260503-t8 — PV tracker + 🏆 graduation rule + Artem foundation drills
 
