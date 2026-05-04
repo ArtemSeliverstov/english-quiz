@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260503-t8">
+  <meta name="app-version" content="v20260504-t1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -999,7 +999,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260503-t8</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260504-t1</span></p>
 </header>
 
 <!-- TABS -->
@@ -4063,7 +4063,7 @@ function renderLearnerHome() {
   }
   const quizHintEl = document.getElementById('lh-quiz-hint');
   if (quizHintEl) {
-    quizHintEl.textContent = '10 grammar questions';
+    quizHintEl.textContent = quizCountFor(currentPlayer) + ' grammar questions';
   }
 
   // Zone 2: family pull — reuse the family-poll fetch path
@@ -4250,6 +4250,17 @@ async function renderLearnerMedals() {
 //   4. Free Write fallback with a starter prompt
 const SPELL_HELP_THRESHOLD = 5;
 const PARTIAL_RESUME_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+// Don't auto-resume tiny stubs — drops the player into the tail of an
+// abandoned session. Below this threshold the player gets a fresh start.
+const PARTIAL_RESUME_MIN_TOTAL = 3;
+// Quiz length per player. Median completed `total` from recentSessions:
+// nicole=20 (n=10), ernest=20 (n=8), anna=10 (n=10). Default 10 covers
+// builder-shell + new players.
+const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20 };
+const QUIZ_COUNT_DEFAULT = 10;
+function quizCountFor(player) {
+  return QUIZ_COUNT_BY_PLAYER[player] || QUIZ_COUNT_DEFAULT;
+}
 
 async function homeFindPartialTranslation(player) {
   try {
@@ -4261,6 +4272,7 @@ async function homeFindPartialTranslation(player) {
       const total = ex.total || 0;
       const planned = ex.planned_total || total;
       if (total === 0 || total >= planned) continue;
+      if (total < PARTIAL_RESUME_MIN_TOTAL) continue;
       const ts = parseInt(ex.id, 10);
       if (!Number.isFinite(ts)) continue;
       if (Date.now() - ts > PARTIAL_RESUME_MAX_AGE_MS) continue;
@@ -4303,6 +4315,44 @@ async function homeCountSpellHelpSinceLastDrill(player) {
   } catch (e) {
     return 0;
   }
+}
+
+// Returns { type: lastTsMs } for the most recent exercise doc per type for
+// this player. Used by homeStartPractice to rotate which Coach type comes up
+// first — least-recently-done wins. Types never done get 0 (== "long ago").
+async function coachListLastCompletionTs(player, types) {
+  const out = {};
+  (types || []).forEach(t => out[t] = 0);
+  try {
+    const exs = await fsList('players/' + player + '/exercises');
+    for (const ex of (exs || [])) {
+      const t = ex && ex.exercise;
+      if (!t || !(t in out)) continue;
+      const ts = parseInt(ex.id, 10);
+      if (Number.isFinite(ts) && ts > out[t]) out[t] = ts;
+    }
+  } catch (e) { /* ignore — defaults to 0s */ }
+  return out;
+}
+
+// Returns a Set of exercise_ids that the player solved correctly for `type`
+// in the last `ageMs`. Used to cool down recently-mastered items inside
+// coachStartType so sessions surface fresh material first.
+async function coachListRecentCorrectIds(player, type, ageMs) {
+  const ids = new Set();
+  try {
+    const exs = await fsList('players/' + player + '/exercises');
+    const cutoff = Date.now() - ageMs;
+    for (const ex of (exs || [])) {
+      if (!ex || ex.exercise !== type) continue;
+      const ts = parseInt(ex.id, 10);
+      if (!Number.isFinite(ts) || ts < cutoff) continue;
+      for (const it of (ex.items || [])) {
+        if (it && it.exercise_id && it.correct) ids.add(it.exercise_id);
+      }
+    }
+  } catch (e) { /* ignore — empty set is safe */ }
+  return ids;
 }
 
 async function homeStartPractice() {
@@ -4360,21 +4410,28 @@ async function homeStartPractice() {
       return;
     }
 
-    // Step 5: Pick the highest-priority Coach type with unseen content for
-    // this player. Probe library counts directly (avoids coachStartType's
-    // alert() side-effect when fsList fails). Only call coachStartType once
-    // we know the type has items. Order = engagement weight, descending:
-    // pre-generated drills first (they're the targeted intervention layer);
-    // Free Write below as the always-available default.
+    // Step 5: Rotate Coach types by recency. Pull every type the player has
+    // content for, then start with the one she's done least recently (or
+    // never). Solves the "Practice always = Translation" trap that made Anna
+    // feel like she was redoing the same drill on every press. The
+    // COACH_PRIORITY order is the tie-breaker for never-touched types.
     revealCoach();
     const COACH_PRIORITY = ['translation', 'article_drill', 'particle_sort', 'error_correction', 'spelling_drill'];
+    const candidates = [];
     for (const type of COACH_PRIORITY) {
-      let items = null;
       try {
         const all = await fsList('exercises_library/' + type + '/items');
-        items = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
-      } catch (e) { /* read blocked or network — try next */ continue; }
-      if (!items.length) continue;
+        const items = (all || []).filter(ex => ex && (ex.target_player === currentPlayer || ex.target_player === 'all'));
+        if (items.length) candidates.push(type);
+      } catch (e) { /* read blocked or network — skip */ }
+    }
+    const lastTs = await coachListLastCompletionTs(currentPlayer, candidates);
+    candidates.sort((a, b) => {
+      const ta = lastTs[a] || 0, tb = lastTs[b] || 0;
+      if (ta !== tb) return ta - tb;                 // older / never-done first
+      return COACH_PRIORITY.indexOf(a) - COACH_PRIORITY.indexOf(b);
+    });
+    for (const type of candidates) {
       try {
         const ok = await coachStartType(type);
         if (ok === true) return;
@@ -4428,7 +4485,7 @@ async function homeStartQuiz() {
   catFilter = 'All';
   maxLevel = 'C2';      // applyLearnerWindowFilter clamps to learning_path.level_cap
   includeBiz = true;
-  const COUNT = 10;
+  const COUNT = quizCountFor(currentPlayer);
   const pool = selectQuestions(COUNT);
   if (!pool || pool.length === 0) return false;
 
@@ -7456,6 +7513,12 @@ const COACH_WORKER_URL = 'https://english-quiz-coach.artem2030.workers.dev';
 const COACH_FW_MODEL = 'claude-sonnet-4-6';     // Free Write — high-volume, Sonnet
 const COACH_ESC_MODEL = 'claude-opus-4-7';      // Escalate — one-shot depth, Opus
 const COACH_FW_SOFT_TURN_CAP = 8;               // soft "wrap up?" nudge — empirically 7+ turns was already feeling endless to Anna (s92)
+// Per-player override — Ernest's median is 8 with top quartile at 12, so the
+// default cap was firing right at his typical session length. null/missing = use default.
+const COACH_FW_SOFT_TURN_CAP_BY_PLAYER = { ernest: 12 };
+function coachFwSoftTurnCapFor(player) {
+  return COACH_FW_SOFT_TURN_CAP_BY_PLAYER[player] || COACH_FW_SOFT_TURN_CAP;
+}
 const COACH_FW_STARTERS = [
   'Tell me about your day in English.',
   'What did you do this weekend?',
@@ -7871,7 +7934,7 @@ function coachShowFreeWriteEndRow() {
   endBtn.onclick = () => coachFreeWriteEnd();
   row.appendChild(endBtn);
   // Soft 20-turn nudge per §8.6
-  if (coachState.fwTurnCount >= COACH_FW_SOFT_TURN_CAP) {
+  if (coachState.fwTurnCount >= coachFwSoftTurnCapFor(currentPlayer)) {
     const nudge = document.createElement('div');
     nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
     nudge.textContent = "We've covered a lot — wrap up?";
@@ -8373,6 +8436,14 @@ const COACH_TYPE_TO_LIBRARY = {
   particle_sort: 'particle_sort',
   error_correction: 'error_correction',
 };
+// Hide items the player solved correctly within this window — keeps sessions
+// fresh without dropping items forever (they cycle back after a week).
+const COACH_COOLDOWN_MS = 7 * 86400000;
+// Per-player planned_total caps. Anna's spelling_drill ran 3-of-4 partials at
+// pool=16 — stamina mismatch, not motivation. null/missing = use full pool.
+const COACH_PLANNED_TOTAL_OVERRIDES = {
+  spelling_drill: { anna: 10 },
+};
 const COACH_TYPE_LABEL = {
   translation: 'translation drill',
   spelling_drill: 'spelling drill',
@@ -8399,6 +8470,17 @@ async function coachStartType(type, opts) {
   if (resuming) {
     exercises = exercises.filter(ex => !opts.completedIds.has(ex.id));
   }
+  // Cooldown: hide items the player solved correctly in the last 7 days, but
+  // only if doing so still leaves a usable pool. Falls back to the full set
+  // when the library is small enough that filtering would starve the session.
+  if (!resuming && exercises.length) {
+    const cooldownIds = await coachListRecentCorrectIds(currentPlayer, type, COACH_COOLDOWN_MS);
+    if (cooldownIds.size) {
+      const fresh = exercises.filter(ex => !cooldownIds.has(ex.id));
+      const minFresh = Math.min(3, exercises.length);
+      if (fresh.length >= minFresh) exercises = fresh;
+    }
+  }
   if (!exercises.length) {
     if (resuming) {
       // Partial covered the whole library — fall through to caller for fallback.
@@ -8408,6 +8490,11 @@ async function coachStartType(type, opts) {
     return false;
   }
   exercises.sort(() => Math.random() - 0.5);
+  // Per-player planned_total cap (e.g. Anna's spelling_drill = 10, not 16).
+  if (!resuming) {
+    const cap = (COACH_PLANNED_TOTAL_OVERRIDES[type] || {})[currentPlayer];
+    if (cap && exercises.length > cap) exercises = exercises.slice(0, cap);
+  }
   coachState.type = type;
   coachState.pool = exercises;
   coachState.sessionStartedAt = Date.now();
