@@ -19,30 +19,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **1. Pull stats.** Run `get_all_players.js -S` for all 5 docs + subcollections. For one player deep-dive: `get_player.js {name}`. Filter out `auto_suspected: true` sessions before pattern aggregation.
 
-**1a. Pick the right signal for the question.** Post-Option-D (2026-05-05), every practice surface — Quiz play, Coach upsert, Free Write log, both CC log scripts — bumps `lastPlayedDate / currentStreak / longestStreak`. So the doc-level fields and the subcollections answer **different** questions; use the right one.
-
-| Question | Authoritative source |
-|---|---|
-| "When did the player last practise? Are they active today / yesterday / N days ago?" | `lastPlayedDate` (post-Option-D, all surfaces bump it) |
-| "What did they do in the last N days — how many sessions, which surfaces, which exercise types, what accuracy?" | Subcollections — filter `ex.ts` / `cs.created` |
-| "Streak status?" | `currentStreak` / `longestStreak` |
-| "Per-question / per-category drill-down?" | `qStats / catStats / lvlStats` (quiz-only) + `exercises[].items[]` (coach) |
-
-Projected timestamp fields from `get_all_players.js -S`:
-
-| Source | Filter on | Notes |
-|---|---|---|
-| `exercises[]` | `ex.ts` (ISO string, derived from doc id) | Raw doc has `date: YYYY-MM-DD` but the `-S` projection drops it — use `ts`. |
-| `coach_sessions[]` | `cs.created` (ISO string) | Raw field, passed through unchanged. |
-
-Filter snippet:
-```js
-const cutoff = new Date('YYYY-MM-DD').getTime();
-exs.filter(e => new Date(e.ts).getTime() >= cutoff);
-cs.filter(s => new Date(s.created).getTime() >= cutoff);
-```
-
-**Pre-Option-D historical caveat.** Rows written before 2026-05-05 came from write paths that didn't bump `lastPlayedDate`. For windows that include those dates, a stale `lastPlayedDate` is possible even when subcollection rows exist (e.g. Anna's pre-fix Coach activity sat under a `lastPlayedDate=2026-04-21` stamp). When the question is "did they practise on date X?" and X is before 2026-05-05, prefer the subcollections; if `lastPlayedDate` and the subcollection disagree, the subcollection wins.
+**1a. Right signal for the question.** Post-Option-D (2026-05-05) every surface bumps `lastPlayedDate / currentStreak / longestStreak` — use these for recency/streak, subcollections for everything else (volume, surface, type, accuracy). Filter `exercises[]` on `ex.ts` (ISO from doc id; `-S` drops the raw `date`), `coach_sessions[]` on `cs.created`. Pre-Option-D rows skipped the doc bump — for windows spanning dates before 2026-05-05, subcollection wins on disagreement.
 
 **2. Coverage review per player** (mandatory). For each: category breakdown (count, level distribution, accuracy), type distribution, trends vs prior session if available, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error rate), quality flags (≥60% error across 3+ players).
 

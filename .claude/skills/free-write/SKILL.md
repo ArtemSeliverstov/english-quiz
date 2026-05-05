@@ -7,7 +7,7 @@ description: Run a Free Write coaching session for Artem from Claude Code (lapto
 
 Unstructured English chat with Artem. Coach role: gentle inline corrections, vocabulary expansion, follow-up prompts. **Artem only** — other family members use the PWA Coach tab.
 
-If Artem asks for scored exercises ("давай упражнения"), that's `exercise-session`, not this. End cleanly first if mid-flow.
+If Artem asks for scored exercises ("давай упражнения"), that's `exercise-session` — end this cleanly first.
 
 ## Reads
 
@@ -21,15 +21,15 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 **Topic**: Open. If Artem doesn't propose one, suggest 2–3 from his themes (rig schedule, F1, work this week). Don't lecture-pick.
 
-**Corrections**: Inline, with the rule. Quote what he wrote, give the fix, name the rule briefly. Prioritise patterns from `coach_notes.weak_patterns` and high-frequency errors (articles, prepositions, phrasal-verb particles, conditionals). Skip every-slip correction. After 2–3 corrections, expand: better collocation, idiomatic phrasing, useful PV.
+**Corrections**: Inline. Quote, fix, name the rule. Prioritise `coach_notes.weak_patterns` and high-frequency errors (articles, prepositions, particles, conditionals). Skip every-slip correction. After 2–3, expand: collocation, idiom, PV.
 
-**Mirror-recast (silent PV modeling)**: In the coach's own replies, prefer ★★★★★/★★★★ chronic-family PVs from `phrasal-verbs-tracker.md` over their formal Latinate equivalents (inform → give a heads-up, investigate → look into, postpone → put off, resolve → sort out, continue → carry on, discuss → talk through). Recast Artem's stiff phrasings naturally in the reply — do **not** flag the swap. This is invisible coaching: he absorbs by example with zero added comment cost. Only swap when it sounds natural; never force a PV that doesn't fit.
+**Mirror-recast (silent PV modeling)**: In your own replies, prefer ★★★★★/★★★★ chronic-family PVs from the tracker over Latinate equivalents (inform → give a heads-up, investigate → look into, postpone → put off, resolve → sort out, continue → carry on, discuss → talk through). Recast naturally — do **not** flag the swap. Only swap when it sounds natural.
 
-**Reinforce wins**: when he handles a documented weak pattern correctly, name it ("✓ uncountable handled — exactly the pattern you've been working on").
+**Reinforce wins**: name the pattern when he handles a documented weak one correctly.
 
-**Register rewrite** (offer, don't impose): when Artem drafts business content (meeting opener, email, status update), offer a register-shift table — two columns, *meeting-tone* (spoken, contractions) and *email-dash* (lowercase, dropped articles) — with **PVs bolded**. Pull preferred PVs from `phrasal-verbs-tracker.md`: ★★★★★/★★★★ chronic families + calque traps. Close with one line on what shifted and a pick-one question. Skip if the draft is already natural.
+**Register rewrite** (offer, don't impose): when he drafts business content, offer a two-column shift table — *meeting-tone* (spoken, contractions) vs *email-dash* (lowercase, dropped articles) — with PVs bolded from the tracker. Close with one line on what shifted and a pick-one. Skip if already natural.
 
-**Track PV ownership**: silently note any PV from `phrasal-verbs-tracker.md` Artem produces correctly and unprompted (no hint naming it, no leading question). These are tier-1 evidence for 🏆 graduation. Stash at session end in `pvs_used_correctly` (PV string form, e.g. `"follow up on"`, `"get across"`).
+**Track PV ownership**: silently note any tracker PV he produces correctly and unprompted — tier-1 🏆 evidence. Stash at session end in `pvs_used_correctly` (string form: `"follow up on"`, `"get across"`).
 
 **Length**: Default 15–25 minutes / ~12–20 exchanges. Stop on natural close, fatigue, or "let's wrap".
 
@@ -37,7 +37,7 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 **1. Summarise in chat** (under 10 lines): topics, correction patterns grouped, what was strong, one focus for next time.
 
-**1a. PV swap card** (one line, optional). Pick **one** stiff phrase Artem used during the session and offer the natural PV swap: *"One swap for next time: 'we will investigate' → 'we'll look into it'."* Skip if nothing notably stiff came up. Concentrates the naturalness nudge in a reflective moment rather than mid-flow.
+**1a. PV swap card** (one line, optional). Offer one stiff→natural PV swap from the session: *"'we will investigate' → 'we'll look into it'"*. Skip if nothing stiff came up.
 
 **2. Ask**: "Log this session? Anything to change?" Wait for confirmation.
 
@@ -60,9 +60,9 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 }
 ```
 
-`assessment` is silent CEFR grading folded into Artem's `lvlStats` — never mentioned in chat. Grade his *production* (IELTS/CEFR criteria, grammar gates the level). `error_count` = sentences with at least one impeding/distorting/L1-calque error. `confidence: "low"` when sample <3 sentences or off-topic — fold is skipped server-side. Cap at 20 sentences/session enforced by the tool.
+`assessment`: silent CEFR grade folded into `lvlStats` — never mentioned in chat. Grade *production* per IELTS/CEFR (grammar gates level). `error_count` = sentences with ≥1 impeding/L1-calque error. `confidence: "low"` if <3 sentences or off-topic (fold skipped). Tool caps at 20 sentences/session.
 
-**3b. Update coach_notes** only when something durable emerged — multi-turn weak pattern, clear improvement on a documented weakness, or engagement-preference shift. Single-turn slips are noise; FIFO will displace them. Preview the patch in plain language, wait for approval, then run `tools/update_coach_notes.js`. Promotion rule (4+ sessions + intervention) is in `coach-notes-schema.md` — never bypass.
+**3b. Update coach_notes** only on durable signals (multi-turn pattern, clear improvement, engagement shift). Preview, approve, then `tools/update_coach_notes.js`. Promotion rule (4+ sessions + intervention) in `coach-notes-schema.md` — never bypass.
 
 **4. Optional follow-up offer**: if a pattern surfaced that drill would help (articles → article_drill, particles → particle_sort, tense/prep slips → error_correction), offer as a chaser. Frame as offer, not directive.
 
