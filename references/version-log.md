@@ -11,6 +11,34 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-05 · Session t1
+### v20260505-t1r4 — Navigation tabs back + Family levels restored + medal system fix
+
+Two threads in one push: navigation polish on top of t1r3's learner-everywhere flip, and a research-backed overhaul of the medal system.
+
+**Navigation (per t1r3 follow-up):**
+- Tab bar visibility centralised in `showTab()`: hidden on home (calm landing), shown on every non-home screen so Coach/Family/Stats are reachable from each other. Removed the per-function `learner ? 'none' : ''` toggling.
+- Tab buttons reordered to `🏠 Home / 📊 Statistics / 👨‍👩‍👧 Family / 🎯 Coach`. The 🎯 Practice (builder Setup) button removed — builder shell isn't reachable through normal flow anyway after the t1r3 ui_shell flip.
+- `lh-levels-zone` restored on home (after Family streaks) — user kept the zone valuable for at-a-glance phase tracking.
+- Family tab gains a richer `family-levels-strip` block (CEFR phase + accuracy + lifetime Qs + most-played category, sorted by band → phase → accuracy) — duplicates the home table with more depth, the user's preferred place for the data.
+- `renderLearnerFamilyBoards()` already tolerated the missing levels table from r3; restoration is purely additive.
+
+**Medal system overhaul:**
+- **Persistence bug (the "shaky" complaint):** `DB.badges` was set in memory by `checkNewBadges()` but never persisted — every page reload announced all existing badges as "new" on the next quiz. Fix: added `badges: {}` to `createPlayerData()` and the remote-doc merge in `syncFromFirebase()`; `checkNewBadges()` now calls `saveData(DB)`.
+- **Highest-watermark rule:** Once a category earns a tier, it can't be downgraded by accuracy dips. Stops threshold-flicker as `seen` and accuracy bob across boundaries.
+- **Hybrid threshold (absolute OR coverage):** Audit revealed that 6 of 28 categories were locked out of any medal (bank size <30) and 17 of 28 were locked out of gold (bank <50). New `computeBadges(catStats, qStats)` qualifies a player when EITHER `seen >= absoluteThreshold` OR `unique_seen_in_cat >= ceil(catSize * coverageRatio)`. Coverage uses *unique* questions seen (intersection of `qStats` IDs with `ALL_QUESTIONS` filtered by cat) so it can't be gamed by re-answering the same easy question. Ratios: bronze/silver 80%, gold 90%. Result: every category becomes medal-reachable for at least gold; existing absolute thresholds keep their meaning for big categories.
+- **🌟 Gold-Master tier added:** ≥85% accuracy AND ≥150 attempts AND catSize ≥150. Absolute-only path (coverage path disabled) — point of master is "you put in the volume", which a 22-question category can't legitimately demonstrate. Only Tenses, Articles, Gerunds & Infinitives, Vocabulary, and Phrasal Verbs are eligible. `MEDAL_RANK` extended; results-screen and home/family rendering updated to surface the tier.
+- **Toast-fatigue cap:** Results-screen `res-new-medal` panel now shows only the highest-tier upgrade (one pill), even when a single quiz triggers multiple boundary crossings. Toast was already capped at one. Research backing: notification fatigue + Duolingo's tiered progression pattern (Yu-kai Chou, Smashing Mag 2025).
+- All `computeBadges(catStats)` callers updated to pass `qStats` so the coverage path activates: `renderLearnerMedals`, `renderCatGrid`, `renderBadgeShelf`, per-player Family card.
+
+For Artem specifically, the audit produced 1 new gold (Comparisons — 100% on a 30-question cat now passes via 100% coverage) and 1 new silver (Passive Voice — 28-question cat, full coverage). 24 existing badges silently roll over to persisted state on first run; subsequent quizzes only celebrate genuine upgrades.
+
+Verified end-to-end in Claude Preview: `node --check` passes, schema lint + transform-keyword lint clean, no console errors. Tab bar hidden on home, visible on Stats/Family/Coach (5 player rows in family-levels-strip, e.g. *"Comfortable C1 · 73% · 1827 Qs · Phrasal Verbs"*). Medal panel shows exactly 1 pill when 3 are passed in. Second `checkNewBadges()` call returns 0 announcements (persistence working).
+
+Q count: 1988 (unchanged) · Version: v20260505-t1r4
+
+---
+
+## 2026-05-05 · Session t1
 ### v20260505-t1r3 — One UI: learner shell for all + Coach merge + Family redesign
 
 Big consolidation pass — collapses two redundant UI shells into one and rebuilds the social/motivation surface around it.

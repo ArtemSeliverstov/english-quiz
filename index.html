@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260505-t1r3">
+  <meta name="app-version" content="v20260505-t1r4">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -485,6 +485,15 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
     .fc-stat{flex:1;text-align:center;}
     .fc-stat-val{font-size:.95rem;font-weight:700;}
     .fc-stat-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.1rem;}
+    .family-levels-strip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.55rem .65rem;margin-bottom:.8rem;}
+    .fls-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem .25rem;font-size:.78rem;border-top:1px solid rgba(255,255,255,.04);}
+    .fls-row:first-child{border-top:none;}
+    .fls-row.fls-you{background:rgba(126,154,255,.06);border-radius:6px;}
+    .fls-name{display:flex;align-items:center;gap:.4rem;font-weight:600;}
+    .fls-emoji{font-size:1rem;}
+    .fls-phase{color:var(--muted);font-size:.72rem;text-align:right;line-height:1.25;}
+    .fls-phase strong{color:var(--text);font-weight:700;}
+    .fls-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.1rem .25rem .35rem;}
     .family-medal-axis{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:.55rem .85rem;margin-bottom:.8rem;font-size:.78rem;color:#fbbf24;line-height:1.4;}
     .family-medal-axis .fma-label{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.65rem;opacity:.85;}
     .pb-pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
@@ -1026,12 +1035,12 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r4</span></p>
 </header>
 
 <!-- TABS -->
 <div class="tabs">
-  <button class="tab active" onclick="showTab('setup')">🎯 Practice</button>
+  <button class="tab" onclick="showLearnerHome()">🏠 Home</button>
   <button class="tab" onclick="showTab('stats')">📊 Statistics</button>
   <button class="tab" onclick="showTab('family')">👨‍👩‍👧 Family</button>
   <button class="tab" onclick="showTab('coach')">🎯 Coach</button>
@@ -1068,6 +1077,11 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     <div class="lh-zone" id="lh-streaks-zone">
       <div class="lh-zone-label">Family streaks</div>
       <table id="lh-streaks-table" class="lh-board"><tbody></tbody></table>
+    </div>
+
+    <div class="lh-zone" id="lh-levels-zone">
+      <div class="lh-zone-label">Family levels</div>
+      <table id="lh-levels-table" class="lh-board"><tbody></tbody></table>
     </div>
   </div>
 </div>
@@ -1292,6 +1306,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
     <!-- Family co-op zone (Plan B): collective totals + weekly target -->
     <div id="family-coop" class="family-coop"></div>
+
+    <!-- Family levels strip (richer view of the home table) -->
+    <div id="family-levels-strip" class="family-levels-strip"></div>
 
     <!-- Rotating weekly medal axis banner (Plan B) -->
     <div id="family-medal-axis" class="family-medal-axis"></div>
@@ -3547,6 +3564,7 @@ function defaultData() {
     createdAt: new Date().toISOString(),
     ui_shell: 'learner',
     learning_path: null,
+    badges: {},
   };
 }
 
@@ -3695,10 +3713,14 @@ function showTab(name) {
   const target = document.getElementById('tab-'+name);
   if (target) target.classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
+  // Tab indices: 0 = Home, 1 = Stats, 2 = Family, 3 = Coach
+  if (name === 'home')   document.querySelectorAll('.tab')[0].classList.add('active');
   if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
   if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
-  if (name === 'coach') { document.querySelectorAll('.tab')[3].classList.add('active'); coachOpenTab(); }
+  if (name === 'coach')  { document.querySelectorAll('.tab')[3].classList.add('active'); coachOpenTab(); }
+  // Tab bar visibility — hide on home (calm landing), show everywhere else.
+  const tabsBar = document.querySelector('.tabs');
+  if (tabsBar) tabsBar.style.display = (name === 'home') ? 'none' : 'flex';
 }
 
 // ══════════════════════════════════════════════
@@ -4274,7 +4296,7 @@ async function renderLearnerMedals() {
   const countEl = document.getElementById('lh-medals-count');
   const deltaEl = document.getElementById('lh-medals-delta');
   if (!zone || !countEl) return;
-  const badges = (typeof computeBadges === 'function') ? computeBadges(DB.catStats) : {};
+  const badges = (typeof computeBadges === 'function') ? computeBadges(DB.catStats, DB.qStats) : {};
   const entries = Object.values(badges);
   const current = {
     gold: entries.filter(v => v === '🥇').length,
@@ -4618,20 +4640,12 @@ function homeReturnFromQuiz() {
 }
 
 function homePracticeOther() {
-  // Learner shell: stay inside the coach surface (picker has its own back-home link).
-  // Builder shell: reveal tabs as before.
-  const tabsBar = document.querySelector('.tabs');
-  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
-  if (tabsBar) tabsBar.style.display = learner ? 'none' : '';
+  // Tab-bar visibility is now centralised in showTab() — visible on every
+  // non-home screen so the user can navigate between Coach/Family/Stats.
   showTab('coach');
 }
 
 function homeOpenStats() {
-  // Learner shell: stats panel has its own "← Back home" link, so keep tabs hidden.
-  // Builder shell: reveal tabs as before so the player can navigate freely.
-  const tabsBar = document.querySelector('.tabs');
-  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
-  if (tabsBar) tabsBar.style.display = learner ? 'none' : '';
   showTab('stats');
 }
 
@@ -4755,7 +4769,7 @@ function renderCatProgress() {
   if (!grid) return;
   const allCats = [...new Set(ALL_QUESTIONS.map(q => q.cat))].sort();
   const catStats = DB.catStats || {};
-  const badges = computeBadges(catStats);
+  const badges = computeBadges(catStats, DB.qStats);
   grid.innerHTML = allCats.map(cat => {
     const s = catStats[cat];
     const hasSeen = s && s.seen >= 5;
@@ -5730,13 +5744,14 @@ function showResults(score, total, pct, newlyEarnedBadges) {
   if (medalEl) {
     const list = (newlyEarnedBadges || []);
     if (list.length) {
-      const order = {'🥇':0,'🥈':1,'🥉':2};
+      // Show only the highest-tier upgrade — stops toast/pill fatigue when a
+      // single quiz happens to push multiple categories across thresholds.
+      const order = {'🌟':0,'🥇':1,'🥈':2,'🥉':3};
       const sorted = list.slice().sort((a, b) => (order[a.medal] || 9) - (order[b.medal] || 9));
-      const levelNames = { '🥇':'Gold', '🥈':'Silver', '🥉':'Bronze' };
-      const items = sorted.map(b =>
-        `<span class="res-new-medal-pill"><span class="res-new-medal-icon">${b.medal}</span>${escapeHtml(b.cat)} <span class="res-new-medal-tier">${levelNames[b.medal] || ''}</span></span>`
-      ).join('');
-      medalEl.innerHTML = `<div class="res-new-medal-headline">🎉 New medal${sorted.length === 1 ? '' : 's'} earned</div><div class="res-new-medal-list">${items}</div>`;
+      const top = sorted[0];
+      const levelNames = { '🌟':'Gold-Master', '🥇':'Gold', '🥈':'Silver', '🥉':'Bronze' };
+      const item = `<span class="res-new-medal-pill"><span class="res-new-medal-icon">${top.medal}</span>${escapeHtml(top.cat)} <span class="res-new-medal-tier">${levelNames[top.medal] || ''}</span></span>`;
+      medalEl.innerHTML = `<div class="res-new-medal-headline">🎉 New medal earned</div><div class="res-new-medal-list">${item}</div>`;
       medalEl.style.display = '';
     } else {
       medalEl.style.display = 'none';
@@ -6178,14 +6193,54 @@ function heroAction() {
 //  U5: CATEGORY MASTERY BADGES
 //  🥉 ≥70% with 30+ seen · 🥈 ≥80% with 30+ seen · 🥇 ≥90% with 50+ seen
 // ══════════════════════════════════════════════
-function computeBadges(catStats) {
+// Hybrid medal thresholds — a category qualifies via the absolute attempt
+// count OR a percentage of the category's unique question pool seen, whichever
+// the player hits first. Without this, 17 of 28 categories were structurally
+// locked out of gold (bank too small to ever reach 50 attempts on unique
+// questions). Coverage uses unique-seen, not attempts, so it can't be gamed
+// by re-answering the same easy question.
+//
+// Gold-Master (🌟) stays absolute-only and gated to large categories — the
+// point of master is "you put in the volume", which a 22-question category
+// can't legitimately demonstrate.
+function _categorySize(cat) {
+  if (!Array.isArray(ALL_QUESTIONS)) return 0;
+  let n = 0;
+  for (const q of ALL_QUESTIONS) { if (q && q.cat === cat) n++; }
+  return n;
+}
+function _uniqueSeenInCat(cat, qStats) {
+  if (!qStats || !Array.isArray(ALL_QUESTIONS)) return 0;
+  let n = 0;
+  for (const q of ALL_QUESTIONS) {
+    if (q && q.cat === cat && qStats[q.id] && qStats[q.id].seen > 0) n++;
+  }
+  return n;
+}
+function _qualifies(absSeen, uniqueSeen, catSize, absThreshold, coverageRatio) {
+  if (absSeen >= absThreshold) return true;
+  if (catSize <= 0 || coverageRatio <= 0) return false;
+  return uniqueSeen >= Math.ceil(catSize * coverageRatio);
+}
+function computeBadges(catStats, qStats) {
+  // Backward-compat: callers that pass only catStats still work; coverage path
+  // just becomes a no-op in that case (qStats undefined → uniqueSeen 0).
   const badges = {};
   Object.entries(catStats || {}).forEach(([cat, s]) => {
     if (!s || !s.seen) return;
     const pct = Math.round(s.correct / s.seen * 100);
-    if (pct >= 90 && s.seen >= 50) badges[cat] = '🥇';
-    else if (pct >= 80 && s.seen >= 30) badges[cat] = '🥈';
-    else if (pct >= 70 && s.seen >= 30) badges[cat] = '🥉';
+    const catSize = _categorySize(cat);
+    const uniqueSeen = qStats ? _uniqueSeenInCat(cat, qStats) : 0;
+    // Tiers checked highest-first; first match wins.
+    if (pct >= 85 && s.seen >= 150 && catSize >= 150) {
+      badges[cat] = '🌟'; // Gold-Master — absolute-only, large cats only
+    } else if (pct >= 90 && _qualifies(s.seen, uniqueSeen, catSize, 50, 0.90)) {
+      badges[cat] = '🥇';
+    } else if (pct >= 80 && _qualifies(s.seen, uniqueSeen, catSize, 30, 0.80)) {
+      badges[cat] = '🥈';
+    } else if (pct >= 70 && _qualifies(s.seen, uniqueSeen, catSize, 30, 0.80)) {
+      badges[cat] = '🥉';
+    }
   });
   return badges;
 }
@@ -6194,9 +6249,9 @@ function renderBadgeShelf() {
   const shelf = document.getElementById('badge-shelf');
   const items = document.getElementById('badge-shelf-items');
   if (!shelf || !items) return;
-  const badges = computeBadges(DB.catStats);
+  const badges = computeBadges(DB.catStats, DB.qStats);
   const entries = Object.entries(badges).sort((a,b) => {
-    const order = {'🥇':0,'🥈':1,'🥉':2};
+    const order = {'🌟':0,'🥇':1,'🥈':2,'🥉':3};
     return (order[a[1]]||9) - (order[b[1]]||9) || a[0].localeCompare(b[0]);
   });
   if (entries.length === 0) {
@@ -6210,23 +6265,32 @@ function renderBadgeShelf() {
 }
 
 // Medal rank used for asymmetric D9 display: only surface upward transitions
-// (no badge → bronze, bronze → silver, silver → gold, etc.). Downgrades stay
-// silent in both shells.
-const MEDAL_RANK = { '🥉': 1, '🥈': 2, '🥇': 3 };
+// (no badge → bronze, bronze → silver, silver → gold, gold → master).
+// Downgrades stay silent in both shells. Highest-watermark rule is enforced
+// in checkNewBadges by merging current with prev (kept badges never drop).
+const MEDAL_RANK = { '🥉': 1, '🥈': 2, '🥇': 3, '🌟': 4 };
 function checkNewBadges() {
-  const current = computeBadges(DB.catStats);
+  const current = computeBadges(DB.catStats, DB.qStats);
   const prev = DB.badges || {};
   const positive = [];
+  // Highest-watermark merge: a category never loses a medal it has earned.
+  const merged = { ...prev };
   Object.entries(current).forEach(([cat, medal]) => {
     const prevRank = MEDAL_RANK[prev[cat]] || 0;
     const curRank = MEDAL_RANK[medal] || 0;
-    if (curRank > prevRank) positive.push({ cat, medal });
+    if (curRank > prevRank) {
+      positive.push({ cat, medal });
+      merged[cat] = medal;
+    }
+    // If curRank <= prevRank, keep prev (no downgrade).
   });
-  // Save current badges
-  DB.badges = current;
+  // Persist merged state to DB and storage so the next session doesn't
+  // re-announce existing badges (the original "shaky" bug).
+  DB.badges = merged;
+  if (typeof saveData === 'function') { try { saveData(DB); } catch (e) {} }
   if (positive.length > 0) {
-    // Sort: gold first
-    const order = {'🥇':0,'🥈':1,'🥉':2};
+    // Highest tier first; cap to one toast per session to prevent fatigue.
+    const order = {'🌟':0,'🥇':1,'🥈':2,'🥉':3};
     positive.sort((a,b) => (order[a.medal]||9) - (order[b.medal]||9));
     showBadgeToast(positive[0]);
   }
@@ -6237,7 +6301,7 @@ function showBadgeToast(badge) {
   // Remove any existing toast
   const existing = document.querySelector('.badge-toast');
   if (existing) existing.remove();
-  const levelNames = {'🥇':'Gold','🥈':'Silver','🥉':'Bronze'};
+  const levelNames = {'🌟':'Gold-Master','🥇':'Gold','🥈':'Silver','🥉':'Bronze'};
   const toast = document.createElement('div');
   toast.className = 'badge-toast';
   toast.innerHTML = '<span class="badge-toast-medal">' + badge.medal + '</span>' +
@@ -6885,6 +6949,7 @@ async function loadFromFirebase() {
         _simpleUI:      remote.simpleUI         === true,
         ui_shell:       remote.ui_shell        || 'learner',
         learning_path:  remote.learning_path   || null,
+        badges:         remote.badges          || {},
       };
       if (typeof saveData === 'function') await saveData(merged);
       if (typeof DB !== 'undefined') {
@@ -7056,6 +7121,49 @@ function renderFamily(playersData) {
       '<div>' + axis.emoji + ' ' + axis.label + ' — leaderboard ranks by this metric until Sunday.</div>';
   }
 
+  // Family levels strip — richer view of the home `lh-levels-table`. Shows the
+  // dominant CEFR phase, accuracy, total questions seen, and most-played
+  // category (where seen >= 5). Sorted by CEFR band DESC then phase DESC.
+  const lvlEl = document.getElementById('family-levels-strip');
+  if (lvlEl) {
+    const bandRank = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
+    const phaseRank = { Solid: 3, Comfortable: 2, Settling: 1 };
+    const phaseRows = players.map(p => {
+      const phase = (typeof dominantBandPhase === 'function') ? dominantBandPhase(p.lvlStats) : null;
+      const seen = Object.keys(p.qStats || {}).length;
+      const cats = Object.entries(p.catStats || {})
+        .filter(([,s]) => s.seen >= 5)
+        .sort((a,b) => b[1].seen - a[1].seen);
+      const topCat = cats[0] ? cats[0][0] : null;
+      return { p, phase, seen, topCat };
+    }).sort((a, b) => {
+      const aBand = a.phase ? (bandRank[a.phase.band] || 0) : 0;
+      const bBand = b.phase ? (bandRank[b.phase.band] || 0) : 0;
+      if (bBand !== aBand) return bBand - aBand;
+      const aPhase = a.phase ? (phaseRank[a.phase.phase] || 0) : 0;
+      const bPhase = b.phase ? (phaseRank[b.phase.phase] || 0) : 0;
+      if (bPhase !== aPhase) return bPhase - aPhase;
+      const aAcc = a.phase ? a.phase.accuracy : 0;
+      const bAcc = b.phase ? b.phase.accuracy : 0;
+      return bAcc - aAcc;
+    });
+    lvlEl.innerHTML = '<div class="fls-label">Family levels</div>' + phaseRows.map(({p, phase, seen, topCat}) => {
+      const isMe = p.key === currentPlayer;
+      const name = capFirst((p.displayName || p.key).split(' ')[0]);
+      const label = phase
+        ? ((typeof dominantBandPhaseLabel === 'function') ? dominantBandPhaseLabel(phase) : (phase.phase + ' ' + phase.band))
+        : 'No data yet';
+      const accPct = phase ? Math.round(phase.accuracy * 100) : null;
+      const phaseHtml = phase
+        ? '<strong>' + escapeHtml(label) + '</strong> · ' + accPct + '% · ' + seen + ' Qs' + (topCat ? ' · ' + escapeHtml(topCat) : '')
+        : '<span style="opacity:.6;">no data yet</span>';
+      return '<div class="fls-row' + (isMe ? ' fls-you' : '') + '">' +
+        '<div class="fls-name"><span class="fls-emoji">' + (p.emoji || '👤') + '</span>' + escapeHtml(name) + (isMe ? ' (you)' : '') + '</div>' +
+        '<div class="fls-phase">' + phaseHtml + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
   if (players.length === 0) {
     list.innerHTML = '<div style="color:var(--muted);font-size:.9rem;text-align:center;padding:1rem;">No players yet — play a session to appear here!</div>';
     return;
@@ -7156,13 +7264,15 @@ function renderFamily(playersData) {
         ${bestCat ?`<span class="cat-pill best">💪 ${bestCat}</span>`:''}
         ${worstCat?`<span class="cat-pill worst">📖 ${worstCat}</span>`:''}
         ${(() => {
-          const b = computeBadges(p.catStats || {});
+          const b = computeBadges(p.catStats || {}, p.qStats || {});
           const n = Object.keys(b).length;
           if (n === 0) return '';
+          const master = Object.values(b).filter(v=>v==='🌟').length;
           const gold = Object.values(b).filter(v=>v==='🥇').length;
           const silver = Object.values(b).filter(v=>v==='🥈').length;
           const bronze = Object.values(b).filter(v=>v==='🥉').length;
           const parts = [];
+          if (master) parts.push(master+'🌟');
           if (gold) parts.push(gold+'🥇');
           if (silver) parts.push(silver+'🥈');
           if (bronze) parts.push(bronze+'🥉');
