@@ -55,6 +55,13 @@ GHA backup workflow runs daily (was weekly), captures full subcollections (was p
 ### `fsSet` refuse-player-replace (t7)
 `tools/_firestore.js` now blocks `fsSet('players/{name}', ...)` unless explicitly opted in. The 2026-05-02 contamination was a full-document replace via the play loop; while the play loop doesn't go through `_firestore.js`, future tools/ scripts could trigger the same pattern. Defense-in-depth, with `opts.allowPlayerReplace` or `ALLOW_PLAYER_REPLACE=1` for legitimate restore use cases.
 
+### Free Write CEFR rubric lives in two places (2026-05-05)
+The silent CEFR-grading prompt for Free Write has two homes:
+- **PWA path**: `worker/index.js` `sessionEndInstructions('free_write', ...)` — verbose, explicit per-criterion IELTS/CEFR rules.
+- **CC path**: `.claude/skills/free-write/SKILL.md` — terser instruction next to the schema block.
+
+Both anchor on the same gates ("grammar accuracy gates the level"; "confidence: low when sample < 3 sentences or off-topic — server-side skip"). When updating either, **update both in the same commit** — drift between them produces inconsistent lvlStats contributions depending on which surface the player used. The PWA prompt is the canonical version; if they disagree, sync the SKILL.md to match the worker.
+
 ### Unified daily streak across Quiz and Coach (Option D, 2026-05-05)
 The two surfaces stay separate (two CTAs, distinct exercise types, separate subcollections — Quiz exercises recognition/controlled form, Coach exercises pushed output / Free Write). But `lastPlayedDate`, `currentStreak`, `longestStreak` are **shared** — any practice surface counts toward the same daily streak.
 
