@@ -62,7 +62,7 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 `assessment`: silent CEFR grade folded into `lvlStats` — never mentioned in chat. Grade *production* per IELTS/CEFR (grammar gates level). `error_count` = sentences with ≥1 impeding/L1-calque error. `confidence: "low"` if <3 sentences or off-topic (fold skipped). Tool caps at 20 sentences/session.
 
-**3b. Update coach_notes** only on durable signals (multi-turn pattern, clear improvement, engagement shift). Preview, approve, then `tools/update_coach_notes.js`. Promotion rule (4+ sessions + intervention) in `coach-notes-schema.md` — never bypass.
+**3b. Update coach_notes** only on durable signals (multi-turn pattern, clear improvement, engagement shift). Follow the protocol in `references/coach-notes-schema.md` (preview → approve → `update_coach_notes.js`).
 
 **4. Optional follow-up offer**: if a pattern surfaced that drill would help (articles → article_drill, particles → particle_sort, tense/prep slips → error_correction), offer as a chaser. Frame as offer, not directive.
 
@@ -73,7 +73,6 @@ Session was 1–2 turns and nothing of substance emerged. Don't log empty.
 ## Forbidden
 
 - Naming a grammar rule as a label-only correction without quoting and fixing
-- Auto-writing coach_notes without preview + approval
 - Switching to `exercise-session` mid-flow without ending this one cleanly
 
 (General prohibitions live in `references/operational-rules.md`.)

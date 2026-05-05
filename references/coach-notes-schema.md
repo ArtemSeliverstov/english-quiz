@@ -67,8 +67,9 @@ Possible values:
 
 ## Update protocol
 
-After any session that includes stats analysis or an exercise session, propose 0-4
-updates to `coach_notes` for the affected player. Categories:
+Used by `free-write`, `exercise-session`, `stats-review`, and any other skill that proposes `coach_notes` changes.
+
+After any session, propose 0–4 updates to `coach_notes` for the affected player. Categories:
 
 1. **New `weak_patterns` entry** — pattern confirmed across this + at least 1 prior session
 2. **New `strong_patterns` entry** — same threshold
@@ -76,11 +77,13 @@ updates to `coach_notes` for the affected player. Categories:
 4. **`recent_observations` entry** — single-session note worth remembering for next time
 5. **`stuck_questions` adjustment** — question crossed 100% error threshold or recovered
 
-**Always** wait for user confirmation before writing. Show a proposed-changes table.
+Then:
 
-**Never** silently update `weak_patterns` or `strong_patterns` from a single session —
-those are stable. Use `recent_observations` for one-session insights; promote to patterns
-only after a second session confirms.
+1. **Preview** the patch in human-readable prose, not JSON. For arrays, list the new entries with one line of context each.
+2. **Wait for explicit user confirmation.** Don't auto-write.
+3. **Persist** via `node tools/update_coach_notes.js {player} <patch.json>`. The script handles dedup, FIFO cap (10 for `recent_observations`), and `last_updated`. See `tools/README.md`.
+
+**Forbidden across skills**: auto-writing without preview, promoting single-turn observations to `weak_patterns` / `strong_patterns` (those need 2+ sessions), bypassing the promotion rule below.
 
 ---
 

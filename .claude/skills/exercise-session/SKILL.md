@@ -28,7 +28,7 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **5. Get player feedback.** One short sentence for `recent_observations`.
 
-**6. Persist.** Preview the planned writes in human-readable form first — date, type, topic, score, errors as prose, observation as a quoted sentence. Never show raw JSON at preview.
+**6. Persist.** Preview shows date, type, topic, score, errors as prose, observation as a quoted sentence. coach_notes follows the protocol in `references/coach-notes-schema.md`.
 
 Build the rich shape per `references/firestore-schema.md`: `source: "cc_session"` and one `items[]` entry per scored item. CC-specific capture:
 

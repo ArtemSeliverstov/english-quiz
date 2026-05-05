@@ -27,11 +27,9 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **3. Synthesise patterns.** New weak patterns confirmed across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition vs production gaps (high MCQ, low input).
 
-**4. Propose coach_notes updates.** Per player, 0–4 updates: new `weak_patterns`, new `strong_patterns`, `engagement_notes` revision, `recent_observations` entry, `stuck_questions` adjustment. Show as a table. Wait for confirmation per player.
+**4. Propose coach_notes updates.** Per player, 0–4 updates as a table. Follow the protocol in `references/coach-notes-schema.md` (preview → approve per player → `update_coach_notes.js`).
 
 **5. Action recommendations.** Don't apply here — this skill produces, the user triggers `quiz-development` or `exercise-session` to act.
-
-**6. Persist confirmed updates** via `tools/update_coach_notes.js` with a patch JSON. The script handles dedup, FIFO cap, and `last_updated`. See `tools/README.md`.
 
 ## Speculation marking — mandatory
 
@@ -67,7 +65,6 @@ Never write `[speculation]` into `weak_patterns`. Only [data] or [inferred] qual
 
 ## Forbidden
 
-- Auto-applying coach_notes without confirmation
 - Bringing up sensitive observations (mental health, personal crises) unprompted
 - Including stats numbers in proposed memory updates (those live in stats fields)
 - Promoting a single-session observation to `weak_patterns` (need 2+ sessions, plus the 4-sessions+intervention rule for profile graduation)
