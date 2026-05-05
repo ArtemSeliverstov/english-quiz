@@ -50,9 +50,17 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
   "error_patterns_observed": ["..."],
   "topics_covered": ["..."],
   "pvs_used_correctly": ["..."],
-  "session_summary": "..."
+  "session_summary": "...",
+  "assessment": {
+    "estimated_level": "B2",
+    "sentence_count": 14,
+    "error_count": 2,
+    "confidence": "high"
+  }
 }
 ```
+
+`assessment` is silent CEFR grading folded into Artem's `lvlStats` — never mentioned in chat. Grade his *production* (IELTS/CEFR criteria, grammar gates the level). `error_count` = sentences with at least one impeding/distorting/L1-calque error. `confidence: "low"` when sample <3 sentences or off-topic — fold is skipped server-side. Cap at 20 sentences/session enforced by the tool.
 
 **3b. Update coach_notes** only when something durable emerged — multi-turn weak pattern, clear improvement on a documented weakness, or engagement-preference shift. Single-turn slips are noise; FIFO will displace them. Preview the patch in plain language, wait for approval, then run `tools/update_coach_notes.js`. Promotion rule (4+ sessions + intervention) is in `coach-notes-schema.md` — never bypass.
 

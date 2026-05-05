@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260505-t1">
+  <meta name="app-version" content="v20260505-t1r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1010,7 +1010,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -6812,6 +6812,7 @@ function buildPayload(db) {
       return s;
     }),
     aggregated_exercises: db.aggregated_exercises || {},
+    aggregated_coach_sessions: db.aggregated_coach_sessions || {},
   };
 }
 
@@ -6878,6 +6879,7 @@ async function loadFromFirebase() {
         longestStreak:  remote.longestStreak    || 0,
         lastPlayedDate: remote.lastPlayedDate   || null,
         aggregated_exercises: remote.aggregated_exercises || {},
+        aggregated_coach_sessions: remote.aggregated_coach_sessions || {},
         createdAt:      remote.createdAt        || new Date().toISOString(),
         _simpleUI:      remote.simpleUI         === true,
         ui_shell:       remote.ui_shell        || 'builder',
@@ -8218,6 +8220,10 @@ async function coachFreeWriteEnd() {
         note: 'Free Write — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (turns: ' + coachState.fwTurnCount + ')',
       });
     }
+    // Silent CEFR fold — feeds the player's lvlStats / totals so Free Write
+    // contributes to proficiency phase, never shown to the learner.
+    // Schema + safeguards in references/firestore-schema.md.
+    coachFoldFreeWriteAssessment(result.session_metadata && result.session_metadata.assessment, coachState.fwSessionId);
   } catch (e) {
     coachAppendMessage('assistant', '<em>Session saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
   }
@@ -9120,6 +9126,33 @@ async function coachUpsertSession({ partial = true } = {}) {
     // Final-save failure (partial:false) is surfaced by the caller.
     if (!partial) throw e;
   }
+}
+
+// Silent fold of a Free Write `assessment` block into player aggregates.
+// Idempotent via the `aggregated_coach_sessions` map on the player root —
+// session_id is the key, sentences-folded the value. Per-session sentence
+// cap of 20 prevents one long Free Write from dominating lvlStats. Skips
+// when confidence is low or sample < 3 sentences. See firestore-schema.md.
+function coachFoldFreeWriteAssessment(a, sessionId) {
+  if (!a || !sessionId) return;
+  if (a.confidence !== 'high') return;
+  const lvl = a.estimated_level;
+  if (!/^[ABC][12]$/.test(String(lvl || ''))) return;
+  const rawSeen = Number(a.sentence_count) || 0;
+  if (rawSeen < 3) return;
+  const seen = Math.min(rawSeen, 20);
+  const errors = Math.max(0, Math.min(Number(a.error_count) || 0, seen));
+  const correct = seen - errors;
+  DB.aggregated_coach_sessions = DB.aggregated_coach_sessions || {};
+  if (DB.aggregated_coach_sessions[sessionId]) return; // already folded
+  DB.lvlStats = DB.lvlStats || {};
+  DB.lvlStats[lvl] = DB.lvlStats[lvl] || { seen: 0, correct: 0 };
+  DB.lvlStats[lvl].seen += seen;
+  DB.lvlStats[lvl].correct += correct;
+  DB.totalAnswered = (DB.totalAnswered || 0) + seen;
+  DB.totalCorrect = (DB.totalCorrect || 0) + correct;
+  DB.aggregated_coach_sessions[sessionId] = seen;
+  saveData(DB); // triggers debounced sync to player root
 }
 
 // Particle-sort answer-leak guard: the authored `meaning` field starts with

@@ -311,16 +311,32 @@ function sessionEndInstructions(mode, ctx) {
     // progress/phrasal-verbs-tracker*.md. Artem (B1–C1) and Anna (A1–B1) have
     // active trackers; Nicole and Ernest will get one when their PV focus
     // crystallises. Cheap to emit for all players — empty array if none qualify.
+    //
+    // assessment.* is silent CEFR grading folded into player lvlStats — never
+    // shown to the player, only used for proficiency stats. See
+    // references/firestore-schema.md (aggregated_coach_sessions).
     return `Append a JSON block at the very end of your message wrapped in <session_meta>...</session_meta> tags containing:
 {
   "error_patterns_observed": ["pattern_id_1", ...],
   "topics_covered": ["topic_1", ...],
   "pvs_used_correctly": ["pv_string_1", ...],
-  "session_summary": "Two-sentence recap."
+  "session_summary": "Two-sentence recap.",
+  "assessment": {
+    "estimated_level": "B2",
+    "sentence_count": 14,
+    "error_count": 2,
+    "confidence": "high"
+  }
 }
 Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".
 
-For "pvs_used_correctly": list any phrasal verbs the learner produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "look for", "find out", "pick up", "follow up on", "get across". Empty array if none qualify.`;
+For "pvs_used_correctly": list any phrasal verbs the learner produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "look for", "find out", "pick up", "follow up on", "get across". Empty array if none qualify.
+
+For "assessment" (silent CEFR grade — never mention to the learner):
+- estimated_level: A1 | A2 | B1 | B2 | C1 | C2. Grade the learner's *production* in this session against IELTS/CEFR writing rubrics (task achievement + coherence + lexical resource + grammatical range & accuracy). The grammar criterion gates the level.
+- sentence_count: integer count of the learner's sentences only (not yours).
+- error_count: integer count of *sentences* with at least one error that impedes meaning, distorts grammar, or reflects an L1 calque. Stylistic preferences don't count. Cap at sentence_count.
+- confidence: "high" if the sample is meaningful and unambiguous; "low" if too short (<3 sentences), off-topic, or you're guessing. Low-confidence assessments are silently dropped from stats.`;
   }
   return `Append a JSON block at the very end wrapped in <session_meta>...</session_meta>:
 {

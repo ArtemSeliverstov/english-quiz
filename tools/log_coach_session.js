@@ -46,7 +46,9 @@
  */
 
 const fs = require('fs');
-const { fsSet, PLAYERS, bumpDailyStreakRemote } = require('./_firestore');
+const {
+  fsSet, fsGet, fsPatch, docToPlain, PLAYERS, bumpDailyStreakRemote,
+} = require('./_firestore');
 
 const VALID_MODES = ['free_write', 'cc_session', 'escalate'];
 
@@ -100,6 +102,48 @@ function validate(session, player) {
   if (session.pvs_used_correctly && !Array.isArray(session.pvs_used_correctly)) {
     throw new Error('pvs_used_correctly must be an array if provided');
   }
+  if (session.assessment != null) {
+    const a = session.assessment;
+    if (typeof a !== 'object' || Array.isArray(a)) {
+      throw new Error('assessment must be an object if provided');
+    }
+    if (a.estimated_level && !/^[ABC][12]$/.test(String(a.estimated_level))) {
+      throw new Error('assessment.estimated_level must be A1|A2|B1|B2|C1|C2');
+    }
+    if (a.confidence && !['high', 'low'].includes(a.confidence)) {
+      throw new Error('assessment.confidence must be "high" or "low"');
+    }
+  }
+}
+
+/**
+ * Silent CEFR fold for Free Write — mirrors the PWA `coachFoldFreeWriteAssessment`
+ * logic. Idempotent via the `aggregated_coach_sessions` map on the player root.
+ * Skips low-confidence assessments and tiny samples; caps at 20 sentences/session
+ * so one long Free Write doesn't dominate the player's lvlStats.
+ */
+async function applyAssessmentFold(player, sessionId, assessment) {
+  if (!assessment || assessment.confidence !== 'high') return { applied: false, reason: 'low confidence or absent' };
+  const lvl = assessment.estimated_level;
+  if (!/^[ABC][12]$/.test(String(lvl || ''))) return { applied: false, reason: 'invalid level' };
+  const rawSeen = Number(assessment.sentence_count) || 0;
+  if (rawSeen < 3) return { applied: false, reason: 'sentence_count < 3' };
+  const seen = Math.min(rawSeen, 20);
+  const errors = Math.max(0, Math.min(Number(assessment.error_count) || 0, seen));
+  const correct = seen - errors;
+  const root = docToPlain(await fsGet(`players/${player}`)) || {};
+  const map = root.aggregated_coach_sessions || {};
+  if (map[sessionId]) return { applied: false, reason: 'already folded' };
+  const lvlStats = root.lvlStats || {};
+  const cur = lvlStats[lvl] || { seen: 0, correct: 0 };
+  lvlStats[lvl] = { seen: cur.seen + seen, correct: cur.correct + correct };
+  const totalAnswered = (root.totalAnswered || 0) + seen;
+  const totalCorrect = (root.totalCorrect || 0) + correct;
+  const newMap = { ...map, [sessionId]: seen };
+  await fsPatch(`players/${player}`,
+    ['lvlStats', 'totalAnswered', 'totalCorrect', 'aggregated_coach_sessions'],
+    { lvlStats, totalAnswered, totalCorrect, aggregated_coach_sessions: newMap });
+  return { applied: true, level: lvl, sentences_folded: seen, correct };
 }
 
 async function main() {
@@ -133,6 +177,7 @@ async function main() {
     created: session.created || now,
     ended: session.ended || now,
     source: 'cc_session', // distinguishes from PWA-driven Free Write (which omits this)
+    assessment: session.assessment || null, // silent CEFR grade — see firestore-schema.md
   };
 
   const path = `players/${args.player}/coach_sessions/${session_id}`;
@@ -156,7 +201,22 @@ async function main() {
     console.warn(`[log_coach_session] WARNING: streak bump failed: ${e.message}`);
   }
 
-  console.log(JSON.stringify({ ok: true, path, session_id, streak_bumped: streakBumped }, null, 2));
+  // Silent CEFR grade fold (Free Write only). Idempotent via aggregated_coach_sessions
+  // map on the player root. Low-confidence assessments are skipped silently.
+  let assessmentFold = { applied: false };
+  if (session.mode === 'free_write' && session.assessment) {
+    try {
+      assessmentFold = await applyAssessmentFold(args.player, session_id, session.assessment);
+    } catch (e) {
+      console.warn(`[log_coach_session] WARNING: assessment fold failed: ${e.message}`);
+    }
+  }
+
+  console.log(JSON.stringify({
+    ok: true, path, session_id,
+    streak_bumped: streakBumped,
+    assessment_fold: assessmentFold,
+  }, null, 2));
 }
 
 main().catch(e => {
