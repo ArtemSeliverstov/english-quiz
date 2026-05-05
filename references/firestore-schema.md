@@ -20,12 +20,14 @@ One document per family member. Player keys are lowercase: `artem`, `anna`, `nic
 | `name` | string | bootstrap | PWA, tools | Display name |
 | `pin` | string | PWA (Change PIN) | PWA | 4-digit PIN |
 | `emoji` | string | bootstrap | PWA | Avatar emoji |
-| `qStats` | map | PWA play loop | PWA, stats-review, weak-mode selector | Per-question stats: `{qid: {seen, correct, lastSeen, lastWrong, consec, wrong}}` |
-| `catStats` | map | PWA play loop | PWA, stats-review | Per-category rollup |
-| `lvlStats` | map | PWA play loop | PWA, stats-review | Per-level rollup |
+| `qStats` | map | PWA play loop, Coach tab `coachUpsertSession`, `tools/log_exercise.js`, `tools/backfill_coach_to_quiz_stats.js` | PWA, stats-review, weak-mode selector | Per-question stats: `{qid: {seen, correct, lastSeen, lastWrong, consec, wrong}}`. Coach surfaces fold per-item activity here (qid = `items[].exercise_id` from the subcollection row). |
+| `catStats` | map | PWA play loop, Coach tab, `log_exercise.js`, `backfill_coach_to_quiz_stats.js` | PWA, stats-review | Per-category rollup. Coach surfaces attribute to `exercise.categories[0]` (primary cat) only, to keep per-cat sums aligned with `totalAnswered` (matches the quiz invariant of one cat per question). |
+| `lvlStats` | map | PWA play loop, Coach tab, `log_exercise.js`, `backfill_coach_to_quiz_stats.js` | PWA, stats-review | Per-level rollup. Coach surfaces use `exercise.level` from the subcollection row. |
+| `aggregated_exercises` | map | Coach tab, `log_exercise.js`, `backfill_coach_to_quiz_stats.js` | same writers (idempotency) | `{ "<exerciseTs>": <items_through_count> }`. Tracks which subcollection rows have already been folded into `qStats / catStats / lvlStats / totals`, so re-runs of the backfill (or coach upserts on resumed sessions) don't double-count. Sentinel `-1` for sparse-legacy session-folded rows. Lives on the player root because the `exercises` subcollection is write-once (no per-row marker possible). |
 | `recentSessions` | array | PWA play loop | PWA, stats-review | Last 10 quiz sessions (FIFO) |
-| `totalAnswered`, `totalCorrect`, `totalSessions`, `currentStreak`, `longestStreak` | number | PWA play loop | PWA stats card | Headline aggregates |
-| `lastPlayedDate` | string | PWA play loop | PWA | YYYY-MM-DD of last session |
+| `totalAnswered`, `totalCorrect` | number | PWA play loop, Coach tab, `log_exercise.js`, `backfill_coach_to_quiz_stats.js` | PWA stats card, learner home, family tab | Unified across surfaces — Coach tab and CC log scripts now fold per-item activity into these via the `aggregated_exercises` dedup map. May contain fractional `totalCorrect` from multi-blank partial credit (matches the quiz `recordMultiAnswer` convention where `qStats.correct` is also fractional). |
+| `totalSessions` | number | PWA play loop only | PWA stats card | Counts **completed** Quiz sessions (FIFO via `recentSessions`). Coach Tab activity is per-item, not session-counted here. |
+| `currentStreak`, `longestStreak`, `lastPlayedDate` | number / string | PWA play loop, Coach tab (`coachUpsertSession` / `coachWriteSessionLogStandalone`), `tools/log_exercise.js`, `tools/log_coach_session.js` | PWA, learner home | **Unified daily-streak fields — every practice surface bumps them.** Idempotent first-of-day rule (see `bumpDailyStreak` in index.html / `bumpDailyStreakRemote` in `tools/_firestore.js`). Rationale in `design-decisions.md` (Option D: one streak across surfaces). |
 | `learning_path` | map | PWA promotion logic | PWA, learner shell | Active categories, mastery, level cap |
 | `ui_shell` | string | PWA settings, bootstrap | PWA | `learner` \| `builder` |
 | `coach_notes` | map | `tools/update_coach_notes.js` only | exercise-session, stats-review, free-write skills | Dynamic learner observations. See `coach-notes-schema.md`. |

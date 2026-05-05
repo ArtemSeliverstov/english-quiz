@@ -3,7 +3,7 @@
 A1–B1 PV inventory sorted for Anna's daily-conversational use. Russian L1, B2 official level but tracker scope is the foundational A1–B1 layer she actually reaches for in family life, home, padel, neighbours, shopping. No business register.
 
 **Baseline source**: `references/family-profiles.md` (Anna section) + Cambridge EVP A1–B1 list + 2026-04-30 stats-review weak_patterns
-**Last refresh**: 2026-05-03 — first stats refresh. Anna has touched 11 PV questions out of 276 in the bank (4% engagement). Most are n=1 (single attempt), insufficient for confident status — flagged ⚪ rather than promoted. One chronic surfaced: *come across* (B2, 0/3 = 100% wrong) — out of A1–B1 scope here but logged in Artem's tracker. See Stats observations below.
+**Last refresh**: 2026-05-05 — added 8 London-Brit-Bahrain expat-speech PVs (catch up, pop in/out/round/over, drop off, top up at ★★★★★; chill out, crack on, get on with, head off/out/back at ★★★★) as 📅 planned rows. The B2-tilted half of the source list (knock off, wrap up, kick off, run by, push back, pack in/up, wind up) was excluded per this tracker's A1–B1 scope. Prior refresh 2026-05-03: Anna had touched 11 PV questions out of 276 (4%). Most are n=1, insufficient for confident status — flagged ⚪ rather than promoted. One chronic surfaced: *come across* (B2, 0/3 = 100% wrong) — out of A1–B1 scope here but logged in Artem's tracker. See Stats observations below.
 **Methodology**: see [phrasal-verbs-tracker-artem.md](phrasal-verbs-tracker-artem.md) for full status legend, frequency legend, 🏆 cold-production rule, particle meaning map, and refresh protocol. Run `node tools/pv_cold_streak.js anna` to compute current streaks.
 
 ---
@@ -57,8 +57,10 @@ Sort: Freq DESC then alphabetical. Status all "—" until next stats-review pull
 
 | PV | Meaning | Lvl | Freq | Quiz | Status | Notes |
 |---|---|---|---|---|---|---|
+| catch up | meet socially / restore progress | B1 | ★★★★★ | ✗ | 📅 | "catch up with Sue"; calls + kids + news |
 | come back | return | A2 | ★★★★★ | ? | — | foundational |
 | come in | enter | A2 | ★★★★★ | ? | — | "come in!" greeting |
+| drop off | set down / fall asleep | B1 | ★★★★★ | ✗ | 📅 | "drop the kids off at school"; school run register |
 | find out | discover | B1 | ★★★★★ | ? | — | "I'll find out" |
 | get back | return | A2 | ★★★★★ | ? | — | "when did you get back?" |
 | get in | enter (vehicle/place) | A2 | ★★★★★ | ? | — | "get in the car" |
@@ -72,11 +74,13 @@ Sort: Freq DESC then alphabetical. Status all "—" until next stats-review pull
 | look at | examine | A2 | ★★★★★ | ? | — | |
 | look for | seek | A2 | ★★★★★ | ? | — | "I'm looking for X" — pair-confusion with look after |
 | pick up | collect / lift | B1 | ★★★★★ | ? | — | "pick up the kids", "pick up groceries" |
+| pop in / pop out / pop round / pop over | visit briefly | A2 | ★★★★★ | ✗ | 📅 | neighbours, errands — replaces "go briefly to" |
 | put on | wear / apply | A2 | ★★★★★ | ? | — | clothes/makeup |
 | sit down | take a seat | A1 | ★★★★★ | ? | — | foundational |
 | stand up | rise to feet | A1 | ★★★★★ | ? | — | foundational |
 | take off | remove (clothes) | A2 | ★★★★★ | ? | — | |
 | take out | remove / take away | A2 | ★★★★★ | ? | — | "take out the trash" |
+| top up | refill / add credit | B1 | ★★★★★ | ✗ | 📅 | Batelco credit, kids' lunch money, petrol |
 | turn off | switch off | A2 | ★★★★★ | ? | — | devices, AC |
 | turn on | activate | A1 | ★★★★★ | ✓ | ⚪ | devices. n=1 right (pv_b02). |
 | wake up | stop sleeping | A2 | ★★★★★ | ? | — | |
@@ -84,14 +88,18 @@ Sort: Freq DESC then alphabetical. Status all "—" until next stats-review pull
 | call back | return a call | B1 | ★★★★ | ? | — | |
 | check in | arrive at hotel/flight | B1 | ★★★★ | ? | — | travel |
 | check out | leave hotel / examine | B1 | ★★★★ | ? | — | travel + shopping |
+| chill out | relax | B1 | ★★★★ | ✗ | 📅 | weekend / family register |
 | clean up | tidy | B1 | ★★★★ | ? | — | family/home |
 | come from | originate | A2 | ★★★★ | ? | — | small talk |
 | come on | encouragement | A2 | ★★★★ | ? | — | "come on!" |
+| crack on | get on with it | B1 | ★★★★ | ✗ | 📅 | "let's crack on" — chores / homework prompt |
+| get on with | continue / have a relationship with | B1 | ★★★★ | ✗ | 📅 | "get on with the cleaning"; "get on with the neighbours" |
 | get over | recover from | B1 | ★★★★ | ✓ | ⚪ | illness, break-up. n=1 right (gt05). |
 | give back | return (an object) | A2 | ★★★★ | ? | — | |
 | give up | stop trying | B1 | ★★★★ | ? | — | "don't give up" |
 | go away | leave | A2 | ★★★★ | ? | — | |
 | grow up | mature | A2 | ★★★★ | ? | — | "where did you grow up?" |
+| head off / head out / head back | depart / leave | B1 | ★★★★ | ✗ | 📅 | school run, errands ("heading off to Lulu") |
 | hold on | wait | B1 | ★★★★ | ? | — | "hold on a sec" |
 | log in / log on | authenticate | A2 | ★★★★ | ? | — | tech daily |
 | look forward to | anticipate | B1 | ★★★★ | ? | — | "looking forward to it" — Anna prep-trap |
@@ -128,7 +136,7 @@ Sort: Freq DESC then alphabetical. Status all "—" until next stats-review pull
 | turn around | reverse direction | A2 | ★★★ | ? | — | |
 | turn up | volume / arrive | B1 | ★★★ | ? | — | "turn it up" |
 
-**Counts**: 24 ★★★★★ · 27 ★★★★ · 18 ★★★ · **69 PVs total**
+**Counts**: 28 ★★★★★ · 32 ★★★★ · 18 ★★★ · **78 PVs total**
 
 ---
 

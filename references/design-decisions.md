@@ -55,6 +55,25 @@ GHA backup workflow runs daily (was weekly), captures full subcollections (was p
 ### `fsSet` refuse-player-replace (t7)
 `tools/_firestore.js` now blocks `fsSet('players/{name}', ...)` unless explicitly opted in. The 2026-05-02 contamination was a full-document replace via the play loop; while the play loop doesn't go through `_firestore.js`, future tools/ scripts could trigger the same pattern. Defense-in-depth, with `opts.allowPlayerReplace` or `ALLOW_PLAYER_REPLACE=1` for legitimate restore use cases.
 
+### Unified daily streak across Quiz and Coach (Option D, 2026-05-05)
+The two surfaces stay separate (two CTAs, distinct exercise types, separate subcollections — Quiz exercises recognition/controlled form, Coach exercises pushed output / Free Write). But `lastPlayedDate`, `currentStreak`, `longestStreak` are **shared** — any practice surface counts toward the same daily streak.
+
+Triggered by a stats-review gap: Anna had 12 Coach-tab drills over three days but her player-doc `lastPlayedDate` showed her dormant 14 days. Earlier-session stats reviews missed her entirely.
+
+Two corrections at once:
+1. **All practice writers bump the streak.** `bumpDailyStreak(DB)` (idempotent, first-of-day) added to `coachUpsertSession` and `coachWriteSessionLogStandalone` in index.html; `bumpDailyStreakRemote(player)` added to `tools/_firestore.js` and called from `log_exercise.js` + `log_coach_session.js`.
+2. **Per-surface aggregates stay split.** `qStats / catStats / lvlStats / totalAnswered / totalCorrect / totalSessions / recentSessions` remain quiz-only — Coach activity has its own ledger in the `exercises` subcollection. Only the *habit signal* unifies; the *diagnostic signals* stay surface-specific.
+
+Rationale (web-researched):
+- **Pedagogy (Krashen / Swain)**: receptive drilling and pushed free production are distinct cognitive functions and should be visible separately for diagnostics. → keep two CTAs, keep per-surface stats.
+- **Gamification research (Decision Lab, *Journal of Consumer Research*)**: multiple parallel streaks correlate with fatigue, FOMO, and abandonment when one breaks. Loss aversion makes a broken streak more likely to end engagement than zero streak ever was. → unify the streak.
+- **App-design convergence (Duolingo, Busuu, ELSA)**: dominant pattern is "one streak (any practice counts) + per-skill dashboard for diagnostics." Both ELSA's per-dimension scores and Duolingo's any-lesson-counts streak point this way.
+
+Rejected alternatives:
+- *A. Doc-only fix*: just mark `lastPlayedDate` quiz-only and forbid using it as activity gate. Leaves Anna's PWA home lying about her practice. UX cost.
+- *B. Add `lastCoachDate`*: separate coach-side date field, no streak credit. Halfway: the home screen would show two stale-looking dates and learners with Coach-only activity get zero streak motivation.
+- *C. Per-track streaks*: separate `coachStreak` / `quizStreak`. Exactly the multi-streak anti-pattern the gamification literature warns against; doubles the streak-logic surface area without diagnostic benefit.
+
 ---
 
 ## Pedagogy

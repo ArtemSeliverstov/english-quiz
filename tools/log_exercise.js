@@ -19,7 +19,10 @@
  */
 
 const fs = require('fs');
-const { fsSet, PLAYERS } = require('./_firestore');
+const {
+  fsSet, fsGet, fsPatch, docToPlain, PLAYERS, bumpDailyStreakRemote,
+  aggregateExerciseDelta, applyDeltaToStats,
+} = require('./_firestore');
 
 const VALID_EXERCISES = [
   'translation', 'free_write', 'error_correction', 'transform',
@@ -165,6 +168,52 @@ async function main() {
   const path = `players/${args.player}/exercises/${ts}`;
   await fsSet(path, exercise);
 
+  // Unified daily streak — Coach/CC exercise activity credits the same streak
+  // as Quiz play (Option D, see references/design-decisions.md). Idempotent.
+  let streakBumped = false;
+  try {
+    streakBumped = await bumpDailyStreakRemote(args.player);
+  } catch (e) {
+    console.warn(`[log_exercise] WARNING: streak bump failed: ${e.message}`);
+  }
+
+  // Cross-surface stats aggregation — fold this exercise's items into the player
+  // root's `qStats / catStats / lvlStats / totals` so proficiency metrics see
+  // Coach/CC activity, not just Quiz. Tracked idempotently via the
+  // `aggregated_exercises` map on the player doc; this exercise is brand-new
+  // so we always fold from index 0. See `references/firestore-schema.md`.
+  let aggregated = { items_folded: 0 };
+  try {
+    const rootDoc = await fsGet(`players/${args.player}`);
+    const root = rootDoc ? docToPlain(rootDoc) : {};
+    const { delta, next_through, applied } = aggregateExerciseDelta(exercise, 0);
+    if (applied > 0) {
+      const snap = {
+        qStats: root.qStats || {},
+        catStats: root.catStats || {},
+        lvlStats: root.lvlStats || {},
+        totalAnswered: root.totalAnswered || 0,
+        totalCorrect: root.totalCorrect || 0,
+      };
+      applyDeltaToStats(snap, delta);
+      const aggMap = { ...(root.aggregated_exercises || {}) };
+      aggMap[ts] = next_through;
+      await fsPatch(`players/${args.player}`,
+        ['qStats', 'catStats', 'lvlStats', 'totalAnswered', 'totalCorrect', 'aggregated_exercises'],
+        {
+          qStats: snap.qStats,
+          catStats: snap.catStats,
+          lvlStats: snap.lvlStats,
+          totalAnswered: snap.totalAnswered,
+          totalCorrect: snap.totalCorrect,
+          aggregated_exercises: aggMap,
+        });
+      aggregated = { items_folded: applied };
+    }
+  } catch (e) {
+    console.warn(`[log_exercise] WARNING: stats aggregation failed: ${e.message}`);
+  }
+
   console.log(JSON.stringify({
     written: path,
     timestamp: ts,
@@ -172,6 +221,8 @@ async function main() {
     rich: Array.isArray(exercise.items),
     tta_stats: exercise.tta_stats || null,
     auto_suspected: exercise.auto_suspected ?? null,
+    streak_bumped: streakBumped,
+    items_aggregated: aggregated.items_folded,
   }, null, 2));
 }
 

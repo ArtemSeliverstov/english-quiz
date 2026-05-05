@@ -146,6 +146,151 @@ async function fsList(collectionPath, options = {}) {
   });
 }
 
+/**
+ * Idempotent first-of-day streak bump on a player root doc. Mirror of
+ * `bumpDailyStreak(DB)` in index.html — any practice surface (Quiz, Coach,
+ * CC log scripts) credits the same unified daily streak. See
+ * `references/design-decisions.md` for the rationale (Option D).
+ *
+ * Reads the current `lastPlayedDate` / `currentStreak` / `longestStreak`,
+ * applies the same yesterday-or-reset rule the PWA uses, and PATCHes only
+ * those three fields. No-op when `lastPlayedDate` already matches today (UTC).
+ *
+ * Returns true if a write was performed, false if it was a no-op.
+ */
+async function bumpDailyStreakRemote(player) {
+  const path = `players/${player}`;
+  const doc = await fsGet(path);
+  const cur = doc ? docToPlain(doc) : {};
+  const today = new Date().toISOString().slice(0, 10);
+  if (cur.lastPlayedDate === today) return false;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const nextStreak = (cur.lastPlayedDate === yesterday) ? ((cur.currentStreak || 0) + 1) : 1;
+  const longest = Math.max(cur.longestStreak || 0, nextStreak);
+  await fsPatch(path, ['lastPlayedDate', 'currentStreak', 'longestStreak'], {
+    lastPlayedDate: today,
+    currentStreak: nextStreak,
+    longestStreak: longest,
+  });
+  return true;
+}
+
+/**
+ * Pure aggregation helper. Given an exercise doc from `players/{name}/exercises/{ts}`,
+ * returns the deltas to apply to the player root doc's `qStats / catStats / lvlStats /
+ * totalAnswered / totalCorrect`, plus a `next_through` value the caller stores in the
+ * player doc's `aggregated_exercises` map so re-runs don't double-count.
+ *
+ * Idempotency lives on the **player root doc**, not the exercise doc — Firestore rules
+ * mark the `exercises` subcollection as write-once (`allow update: if false`), so we
+ * can't stamp markers on individual exercise rows. The map shape:
+ *
+ *   players/{name}.aggregated_exercises = { "<exerciseId>": <items_through_count> }
+ *
+ * For rich rows (items[]): `<items_through_count>` = number of items folded so far.
+ *   Re-runs fold items[through..end] and update the map to items.length.
+ * For sparse rows (no items[]): we use the sentinel value `-1` to mean
+ *   "session-level totals folded once, never again".
+ *
+ * Per-item rules:
+ *   - lvlStats[level] += 1; totals += 1; if item.exercise_id → qStats[id] += 1.
+ *   - catStats: only the *primary* category (`exercise.categories[0]`) gets the +1,
+ *     so per-cat seen sums stay aligned with totals (matches the quiz invariant where
+ *     each question has one cat).
+ *   - Sparse rows with multiple categories: catStats skipped.
+ *   - Items missing a boolean `correct` field: skipped silently.
+ *
+ * Returns: { delta, next_through, applied }
+ *   delta:        { qStats, catStats, lvlStats, totalAnswered, totalCorrect }
+ *   next_through: int — value to store in the aggregated_exercises map (or -1 sentinel)
+ *   applied:      number of items (or session-total) folded this call. 0 = no change.
+ */
+function aggregateExerciseDelta(exercise, alreadyThrough = 0) {
+  const delta = { qStats: {}, catStats: {}, lvlStats: {}, totalAnswered: 0, totalCorrect: 0 };
+  if (!exercise || typeof exercise !== 'object') return { delta, next_through: alreadyThrough, applied: 0 };
+
+  const lvl = exercise.level;
+  const cats = Array.isArray(exercise.categories) ? exercise.categories.filter(Boolean) : [];
+  const primaryCat = cats[0] || null;
+  const items = Array.isArray(exercise.items) ? exercise.items : null;
+
+  if (items) {
+    const startIdx = Number(alreadyThrough) || 0;
+    let applied = 0;
+    for (let i = startIdx; i < items.length; i++) {
+      const it = items[i];
+      if (!it || typeof it.correct !== 'boolean') continue;
+      const ok = it.correct;
+      delta.totalAnswered += 1;
+      if (ok) delta.totalCorrect += 1;
+      if (lvl) {
+        delta.lvlStats[lvl] = delta.lvlStats[lvl] || { seen: 0, correct: 0 };
+        delta.lvlStats[lvl].seen += 1;
+        if (ok) delta.lvlStats[lvl].correct += 1;
+      }
+      if (it.exercise_id) {
+        const id = it.exercise_id;
+        delta.qStats[id] = delta.qStats[id] || { seen: 0, correct: 0, wrong: 0 };
+        delta.qStats[id].seen += 1;
+        if (ok) delta.qStats[id].correct += 1; else delta.qStats[id].wrong += 1;
+      }
+      if (primaryCat) {
+        delta.catStats[primaryCat] = delta.catStats[primaryCat] || { seen: 0, correct: 0 };
+        delta.catStats[primaryCat].seen += 1;
+        if (ok) delta.catStats[primaryCat].correct += 1;
+      }
+      applied += 1;
+    }
+    return { delta, next_through: items.length, applied };
+  }
+
+  // Sparse legacy: session-level fold, once. Sentinel -1 means "done".
+  if (alreadyThrough === -1) return { delta, next_through: -1, applied: 0 };
+  const total = Number(exercise.total) || 0;
+  const correct = Number(exercise.correct) || 0;
+  if (total > 0) {
+    delta.totalAnswered = total;
+    delta.totalCorrect = correct;
+    if (lvl) delta.lvlStats[lvl] = { seen: total, correct };
+    if (cats.length === 1) delta.catStats[cats[0]] = { seen: total, correct };
+    return { delta, next_through: -1, applied: total };
+  }
+  return { delta, next_through: alreadyThrough, applied: 0 };
+}
+
+/**
+ * Apply an aggregation delta to a stats snapshot in place. Mirrors the merge
+ * semantics of the live quiz play loop's per-question writes: incremental,
+ * additive, no overwrite.
+ */
+function applyDeltaToStats(snap, delta) {
+  snap.totalAnswered = (snap.totalAnswered || 0) + (delta.totalAnswered || 0);
+  snap.totalCorrect = (snap.totalCorrect || 0) + (delta.totalCorrect || 0);
+  snap.qStats = snap.qStats || {};
+  for (const [id, d] of Object.entries(delta.qStats || {})) {
+    const cur = snap.qStats[id] || { seen: 0, correct: 0, wrong: 0 };
+    cur.seen = (cur.seen || 0) + d.seen;
+    cur.correct = (cur.correct || 0) + d.correct;
+    cur.wrong = (cur.wrong || 0) + (d.wrong || 0);
+    snap.qStats[id] = cur;
+  }
+  snap.catStats = snap.catStats || {};
+  for (const [cat, d] of Object.entries(delta.catStats || {})) {
+    const cur = snap.catStats[cat] || { seen: 0, correct: 0 };
+    cur.seen = (cur.seen || 0) + d.seen;
+    cur.correct = (cur.correct || 0) + d.correct;
+    snap.catStats[cat] = cur;
+  }
+  snap.lvlStats = snap.lvlStats || {};
+  for (const [lvl, d] of Object.entries(delta.lvlStats || {})) {
+    const cur = snap.lvlStats[lvl] || { seen: 0, correct: 0 };
+    cur.seen = (cur.seen || 0) + d.seen;
+    cur.correct = (cur.correct || 0) + d.correct;
+    snap.lvlStats[lvl] = cur;
+  }
+  return snap;
+}
+
 module.exports = {
   PROJECT_ID,
   FS_BASE,
@@ -156,5 +301,8 @@ module.exports = {
   fsGet,
   fsPatch,
   fsSet,
-  fsList
+  fsList,
+  bumpDailyStreakRemote,
+  aggregateExerciseDelta,
+  applyDeltaToStats,
 };

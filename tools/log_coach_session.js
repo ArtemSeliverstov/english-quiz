@@ -46,7 +46,7 @@
  */
 
 const fs = require('fs');
-const { fsSet, PLAYERS } = require('./_firestore');
+const { fsSet, PLAYERS, bumpDailyStreakRemote } = require('./_firestore');
 
 const VALID_MODES = ['free_write', 'cc_session', 'escalate'];
 
@@ -146,7 +146,17 @@ async function main() {
   }
 
   await fsSet(path, doc);
-  console.log(JSON.stringify({ ok: true, path, session_id }, null, 2));
+
+  // Unified daily streak — Free Write / cc_session activity credits the same
+  // streak as Quiz play (Option D, see references/design-decisions.md). Idempotent.
+  let streakBumped = false;
+  try {
+    streakBumped = await bumpDailyStreakRemote(args.player);
+  } catch (e) {
+    console.warn(`[log_coach_session] WARNING: streak bump failed: ${e.message}`);
+  }
+
+  console.log(JSON.stringify({ ok: true, path, session_id, streak_bumped: streakBumped }, null, 2));
 }
 
 main().catch(e => {

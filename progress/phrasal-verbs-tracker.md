@@ -3,7 +3,7 @@
 Canonical PV inventory A1→C1 with quiz coverage, current accuracy, and frequency in your context. Refreshed at each stats-review.
 
 **Baseline source**: `archive/phrasal_verbs_mastery_plan.html` (stats export 2026-04-04)
-**Last refresh**: 2026-05-03
+**Last refresh**: 2026-05-05
 **Next refresh trigger**: any `stats-review` skill run that uploads fresh `family_stats_ai` JSON.
 
 ---
@@ -100,10 +100,12 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 |---|---|---|---|---|---|---|
 | break down ² | negotiations fail | B1 | ★★★★★ | ✗ | 📅 | Phase 3 — "talks broke down" |
 | bring up ² | mention a topic | B2 | ★★★★★ | ✓ | 🟡 | meeting-essential |
+| catch up | meet socially / restore progress | B1 | ★★★★★ | ✗ | 📅 | "catch up over a brew"; "catching up on emails" |
 | come back | return | A2 | ★★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — direction trap with *go back*. Drill: tr_artem_b03. Use as distractor only after re-test passes. |
 | come from | originate | A2 | ★★★★★ | ✗ | — | A2 distractor |
 | come up | arise / be mentioned | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — "this came up" |
 | come up with | propose / produce idea | B2 | ★★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
+| crack on | get on with it | B1 | ★★★★★ | ✗ | 📅 | already in style notes — meeting-end / hallway register |
 | cut off | disconnect / isolate | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — "cut off funding" |
 | end up | finally be in a state/place | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
 | fall behind | fail to keep up | B2 | ★★★★★ | ✗ | 📅 | Batch 2 |
@@ -120,11 +122,14 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | get up | rise from bed | A1 | ★★★★★ | ✓ | 🟢 | foundational |
 | give up | stop trying | B1 | ★★★★★ | ✓ | ⚪ | only MCQ — no production test (Batch 1) |
 | go through | experience / examine | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
+| head off / head out / head back | depart / leave | B1 | ★★★★★ | ✗ | 📅 | expat travel + meeting-end ("right, I'm heading off") |
 | hold up | delay / rob / remain strong | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — 3 meanings |
+| knock off | finish work for the day | B2 | ★★★★★ | ✗ | 📅 | Bapco hallway register — "knocking off at 4" |
 | let down | disappoint | B2 | ★★★★★ | ✗ | 📅 | Batch 2 |
 | make up ² | constitute | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "make up 60% of revenue" |
 | pay off | repay / be worthwhile | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — business-critical |
 | point out | draw attention to | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
+| pop in / pop out / pop round / pop over | visit briefly | A2 | ★★★★★ | ✗ | 📅 | replaces "go briefly to" — Carrefour / Saar / neighbours |
 | put off ¹ | postpone | B2 | ★★★★★ | ✓ | 🟢 | |
 | run into ² | encounter problems | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "ran into delays" |
 | set up ¹ | establish | B2 | ★★★★★ | ✓ | 🟡 | "set up a JV" |
@@ -135,12 +140,14 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | take on ² | accept a challenge | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "take on the project" |
 | take over | assume control | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — M&A, ops |
 | take up ² | occupy time | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "merger taking up all my time" |
+| top up | refill / add credit | B1 | ★★★★★ | ✗ | 📅 | petrol, Batelco, drinks |
 | turn down | reject | B2 | ★★★★★ | ✓ | 🔴 | "turn down an offer" |
 | turn into | become / transform | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — strategy lexicon |
 | turn off ¹ | switch off | A2 | ★★★★★ | ✓ | ⚪ | Batch 1 |
 | turn on | activate | A2 | ★★★★★ | ✓ | 🟢 | |
 | turn out ¹ | prove to be | B2 | ★★★★★ | ✓ | 🔴 | 0/4 — every analysis |
 | work out | calculate / exercise / succeed | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — 3 meanings |
+| wrap up | conclude (meeting/task) | B2 | ★★★★★ | ✗ | 📅 | meeting essential — "let's wrap up" |
 | break out | start suddenly / escape | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
 | break up | end relationship / disintegrate | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
 | bring about | cause | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
@@ -149,12 +156,14 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | build up | increase gradually | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | call off | cancel | B1 | ★★★★ | ✓ | 🟠 | only particle gap (Batch 1) |
 | check out | examine / leave hotel | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
+| chill out | relax | B1 | ★★★★ | ✗ | 📅 | compound / weekend register |
 | come across ¹ | seem / appear | B2 | ★★★★ | ✓ | 🟡 | |
 | come across ² | find by chance | B2 | ★★★★ | ✗ | 📅 | Phase 3 |
 | come in | enter | A2 | ★★★★ | ✗ | — | A2 distractor |
 | come on | encouragement / progress | A2 | ★★★★ | ✗ | — | A2 distractor |
 | cut down on | reduce | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
 | drill down into | analyse in depth | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold — analysis lexicon |
+| drop off | set down / fall asleep / decline | B1 | ★★★★ | ✗ | 📅 | "drop the kids off"; "dropped off mid-meeting"; "demand dropped off Q3" — 3 senses |
 | drum up | generate (interest, support) | C1 | ★★★★ | ✓ | — | "drum up support" |
 | fill in ¹ | complete a form | B2 | ★★★★ | ✓ | 🟡 | |
 | get along (with) | have good relations | B2 | ★★★★ | ✗ | — | candidate addition |
@@ -165,6 +174,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | get into ² | become interested in | B2 | ★★★★ | ✗ | 📅 | Phase 3 — "got into cycling" |
 | get off | exit transport | A2 | ★★★★ | ✓ | 🔴 | 0/4 — confused with *get out of* |
 | get on | board transport | A2 | ★★★★ | ✓ | 🟡 | |
+| get on with | continue / have a relationship with | B1 | ★★★★ | ✗ | 📅 | "get on with it"; "I get on with him fine" |
 | get over | recover from | B2 | ★★★★ | ✓ | 🔴 | 1/2 |
 | get through ¹ | survive difficulty | B2 | ★★★★ | ✓ | 🔴 | 0/3 |
 | give back | return (an object) | A2 | ★★★★ | ✓ | — | |
@@ -178,15 +188,19 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | hammer out | negotiate to agreement | C1 | ★★★★ | ✓ | — | "hammer out a deal" |
 | iron out | resolve (small issues) | C1 | ★★★★ | ✓ | — | "iron out the wrinkles" |
 | keep up with | maintain pace | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
+| kick off | start (event/meeting/match) | B2 | ★★★★ | ✗ | 📅 | meeting + project + sports |
 | look at | examine | A2 | ★★★★ | ✗ | — | A2 distractor |
 | look for | seek | A2 | ★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — confused with *look after* (caregiving). Drills: tr_artem_b02 + rt_artem_b01/b02. |
 | look like | resemble | A2 | ★★★★ | ✗ | — | A2 distractor |
+| pack in / pack up | quit / stop functioning | B2 | ★★★★ | ✗ | 📅 | "I'm packing it in"; "the AC's packed up" |
 | pick up ¹ | collect someone | B1 | ★★★★ | ✓ | 🟢 | |
 | pick up ² | learn informally | B1 | ★★★★ | ✗ | 📅 | Phase 3 — "picked up Arabic" |
 | pick up ³ | improve | B1 | ★★★★ | ✗ | — | candidate — "sales picked up" |
+| push back | delay / resist | B2 | ★★★★ | ✗ | 📅 | already echoed in style notes — "contractor's pushing back" |
 | put on | wear / apply | A2 | ★★★★ | ✗ | — | A2 distractor |
 | put up with | tolerate | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | rule out | eliminate possibility | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
+| run by (sb) | show for review | B2 | ★★★★ | ✗ | 📅 | "run that by Sara" — pure office register |
 | set aside | reserve | B2 | ★★★★ | ✗ | — | candidate — "set aside funds" |
 | set off | begin a journey | B2 | ★★★★ | ✗ | 📅 | Batch 2 — flagged |
 | set out | depart / present formally | B2 | ★★★★ | ✓ | 🟠 | "set out the opportunity for" — wrong dep prep |
@@ -202,6 +216,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | water down | weaken | C1 | ★★★★ | ✓ | — | "watered-down version" |
 | weed out | eliminate the unwanted | C1 | ★★★★ | ✓ | — | "weed out underperformers" |
 | wind down | relax / gradually end | B2 | ★★★★ | ✗ | 📅 | Batch 2 — *расслабиться* calque trap |
+| wind up | annoy / end up | B2 | ★★★★ | ✗ | 📅 | "stop winding me up"; "wound up in Manama" — 2 senses |
 | write down | record on paper | A2 | ★★★★ | ✗ | — | A2 distractor |
 | break down ¹ | machine stops | B1 | ★★★ | ✓ | 🟢 | |
 | break down ³ | cry / lose control | B1 | ★★★ | ✗ | — | candidate |
@@ -248,7 +263,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | take off ⁴ | leave quickly | C1 | ★★ | ✗ | — | candidate |
 | come round ³ | regain consciousness | B2 | ★ | ✗ | 📅 | Batch 2 — niche |
 
-**Counts**: 43 ★★★★★ · 61 ★★★★ · 37 ★★★ · 6 ★★ · 1 ★ · **148 PV-meanings total**
+**Counts**: 50 ★★★★★ · 70 ★★★★ · 37 ★★★ · 6 ★★ · 1 ★ · **164 PV-meanings total**
 
 ---
 

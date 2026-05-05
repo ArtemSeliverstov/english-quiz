@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260504-t1">
+  <meta name="app-version" content="v20260505-t1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -776,6 +776,17 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .lh-family-pill .lh-fp-emoji{font-size:.95rem;}
 .lh-family-empty{font-size:.82rem;color:var(--muted);font-style:italic;}
 .lh-lasttime{font-size:.88rem;color:var(--text);line-height:1.5;}
+.lh-board{width:100%;border-collapse:collapse;font-size:.86rem;}
+.lh-board td{padding:.32rem .25rem;border-top:1px solid var(--border);color:var(--text);}
+.lh-board tr:first-child td{border-top:none;}
+.lh-board td.lh-b-name{font-weight:500;}
+.lh-board td.lh-b-name .lh-b-emoji{display:inline-block;width:1.4em;text-align:center;margin-right:.3rem;}
+.lh-board td.lh-b-you{color:var(--accent);}
+.lh-board td.lh-b-num{text-align:right;white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums;}
+.lh-board td.lh-b-num.lh-b-strong{color:var(--text);}
+.lh-board td.lh-b-when{text-align:right;color:var(--muted);font-size:.8rem;white-space:nowrap;}
+.lh-board td.lh-b-phase{text-align:right;font-size:.82rem;color:var(--muted);}
+.lh-board td.lh-b-phase .lh-b-phase-name{color:var(--text);font-weight:500;}
 .lh-medals{display:flex;align-items:center;justify-content:space-between;}
 .lh-medals-count{font-size:1.05rem;color:var(--text);}
 .lh-medals-delta{margin-top:.2rem;font-size:.78rem;color:var(--green,#6fefb2);font-weight:600;min-height:0;}
@@ -999,7 +1010,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260504-t1</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1</span></p>
 </header>
 
 <!-- TABS -->
@@ -1035,6 +1046,16 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <div id="lh-family-row" class="lh-family-row">
         <span class="lh-family-empty">Loading…</span>
       </div>
+    </div>
+
+    <div class="lh-zone" id="lh-streaks-zone">
+      <div class="lh-zone-label">Family streaks</div>
+      <table id="lh-streaks-table" class="lh-board"><tbody></tbody></table>
+    </div>
+
+    <div class="lh-zone" id="lh-levels-zone">
+      <div class="lh-zone-label">Family levels</div>
+      <table id="lh-levels-table" class="lh-board"><tbody></tbody></table>
     </div>
 
     <div class="lh-zone" id="lh-lasttime-zone" style="display:none;">
@@ -3638,7 +3659,7 @@ function renderGreeting() {
   const name = capFirst(DB.displayName || currentPlayer || '');
   if (!name) { el.textContent = ''; return; }
 
-  const streak = DB.currentStreak || 0;
+  const streak = effectiveStreak(DB.lastPlayedDate, DB.currentStreak);
   const lastPlayed = DB.lastPlayedDate || null;
   const today = new Date().toISOString().slice(0, 10);
   const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
@@ -3864,7 +3885,7 @@ function renderSimpleSetup() {
   // Greeting (reuse same logic as renderGreeting)
   const greetEl = document.getElementById('simple-greeting');
   if (greetEl) {
-    const streak = DB.currentStreak || 0;
+    const streak = effectiveStreak(DB.lastPlayedDate, DB.currentStreak);
     const lastPlayed = DB.lastPlayedDate || null;
     const today = new Date().toISOString().slice(0, 10);
     const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
@@ -4038,21 +4059,16 @@ function renderLearnerHome() {
 
   const subEl = document.getElementById('lh-sub');
   if (subEl) {
-    const streak = DB.currentStreak || 0;
-    const lastPlayed = DB.lastPlayedDate || null;
-    const today = new Date().toISOString().slice(0, 10);
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-    let sub = '';
-    if (!lastPlayed) sub = 'Ready when you are.';
-    else if (lastPlayed === today) sub = 'Good to see you back today.';
-    else if (lastPlayed === yesterday) sub = 'Welcome back — yesterday counts.';
-    else {
-      const daysAgo = Math.round((Date.now() - new Date(lastPlayed).getTime()) / 86400000);
-      sub = daysAgo <= 7 ? ('Welcome back — ' + daysAgo + ' days since last time.') : 'Welcome back — great to see you again.';
+    const streak = effectiveStreak(DB.lastPlayedDate, DB.currentStreak);
+    const phaseInfo = dominantBandPhase(DB.lvlStats);
+    const parts = [];
+    if (phaseInfo) {
+      const accPct = Math.round(phaseInfo.accuracy * 100);
+      parts.push(dominantBandPhaseLabel(phaseInfo) + ' · ' + accPct + '%');
     }
-    if (streak >= 3) sub += ' · 🔥 ' + streak + '-day streak';
-    else if (streak >= 1) sub += ' · 🔥 ' + streak + '-day streak';
-    subEl.textContent = sub;
+    if (streak >= 1) parts.push('🔥 ' + streak);
+    if (parts.length) subEl.textContent = parts.join(' · ');
+    else subEl.textContent = 'Ready when you are.';
   }
 
   // Zone 1b: button hints. Primary = Coach exercises ("we'll pick"); secondary = Quiz.
@@ -4069,11 +4085,92 @@ function renderLearnerHome() {
   // Zone 2: family pull — reuse the family-poll fetch path
   renderLearnerFamilyPull();
 
+  // Zone 2b/2c: family streaks board (everyone, sorted by streak DESC) +
+  // family levels board (everyone, sorted by dominant-band volume DESC then phase).
+  renderLearnerFamilyBoards();
+
   // Zone 3: last-time line
   renderLearnerLastTime();
 
   // Zone 4: medal count
   renderLearnerMedals();
+}
+
+async function renderLearnerFamilyBoards() {
+  const streaksBody = document.querySelector('#lh-streaks-table tbody');
+  const levelsBody = document.querySelector('#lh-levels-table tbody');
+  if (!streaksBody || !levelsBody) return;
+  try {
+    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).map(m => m.key);
+    const docs = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
+    const rows = playerKeys.map((k, i) => {
+      const p = docs[i] || {};
+      const member = FAMILY_MEMBERS.find(m => m.key === k) || {};
+      return {
+        key: k,
+        emoji: p.emoji || member.emoji || '👤',
+        name: capFirst(String(p.displayName || member.name || k).split(' ')[0]),
+        isMe: k === currentPlayer,
+        streak: effectiveStreak(p.lastPlayedDate, p.currentStreak),
+        lastPlayedDate: p.lastPlayedDate || null,
+        phase: dominantBandPhase(p.lvlStats),
+      };
+    });
+
+    // Streak board: ALL players, sort streak DESC, tie-break by recency.
+    const streakSorted = rows.slice().sort((a, b) => {
+      if (b.streak !== a.streak) return b.streak - a.streak;
+      return (b.lastPlayedDate || '').localeCompare(a.lastPlayedDate || '');
+    });
+    streaksBody.innerHTML = streakSorted.map(r => {
+      const when = lastPlayedLabel(r.lastPlayedDate) || '—';
+      const streakCell = r.streak > 0
+        ? '<span class="lh-b-strong">🔥 ' + r.streak + '</span>'
+        : '🔥 0';
+      return '<tr>'
+        + '<td class="lh-b-name' + (r.isMe ? ' lh-b-you' : '') + '">'
+        + '<span class="lh-b-emoji">' + r.emoji + '</span>'
+        + escapeHtml(r.name) + (r.isMe ? ' (you)' : '')
+        + '</td>'
+        + '<td class="lh-b-num' + (r.streak > 0 ? ' lh-b-strong' : '') + '">' + streakCell + '</td>'
+        + '<td class="lh-b-when">' + escapeHtml(when) + '</td>'
+        + '</tr>';
+    }).join('');
+
+    // Levels board: ALL players, sort dominant CEFR band DESC, then phase rank
+    // DESC (Reaching > Comfortable > Settling), then accuracy DESC as tie-break.
+    const bandRank = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
+    const phaseRank = { Solid: 3, Comfortable: 2, Settling: 1 };
+    const levelSorted = rows.slice().sort((a, b) => {
+      const aBand = a.phase ? (bandRank[a.phase.band] || 0) : 0;
+      const bBand = b.phase ? (bandRank[b.phase.band] || 0) : 0;
+      if (bBand !== aBand) return bBand - aBand;
+      const aPhase = a.phase ? (phaseRank[a.phase.phase] || 0) : 0;
+      const bPhase = b.phase ? (phaseRank[b.phase.phase] || 0) : 0;
+      if (bPhase !== aPhase) return bPhase - aPhase;
+      const aAcc = a.phase ? a.phase.accuracy : 0;
+      const bAcc = b.phase ? b.phase.accuracy : 0;
+      return bAcc - aAcc;
+    });
+    levelsBody.innerHTML = levelSorted.map(r => {
+      const label = r.phase ? dominantBandPhaseLabel(r.phase) : 'No data yet';
+      let phaseHtml = '<span class="lh-b-phase-name">' + escapeHtml(label) + '</span>';
+      if (r.phase) {
+        const accPct = Math.round(r.phase.accuracy * 100);
+        phaseHtml += ' <span style="opacity:.7;">· ' + accPct + '%</span>';
+      }
+      return '<tr>'
+        + '<td class="lh-b-name' + (r.isMe ? ' lh-b-you' : '') + '">'
+        + '<span class="lh-b-emoji">' + r.emoji + '</span>'
+        + escapeHtml(r.name) + (r.isMe ? ' (you)' : '')
+        + '</td>'
+        + '<td class="lh-b-phase">' + phaseHtml + '</td>'
+        + '</tr>';
+    }).join('');
+  } catch (e) {
+    streaksBody.innerHTML = '<tr><td class="lh-family-empty">—</td></tr>';
+    levelsBody.innerHTML = '<tr><td class="lh-family-empty">—</td></tr>';
+  }
 }
 
 async function renderLearnerFamilyPull() {
@@ -5256,16 +5353,88 @@ async function answerMultiBlank(chosen, chip, q, blankIdx) {
   }
 }
 
+// Idempotent first-of-day streak bump. Shared by Quiz play loop and Coach tab —
+// any practice surface counts toward the same streak (Option D, see design-decisions.md).
+function bumpDailyStreak(d) {
+  const today = new Date().toISOString().slice(0,10);
+  if (d.lastPlayedDate === today) return;
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  d.currentStreak = (d.lastPlayedDate === yesterday) ? (d.currentStreak||0)+1 : 1;
+  d.lastPlayedDate = today;
+  if (d.currentStreak > (d.longestStreak||0)) d.longestStreak = d.currentStreak;
+}
+
+// A streak is "alive" only when the last activity was today or yesterday.
+// The stored `currentStreak` doesn't decay — it sits at whatever the last
+// bump set it, even months later — so every display site should run the
+// raw value through this helper before rendering. Returns 0 once the
+// streak has lapsed; the next bump will recompute correctly.
+function effectiveStreak(lastPlayedDate, currentStreak) {
+  if (!lastPlayedDate) return 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  if (lastPlayedDate === today || lastPlayedDate === yesterday) return currentStreak || 0;
+  return 0;
+}
+
+// Last-played pill ("Today" / "Yesterday" / "Nd ago"). Returns null when
+// older than 7 days — used by family-streaks zone to hide stale dates.
+function lastPlayedLabel(lastPlayedDate, maxDays = 7) {
+  if (!lastPlayedDate) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  if (lastPlayedDate === today) return 'Today';
+  const days = Math.round((Date.now() - new Date(lastPlayedDate).getTime()) / 86400000);
+  if (!Number.isFinite(days) || days < 0) return null;
+  if (days > maxDays) return null;
+  if (days === 1) return 'Yesterday';
+  return days + 'd ago';
+}
+
+// Dominant band + phase per the within-band journey model.
+//   Dominant band = cascade ceiling: highest CEFR level where seen ≥ 30 AND
+//     accuracy ≥ 60%. Walked A2 → C2; the highest pass wins. Represents
+//     current measured competence, not where the bank has fed the most
+//     volume (which biases toward lower bands at this stage of authoring).
+//   Phase = pure accuracy at the cascade band:
+//     Settling     — 60–69% (just above promotion floor)
+//     Comfortable  — 70–79% (established at this band)
+//     Solid        — 80%+   (mastered; ready for the next band)
+// The cascade itself handles the transition between bands — when next-band
+// accuracy crosses 60% with 30+ items, the player automatically moves to
+// Settling at the new band. So Solid → Settling at next band is the natural
+// graduation; no separate "Reaching" phase needed.
+// Returns null when no level meets the cascade threshold.
+function dominantBandPhase(lvlStats) {
+  const order = ['A1','A2','B1','B2','C1','C2'];
+  const entries = order.map(L => {
+    const s = (lvlStats || {})[L] || { seen: 0, correct: 0 };
+    return { lvl: L, seen: s.seen || 0, correct: s.correct || 0 };
+  });
+  // Cascade ceiling: highest band passing the threshold. A2 → C2 walk.
+  let dom = null;
+  for (const e of entries) {
+    if (e.lvl === 'A1') continue; // cascade starts at A2
+    if (e.seen >= 30 && (e.correct / e.seen) >= 0.60) dom = e;
+    else if (dom) break; // failed at this band; stop walking
+  }
+  if (!dom) return null;
+  const acc = dom.correct / dom.seen;
+  let phase;
+  if (acc >= 0.80) phase = 'Solid';
+  else if (acc >= 0.70) phase = 'Comfortable';
+  else phase = 'Settling';
+  return { band: dom.lvl, accuracy: acc, seen: dom.seen, phase };
+}
+
+function dominantBandPhaseLabel(info) {
+  if (!info) return null;
+  return info.phase + ' ' + info.band;
+}
+
 async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   const allCorrect = blanksCorrect === blanksTotal;
   if (allCorrect) { sessionScore++; streak++; } else streak = 0;
-  const _today = new Date().toISOString().slice(0,10);
-  if (DB.lastPlayedDate !== _today) {
-    const _yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-    DB.currentStreak = (DB.lastPlayedDate === _yesterday) ? (DB.currentStreak||0)+1 : 1;
-    DB.lastPlayedDate = _today;
-    if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
-  }
+  bumpDailyStreak(DB);
   if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
   DB.qStats[q.id].seen++;
   DB.qStats[q.id].correct += fraction;
@@ -5297,16 +5466,7 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
 
 async function recordAnswer(correct, q) {
   if (correct) { sessionScore++; streak++; } else streak = 0;
-
-  // streak tracking — update on first answer of each day so a partial session
-  // still counts toward the streak (session-end block is idempotent: guards with !== today)
-  const _today = new Date().toISOString().slice(0,10);
-  if (DB.lastPlayedDate !== _today) {
-    const _yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-    DB.currentStreak = (DB.lastPlayedDate === _yesterday) ? (DB.currentStreak||0)+1 : 1;
-    DB.lastPlayedDate = _today;
-    if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
-  }
+  bumpDailyStreak(DB);
 
   // per-question
   if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
@@ -5553,14 +5713,7 @@ async function finishSession() {
   DB.totalSessions++;
   if (DB.sessions.length > 50) DB.sessions = DB.sessions.slice(0, 50);
 
-  // streak tracking
-  const today = new Date().toISOString().slice(0,10);
-  if (DB.lastPlayedDate !== today) {
-    const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
-    DB.currentStreak = (DB.lastPlayedDate === yesterday) ? (DB.currentStreak||0)+1 : 1;
-    DB.lastPlayedDate = today;
-    if (DB.currentStreak > (DB.longestStreak||0)) DB.longestStreak = DB.currentStreak;
-  }
+  bumpDailyStreak(DB);
 
   await saveData(DB);
 
@@ -5965,7 +6118,7 @@ function renderStatsHero() {
   const totalAns = DB.totalAnswered || 0;
   const totalCor = DB.totalCorrect || 0;
   const overallPct = totalAns > 0 ? Math.round((totalCor / totalAns) * 100) : 0;
-  const curStreak = DB.currentStreak || 0;
+  const curStreak = effectiveStreak(DB.lastPlayedDate, DB.currentStreak);
   const uniqueSeen = Object.keys(DB.qStats || {}).length;
 
   // Find weakest category (min 5 seen)
@@ -6186,7 +6339,7 @@ function renderStats() {
   let bestStreak = 0, cur2 = 0;
   sessionAnswered.forEach(a => { cur2 = a.correct ? cur2+1 : 0; bestStreak = Math.max(bestStreak, cur2); });
 
-  const curStreak  = DB.currentStreak  || 0;
+  const curStreak  = effectiveStreak(DB.lastPlayedDate, DB.currentStreak);
   const longStreak = DB.longestStreak  || 0;
   const uniqueSeen = Object.keys(DB.qStats || {}).length;
 
@@ -6658,6 +6811,7 @@ function buildPayload(db) {
       if (dm) return { ...s, date: `${dm[3]}-${dm[2]}-${dm[1]}` };
       return s;
     }),
+    aggregated_exercises: db.aggregated_exercises || {},
   };
 }
 
@@ -6723,6 +6877,7 @@ async function loadFromFirebase() {
         currentStreak:  remote.currentStreak    || 0,
         longestStreak:  remote.longestStreak    || 0,
         lastPlayedDate: remote.lastPlayedDate   || null,
+        aggregated_exercises: remote.aggregated_exercises || {},
         createdAt:      remote.createdAt        || new Date().toISOString(),
         _simpleUI:      remote.simpleUI         === true,
         ui_shell:       remote.ui_shell        || 'builder',
@@ -6832,9 +6987,10 @@ function renderFamily(playersData) {
         if (lp === today) { whenText = 'Today'; whenClass = 'today'; ringClass = 'active-today'; }
         else {
           const days = Math.round((Date.now() - new Date(lp).getTime()) / 86400000);
-          if (days <= 2) { whenText = days + 'd ago'; whenClass = ''; ringClass = ''; }
-          else if (days <= 7) { whenText = days + 'd ago'; whenClass = 'warn'; ringClass = 'inactive-warn'; }
-          else { whenText = days + 'd ago'; whenClass = 'danger'; ringClass = 'inactive-danger'; }
+          const label = days === 1 ? 'Yesterday' : days + 'd ago';
+          if (days <= 2) { whenText = label; whenClass = ''; ringClass = ''; }
+          else if (days <= 7) { whenText = label; whenClass = 'warn'; ringClass = 'inactive-warn'; }
+          else { whenText = label; whenClass = 'danger'; ringClass = 'inactive-danger'; }
         }
       }
       return `<div class="fa-player">
@@ -6895,9 +7051,12 @@ function renderFamily(playersData) {
     if (lastExTs) {
       const daysAgo = Math.round((Date.now() - lastExTs) / 86400000);
       if (daysAgo === 0) { lastExText = 'Today'; lastExColor = 'var(--green)'; }
-      else if (daysAgo <= 2) { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--text)'; }
-      else if (daysAgo <= 5) { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--accent)'; }
-      else { lastExText = daysAgo + 'd ago'; lastExColor = 'var(--accent2)'; }
+      else {
+        const label = daysAgo === 1 ? 'Yesterday' : daysAgo + 'd ago';
+        if (daysAgo <= 2) { lastExText = label; lastExColor = 'var(--text)'; }
+        else if (daysAgo <= 5) { lastExText = label; lastExColor = 'var(--accent)'; }
+        else { lastExText = label; lastExColor = 'var(--accent2)'; }
+      }
     }
     const exDetailHTML = exEntries.slice(0,3).map(e => {
       const pct = Math.round((e.score||0)*100);
@@ -6913,7 +7072,7 @@ function renderFamily(playersData) {
         <div class="player-avatar" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
         <div>
           <div class="player-name">${capFirst(p.displayName||p.key)}${isMe?' <span style="font-size:.7rem;color:var(--accent)">(you)</span>':''}</div>
-          <div class="player-last">Last: ${lastPlayed} · ${p.currentStreak||0} 🔥</div>
+          <div class="player-last">Last: ${lastPlayed} · ${effectiveStreak(p.lastPlayedDate, p.currentStreak)} 🔥</div>
         </div>
         <div class="player-rank">${medals[i]||i+1}</div>
       </div>
@@ -8249,6 +8408,9 @@ async function coachWriteSessionLog({ mode, session_metadata, messages, model_us
 
 async function coachWriteSessionLogStandalone({ session_id, mode, session_metadata, messages, model_used, tokens_used, exercise_id, exercise_version }) {
   if (!currentPlayer || !session_id) return;
+  // Free Write counts toward the unified daily streak (Option D — see design-decisions.md).
+  bumpDailyStreak(DB);
+  saveData(DB);
   const meta = session_metadata || {};
   const doc = {
     session_id,
@@ -8502,10 +8664,18 @@ async function coachStartType(type, opts) {
     coachState.sessionTs = opts.resumeSessionTs;
     coachState.sessionResults = (opts.completedItems || []).slice();
     coachState.plannedTotal = exercises.length + coachState.sessionResults.length;
+    // Items already folded into player aggregates per the dedup map. Defaults to
+    // current sessionResults length on a fresh resume — the prior session's last
+    // upsert would have set the map to that count.
+    const _alreadyFolded = (DB.aggregated_exercises || {})[String(coachState.sessionTs)];
+    coachState.aggregatedItemCount = (typeof _alreadyFolded === 'number')
+      ? _alreadyFolded
+      : coachState.sessionResults.length;
   } else {
     coachState.sessionTs = Date.now();
     coachState.sessionResults = [];
     coachState.plannedTotal = exercises.length;
+    coachState.aggregatedItemCount = 0;
   }
   coachState.current = null;
   coachState.attemptCount = 0;          // per-item retry counter (D6 spelling drill nudge)
@@ -8573,10 +8743,14 @@ function coachNextExercise() {
     // the player picks the particle that completes the PV with the intended meaning.
     const tmpl = String(ex.sentence || '');
     const rendered = escapeHtml(tmpl).replace(/\{1\}/g, '<span class="ad-blank">_____</span>');
+    // Strip the leading "{base_verb} {correct_particle} —" prefix from the meaning
+    // hint — authoring convention spells out the answer, which leaks it. Keep the
+    // explanatory tail so the meaning still scaffolds.
+    const meaningHint = coachCleanParticleMeaning(ex.meaning, ex);
     coachAppendMessage('assistant',
       `<div class="coach-msg-prompt">Pick the particle (${idx}/${total}):</div>` +
       `<div class="coach-msg-prompt-en ad-sentence">${rendered}</div>` +
-      (ex.meaning ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">Meaning: ${escapeHtml(ex.meaning)}</div>` : '')
+      (meaningHint ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;">Meaning: ${escapeHtml(meaningHint)}</div>` : '')
     );
     coachShowParticleChips();
     return;
@@ -8889,6 +9063,37 @@ async function coachUpsertSession({ partial = true } = {}) {
   // Reusing the same ts means no duplicate exercise rows; PATCH semantics overwrite the doc.
   // If currentPlayer or sessionTs aren't set, bail silently.
   if (!currentPlayer || !coachState.sessionTs || !coachState.sessionResults.length) return;
+  // Coach activity counts toward the unified daily streak (Option D — see design-decisions.md).
+  // Idempotent: only bumps once per UTC day. saveData triggers debounced parent-doc sync.
+  bumpDailyStreak(DB);
+  // Cross-surface stats fold: items[aggregatedItemCount..end] → DB qStats/catStats/lvlStats/totals.
+  // Mirror of `aggregateExerciseDelta` in tools/_firestore.js. Idempotent via
+  // coachState.aggregatedItemCount; the dedup map on the player root
+  // (aggregated_exercises) prevents the backfill tool from re-folding the same items.
+  if (typeof coachState.aggregatedItemCount !== 'number') coachState.aggregatedItemCount = 0;
+  const _coachLvl = 'B2'; // Coach Tab session level (matches subcollection write below)
+  for (let i = coachState.aggregatedItemCount; i < coachState.sessionResults.length; i++) {
+    const r = coachState.sessionResults[i];
+    if (!r || typeof r.correct !== 'boolean') continue;
+    DB.totalAnswered = (DB.totalAnswered || 0) + 1;
+    if (r.correct) DB.totalCorrect = (DB.totalCorrect || 0) + 1;
+    DB.lvlStats = DB.lvlStats || {};
+    DB.lvlStats[_coachLvl] = DB.lvlStats[_coachLvl] || { seen: 0, correct: 0 };
+    DB.lvlStats[_coachLvl].seen += 1;
+    if (r.correct) DB.lvlStats[_coachLvl].correct += 1;
+    if (r.exercise_id) {
+      DB.qStats = DB.qStats || {};
+      const q = DB.qStats[r.exercise_id] || { seen: 0, correct: 0, wrong: 0, lastSeen: 0 };
+      q.seen += 1;
+      if (r.correct) q.correct += 1; else q.wrong += 1;
+      q.lastSeen = Date.now();
+      DB.qStats[r.exercise_id] = q;
+    }
+  }
+  coachState.aggregatedItemCount = coachState.sessionResults.length;
+  DB.aggregated_exercises = DB.aggregated_exercises || {};
+  DB.aggregated_exercises[String(coachState.sessionTs)] = coachState.sessionResults.length;
+  saveData(DB);
   const results = coachState.sessionResults;
   const total = results.length;
   const correct = results.filter(r => r.correct).length;
@@ -8915,6 +9120,21 @@ async function coachUpsertSession({ partial = true } = {}) {
     // Final-save failure (partial:false) is surfaced by the caller.
     if (!partial) throw e;
   }
+}
+
+// Particle-sort answer-leak guard: the authored `meaning` field starts with
+// "{base_verb} {correct_particle} — …" (e.g. "figure out — work out the answer"),
+// which spells out the answer if shown verbatim. Strip that prefix so the
+// scaffolding stays without giving away the choice. Falls through gracefully
+// when the prefix isn't present.
+function coachCleanParticleMeaning(meaning, ex) {
+  if (!meaning || !ex || !ex.base_verb) return meaning || '';
+  const escape = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const particles = (Array.isArray(ex.correct_particles) ? ex.correct_particles : []).filter(Boolean).map(escape);
+  if (!particles.length) return meaning;
+  const re = new RegExp('^\\s*' + escape(ex.base_verb) + '\\s+(' + particles.join('|') + ')\\s*[—–\\-]\\s*', 'i');
+  const stripped = String(meaning).replace(re, '').trim();
+  return stripped || meaning; // never return empty — fall back to original
 }
 
 function coachMatchPattern(submitted, commonErrors) {
