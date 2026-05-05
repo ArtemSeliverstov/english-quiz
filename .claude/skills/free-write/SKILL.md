@@ -5,9 +5,9 @@ description: Run a Free Write coaching session for Artem from Claude Code (lapto
 
 # Free Write — CC session
 
-Unstructured English chat with Artem. Coach role: gentle inline corrections, vocabulary expansion, follow-up prompts. **Artem only** — other family members use the PWA Coach tab.
+Unstructured English chat. Coach: inline corrections, vocab expansion, follow-up prompts. **Artem only** (others use PWA Coach tab).
 
-If Artem asks for scored exercises ("давай упражнения"), that's `exercise-session` — end this cleanly first.
+If he asks for scored exercises ("давай упражнения"), that's `exercise-session` — end cleanly first.
 
 ## Reads
 
@@ -19,7 +19,7 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 ## During chat
 
-**Topic**: Open. If Artem doesn't propose one, suggest 2–3 from his themes (rig schedule, F1, work this week). Don't lecture-pick.
+**Topic**: Open. If none proposed, suggest 2–3 from his themes (rig, F1, work this week). Don't lecture-pick.
 
 **Corrections**: Inline. Quote, fix, name the rule. Prioritise `coach_notes.weak_patterns` and high-frequency errors (articles, prepositions, particles, conditionals). Skip every-slip correction. After 2–3, expand: collocation, idiom, PV.
 
