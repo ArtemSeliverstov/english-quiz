@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260505-t1r2">
+  <meta name="app-version" content="v20260505-t1r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -474,6 +474,22 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 
     /* ══ FAMILY / FIREBASE ══ */
     .family-wrap { padding: 0 0 2rem; }
+    .family-coop{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;margin-bottom:.9rem;}
+    .fc-headline{font-size:1.4rem;font-weight:700;line-height:1.15;}
+    .fc-headline .fc-num{color:var(--accent);}
+    .fc-sub{font-size:.78rem;color:var(--muted);margin-top:.15rem;}
+    .fc-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;margin-top:.7rem;overflow:hidden;}
+    .fc-bar{height:100%;border-radius:4px;transition:width .4s;}
+    .fc-meta{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:.35rem;}
+    .fc-secondary{display:flex;justify-content:space-between;gap:.5rem;margin-top:.65rem;padding-top:.6rem;border-top:1px solid var(--border);}
+    .fc-stat{flex:1;text-align:center;}
+    .fc-stat-val{font-size:.95rem;font-weight:700;}
+    .fc-stat-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.1rem;}
+    .family-medal-axis{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:.55rem .85rem;margin-bottom:.8rem;font-size:.78rem;color:#fbbf24;line-height:1.4;}
+    .family-medal-axis .fma-label{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.65rem;opacity:.85;}
+    .pb-pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
+    .pb-pill{font-size:.68rem;padding:.18rem .5rem;border-radius:10px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);color:#fbbf24;}
+    .pb-pill.streak{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.3);color:var(--accent2);}
     .family-activity{display:flex;justify-content:center;gap:1rem;margin-bottom:1.1rem;padding:.6rem 0;}
     .fa-player{display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:52px;}
     .fa-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;}
@@ -1010,7 +1026,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -1018,7 +1034,6 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
   <button class="tab active" onclick="showTab('setup')">🎯 Practice</button>
   <button class="tab" onclick="showTab('stats')">📊 Statistics</button>
   <button class="tab" onclick="showTab('family')">👨‍👩‍👧 Family</button>
-  <button class="tab" onclick="showTab('exercises')">📝 Exercises</button>
   <button class="tab" onclick="showTab('coach')">🎯 Coach</button>
 </div>
 
@@ -1041,28 +1056,6 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     </button>
     <button class="lh-other" onclick="homePracticeOther()">Practice something else →</button>
 
-    <div class="lh-zone" id="lh-family-zone">
-      <div class="lh-zone-label">Practising today</div>
-      <div id="lh-family-row" class="lh-family-row">
-        <span class="lh-family-empty">Loading…</span>
-      </div>
-    </div>
-
-    <div class="lh-zone" id="lh-streaks-zone">
-      <div class="lh-zone-label">Family streaks</div>
-      <table id="lh-streaks-table" class="lh-board"><tbody></tbody></table>
-    </div>
-
-    <div class="lh-zone" id="lh-levels-zone">
-      <div class="lh-zone-label">Family levels</div>
-      <table id="lh-levels-table" class="lh-board"><tbody></tbody></table>
-    </div>
-
-    <div class="lh-zone" id="lh-lasttime-zone" style="display:none;">
-      <div class="lh-zone-label">Last time</div>
-      <div id="lh-lasttime" class="lh-lasttime"></div>
-    </div>
-
     <div class="lh-zone lh-medals" id="lh-medals-zone" style="display:none;">
       <div>
         <div class="lh-zone-label" style="margin-bottom:.2rem;">Medals</div>
@@ -1070,6 +1063,11 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <div id="lh-medals-delta" class="lh-medals-delta"></div>
       </div>
       <button class="lh-medals-link" onclick="homeOpenStats()">View →</button>
+    </div>
+
+    <div class="lh-zone" id="lh-streaks-zone">
+      <div class="lh-zone-label">Family streaks</div>
+      <table id="lh-streaks-table" class="lh-board"><tbody></tbody></table>
     </div>
   </div>
 </div>
@@ -1290,17 +1288,21 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 <div id="tab-family" class="hidden">
   <div class="family-wrap">
 
-    <div id="fb-status-bar" class="fb-status loading">⏳ Connecting to server…</div>
+    <div id="fb-status-bar" class="fb-status loading" style="display:none;"></div>
 
-    <!-- U3: Activity strip — who's playing? -->
-    <div id="family-activity" class="family-activity"></div>
+    <!-- Family co-op zone (Plan B): collective totals + weekly target -->
+    <div id="family-coop" class="family-coop"></div>
+
+    <!-- Rotating weekly medal axis banner (Plan B) -->
+    <div id="family-medal-axis" class="family-medal-axis"></div>
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;">Family leaderboard</div>
-      <div style="display:flex;gap:.4rem;">
-        <button class="export-ai-btn" onclick="syncToFirebase(true)" title="Force sync your data to server" style="background:var(--surface);color:var(--text);border:1px solid var(--border);">🔄 Sync</button>
-        <button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export</button>
-      </div>
+      <button class="export-ai-btn" id="family-admin-toggle" onclick="toggleFamilyAdmin()" title="Admin tools" style="background:var(--surface);color:var(--text);border:1px solid var(--border);padding:.35rem .55rem;">⚙️</button>
+    </div>
+    <div id="family-admin-row" style="display:none;text-align:right;margin-bottom:.6rem;gap:.4rem;">
+      <button class="export-ai-btn" onclick="syncToFirebase(true)" title="Force sync your data to server" style="background:var(--surface);color:var(--text);border:1px solid var(--border);">🔄 Sync</button>
+      <button class="export-ai-btn" onclick="exportForAI()" title="Export all family stats for AI review">🤖 Export</button>
     </div>
 
     <div id="family-list">
@@ -1311,25 +1313,6 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 </div>
 
 <!-- ══ EXERCISES SCREEN ══ -->
-<div id="tab-exercises" class="hidden">
-  <div style="max-width:520px;margin:0 auto;">
-
-    <!-- ── STATS ROW ── -->
-    <div class="ex-stats-grid" id="exStatsGrid">
-      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatTotal">—</div><div class="ex-stat-label">Sessions</div></div>
-      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatAvg">—</div><div class="ex-stat-label">Avg Score</div></div>
-      <div class="ex-stat-card"><div class="ex-stat-val" id="exStatWeek">—</div><div class="ex-stat-label">This Week</div></div>
-    </div>
-
-    <!-- ── WEEKLY PLAN STRIP ── -->
-    <div id="exWeeklyPlan" class="ex-week-plan"></div>
-
-    <!-- ── HISTORY ── -->
-    <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
-
-  </div>
-</div>
-
 <!-- ══ COACH SCREEN ══ -->
 <div id="tab-coach" class="hidden">
   <div style="max-width:520px;margin:0 auto;">
@@ -1379,6 +1362,18 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <span>How do I spell…?</span>
       </button>
       <button id="coachBackHomeLink" class="lh-other" style="display:none;margin-top:.5rem;" onclick="homeReturnFromCoach()">← Back home</button>
+    </div>
+
+    <!-- ── EXERCISE HISTORY (merged from former Exercises tab) ──
+         Visible alongside the picker. Hidden when a drill chat is active. -->
+    <div id="coachHistoryWrap">
+      <div class="ex-stats-grid" id="exStatsGrid">
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatTotal">—</div><div class="ex-stat-label">Sessions</div></div>
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatAvg">—</div><div class="ex-stat-label">Avg Score</div></div>
+        <div class="ex-stat-card"><div class="ex-stat-val" id="exStatWeek">—</div><div class="ex-stat-label">This Week</div></div>
+      </div>
+      <div id="exWeeklyPlan" class="ex-week-plan"></div>
+      <div id="exHistoryList"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem 0;">Loading…</div></div>
     </div>
 
     <!-- ── CHAT THREAD ── -->
@@ -2055,7 +2050,7 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'mc04',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ Head of ___ Finance has submitted ___ report to ___ board.',intro:'Unique roles take <em>the</em>. Department names used as categories take no article. First-mention documents take <em>a</em>. Governing bodies take <em>the</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:1,opts:['the','a','—']},{ans:0,opts:['the','a','—']}],exp:'• <strong>The</strong> Head of Finance — unique role<br>• — Finance — department name<br>• <strong>A</strong> report — first mention<br>• <strong>The</strong> board — unique body.<br>✗ A board is wrong — unique entities take the.'},
 {id:'mc05',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'___ project is currently under ___ construction and is on ___ schedule for completion in Q4.',intro:'Fixed prepositional phrases (<em>under construction, on schedule</em>) take no article. Adding a modifier to such a phrase brings back the article.',blanks:[{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'• <em>The</em> project — specific known project<br>• <em>Under construction</em> — fixed phrase, no article<br>• <em>On schedule</em> — fixed phrase, no article. Compare: <em>on the revised schedule</em> (modifier brings the article back)'},
 {id:'mc06',type:'multi',cat:'Articles',lvl:'B2',biz:false,q:'Both parties have signed ___ agreement. ___ agreement will come into force on ___ first day of ___ next month.',intro:'Articles: first and second mention',blanks:[{ans:1,opts:['the','an','—']},{ans:0,opts:['the','an','—']},{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'• <strong>An</strong> agreement — first mention<br>• <strong>The</strong> agreement — second mention<br>• <strong>The</strong> first day — ordinals always take the<br>• — next month — no article after next/last.<br>✗ A first day is wrong — ordinals require the.'},
-{id:'mc07',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ company\'s strategy for ___ growth in ___ emerging markets was presented to ___ investors.',intro:'Possessives replace articles — no article is needed after a possessive. Abstract nouns and general categories take no article.',blanks:[{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'<strong>The</strong> company\'s — specific company<br>• — growth — abstract noun<br>• — emerging markets — general category<br>• — investors — general first mention.<br>✗ Possessives replace articles — never the the company\'s.'},
+{id:'mc07',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ company\'s strategy for ___ growth in ___ emerging markets was presented to investors last month.',intro:'Possessives replace articles — no article is needed after a possessive. Abstract nouns and general categories take no article.',blanks:[{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'<strong>The</strong> company\'s — specific company<br>• — growth — abstract noun<br>• — emerging markets — general category.<br>✗ Possessives replace articles — never <em>the</em> company\'s.'},
 {id:'mc08',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ acquisition of ___ competitor will require ___ approval of ___ shareholders.',intro:'Specific deals and transactions take <em>the</em>. Non-specific targets take <em>a</em>. Specific required approvals and specific groups of people take <em>the</em>.',blanks:[{ans:0,opts:['the','a','—']},{ans:1,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:0,opts:['the','a','—']}],exp:'<strong>The</strong> acquisition — specific deal<br>• <strong>A</strong> competitor — non-specific target<br>• <strong>The</strong> approval — specific required step<br>• <strong>The</strong> shareholders — specific group.<br>✗ An acquisition implies it hasn\'t been identified yet.'},
 {id:'mc09',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ new Director will be responsible for ___ management of ___ operations across ___ region.',intro:'New roles introduced for the first time take <em>a</em>. Specific organisational functions take <em>the</em>. Business function categories take no article. Known geographic areas take <em>the</em>.',blanks:[{ans:1,opts:['the','a','—']},{ans:0,opts:['the','a','—']},{ans:2,opts:['the','a','—']},{ans:0,opts:['the','a','—']}],exp:'• <strong>A</strong> new Director — first mention of a role<br>• <strong>The</strong> management — specific function<br>• — operations — general function.<br>✗ The new Director at first mention implies the person is already known.'},
 {id:'mc10',type:'multi',cat:'Articles',lvl:'B2',biz:true,q:'___ report recommends ___ increase in ___ capital expenditure and ___ reduction of ___ headcount.',intro:'Specific documents take <em>the</em>. Quantities introduced for the first time take <em>a/an</em>. Uncountable business terms take no article.',blanks:[{ans:0,opts:['the','a','—']},{ans:1,opts:['the','an','—']},{ans:2,opts:['the','a','—']},{ans:1,opts:['the','a','—']},{ans:2,opts:['the','a','—']}],exp:'• <strong>The</strong> report — specific document<br>• <strong>An</strong> increase — first mention, vowel sound<br>• — capital expenditure — uncountable<br>• <strong>A</strong> reduction — first mention.<br>✗ A report is wrong here — the report is already identified.'},
@@ -2137,7 +2132,7 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'pp_ps02',type:'gap',cat:'Tenses',lvl:'C1',biz:false,q:'I recognised him immediately — we ___ at a conference two years before.',ans:0,opts:['had met','met','have met'],exp:'<strong>Past perfect for a prior past event</strong> referenced from another past moment. The recognition happened in the past (past simple reference point). The meeting happened even earlier (past perfect: <em>had met</em>). The phrase <em>two years before</em> confirms the meeting preceded the recognition.'},
 {id:'pp_ps03',type:'mcq',cat:'Tenses',lvl:'C1',biz:true,q:'Which sentence has a tense error?',ans:2,opts:['She had never visited the Gulf before she joined Bapco.','By 2020, the company had expanded into five new markets.','When he arrived, she has already finished the presentation.'],exp:'<strong>Error in option C:</strong> <em>has already finished</em> is present perfect — you cannot use present perfect to refer to a moment in the past (<em>when he arrived</em>). The correct form is <em>had already finished</em> (past perfect). Present perfect can only be used from the present moment, never from a past reference point.'},
 {id:'ps04',type:'mcq',cat:'Tenses',lvl:'C1',biz:false,q:'Which is correct?',ans:1,opts:['I didn\'t know that she has resigned until I read the email.','I didn\'t know that she had resigned until I read the email.','I didn\'t know that she resigned until I read the email.'],exp:'<strong>Past perfect in reported discovery.</strong> The resignation happened first (past perfect: <em>had resigned</em>). Not knowing and reading the email happened later (past simple). <em>Until I read</em> marks the second event. Option C (past simple) is common in informal speech but less precise about sequence.'},
-{id:'tm01',type:'multi',cat:'Tenses',lvl:'B2',biz:true,q:'I ___ your email and I ___ your concerns to the management team, who ___ to schedule a call next week.',intro:'Business email: tense selection',blanks:[{ans:0,opts:['have received','received','had received']},{ans:0,opts:['have escalated','escalated','had escalated']},{ans:1,opts:['have agreed','agreed','had agreed']}],exp:'• <em>Have received</em> — present perfect: the email is current context, just received<br>• <em>Have escalated</em> — present perfect: just done, directly relevant now<br>• <em>Agreed</em> — past simple: a specific decision made at a specific moment (in the meeting); not an ongoing state'},
+{id:'tm01',type:'multi',cat:'Tenses',lvl:'B2',biz:true,q:'Since this morning, I ___ your email and I ___ your concerns to the management team, who ___ to schedule a call next week.',intro:'Business email: tense selection',blanks:[{ans:0,opts:['have received','received','had received']},{ans:0,opts:['have escalated','escalated','had escalated']},{ans:1,opts:['have agreed','agreed','had agreed']}],exp:'• <em>Have received</em> / <em>have escalated</em> — <em>since this morning</em> requires present perfect (duration up to now)<br>• <em>Agreed</em> — past simple: a specific decision in their meeting, not an ongoing state'},
 {id:'tm02',type:'multi',cat:'Tenses',lvl:'B2',biz:false,q:'The team ___ the initial assessment last week. Since then, we ___ significant progress and ___ two key milestones.',intro:'Project update report: mix of completed past events and ongoing present perfect states.',blanks:[{ans:0,opts:['completed','has completed','had completed']},{ans:0,opts:['have made','made','had made']},{ans:0,opts:['have reached','reached','had reached']}],exp:'• <em>Completed</em> — past simple: <em>last week</em> is a specific finished time<br>• <em>Have made</em> — present perfect: <em>since then</em> = from that point up to now (unfinished period)<br>• <em>Have reached</em> — present perfect: also within the <em>since then</em> period, still relevant now'},
 {id:'tm03',type:'multi',cat:'Tenses',lvl:'C1',biz:false,q:'When the auditors ___ the accounts, they discovered that someone ___ several transactions incorrectly.',intro:'Narrative sequence: two past events where one clearly preceded the other.',blanks:[{ans:0,opts:['reviewed','had reviewed','have reviewed']},{ans:0,opts:['had recorded','recorded','has recorded']}],exp:'• <em>Reviewed</em> — past simple: this is the main narrative event (the discovery moment)<br>• <em>Had recorded</em> — past perfect: the incorrect recording happened <em>before</em> the review. The past perfect marks the earlier of two past events.'},
 {id:'tm04',type:'multi',cat:'Tenses',lvl:'B2',biz:false,q:'Our new CFO ___ in three listed companies before joining us, and she ___ already ___ significant improvements to our reporting process since her arrival in January.',intro:'Board report mixing experience, recent actions, and specific past events.',blanks:[{ans:0,opts:['has served','served','had served']},{ans:0,opts:['has','had','did']},{ans:0,opts:['introduced','introduce','introducing']}],exp:'• <em>Has served</em> — present perfect: life experience, no specific time given (relevant to current role)<br>• <em>Has introduced</em> — present perfect with <em>already</em>: action completed recently, relevant now<br>• Note: <em>since her arrival in January</em> = unfinished period (she is still here), so present perfect is correct'},
@@ -3225,7 +3220,7 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',lvl:'B2',biz:false,q:'
 {id:'tf_24',type:'transform',lvl:'B2',biz:true,cat:'Linking Words',source:'Although the project was expensive, it was successful.',keyword:'DESPITE',q:'___ expensive, the project was successful.',ans:'despite being|despite the project being',exp:'<em>Although + clause</em> → <em>Despite + gerund/noun</em>. <em>Despite</em> is a preposition, not a conjunction — it cannot take a clause directly.'},
 {id:'tf_25',type:'transform',lvl:'B2',biz:false,cat:'Linking Words',source:'She is rich but she is not happy.',keyword:'SPITE',q:'In ___ rich, she is not happy.',ans:'spite of being',exp:'<em>But</em> (contrast conjunction) → <em>in spite of + gerund</em>. Fixed phrase: <em>in spite of</em> = despite.'},
 {id:'tf_26',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'When did you start learning English?',keyword:'LONG',q:'How ___ English?',ans:'long have you been learning',exp:'<em>When did you start...?</em> → <em>How long have you been...?</em>. Past simple start point → present perfect continuous duration.'},
-{id:'tf_27',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'I haven\'t seen her for three months.',keyword:'LAST',q:'The ___ her was three months ago.',ans:'last time I saw',exp:'<em>Haven\'t done X for Y</em> → <em>The last time I did X was Y ago</em>. Present perfect duration → past simple with <em>last time</em>.'},
+{id:'tf_27',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'I haven\'t seen her for three months.',keyword:'LAST',q:'The ___ her was three months ago.',ans:'last time I saw',exp:'<em>Haven\'t done X for Y</em> → <em>The last time I did X was Y ago</em>. The anchor <em>was three months ago</em> is a definite past time → simple past, not present perfect. ✗ <em>last time I have seen</em> (RU calque).'},
 {id:'tf_28',type:'transform',lvl:'B2',biz:false,cat:'Tenses',source:'This is my first time in Japan.',keyword:'NEVER',q:'I have ___ before.',ans:'never been to Japan|never visited Japan',exp:'<em>First time doing X</em> → <em>have never done X before</em>. Experience → present perfect with <em>never</em>.'},
 {id:'tf_29',type:'transform',lvl:'B2',biz:false,cat:'Grammar',source:'Learning a new language takes patience.',keyword:'PATIENT',q:'You need to be ___ a new language.',ans:'patient when learning|patient to learn',exp:'Noun (<em>patience</em>) → adjective (<em>patient</em>) with restructured sentence. The keyword forces a word-family change.'},
 {id:'tf_30',type:'transform',lvl:'B2',biz:true,cat:'Grammar',source:'She types faster than anyone else in the office.',keyword:'FASTEST',q:'She is the ___ in the office.',ans:'fastest typist',exp:'<em>Verb + comparative + than anyone</em> → <em>superlative + noun</em>. Restructure from action to attribute.'},
@@ -3550,7 +3545,7 @@ function defaultData() {
     longestStreak: 0,
     lastPlayedDate: null,
     createdAt: new Date().toISOString(),
-    ui_shell: 'builder',
+    ui_shell: 'learner',
     learning_path: null,
   };
 }
@@ -3691,7 +3686,7 @@ function renderGreeting() {
 //  TAB NAVIGATION
 // ══════════════════════════════════════════════
 function showTab(name) {
-  ['home','setup','stats','quiz','results','family','exercises','coach'].forEach(t => {
+  ['home','setup','stats','quiz','results','family','coach'].forEach(t => {
     const el = document.getElementById('tab-'+t);
     if (el) el.classList.add('hidden');
   });
@@ -3703,8 +3698,7 @@ function showTab(name) {
   if (name === 'setup')  document.querySelectorAll('.tab')[0].classList.add('active');
   if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
   if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
-  if (name === 'exercises') { document.querySelectorAll('.tab')[3].classList.add('active'); exLoadHistory(); }
-  if (name === 'coach') { document.querySelectorAll('.tab')[4].classList.add('active'); coachOpenTab(); }
+  if (name === 'coach') { document.querySelectorAll('.tab')[3].classList.add('active'); coachOpenTab(); }
 }
 
 // ══════════════════════════════════════════════
@@ -4099,7 +4093,7 @@ function renderLearnerHome() {
 async function renderLearnerFamilyBoards() {
   const streaksBody = document.querySelector('#lh-streaks-table tbody');
   const levelsBody = document.querySelector('#lh-levels-table tbody');
-  if (!streaksBody || !levelsBody) return;
+  if (!streaksBody) return;
   try {
     const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).map(m => m.key);
     const docs = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
@@ -4139,6 +4133,7 @@ async function renderLearnerFamilyBoards() {
 
     // Levels board: ALL players, sort dominant CEFR band DESC, then phase rank
     // DESC (Reaching > Comfortable > Settling), then accuracy DESC as tie-break.
+    if (!levelsBody) return;
     const bandRank = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
     const phaseRank = { Solid: 3, Comfortable: 2, Settling: 1 };
     const levelSorted = rows.slice().sort((a, b) => {
@@ -4169,7 +4164,7 @@ async function renderLearnerFamilyBoards() {
     }).join('');
   } catch (e) {
     streaksBody.innerHTML = '<tr><td class="lh-family-empty">—</td></tr>';
-    levelsBody.innerHTML = '<tr><td class="lh-family-empty">—</td></tr>';
+    if (levelsBody) levelsBody.innerHTML = '<tr><td class="lh-family-empty">—</td></tr>';
   }
 }
 
@@ -4353,7 +4348,7 @@ const PARTIAL_RESUME_MIN_TOTAL = 3;
 // Quiz length per player. Median completed `total` from recentSessions:
 // nicole=20 (n=10), ernest=20 (n=8), anna=10 (n=10). Default 10 covers
 // builder-shell + new players.
-const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20 };
+const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20, artem: 20 };
 const QUIZ_COUNT_DEFAULT = 10;
 function quizCountFor(player) {
   return QUIZ_COUNT_BY_PLAYER[player] || QUIZ_COUNT_DEFAULT;
@@ -6311,11 +6306,17 @@ function toggleFullStats() {
 }
 
 function renderStats() {
-  // §4.4 — learner shell: show simplified active/mastered/coming-next panel.
-  // Builder shell sees the full grid below as before.
+  // §4.4 — learner shell with a populated learning_path shows the simplified
+  // active/mastered/coming-next panel. If the path is empty (e.g. Artem, Egor
+  // — no curated path), fall through to the full builder stats so the medals
+  // "View →" link lands on something meaningful instead of empty placeholders.
   const learnerPanel = document.getElementById('learner-stats-panel');
   const builderWrap = document.getElementById('builder-stats-wrap');
-  if ((typeof isLearnerShell === 'function') && isLearnerShell()) {
+  const lp = (DB && DB.learning_path) || {};
+  const hasLearnerPath = (Array.isArray(lp.active_categories) && lp.active_categories.length > 0)
+    || (Array.isArray(lp.mastered_categories) && lp.mastered_categories.length > 0)
+    || (Array.isArray(lp.next_unlock_options) && lp.next_unlock_options.length > 0);
+  if ((typeof isLearnerShell === 'function') && isLearnerShell() && hasLearnerPath) {
     if (learnerPanel) learnerPanel.style.display = '';
     if (builderWrap) builderWrap.style.display = 'none';
     renderLearnerStats();
@@ -6882,7 +6883,7 @@ async function loadFromFirebase() {
         aggregated_coach_sessions: remote.aggregated_coach_sessions || {},
         createdAt:      remote.createdAt        || new Date().toISOString(),
         _simpleUI:      remote.simpleUI         === true,
-        ui_shell:       remote.ui_shell        || 'builder',
+        ui_shell:       remote.ui_shell        || 'learner',
         learning_path:  remote.learning_path   || null,
       };
       if (typeof saveData === 'function') await saveData(merged);
@@ -6956,51 +6957,103 @@ function playerCoverageHTML(p) {
   }).join('');
 }
 
+// Plan B — rotating weekly medal axis. ISO week % 4 selects the axis.
+const FAMILY_MEDAL_AXES = [
+  { key: 'sessions',  label: 'Most sessions this week',         emoji: '📚' },
+  { key: 'accuracy',  label: 'Highest weekly accuracy',         emoji: '🎯' },
+  { key: 'questions', label: 'Most questions answered',         emoji: '🔢' },
+  { key: 'categories',label: 'Most categories practiced',       emoji: '🌐' },
+];
+function getISOWeek(d) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+}
+function currentMedalAxis() {
+  return FAMILY_MEDAL_AXES[getISOWeek(new Date()) % FAMILY_MEDAL_AXES.length];
+}
+function toggleFamilyAdmin() {
+  const row = document.getElementById('family-admin-row');
+  if (!row) return;
+  row.style.display = row.style.display === 'none' ? 'flex' : 'none';
+}
+
 function renderFamily(playersData) {
   const list = document.getElementById('family-list');
   if (!list) return;
-  const LEVEL_MULT = { B1: 1.0, B2: 1.3, C1: 1.6, C2: 2.0 };
+
+  // Per-player weekly aggregates (current ISO week, Mon-anchored)
+  const now = new Date();
+  const dayOfWeek = (now.getDay() + 6) % 7;
+  const weekStart = new Date(now); weekStart.setDate(now.getDate() - dayOfWeek); weekStart.setHours(0,0,0,0);
+
+  const axis = currentMedalAxis();
 
   const players = Object.entries(playersData).map(([key, p]) => {
     const accuracy = p.totalAnswered > 0 ? Math.round(p.totalCorrect / p.totalAnswered * 100) : 0;
-    const lvlOrder = ['C2','C1','B2','B1'];
-    let topLvlKey = 'B1';
-    for (const lv of lvlOrder) {
-      const ls = (p.lvlStats || {})[lv];
-      if (ls && ls.seen >= 10) { topLvlKey = lv; break; }
+    const weeklySessions = (p.recentSessions || []).filter(s => {
+      const d = s.date ? new Date(s.date) : null;
+      return d && !isNaN(d) && d >= weekStart;
+    });
+    const wkSessionCount = weeklySessions.length;
+    const wkQuestionCount = weeklySessions.reduce((sum, s) => sum + (s.total || 0), 0);
+    const wkAcc = wkSessionCount >= 2
+      ? Math.round(weeklySessions.reduce((sum, s) => {
+          const v = typeof s.pct === 'string' ? parseInt(s.pct) : (s.pct || 0);
+          return sum + v;
+        }, 0) / wkSessionCount)
+      : null;
+    const wkCatSet = new Set();
+    weeklySessions.forEach(s => Object.keys(s.catBreakdown || {}).forEach(c => wkCatSet.add(c)));
+    const wkCategories = wkCatSet.size;
+    let axisVal;
+    switch (axis.key) {
+      case 'sessions':   axisVal = wkSessionCount; break;
+      case 'accuracy':   axisVal = wkAcc == null ? -1 : wkAcc; break;
+      case 'questions':  axisVal = wkQuestionCount; break;
+      case 'categories': axisVal = wkCategories; break;
     }
-    const lvlMult = LEVEL_MULT[topLvlKey] || 1.0;
-    const seen = Object.keys(p.qStats || {}).length;
-    const score = accuracy * Math.log(seen + 1) * lvlMult;
-    return { key, ...p, accuracy, score, topLvlKey, lvlMult, seen };
-  }).sort((a, b) => b.score - a.score);
+    return {
+      key, ...p, accuracy,
+      wkSessionCount, wkQuestionCount, wkAcc, wkCategories,
+      weeklyScore: wkAcc, axisVal
+    };
+  }).sort((a, b) => b.axisVal - a.axisVal);
 
-  // U3: Activity strip
-  const actEl = document.getElementById('family-activity');
-  if (actEl && players.length > 0) {
-    const today = new Date().toISOString().slice(0,10);
-    actEl.innerHTML = players.map(p => {
-      const color = p.color || '#888';
-      const lp = p.lastPlayedDate;
-      let whenText = 'Never';
-      let whenClass = 'danger';
-      let ringClass = 'inactive-danger';
-      if (lp) {
-        if (lp === today) { whenText = 'Today'; whenClass = 'today'; ringClass = 'active-today'; }
-        else {
-          const days = Math.round((Date.now() - new Date(lp).getTime()) / 86400000);
-          const label = days === 1 ? 'Yesterday' : days + 'd ago';
-          if (days <= 2) { whenText = label; whenClass = ''; ringClass = ''; }
-          else if (days <= 7) { whenText = label; whenClass = 'warn'; ringClass = 'inactive-warn'; }
-          else { whenText = label; whenClass = 'danger'; ringClass = 'inactive-danger'; }
-        }
-      }
-      return `<div class="fa-player">
-        <div class="fa-avatar ${ringClass}" style="background:${color}22;border:2px solid ${color}">${p.emoji||'👤'}</div>
-        <div class="fa-name">${capFirst((p.displayName||p.key).split(' ')[0])}</div>
-        <div class="fa-when ${whenClass}">${whenText}</div>
-      </div>`;
-    }).join('');
+  // Family co-op zone — collective totals + weekly target (25 sessions)
+  const coopEl = document.getElementById('family-coop');
+  if (coopEl) {
+    const FAMILY_WEEKLY_TARGET = 25;
+    const familyWkSessions = players.reduce((s, p) => s + p.wkSessionCount, 0);
+    const familyWkQuestions = players.reduce((s, p) => s + p.wkQuestionCount, 0);
+    const familyTotalQ = players.reduce((s, p) => s + (p.totalAnswered || 0), 0);
+    const longestActive = players.reduce((m, p) => {
+      const eff = effectiveStreak(p.lastPlayedDate, p.currentStreak);
+      return eff > m.streak ? { name: capFirst((p.displayName||p.key).split(' ')[0]), streak: eff, emoji: p.emoji||'👤' } : m;
+    }, { name: '', streak: 0, emoji: '' });
+    const pct = Math.min(100, Math.round(familyWkSessions / FAMILY_WEEKLY_TARGET * 100));
+    const barColor = familyWkSessions >= FAMILY_WEEKLY_TARGET ? 'var(--green)' : pct >= 50 ? 'var(--accent)' : 'var(--blue)';
+    const goalNote = familyWkSessions >= FAMILY_WEEKLY_TARGET
+      ? '🎯 Weekly target hit — extra sessions still count!'
+      : (FAMILY_WEEKLY_TARGET - familyWkSessions) + ' more to hit the family target';
+    coopEl.innerHTML =
+      '<div class="fc-headline">This week the family did <span class="fc-num">' + familyWkSessions + '</span> session' + (familyWkSessions===1?'':'s') + '</div>' +
+      '<div class="fc-sub">' + familyWkQuestions + ' questions answered together</div>' +
+      '<div class="fc-bar-wrap"><div class="fc-bar" style="width:' + pct + '%;background:' + barColor + '"></div></div>' +
+      '<div class="fc-meta"><span>' + familyWkSessions + ' / ' + FAMILY_WEEKLY_TARGET + ' family target</span><span>' + goalNote + '</span></div>' +
+      '<div class="fc-secondary">' +
+        '<div class="fc-stat"><div class="fc-stat-val">' + familyTotalQ.toLocaleString() + '</div><div class="fc-stat-lbl">Lifetime Qs</div></div>' +
+        '<div class="fc-stat"><div class="fc-stat-val">' + (longestActive.streak > 0 ? longestActive.emoji + ' ' + longestActive.name + ' 🔥' + longestActive.streak : '—') + '</div><div class="fc-stat-lbl">Longest active streak</div></div>' +
+      '</div>';
+  }
+
+  // Rotating medal axis banner
+  const axisEl = document.getElementById('family-medal-axis');
+  if (axisEl) {
+    axisEl.innerHTML = '<div class="fma-label">This week\'s medal</div>' +
+      '<div>' + axis.emoji + ' ' + axis.label + ' — leaderboard ranks by this metric until Sunday.</div>';
   }
 
   if (players.length === 0) {
@@ -7020,19 +7073,21 @@ function renderFamily(playersData) {
       .sort((a,b) => b.pct - a.pct);
     const bestCat  = cats[0] ? cats[0].cat + ' ' + cats[0].pct + '%' : null;
     const worstCat = cats.length > 1 ? cats[cats.length-1].cat + ' ' + cats[cats.length-1].pct + '%' : null;
-    const now = new Date();
-    const dayOfWeek = (now.getDay() + 6) % 7;
-    const weekStart = new Date(now); weekStart.setDate(now.getDate() - dayOfWeek); weekStart.setHours(0,0,0,0);
-    const weeklySessions = (p.recentSessions || []).filter(s => {
-      const d = s.date ? new Date(s.date) : null;
-      return d && !isNaN(d) && d >= weekStart;
-    });
-    const weeklyScore = weeklySessions.length > 0
-      ? Math.round(weeklySessions.reduce((sum, s) => {
-          const v = typeof s.pct === 'string' ? parseInt(s.pct) : (s.pct || 0);
-          return sum + v;
-        }, 0) / weeklySessions.length)
-      : null;
+    // Personal-best pills: longest streak ever, best single-session pct
+    const longestEver = p.longestStreak || 0;
+    const bestSession = (p.recentSessions || []).reduce((m, s) => {
+      const v = typeof s.pct === 'string' ? parseInt(s.pct) : (s.pct || 0);
+      return v > m ? v : m;
+    }, 0);
+    // This-week axis-metric value (formatted) — prominent third stat box
+    let axisDisplay;
+    switch (axis.key) {
+      case 'sessions':   axisDisplay = p.wkSessionCount + ''; break;
+      case 'accuracy':   axisDisplay = p.wkAcc == null ? '—' : p.wkAcc + '%'; break;
+      case 'questions':  axisDisplay = p.wkQuestionCount + ''; break;
+      case 'categories': axisDisplay = p.wkCategories + ''; break;
+    }
+    const weeklyScore = p.weeklyScore;
     const sparkBars = (p.recentSessions || []).slice(0,10).reverse().map(s => {
       const h = Math.max(4, Math.round(s.pct * 0.28));
       const col = s.pct>=75?'var(--green)':s.pct>=55?'var(--accent)':'var(--accent2)';
@@ -7068,6 +7123,9 @@ function renderFamily(playersData) {
         '<span style="color:' + col + ';font-weight:700;">' + pct + '%</span>' +
         '<span style="color:var(--muted);font-size:.6rem;">' + (e.date||'').slice(5) + '</span></div>';
     }).join('');
+    // Medal goes only to top-3 players who actually have a non-zero axis value this week
+    const rankBadge = (p.axisVal > 0 && i < 3) ? medals[i] : (i + 1);
+    const axisColor = p.axisVal > 0 ? 'var(--accent)' : 'var(--muted)';
     return `
     <div class="player-card${isMe?' me':''}">
       <div class="player-header">
@@ -7076,18 +7134,24 @@ function renderFamily(playersData) {
           <div class="player-name">${capFirst(p.displayName||p.key)}${isMe?' <span style="font-size:.7rem;color:var(--accent)">(you)</span>':''}</div>
           <div class="player-last">Last: ${lastPlayed} · ${effectiveStreak(p.lastPlayedDate, p.currentStreak)} 🔥</div>
         </div>
-        <div class="player-rank">${medals[i]||i+1}</div>
+        <div class="player-rank">${rankBadge}</div>
       </div>
       <div class="player-stats" style="grid-template-columns:repeat(3,1fr);">
         <div class="ps-box"><div class="ps-num" style="color:var(--green)">${p.accuracy}%</div><div class="ps-lbl">Accuracy</div></div>
         <div class="ps-box"><div class="ps-num">${p.totalSessions||0}</div><div class="ps-lbl">Sessions</div></div>
-        <div class="ps-box"><div class="ps-num" style="color:var(--b1)">${weeklyScore !== null ? weeklyScore + '%' : '—'}</div><div class="ps-lbl">This week</div></div>
+        <div class="ps-box"><div class="ps-num" style="color:${axisColor}">${axisDisplay}</div><div class="ps-lbl">${axis.emoji} ${axis.key === 'sessions' ? 'Wk sessions' : axis.key === 'accuracy' ? 'Wk accuracy' : axis.key === 'questions' ? 'Wk Qs' : 'Wk cats'}</div></div>
       </div>
       ${exCount > 0 ? `<div class="player-stats" style="grid-template-columns:repeat(3,1fr);margin-top:.3rem;">
         <div class="ps-box"><div class="ps-num" style="font-size:.9rem;">${exCount}</div><div class="ps-lbl">📝 Exercises</div></div>
         <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${exAvg>=70?'var(--green)':exAvg>=50?'var(--accent)':'var(--accent2)'}">${exAvg}%</div><div class="ps-lbl">Ex. Avg</div></div>
         <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${lastExColor}">${lastExText}</div><div class="ps-lbl">Last Ex.</div></div>
       </div>` : ''}
+      ${sparkBars?`<div class="sparkline" title="Last 10 sessions" style="margin-top:.55rem;">${sparkBars}</div>`:''}
+      <div class="pb-pills">
+        ${longestEver > 0 ? `<span class="pb-pill streak">🔥 Longest streak: ${longestEver}</span>` : ''}
+        ${bestSession > 0 ? `<span class="pb-pill">⭐ Best session: ${bestSession}%</span>` : ''}
+        ${weeklyScore !== null ? `<span class="pb-pill">📊 This week: ${weeklyScore}%</span>` : ''}
+      </div>
       <div class="player-cats">
         ${bestCat ?`<span class="cat-pill best">💪 ${bestCat}</span>`:''}
         ${worstCat?`<span class="cat-pill worst">📖 ${worstCat}</span>`:''}
@@ -7109,7 +7173,6 @@ function renderFamily(playersData) {
         <span style="font-size:.75rem;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="document.getElementById('${cardId}').style.display=document.getElementById('${cardId}').style.display==='none'?'block':'none';this.textContent=document.getElementById('${cardId}').style.display==='none'?'Details ▸':'Details ▾'">Details ▸</span>
       </div>
       <div id="${cardId}" style="display:none;">
-        ${sparkBars?`<div class="sparkline">${sparkBars}</div>`:''}
         <div class="player-coverage">${playerCoverageHTML(p)}</div>
         ${exDetailHTML ? '<div style="margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);"><div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.3rem;">Recent exercises</div>' + exDetailHTML + '</div>' : ''}
       </div>
@@ -7779,6 +7842,7 @@ async function coachOpenTab() {
   await Promise.all([coachLoadMeta(), coachRenderStatsCard(), coachLoadPlayerCoachNotes()]);
   coachUpdateLiveAIAvailability();
   coachApplyShellLayout();
+  exLoadHistory();
 }
 
 // Hide picker types with zero available items in learner shell, so the picker
@@ -7836,6 +7900,8 @@ function coachUpdateLiveAIAvailability() {
 
 function coachShowPicker() {
   document.getElementById('coachPicker').style.display = '';
+  const hist = document.getElementById('coachHistoryWrap');
+  if (hist) hist.style.display = '';
   document.getElementById('coachChat').style.display = 'none';
   document.getElementById('coachInputRow').style.display = 'none';
   document.getElementById('coachActionRow').style.display = 'none';
@@ -7950,6 +8016,7 @@ async function coachStartFreeWrite() {
   coachState.fwStarter = starter;
   // Switch UI: hide picker, show chat + input + end-session button
   document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
   document.getElementById('coachChat').style.display = '';
   document.getElementById('coachChat').innerHTML = '';
   document.getElementById('coachActionRow').style.display = 'none';
@@ -7988,6 +8055,7 @@ async function coachOpenSpellHelp() {
   }
   // Render an inline form in the chat surface — simpler than a modal.
   document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
   const chat = document.getElementById('coachChat');
   chat.style.display = '';
   chat.innerHTML = '';
@@ -8686,6 +8754,7 @@ async function coachStartType(type, opts) {
   coachState.current = null;
   coachState.attemptCount = 0;          // per-item retry counter (D6 spelling drill nudge)
   document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
   document.getElementById('coachChat').style.display = '';
   document.getElementById('coachExitRow').style.display = '';
   document.getElementById('coachChat').innerHTML = '';

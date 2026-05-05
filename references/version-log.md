@@ -11,6 +11,33 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-05 · Session t1
+### v20260505-t1r3 — One UI: learner shell for all + Coach merge + Family redesign
+
+Big consolidation pass — collapses two redundant UI shells into one and rebuilds the social/motivation surface around it.
+
+- **Quiz fixes from today's mistake review** (`index.html`, `ALL_QUESTIONS`):
+  - `tf_27` (transform, B2): exp now names *was three months ago* as the simple-past anchor and calls out the RU calque *last time I have seen*.
+  - `tm01` (multi, B2): added *Since this morning,* lead-in to force present perfect via since+duration; exp unified for blanks 1–2.
+  - `mc07` (multi, B2): dropped ambiguous blank 4 (3 blanks now); *investors* embedded in stem since the company-specific framing made "the investors" equally valid.
+- **Single UI shell — `learner` for everyone.** `createPlayerData()` and the remote-doc merge default flipped from `'builder'` to `'learner'`; `players/artem.ui_shell` and `players/egor.ui_shell` patched in Firestore so all 5 players land on the same home. Builder code paths still alive but no longer reachable through normal navigation. Deletion of the builder shell deferred.
+- **Exercises tab merged into Coach.** The 📝 Exercises tab is gone — its weekly-plan strip, history list, and stats grid now sit inside Coach below the picker. Both Coach picker and history hide together when a drill chat is active. The data layer was already unified (all reads from `players/{name}/exercises`); this collapses the UI to match. `tab-exercises` markup deleted, `showTab()` updated, `coachOpenTab()` calls `exLoadHistory()`.
+- **Quiz batch for Artem 10 → 20.** `QUIZ_COUNT_BY_PLAYER.artem = 20` so the Quiz button on the landing page surfaces a 20-Q session, matching what he had in builder.
+- **Family-tab redesign — co-op zone + rotating medal axis.** Web research (Yu-kai Chou on relative leaderboards, Duolingo Friends Quests, JMIR on rank-comparison anxiety) drove the rebuild:
+  - Top: `family-coop` zone — collective weekly sessions, lifetime questions, longest active streak, and a 25-session weekly target bar.
+  - Middle: rotating weekly medal axis (`getISOWeek(now) % 4`) — sessions / weekly accuracy / questions / categories. Banner names the metric; per-card third stat box flips to it; medals only awarded to players with a non-zero axis value. Stops the structural lock-in where Artem always won composite-score.
+  - Cards: sparkline promoted out of "Details ▾" to default-visible; new personal-best pills (longest streak ever, best-session %, this-week %).
+  - Sync/Export tucked behind a ⚙️ `toggleFamilyAdmin()` toggle — admin tools off the main view.
+  - Removed: `family-activity` strip and `fb-status-bar` (status bar hidden by default; setFbStatus still works, just unobtrusive).
+- **Learner-home cleanup.** Dropped Practising-today, Last-time, and Family-levels zones. Medals zone moved above Family-streaks zone so the call-to-action is visible without scrolling. `renderLearnerFamilyBoards()` now tolerates a missing levels-table.
+- **Stats fall-through for empty learning_path.** `renderStats()` checks whether learning_path has any active/mastered/coming entries — if all empty, falls through to the full builder stats view (hero + grid + coverage). Fixes the "View →" medals link landing on an empty active-window placeholder for Artem and Egor.
+
+Verified end-to-end in Claude Preview: 1988 questions intact, `node --check` passes, schema lint + transform-keyword lint clean, no console errors. Coach tab renders picker + history together; Family tab renders co-op headline, medal axis banner, 5 axis-ranked cards with sparklines and personal-best pills; home zones show Medals → Family streaks; Medals "View →" lands on the full builder stats.
+
+Q count: 1988 (unchanged) · Version: v20260505-t1r3
+
+---
+
+## 2026-05-05 · Session t1
 ### v20260505-t1r2 — Silent CEFR grading for Free Write
 
 Same-session rebuild on top of t1. Closes the assessment-blind gap for Free Write — the largest unscored surface — by extending the existing wrap pass to also emit an IELTS/CEFR-rubric assessment, then folding it into the player's `lvlStats` so it contributes to their proficiency phase. Player never sees a score; the signal is silent and statistical.
