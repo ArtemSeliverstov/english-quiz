@@ -11,6 +11,25 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-05 · Session t1
+### v20260505-t1r2 — Silent CEFR grading for Free Write
+
+Same-session rebuild on top of t1. Closes the assessment-blind gap for Free Write — the largest unscored surface — by extending the existing wrap pass to also emit an IELTS/CEFR-rubric assessment, then folding it into the player's `lvlStats` so it contributes to their proficiency phase. Player never sees a score; the signal is silent and statistical.
+
+- **Worker** (`worker/index.js`): `sessionEndInstructions` for `free_write` extended to include `assessment: { estimated_level, sentence_count, error_count, confidence }` in the `<session_meta>` JSON block. Grading prompt anchored on IELTS/CEFR criteria with grammar gating the level. **Requires `wrangler deploy` of the worker for PWA Free Writes to emit the new field.**
+- **PWA** (`index.html`): new `coachFoldFreeWriteAssessment(a, sessionId)` helper called from the Free Write finalize path. Confidence gate (skip `'low'`), sentence floor (skip `<3`), per-session cap (`min(sentence_count, 20)`), idempotent via `aggregated_coach_sessions` map on the player root. `saveData` triggers debounced sync.
+- **CC parity** (`tools/log_coach_session.js`): validates the new field, applies the same fold via `applyAssessmentFold(player, sessionId, assessment)` after writing the session log.
+- **`free-write` SKILL.md**: schema block extended with the `assessment` object + 1-line rule that grading is silent and folded server-side. Word count 685→747.
+- **References**: `firestore-schema.md` documents `aggregated_coach_sessions` (idempotency map) and the `assessment` field on `coach_sessions` docs.
+
+No profile cap (per Artem's call) — recognition/production gap argues for honest grading; AI variance smooths via per-session cap and confidence gate. No user-visible score. Forward-only; existing transcripts can be regraded later via a backfill if needed.
+
+Verified in preview against 5 cases (high/n=14, low conf, n=2 floor, n=50 cap, duplicate id idempotency) — all behave correctly. Test pollution cleaned up before debounced sync fired.
+
+Q count: 1988 (unchanged) · Version: v20260505-t1r2
+
+---
+
+## 2026-05-05 · Session t1
 ### v20260505-t1 — Unified streak + Coach stats fold + mastery phases on landing
 
 Big plumbing session. Several long-standing structural mismatches fixed in one go.
