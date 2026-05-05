@@ -10,6 +10,27 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-05 · Session t1
+### v20260505-t1 — Unified streak + Coach stats fold + mastery phases on landing
+
+Big plumbing session. Several long-standing structural mismatches fixed in one go.
+
+- **Option D — unified daily streak across surfaces.** Pre-fix only the Quiz play loop bumped `lastPlayedDate` / `currentStreak` / `longestStreak`; Coach drills and Free Write writes left the parent-doc streak fields stale. Anna's 5-day Coach burst showed her as "Dormant 14 days" on the Family tab. New `bumpDailyStreak(d)` (idempotent first-of-day) shared by Quiz, Coach upsert, Free Write log, `tools/log_exercise.js`, `tools/log_coach_session.js`. Web-research-backed (Krashen/Swain pedagogy + gamification literature on multi-streak burnout) — separate exercise types, single habit signal. `effectiveStreak(lp, cs)` projects the stored value to 0 once last play falls out of today/yesterday window.
+- **Coach + CC stats unification.** Pure helpers `aggregateExerciseDelta` + `applyDeltaToStats` in `tools/_firestore.js`. `log_exercise.js` and Coach Tab `coachUpsertSession` now fold per-item activity into `qStats / catStats / lvlStats / totalAnswered / totalCorrect`. Idempotency tracked via `aggregated_exercises: { ts: items_through }` map on the player root (exercises subcoll is write-once per `firestore.rules`). `tools/backfill_coach_to_quiz_stats.js` handles historical rows with the same dedup map. Backfill folded 248 items for Artem, 107 for Anna, 7 for Ernest; revealed Anna's true B2 accuracy at 45% (was 51% on quiz-only data).
+- **Mastery phases on learner home.** `dominantBandPhase(lvlStats)`: cascade ceiling (highest level with seen ≥ 30 + accuracy ≥ 60%) gives the band; phase from accuracy (Settling 60–69 / Comfortable 70–79 / Solid 80+). Three monotonically positive phases. The earlier "Reaching" name (test variant) was abandoned for sounding worse than "Comfortable".
+- **Family streaks + Family levels boards** on `tab-home`. Streaks: all 5, sorted streak DESC + recency tie-break, "Yesterday" / "Nd ago" within 7 days only (older = "—"). Levels: all 5, sorted CEFR DESC then phase DESC then accuracy DESC. Subtitle compressed to one line: `Comfortable C1 · 74% · 🔥 8`.
+- **Backfill streak history.** `tools/backfill_streaks.js` with incremental and `--full` modes. The `--full` pass replays `bumpDailyStreak` rule across qStats lastSeen + recentSessions + exercises + coach_sessions; restored Artem's true 8-day streak (was 2 because pre-Option-D Coach Sunday broke the chain).
+- **particle_sort answer-leak fix.** `coachCleanParticleMeaning` strips the `^{base_verb} {correct_particle} —` prefix from the authored `meaning` field — currently leaking the answer to every player. Render-side fix for live data; source files in `library_drafts/` cleaned for next push.
+- **PV trackers.** 15 London-Brit-Bahrain expat-speech PVs added to Artem (catch up, crack on, head off/out/back, top up, knock off, wrap up, pop in/out/round/over, chill out, drop off, get on with, kick off, pack in/up, push back, run by, wind up). 8 of the 15 (A1–B1 in scope) added to Anna's tracker.
+- **Audit**: confirmed no other Coach exercise type leaks the answer pre-submit (translation/spelling_drill/article_drill/error_correction all clean; russian_trap UI is disabled).
+- **References updated**: `firestore-schema.md` (writer columns, `aggregated_exercises`), `design-decisions.md` (Option D entry with rationale), `stats-review` SKILL (post-Option-D filtering cheat-sheet).
+
+Validated via Claude Preview: all helpers resolve, family boards render correctly, version badge reads `v20260505-t1`, zero console errors.
+
+Q count: 1988 (unchanged) · Version: v20260505-t1
+
+---
+
 ## 2026-05-04 · Session t1
 ### v20260504-t1 — Routing-audit fixes: recency rotation + cooldown + per-player COUNT
 
