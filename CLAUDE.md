@@ -65,6 +65,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
 | `routing-audit` | "audit landing", "check routing", "are X being routed correctly", "is COUNT/N items justified", "review batch sizes" — learner-shell CTA + batch-size alignment |
+| `mistakes-review` | "review mistakes", "check yesterday's mistakes" + daily 07:30 Bahrain routine — triage past-31h quiz mistakes (genuine vs question-quality bug + sibling sweep) |
 | `deploy-build` | "deploy", "ship it", "push the changes", any pre-deploy validation |
 
 Skills orchestrate; they don't repeat reference content.

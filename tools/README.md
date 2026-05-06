@@ -33,6 +33,23 @@ node tools/check_transform_keywords.js
 
 Validates the two transform rules: every accepted `ans` variant contains `keyword`, and `keyword` is not a whole word in the stem. Run in CI.
 
+### `get_recent_mistakes.js` — pull past-N-hour quiz mistakes for all players
+
+```bash
+node tools/get_recent_mistakes.js                       # default 31h, JSON output
+node tools/get_recent_mistakes.js --hours 48
+node tools/get_recent_mistakes.js --player artem
+node tools/get_recent_mistakes.js --pretty              # human-readable per-mistake blocks
+```
+
+A mistake = `qStats[qid].lastSeen >= now-window` AND `lastWrong` is set. The
+live quiz play loop deletes `lastWrong` on a correct answer, so its presence
+implies the most recent attempt was wrong. Coach/CC supplementary surfaces
+fold into `qStats.{seen,correct,wrong}` but never set `lastWrong/lastSeen`,
+so this tool reports quiz-tab activity only — exactly what `mistakes-review`
+needs. Joins question metadata (q, opts, ans, exp, hint, keyword, raw object
+source) from `index.html` for downstream classification.
+
 ### `get_player.js` — fetch one player's doc
 
 ```bash
