@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260506-t2">
+  <meta name="app-version" content="v20260506-t2r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1035,7 +1035,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260506-t2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260506-t2r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -5421,22 +5421,40 @@ function dominantBandPhase(lvlStats) {
   const order = ['A1','A2','B1','B2','C1','C2'];
   const entries = order.map(L => {
     const s = (lvlStats || {})[L] || { seen: 0, correct: 0 };
-    return { lvl: L, seen: s.seen || 0, correct: s.correct || 0 };
+    return { lvl: L, seen: Number(s.seen) || 0, correct: Number(s.correct) || 0 };
   });
-  // Cascade ceiling: highest band passing the threshold. A2 → C2 walk.
+  // Cascade ceiling: highest band passing the 60% gate. A2 → C2 walk. Track the
+  // lowest band with ≥30 seen as a Building fallback in case no band passes the
+  // gate (one wrong answer used to flip a 60.5% display to "No data yet" — see
+  // 2026-05-06 audit of Anna's level rendering).
   let dom = null;
+  let buildingFallback = null;
   for (const e of entries) {
     if (e.lvl === 'A1') continue; // cascade starts at A2
-    if (e.seen >= 30 && (e.correct / e.seen) >= 0.60) dom = e;
-    else if (dom) break; // failed at this band; stop walking
+    if (e.seen < 30) {
+      if (dom) break;
+      continue;
+    }
+    if (!buildingFallback) buildingFallback = e;
+    if ((e.correct / e.seen) >= 0.60) {
+      dom = e;
+    } else if (dom) {
+      break; // passed an earlier band, failed this one — stop climbing
+    }
   }
-  if (!dom) return null;
-  const acc = dom.correct / dom.seen;
-  let phase;
-  if (acc >= 0.80) phase = 'Solid';
-  else if (acc >= 0.70) phase = 'Comfortable';
-  else phase = 'Settling';
-  return { band: dom.lvl, accuracy: acc, seen: dom.seen, phase };
+  if (dom) {
+    const acc = dom.correct / dom.seen;
+    let phase;
+    if (acc >= 0.80) phase = 'Solid';
+    else if (acc >= 0.70) phase = 'Comfortable';
+    else phase = 'Settling';
+    return { band: dom.lvl, accuracy: acc, seen: dom.seen, phase };
+  }
+  if (buildingFallback) {
+    const acc = buildingFallback.correct / buildingFallback.seen;
+    return { band: buildingFallback.lvl, accuracy: acc, seen: buildingFallback.seen, phase: 'Building' };
+  }
+  return null;
 }
 
 function dominantBandPhaseLabel(info) {

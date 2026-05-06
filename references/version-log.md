@@ -11,6 +11,24 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-06 · Session t2
+### v20260506-t2r2 — Family levels: "Building" tier below 60% gate
+
+`dominantBandPhase` now falls through to a **Building** tier when no band passes the 60% accuracy gate but at least one band has ≥30 seen. Surfaces the lowest such band (the player's natural "current band"). Eliminates a threshold-cliff bug where a single wrong answer could flip the family-tab levels strip from "Settling B1" to "No data yet" — surfaced today when Anna's B1 dipped from 60.something% to 59.94%.
+
+Behaviour:
+- Anna (B1 352/211 = 59.94%): was `null` → "No data yet". Now `Building B1 · 60% · 459 Qs · Grammar`.
+- Players actually passing the 60% gate at any band: unchanged (still Solid/Comfortable/Settling).
+- Players with no band ≥30 seen: still `null` → "No data yet" (genuinely no data).
+
+Sort order in family-levels-strip + levels table preserved: `bandRank` desc → `phaseRank` desc → accuracy desc. `phaseRank` lookup uses `|| 0`, so the new `Building` phase sorts below `Settling` within band — correct (Settling is further along).
+
+Pre-deploy validation: JS syntax OK; question count 1988 unchanged; schema lint clean; transform keyword audit clean; doc word caps OK across all 7 files (CI's C.UTF-8 locale verified locally).
+
+Q count: 1988 (unchanged) · Version: v20260506-t2r2
+
+---
+
+## 2026-05-06 · Session t2
 ### v20260506-t2 — Phase 3: Phrase Swaps button on PWA Coach tab
 
 User-visible deploy of the natural-phrases initiative. Builds on Phase 1 (KB scaffolding) and Phase 2 (worker mode + tools, worker deployed to Cloudflare separately).
