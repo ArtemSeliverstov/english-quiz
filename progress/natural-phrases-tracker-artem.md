@@ -31,11 +31,11 @@
 
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
-| `[biz_oil]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
+| `[biz_oil]` | 0 | 2 | 0 | 0 | 0 | 0 | 2 |
 | `[leisure_sport]` | 0 | 2 | 0 | 0 | 0 | 0 | 2 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| _Untagged_ | 0 | 6 | 0 | 0 | 0 | 0 | 6 |
-| **Total** | 0 | 10 | 0 | 0 | 0 | 0 | 10 |
+| _Untagged_ | 0 | 8 | 0 | 0 | 0 | 0 | 8 |
+| **Total** | 0 | 13 | 0 | 0 | 0 | 0 | 13 |
 
 ---
 
@@ -53,6 +53,9 @@
 | follow steps in the learning process | follow the learning ladder | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
 | required topics and required distribution | subtopics and type distribution | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
 | go out of my villa | leave the villa / step outside | `[brit_expat]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
+| said to my notes | wrote to my notes | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| what is needed | what we need | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| in the future | going forward | `[biz_oil]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
 
 ---
 
