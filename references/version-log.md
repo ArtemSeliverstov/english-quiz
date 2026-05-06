@@ -11,6 +11,21 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-06 · Session t2
+### v20260506-t2r5 — Mistakes-review fixes: 3 alt-answer widenings + 1 stem rewrite
+
+Landed the 4 quality bugs surfaced by today's `mistakes-review` daily routine. All four user-approved before edit.
+
+- **`pv_a06` + `pv_a07`** (Passive Voice, B2): widened `ans:0` → `ans:[0,1]`. The exp on both already acknowledged that *get + something + done* is equally correct as the causative — the keyed answer was inconsistent with the explanation. Sibling `pv_a06` had the identical defect and was fixed in the same pass.
+- **`mvc20`** (Modal Verbs, B2): widened `ans:[1,2]` → `ans:[0,1,2]` and rewrote exp. *Must submit the expense report within 30 days — it's a firm company requirement* is standard formal corporate register; the previous "must is slightly odd" exp was an over-fine prescriptive call that didn't match real business writing.
+- **`gsp01`** (Grammar, B1): rewrote stem from the meta-language *"I try to avoid it so I will not get stuck with one preposition"* (no antecedent for "it", weird persona for Nicole) to `[home_daily]` *"I always get stuck with doing the dishes when my brothers aren't home"*. Same pedagogical target (need *get* + *with* collocation), unambiguous answer, age-appropriate context. Kept ans:2 (mcq engine doesn't support array ans — design decision deferred).
+
+Pre-deploy validation: `tools/lint_questions.js` clean (2025 questions); ALL_QUESTIONS array parses cleanly (length 2025 unchanged).
+
+Q count: 2025 → 2025 (no count change) · Version: v20260506-t2r5
+
+---
+
+## 2026-05-06 · Session t2
 ### v20260506-t2r4 — Emphasis rebuild Phase 2 (Business inversion + Fronting)
 
 Second phase of the Emphasis rebuild per `plans/EMPHASIS_REBUILD_SPEC.md`. Adds the production-side ladder for business inversion (which previously had only 2 mcq recognition items) and introduces a new Fronting subtopic framed as a distinction skill (fronting vs negative inversion vs cleft). Phase 3 (academic inversion polish) remains deferred until Egor reactivates exercise sessions.
