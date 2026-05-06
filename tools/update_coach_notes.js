@@ -130,16 +130,47 @@ function addDaysISO(days) {
   return d.toISOString().slice(0, 10);
 }
 
+// Validate a phrase_tracker patch against the player's profile tags BEFORE
+// applying. Catches tag/profile mismatches at write time so they don't pollute
+// the data (the renderer treats unknown tags as the "Other" bucket — visible
+// but not what we want long-term).
+//
+// Allows tag === null (untagged is valid for cross-context register tendencies).
+// Throws on any tag string that isn't in the player's PLAYER_TAGS list.
+function validatePhraseTrackerPatch(player, patch) {
+  const validTags = new Set(PLAYER_TAGS[player] || []);
+  const errors = [];
+  for (const [i, add] of (patch.phrase_tracker_add || []).entries()) {
+    if (add.tag != null && !validTags.has(add.tag)) {
+      errors.push(`phrase_tracker_add[${i}] ("${add.awkward}"): tag "${add.tag}" is not in ${player}'s profile tags (${[...validTags].join(', ') || 'none'}). Use null for cross-context entries, or one of the listed tags.`);
+    }
+  }
+  if (errors.length) {
+    throw new Error('Phrase tracker validation failed:\n  ' + errors.join('\n  '));
+  }
+}
+
 function applyPhraseTrackerPatch(current, patch) {
   const tracker = current && typeof current === 'object'
     ? { entries: Array.isArray(current.entries) ? [...current.entries] : [], last_updated: current.last_updated || null }
     : { entries: [], last_updated: null };
 
-  // Index existing entries by composite key
-  const idx = new Map();
+  // Order matters: removes → adds → transitions. Removes must run first
+  // so a retag (remove + re-add same composite key) actually replaces the
+  // entry. If adds ran first, the new entry would hit the dedupe check
+  // against the still-present old entry and be silently dropped.
+  let idx = new Map();
   for (const e of tracker.entries) idx.set(entryKey(e), e);
 
-  // 1. Adds — new entries (typically at first ⚪→🔵 promotion)
+  // 1. Removes — by composite key
+  if (Array.isArray(patch.phrase_tracker_remove) && patch.phrase_tracker_remove.length) {
+    const removeSet = new Set(patch.phrase_tracker_remove.map(entryKey));
+    tracker.entries = tracker.entries.filter(e => !removeSet.has(entryKey(e)));
+    idx = new Map();
+    for (const e of tracker.entries) idx.set(entryKey(e), e);
+  }
+
+  // 2. Adds — new entries (typically at first ⚪→🔵 promotion)
   for (const add of (patch.phrase_tracker_add || [])) {
     if (!add.awkward || !add.natural) continue;
     const k = entryKey(add);
@@ -162,7 +193,7 @@ function applyPhraseTrackerPatch(current, patch) {
     idx.set(k, entry);
   }
 
-  // 2. Transitions — change status, append event, optionally update next_retest
+  // 3. Transitions — change status, append event, optionally update next_retest
   for (const tr of (patch.phrase_tracker_transition || [])) {
     if (!tr.awkward || !tr.natural || !tr.to_status) continue;
     if (!STATUS_EMOJI[tr.to_status]) continue;
@@ -187,12 +218,6 @@ function applyPhraseTrackerPatch(current, patch) {
     });
   }
 
-  // 3. Removes — by composite key
-  if (Array.isArray(patch.phrase_tracker_remove) && patch.phrase_tracker_remove.length) {
-    const removeSet = new Set(patch.phrase_tracker_remove.map(entryKey));
-    tracker.entries = tracker.entries.filter(e => !removeSet.has(entryKey(e)));
-  }
-
   tracker.last_updated = new Date().toISOString();
   return tracker;
 }
@@ -205,22 +230,45 @@ function renderTrackerMarkdown(player, tracker) {
   const lastRefresh = todayISO();
   const playerCap = player.charAt(0).toUpperCase() + player.slice(1);
 
-  // Coverage counts: rows = tags, cols = statuses
+  // Coverage counts: rows = tags, cols = statuses. Three buckets:
+  //   - profile tags (player's own)
+  //   - Untagged (tag === null) — for cross-context register tendencies
+  //   - Other (tag set but outside player's profile) — likely a tag-validation slip
+  // Totals row counts every entry (regardless of tag) so the rightmost cell
+  // reconciles with entries.length — no silently invisible rows.
   const statusOrder = ['first_pass', 'active', 'retest_due', 'mastered', 'owned', 'failed_retest'];
   const counts = {};
   for (const t of tags) counts[t] = Object.fromEntries(statusOrder.map(s => [s, 0]));
+  const untagged = Object.fromEntries(statusOrder.map(s => [s, 0]));
+  const other = Object.fromEntries(statusOrder.map(s => [s, 0]));
+  let untaggedTotal = 0, otherTotal = 0;
   let totals = Object.fromEntries(statusOrder.map(s => [s, 0]));
   for (const e of entries) {
-    if (!counts[e.tag]) continue; // entries with unknown tag don't roll up
-    if (counts[e.tag][e.status] !== undefined) counts[e.tag][e.status]++;
     if (totals[e.status] !== undefined) totals[e.status]++;
+    if (e.tag == null) {
+      if (untagged[e.status] !== undefined) untagged[e.status]++;
+      untaggedTotal++;
+    } else if (counts[e.tag]) {
+      if (counts[e.tag][e.status] !== undefined) counts[e.tag][e.status]++;
+    } else {
+      if (other[e.status] !== undefined) other[e.status]++;
+      otherTotal++;
+    }
   }
 
-  const coverageRows = tags.map(t => {
+  const profileRows = tags.map(t => {
     const c = counts[t];
     const total = statusOrder.reduce((a, s) => a + c[s], 0);
     return `| \`[${t}]\` | ${c.first_pass} | ${c.active} | ${c.retest_due} | ${c.mastered} | ${c.owned} | ${c.failed_retest} | ${total} |`;
   }).join('\n');
+  const extraRows = [];
+  if (untaggedTotal > 0) {
+    extraRows.push(`| _Untagged_ | ${untagged.first_pass} | ${untagged.active} | ${untagged.retest_due} | ${untagged.mastered} | ${untagged.owned} | ${untagged.failed_retest} | ${untaggedTotal} |`);
+  }
+  if (otherTotal > 0) {
+    extraRows.push(`| _Other_ | ${other.first_pass} | ${other.active} | ${other.retest_due} | ${other.mastered} | ${other.owned} | ${other.failed_retest} | ${otherTotal} |`);
+  }
+  const coverageRows = [profileRows, ...extraRows].filter(Boolean).join('\n');
   const totalRow = `| **Total** | ${totals.first_pass} | ${totals.active} | ${totals.retest_due} | ${totals.mastered} | ${totals.owned} | ${totals.failed_retest} | ${entries.length} |`;
 
   // Inventory rows
@@ -392,6 +440,14 @@ async function main() {
     Array.isArray(patch.phrase_tracker_add) ||
     Array.isArray(patch.phrase_tracker_transition) ||
     Array.isArray(patch.phrase_tracker_remove);
+  if (trackerTouched) {
+    try {
+      validatePhraseTrackerPatch(args.player, patch);
+    } catch (e) {
+      console.error(e.message);
+      process.exit(1);
+    }
+  }
   const updatedTracker = trackerTouched
     ? applyPhraseTrackerPatch(currentTracker, patch)
     : currentTracker;
@@ -463,7 +519,9 @@ if (require.main === module) {
 
 module.exports = {
   applyPhraseTrackerPatch,
+  validatePhraseTrackerPatch,
   renderTrackerMarkdown,
   applyArrayPatch,
   applyObservationsPatch,
+  PLAYER_TAGS,
 };

@@ -33,8 +33,9 @@
 |---|---|---|---|---|---|---|---|
 | `[biz_oil]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
 | `[leisure_sport]` | 0 | 2 | 0 | 0 | 0 | 0 | 2 |
-| `[brit_expat]` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| **Total** | 0 | 3 | 0 | 0 | 0 | 0 | 4 |
+| `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
+| _Untagged_ | 0 | 6 | 0 | 0 | 0 | 0 | 6 |
+| **Total** | 0 | 10 | 0 | 0 | 0 | 0 | 10 |
 
 ---
 
@@ -42,10 +43,16 @@
 
 | Awkward | Natural | Tag | First seen | Last drill | Status | Next retest | Reps | Sources |
 |---|---|---|---|---|---|---|---|---|
-| go out of my villa | leave the villa / step outside | `[home_daily]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
 | invent something | make something up / come up with something | `[biz_oil]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
 | my achievement of 4 years ago | what I hit 4 years ago / my best from 4 years ago | `[leisure_sport]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
 | race in Zwift | race on Zwift | `[leisure_sport]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
+| we agreed | CC and I agreed | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| is not relevant for my context | isn't relevant for me | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| audit my mistake | review my mistake | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| propose whether X is relevant | tell me whether X is relevant | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| follow steps in the learning process | follow the learning ladder | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| required topics and required distribution | subtopics and type distribution | `[—]` | 2026-05-06 | — | 🔵 active | — | 0 | wrap |
+| go out of my villa | leave the villa / step outside | `[brit_expat]` | 2026-05-06 | — | 🔵 active | — | 0 | — |
 
 ---
 
