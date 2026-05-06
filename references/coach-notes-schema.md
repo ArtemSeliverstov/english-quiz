@@ -280,12 +280,19 @@ writes back via PATCH with `updateMask=coach_notes`. Other player fields are unt
 
 Lexical swaps captured via the `awkward → natural [tag]` notation in `weak_patterns`
 have a longer lifecycle than grammar entries because they need spaced retesting.
-The state machine is mechanical and runs in `stats-review`:
+The state machine is mechanical and runs in `stats-review`.
+
+**Capture-source asymmetry** (added 2026-05-06): CC captures (from the `free-write`
+skill) skip the ⚪ first_pass step and land directly as 🔵 active. Rationale: the
+coach observed the slip in real time during a structured session, which is much
+higher signal than an ML-inferred capture from the PWA worker. PWA worker captures
+(lower signal) still go through ⚪ first_pass and require a 2nd-session hit before
+promotion. Both routes converge at 🔵 active and follow the same lifecycle from
+that point.
 
 ```
-captured 1× (rec_obs, ⚪)
-  ↓ 2nd hit in any session
-weak_patterns + tracker 🔵 active
+[CC route]   captured 1× → tracker 🔵 active (immediate)
+[PWA route]  captured 1× (rec_obs, ⚪) → 2nd hit → tracker 🔵 active
   ↓ 3 clean reps in phrase_swap_drill or unprompted in free_write
 demoted from weak_patterns → tracker 🟡 retest-due (date = demote + 21 days)
   ↓ retest window opens; next phrase_swap_drill auto-includes the entry
