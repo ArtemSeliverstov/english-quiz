@@ -65,6 +65,18 @@ async function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
 }
 
+// Format a swap as the lexical-swap string the PWA parser expects:
+//   tagged:    "<awkward> → <natural> [<tag>]"
+//   untagged:  "<awkward> → <natural>"
+// See coachParseLexicalWeakPattern in index.html for the parser. Note: the PWA
+// skips untagged entries with single-word naturals (treats them as grammar
+// shorthand) — caller-side warning emitted in buildPatch().
+function formatLexicalSwap(s) {
+  return s.tag
+    ? `${s.awkward} → ${s.natural} [${s.tag}]`
+    : `${s.awkward} → ${s.natural}`;
+}
+
 function buildPatch(input) {
   const { source, session_id, swaps } = input || {};
   if (!VALID_SOURCES.has(source)) {
@@ -89,6 +101,19 @@ function buildPatch(input) {
     };
   });
 
+  // Dual-write: every active swap also goes into weak_patterns as a lexical
+  // string so the PWA's coachBuildPhrasePool picks it up. Without this the
+  // entry sits in phrase_tracker but the Phrase Swaps button stays grey.
+  const weak_patterns_add = swaps.map(formatLexicalSwap);
+
+  // Soft warning: untagged + single-word natural is invisible to the PWA
+  // parser (it treats those as grammar shorthand and skips them).
+  for (const [i, s] of swaps.entries()) {
+    if (!s.tag && s.natural.split(/\s+/).length < 2) {
+      console.warn(`[capture_swaps] WARNING: swap[${i}] "${s.awkward} → ${s.natural}" is untagged with single-word natural — PWA Phrase Swaps will skip it. Add a tag or expand the natural form.`);
+    }
+  }
+
   const sessionRef = session_id || `${source}_capture_${Date.now()}`;
   const previewList = swaps
     .map(s => `"${s.awkward}" → "${s.natural}"`)
@@ -97,6 +122,7 @@ function buildPatch(input) {
 
   return {
     phrase_tracker_add,
+    weak_patterns_add,
     recent_observations_add: [{
       date: todayISO(),
       session_id: sessionRef,
