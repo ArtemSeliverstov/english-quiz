@@ -208,6 +208,13 @@ After GitHub Pages deploys:
    exercises both paths.
 5. Refresh, verify stats reload from Firestore correctly
 6. Tap any deeplinks generated this session (if applicable) — verify they work
+7. **Coach tab → Phrase Swaps** (Phase 3, added 2026-05-06): button should be
+   visible for all 5 players. With no captured phrases yet it shows "no phrases
+   yet" and is disabled — that's correct. Once captures land via Free Write or
+   stats-review seeding, count text switches to "N phrases" and becomes clickable.
+   Per-player smoke: log in as artem, anna, nicole, ernest, egor — confirm button
+   renders in each picker (gating shared with Free Write: hidden if Worker URL
+   absent / offline / API exhausted).
 
 If anything fails: **revert immediately**.
 

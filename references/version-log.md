@@ -11,6 +11,33 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-06 · Session t2
+### v20260506-t2 — Phase 3: Phrase Swaps button on PWA Coach tab
+
+User-visible deploy of the natural-phrases initiative. Builds on Phase 1 (KB scaffolding) and Phase 2 (worker mode + tools, worker deployed to Cloudflare separately).
+
+**index.html — Coach tab additions**:
+- New "Phrase Swaps" button in the picker grid, alongside Free Write. Visible to all 5 players (Egor included). Per-player count populated from lexical entries in `coach_notes.weak_patterns` + retest-due entries in `phrase_tracker`. Disabled with "no phrases yet" until first capture lands.
+- Same liveAI gating as Free Write (hidden if Worker URL absent, offline, or API exhausted).
+- New `coachStartPhraseSwapDrill()` flow: pulls fresh player doc on start, builds 6-cue pool (4 active + 2 retest-due, mixed), opens chat with synthetic "ready" first turn.
+- New `coachPhraseSwapSendUserTurn()` and `coachPhraseSwapEnd()` mirror the Free Write loop. End-of-session: log to `coach_sessions/{psd_*}`, parse `session_metadata.phrase_swaps_drilled[]`, run `coachApplyPhraseSwapTransitions` (lifecycle: 3 clean → demote → 21d retest → 42d mastered → owned).
+- New `coachParseLexicalWeakPattern()` — strict regex requiring whitespace around the arrow so legacy grammar shorthand (`a→the for shared knowledge`) does not match. Filters single-word natural forms unless they carry an explicit `[tag]`.
+- `coachState` extended with `psd*` fields and `playerPhraseTracker` cache.
+- `coachMakeSessionId` emits `psd_` prefix for phrase_swap_drill mode (mirrors the prefix added to `tools/log_coach_session.js` in Phase 2).
+- `coachShowPicker` resets the new state on exit.
+
+**Smoke-tested in Claude Preview (artem signed in)**: button renders correctly, parser rejects all known false positives (grammar shorthand, single-word natural forms without tag), pool builder mixes active + retest with proper de-dupe and date filtering. Console clean, no JS errors.
+
+**Pre-deploy validation**: JS syntax OK; question count 1988 unchanged; schema lint clean (1988 questions); transform keyword audit clean (46 transforms); no duplicate consts; no sparse arrays; version string consistent across 3 canonical locations.
+
+**Worker dependency**: this PWA build calls `mode: "phrase_swap_drill"` which was added in Phase 2 and deployed to Cloudflare (worker version `2aaf2c3f-7c52-4958-830f-2115179a1ea5`). Worker is live; the button just had no UI to call it until now.
+
+**What's next (Phase 4)**: seed 2-3 swaps per player into `weak_patterns` so the button enables on real player accounts; run an end-to-end drill per player; verify `phrase_tracker` transitions land correctly; regenerate the 5 markdown trackers.
+
+Q count: 1988 (unchanged) · Version: v20260506-t2
+
+---
+
+## 2026-05-06 · Session t2
 ### Phase 2 — Natural-phrases worker mode + tools (worker deploy required, no PWA deploy)
 
 Builds on Phase 1's KB scaffolding. Adds the `phrase_swap_drill` worker mode and extends the two CLI tools that touch coach data so the lifecycle loop is now exercisable end-to-end (capture → store → drill → log → transition → markdown regen).

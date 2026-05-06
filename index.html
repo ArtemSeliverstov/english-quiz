@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260505-t1r4">
+  <meta name="app-version" content="v20260506-t2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1035,7 +1035,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260505-t1r4</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260506-t2</span></p>
 </header>
 
 <!-- TABS -->
@@ -1372,6 +1372,10 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <button class="coach-type-btn" data-type="free_write" onclick="coachStartFreeWrite()" title="Live AI — chat with the coach about anything you write">
           <span class="coach-type-name">Free Write</span>
           <span class="coach-type-count">live AI</span>
+        </button>
+        <button class="coach-type-btn" data-type="phrase_swap_drill" onclick="coachStartPhraseSwapDrill()" title="Live AI — practise stiff/calqued phrases, swap them for natural ones">
+          <span class="coach-type-name">Phrase Swaps</span>
+          <span class="coach-type-count" data-count-for="phrase_swap_drill">…</span>
         </button>
       </div>
       <button id="spellHelpBtn" class="coach-spellhelp-btn" onclick="coachOpenSpellHelp()" title="Quick spelling lookup with example sentence">
@@ -7912,7 +7916,7 @@ function coachPickFreeWriteStarter(player) {
 
 const coachState = {
   // Common
-  type: null,             // 'translation' | 'free_write' | null
+  type: null,             // 'translation' | 'free_write' | 'phrase_swap_drill' | null
   meta: null,
   lastSummary: null,
   apiUnavailable: false,  // set true after API_402; hides Free Write/Escalate for the rest of the tab session
@@ -7934,11 +7938,23 @@ const coachState = {
   fwModel: '',
   fwStarter: '',
   fwBusy: false,          // true while a request is in-flight
+  // Phrase Swap Drill flow (Phase 3 — natural-phrases initiative)
+  psdMessages: [],
+  psdTurnCount: 0,
+  psdSessionId: '',
+  psdStartedAt: 0,
+  psdTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  psdModel: '',
+  psdPool: [],            // resolved pool sent in the worker context
+  psdTargetCount: 6,
+  psdBusy: false,
   // Escalate retry flow (s92)
   escalateRetryActive: false,    // input field routes to coachEscalateRetrySubmit while true
   escalateRetryStartedAt: 0,
   // Cached coach_notes (loaded at coachOpenTab; sent in context payloads)
   playerCoachNotes: null,
+  // Cached phrase_tracker (loaded at coachOpenTab — used by phrase_swap_drill pool builder)
+  playerPhraseTracker: null,
 };
 
 async function coachOpenTab() {
@@ -7968,8 +7984,8 @@ function coachApplyShellLayout() {
     const type = btn.dataset.type;
     const countEl = btn.querySelector('.coach-type-count');
     const txt = countEl ? countEl.textContent.trim() : '';
-    // Free Write availability is governed by coachUpdateLiveAIAvailability — leave alone.
-    if (type === 'free_write') { btn.style.display = ''; return; }
+    // Free Write & Phrase Swaps availability is governed by liveAI gating — leave alone.
+    if (type === 'free_write' || type === 'phrase_swap_drill') { btn.style.display = ''; return; }
     if (!learner) { btn.style.display = ''; return; }
     // Hide if disabled (no library content) or count parses to zero.
     const numMatch = txt.match(/^(\d+)/);
@@ -7981,14 +7997,47 @@ function coachApplyShellLayout() {
   if (backLink) backLink.style.display = learner ? '' : 'none';
 }
 
-// Read player's current coach_notes once per tab open. Used in Free Write/Escalate
-// payloads to give the Worker the system prompt's "About this learner" context.
+// Read player's current coach_notes + phrase_tracker once per tab open. Used in
+// Free Write/Escalate payloads (coach_notes) and the Phrase Swaps button count
+// (phrase_tracker + lexical weak_patterns). Phrase Swap Drill itself re-reads
+// at start to avoid stale pool selection.
 async function coachLoadPlayerCoachNotes() {
   try {
     const player = await fsGet('players/' + currentPlayer);
     coachState.playerCoachNotes = (player && player.coach_notes) || null;
+    coachState.playerPhraseTracker = (player && player.phrase_tracker) || null;
   } catch (e) {
     coachState.playerCoachNotes = null;
+    coachState.playerPhraseTracker = null;
+  }
+  // Refresh the Phrase Swaps button count if the picker is on screen.
+  coachUpdatePhraseSwapAvailability();
+}
+
+// Compute the size of the available phrase pool (active + retest-due) and update
+// the Phrase Swaps button accordingly. Mirrors coachUpdateLiveAIAvailability —
+// hides the button when nothing to drill, the API is down, or the network is off.
+function coachUpdatePhraseSwapAvailability() {
+  const btn = document.querySelector('.coach-type-btn[data-type="phrase_swap_drill"]');
+  if (!btn) return;
+  const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  const cn = coachState.playerCoachNotes || {};
+  const tracker = coachState.playerPhraseTracker || { entries: [] };
+  const today = new Date().toISOString().slice(0, 10);
+  const lexCount = (cn.weak_patterns || [])
+    .map(coachParseLexicalWeakPattern).filter(Boolean).length;
+  const retestCount = (tracker.entries || [])
+    .filter(e => e && e.status === 'retest_due' && (!e.next_retest || e.next_retest <= today)).length;
+  const total = lexCount + retestCount;
+  const usable = liveAvail && total > 0;
+  btn.disabled = !usable;
+  btn.classList.toggle('disabled', !usable);
+  const countEl = btn.querySelector('[data-count-for="phrase_swap_drill"]');
+  if (countEl) {
+    countEl.textContent = !navigator.onLine ? 'offline' :
+                          coachState.apiUnavailable ? 'unavailable' :
+                          total === 0 ? 'no phrases yet' :
+                          total + ' phrase' + (total === 1 ? '' : 's');
   }
 }
 
@@ -8006,6 +8055,8 @@ function coachUpdateLiveAIAvailability() {
                           coachState.apiUnavailable ? 'unavailable' :
                           !COACH_WORKER_URL ? 'soon' : 'live AI';
   }
+  // Phrase Swaps button rides the same liveAI gating + a per-player pool count.
+  coachUpdatePhraseSwapAvailability();
 }
 
 function coachShowPicker() {
@@ -8029,6 +8080,14 @@ function coachShowPicker() {
   coachState.fwStartedAt = 0;
   coachState.fwTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
   coachState.fwBusy = false;
+  // Reset Phrase Swap Drill flow
+  coachState.psdMessages = [];
+  coachState.psdTurnCount = 0;
+  coachState.psdSessionId = '';
+  coachState.psdStartedAt = 0;
+  coachState.psdTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.psdPool = [];
+  coachState.psdBusy = false;
   // Reset escalate retry state
   coachState.escalateRetryActive = false;
   coachState.escalateRetryStartedAt = 0;
@@ -8082,7 +8141,12 @@ async function coachWorkerCall(payload, { retries = 1, timeoutMs = 30000 } = {})
 
 function coachMakeSessionId(player, mode) {
   const r = Math.random().toString(36).slice(2, 6);
-  return player + '_' + (mode === 'free_write' ? 'fw' : mode === 'escalate' ? 'esc' : 'sess') + '_' + Date.now() + '_' + r;
+  const prefix =
+    mode === 'free_write' ? 'fw' :
+    mode === 'escalate' ? 'esc' :
+    mode === 'phrase_swap_drill' ? 'psd' :
+    'sess';
+  return player + '_' + prefix + '_' + Date.now() + '_' + r;
 }
 
 // ─── Build the context payload sent to the Worker ───────────────────────────
@@ -8145,6 +8209,431 @@ async function coachStartFreeWrite() {
   fld.disabled = false;
   document.getElementById('coachSendBtn').disabled = false;
   setTimeout(() => fld.focus(), 80);
+}
+
+// ─── Phrase Swap Drill (Phase 3 — natural-phrases initiative) ──────────────
+// Live AI drill. RU cue → EN production, lenient scoring (multiple natural forms
+// accepted), 1–2 sentence register explanation on stiff production.
+//
+// Pool source:
+//   1. Lexical entries in coach_notes.weak_patterns matching `awkward → natural [tag]`
+//   2. Retest-due entries in phrase_tracker.entries (status=retest_due, next_retest≤today)
+//
+// Worker mode: 'phrase_swap_drill'. See worker/index.js phraseSwapDrillSystemPrompt.
+// Tracker schema + lifecycle in references/coach-notes-schema.md.
+const COACH_PSD_MODEL = COACH_FW_MODEL;
+const PSD_DEFAULT_TARGET = 6;
+
+// Parse a weak_patterns entry of the form "<awkward> → <natural> [<tag>]" into
+// an entry. Returns null if the entry isn't a lexical swap (no arrow + brackets).
+// Tag is optional in spec but recommended; entries without [tag] still parse.
+function coachParseLexicalWeakPattern(s) {
+  if (typeof s !== 'string') return null;
+  // Strip "(coach_session YYYY-MM-DD)" trailing tag (added by coachMergeWeakPatterns)
+  const cleaned = s.replace(/\s*\(coach_session[^)]*\)\s*$/i, '').trim();
+  // Match "X → Y [tag]" — REQUIRE whitespace around the arrow so legacy grammar
+  // shorthand like "a→the for shared knowledge" (no spaces) does not match.
+  // Accepts both U+2192 (→) and -> as separators.
+  const m = cleaned.match(/^(.+?)\s+(?:→|->)\s+(.+?)(?:\s*\[([a-z_]+)\])?\s*$/i);
+  if (!m) return null;
+  const awkward = m[1].trim();
+  const natural = m[2].trim();
+  if (!awkward || !natural) return null;
+  // Extra signal: lexical swaps either carry an explicit [tag] OR have a
+  // multi-word natural form. Single-word natural without a tag is most likely a
+  // grammar shorthand (e.g. "arrive to → at") — skip it.
+  if (natural.split(/\s+/).length < 2 && !m[3]) return null;
+  return { awkward, natural, tag: (m[3] || '').toLowerCase() || null, status: 'active' };
+}
+
+function coachBuildPhrasePool({ weakPatterns, phraseTracker, target }) {
+  const today = new Date().toISOString().slice(0, 10);
+  // Active entries (from weak_patterns)
+  const active = (weakPatterns || [])
+    .map(coachParseLexicalWeakPattern)
+    .filter(Boolean);
+  // Retest-due entries (from phrase_tracker)
+  const trackerEntries = (phraseTracker && Array.isArray(phraseTracker.entries))
+    ? phraseTracker.entries : [];
+  const retestDue = trackerEntries
+    .filter(e => e && e.status === 'retest_due' && (!e.next_retest || e.next_retest <= today))
+    .map(e => ({
+      awkward: e.awkward,
+      natural: e.natural,
+      tag: e.tag || null,
+      status: 'retest_due',
+      also_accept: Array.isArray(e.also_accept) ? e.also_accept : undefined,
+    }));
+  // Mix: prefer 4 active + 2 retest, but fill from whichever pool has stock.
+  // Total capped at target; if neither pool has anything, return empty.
+  const want = target || PSD_DEFAULT_TARGET;
+  const wantRetest = Math.min(2, retestDue.length);
+  const wantActive = Math.min(want - wantRetest, active.length);
+  // De-dupe across pools by composite key
+  const key = e => (e.awkward || '') + '|||' + (e.natural || '');
+  const seen = new Set();
+  const pool = [];
+  for (const e of retestDue.slice(0, wantRetest)) {
+    if (seen.has(key(e))) continue;
+    seen.add(key(e));
+    pool.push(e);
+  }
+  for (const e of active) {
+    if (pool.length >= want) break;
+    if (seen.has(key(e))) continue;
+    seen.add(key(e));
+    pool.push(e);
+    if (pool.length >= wantRetest + wantActive) break;
+  }
+  return pool;
+}
+
+async function coachStartPhraseSwapDrill() {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable) {
+    alert('Live AI is temporarily unavailable. Try Translation Drill instead.');
+    return;
+  }
+  if (!navigator.onLine) {
+    alert('You appear to be offline. Phrase Swaps needs a connection.');
+    return;
+  }
+  // Pull fresh player doc to get latest weak_patterns + phrase_tracker
+  let playerDoc;
+  try {
+    playerDoc = await fsGet('players/' + currentPlayer);
+  } catch (e) {
+    alert('Could not load your profile to build the drill. Try again in a moment.');
+    return;
+  }
+  const cn = (playerDoc && playerDoc.coach_notes) || {};
+  const tracker = (playerDoc && playerDoc.phrase_tracker) || { entries: [] };
+  coachState.playerCoachNotes = cn;
+  coachState.playerPhraseTracker = tracker;
+  const pool = coachBuildPhrasePool({
+    weakPatterns: cn.weak_patterns || [],
+    phraseTracker: tracker,
+    target: PSD_DEFAULT_TARGET,
+  });
+  if (!pool.length) {
+    alert('Nothing to drill yet — your phrase list is empty. Captures land here after a few Free Write sessions.');
+    return;
+  }
+  coachState.type = 'phrase_swap_drill';
+  coachState.psdMessages = [];
+  coachState.psdTurnCount = 0;
+  coachState.psdSessionId = coachMakeSessionId(currentPlayer, 'phrase_swap_drill');
+  coachState.psdStartedAt = Date.now();
+  coachState.psdTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.psdModel = COACH_PSD_MODEL;
+  coachState.psdPool = pool;
+  coachState.psdTargetCount = Math.min(pool.length, PSD_DEFAULT_TARGET);
+  // Switch UI: hide picker, show chat + input + end-session button
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  // Header line + initial loading message
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Phrase Swaps · ${coachState.psdTargetCount} cues</div>`
+  );
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Setting up…</span>');
+  // First worker call — synthetic "ready" user turn to kick off the first cue
+  const initMsg = { role: 'user', content: 'ready' };
+  coachState.psdMessages.push(initMsg);
+  const result = await coachWorkerCall({
+    mode: 'phrase_swap_drill',
+    model: coachState.psdModel,
+    messages: coachState.psdMessages,
+    context: coachBuildContext({
+      phrase_pool: coachState.psdPool,
+      target_item_count: coachState.psdTargetCount,
+    }),
+    session_id: coachState.psdSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    document.getElementById('coachExitRow').style.display = '';
+    coachState.type = null;
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.psdMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.psdTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.psdTokensTotal.input += t.input || 0;
+  coachState.psdTokensTotal.output += t.output || 0;
+  coachState.psdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.psdTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.psdModel = result.model_used;
+  // Show input row + end button
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowPhraseSwapEndRow();
+  document.getElementById('coachExitRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowPhraseSwapEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End drill';
+  endBtn.onclick = () => coachPhraseSwapEnd();
+  row.appendChild(endBtn);
+  // Soft cap: nudge after target_count cues drilled
+  if (coachState.psdTurnCount >= coachState.psdTargetCount) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "That's the lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachPhraseSwapSendUserTurn() {
+  if (coachState.type !== 'phrase_swap_drill' || coachState.psdBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.psdBusy = true;
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  coachState.psdMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  const result = await coachWorkerCall({
+    mode: 'phrase_swap_drill',
+    model: coachState.psdModel,
+    messages: coachState.psdMessages,
+    context: coachBuildContext({
+      phrase_pool: coachState.psdPool,
+      target_item_count: coachState.psdTargetCount,
+    }),
+    session_id: coachState.psdSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    coachState.psdMessages.pop(); // rewind
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.psdBusy = false;
+    coachShowPhraseSwapEndRow();
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.psdMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.psdTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.psdTokensTotal.input += t.input || 0;
+  coachState.psdTokensTotal.output += t.output || 0;
+  coachState.psdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.psdTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.psdModel = result.model_used;
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.psdBusy = false;
+  coachShowPhraseSwapEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachPhraseSwapEnd() {
+  if (coachState.type !== 'phrase_swap_drill') return;
+  if (coachState.psdBusy) return;
+  if (!coachState.psdMessages.filter(m => m.role === 'user' && m.content !== 'ready').length) {
+    // Nothing actually drilled — just go back
+    coachShowPicker();
+    return;
+  }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.psdBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the drill…</span>');
+  const closingMessages = coachState.psdMessages.concat([{ role: 'user', content: "That's it — wrap up the drill." }]);
+  const result = await coachWorkerCall({
+    mode: 'phrase_swap_drill',
+    model: coachState.psdModel,
+    messages: closingMessages,
+    context: coachBuildContext({
+      phrase_pool: coachState.psdPool,
+      target_item_count: coachState.psdTargetCount,
+    }),
+    session_id: coachState.psdSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the drill: ' + escapeHtml(coachFriendlyError(result)) + ' (your responses will not be logged)</em>',
+      'feedback-wrong');
+    coachState.psdBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  // Render wrap-up text (model emits the player-facing table + feedback ask in PART 1)
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.psdMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.psdMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.psdTokensTotal.input += t.input || 0;
+  coachState.psdTokensTotal.output += t.output || 0;
+  coachState.psdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.psdTokensTotal.cache_creation += t.cache_creation || 0;
+  // Persist session log + apply tracker transitions (best effort)
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: coachState.psdSessionId,
+      mode: 'phrase_swap_drill',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.psdMessages,
+      model_used: result.model_used || coachState.psdModel,
+      tokens_used: coachState.psdTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.phrase_swaps_drilled)) {
+      await coachApplyPhraseSwapTransitions(result.session_metadata.phrase_swaps_drilled);
+    }
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Drill saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  // Token tally
+  const tot = coachState.psdTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Drill tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.psdBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
+}
+
+// Apply tracker lifecycle transitions based on phrase_swaps_drilled[] from the
+// session_metadata. Conservative client-side rule (CC stats-review remains the
+// authoritative orchestrator):
+//   - For each drilled entry where produced_natural=true and the tracker entry
+//     was 'active': bump reps + last_drilled. If reps reaches 3, demote (status
+//     → retest_due, next_retest = today + 21d, also drop the lexical entry from
+//     coach_notes.weak_patterns).
+//   - For each drilled entry where status was 'retest_due' and produced_natural
+//     =true: promote to 'mastered', next_retest = today + 42d.
+//   - For each drilled entry where status was 'retest_due' and produced_natural
+//     =false: re-add to active rotation (status → active, next_retest cleared,
+//     re-add to weak_patterns).
+//   - First-time captures (entry not in tracker yet) are added as 'active' with
+//     first_seen=today, reps=0 — the model produces this when the player nails
+//     a phrase but it wasn't in the original pool. Skip if no awkward/natural.
+async function coachApplyPhraseSwapTransitions(drilled) {
+  if (!Array.isArray(drilled) || !drilled.length) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const addDays = n => {
+    const d = new Date();
+    d.setUTCDate(d.getUTCDate() + n);
+    return d.toISOString().slice(0, 10);
+  };
+  // Re-pull current state (server-side) to avoid clobbering concurrent writes
+  let player;
+  try { player = await fsGet('players/' + currentPlayer); } catch (e) { return; }
+  const cn = (player && player.coach_notes) || {};
+  const tracker = (player && player.phrase_tracker) || { entries: [], last_updated: null };
+  const trackerByKey = new Map();
+  for (const e of (tracker.entries || [])) {
+    trackerByKey.set((e.awkward || '') + '|||' + (e.natural || ''), e);
+  }
+  const wpAdds = [];
+  const wpRemoves = [];
+  for (const d of drilled) {
+    if (!d || typeof d.awkward !== 'string' || typeof d.natural !== 'string') continue;
+    const key = d.awkward + '|||' + d.natural;
+    let entry = trackerByKey.get(key);
+    if (!entry) {
+      // First-time capture (e.g. model surfaced a swap mid-drill that wasn't in pool)
+      entry = {
+        awkward: d.awkward,
+        natural: d.natural,
+        tag: d.tag || null,
+        status: 'active',
+        first_seen: today,
+        last_drilled: today,
+        next_retest: null,
+        reps: d.produced_natural ? 1 : 0,
+        sources: ['psd'],
+        events: [{ date: today, event: 'captured', note: 'first surfaced in psd_drill' }],
+      };
+      tracker.entries = tracker.entries || [];
+      tracker.entries.push(entry);
+      trackerByKey.set(key, entry);
+      // Add the lexical form to weak_patterns so future drills include it
+      const wp = entry.awkward + ' → ' + entry.natural + (entry.tag ? ' [' + entry.tag + ']' : '');
+      wpAdds.push(wp);
+      continue;
+    }
+    entry.last_drilled = today;
+    entry.sources = entry.sources || [];
+    entry.sources.push('psd');
+    entry.events = entry.events || [];
+    if (entry.status === 'active' && d.produced_natural) {
+      entry.reps = (entry.reps || 0) + 1;
+      if (entry.reps >= 3) {
+        const prev = entry.status;
+        entry.status = 'retest_due';
+        entry.next_retest = addDays(21);
+        entry.events.push({ date: today, event: prev + '_to_retest_due', next_retest: entry.next_retest });
+        // Demote from weak_patterns active rotation
+        const wp = entry.awkward + ' → ' + entry.natural + (entry.tag ? ' [' + entry.tag + ']' : '');
+        wpRemoves.push(wp);
+      }
+    } else if (entry.status === 'retest_due' && d.produced_natural) {
+      const prev = entry.status;
+      entry.status = 'mastered';
+      entry.next_retest = addDays(42);
+      entry.events.push({ date: today, event: prev + '_to_mastered', next_retest: entry.next_retest });
+    } else if (entry.status === 'mastered' && d.produced_natural) {
+      const prev = entry.status;
+      entry.status = 'owned';
+      entry.next_retest = null;
+      entry.events.push({ date: today, event: prev + '_to_owned' });
+    } else if ((entry.status === 'retest_due' || entry.status === 'mastered' || entry.status === 'owned') && !d.produced_natural) {
+      // Failed retest — back to active
+      const prev = entry.status;
+      entry.status = 'active';
+      entry.next_retest = null;
+      entry.events.push({ date: today, event: prev + '_to_active', note: 'failed retest' });
+      const wp = entry.awkward + ' → ' + entry.natural + (entry.tag ? ' [' + entry.tag + ']' : '');
+      wpAdds.push(wp);
+    }
+    // 'active' + !produced_natural = no transition; just record source/last_drilled
+  }
+  tracker.last_updated = new Date().toISOString();
+  // Patch weak_patterns (priority-aware merge — same shape as coachMergeWeakPatterns)
+  const existing = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
+  const removeSet = new Set(wpRemoves);
+  const filtered = existing.filter(s => !removeSet.has(s));
+  const newAdds = wpAdds.filter(p => !filtered.some(e => e === p));
+  const newWeak = [...filtered, ...newAdds];
+  const newCn = Object.assign({}, cn, {
+    weak_patterns: newWeak,
+    last_updated: new Date().toISOString(),
+    last_updated_by: 'coach_tab',
+    update_count: (cn.update_count || 0) + 1,
+  });
+  await fsMerge('players/' + currentPlayer, { coach_notes: newCn, phrase_tracker: tracker });
+  coachState.playerCoachNotes = newCn;
+  coachState.playerPhraseTracker = tracker;
 }
 
 // ─── Spell Help (D7) ────────────────────────────────────────────────────────
@@ -9624,6 +10113,7 @@ function coachExitToPicker() {
 function coachSendDispatch() {
   if (coachState.escalateRetryActive) return coachEscalateRetrySubmit();
   if (coachState.type === 'free_write') return coachFreeWriteSendUserTurn();
+  if (coachState.type === 'phrase_swap_drill') return coachPhraseSwapSendUserTurn();
   return coachSubmitAnswer(); // translation default
 }
 
