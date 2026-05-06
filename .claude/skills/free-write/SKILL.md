@@ -37,11 +37,11 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 Auto-write at session close, table read-out, non-blocking feedback ask. Full update protocol + read-out templates + log schema + assessment rules in `references/coach-notes-schema.md`.
 
-**1. Build the patches silently** — `coach_sessions/{fw_*}` log + `coach_notes` patch (rec_obs, weak_patterns, phrase_tracker for swaps). Swaps: scan for stiff/calqued moments, pair with natural form, tag `[biz_oil] | [brit_expat] | [leisure_sport]`. CC captures land directly `status: active` (coach observed the evidence; PWA worker uses first_pass gate). PV swap stays in `pvs_used_correctly`.
+**1. Build the patches silently** — `coach_sessions/{fw_*}` log, `coach_notes` patch (rec_obs + weak_patterns updates), and a swaps list. Swaps: scan for stiff/calqued moments, pair with natural form. Tag if domain-bound (`[biz_oil] | [brit_expat] | [leisure_sport]`); leave untagged for cross-context register tendencies. PV swap stays in `pvs_used_correctly`.
 
 **Assessment REQUIRED** on the session log — `{estimated_level, sentence_count, error_count, confidence}`. Drives the silent CEFR fold into lvlStats. Use `confidence: "low"` for <3 sentences or off-topic; field must be present even when fold skips.
 
-**2. Auto-write** — `tools/log_coach_session.js artem` + `tools/update_coach_notes.js artem`. No preview.
+**2. Auto-write** (no preview): `tools/log_coach_session.js artem` (chat log), `tools/update_coach_notes.js artem` (rec_obs + weak_patterns), `tools/capture_swaps.js artem` with `source: 'fw'` (swaps → phrase_tracker; the tool handles status + lifecycle stamps).
 
 **3. Render the player-facing table** using the `free_write` template in `coach-notes-schema.md`.
 
