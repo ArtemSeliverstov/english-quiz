@@ -106,12 +106,21 @@ function buildPatch(input) {
   // entry sits in phrase_tracker but the Phrase Swaps button stays grey.
   const weak_patterns_add = swaps.map(formatLexicalSwap);
 
-  // Soft warning: untagged + single-word natural is invisible to the PWA
-  // parser (it treats those as grammar shorthand and skips them).
-  for (const [i, s] of swaps.entries()) {
-    if (!s.tag && s.natural.split(/\s+/).length < 2) {
-      console.warn(`[capture_swaps] WARNING: swap[${i}] "${s.awkward} → ${s.natural}" is untagged with single-word natural — PWA Phrase Swaps will skip it. Add a tag or expand the natural form.`);
-    }
+  // Hard validation: untagged + single-word natural is invisible to the PWA
+  // parser (it treats those as grammar shorthand and skips them). Fail fast
+  // here so the swap doesn't silently miss the drill rotation.
+  const tooShort = swaps
+    .map((s, i) => ({ i, s }))
+    .filter(({ s }) => !s.tag && s.natural.split(/\s+/).length < 2);
+  if (tooShort.length) {
+    const lines = tooShort.map(({ i, s }) =>
+      `  swap[${i}] "${s.awkward} → ${s.natural}": untagged + single-word natural`
+    );
+    throw new Error(
+      'Untagged swaps require 2+ words in the natural form, otherwise the PWA parser skips them as grammar shorthand:\n' +
+      lines.join('\n') +
+      '\n  Fix: expand the natural form (e.g., "fix" → "sort it out") OR add a tag (biz_oil/leisure_sport/brit_expat/...).'
+    );
   }
 
   const sessionRef = session_id || `${source}_capture_${Date.now()}`;
