@@ -35,10 +35,12 @@ C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.
 | Phase | What | Status |
 |---|---|---|
 | 1 | Audit existing 18 + add Cleft, Do-emphasis, So/Neither, Intensifiers (26 new) | ✅ done t2r3 |
-| 2 | Business inversion + Fronting (~9–11 new). Phase 7 fronting reframed as distinction skill (vs cleft/inversion). | pending |
+| 2 | Business inversion (6 new) + Fronting (5 new, distinction skill) | ✅ done t2r4 |
 | 3 | Academic inversion polish (no new authoring; possibly retire 1–2 redundant `inv` mcqs) | **deferred** — Egor-triggered. Activate when Egor reactivates exercise sessions. |
 
-Phase 1 outcomes: Emphasis went 18→44 questions, input share 16.7%→25%, B1 0→7, B2 1→20. So/Neither/Nor and Do-emphasis subtopics added from zero. Cleft expanded 1→7.
+Phase 1 outcomes: Emphasis 18→44, input share 16.7%→25%, B1 0→7, B2 1→20. So/Neither/Nor and Do-emphasis subtopics added from zero. Cleft expanded 1→7.
+
+Phase 2 outcomes: Emphasis 44→55, input share 25%→29%. Business inversion 2→8 (added Should-you / Had-I-known / Were-we-to / Under-no-circumstances production). Fronting 0→5 with the focus on distinction-from-inversion (the most common over-extension error). Phase 3 still deferred.
 
 ---
 

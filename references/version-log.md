@@ -11,6 +11,49 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-06 · Session t2
+### v20260506-t2r4 — Emphasis rebuild Phase 2 (Business inversion + Fronting)
+
+Second phase of the Emphasis rebuild per `plans/EMPHASIS_REBUILD_SPEC.md`. Adds the production-side ladder for business inversion (which previously had only 2 mcq recognition items) and introduces a new Fronting subtopic framed as a distinction skill (fronting vs negative inversion vs cleft). Phase 3 (academic inversion polish) remains deferred until Egor reactivates exercise sessions.
+
+**New content (11 questions)**:
+- **Business inversion** (6 new, `emph_bi01–06`): the four formal patterns Artem actually uses in business writing.
+  - *Should you have / Should you wish* — formal email closers (`emph_bi01`, `emph_bi06`, both input).
+  - *Had I/he known* — third-conditional inversion for counterfactual regret (`emph_bi02` transform, `emph_bi05` multi).
+  - *Were we to* — formal hypothetical inversion for board/analyst questions (`emph_bi03` input).
+  - *Under no circumstances + aux + S* — zero-tolerance prohibition (`emph_bi04` transform).
+  - All `biz:true`, all real Bapco/board/vendor/audit contexts.
+- **Fronting** (5 new, `emph_fr01–05`): framed as the distinction skill. The teaching value is recognising when to invert (negative adverbial fronts) vs when not (object/topic fronts).
+  - `emph_fr01` gap — object fronting + anti-inversion contrast (coffee/pasta).
+  - `emph_fr02` input — adverbial fronting with pronoun subject (no inversion).
+  - `emph_fr03` gap — predicate fronting with be-inversion (formal register).
+  - `emph_fr04` input — object fronting + negation in main clause; the trap question (do NOT invert).
+  - `emph_fr05` transform — object fronting transformation; explicit contrast with cleft and inversion alternatives.
+
+**Coverage shift**:
+- Total Emphasis 44 → 55.
+- Input share 25.0% → 29.1%.
+- Business inversion subtopic 2 → 8 (now has full ladder: 2 mcq recognition + 3 input + 1 multi + 2 transform).
+- Fronting subtopic 0 → 5.
+- Type mix unchanged structurally; multi count grew 5→6, transform 9→12.
+
+**Subtopic distribution (all 55 questions, post-Phase-2)**:
+| # | Subtopic | Count |
+|---|---|---|
+| 1 | Cleft | 7 |
+| 2 | Do-emphasis | 6 |
+| 3 | So/Neither/Nor | 7 |
+| 4 | Intensifiers | 9 |
+| 5 | Business inversion | 8 |
+| 6 | Academic inversion | 12 (Phase 3, deferred) |
+| 7 | Fronting | 5 |
+
+Pre-deploy validation: lint clean (2025 questions); transform-keyword audit clean (54 transforms, including the 3 new); JS syntax OK; sparse-array clean; preview eval confirms all 11 new IDs load, multi-blank schema validates, transform keyword rules satisfied; no console errors.
+
+Q count: 2014 → 2025 (+11) · Version: v20260506-t2r4
+
+---
+
+## 2026-05-06 · Session t2
 ### v20260506-t2r3 — Emphasis rebuild Phase 1 (Cleft, Do-emph, So/Neither, Intensifiers)
 
 Emphasis category rebuilt per `plans/EMPHASIS_REBUILD_SPEC.md`. The category was over-indexed on academic inversion (12 of 18 questions) at the expense of constructions the family actually uses. Phase 1 closes three subtopic gaps (Do-emphasis, So/Neither/Nor, and substantial Cleft expansion) and adds an Intensifiers ladder.
