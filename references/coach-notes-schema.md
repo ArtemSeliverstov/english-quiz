@@ -282,13 +282,19 @@ Lexical swaps captured via the `awkward → natural [tag]` notation in `weak_pat
 have a longer lifecycle than grammar entries because they need spaced retesting.
 The state machine is mechanical and runs in `stats-review`.
 
-**Capture-source asymmetry** (added 2026-05-06): CC captures (from the `free-write`
-skill) skip the ⚪ first_pass step and land directly as 🔵 active. Rationale: the
-coach observed the slip in real time during a structured session, which is much
-higher signal than an ML-inferred capture from the PWA worker. PWA worker captures
-(lower signal) still go through ⚪ first_pass and require a 2nd-session hit before
-promotion. Both routes converge at 🔵 active and follow the same lifecycle from
-that point.
+**Capture-source asymmetry** (added 2026-05-06): CC captures skip the ⚪ first_pass
+step and land directly as 🔵 active. Rationale: the coach observed the slip in
+real time during a structured session, which is much higher signal than an
+ML-inferred capture from the PWA worker. PWA worker captures (lower signal) still
+go through ⚪ first_pass and require a 2nd-session hit before promotion. Both
+routes converge at 🔵 active and follow the same lifecycle from that point.
+
+CC routes that use the asymmetry — all go through `tools/capture_swaps.js`, which
+stamps the right `sources` prefix and skips ⚪:
+- `fw` — `free-write` skill, lexical/register slips during chat
+- `ex` — `exercise-session` skill, slips during structured drills
+- `wrap` — end-of-session prompt-coaching round-up (Artem's stiff/calqued prompts
+  to CC, captured at session wrap per the `feedback_cc_prompt_coaching` memory rule)
 
 ```
 [CC route]   captured 1× → tracker 🔵 active (immediate)

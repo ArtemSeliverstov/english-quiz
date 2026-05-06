@@ -90,6 +90,31 @@ subcollections. Recovery source after the RTDB sunset (~2026-05-28). See
 `backups/` is `.gitignore`d on `main` — production snapshots go to the
 `backups` orphan branch via `.github/workflows/backup.yml`.
 
+### `capture_swaps.js` — capture awkward→natural swaps to phrase_tracker
+
+```bash
+node tools/capture_swaps.js artem ./swaps.json
+cat swaps.json | node tools/capture_swaps.js artem -
+node tools/capture_swaps.js artem ./swaps.json --dry-run
+```
+
+Thin wrapper over `update_coach_notes.js` that centralises the CC capture-source asymmetry rule (skip ⚪ first_pass, land at 🔵 active). Used by the `free-write` skill, the `exercise-session` skill, and the end-of-session prompt-coaching wrap.
+
+Input shape:
+
+```json
+{
+  "source": "fw",
+  "session_id": "artem_fw_1778100000000_xy12",
+  "swaps": [
+    { "awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat" },
+    { "awkward": "audit my mistake", "natural": "review my mistake" }
+  ]
+}
+```
+
+`source` is one of `fw` (free-write) / `ex` (exercise-session) / `psd` (phrase_swap_drill) / `wrap` (end-of-session). `tag` is optional — omit for register tendencies that apply across all contexts. The tool stamps `status: 'active'`, `first_seen: today`, `sources: [source]`, and appends a `recent_observations` summary entry referencing the session. Lifecycle thereafter follows `references/coach-notes-schema.md` "Phrase tracker lifecycle".
+
 ### `update_coach_notes.js` — apply a patch to coach_notes
 
 ```bash
