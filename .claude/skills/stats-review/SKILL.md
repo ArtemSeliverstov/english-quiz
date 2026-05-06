@@ -14,6 +14,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 - `references/coverage-matrix.md` — category targets, input share priorities
 - `references/coach-notes-schema.md` — update protocol and promotion rule
 - `progress/phrasal-verbs-tracker.md` (Artem) and `progress/phrasal-verbs-tracker-anna.md` (Anna) — refresh per-PV status when that player's stats are reviewed; methodology in Artem's file (see refresh protocol at bottom)
+- `progress/natural-phrases-tracker-{player}.md` × 5 — **generated** views of `players/{name}.phrase_tracker`. Regenerate (overwrite) on every stats-review run. Never hand-edit. Methodology in `coach-notes-schema.md` "Phrase tracker lifecycle".
 
 ## Workflow
 
@@ -30,6 +31,16 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 **4. Propose coach_notes updates.** Per player, 0–4 updates as a table. Follow the protocol in `references/coach-notes-schema.md` (preview → approve per player → `update_coach_notes.js`).
 
 **5. Action recommendations.** Don't apply here — this skill produces, the user triggers `quiz-development` or `exercise-session` to act.
+
+**6. Phrase tracker maintenance** (auto, runs after coach_notes proposals are confirmed). For each player:
+   1. Read `players/{name}.phrase_tracker` from Firestore
+   2. For each entry, run lifecycle transitions based on the period's `coach_sessions` (mode `phrase_swap_drill` or `free_write` with `phrase_swaps_captured`):
+      - 3 clean reps in `phrase_swap_drill` or any unprompted free-write production → demote from `weak_patterns`, set tracker `status: retest_due`, `next_retest = today + 21d`
+      - Retest pass → `status: mastered`, `next_retest = today + 42d`
+      - Second retest pass → `status: owned`, `next_retest = null`
+      - Any retest fail → re-add to `weak_patterns`, `status: active`, log `failed_retest` event
+   3. Surface "retest due today/this week" entries in the review output so the next `phrase_swap_drill` knows to seed them (worker reads `phrase_tracker` directly when assembling the drill)
+   4. Regenerate `progress/natural-phrases-tracker-{name}.md` from the updated `phrase_tracker`. Overwrite — file is generated.
 
 ## Speculation marking — mandatory
 

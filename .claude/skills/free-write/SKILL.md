@@ -5,7 +5,7 @@ description: Run a Free Write coaching session for Artem from Claude Code (lapto
 
 # Free Write — CC session
 
-Unstructured English chat. Coach: inline corrections, vocab expansion, follow-up prompts. **Artem only** (others use PWA Coach tab).
+Unstructured English chat. Coach: inline corrections, vocab expansion, follow-up prompts. CC-only by mechanism (Artem is the only player with a CC channel — others use the PWA Coach tab Free Write button, which has its own coaching path in `worker/index.js`).
 
 If he asks for scored exercises ("давай упражнения"), that's `exercise-session` — end cleanly first.
 
@@ -35,13 +35,39 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 ## End-of-session protocol
 
-**1. Summarise in chat** (under 10 lines): topics, correction patterns grouped, what was strong, one focus for next time.
+Auto-write at session close. Table read-out, then non-blocking feedback ask. The previous "preview → wait → persist" flow lost data when sessions were abandoned mid-feedback — see `coach-notes-schema.md` "Update protocol" rationale.
 
-**1a. PV swap card** (one line, optional). Offer one stiff→natural PV swap from the session: *"'we will investigate' → 'we'll look into it'"*. Skip if nothing stiff came up.
+**1. Decide the writes silently**. Build:
+- `coach_sessions/{fw_*}` log shape (schema below)
+- `coach_notes` patch — `recent_observations` append (always if anything substantial happened) + `weak_patterns` add/remove on durable signals (multi-turn pattern, clear improvement, engagement shift) + `phrase_tracker` patch for any captured swaps
+- Phrase swap captures: scan the session for stiff/calqued lexical moments and pair each with a natural form. Tag with the relevant context (`[biz_oil] | [brit_expat] | [leisure_sport]` for Artem). 2nd-occurrence rule is mechanical — single-session captures land in `recent_observations` only; 2nd hit promotes to `weak_patterns` lexical entry + `phrase_tracker` ⚪→🔵.
+- PV swap (existing): pick at most one stiff→natural PV swap to surface to Artem; PV-specific data still lands in `pvs_used_correctly`.
 
-**2. Ask**: "Log this session? Anything to change?" Wait for confirmation.
+**2. Auto-write everything** via the tools — no preview, no confirm:
+```bash
+node tools/log_coach_session.js artem <session.json>
+node tools/update_coach_notes.js artem <coach_notes_patch.json>
+```
 
-**3a. Log session** to `players/artem/coach_sessions/{session_id}` via `node tools/log_coach_session.js artem <patch.json>`. The tool generates the session_id and tags `source: 'cc_session'`. Schema:
+**3. Render the player-facing table** (≤10 lines including the feedback ask). Use the `free_write` template from `coach-notes-schema.md` "Player-facing read-out templates" — adapt rows to what actually happened. Hide internal field names, session IDs, status codes. Example:
+
+```
+**Saved.**
+
+| | |
+|---|---|
+| What we noticed | Articles solid, prepositions slipped once |
+| New phrases captured | "a while ago" (instead of "sometime ago") |
+| Active list | 7 phrases |
+
+How did it feel? One sentence — or skip.
+```
+
+**4. If Artem replies to the feedback ask**, append the answer as another `recent_observations` entry (auto, no second confirm). If he doesn't reply, the session is already saved — nothing orphaned.
+
+**5. Optional follow-up offer**: if a pattern surfaced that drill would help (articles → article_drill, particles → particle_sort, tense/prep slips → error_correction, captured swaps → phrase_swap_drill via PWA), offer as a chaser. Frame as offer, not directive.
+
+### Session log schema
 
 ```json
 {
@@ -50,6 +76,9 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
   "error_patterns_observed": ["..."],
   "topics_covered": ["..."],
   "pvs_used_correctly": ["..."],
+  "phrase_swaps_captured": [
+    {"awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat"}
+  ],
   "session_summary": "...",
   "assessment": {
     "estimated_level": "B2",
@@ -61,10 +90,6 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 ```
 
 `assessment`: silent CEFR grade folded into `lvlStats` — never mentioned in chat. Grade *production* per IELTS/CEFR (grammar gates level). `error_count` = sentences with ≥1 impeding/L1-calque error. `confidence: "low"` if <3 sentences or off-topic (fold skipped). Tool caps at 20 sentences/session.
-
-**3b. Update coach_notes** only on durable signals (multi-turn pattern, clear improvement, engagement shift). Follow the protocol in `references/coach-notes-schema.md` (preview → approve → `update_coach_notes.js`).
-
-**4. Optional follow-up offer**: if a pattern surfaced that drill would help (articles → article_drill, particles → particle_sort, tense/prep slips → error_correction), offer as a chaser. Frame as offer, not directive.
 
 ## Skip log when
 

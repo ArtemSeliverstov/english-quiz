@@ -33,10 +33,10 @@ accuracy alongside being a player.
 - Skip excessive caveats and apologies.
 - Real-world context: business / O&G / cycling / sports / Bahrain settings.
 
-**Exercise context themes**:
-- Default: business meetings, O&G operations, finance, strategy, Bahrain settings
-- Cycling and sports as recurring fallback
-- Avoid pitch-deck register (step-change, unit costs across upstream, strategy review). Use operational/hallway English — "never got around to it last quarter," "contractor's pushing back," "let's crack on."
+**Exercise context themes** (tags: `[biz_oil] | [leisure_sport] | [brit_expat]`):
+- `[biz_oil]` — business meetings, O&G operations, finance, strategy, Bahrain settings. Operational/hallway register — "never got around to it last quarter," "contractor's pushing back," "let's crack on." Avoid pitch-deck register.
+- `[leisure_sport]` — cycling, F1, gym, sports talk
+- `[brit_expat]` — pubs, padel club, rugby/F1 banter, dinner parties, dropped-by-the-club casual register
 - If Artem mentions travel at session start ("we're in Turkey this week"), shift to location-appropriate scenarios for that session
 
 **Weekly slot plan**: see `weekly-slots.md`.
@@ -63,9 +63,10 @@ Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
 - Claude communicates explanations to Anna in Russian when explaining grammar
 - Encouraging tone — engagement matters more than maximum challenge
 
-**Exercise context themes**:
-- Home life, interior, padel, neighbours
-- Daily-life situations she actually encounters
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+- `[home_daily]` — home life, interior, neighbours, daily-life situations she actually encounters
+- `[leisure_sport]` — padel, gym, weekend plans
+- `[brit_expat]` — British Club padel, school-gate parents, expat dinner parties, weekend brunch chat
 - If Artem mentions family travel at session start, shift to location-appropriate scenarios
 
 **Adjustment rules**:
@@ -95,9 +96,10 @@ fragile.
 - Up to 2 bonus exercises per week max
 - Do not increase item count until irregular verb accuracy consistently > 70% across 2+ sessions
 
-**Exercise context themes**:
-- K-pop, school, friends
-- Topics she actually cares about
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+- `[home_daily]` — K-pop, school, friends, topics she actually cares about
+- `[leisure_sport]` — sports she does or watches
+- `[brit_expat]` — expat-school friends, weekend hangouts, things her classmates would say
 - If Artem mentions family travel at session start, shift to location-appropriate scenarios
 
 **Important note (durable observation)**:
@@ -130,25 +132,40 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 - Easy on-ramp for input questions
 - Coach explanations in English (per Artem's call 2026-05-01) — different from Anna/Nicole who get Russian
 
-**Exercise context themes**: school, friends, age-appropriate scenarios.
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+- `[home_daily]` — school, friends, age-appropriate scenarios
+- `[leisure_sport]` — sports, gaming, weekend plans
+- `[brit_expat]` — expat-school playground, weekend hangouts with friends, casual peer banter
 
 ---
 
 ## Egor 🧒
 
-**Player key**: `egor` · **Level**: B2 → C1 · **Coach language**: `en` (N/A — no Coach tab use) · **Defaults**: B2+C1, `biz: false`
+**Player key**: `egor` · **Level**: B2 → C1 · **Coach language**: `en` · **Defaults**: B2+C1, `biz: false`
 
 Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
-Applying to UK/Western master's. Quiz user only — does NOT do supplementary exercises.
+English-speaking consulting work (Russian-speaking colleagues, English-language deliverables and clients). Applying to UK/Western master's.
+
+As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA Free Write, PWA Phrase Swaps drill, exercise sessions. Quiz remains primary. Coach tab access via the family PWA login — no CC channel.
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Academic vocabulary (IELTS preparation)
 - Articles (persistently weak)
 - Multi-blank performance — investigate UI vs knowledge (cross-player anomaly, see Cross-cutting principles)
 
-**Communication style for sessions**: N/A — no exercise sessions for Egor.
+**Communication style for sessions**:
+- Concise, direct. Coach explanations in English (per Artem's call 2026-05-01, same as Ernest)
+- IELTS-rubric framing where relevant (academic register, hedging, formal cohesion)
+- Engage on grammar questions; he has the metalinguistic vocabulary
 
-**For stats reviews**: focus on academic / IELTS-relevant patterns only.
+**Exercise context themes** (tags: `[academic_ielts] | [kpmg_consulting] | [almaty_daily]`):
+- `[academic_ielts]` — IELTS Writing/Speaking topics, academic register, master's-application scenarios (research aims, methodology, motivation letters)
+- `[kpmg_consulting]` — English-speaking consulting work at KPMG Almaty (client deliverables, internal English memos, audit/advisory scenarios with Russian-L1 colleagues)
+- `[almaty_daily]` — Almaty city life, weekend, family — ordinary daily-life context for non-academic items
+
+No `[brit_expat]` — different geography, no Bahrain expat exposure.
+
+**For stats reviews**: focus on academic / IELTS-relevant patterns; include Coach-tab activity now that he has access.
 
 ---
 
@@ -170,6 +187,13 @@ shift exercise themes to that location for the rest of the session.
 
 **The "Current observations" column** that lived in the previous KB is now in Firestore
 `coach_notes.recent_observations`. Read it before any session for that player.
+
+**Natural-phrase swaps** (added 2026-05-06): captured `awkward → natural [tag]` entries
+land in `coach_notes.weak_patterns` (lexical/idiom register swaps) and accumulate per
+player in `players/{name}.phrase_tracker` (Firestore canonical, markdown view at
+`progress/natural-phrases-tracker-{name}.md` regenerated by stats-review). Tags above
+identify which context each swap applies to. See `coach-notes-schema.md` for the
+notation, lifecycle, and retest cadence.
 
 **Multi-blank format anomaly**: All players who've attempted multi-blank questions
 are <55% (Artem 53%/n=55, Anna 50%/n=4, Nicole 17%/n=6, Ernest 6%/n=4, Egor 20%/n=5).

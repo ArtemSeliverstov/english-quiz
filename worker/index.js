@@ -6,8 +6,11 @@
 // and returns a structured envelope per references/phase2-coach-tab.md §7.2.
 //
 // Modes:
-//   - free_write : conversational tutoring on free-typed English
-//   - escalate   : one-shot deeper explanation after pre-generated feedback
+//   - free_write       : conversational tutoring on free-typed English
+//   - escalate         : one-shot deeper explanation after pre-generated feedback
+//   - phrase_swap_drill: lexical/register swap drill — RU cue, EN production,
+//                        lenient scoring, register explanation on stiff production
+//                        (added 2026-05-06; see references/exercise-types.md type 9)
 //
 // Secrets / vars (configure via Cloudflare dashboard or wrangler):
 //   - ANTHROPIC_API_KEY  (Secret, encrypted)
@@ -23,7 +26,11 @@
 // Artem from the Worker path — he was meant to use CC for his own sessions. In
 // practice he wants to use Free Write from the PWA too (no laptop required), and
 // the prepaid balance amply covers the extra volume.
-const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem'];
+//
+// 'egor' added 2026-05-06 alongside the natural-phrases initiative — full family
+// parity for supplementary surfaces (Free Write + phrase_swap_drill). See
+// design-decisions.md "Egor full family parity".
+const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem', 'egor'];
 
 // The PWA sends `context.coach_language` ('ru' | 'en') derived from each player's
 // FAMILY_MEMBERS profile entry (which mirrors references/family-profiles.md). The
@@ -40,10 +47,15 @@ function explainInRussian(ctx) {
   // Legacy clients (no coach_language field) — fall back to the hard-coded list.
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
-const VALID_MODES = ['free_write', 'escalate'];
+const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
+
+// phrase_swap_drill: default per-session item count (PWA can override via
+// context.target_item_count, capped at PSD_MAX_ITEMS).
+const PSD_DEFAULT_ITEMS = 6;
+const PSD_MAX_ITEMS = 10;
 
 export default {
   async fetch(request, env) {
@@ -96,6 +108,17 @@ export default {
     }
     if (mode === 'escalate' && !context.exercise) {
       return jsonError(400, 'WORKER_VALIDATION', 'mode "escalate" requires context.exercise', false, cors);
+    }
+    if (mode === 'phrase_swap_drill') {
+      const pool = context.phrase_pool;
+      if (!Array.isArray(pool) || pool.length === 0) {
+        return jsonError(400, 'WORKER_VALIDATION', 'mode "phrase_swap_drill" requires non-empty context.phrase_pool', false, cors);
+      }
+      // Each entry must have awkward + natural at minimum
+      const bad = pool.find(e => !e || typeof e.awkward !== 'string' || typeof e.natural !== 'string');
+      if (bad) {
+        return jsonError(400, 'WORKER_VALIDATION', 'phrase_pool entries require {awkward, natural} strings', false, cors);
+      }
     }
 
     // Build system prompt server-side. Cache the stable preamble.
@@ -195,9 +218,10 @@ function jsonError(status, code, message, retriable, cors) {
 
 function buildSystemBlocks(mode, context, isSessionEnd) {
   const blocks = [];
-  const preamble = mode === 'free_write'
-    ? freeWriteSystemPrompt(context)
-    : escalateSystemPrompt(context);
+  let preamble;
+  if (mode === 'free_write') preamble = freeWriteSystemPrompt(context);
+  else if (mode === 'phrase_swap_drill') preamble = phraseSwapDrillSystemPrompt(context);
+  else preamble = escalateSystemPrompt(context);
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
   if (isSessionEnd) {
@@ -245,7 +269,7 @@ About this learner:
 - L1: Russian
 - Level: ${level}
 - Focus categories: ${focus}
-- Persistent weak patterns from previous sessions:
+- Persistent weak patterns and stiff-phrase swaps to recast naturally (entries shaped \`awkward → natural [context]\` are register swaps, not errors — prefer the natural form when context fits, mirror-recast without flagging unless asked):
 ${weakPatterns}
 - Engagement preferences:
 ${engagement}
@@ -305,7 +329,107 @@ ${weakPatterns}
 Tone: warm, direct, slightly more pedagogical than free_write mode.`;
 }
 
+function phraseSwapDrillSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B2';
+  const ru = explainInRussian(ctx);
+  const pool = Array.isArray(ctx.phrase_pool) ? ctx.phrase_pool : [];
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || PSD_DEFAULT_ITEMS),
+    PSD_MAX_ITEMS
+  );
+
+  // Render the pool as a numbered list. Each entry: index, awkward → natural,
+  // tag, status (active vs retest_due — informs which to mix in first).
+  const poolBlock = pool.map((e, i) => {
+    const tag = e.tag ? ` [${e.tag}]` : '';
+    const status = e.status === 'retest_due' ? ' (retest)' : '';
+    const altNatural = Array.isArray(e.also_accept) && e.also_accept.length
+      ? ` — also accept: ${e.also_accept.map(s => `"${s}"`).join(', ')}`
+      : '';
+    return `  ${i + 1}. "${e.awkward}" → "${e.natural}"${tag}${status}${altNatural}`;
+  }).join('\n');
+
+  const languageBlock = ru
+    ? `- **Деliver each cue and explanation in Russian.** ${playerName} reads English fluently but absorbs register feedback faster in her L1.
+- The cue is a Russian sentence ${playerName} should translate into natural English. The "awkward" form in the pool is the L1-calque or stiff alternative — never include it in the cue.
+- When ${playerName} produces the natural form (or a near-equivalent that fits the register), confirm briefly in Russian and move on. No grammar lecture.
+- When she produces the stiff form (or another non-natural alternative), give a 1–2 sentence Russian explanation of *why* the natural form lands better in the tagged context. Do NOT call her sentence "wrong" — both forms are grammatical; the issue is register/frequency.
+- Keep replies short. This is a drill, not a tutorial.`
+    : `- Deliver each cue in Russian (the player's L1) so the production challenge is genuinely from-scratch English. The "awkward" form in the pool is the stiff alternative — never include it in the cue.
+- When ${playerName} produces the natural form (or a near-equivalent that fits the register), confirm briefly in English and move on.
+- When ${playerName} produces the stiff form (or another non-natural alternative), give a 1–2 sentence English explanation of *why* the natural form lands better in the tagged context. Do NOT call the sentence "wrong" — both forms are grammatical; the issue is register/frequency.
+- Keep replies short. This is a drill, not a tutorial.`;
+
+  return `You are running a focused phrase-swap drill with ${playerName}, a Russian-speaking learner at CEFR level ${level}. The goal is to move stiff/calqued lexical phrases from passive recognition into active production by forcing them through a Russian→English cue.
+
+Drill protocol:
+1. Present one Russian cue at a time that naturally invites the **natural** form from the entry. Theme the cue around the entry's [tag] context (e.g. for [brit_expat]: pub/padel/dinner-party scenes; for [biz_oil]: meeting/email scenes).
+2. Wait for ${playerName}'s English response.
+3. Score leniently — the natural form OR any equivalent that fits the same register passes.
+4. ${ru ? 'Reply in Russian' : 'Reply in English'} per the language rules below.
+5. Move to the next cue. Aim for ${targetCount} cues total. Stop early if ${playerName} signals done.
+
+CRITICAL RULES:
+- **Never include the "awkward" or "natural" form in the cue itself.** The cue must be a clean Russian sentence; the production challenge is recalling the natural English form from semantic understanding of the context.
+- **Register, not grammar.** "Sometime ago" is grammatically fine — it's just lower-frequency in spoken Brit-expat banter. Frame feedback as register/frequency, never as a grammar correction.
+- **Don't lecture.** 1–2 sentences of register explanation per stiff production. Move on.
+- **Mix retest entries (marked "(retest)") in early** — they're the ones whose mastery we're confirming. Don't save them for last.
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+
+Today's drill pool (${pool.length} entries; aim for ${targetCount} cues):
+${poolBlock || '  (empty — fall back to small-talk, end the session politely)'}
+
+Tone: focused, pacy, encouraging. This is a sub-5-minute drill, not a chat.
+
+Open the session with: a one-line greeting + the first Russian cue. No preamble about what the drill is — ${playerName} already knows.`;
+}
+
 function sessionEndInstructions(mode, ctx) {
+  if (mode === 'phrase_swap_drill') {
+    const ru = explainInRussian(ctx);
+    const tableHeader = ru
+      ? `Сохранено.`
+      : `Saved.`;
+    const feedbackAsk = ru
+      ? `Как ощущения? Одной фразой — или пропусти.`
+      : `How did that feel? One sentence — or skip.`;
+    return `Your final message must contain TWO parts in this exact order:
+
+PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:
+
+**${tableHeader}**
+
+| | |
+|---|---|
+| Score | <N produced natural> of <total drilled> natural |
+| Mastered today | <natural form in quotes, or "—" if none crossed the 3-clean threshold this session> |
+| Up next | <count> phrases active, <count> retest in ~3 weeks |
+
+${feedbackAsk}
+
+Hide internal field names, session IDs, and status codes from the table. If a row would wrap to a 3rd line, abbreviate ("4 new phrases — say 'show me' for the list"). The "Mastered today" row reflects only entries where this session was the 3rd clean rep — usually empty; that's fine.
+
+PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session_meta>:
+{
+  "phrase_swaps_drilled": [
+    {"awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat", "produced_natural": true},
+    {"awkward": "we will investigate", "natural": "we'll look into it", "tag": "biz_oil", "produced_natural": false}
+  ],
+  "topics_covered": ["padel match", "team review"],
+  "session_summary": "One sentence on overall production quality and which entries felt close vs. distant."
+}
+
+For "phrase_swaps_drilled": one entry per pool item that was actually drilled (skip any not reached). \`produced_natural: true\` if the learner produced the natural form (or a register-equivalent) on first attempt; \`false\` if they produced the stiff form or a non-equivalent alternative. This array is the input to phrase_tracker lifecycle transitions — accuracy here drives ⚪→🔵→🟡→🟢→🏆 progression.
+
+The PWA strips the <session_meta> block before display; PART 1 is what the player sees.`;
+  }
   if (mode === 'free_write') {
     // pvs_used_correctly is tier-1 evidence for 🏆 graduation tracking in
     // progress/phrasal-verbs-tracker*.md. Artem (B1–C1) and Anna (A1–B1) have

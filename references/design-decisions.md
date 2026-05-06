@@ -7,6 +7,28 @@ Format: `[topic]` — decision and rationale. Newest substantive decisions first
 
 ---
 
+## Coaching loop
+
+### Auto-write coach_notes for session skills (2026-05-06)
+Flipped `free-write` and `exercise-session` from "preview → wait for explicit confirmation → persist" to "auto-write → table read-out → non-blocking feedback ask". Trigger: too many sessions where the player closed the tab during the feedback prompt and the data was lost. The 2+ sessions rule for `weak_patterns` is mechanical, so auto-write can't promote a hallucinated pattern — single-session evidence routes to `recent_observations` only, where FIFO prunes it if not corroborated. `stats-review` (operator-mode batch review, no learner present) and `family-profiles.md` edits (git commits, harder to revert) stay confirm-first.
+
+Player-facing read-out is a small markdown table (≤10 lines) hiding internal field names, session IDs, and status codes. Three skill-specific templates live in `coach-notes-schema.md` "Player-facing read-out templates". Feedback ask follows persist, not the other way round — if the player answers, the answer appends to `recent_observations` (auto). If not, the session is already saved.
+
+### `weak_patterns` accepts lexical/register swaps via convention (2026-05-06)
+Considered adding a dedicated `phrase_swaps` field to `coach_notes` for natural-language work, alongside the existing `weak_patterns` (grammar-only). Rejected. The grammar entries already use the `awkward → natural` shape (e.g. `"arrive to → at"`) and the worker (`worker/index.js:248`) already injects them into the Free Write system prompt. A bracketed context tag (`[brit_expat]`, `[biz_oil]`, etc.) is the only addition needed for lexical swaps to inherit recast/correction behavior. Zero schema change, zero new tooling — just a notation extension and a one-line worker prompt edit so the model treats lexical entries as recast targets, not error categories.
+
+Crowding risk (`weak_patterns` may grow past 8–12 entries when lexical accumulates) is mitigated by routing demoted lexical swaps into the new `phrase_tracker` field (separate inventory), keeping `weak_patterns` itself bounded to active-rotation entries.
+
+### Phrase tracker is Firestore canonical, markdown is generated (2026-05-06)
+`players/{name}.phrase_tracker` map field is canonical: worker reads it directly when assembling `phrase_swap_drill` items (mixes ~4 active + ~2 retest-due). Markdown view at `progress/natural-phrases-tracker-{name}.md` × 5 is **generated** by `stats-review` on each refresh — never hand-edited. Two reasons over hand-authored markdown: (a) worker can't read repo files (Cloudflare runtime), so Firestore was already required; (b) avoiding drift between two writeable copies of the same data. Reasons over Firestore-only (no markdown): the user reads the PV trackers casually for coverage view; same instinct for natural phrases.
+
+Spaced retest cadence: demote → 21d → first retest → if pass, 42d → second retest → if pass, 🏆 owned (no further retests). Failed retest at any point: back to active rotation, no cooldown. The cadence is mechanical; transitions happen in `stats-review`.
+
+### Egor full family parity for supplementary surfaces (2026-05-06)
+Egor was previously quiz-only ("does NOT do supplementary exercises", "no Coach tab use"). Reversed: he now has the same surfaces as Anna/Nicole/Ernest (PWA Free Write, PWA `phrase_swap_drill`, exercise sessions). Driver: the original "quiz-only" call was based on no observed engagement, but he hadn't been offered the surfaces. Themes are different from the rest of the family (`[academic_ielts] | [kpmg_consulting] | [almaty_daily]` — no `[brit_expat]` since he's in Almaty, not Bahrain). KPMG context clarified as English-speaking consulting work (Russian-L1 colleagues, English-language deliverables/clients) so the worker doesn't default to RU-translation framing. Coach language stays `en` (set previously alongside Ernest's call 2026-05-01).
+
+---
+
 ## Storage architecture
 
 ### Firestore over RTDB (s87)

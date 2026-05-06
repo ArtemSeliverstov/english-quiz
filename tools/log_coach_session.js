@@ -50,7 +50,7 @@ const {
   fsSet, fsGet, fsPatch, docToPlain, PLAYERS, bumpDailyStreakRemote,
 } = require('./_firestore');
 
-const VALID_MODES = ['free_write', 'cc_session', 'escalate'];
+const VALID_MODES = ['free_write', 'cc_session', 'escalate', 'phrase_swap_drill'];
 
 function parseArgs(argv) {
   const out = { dryRun: false, player: null, jsonPath: null };
@@ -76,8 +76,12 @@ async function readJsonInput(jsonPath) {
 function makeSessionId(player, mode) {
   // Mirror coachMakeSessionId in index.html:
   //   {player}_{prefix}_{ts}_{rand}
-  // Prefix: fw (free_write) | esc (escalate) | sess (cc_session/other)
-  const prefix = mode === 'free_write' ? 'fw' : mode === 'escalate' ? 'esc' : 'sess';
+  // Prefix: fw (free_write) | esc (escalate) | psd (phrase_swap_drill) | sess (cc_session/other)
+  const prefix =
+    mode === 'free_write' ? 'fw' :
+    mode === 'escalate' ? 'esc' :
+    mode === 'phrase_swap_drill' ? 'psd' :
+    'sess';
   const r = Math.random().toString(36).slice(2, 6);
   return `${player}_${prefix}_${Date.now()}_${r}`;
 }
@@ -101,6 +105,18 @@ function validate(session, player) {
   }
   if (session.pvs_used_correctly && !Array.isArray(session.pvs_used_correctly)) {
     throw new Error('pvs_used_correctly must be an array if provided');
+  }
+  if (session.phrase_swaps_captured && !Array.isArray(session.phrase_swaps_captured)) {
+    throw new Error('phrase_swaps_captured must be an array if provided');
+  }
+  if (session.phrase_swaps_drilled && !Array.isArray(session.phrase_swaps_drilled)) {
+    throw new Error('phrase_swaps_drilled must be an array if provided');
+  }
+  // Sanity-check entries (don't enforce — schema may evolve)
+  for (const e of (session.phrase_swaps_drilled || [])) {
+    if (!e || typeof e.awkward !== 'string' || typeof e.natural !== 'string') {
+      throw new Error('phrase_swaps_drilled entries require {awkward, natural} strings');
+    }
   }
   if (session.assessment != null) {
     const a = session.assessment;
@@ -171,6 +187,8 @@ async function main() {
     error_patterns_observed: Array.isArray(session.error_patterns_observed) ? session.error_patterns_observed : [],
     topics_covered: Array.isArray(session.topics_covered) ? session.topics_covered : [],
     pvs_used_correctly: Array.isArray(session.pvs_used_correctly) ? session.pvs_used_correctly : [],
+    phrase_swaps_captured: Array.isArray(session.phrase_swaps_captured) ? session.phrase_swaps_captured : [],
+    phrase_swaps_drilled: Array.isArray(session.phrase_swaps_drilled) ? session.phrase_swaps_drilled : [],
     session_summary: typeof session.session_summary === 'string' ? session.session_summary : '',
     tokens_used: session.tokens_used == null ? null : session.tokens_used,
     model_used: session.model_used || '',

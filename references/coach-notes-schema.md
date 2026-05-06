@@ -42,6 +42,23 @@ players/{name}.coach_notes = {
 **`weak_patterns`** — short labels for confirmed weaknesses. Add only after 2+ sessions
 show the pattern. Remove when 3+ recent sessions show it resolved.
 
+Two shapes are accepted:
+
+1. **Grammar pattern** — short prose label, optionally with `→` showing the swap.
+   Examples: `"a→the for shared knowledge"`, `"preposition swap (arrive to → at)"`.
+2. **Lexical / register swap** — `"<awkward> → <natural> [<context_tag>]"`.
+   Examples: `"sometime ago → a while ago [brit_expat]"`,
+   `"we will investigate → we'll look into it [biz_oil]"`.
+
+Recognised tags (must match a player's profile themes in `family-profiles.md`):
+`[biz_oil] | [brit_expat] | [leisure_sport] | [home_daily] | [academic_ielts] | [kpmg_consulting] | [almaty_daily]`.
+Untagged grammar entries apply across all contexts. Lexical swaps without a tag
+default to all contexts (use sparingly — most lexical swaps are register-bound).
+
+Lifecycle for lexical swaps mirrors grammar entries (2+ sessions to add, 3+ clean
+to demote) — but demotion routes them through the `phrase_tracker` retest queue
+rather than dropping them outright. See "Phrase tracker lifecycle" below.
+
 **`strong_patterns`** — same threshold (2+ sessions confirming). Useful for adjusting
 question selection (don't waste time on what's solid).
 
@@ -67,23 +84,91 @@ Possible values:
 
 ## Update protocol
 
-Used by `free-write`, `exercise-session`, `stats-review`, and any other skill that proposes `coach_notes` changes.
+Two modes depending on caller — session skills auto-write at session end; batch
+review skills (stats-review) stay confirm-first.
 
-After any session, propose 0–4 updates to `coach_notes` for the affected player. Categories:
+### Session skills (`free-write`, `exercise-session`, PWA worker)
+
+After any session, decide 0–4 updates to `coach_notes` for the affected player. Categories:
 
 1. **New `weak_patterns` entry** — pattern confirmed across this + at least 1 prior session
 2. **New `strong_patterns` entry** — same threshold
 3. **`engagement_notes` revision** — durable shift in how the player engages
 4. **`recent_observations` entry** — single-session note worth remembering for next time
 5. **`stuck_questions` adjustment** — question crossed 100% error threshold or recovered
+6. **`phrase_tracker` transitions** — captured swaps moving through ⚪ → 🔵 → 🟡 → 🟢 → 🏆
 
 Then:
 
+1. **Auto-write** via `node tools/update_coach_notes.js {player} <patch.json>` (or PWA equivalents) — no operator approval, no preview wait. The 2+ sessions rule for `weak_patterns` is mechanical; single-session evidence routes to `recent_observations` only.
+2. **Render the player-facing read-out** (table, ≤10 lines including feedback ask). Use the appropriate template below.
+3. **Ask for one-sentence feedback** ("How did that feel? — or skip."). Non-blocking. If the player answers, append the answer as another `recent_observations` entry (auto). If they don't answer, the session is already saved; nothing orphaned.
+
+**Why auto-write**: the previous "preview → wait → persist" flow lost data when a player closed the tab mid-feedback. Resilience-to-abandonment matters more than the marginal accuracy of operator approval. Single-session miswrites are recoverable next session ("remove the X swap").
+
+### Player-facing read-out templates
+
+Hide internal field names, session IDs, and status codes from the table. ≤10 lines including the feedback ask. If a row would wrap to a 3rd line, abbreviate ("4 new phrases — say 'show me' for the list").
+
+**`phrase_swap_drill`**:
+
+```
+**Saved.**
+
+| | |
+|---|---|
+| Score | 4 of 6 natural |
+| Mastered today | "we'll look into it" |
+| Up next | 5 phrases active, 1 retest in ~3 weeks |
+
+How did that feel? One sentence — or skip.
+```
+
+**`free_write`**:
+
+```
+**Saved.**
+
+| | |
+|---|---|
+| What we noticed | Articles solid, prepositions slipped once |
+| New phrases captured | "a while ago" (instead of "sometime ago") |
+| Active list | 7 phrases |
+
+How did it feel? One sentence — or skip.
+```
+
+**`exercise-session`** (translation / drill):
+
+```
+**Saved.**
+
+| | |
+|---|---|
+| Score | 7 of 10 |
+| Strongest | conditionals |
+| Slipped on | preposition swaps (×2) |
+
+How did it feel? One sentence — or skip.
+```
+
+### Batch review skill (`stats-review`)
+
+Confirm-first protocol stays in place — operator-mode, multi-player, no learner present.
+
 1. **Preview** the patch in human-readable prose, not JSON. For arrays, list the new entries with one line of context each.
 2. **Wait for explicit user confirmation.** Don't auto-write.
-3. **Persist** via `node tools/update_coach_notes.js {player} <patch.json>`. The script handles dedup, FIFO cap (10 for `recent_observations`), and `last_updated`. See `tools/README.md`.
+3. **Persist** via `node tools/update_coach_notes.js {player} <patch.json>`.
 
-**Forbidden across skills**: auto-writing without preview, promoting single-turn observations to `weak_patterns` / `strong_patterns` (those need 2+ sessions), bypassing the promotion rule below.
+### Family-profiles edits
+
+Edits to `references/family-profiles.md` (Learning Goals promotion, persona shifts) are git commits — always confirm-first. The auto-write change does not apply to repo files.
+
+### Forbidden across all skills
+
+- Promoting single-turn observations to `weak_patterns` / `strong_patterns` (those need 2+ sessions)
+- Bypassing the promotion rule below
+- Auto-writing repo-file edits (CLAUDE.md, references/, progress/ — except generated tracker markdown regenerated mechanically by stats-review)
 
 ---
 
@@ -190,6 +275,73 @@ the new observation, FIFO-caps at 10 entries, sets `last_updated` automatically,
 writes back via PATCH with `updateMask=coach_notes`. Other player fields are untouched.
 
 ---
+
+## Phrase tracker lifecycle (lexical / register swaps)
+
+Lexical swaps captured via the `awkward → natural [tag]` notation in `weak_patterns`
+have a longer lifecycle than grammar entries because they need spaced retesting.
+The state machine is mechanical and runs in `stats-review`:
+
+```
+captured 1× (rec_obs, ⚪)
+  ↓ 2nd hit in any session
+weak_patterns + tracker 🔵 active
+  ↓ 3 clean reps in phrase_swap_drill or unprompted in free_write
+demoted from weak_patterns → tracker 🟡 retest-due (date = demote + 21 days)
+  ↓ retest window opens; next phrase_swap_drill auto-includes the entry
+  ↓ passes
+tracker 🟢 mastered (next retest = pass + 42 days)
+  ↓ passes 2nd retest
+tracker 🏆 owned (no further retests)
+  ↓ fails any retest
+back to weak_patterns 🔵 active; tracker logs ✗ failed-retest event
+```
+
+### Where the data lives
+
+- **Firestore canonical**: `players/{name}.phrase_tracker` field (map). Worker reads it directly when generating `phrase_swap_drill` items (mixes ~4 active + ~2 retest-due).
+- **Markdown view**: `progress/natural-phrases-tracker-{name}.md`. **Generated**, not hand-edited. Regenerated by `stats-review` on each refresh. Human-readable inventory + coverage tables.
+
+### `phrase_tracker` field shape
+
+```javascript
+players/{name}.phrase_tracker = {
+  entries: [
+    {
+      awkward: "sometime ago",
+      natural: "a while ago",
+      tag: "brit_expat",
+      status: "active",          // ⚪ first_pass | 🔵 active | 🟡 retest_due | 🟢 mastered | 🏆 owned | ✗ failed_retest
+      first_seen: "2026-05-08",
+      last_drilled: "2026-05-19",
+      next_retest: "2026-06-09", // null if active or owned
+      reps: 4,
+      sources: ["fw", "psd", "psd", "psd"],  // session prefixes
+      events: [                  // append-only state-change log
+        { date: "2026-05-08", event: "captured", session: "fw_artem_..." },
+        { date: "2026-05-12", event: "promoted_to_weak_patterns" },
+        { date: "2026-05-19", event: "demoted_to_retest", retest_due: "2026-06-09" }
+      ]
+    }
+  ],
+  last_updated: "2026-05-19T11:00:00Z"
+}
+```
+
+### Retest cadences
+
+- Demote → first retest: **+21 days**
+- First retest pass → second retest: **+42 days**
+- Failed retest: back to active rotation immediately, no cooldown
+- Owned status: no further retests (B2+ register lexis is durable)
+
+### Worker selection rule
+
+When the worker assembles a `phrase_swap_drill` (default 6 items):
+
+1. Pull `weak_patterns` entries containing ` → ` and ` [`
+2. Pull `phrase_tracker.entries` where `status == "retest_due"` and `next_retest <= today`
+3. Mix 4 active + 2 retest-due. If retest pool is short, fill from active. If active pool is short, drop session count and tell the player.
 
 ## FIFO cap enforcement
 

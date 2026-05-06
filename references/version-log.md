@@ -10,6 +10,70 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-06 · Session t2
+### Phase 2 — Natural-phrases worker mode + tools (worker deploy required, no PWA deploy)
+
+Builds on Phase 1's KB scaffolding. Adds the `phrase_swap_drill` worker mode and extends the two CLI tools that touch coach data so the lifecycle loop is now exercisable end-to-end (capture → store → drill → log → transition → markdown regen).
+
+**Worker (`worker/index.js`)**:
+- New mode `phrase_swap_drill` added to `VALID_MODES`. Validation requires `context.phrase_pool` (non-empty array of `{awkward, natural, tag?, status?, also_accept?}`).
+- New `phraseSwapDrillSystemPrompt(ctx)`: themed RU cue → EN production drill, lenient scoring (multiple natural forms accepted via `also_accept`), 1–2 sentence register explanation on stiff production. Honors `coach_language` (RU for Anna/Nicole; EN for others). Default 6 cues per session, capped at 10.
+- `sessionEndInstructions('phrase_swap_drill', ctx)`: generates a two-part response — player-facing markdown table (≤10 lines, hides field names) + `<session_meta>` with `phrase_swaps_drilled[]` (per-pool-entry `produced_natural` boolean → drives lifecycle transitions in stats-review).
+- `egor` added to `ALLOWED_PLAYERS` (was anna/nicole/ernest/artem only).
+
+**Tools**:
+- `tools/log_coach_session.js`: accepts `mode: "phrase_swap_drill"`, generates `psd_` session-id prefix, persists optional `phrase_swaps_captured[]` (from free_write) and `phrase_swaps_drilled[]` (from psd) on the session doc.
+- `tools/update_coach_notes.js`: extended with three new patch keys (`phrase_tracker_add`, `phrase_tracker_transition`, `phrase_tracker_remove`) and a `--regen-tracker-md` flag (standalone or post-patch). Auto-computes `next_retest` from cadence (21d demote → 42d mastered → owned). Markdown regen reads `players/{name}.phrase_tracker` and overwrites `progress/natural-phrases-tracker-{name}.md` with a templated view (status legend, per-tag coverage table, inventory). `main()` now guarded with `require.main === module` so the module is importable for testing.
+- Smoke test passed: empty Anna tracker matches Phase 1 template structure; capture → transition → re-render correctly rolls counts, computes 21-day next_retest, and concatenates source labels.
+
+**Worker docs**: `worker/README.md` updated — validation rules, new mode payload shape, curl example, session-end response shape.
+
+**What's NOT in Phase 2**:
+- PWA Coach tab "Phrase swaps" button (Phase 3, requires deploy-build)
+- First-cycle seed data + end-to-end smoke (Phase 4)
+- Egor-specific pre-gen content audit (Phase 5)
+
+**Deploy required**: `cd worker && wrangler deploy` (does not affect PWA — Phase 3 is the next user-visible deploy). Tools are CLI-only, no deploy.
+
+Q count: 1988 (unchanged) · No PWA version stamp (Phase 3 carries that)
+
+---
+
+## 2026-05-06 · Session t2
+### Phase 1 — Natural-phrases initiative foundation (KB only, no deploy)
+
+KB-only changes laying groundwork for `phrase_swap_drill` (Phase 2 worker, Phase 3 PWA). Goal: capture, retest, and master lexical/register swaps (e.g. "sometime ago" → "a while ago [brit_expat]") alongside grammar weaknesses.
+
+**`weak_patterns` notation extended** to accept `"<awkward> → <natural> [<context_tag>]"` for lexical/register swaps, alongside existing grammar entries. Tags: `[biz_oil] | [brit_expat] | [leisure_sport] | [home_daily] | [academic_ielts] | [kpmg_consulting] | [almaty_daily]`. Convention only — no Firestore schema change. Worker `freeWriteSystemPrompt` (line 248) updated so the model treats lexical entries as recast targets, not error categories.
+
+**Brit-expat as 3rd context theme** added for Artem (pubs/padel/rugby/F1), Anna (British Club, school gate), Nicole (expat-school friends), Ernest (expat-school playground). Egor stays without it (Almaty, no Bahrain expat exposure).
+
+**Egor policy reversal — full family parity**. Previously quiz-only with no Coach tab use. Now has access to PWA Free Write, PWA `phrase_swap_drill`, and `exercise-session`. Profile gains communication style (English, IELTS-rubric framing, metalinguistic-vocabulary engagement) and exercise themes `[academic_ielts] | [kpmg_consulting] | [almaty_daily]`. KPMG context clarified as English-speaking consulting work (Russian-L1 colleagues, English-language deliverables). Coach language stays `en`.
+
+**Auto-write coach_notes** for session skills (`free-write`, `exercise-session`, PWA worker). Replaces "preview → wait → confirm" with "auto-write → table read-out → non-blocking feedback ask" — protects against players abandoning sessions mid-feedback. `stats-review` and `family-profiles.md` edits remain confirm-first. Player-facing read-out is a small markdown table (≤10 lines) with internal field names hidden; templates in `coach-notes-schema.md`.
+
+**Phrase tracker introduced**. Per-player Firestore field `players/{name}.phrase_tracker` is canonical store for the lexical-swap inventory + spaced retest queue (21d after demote → 🟢 mastered → 42d → 🏆 owned). Markdown view at `progress/natural-phrases-tracker-{name}.md` × 5 is **generated** by `stats-review` (never hand-edited). Worker reads `phrase_tracker` directly when assembling drill items.
+
+**`phrase_swap_drill` added as canonical exercise type 9**. Lenient scoring (multiple natural forms accepted), register explanation on stiff production (no grammar lecture). 6 items per session (4 active + 2 retest-due, mixed by worker). PWA Coach tab button visible to all 5 players. `coach_sessions` mode enum extended; new `psd` session-id prefix.
+
+**Files touched**:
+- `references/family-profiles.md` (4 players gain brit_expat, Egor reworked)
+- `references/coach-notes-schema.md` (notation, update protocol rewrite, lifecycle section)
+- `references/exercise-types.md` (type 9, Egor row in selection table)
+- `references/firestore-schema.md` (`phrase_tracker` field, mode enum, psd prefix)
+- `.claude/skills/free-write/SKILL.md` (auto-write, capture card, drop "Artem only" framing)
+- `.claude/skills/exercise-session/SKILL.md` (remove Egor exclusion, swap step 5↔6, capture card)
+- `.claude/skills/stats-review/SKILL.md` (phrase tracker maintenance step 6)
+- `worker/index.js:248` (one-line prompt edit for lexical entries)
+- `CLAUDE.md` (5 generated tracker files, 9 exercise types, skill triggers updated)
+- `progress/natural-phrases-tracker-{artem,anna,nicole,ernest,egor}.md` (5 new empty trackers)
+
+**Phase 2 (worker mode) and Phase 3 (PWA button) not yet started** — those land in subsequent sessions.
+
+Q count: 1988 (unchanged) · No version stamp (no deploy)
+
+---
+
 ## 2026-05-05 · Session t1
 ### v20260505-t1r4 — Navigation tabs back + Family levels restored + medal system fix
 

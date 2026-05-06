@@ -141,15 +141,51 @@ fall back to `error_correction`.
 
 ---
 
+## 9. `phrase_swap_drill`
+
+Lexical / register swap practice. Player produces the natural form for a stiff
+or calqued original, themed to a context tag. Driven by `weak_patterns` lexical
+entries (`awkward → natural [tag]` notation) and `phrase_tracker` retest-due
+entries.
+
+**Use for**: Anna, Nicole, Ernest, Egor (PWA Coach tab), Artem (PWA + organic CC
+mirror-recast). Source: live-AI worker, no library content.
+**Item count**: 6 per session (4 active + 2 retest-due, mixed by worker)
+**Player input**: typed English production
+**Scoring**: lenient — multiple natural forms accepted ("a while ago" / "a few
+weeks back" / "some time back" all pass for `[brit_expat]`); on stiff production,
+1–2 sentence register explanation, no grammar lecture
+**Logging**: `coach_sessions/{psd_*}` with `mode: "phrase_swap_drill"`. Mastery
+transitions land in `phrase_tracker` (see `coach-notes-schema.md`).
+
+**Critical authoring rule**: do NOT show the natural form in the prompt. The
+production challenge is recalling it from semantic understanding of the context.
+The Russian cue + `[tag]` is enough.
+
+**Critical scoring rule**: register explanation, not grammar correction.
+"Sometime ago" is grammatically fine — it's just lower-frequency in spoken
+Brit-expat banter. The drill teaches register, not rules.
+
+Example item:
+- Tag: `[brit_expat]`
+- RU cue: «Я бросил курить пару недель назад.»
+- Stiff target: "I quit smoking sometime ago."
+- Natural target: "I quit smoking a while ago." / "...a couple of weeks back."
+- Feedback if stiff produced: "Both are grammatical, but in pub/club register
+  'a while ago' or 'a couple of weeks back' lands more naturally — 'sometime
+  ago' reads slightly formal/written."
+
+---
+
 ## Type selection by player
 
 | Player | Primary types | Secondary | Avoid |
 |---|---|---|---|
-| Artem | free_write, transform, article_drill, particle_sort | error_correction, dictation | translation (too easy at C1) |
-| Anna | translation, error_correction, conversation | dictation | free_write (too unstructured) |
-| Nicole | translation, article_drill (light) | error_correction | free_write, transform (too hard) |
-| Ernest | error_correction, translation | article_drill | free_write, transform |
-| Egor | (no exercises) | — | — |
+| Artem | free_write, transform, article_drill, particle_sort | error_correction, dictation, phrase_swap_drill | translation (too easy at C1) |
+| Anna | translation, error_correction, conversation, phrase_swap_drill | dictation | free_write (too unstructured) |
+| Nicole | translation, article_drill (light) | error_correction, phrase_swap_drill (light) | free_write, transform (too hard) |
+| Ernest | error_correction, translation, phrase_swap_drill | article_drill | free_write, transform |
+| Egor | translation, free_write, phrase_swap_drill | article_drill | transform (later, after B2 article gap closes) |
 
 ---
 

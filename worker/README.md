@@ -104,6 +104,30 @@ curl -s -X POST "$WORKER_URL" \
     "is_session_end": false
   }' | jq
 
+# phrase_swap_drill
+curl -s -X POST "$WORKER_URL" \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://artemseliverstov.github.io" \
+  -d '{
+    "mode": "phrase_swap_drill",
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "ready"}],
+    "context": {
+      "player": "artem",
+      "level": "B2",
+      "coach_language": "en",
+      "target_item_count": 3,
+      "phrase_pool": [
+        {"awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat", "status": "active",
+         "also_accept": ["a few weeks back"]},
+        {"awkward": "we will investigate this matter", "natural": "we will look into it", "tag": "biz_oil", "status": "active"},
+        {"awkward": "in the end of the day", "natural": "at the end of the day", "tag": "biz_oil", "status": "retest_due"}
+      ]
+    },
+    "session_id": "artem_psd_test_1",
+    "is_session_end": false
+  }' | jq
+
 # escalate
 curl -s -X POST "$WORKER_URL" \
   -H "Content-Type: application/json" \
@@ -176,9 +200,43 @@ Error shape:
 In order:
 1. Origin header must equal `ALLOWED_ORIGIN` (403 otherwise).
 2. Body ≤ 50 KB (413 otherwise).
-3. `mode` must be `"free_write"` or `"escalate"` (400 otherwise).
+3. `mode` must be `"free_write"`, `"escalate"`, or `"phrase_swap_drill"` (400 otherwise).
 4. `model` must be in `ALLOWED_MODELS` whitelist (400 otherwise).
-5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest}; for `escalate`, `context.exercise` is required (400 otherwise).
+5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest, artem, egor}; for `escalate`, `context.exercise` is required; for `phrase_swap_drill`, `context.phrase_pool` is required as a non-empty array of `{awkward, natural, tag?, status?, also_accept?}` entries (400 otherwise).
+
+## phrase_swap_drill mode (added 2026-05-06)
+
+Lexical/register swap drill — RU cue → EN production, lenient scoring (multiple natural forms accepted), 1–2 sentence register explanation on stiff production. Driven by `players/{name}.weak_patterns` lexical entries (`awkward → natural [tag]` notation) and `players/{name}.phrase_tracker` retest-due entries. See `references/exercise-types.md` type 9 and `references/coach-notes-schema.md` "Phrase tracker lifecycle".
+
+PWA payload shape:
+
+```json
+{
+  "mode": "phrase_swap_drill",
+  "model": "claude-sonnet-4-6",
+  "messages": [{"role": "user", "content": "ready"}],
+  "context": {
+    "player": "artem",
+    "level": "B2",
+    "coach_language": "en",
+    "target_item_count": 6,
+    "phrase_pool": [
+      {"awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat", "status": "active",
+       "also_accept": ["a few weeks back", "some time back"]},
+      {"awkward": "we will investigate", "natural": "we'll look into it", "tag": "biz_oil", "status": "active"},
+      {"awkward": "right at the start", "natural": "right off the bat", "tag": "brit_expat", "status": "retest_due"}
+    ]
+  },
+  "session_id": "artem_psd_test_1",
+  "is_session_end": false
+}
+```
+
+Default `target_item_count` is 6, max 10 (capped server-side). PWA is responsible for assembling `phrase_pool` by filtering `weak_patterns` lexical entries and reading `phrase_tracker.entries` where `status == "retest_due"` and `next_retest <= today`. Recommended mix: 4 active + 2 retest-due.
+
+Session-end response shape (when `is_session_end: true`):
+
+The model's reply contains both a player-facing close (markdown table + feedback ask) and a `<session_meta>` block with `phrase_swaps_drilled`, `topics_covered`, `session_summary`. The Worker strips and parses the `<session_meta>` block into `session_metadata` on the response. `phrase_swaps_drilled[].produced_natural` (boolean, per pool entry actually drilled) feeds the phrase_tracker lifecycle transitions in `stats-review`.
 
 ## Threat model
 
