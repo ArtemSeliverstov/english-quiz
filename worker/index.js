@@ -350,16 +350,28 @@ function phraseSwapDrillSystemPrompt(ctx) {
     return `  ${i + 1}. "${e.awkward}" → "${e.natural}"${tag}${status}${altNatural}`;
   }).join('\n');
 
+  // Level-aware feedback depth (option 2):
+  //   B1 / B1+ → 2 sentences of register reasoning + 1 short example sentence in context
+  //   B2 / C1 → 1 sentence of register reasoning, no example needed
+  // Always surface the awkward alternative (option 1) — even on a correct natural production —
+  // so the player builds explicit awareness of which stiff form they avoided.
+  const isLowerLevel = /^(A[12]|B1)$/i.test(String(level || ''));
+  const depthHint = isLowerLevel
+    ? `Use 2 short sentences explaining the register/frequency difference, then one short example sentence using the natural form in the tagged context.`
+    : `Use 1 short sentence on the register/frequency difference. Skip example sentences unless the player asks.`;
+
   const languageBlock = ru
-    ? `- **Деliver each cue and explanation in Russian.** ${playerName} reads English fluently but absorbs register feedback faster in her L1.
+    ? `- **Deliver each cue and explanation in Russian.** ${playerName} reads English fluently but absorbs register feedback faster in her L1.
 - The cue is a Russian sentence ${playerName} should translate into natural English. The "awkward" form in the pool is the L1-calque or stiff alternative — never include it in the cue.
-- When ${playerName} produces the natural form (or a near-equivalent that fits the register), confirm briefly in Russian and move on. No grammar lecture.
-- When she produces the stiff form (or another non-natural alternative), give a 1–2 sentence Russian explanation of *why* the natural form lands better in the tagged context. Do NOT call her sentence "wrong" — both forms are grammatical; the issue is register/frequency.
-- Keep replies short. This is a drill, not a tutorial.`
+- **Always surface the awkward alternative**, even on a correct natural production. Format: confirm the natural form, then briefly contrast it with the stiff version she avoided. Example: "Хорошо — 'a while ago' звучит естественнее в обстановке паба, чем 'sometime ago' (которое читается чуть формально/письменно)." This builds explicit awareness for next time.
+- When she produces the stiff form (or another non-natural alternative), explain *why* the natural form lands better in the tagged context. Do NOT call her sentence "wrong" — both forms are grammatical; the issue is register/frequency.
+- ${depthHint}
+- Keep replies focused. This is a drill, not a tutorial — but lower-level players need the example sentence to anchor the natural form in context.`
     : `- Deliver each cue in Russian (the player's L1) so the production challenge is genuinely from-scratch English. The "awkward" form in the pool is the stiff alternative — never include it in the cue.
-- When ${playerName} produces the natural form (or a near-equivalent that fits the register), confirm briefly in English and move on.
-- When ${playerName} produces the stiff form (or another non-natural alternative), give a 1–2 sentence English explanation of *why* the natural form lands better in the tagged context. Do NOT call the sentence "wrong" — both forms are grammatical; the issue is register/frequency.
-- Keep replies short. This is a drill, not a tutorial.`;
+- **Always surface the awkward alternative**, even on a correct natural production. Format: confirm the natural form, then briefly contrast it with the stiff version they avoided. Example: "Nice — 'a while ago' lands more natural in pub talk than 'sometime ago' (which reads slightly formal/written)." This builds explicit awareness for next time.
+- When ${playerName} produces the stiff form (or another non-natural alternative), explain *why* the natural form lands better in the tagged context. Do NOT call the sentence "wrong" — both forms are grammatical; the issue is register/frequency.
+- ${depthHint}
+- Keep replies focused. This is a drill, not a tutorial — but lower-level players need the example sentence to anchor the natural form in context.`;
 
   return `You are running a focused phrase-swap drill with ${playerName}, a Russian-speaking learner at CEFR level ${level}. The goal is to move stiff/calqued lexical phrases from passive recognition into active production by forcing them through a Russian→English cue.
 
@@ -441,7 +453,7 @@ The PWA strips the <session_meta> block before display; PART 1 is what the playe
     // references/firestore-schema.md (aggregated_coach_sessions).
     return `Append a JSON block at the very end of your message wrapped in <session_meta>...</session_meta> tags containing:
 {
-  "error_patterns_observed": ["pattern_id_1", ...],
+  "error_patterns_observed": ["pattern_id_1", "awkward → natural [tag]", ...],
   "topics_covered": ["topic_1", ...],
   "pvs_used_correctly": ["pv_string_1", ...],
   "session_summary": "Two-sentence recap.",
@@ -452,7 +464,13 @@ The PWA strips the <session_meta> block before display; PART 1 is what the playe
     "confidence": "high"
   }
 }
-Use snake_case pattern IDs, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".
+Use snake_case pattern IDs for grammar items, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".
+
+**Lexical/register swaps go in the SAME error_patterns_observed array, formatted as \`<awkward> → <natural> [<tag>]\`** (with whitespace around the arrow). Surface up to 3 per session — only entries where the learner produced a stiff/calqued lexical phrase AND the natural alternative is meaningfully more idiomatic in the tagged context. Examples:
+- "sometime ago → a while ago [brit_expat]"
+- "we will investigate this matter → we'll look into it [biz_oil]"
+- "in the end of the day → at the end of the day [biz_oil]"
+Tag must be one of: biz_oil, brit_expat, leisure_sport, home_daily, academic_ielts, kpmg_consulting, almaty_daily. Skip when no clearly-better natural form exists, or when the swap is style preference rather than register. These entries get auto-merged into the player's weak_patterns and become drillable in Phrase Swaps.
 
 For "pvs_used_correctly": list any phrasal verbs the learner produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "look for", "find out", "pick up", "follow up on", "get across". Empty array if none qualify.
 
