@@ -46,7 +46,7 @@ Update it whenever input questions are added.
 | Word Formation | 40 | 0 | 0.0% | ❌ zero — top priority |
 | Passive Voice | 28 | 4 | 14.3% | ⚠ below — priority |
 | Used To | 48 | 3 | 6.3% | ❌ below — priority |
-| Emphasis | 18 | 3 | 16.7% | ⚠ below |
+| Emphasis | 44 | 11 | 25.0% | ✓ (post-Phase-1 rebuild, t2r3) |
 | Idioms | 35 | 6 | 17.1% | ⚠ below |
 | Word Order | 22 | 4 | 18.2% | ⚠ borderline |
 | Linking Words | 80 | 15 | 18.8% | ⚠ borderline |

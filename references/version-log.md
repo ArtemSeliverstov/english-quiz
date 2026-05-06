@@ -11,6 +11,48 @@ specifics live in their dedicated reference files.
 ---
 
 ## 2026-05-06 · Session t2
+### v20260506-t2r3 — Emphasis rebuild Phase 1 (Cleft, Do-emph, So/Neither, Intensifiers)
+
+Emphasis category rebuilt per `plans/EMPHASIS_REBUILD_SPEC.md`. The category was over-indexed on academic inversion (12 of 18 questions) at the expense of constructions the family actually uses. Phase 1 closes three subtopic gaps (Do-emphasis, So/Neither/Nor, and substantial Cleft expansion) and adds an Intensifiers ladder.
+
+**Audit fixes (existing 18 questions)**:
+- Level demotions: `inv06–10` C2→C1 (5 mcqs); `se02` C1→B2.
+- Reclassify `inv05` + `inv10` to subtopic 5 (business inversion). `inv10` flipped `biz:false → true`.
+- Family-context rewrites: `se01` (cycling/Jebel Hafeet "literally heart-stopping"), `se02` (CFO board context), `emph_i02` (Bapco it-cleft, predicate-cleft anti-pattern removed).
+- `exp` ✗-contrast adds: `tf_31` (Never I had seen), `tf_32` (Only after had I reviewed — addresses the misplaced-inversion error pattern).
+
+**New content (26 questions)**:
+- Cleft (6 new, ids `emph_cl01–06`): all-cleft B1, it-cleft object focus B2, what/pseudo-cleft B2/C1, transforms. Family + biz contexts. Heavy emphasis on RU L1 *«то, что»* → *what* (not *that*) trap.
+- Do-emphasis (6 new, `emph_do01–06`): present/past/imperative/concession patterns. RU L1 *«ведь, же, действительно, всё-таки»* → *do/does/did + bare verb*.
+- So/Neither/Nor (7 new, `emph_sn01–07`): B1 + B2. Aux-matching is the central rule — every `exp` hammers RU L1 default-to-*am* error.
+- Intensifiers (7 new, `emph_in01–07`): gradable vs ungradable adjective rule. RU L1 *очень* over-extension trap. *way/far + comparative*.
+
+**Coach_notes cleanup (Artem)**: removed `weak_patterns` entry "emphasis/inversion: two-layout matrix not consolidated…". The 0/3 drill 2026-05-06 surfaced a real production gap on academic-inversion patterns (no sooner…than / not until X did Y / only after X did Y) — but those are formal-writing patterns Artem doesn't need to produce in business communication. Recognition mcqs (inv01–10) remain in the bank; new authoring of academic inversion is deferred to Phase 3 (Egor-triggered). The `recent_observations` entry stays as historical record.
+
+**Coverage shift**:
+- Total Emphasis 18 → 44.
+- Input share 16.7% → 25.0% (now above 20% target).
+- Level mix B1 0→7, B2 1→20, C1 17→17, C2 5→0.
+- `biz:true` 4 → 17.
+
+**Subtopic distribution (all 44 questions, post-Phase-1)**:
+| # | Subtopic | Count |
+|---|---|---|
+| 1 | Cleft | 7 |
+| 2 | Do-emphasis | 6 |
+| 3 | So/Neither/Nor | 7 |
+| 4 | Intensifiers | 9 |
+| 5 | Business inversion | 2 (Phase 2 will add 4–6) |
+| 6 | Academic inversion | 12 (Phase 3, deferred) |
+| 7 | Fronting | 0 (Phase 2 will add 5) |
+
+Pre-deploy validation: lint clean (2014 questions); transform-keyword audit clean (51 transforms); JS syntax OK; sparse-array scan clean; preview eval confirms all 26 new IDs load and `emph_i02` audit-fix structure intact.
+
+Q count: 1988 → 2014 (+26) · Version: v20260506-t2r3
+
+---
+
+## 2026-05-06 · Session t2
 ### v20260506-t2r2 — Family levels: "Building" tier below 60% gate
 
 `dominantBandPhase` now falls through to a **Building** tier when no band passes the 60% accuracy gate but at least one band has ≥30 seen. Surfaces the lowest such band (the player's natural "current band"). Eliminates a threshold-cliff bug where a single wrong answer could flip the family-tab levels strip from "Settling B1" to "No data yet" — surfaced today when Anna's B1 dipped from 60.something% to 59.94%.
