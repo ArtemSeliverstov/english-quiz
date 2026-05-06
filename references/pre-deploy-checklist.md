@@ -150,6 +150,25 @@ are acceptable; identical type+stem are not.
 
 ---
 
+## 6b. Doc word caps (CI-mirrored)
+
+CI enforces caps on `CLAUDE.md` (≤500) and every `.claude/skills/*/SKILL.md` (≤600). Run locally **with the C.UTF-8 locale** — plain `wc -w` undercounts on some Windows shells:
+
+```bash
+for f in CLAUDE.md .claude/skills/*/SKILL.md; do
+  n=$(LC_ALL=C.UTF-8 wc -w < "$f")
+  cap=600; [ "$f" = "CLAUDE.md" ] && cap=500
+  status="OK"; [ "$n" -gt "$cap" ] && status="FAIL"
+  printf "%-60s %4d / %d  %s\n" "$f" "$n" "$cap" "$status"
+done
+```
+
+Any FAIL → trim before pushing. Trimming rule (per `references/doc-style.md`): push detail into `references/`, keep SKILL.md as orchestration only.
+
+This was missed during the v20260506-t2 deploy and broke CI on commit e2616fd. Always run before pushing.
+
+---
+
 ## 7. Version string consistency
 
 The version string `vYYYYMMDD-tN` must appear identically in **four** places:

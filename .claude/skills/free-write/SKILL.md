@@ -35,61 +35,17 @@ Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 ## End-of-session protocol
 
-Auto-write at session close. Table read-out, then non-blocking feedback ask. The previous "preview → wait → persist" flow lost data when sessions were abandoned mid-feedback — see `coach-notes-schema.md` "Update protocol" rationale.
+Auto-write at session close, table read-out, non-blocking feedback ask. Full update protocol + read-out templates + log schema + assessment rules in `references/coach-notes-schema.md`.
 
-**1. Decide the writes silently**. Build:
-- `coach_sessions/{fw_*}` log shape (schema below)
-- `coach_notes` patch — `recent_observations` append (always if anything substantial happened) + `weak_patterns` add/remove on durable signals (multi-turn pattern, clear improvement, engagement shift) + `phrase_tracker` patch for any captured swaps
-- Phrase swap captures: scan the session for stiff/calqued lexical moments and pair each with a natural form. Tag with the relevant context (`[biz_oil] | [brit_expat] | [leisure_sport]` for Artem). 2nd-occurrence rule is mechanical — single-session captures land in `recent_observations` only; 2nd hit promotes to `weak_patterns` lexical entry + `phrase_tracker` ⚪→🔵.
-- PV swap (existing): pick at most one stiff→natural PV swap to surface to Artem; PV-specific data still lands in `pvs_used_correctly`.
+**1. Build the patches silently** — `coach_sessions/{fw_*}` log + `coach_notes` patch (rec_obs append, weak_patterns add/remove on durable signals, phrase_tracker for captured swaps). Phrase swaps: scan for stiff/calqued lexical moments, pair with a natural form, tag with `[biz_oil] | [brit_expat] | [leisure_sport]`. 2+ session promotion rule mechanical. PV swap card stays in `pvs_used_correctly`.
 
-**2. Auto-write everything** via the tools — no preview, no confirm:
-```bash
-node tools/log_coach_session.js artem <session.json>
-node tools/update_coach_notes.js artem <coach_notes_patch.json>
-```
+**2. Auto-write** — `tools/log_coach_session.js artem` + `tools/update_coach_notes.js artem`. No preview.
 
-**3. Render the player-facing table** (≤10 lines including the feedback ask). Use the `free_write` template from `coach-notes-schema.md` "Player-facing read-out templates" — adapt rows to what actually happened. Hide internal field names, session IDs, status codes. Example:
+**3. Render the player-facing table** using the `free_write` template in `coach-notes-schema.md`.
 
-```
-**Saved.**
+**4. Ask** "How did it feel? — or skip." If answered, append to rec_obs.
 
-| | |
-|---|---|
-| What we noticed | Articles solid, prepositions slipped once |
-| New phrases captured | "a while ago" (instead of "sometime ago") |
-| Active list | 7 phrases |
-
-How did it feel? One sentence — or skip.
-```
-
-**4. If Artem replies to the feedback ask**, append the answer as another `recent_observations` entry (auto, no second confirm). If he doesn't reply, the session is already saved — nothing orphaned.
-
-**5. Optional follow-up offer**: if a pattern surfaced that drill would help (articles → article_drill, particles → particle_sort, tense/prep slips → error_correction, captured swaps → phrase_swap_drill via PWA), offer as a chaser. Frame as offer, not directive.
-
-### Session log schema
-
-```json
-{
-  "mode": "free_write",
-  "messages": [...],
-  "error_patterns_observed": ["..."],
-  "topics_covered": ["..."],
-  "pvs_used_correctly": ["..."],
-  "phrase_swaps_captured": [
-    {"awkward": "sometime ago", "natural": "a while ago", "tag": "brit_expat"}
-  ],
-  "session_summary": "...",
-  "assessment": {
-    "estimated_level": "B2",
-    "sentence_count": 14,
-    "error_count": 2,
-    "confidence": "high"
-  }
-}
-```
-
-`assessment`: silent CEFR grade folded into `lvlStats` — never mentioned in chat. Grade *production* per IELTS/CEFR (grammar gates level). `error_count` = sentences with ≥1 impeding/L1-calque error. `confidence: "low"` if <3 sentences or off-topic (fold skipped). Tool caps at 20 sentences/session.
+**5. Optional drill chaser** for any pattern that would benefit (articles, particles, tense/prep, captured swaps → phrase_swap_drill via PWA).
 
 ## Skip log when
 

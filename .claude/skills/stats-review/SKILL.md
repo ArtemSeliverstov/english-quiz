@@ -9,18 +9,18 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Reads
 
-- `node tools/get_all_players.js -S` — all 5 player docs + their `exercises` and `coach_sessions` subcollections (or use uploaded JSON if Artem pasted one)
-- `references/family-profiles.md` — stable profile and focus areas
-- `references/coverage-matrix.md` — category targets, input share priorities
-- `references/coach-notes-schema.md` — update protocol and promotion rule
-- `progress/phrasal-verbs-tracker.md` (Artem) and `progress/phrasal-verbs-tracker-anna.md` (Anna) — refresh per-PV status when that player's stats are reviewed; methodology in Artem's file (see refresh protocol at bottom)
-- `progress/natural-phrases-tracker-{player}.md` × 5 — **generated** views of `players/{name}.phrase_tracker`. Regenerate (overwrite) on every stats-review run. Never hand-edit. Methodology in `coach-notes-schema.md` "Phrase tracker lifecycle".
+- `node tools/get_all_players.js -S` — 5 player docs + `exercises` and `coach_sessions` subcollections (or uploaded JSON)
+- `references/family-profiles.md` — profile + focus
+- `references/coverage-matrix.md` — category targets
+- `references/coach-notes-schema.md` — update protocol + promotion rule + phrase tracker lifecycle
+- `progress/phrasal-verbs-tracker.md` (Artem), `progress/phrasal-verbs-tracker-anna.md` (Anna) — refresh per-PV status; methodology in Artem's file
+- `progress/natural-phrases-tracker-{name}.md` × 5 — **generated** views of `players/{name}.phrase_tracker`. Regenerate via `update_coach_notes.js --regen-tracker-md`. Never hand-edit.
 
 ## Workflow
 
 **1. Pull stats.** Run `get_all_players.js -S` for all 5 docs + subcollections. For one player deep-dive: `get_player.js {name}`. Filter out `auto_suspected: true` sessions before pattern aggregation.
 
-**1a. Right signal for the question.** Post-Option-D (2026-05-05) every surface bumps `lastPlayedDate / currentStreak / longestStreak` — use these for recency/streak, subcollections for everything else (volume, surface, type, accuracy). Filter `exercises[]` on `ex.ts` (ISO from doc id; `-S` drops the raw `date`), `coach_sessions[]` on `cs.created`. Pre-Option-D rows skipped the doc bump — for windows spanning dates before 2026-05-05, subcollection wins on disagreement.
+**1a. Signal selection.** Post-Option-D (2026-05-05) every surface bumps `lastPlayedDate / currentStreak / longestStreak` — use these for recency/streak, subcollections for volume/surface/type/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Pre-Option-D rows: subcollection wins on disagreement.
 
 **2. Coverage review per player** (mandatory). For each: category breakdown (count, level distribution, accuracy), type distribution, trends vs prior session if available, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error rate), quality flags (≥60% error across 3+ players).
 
@@ -32,15 +32,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **5. Action recommendations.** Don't apply here — this skill produces, the user triggers `quiz-development` or `exercise-session` to act.
 
-**6. Phrase tracker maintenance** (auto, runs after coach_notes proposals are confirmed). For each player:
-   1. Read `players/{name}.phrase_tracker` from Firestore
-   2. For each entry, run lifecycle transitions based on the period's `coach_sessions` (mode `phrase_swap_drill` or `free_write` with `phrase_swaps_captured`):
-      - 3 clean reps in `phrase_swap_drill` or any unprompted free-write production → demote from `weak_patterns`, set tracker `status: retest_due`, `next_retest = today + 21d`
-      - Retest pass → `status: mastered`, `next_retest = today + 42d`
-      - Second retest pass → `status: owned`, `next_retest = null`
-      - Any retest fail → re-add to `weak_patterns`, `status: active`, log `failed_retest` event
-   3. Surface "retest due today/this week" entries in the review output so the next `phrase_swap_drill` knows to seed them (worker reads `phrase_tracker` directly when assembling the drill)
-   4. Regenerate `progress/natural-phrases-tracker-{name}.md` from the updated `phrase_tracker`. Overwrite — file is generated.
+**6. Phrase tracker maintenance** (auto, after step-4 confirmations). Per player: read `players/{name}.phrase_tracker`, apply lifecycle transitions from the period's `coach_sessions` (full state machine in `coach-notes-schema.md` "Phrase tracker lifecycle"), surface retest-due entries in the output, then `node tools/update_coach_notes.js {name} <patch.json> --regen-tracker-md` to refresh the markdown view.
 
 ## Speculation marking — mandatory
 

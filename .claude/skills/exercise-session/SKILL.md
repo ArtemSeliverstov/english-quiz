@@ -26,24 +26,11 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **4. Post-session feedback.** Score trend within session, persistent error patterns, specific (not generic) recommendation for next time, score vs recent baseline.
 
-**5. Persist (auto-write).** No preview, no confirm. Write the exercise log + coach_notes patch in one go. The previous "preview → wait → persist" flow lost data when sessions were abandoned mid-feedback — see `coach-notes-schema.md` "Update protocol".
+**5. Persist (auto-write)** — `tools/log_exercise.js` (exercise log) + `tools/update_coach_notes.js` (rec_obs, weak_patterns adjustments, phrase_tracker transitions). No preview. Auto-write rationale + capture card + read-out template in `coach-notes-schema.md`. Rich shape per `firestore-schema.md`: `source: "cc_session"`, one `items[]` per scored item, snake_case `matched_pattern_id` aligned with `error_types[]`, `time_to_answer_ms` via Bash (rough OK), `exercise_id`/`exercise_version` null for CC-authored.
 
-```bash
-node tools/log_exercise.js {name} <exercise.json>     # exercises/{ts}
-node tools/update_coach_notes.js {name} <patch.json>  # rec_obs append + weak_patterns adjustments + phrase_tracker transitions
-```
+**5a. Capture card** — if any stiff/calqued lexical moment surfaced, pair with natural form + context tag, fold into the same patch (single-session captures land in `recent_observations` only).
 
-Build the rich shape per `references/firestore-schema.md`: `source: "cc_session"` and one `items[]` entry per scored item. CC-specific capture:
-
-- `time_to_answer_ms`: `Date.now()` via Bash at item start + after the reply; rough is fine (auto_suspected uses 500ms threshold).
-- `matched_pattern_id` (wrong items): snake_case slug, same vocabulary as `error_types[]` (e.g. `a_the_swap`, `wait_no_for`).
-- `exercise_id`, `exercise_version`: `null` — these point at library versions; CC items don't have them.
-
-`log_exercise.js` validates the per-item shape, computes `tta_stats` and `auto_suspected` at write time. The notes script handles FIFO-cap on `recent_observations` automatically. See `tools/README.md` and `references/coach-notes-schema.md`.
-
-**5a. Capture card** (always run if any stiff/calqued lexical moment surfaced). Pair each with a natural form, tag with player context. 2nd-occurrence rule mechanical — single-session captures land in `recent_observations` only. Fold into the same `update_coach_notes.js` patch.
-
-**6. Render the player-facing table** (≤10 lines including the feedback ask). Use the `exercise-session` template from `coach-notes-schema.md`. Then ask "How did it feel? — or skip." Non-blocking — if the player answers, append the answer as a `recent_observations` entry (auto, no second confirm). If they don't, the session is already saved.
+**6. Render the player-facing table** using the `exercise-session` template in `coach-notes-schema.md`, then ask "How did it feel? — or skip." Non-blocking.
 
 ## When not to run
 

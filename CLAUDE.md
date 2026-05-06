@@ -10,9 +10,9 @@ Single-file PWA. Five Russian-speaking family members (Bahrain) practise English
 Hosted at `artemseliverstov.github.io/english-quiz`. Deployed via GitHub Pages.
 
 - **Stack**: HTML/CSS/JS in one file (`index.html`, ~1.3 MB). Service worker (`sw.js`).
-- **Sync**: Cloud Firestore. Five players: artem, anna, nicole, ernest, egor. Open writes via security rules.
-- **Local storage**: IndexedDB primary, localStorage backup.
-- **Surfaces**: Claude Code mobile/laptop (you), claude.ai chat (occasional). Future: Coach tab in PWA.
+- **Sync**: Cloud Firestore. Players: artem, anna, nicole, ernest, egor.
+- **Local**: IndexedDB primary, localStorage backup.
+- **Surfaces**: Claude Code (laptop, you) + PWA Coach tab.
 
 ---
 
@@ -52,11 +52,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 |---|---|---|
 | `progress/phrasal-verbs-tracker.md` | Artem (B1–C1, business + cycling) | `stats-review` (per-PV status + Freq) |
 | `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
-| `progress/natural-phrases-tracker-artem.md` | Artem | `stats-review` — **generated** view of `players/artem.phrase_tracker`, never hand-edit |
-| `progress/natural-phrases-tracker-anna.md` | Anna | `stats-review` — **generated** view of `players/anna.phrase_tracker`, never hand-edit |
-| `progress/natural-phrases-tracker-nicole.md` | Nicole | `stats-review` — **generated** view of `players/nicole.phrase_tracker`, never hand-edit |
-| `progress/natural-phrases-tracker-ernest.md` | Ernest | `stats-review` — **generated** view of `players/ernest.phrase_tracker`, never hand-edit |
-| `progress/natural-phrases-tracker-egor.md` | Egor | `stats-review` — **generated** view of `players/egor.phrase_tracker`, never hand-edit |
+| `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
 
 ---
 
@@ -64,8 +60,8 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 
 | Skill | Triggers |
 |---|---|
-| `exercise-session` | "this is X, let's do exercises", "давай упражнения", any exercise request for any of the 5 family members (Egor included as of 2026-05-06) |
-| `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side Free Write for Artem (other family members use the PWA Coach tab Free Write button) |
+| `exercise-session` | "let's do exercises", "давай упражнения", any exercise request for any of the 5 players (Egor included) |
+| `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side; others use the PWA Coach tab |
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
 | `routing-audit` | "audit landing", "check routing", "are X being routed correctly", "is COUNT/N items justified", "review batch sizes" — learner-shell CTA + batch-size alignment |
