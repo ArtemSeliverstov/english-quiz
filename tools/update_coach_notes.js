@@ -75,9 +75,13 @@ const RETEST_DAYS_SECOND = 42;
 
 function parseArgs(argv) {
   if (argv[0] === '--help' || argv[0] === '-h') return { help: true };
+  // Positionals are non-flag args; flags start with '--'. This matters when
+  // --regen-tracker-md is passed without a patch file (would otherwise be
+  // mistaken for the patch path).
+  const positionals = argv.filter(a => !a.startsWith('--'));
   return {
-    player: argv[0],
-    jsonPath: argv[1],
+    player: positionals[0],
+    jsonPath: positionals[1],
     dryRun: argv.includes('--dry-run'),
     regenTrackerMd: argv.includes('--regen-tracker-md'),
   };
