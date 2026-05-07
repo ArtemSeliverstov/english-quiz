@@ -14,9 +14,9 @@ Validates and pushes to GitHub Pages. Live URL: `artemseliverstov.github.io/engl
 
 ## Workflow
 
-**1. Determine version string.** Format `vYYYYMMDD-tN` (s series ended at s100; new sessions use `t`). Same-session rebuild: append `r2`, `r3`. Find last via `grep -nE "v202[0-9]{5}-[st][0-9]+" index.html sw.js | head`.
+**1. Determine version string.** Format `vYYYYMMDD` (date-only, since 2026-05-07). Same-day rebuild: append `-r2`, `-r3` (e.g. `v20260508-r2`). Legacy `-sN` and `-tN[rM]` tags remain in git history and CI still accepts them, but new deploys use date-only. Find last via `grep -oE "v202[0-9]{5}(-[stre0-9]+)?" index.html | head`.
 
-**2. Run pre-deploy checklist.** Walk every step in `pre-deploy-checklist.md`. Don't skip. The critical items: `node --check` on extracted JS, question count, LEVEL_TOTALS / CAT_TOTALS sync, no duplicate const, no sparse arrays, duplicate stem check, version string consistency in 4 places.
+**2. Run pre-deploy checklist.** Walk every step in `pre-deploy-checklist.md`. Don't skip. The critical items: `node --check` on extracted JS, question count, LEVEL_TOTALS / CAT_TOTALS sync, no duplicate const, no sparse arrays, duplicate stem check, version string consistency in 3 places.
 
 **3. Bump version in 4 places.** HTML `<meta name="app-version">`, `id="hdr-ver"` span, `sw.js` CACHE constant, git commit message prefix. After bumping, re-run version consistency check (CI also verifies, but local-first).
 
@@ -25,7 +25,7 @@ Validates and pushes to GitHub Pages. Live URL: `artemseliverstov.github.io/engl
 ```bash
 git status                # final visual check
 git add -A
-git commit -m "vYYYYMMDD-tN: <summary>
+git commit -m "vYYYYMMDD: <summary>
 
 - bullet 1
 - bullet 2
@@ -39,13 +39,13 @@ GitHub Pages publishes in ~60s. CI runs the linters and version check on every p
 **5. Update version-log.md.** New entry at top:
 
 ```markdown
-## YYYY-MM-DD · Session N
-### vYYYYMMDD-tN — <summary>
+## YYYY-MM-DD
+### vYYYYMMDD — <summary>
 
 - bullet 1
 - bullet 2
 
-Q count: X (Δ) · Version: vYYYYMMDD-tN
+Q count: X (Δ) · Version: vYYYYMMDD
 ```
 
 Same push or follow-up commit.

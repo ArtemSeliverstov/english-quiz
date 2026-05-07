@@ -171,24 +171,24 @@ This was missed during the v20260506-t2 deploy and broke CI on commit e2616fd. A
 
 ## 7. Version string consistency
 
-The version string `vYYYYMMDD-tN` must appear identically in **four** places:
+The version string `vYYYYMMDD` must appear identically in **four** places:
 
-1. HTML version badge (search for previous version string in `index.html`)
-2. Service worker cache key in `sw.js` (`CACHE = 'eq-vYYYYMMDD-tN'`)
-3. Version constant (if any) in `index.html`
+1. HTML `<meta name="app-version" content="vYYYYMMDD">` in `index.html`
+2. HTML `id="hdr-ver"` badge span in `index.html`
+3. Service worker cache key in `sw.js` (`CACHE = 'eq-vYYYYMMDD'`)
 4. Git commit message prefix
 
-Counter convention: the `s` series ran s1–s100; from t1 onward use the `t` prefix. Past sessions remain at their original `sN` tags — don't retag them. New sessions increment the `t` counter. Same-session rebuilds append `r2`, `r3`.
+Versioning scheme (since 2026-05-07): **date-only**. First deploy of a day = `vYYYYMMDD`. Same-day rebuild = `vYYYYMMDD-r2`, `-r3`, etc. Legacy `-sN` (s1–s100) and `-tN[rM]` tags remain in git history and CI still accepts them; new deploys are date-only.
 
 Mismatch causes silent bugs:
 - Stale SW cache key = browser serves old JS regardless of new HTML (root cause s66r1–r4 blank card bug)
 - Mismatched badge = users don't know they have the latest
 
 ```bash
-grep -nE "v202[0-9]{5}-[st][0-9]+(r[0-9]+)?" index.html sw.js
+grep -oE "v202[0-9]{5}(-(s[0-9]+|t[0-9]+(r[0-9]+)?|r[0-9]+))?" index.html sw.js
 ```
 
-All hits should show the same version string.
+All hits should show the same version string. CI's regex (`.github/workflows/ci.yml`, "Version string consistency" step) accepts the same shapes.
 
 ---
 

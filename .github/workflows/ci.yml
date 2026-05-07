@@ -54,10 +54,15 @@ jobs:
       - name: Version string consistency
         run: |
           # Three canonical locations must hold the same version string.
+          # Accepted forms (since 2026-05-07):
+          #   vYYYYMMDD              (date-only, the new norm)
+          #   vYYYYMMDD-rN           (same-day rebuild)
+          #   vYYYYMMDD-sN / -tN / -tNrM   (legacy s/t-counter, still valid)
           # Historical references in comments are ignored.
-          META_VER=$(grep -oE '<meta name="app-version" content="v202[0-9]{5}-[st][0-9]+(r[0-9]+)?"' index.html | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
-          BADGE_VER=$(grep -oE 'id="hdr-ver"[^>]*>v202[0-9]{5}-[st][0-9]+(r[0-9]+)?' index.html | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
-          CACHE_VER=$(grep -oE "CACHE='eq-v202[0-9]{5}-[st][0-9]+(r[0-9]+)?'" sw.js | grep -oE 'v202[0-9]{5}-[st][0-9]+(r[0-9]+)?')
+          VER_RE='v202[0-9]{5}(-(s[0-9]+|t[0-9]+(r[0-9]+)?|r[0-9]+))?'
+          META_VER=$(grep -oE "<meta name=\"app-version\" content=\"${VER_RE}\"" index.html | grep -oE "${VER_RE}")
+          BADGE_VER=$(grep -oE "id=\"hdr-ver\"[^>]*>${VER_RE}" index.html | grep -oE "${VER_RE}")
+          CACHE_VER=$(grep -oE "CACHE='eq-${VER_RE}'" sw.js | grep -oE "${VER_RE}")
 
           echo "meta:  $META_VER"
           echo "badge: $BADGE_VER"
