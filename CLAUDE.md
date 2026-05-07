@@ -24,14 +24,14 @@ The KB is the authoritative source. CLAUDE.md is only a routing layer.
 |---|---|
 | `references/operational-rules.md` | Before any change. Inviolable do/don'ts. |
 | `references/doc-style.md` | Before writing or editing any doc. |
-| `references/family-profiles.md` | Any session involving a player. Stable level/focus per person. Includes the family one-line table. |
+| `references/family-profiles.md` | Any session involving a player. Stable level/focus per person. |
 | `references/exercise-types.md` | Running exercises. Defines the 9 exercise types. |
-| `references/weekly-slots.md` | Artem's planned weekly schedule. |
-| `references/question-schema.md` | Authoring questions or editing existing ones. |
+| `references/weekly-slots.md` | Artem's weekly schedule. |
+| `references/question-schema.md` | Authoring or editing questions. |
 | `references/question-authoring-standards.md` | Writing q/exp/hint fields. |
-| `references/pre-deploy-checklist.md` | Before any push to main. Includes the deploy workflow and version-stamp invariant. |
-| `references/firestore-schema.md` | Reading/writing player or exercise data. Project ID, endpoint, write semantics. |
-| `references/coach-notes-schema.md` | Updating `coach_notes`. Defines the two-layer memory model and promotion rule. |
+| `references/pre-deploy-checklist.md` | Before any push. Includes deploy workflow and version-stamp invariant. |
+| `references/firestore-schema.md` | Reading/writing player or exercise data. |
+| `references/coach-notes-schema.md` | Updating `coach_notes`. Two-layer memory model + promotion rule. |
 | `references/coverage-matrix.md` | Coverage targets per category. |
 | `references/bug-log.md` | Before changing existing code, search this. |
 | `references/design-decisions.md` | Why-we-did-X notes. |
