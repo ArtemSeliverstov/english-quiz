@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260506-t2r5">
+  <meta name="app-version" content="v20260507-t1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -20,6 +20,7 @@
 :root {
   --bg:#0f0e17; --surface:#1a1928; --card:#201f30;
   --accent:#f7c948; --accent2:#ff6b6b; --green:#6fefb2;
+  --blue:#4a9eff; --yellow:#f7c948;
   --text:#fffffe; --muted:#a7a9be; --border:rgba(255,255,255,0.08);
 }
 /* ── BASE FONT SCALE ── */
@@ -494,6 +495,25 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
     .fls-phase{color:var(--muted);font-size:.72rem;text-align:right;line-height:1.25;}
     .fls-phase strong{color:var(--text);font-weight:700;}
     .fls-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.1rem .25rem .35rem;}
+    /* Family CEFR heatmap: players × {B1,B2,C1}. Cell hue = accuracy band, opacity = coverage. */
+    .flm-grid{display:grid;grid-template-columns:auto repeat(3,minmax(58px,1fr));gap:.2rem .3rem;align-items:center;margin-top:.35rem;}
+    .flm-head{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;text-align:center;padding-bottom:.25rem;}
+    .flm-head.flm-head-name{text-align:left;padding-left:.25rem;}
+    .flm-name{display:flex;align-items:center;gap:.4rem;font-weight:600;font-size:.75rem;padding:.3rem .3rem;border-radius:6px;}
+    .flm-name.flm-you{background:rgba(126,154,255,.08);}
+    .flm-cell{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:700;text-align:center;padding:.32rem .2rem;border-radius:6px;line-height:1.1;}
+    .flm-cell-cov{display:block;font-weight:400;font-size:.55rem;opacity:.7;margin-top:.05rem;letter-spacing:.02em;}
+    .flm-cell.flm-empty{color:rgba(255,255,255,.2);font-weight:400;background:transparent;}
+    .flm-foot{font-size:.58rem;color:var(--muted);margin-top:.45rem;padding-top:.4rem;border-top:1px solid rgba(255,255,255,.04);line-height:1.4;}
+    /* Per-card accuracy trend sparkline (3m → 1m → 1w → now) */
+    .ptrend{margin-top:.55rem;background:var(--bg);border-radius:8px;padding:.55rem .65rem;}
+    .ptrend-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:baseline;}
+    .ptrend-arrow{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:700;text-transform:none;letter-spacing:0;}
+    .ptrend-svg{display:block;width:100%;}
+    .ptrend-axis{display:flex;justify-content:space-between;margin-top:.2rem;font-family:'DM Mono',monospace;font-size:.55rem;line-height:1.25;}
+    .ptrend-axis > div{flex:1;text-align:center;}
+    .ptrend-axis .ptrend-pct{font-weight:700;font-size:.65rem;display:block;margin-top:.05rem;}
+    .ptrend-axis .ptrend-empty{color:var(--muted);opacity:.4;}
     .family-medal-axis{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:.55rem .85rem;margin-bottom:.8rem;font-size:.78rem;color:#fbbf24;line-height:1.4;}
     .family-medal-axis .fma-label{font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.65rem;opacity:.85;}
     .pb-pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
@@ -721,15 +741,17 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
 .cov-cat-acc{font-family:'DM Mono',monospace;font-size:.68rem;width:38px;text-align:right;flex-shrink:0;}
 
 /* ── Player card coverage bars ─────────────────────── */
-.player-coverage{margin-top:.6rem;padding:.5rem .6rem;background:var(--bg);border-radius:8px;}
-.pcov-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem;}
+.player-coverage{margin-top:.6rem;padding:.55rem .65rem;background:var(--bg);border-radius:8px;}
+.pcov-section-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.4rem;}
+.pcov-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.32rem;}
 .pcov-row:last-child{margin-bottom:0;}
 .pcov-lv{font-family:'DM Mono',monospace;font-size:.65rem;font-weight:700;width:22px;flex-shrink:0;}
 .pcov-lv.b1{color:#4a9eff;}.pcov-lv.b2{color:#a78bfa;}.pcov-lv.c1{color:#f59e0b;}.pcov-lv.c2{color:#ef4444;}
-.pcov-bar-wrap{flex:1;background:var(--surface);border-radius:20px;height:4px;overflow:hidden;}
+.pcov-bar-wrap{flex:1;background:var(--surface);border-radius:20px;height:5px;overflow:hidden;min-width:50px;}
 .pcov-bar{height:100%;border-radius:20px;transition:width .5s;}
-.pcov-pct{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);width:28px;text-align:right;flex-shrink:0;}
-.pcov-acc{font-family:'DM Mono',monospace;font-size:.62rem;width:28px;text-align:right;flex-shrink:0;}
+.pcov-frac{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--muted);min-width:54px;text-align:right;flex-shrink:0;letter-spacing:.01em;}
+.pcov-acc{font-family:'DM Mono',monospace;font-size:.7rem;font-weight:700;min-width:34px;text-align:right;flex-shrink:0;}
+.pcov-trend{font-family:'DM Mono',monospace;font-size:.6rem;min-width:24px;text-align:right;flex-shrink:0;}
 
 /* ── MOBILE UX — iPhone optimisations (S65) ── */
 
@@ -1035,12 +1057,13 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260506-t2r5</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260507-t1</span></p>
 </header>
 
 <!-- TABS -->
 <div class="tabs">
   <button class="tab" onclick="showLearnerHome()">🏠 Home</button>
+  <button class="tab" onclick="showTab('setup')">📝 Quiz</button>
   <button class="tab" onclick="showTab('stats')">📊 Statistics</button>
   <button class="tab" onclick="showTab('family')">👨‍👩‍👧 Family</button>
   <button class="tab" onclick="showTab('coach')">🎯 Coach</button>
@@ -3609,14 +3632,31 @@ function defaultData() {
   };
 }
 
+// Legacy backfill: populates catStats/lvlStats from qStats for accounts
+// migrated before those aggregates existed. Idempotency relies on the
+// `_backfilled` flag — but `loadFromFirebase` builds a merged object that
+// drops `_` fields, so IndexedDB ends up storing a doc without the flag.
+// On the next page load this loop would re-run and ADD qStats sums on top
+// of the already-populated lvlStats — the 2026-05-06 Artem C1 inflation
+// (321 seen → 3225 seen). Belt-and-braces fix: if either aggregate already
+// holds non-zero seen counts, treat the backfill as done regardless of
+// the flag — the play loop / Coach fold / Free Write fold are the only
+// authoritative writers from that point forward.
 function backfillStats(db) {
-  if (db._backfilled) return db;
   if (!db.catStats) db.catStats = {};
   if (!db.lvlStats) db.lvlStats = {};
+  if (db._backfilled) return db;
+  const lvlPopulated = Object.values(db.lvlStats).some(v => Number(v && v.seen) > 0);
+  const catPopulated = Object.values(db.catStats).some(v => Number(v && v.seen) > 0);
+  if (lvlPopulated || catPopulated) {
+    db._backfilled = true;
+    return db;
+  }
   Object.entries(db.qStats || {}).forEach(([id, st]) => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
     if (!q) return;
-    const cat = q.cat, lvl = q.lvl || 'B2';
+    const cat = q.cat;
+    const lvl = (typeof canonicalBand === 'function') ? canonicalBand(q.lvl) : (/^[ABC][12]$/.test(String(q.lvl||'')) ? q.lvl : 'B2');
     if (!db.catStats[cat]) db.catStats[cat] = {seen:0,correct:0};
     if (!db.lvlStats[lvl]) db.lvlStats[lvl] = {seen:0,correct:0};
     db.catStats[cat].seen    += st.seen    || 0;
@@ -3749,16 +3789,17 @@ function showTab(name) {
     const el = document.getElementById('tab-'+t);
     if (el) el.classList.add('hidden');
   });
-  if (name === 'setup') { renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
+  if (name === 'setup') { document.getElementById('tab-setup').style.display = ''; renderGreeting(); updatePoolSizeHint(); checkSimpleUI(); }
   if (name === 'home')  { renderLearnerHome(); }
   const target = document.getElementById('tab-'+name);
   if (target) target.classList.remove('hidden');
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  // Tab indices: 0 = Home, 1 = Stats, 2 = Family, 3 = Coach
+  // Tab indices: 0 = Home, 1 = Quiz (setup), 2 = Stats, 3 = Family, 4 = Coach
   if (name === 'home')   document.querySelectorAll('.tab')[0].classList.add('active');
-  if (name === 'stats')  { document.querySelectorAll('.tab')[1].classList.add('active'); renderStats(); }
-  if (name === 'family') document.querySelectorAll('.tab')[2].classList.add('active');
-  if (name === 'coach')  { document.querySelectorAll('.tab')[3].classList.add('active'); coachOpenTab(); }
+  if (name === 'setup')  document.querySelectorAll('.tab')[1].classList.add('active');
+  if (name === 'stats')  { document.querySelectorAll('.tab')[2].classList.add('active'); renderStats(); }
+  if (name === 'family') document.querySelectorAll('.tab')[3].classList.add('active');
+  if (name === 'coach')  { document.querySelectorAll('.tab')[4].classList.add('active'); coachOpenTab(); }
   // Tab bar visibility — hide on home (calm landing), show everywhere else.
   const tabsBar = document.querySelector('.tabs');
   if (tabsBar) tabsBar.style.display = (name === 'home') ? 'none' : 'flex';
@@ -5499,6 +5540,16 @@ function dominantBandPhaseLabel(info) {
   return info.phase + ' ' + info.band;
 }
 
+// CEFR-band canonical guard. Anything not A1/A2/B1/B2/C1/C2 (e.g. legacy
+// "B2-C1" range labels, missing values) is coerced to 'B2' so non-canonical
+// keys can never re-enter lvlStats. The historical `?` and `B2-C1` residue
+// on Artem and Nicole came from pre-canonical authoring; this guard makes
+// future drift impossible regardless of question-bank typos.
+const CANONICAL_BANDS = /^[ABC][12]$/;
+function canonicalBand(lvl) {
+  return CANONICAL_BANDS.test(String(lvl || '')) ? lvl : 'B2';
+}
+
 async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   const allCorrect = blanksCorrect === blanksTotal;
   if (allCorrect) { sessionScore++; streak++; } else streak = 0;
@@ -5515,13 +5566,13 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   if (!DB.catStats[cat]) DB.catStats[cat] = {seen:0,correct:0};
   DB.catStats[cat].seen++;
   if (allCorrect) DB.catStats[cat].correct++;
-  const lvl = q.lvl || 'B2';
+  const lvl = canonicalBand(q.lvl);
   if (!DB.lvlStats[lvl]) DB.lvlStats[lvl] = {seen:0,correct:0};
   DB.lvlStats[lvl].seen++;
   if (allCorrect) DB.lvlStats[lvl].correct++;
   DB.totalAnswered++;
   if (allCorrect) DB.totalCorrect++;
-  sessionAnswered.push({q:q.q, cat:q.cat, lvl:q.lvl||'B2', correct:allCorrect, id:q.id,
+  sessionAnswered.push({q:q.q, cat:q.cat, lvl, correct:allCorrect, id:q.id,
     multiPartial: !allCorrect ? blanksCorrect+'/'+blanksTotal : null});
   const exp = document.getElementById('q-explanation');
   const partialNote = allCorrect ? '✅ ' : '⚠️ ' + blanksCorrect + '/' + blanksTotal + ' blanks correct — ';
@@ -5552,7 +5603,7 @@ async function recordAnswer(correct, q) {
   if (correct) DB.catStats[cat].correct++;
 
   // per-level
-  const lvl = q.lvl || 'B2';
+  const lvl = canonicalBand(q.lvl);
   if (!DB.lvlStats[lvl]) DB.lvlStats[lvl] = {seen:0,correct:0};
   DB.lvlStats[lvl].seen++;
   if (correct) DB.lvlStats[lvl].correct++;
@@ -5561,7 +5612,7 @@ async function recordAnswer(correct, q) {
   DB.totalAnswered++;
   if (correct) DB.totalCorrect++;
 
-  sessionAnswered.push({q:q.q, cat:q.cat, lvl:q.lvl||'B2', correct, id:q.id});
+  sessionAnswered.push({q:q.q, cat:q.cat, lvl, correct, id:q.id});
   const exp = document.getElementById('q-explanation');
   exp.innerHTML = (correct ? '✅ ' : '❌ ') + q.exp;
   exp.style.display = 'block';
@@ -6928,7 +6979,7 @@ function buildPayload(db) {
     catStats:       db.catStats       || {},
     lvlStats:       db.lvlStats       || {},
     qStats:         db.qStats         || {},
-    recentSessions: (db.sessions || []).slice(0, 10).map(s => {
+    recentSessions: (db.sessions || []).slice(0, 50).map(s => {
       if (!s || !s.date) return s;
       if (/^\d{4}-/.test(s.date)) return s;
       const dm = s.date.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
@@ -7055,30 +7106,230 @@ function startFamilyPoll() {
   familyPollTimer = setInterval(fetchAndRenderFamily, 30000);
 }
 
+// ─── Per-card accuracy trend ──────────────────────────────────────────────
+// Each point is a CUMULATIVE snapshot — accuracy AS OF that moment in time.
+// `now` = current lifetime; `1w ago` = lifetime minus the last 7 days;
+// `1m ago` = lifetime minus the last 30 days; `3m ago` = lifetime minus the
+// last 90 days. Computed by subtracting future-session lvlBreakdown sums
+// from lvlStats. Stable comparison: each point is the same monotonically
+// growing dataset (everything from day-1 up to time T), so a small recent
+// dip moves the line by a fraction of a pp instead of swinging tens of pp.
+//
+// For the current player, prefers local DB.sessions (cap 50) over the
+// remote-synced recentSessions (cap 10) so the most recent session deltas
+// resolve from local data before the next Firebase round-trip.
+function playerTrendBuckets(p, band) {
+  if (!band) return [];
+  const sessSrc = (p.key === currentPlayer && typeof DB !== 'undefined' && Array.isArray(DB.sessions))
+    ? DB.sessions
+    : (p.recentSessions || []);
+  const sess = sessSrc.filter(s => s && s.date && s.lvlBreakdown);
+  const now = Date.now();
+  const lifetime = (p.lvlStats || {})[band] || { seen: 0, correct: 0 };
+  const lifeSeen    = Number(lifetime.seen)    || 0;
+  const lifeCorrect = Number(lifetime.correct) || 0;
+  const buckets = [
+    { key: '3m',  label: '3m ago', daysCutoff: 90 },
+    { key: '1m',  label: '1m ago', daysCutoff: 30 },
+    { key: '1w',  label: '1w ago', daysCutoff: 7  },
+    { key: 'now', label: 'now',    daysCutoff: 0  },
+  ];
+  return buckets.map(b => {
+    let subSeen = 0, subCorrect = 0;
+    if (b.daysCutoff > 0) {
+      const cutoff = now - b.daysCutoff * 86400000;
+      sess.forEach(s => {
+        const d = new Date(s.date); if (isNaN(d) || d.getTime() < cutoff) return;
+        const lb = s.lvlBreakdown[band];
+        if (!lb) return;
+        subSeen    += Number(lb.seen)    || 0;
+        subCorrect += Number(lb.correct) || 0;
+      });
+    }
+    const seen = lifeSeen - subSeen;
+    const correct = lifeCorrect - subCorrect;
+    if (seen < 5) return { ...b, pct: null, seen, correct };
+    return { ...b, pct: Math.round(correct / seen * 100), seen, correct };
+  });
+}
+
+// SVG sparkline of accuracy across the 4 trend buckets.
+function trendSparklineHTML(buckets, band) {
+  const W = 200, H = 36, pad = 6;
+  const innerW = W - pad*2, innerH = H - pad*2;
+  const xFor = i => pad + (i * innerW) / (buckets.length - 1);
+  // Auto-range Y axis with at least 8pp window so small cumulative shifts
+  // are still visible. Floor 30, ceiling 100.
+  const liveP = buckets.filter(b => b.pct != null).map(b => b.pct);
+  let yMin = 30, yMax = 100;
+  if (liveP.length) {
+    const lo = Math.min(...liveP), hi = Math.max(...liveP);
+    const span = Math.max(8, hi - lo + 4);
+    const mid = (lo + hi) / 2;
+    yMin = Math.max(30, Math.floor((mid - span/2) / 2) * 2);
+    yMax = Math.min(100, Math.ceil((mid + span/2) / 2) * 2);
+  }
+  const yFor = pct => pad + innerH - ((Math.max(yMin, Math.min(yMax, pct)) - yMin) / (yMax - yMin)) * innerH;
+  const colFor = pct => pct >= 75 ? 'var(--green)' : pct >= 60 ? 'var(--accent)' : 'var(--accent2)';
+  const points = buckets.map((b, i) => b.pct == null ? null : { x: xFor(i), y: yFor(b.pct), pct: b.pct })
+    .filter(Boolean);
+  // Connect consecutive available points (skip gaps with separate polylines)
+  let polyParts = [];
+  let segment = [];
+  buckets.forEach((b, i) => {
+    if (b.pct == null) { if (segment.length >= 2) polyParts.push(segment); segment = []; }
+    else segment.push({ x: xFor(i), y: yFor(b.pct) });
+  });
+  if (segment.length >= 2) polyParts.push(segment);
+  const polylines = polyParts.map(seg =>
+    '<polyline fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5" points="'
+    + seg.map(p => p.x + ',' + p.y).join(' ') + '"/>'
+  ).join('');
+  const dots = buckets.map((b, i) => b.pct == null
+    ? '<circle cx="' + xFor(i) + '" cy="' + (H/2) + '" r="2" fill="rgba(255,255,255,.15)"/>'
+    : '<circle cx="' + xFor(i) + '" cy="' + yFor(b.pct) + '" r="3.5" fill="' + colFor(b.pct) + '" stroke="var(--bg)" stroke-width="1"/>'
+  ).join('');
+  // Subtle gridlines at the 60/75 accuracy thresholds when in range
+  const gridLine = (y) => '<line x1="' + pad + '" x2="' + (W-pad) + '" y1="' + yFor(y) + '" y2="' + yFor(y) + '" stroke="rgba(255,255,255,.04)" stroke-dasharray="2,3"/>';
+  let grid = '';
+  if (60 >= yMin && 60 <= yMax) grid += gridLine(60);
+  if (75 >= yMin && 75 <= yMax) grid += gridLine(75);
+  // Header arrow comparing first to last available point
+  const firstP = points[0], lastP = points[points.length - 1];
+  let arrowHTML = '';
+  if (firstP && lastP && firstP !== lastP) {
+    const delta = lastP.pct - firstP.pct;
+    if (delta >= 3)       arrowHTML = '<span class="ptrend-arrow" style="color:var(--green)">↑ ' + delta + 'pp</span>';
+    else if (delta <= -3) arrowHTML = '<span class="ptrend-arrow" style="color:var(--accent2)">↓ ' + Math.abs(delta) + 'pp</span>';
+    else                  arrowHTML = '<span class="ptrend-arrow" style="color:var(--muted)">stable</span>';
+  } else if (points.length === 1) {
+    arrowHTML = '<span class="ptrend-arrow" style="color:var(--muted)">single point</span>';
+  } else {
+    arrowHTML = '<span class="ptrend-arrow" style="color:var(--muted)">no data</span>';
+  }
+  const axis = buckets.map(b => b.pct == null
+    ? '<div><span class="ptrend-empty">' + b.label + '</span><span class="ptrend-pct ptrend-empty">—</span></div>'
+    : '<div><span style="color:var(--muted)">' + b.label + '</span><span class="ptrend-pct" style="color:' + colFor(b.pct) + '">' + b.pct + '%</span></div>'
+  ).join('');
+  const labelLeft = band
+    ? 'Accuracy trend · <span style="color:var(--accent)">' + band + '</span> · 3m → now'
+    : 'Accuracy trend · 3m → now';
+  return '<div class="ptrend">'
+    + '<div class="ptrend-label"><span>' + labelLeft + '</span>' + arrowHTML + '</div>'
+    + '<svg class="ptrend-svg" viewBox="0 0 ' + W + ' ' + H + '" height="' + H + '" preserveAspectRatio="none">'
+    + grid + polylines + dots + '</svg>'
+    + '<div class="ptrend-axis">' + axis + '</div>'
+    + '</div>';
+}
+
+// ─── Per-band trend signal ────────────────────────────────────────────────
+// Compares last-5 vs prior-5 sessions' lvlBreakdown for the given band.
+// Returns delta in pp (rounded), or null when sample is too thin.
+function bandTrend(p, band) {
+  const sess = (p.recentSessions || []).filter(s => s && s.lvlBreakdown && s.lvlBreakdown[band]);
+  if (sess.length < 4) return null;
+  const acc = arr => {
+    let seen = 0, correct = 0;
+    arr.forEach(s => { const lb = s.lvlBreakdown[band]; if (lb) { seen += lb.seen||0; correct += lb.correct||0; } });
+    return seen >= 5 ? correct/seen*100 : null;
+  };
+  const a1 = acc(sess.slice(0, 5));
+  const a2 = acc(sess.slice(5, 10));
+  if (a1 == null || a2 == null) return null;
+  return Math.round(a1 - a2);
+}
+
+function trendHTML(delta) {
+  if (delta == null) return '<span class="pcov-trend" style="color:var(--muted)">—</span>';
+  if (delta >= 3)  return '<span class="pcov-trend" style="color:var(--green)">↑' + delta + '</span>';
+  if (delta <= -3) return '<span class="pcov-trend" style="color:var(--accent2)">↓' + Math.abs(delta) + '</span>';
+  return '<span class="pcov-trend" style="color:var(--muted)">·</span>';
+}
+
+// Always-visible per-card CEFR matrix. Bar width = coverage%, bar colour = accuracy band.
+// Right-side text shows seen/total · accuracy% · trend (last-5 vs prior-5).
 function playerCoverageHTML(p) {
-  // LEVEL_TOTALS computed dynamically by computeCoverageConstants()
-  const lvlSeen = { B1:0, B2:0, C1:0, C2:0 };
+  const BANDS = ['B1','B2','C1'];   // C2 omitted (pool=11, too thin)
+  const lvlSeen = {};
   Object.keys(p.qStats||{}).forEach(id => {
     const q = ALL_QUESTIONS.find(q => q && q.id === id);
-    if (q && lvlSeen[q.lvl] !== undefined) lvlSeen[q.lvl]++;
+    if (q && BANDS.includes(q.lvl)) lvlSeen[q.lvl] = (lvlSeen[q.lvl]||0) + 1;
   });
-  return ['B1','B2','C1','C2'].map(lv => {
-    const seen = lvlSeen[lv]||0;
-    const total = LEVEL_TOTALS[lv];
-    const pct = Math.round(seen/total*100);
-    const st = (p.lvlStats||{})[lv]||{seen:0,correct:0};
+  const rows = BANDS.map(lv => {
+    const seen = lvlSeen[lv] || 0;
+    const total = LEVEL_TOTALS[lv] || 0;
+    const cov = total > 0 ? Math.round(seen/total*100) : 0;
+    const st = (p.lvlStats||{})[lv] || {seen:0, correct:0};
     const acc = st.seen > 0 ? Math.round(st.correct/st.seen*100) : null;
-    const col = pct>=80?'var(--green)':pct>=40?'var(--accent)':'#4a9eff';
-    const accStr = acc !== null
-      ? '<span class="pcov-acc" style="color:' + (acc>=80?'var(--green)':acc>=65?'var(--accent)':'var(--accent2)') + '">' + acc + '%</span>'
-      : '<span class="pcov-acc" style="color:var(--muted)">—</span>';
+    const accCol = acc == null ? 'var(--muted)' : acc>=75?'var(--green)':acc>=60?'var(--accent)':'var(--accent2)';
+    const barCol = acc == null ? 'var(--surface)' : accCol;
+    const accStr = acc == null ? '—' : acc + '%';
+    const delta = bandTrend(p, lv);
     return '<div class="pcov-row">'
       + '<span class="pcov-lv ' + lv.toLowerCase() + '">' + lv + '</span>'
-      + '<div class="pcov-bar-wrap"><div class="pcov-bar" style="width:' + pct + '%;background:' + col + '"></div></div>'
-      + '<span class="pcov-pct">' + pct + '%</span>'
-      + accStr
+      + '<div class="pcov-bar-wrap"><div class="pcov-bar" style="width:' + cov + '%;background:' + barCol + '"></div></div>'
+      + '<span class="pcov-frac">' + seen + '/' + total + '</span>'
+      + '<span class="pcov-acc" style="color:' + accCol + '">' + accStr + '</span>'
+      + trendHTML(delta)
       + '</div>';
   }).join('');
+  return '<div class="pcov-section-label">CEFR coverage · accuracy · trend</div>' + rows;
+}
+
+// Family-wide CEFR heatmap (Family levels strip). Cell hue = accuracy band,
+// opacity = coverage (so "55%/barely seen" is visibly dimmer than "55%/well-covered").
+function familyLevelMatrixHTML(players) {
+  const BANDS = ['B1','B2','C1'];
+  // Pre-compute coverage per player per band from qStats
+  const cov = new Map();
+  players.forEach(p => {
+    const seenByBand = {B1:0, B2:0, C1:0};
+    Object.keys(p.qStats||{}).forEach(id => {
+      const q = ALL_QUESTIONS.find(q => q && q.id === id);
+      if (q && seenByBand[q.lvl] !== undefined) seenByBand[q.lvl]++;
+    });
+    cov.set(p.key, seenByBand);
+  });
+  // Sort: current player first, then by overall accuracy desc
+  const sorted = [...players].sort((a, b) => {
+    if (a.key === currentPlayer) return -1;
+    if (b.key === currentPlayer) return 1;
+    return (b.accuracy||0) - (a.accuracy||0);
+  });
+  const head = '<div class="flm-head flm-head-name">Player</div>'
+    + BANDS.map(b => '<div class="flm-head">' + b + '</div>').join('');
+  const rows = sorted.map(p => {
+    const isMe = p.key === currentPlayer;
+    const name = capFirst((p.displayName || p.key).split(' ')[0]);
+    const seenByBand = cov.get(p.key) || {};
+    const cells = BANDS.map(b => {
+      const st = (p.lvlStats||{})[b] || {seen:0, correct:0};
+      const acc = st.seen > 0 ? Math.round(st.correct/st.seen*100) : null;
+      const seen = seenByBand[b] || 0;
+      const total = LEVEL_TOTALS[b] || 0;
+      const covPct = total > 0 ? seen/total : 0;
+      if (acc == null || st.seen < 3) {
+        return '<div class="flm-cell flm-empty">—</div>';
+      }
+      const baseRgb = acc >= 75 ? '111, 239, 178'
+                    : acc >= 60 ? '247, 201, 72'
+                    : '255, 107, 107';
+      const alpha = Math.min(1, 0.18 + covPct * 1.64);
+      const fg = acc >= 60 ? '#0f0e17' : '#fff';
+      return '<div class="flm-cell" style="background:rgba(' + baseRgb + ',' + alpha.toFixed(2) + ');color:' + fg + ';">'
+        + '<span class="flm-cell-acc">' + acc + '%</span>'
+        + '<span class="flm-cell-cov">' + Math.round(covPct*100) + '% pool</span>'
+        + '</div>';
+    }).join('');
+    return '<div class="flm-name' + (isMe ? ' flm-you' : '') + '">'
+      + '<span class="fls-emoji">' + (p.emoji || '👤') + '</span>'
+      + escapeHtml(name) + (isMe ? ' (you)' : '')
+      + '</div>'
+      + cells;
+  }).join('');
+  return '<div class="fls-label">Family levels — accuracy × coverage</div>'
+    + '<div class="flm-grid">' + head + rows + '</div>'
+    + '<div class="flm-foot">Cell colour = accuracy band (red &lt;60% · yellow 60–74% · green ≥75%). Cell brightness = % of band\'s question pool touched. C2 omitted (only 11 questions).</div>';
 }
 
 // Plan B — rotating weekly medal axis. ISO week % 4 selects the axis.
@@ -7180,48 +7431,11 @@ function renderFamily(playersData) {
       '<div>' + axis.emoji + ' ' + axis.label + ' — leaderboard ranks by this metric until Sunday.</div>';
   }
 
-  // Family levels strip — richer view of the home `lh-levels-table`. Shows the
-  // dominant CEFR phase, accuracy, total questions seen, and most-played
-  // category (where seen >= 5). Sorted by CEFR band DESC then phase DESC.
+  // Family levels strip — CEFR heatmap (B1/B2/C1 × players). Each cell shows
+  // accuracy% (hue) with brightness scaled by question-pool coverage so a
+  // sparsely-sampled cell visibly dims even at high accuracy.
   const lvlEl = document.getElementById('family-levels-strip');
-  if (lvlEl) {
-    const bandRank = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
-    const phaseRank = { Solid: 3, Comfortable: 2, Settling: 1 };
-    const phaseRows = players.map(p => {
-      const phase = (typeof dominantBandPhase === 'function') ? dominantBandPhase(p.lvlStats) : null;
-      const seen = Object.keys(p.qStats || {}).length;
-      const cats = Object.entries(p.catStats || {})
-        .filter(([,s]) => s.seen >= 5)
-        .sort((a,b) => b[1].seen - a[1].seen);
-      const topCat = cats[0] ? cats[0][0] : null;
-      return { p, phase, seen, topCat };
-    }).sort((a, b) => {
-      const aBand = a.phase ? (bandRank[a.phase.band] || 0) : 0;
-      const bBand = b.phase ? (bandRank[b.phase.band] || 0) : 0;
-      if (bBand !== aBand) return bBand - aBand;
-      const aPhase = a.phase ? (phaseRank[a.phase.phase] || 0) : 0;
-      const bPhase = b.phase ? (phaseRank[b.phase.phase] || 0) : 0;
-      if (bPhase !== aPhase) return bPhase - aPhase;
-      const aAcc = a.phase ? a.phase.accuracy : 0;
-      const bAcc = b.phase ? b.phase.accuracy : 0;
-      return bAcc - aAcc;
-    });
-    lvlEl.innerHTML = '<div class="fls-label">Family levels</div>' + phaseRows.map(({p, phase, seen, topCat}) => {
-      const isMe = p.key === currentPlayer;
-      const name = capFirst((p.displayName || p.key).split(' ')[0]);
-      const label = phase
-        ? ((typeof dominantBandPhaseLabel === 'function') ? dominantBandPhaseLabel(phase) : (phase.phase + ' ' + phase.band))
-        : 'No data yet';
-      const accPct = phase ? Math.round(phase.accuracy * 100) : null;
-      const phaseHtml = phase
-        ? '<strong>' + escapeHtml(label) + '</strong> · ' + accPct + '% · ' + seen + ' Qs' + (topCat ? ' · ' + escapeHtml(topCat) : '')
-        : '<span style="opacity:.6;">no data yet</span>';
-      return '<div class="fls-row' + (isMe ? ' fls-you' : '') + '">' +
-        '<div class="fls-name"><span class="fls-emoji">' + (p.emoji || '👤') + '</span>' + escapeHtml(name) + (isMe ? ' (you)' : '') + '</div>' +
-        '<div class="fls-phase">' + phaseHtml + '</div>' +
-      '</div>';
-    }).join('');
-  }
+  if (lvlEl) lvlEl.innerHTML = familyLevelMatrixHTML(players);
 
   if (players.length === 0) {
     list.innerHTML = '<div style="color:var(--muted);font-size:.9rem;text-align:center;padding:1rem;">No players yet — play a session to appear here!</div>';
@@ -7240,26 +7454,13 @@ function renderFamily(playersData) {
       .sort((a,b) => b.pct - a.pct);
     const bestCat  = cats[0] ? cats[0].cat + ' ' + cats[0].pct + '%' : null;
     const worstCat = cats.length > 1 ? cats[cats.length-1].cat + ' ' + cats[cats.length-1].pct + '%' : null;
-    // Personal-best pills: longest streak ever, best single-session pct
     const longestEver = p.longestStreak || 0;
-    const bestSession = (p.recentSessions || []).reduce((m, s) => {
-      const v = typeof s.pct === 'string' ? parseInt(s.pct) : (s.pct || 0);
-      return v > m ? v : m;
-    }, 0);
-    // This-week axis-metric value (formatted) — prominent third stat box
-    let axisDisplay;
-    switch (axis.key) {
-      case 'sessions':   axisDisplay = p.wkSessionCount + ''; break;
-      case 'accuracy':   axisDisplay = p.wkAcc == null ? '—' : p.wkAcc + '%'; break;
-      case 'questions':  axisDisplay = p.wkQuestionCount + ''; break;
-      case 'categories': axisDisplay = p.wkCategories + ''; break;
-    }
     const weeklyScore = p.weeklyScore;
-    const sparkBars = (p.recentSessions || []).slice(0,10).reverse().map(s => {
-      const h = Math.max(4, Math.round(s.pct * 0.28));
-      const col = s.pct>=75?'var(--green)':s.pct>=55?'var(--accent)':'var(--accent2)';
-      return `<div class="spark-bar" style="height:${h}px;background:${col}" title="${s.pct}%"></div>`;
-    }).join('');
+    const catsPractised = cats.length;
+    const totalAnswered = p.totalAnswered || 0;
+    const phase = (typeof dominantBandPhase === 'function') ? dominantBandPhase(p.lvlStats) : null;
+    const trendBand = phase ? phase.band : null;
+    const trendBuckets = playerTrendBuckets(p, trendBand);
     const cardId = 'fam-detail-' + p.key;
     // ── Exercise stats for family card ──
     const exEntries = [];
@@ -7292,7 +7493,6 @@ function renderFamily(playersData) {
     }).join('');
     // Medal goes only to top-3 players who actually have a non-zero axis value this week
     const rankBadge = (p.axisVal > 0 && i < 3) ? medals[i] : (i + 1);
-    const axisColor = p.axisVal > 0 ? 'var(--accent)' : 'var(--muted)';
     return `
     <div class="player-card${isMe?' me':''}">
       <div class="player-header">
@@ -7304,19 +7504,18 @@ function renderFamily(playersData) {
         <div class="player-rank">${rankBadge}</div>
       </div>
       <div class="player-stats" style="grid-template-columns:repeat(3,1fr);">
-        <div class="ps-box"><div class="ps-num" style="color:var(--green)">${p.accuracy}%</div><div class="ps-lbl">Accuracy</div></div>
-        <div class="ps-box"><div class="ps-num">${p.totalSessions||0}</div><div class="ps-lbl">Sessions</div></div>
-        <div class="ps-box"><div class="ps-num" style="color:${axisColor}">${axisDisplay}</div><div class="ps-lbl">${axis.emoji} ${axis.key === 'sessions' ? 'Wk sessions' : axis.key === 'accuracy' ? 'Wk accuracy' : axis.key === 'questions' ? 'Wk Qs' : 'Wk cats'}</div></div>
+        <div class="ps-box"><div class="ps-num">${p.totalSessions||0}</div><div class="ps-lbl">📚 Sessions</div></div>
+        <div class="ps-box"><div class="ps-num">${totalAnswered.toLocaleString()}</div><div class="ps-lbl">📝 Questions</div></div>
+        <div class="ps-box"><div class="ps-num">${catsPractised}</div><div class="ps-lbl">🌐 Topics</div></div>
       </div>
       ${exCount > 0 ? `<div class="player-stats" style="grid-template-columns:repeat(3,1fr);margin-top:.3rem;">
-        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;">${exCount}</div><div class="ps-lbl">📝 Exercises</div></div>
-        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${exAvg>=70?'var(--green)':exAvg>=50?'var(--accent)':'var(--accent2)'}">${exAvg}%</div><div class="ps-lbl">Ex. Avg</div></div>
-        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${lastExColor}">${lastExText}</div><div class="ps-lbl">Last Ex.</div></div>
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;">${exCount}</div><div class="ps-lbl">🎯 Exercises</div></div>
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${exAvg>=70?'var(--green)':exAvg>=50?'var(--accent)':'var(--accent2)'}">${exAvg}%</div><div class="ps-lbl">Ex. avg</div></div>
+        <div class="ps-box"><div class="ps-num" style="font-size:.9rem;color:${lastExColor}">${lastExText}</div><div class="ps-lbl">Last ex.</div></div>
       </div>` : ''}
-      ${sparkBars?`<div class="sparkline" title="Last 10 sessions" style="margin-top:.55rem;">${sparkBars}</div>`:''}
+      ${trendSparklineHTML(trendBuckets, trendBand)}
       <div class="pb-pills">
         ${longestEver > 0 ? `<span class="pb-pill streak">🔥 Longest streak: ${longestEver}</span>` : ''}
-        ${bestSession > 0 ? `<span class="pb-pill">⭐ Best session: ${bestSession}%</span>` : ''}
         ${weeklyScore !== null ? `<span class="pb-pill">📊 This week: ${weeklyScore}%</span>` : ''}
       </div>
       <div class="player-cats">
@@ -7338,13 +7537,10 @@ function renderFamily(playersData) {
           return '<span class="badge-count">' + parts.join(' ') + '</span>';
         })()}
       </div>
-      <div style="margin-top:.5rem;text-align:center;">
-        <span style="font-size:.75rem;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="document.getElementById('${cardId}').style.display=document.getElementById('${cardId}').style.display==='none'?'block':'none';this.textContent=document.getElementById('${cardId}').style.display==='none'?'Details ▸':'Details ▾'">Details ▸</span>
+      ${exDetailHTML ? `<div style="margin-top:.5rem;text-align:center;">
+        <span style="font-size:.75rem;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;" onclick="document.getElementById('${cardId}').style.display=document.getElementById('${cardId}').style.display==='none'?'block':'none';this.textContent=document.getElementById('${cardId}').style.display==='none'?'Recent exercises ▸':'Recent exercises ▾'">Recent exercises ▸</span>
       </div>
-      <div id="${cardId}" style="display:none;">
-        <div class="player-coverage">${playerCoverageHTML(p)}</div>
-        ${exDetailHTML ? '<div style="margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);"><div style="font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:.3rem;">Recent exercises</div>' + exDetailHTML + '</div>' : ''}
-      </div>
+      <div id="${cardId}" style="display:none;margin-top:.4rem;padding-top:.5rem;border-top:1px solid var(--border);">${exDetailHTML}</div>` : ''}
     </div>`;
   }).join('');
 }

@@ -10,6 +10,23 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-07 · Session t1
+### v20260507-t1 — Family-tab redesign + lvlStats integrity fixes
+
+UI: Quiz tab returned to ribbon (showTab('setup')). Family tab lower half rebuilt: dropped per-session sparkline + duplicate accuracy stat box, added 3-stat effort row (Sessions / Questions / Topics), added per-card cumulative C1 trend chart (3m/1m/1w/now points = lifetime accuracy as-of each timepoint, computed by subtracting future sessions from `lvlStats`). Auto-ranged Y-axis. Family levels strip rebuilt as a `players × {B1,B2,C1}` heatmap (cell hue = accuracy band, brightness = pool coverage). Fixed undefined `--blue` and `--yellow` CSS vars that were rendering progress bars transparent.
+
+Data integrity:
+- **Restored Artem's `lvlStats.C1`** from corrupted 3225/2337 → 333/240 via `tmp/restore_artem_lvlstats.js`. Reconstruction = clean 2026-05-06 backup + 3 newer-session deltas + Coach-Tab B2 residual; cross-validated against frozen RTDB snapshot (267/198 at 2026-04-28).
+- **Root-cause fix in `backfillStats`** ([index.html:3635](index.html:3635)): added belt-and-braces guard — short-circuits when either `lvlStats` or `catStats` already holds non-zero seen counts, regardless of `_backfilled` flag. The flag was being lost through `loadFromFirebase`'s merged-object round-trip, allowing the loop to re-run and ADD qStats sums on top of populated lvlStats (the 05-06 inflation mechanism).
+- **`canonicalBand()` defense**: new `/^[ABC][12]$/` guard wired into `recordAnswer`/`recordMultiAnswer`/`backfillStats` so non-canonical band labels (e.g. `B2-C1` range labels, missing values) coerce to `B2` instead of polluting lvlStats.
+- **One-shot `?` and `B2-C1` cleanup** via `tmp/merge_noncanonical_bands.js`: Artem `?` 26/19 → B2, `B2-C1` 16/12 → C1; Nicole `?` 10/5 → B2. Sums preserved on both. Other 3 players were already clean.
+- **Sync cap bumped 10 → 50** ([index.html:6938](index.html:6938)) so trend buckets fill in over time.
+- CLAUDE.md trimmed under 500-word CI cap (the `mistakes-review` row added in 1947543 had pushed it to 509).
+
+Q count: 2025 → 2025 (no count change) · Version: v20260507-t1
+
+---
+
 ## 2026-05-06 · Session t2
 ### v20260506-t2r5 — Mistakes-review fixes: 3 alt-answer widenings + 1 stem rewrite
 
