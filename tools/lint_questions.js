@@ -25,7 +25,7 @@ if (!m) {
 }
 const arr = m[1];
 
-const VALID_TYPES = new Set(['gap', 'mcq', 'input', 'multi', 'transform', 'wordform']);
+const VALID_TYPES = new Set(['gap', 'mcq', 'input', 'multi', 'transform', 'wordform', 'error_correction']);
 const VALID_LEVELS = new Set(['B1', 'B2', 'C1', 'C2']);
 
 function walkObjects(src) {

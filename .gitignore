@@ -34,3 +34,42 @@ Thumbs.db
 # .github/workflows/backup.yml. Anything in this directory on `main` is a
 # manual run (e.g. tools/backup_players.js without --remote) and stays local.
 backups/
+
+# index.html backup snapshots from migration scripts (rollback points, not history)
+index.html.pre_*.bak
+index.html.*.bak
+
+# Wave-authoring scratch (one-shot scripts + intermediate JSON kept local)
+tools/batches/
+tools/wave*_*.json
+tools/wave*_rubric.md
+tools/wave*_apply.js
+tools/wordform_*.json
+tools/wordform_export.js
+tools/wordform_base_apply.js
+tools/quantifiers_append.js
+tools/errcorr_append.js
+tools/errcorr_recase.js
+tools/strip_linked_qids.js
+tools/grammar_extract.js
+tools/grammar_migration_*.js
+tools/grammar_migration_*.json
+tools/bizflag_*.js
+tools/find_samples.js
+tools/tag_export.js
+tools/tag_export.json
+tools/tag_aggregate.js
+tools/tag_aggregate.json
+tools/tag_apply.js
+tools/tag_extract_missing.js
+tools/tag_finalise.js
+tools/tag_final.json
+tools/tag_split_batches.js
+tools/tag_heuristic*.*
+tools/tag_rubric.md
+
+# Misc scratch
+parsed_questions.json
+temp_questions.js
+all_players_tmp.json
+stratified_sample*.md

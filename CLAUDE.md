@@ -33,6 +33,7 @@ The KB is the authoritative source. CLAUDE.md is only a routing layer.
 | `references/firestore-schema.md` | Reading/writing player or exercise data. |
 | `references/coach-notes-schema.md` | Updating `coach_notes`. Two-layer memory model + promotion rule. |
 | `references/coverage-matrix.md` | Coverage targets per category. |
+| `references/question-bank-taxonomy.md` | Auditing the bank. Categories, theme-tags, relevance matrix. |
 | `references/bug-log.md` | Before changing existing code, search this. |
 | `references/design-decisions.md` | Why-we-did-X notes. |
 | `references/roadmap.md` | What's next, what's deferred. |

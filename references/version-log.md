@@ -10,6 +10,34 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-08 · Session r2
+### v20260508-r2 — Bank overhaul: themes + Pronouns category + error_correction type + Waves 1/2/4 (+166 questions) + UX
+
+Major bank-architecture session. Schema overhaul, 1 new category, 1 new question type, 166 new questions targeting Nicole/Anna/Artem coverage gaps, plus UX polish.
+
+**Schema (Wave 0a–0g)**
+- Added `themes` field (closed-set 8-tag array) to all 2,025 existing questions. Tagging done via batched sub-agent passes; 162-question hand-tagged sample as gold standard. See `references/question-bank-taxonomy.md`.
+- Adopted relaxed relevance model (themes as metadata, routing on lvl + biz only).
+- Migrated 125 B1 Grammar items into specific categories. New 28th category **Pronouns** (40 items: reflexives + reciprocals + singular-they). Grammar now empty (held in reserve).
+- Fixed long-standing `wordform.base` bug: 40 items had no base field, all rendered "Form a word from: undefined". Derived bases from `(q, ans)` pairs and back-filled.
+- Documented `hard` field; stripped dead `linked_question_ids` (18 items).
+- Added new question type `error_correction` (Russian L1 pattern recognition) with tolerant matching (case, whitespace, contractions, punctuation). 12 baseline items.
+- 9 biz-flag corrections + 4 theme repairs.
+
+**Wave 1 — Nicole** (+60 q): Word Order (12), Collocations B1 baseline (12), Idioms B1 baseline (12), Used To B1 (8), Indirect Questions B1 (8), Quantifiers gap (8). Closed Nicole's Collocations (0→15) and Idioms (0→12) zero cells.
+
+**Wave 2 — Anna** (+50 q): Reported Speech input (10), Linking Words input (10), Idioms B2 (8), Passive Voice input (10), Question Formation B2 (8), Adjectives input (4). Reported Speech 0%→31% input share; Linking Words 11%→28%; Passive Voice 14%→52%.
+
+**Wave 4 — Artem** (+32 q): Used To biz (6), Tenses input (10), Vocabulary biz register (8), claude_collab seed (8 across PV/Vocab/Modal/Tenses/QF). First substantive `claude_collab` content — went from 4 to 12 items.
+
+**UX**: Categories alphabetical everywhere (`cov-cat-row` was unsorted — now `localeCompare`). Full Statistics list got column headers (`Category` / `Seen` / `Acc`). **Family heatmap is now drillable** — click any cell to see per-category breakdown for that player at that band, with totals + accuracy + alphabetised category list.
+
+**Schema linter** (`tools/lint_questions.js`) updated to include `error_correction` type.
+
+Q count: 2025 → 2191 (+166) · Version: v20260508-r2
+
+---
+
 ## 2026-05-08 · Session r1
 ### v20260508-r1 — Mistakes-review fixes: 1 stem rewrite + 2 alt-answer widenings
 

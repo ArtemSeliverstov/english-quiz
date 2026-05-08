@@ -14,10 +14,12 @@ see `question-authoring-standards.md`.
 | `id` | string | always | Unique. Primary key. Changing an ID loses history in `qStats`. See ID conventions. |
 | `lvl` | string | always | `B1` \| `B2` \| `C1` \| `C2`. Always set explicitly. |
 | `biz` | boolean | always | `true` = professional/business context. Excluded by toggleable filter. |
-| `cat` | string | always | Must exactly match one of the 27 defined category strings. Case-sensitive. |
-| `type` | string | always | `gap` \| `mcq` \| `input` \| `multi` |
+| `cat` | string | always | Must exactly match one of the 28 defined category strings. Case-sensitive. |
+| `type` | string | always | `gap` \| `mcq` \| `input` \| `multi` \| `transform` \| `wordform` \| `error_correction` |
 | `q` | string | always | Question text. HTML rendered. Use `___` for blank tokens. **Never use `stem:` — `renderQ` reads `q:` only.** |
 | `exp` | string | always | Explanation shown after answering. HTML rendered. |
+| `themes` | string[] | always | Closed set of 8 theme tags (s89). At least one entry. See `question-bank-taxonomy.md` §5 for the vocabulary and tagging rule. |
+| `hard` | boolean | optional | When `true`, selection logic reduces sampling weight in early category exposure ([index.html:5017](../index.html)) — protects learners from getting hard items before they've built familiarity with the category. ~90 items use it as of s89, mostly B2 phrasal verbs. |
 
 ---
 
@@ -80,6 +82,92 @@ Used for concept discrimination only. Answer is integer index. Stem must NOT con
 Matching: case-insensitive, whitespace-normalised. Alternates: pipe-separated string
 `'heard|had heard'`. **No fuzzy matching.**
 
+### `transform` — Cambridge-style key-word transformation
+
+```javascript
+{
+  id: 'tf_02',
+  lvl: 'B2',
+  biz: true,
+  cat: 'Passive Voice',
+  type: 'transform',
+  source: 'People believe that the CEO will resign.',
+  keyword: 'BELIEVED',
+  q: 'The CEO ___ resign.',
+  ans: 'is believed to',
+  exp: '...'
+}
+```
+
+`source` shows the original sentence, `keyword` shows the mandatory word
+(uppercase by convention), `q` shows the target frame with the gap. `ans`
+is a string with pipe-separated valid forms (same matching as `input`).
+**The keyword stem must appear in the answer** (validated at runtime,
+[index.html:5747](../index.html)) — `keyword: 'BELIEVED'` requires `believed`
+in the answer string. 54 in bank as of s89, mostly Passive Voice,
+Conditionals, Reported Speech, Phrasal Verbs.
+
+### `wordform` — affixation drill (Word Formation only)
+
+```javascript
+{
+  id: 'wf_01',
+  lvl: 'B2',
+  biz: true,
+  cat: 'Word Formation',
+  type: 'wordform',
+  q: "The board's ___ surprised everyone.",
+  base: 'DECIDE',
+  ans: 'decision',
+  hint: 'noun (1 word)',
+  exp: '...'
+}
+```
+
+`base` shows the prompt root in uppercase; learner produces the correct
+derived form. `ans` is a string (or pipe-separated alternates) matched as
+input. **Production type, not recognition** — counts toward the player's
+production exposure even though the input-share metric is currently
+input-only (see "production share" question in plans).
+40 in bank as of s89. **Field name is `base`, not `root`** — the renderer
+([index.html:5263](../index.html)) reads `q.base`. Items missing this field
+render "Form a word from: undefined".
+
+### `error_correction` — Russian L1 error-spotting (s89)
+
+```javascript
+{
+  id: 'ec_b05',
+  lvl: 'B1',
+  biz: false,
+  cat: 'Tenses',
+  type: 'error_correction',
+  error_type: 'tense_aspect',
+  q: 'I am living in Bahrain since 2019.',
+  ans: 'i have been living in bahrain since 2019|i have lived in bahrain since 2019',
+  hint: 'duration starting in the past, continuing now',
+  exp: '...'
+}
+```
+
+Stem `q` contains exactly one L1-typical error embedded. Learner types the
+corrected sentence; `ans` is pipe-separated (case/whitespace-tolerant).
+**Scoring is tolerant**: case-insensitive, whitespace-normalised, trailing
+punctuation dropped, unambiguous contractions expanded on both sides
+(`I've` ↔ `I have`, `isn't` ↔ `is not`, etc.).
+
+`error_type` is closed-set: `article` / `preposition` / `tense_aspect` /
+`verb_form` / `word_order` / `quantifier` / `pronoun` / `other`.
+Required — drives audit-time tracking of L1-pattern coverage.
+
+`hint` is optional — narrows where to look without giving the fix.
+`exp` must include a Russian L1 note (the rule plus why it's a typical L1
+error, e.g., "Russian *прибыли в* doesn't map to *arrive to*").
+
+12 in bank as of s89. Targets the documented L1-interference patterns from
+`family-profiles.md` (article drops, preposition swaps, present-perfect
+collapse, etc.).
+
 ### `multi` — multi-blank with independent options
 
 ```javascript
@@ -112,13 +200,17 @@ whole — all blanks must be correct.
 
 ## Field overview by type
 
-| Field | gap | mcq | input | multi |
-|---|---|---|---|---|
-| `opts` | ✓ | ✓ | — | — (inside `blanks[]`) |
-| `hint` | ✗ never | ✗ never | ✓ required* | ✗ never |
-| `intro` | ✗ never | ✗ never | ✗ never | optional |
-| `blanks` | — | — | — | ✓ required |
-| `exp` | ✓ required | ✓ required | ✓ required | ✓ required |
+| Field | gap | mcq | input | multi | transform | wordform | error_correction |
+|---|---|---|---|---|---|---|---|
+| `opts` | ✓ | ✓ | — | — (inside `blanks[]`) | — | — | — |
+| `hint` | ✗ never | ✗ never | ✓ required* | ✗ never | optional | ✗ never | optional |
+| `intro` | ✗ never | ✗ never | ✗ never | optional | ✗ never | ✗ never | ✗ never |
+| `blanks` | — | — | — | ✓ required | — | — | — |
+| `source` | — | — | — | — | ✓ required | — | — |
+| `keyword` | — | — | — | — | ✓ required | — | — |
+| `base` | — | — | — | — | — | ✓ required | — |
+| `error_type` | — | — | — | — | — | — | ✓ required |
+| `exp` | ✓ required | ✓ required | ✓ required | ✓ required | ✓ required | ✓ required | ✓ required |
 
 *`hint` is required for `input` except G&I questions using the standard bracket format
 (see `question-authoring-standards.md` § hint format).
@@ -180,21 +272,24 @@ Common active prefixes (selected examples):
 | `emph` | Emphasis | Inversion / emphatic |
 | `tf_` | (various) | Transform — Key Word |
 | `wf_` | Word Formation | Wordform |
+| `qt_i` | Quantifiers | Input series (s89, B1) |
+| `refl`, `reflop`, `reflby` | Pronouns | Reflexive series (migrated s89) |
 
 Full prefix list with current ranges lives in the source KB. When adding to a prefix,
 verify the highest existing number first.
 
 ---
 
-## Categories (27 total)
+## Categories (28 total, post Grammar migration s89)
 
 Active categories (must match `cat` field exactly, case-sensitive):
 
 Articles · Tenses · Gerunds & Infinitives · Vocabulary · Word Choice · Prepositions
-· Phrasal Verbs · Passive Voice · Grammar · Used To · Question Formation
+· Phrasal Verbs · Passive Voice · Used To · Question Formation
 · Indirect Questions · Modal Verbs · Linking Words · Conditionals · Collocations
 · Reported Speech · Relative Clauses · Idioms · Emphasis · Adjectives · Word Order
-· Comparisons · Quantifiers · Word Formation · (+ 2 in expansion)
+· Comparisons · Quantifiers · Word Formation · Pronouns · Irregular Verbs
+· Everyday English · Grammar (≈0 after migration; reserved as fallback only)
 
 Authoritative count and per-category numbers live in the **Coverage Matrix** section
 of the source KB and are dynamically generated.
@@ -208,3 +303,8 @@ of the source KB and are dynamically generated.
 - s78 → s82: `ALL_QUESTIONS` moved to Firebase RTDB → reverted; questions back inline
 - s84: `consec` field added per-question stat for interval scaling
 - s87: storage migrated RTDB → Firestore (questions remain inline, stats fields preserved)
+- s89: `themes` field added (closed-set array, 8 tags) — see `question-bank-taxonomy.md`
+- s89: schema review found `wordform` field is `base` (not `root`); 40 items back-filled with derived bases. Long-standing UI bug ("Form a word from: undefined") fixed.
+- s89: `hard` field documented (was undocumented but used at runtime for selection weighting).
+- s89: `linked_question_ids` field stripped from 18 items — populated but never read by runtime; dead data removed.
+- s89: `error_correction` type added (Wave 0g) — Russian L1 pattern recognition. Tolerant matching (contractions + punctuation tolerance). 12 baseline items at B1+B2.
