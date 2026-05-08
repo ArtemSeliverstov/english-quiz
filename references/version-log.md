@@ -10,6 +10,17 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-08
+### v20260508 — Phrase Swaps rotation + claude_collab tag
+
+- **Phrase Swaps drill rotation**: kept the 6-cue session size, but the pool builder (`coachBuildPhrasePool`) now Fisher-Yates-shuffles `active` and `retest_due` before slicing, so items past index 6 finally get reached. Verified in preview: three back-to-back synthetic calls drew three different 6-item subsets covering all 10 mock entries. ([index.html:8500](index.html:8500))
+- **New context tag `claude_collab`**: added to recognised-tags list in `references/coach-notes-schema.md`, to Artem's themes in `references/family-profiles.md`, and to `PLAYER_TAGS.artem` + `tagDescriptions` in `tools/update_coach_notes.js`. Anchors the real register Artem uses when prompting CC and talking about project state — was previously landing untagged or being mistaken for project-meta noise.
+- **Artem's pool cleanup** (Firestore-only, no code changes): deduped the "my achievement of 4 years ago" twin (kept the entry with `psd` drill history); re-tagged 15 of 20 phrase_tracker entries to `claude_collab`; reworded 3 stiff naturals/awkwards (#5 "for me" → "to me"; #11 "wrote to" → "wrote in / added to"; #18 added missing "'re"). Pool size 21 → 20 distinct entries.
+
+Q count: 2025 → 2025 (no count change) · Version: v20260508
+
+---
+
 ## 2026-05-07 · Session t1
 ### v20260507-t1 — Family-tab redesign + lvlStats integrity fixes
 
