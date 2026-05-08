@@ -1,0 +1,781 @@
+{
+  "_meta": {
+    "snapshotTs": "2026-05-08T05:28:41.637Z",
+    "player": "egor"
+  },
+  "doc": {
+    "ui_shell": "learner",
+    "totalAnswered": 74,
+    "learning_path": {
+      "next_unlock_options": [],
+      "level_cap": null,
+      "active_window_size": 0,
+      "mastered_categories": [],
+      "active_categories": [],
+      "stretch_allowance": 0,
+      "composition_last_checked": null,
+      "promotion_threshold": {
+        "accuracy": 0.8,
+        "min_attempts": 20,
+        "window_days": 14
+      },
+      "floor_bouncers": []
+    },
+    "totalSessions": 3,
+    "updatedAt": 1772789909944,
+    "lastPlayedDate": "2026-03-06",
+    "currentStreak": 1,
+    "color": "#9c6eff",
+    "createdAt": "2026-02-27T16:50:31.654Z",
+    "longestStreak": 1,
+    "lvlStats": {
+      "B2": {
+        "correct": 37,
+        "seen": 46
+      },
+      "B1": {
+        "seen": 20,
+        "correct": 13
+      },
+      "C1": {
+        "seen": 8,
+        "correct": 4
+      }
+    },
+    "displayName": "Egor",
+    "coach_notes": {
+      "stuck_questions": [],
+      "engagement_notes": "",
+      "recent_observations": [
+        {
+          "date": "2026-04-30",
+          "note": "3 sessions only — sparse, treat as provisional. Multi-blank 20% confirms profile concern; same anomaly visible in Artem (53%) and Ernest (6%) — likely format/UI issue, not knowledge.",
+          "author": "claude_code",
+          "session_id": "stats_review_2026-04-30"
+        }
+      ],
+      "weak_patterns": [
+        "articles 50% (n=8) — confirms profile, IELTS-relevant",
+        "multi-blank format — 20% (n=5), matches cross-player pattern"
+      ],
+      "last_updated": "2026-04-30T05:00:35.900Z",
+      "strong_patterns": [],
+      "last_updated_by": "claude_code"
+    },
+    "totalCorrect": 54,
+    "emoji": "🧒",
+    "qStats": {
+      "ep03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211359620,
+        "wrong": 0
+      },
+      "yr01": {
+        "correct": 1,
+        "lastSeen": 1772211178677,
+        "seen": 1,
+        "wrong": 0
+      },
+      "inf_b04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772211204427,
+        "seen": 1
+      },
+      "rc_b15": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772789370354,
+        "wrong": 1
+      },
+      "aa05": {
+        "correct": 1,
+        "lastSeen": 1772778033476,
+        "seen": 1,
+        "wrong": 0
+      },
+      "pp_ap03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211167587,
+        "wrong": 0
+      },
+      "tg37": {
+        "lastSeen": 1772778052524,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0
+      },
+      "tg27": {
+        "seen": 1,
+        "lastSeen": 1772789835722,
+        "correct": 1,
+        "wrong": 0
+      },
+      "pr_ti07": {
+        "correct": 2,
+        "lastSeen": 1772789710933,
+        "seen": 2,
+        "wrong": 0
+      },
+      "ff03": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211364217
+      },
+      "iq02": {
+        "seen": 1,
+        "lastSeen": 1772211160803,
+        "correct": 1,
+        "wrong": 0
+      },
+      "voc07": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772778089667,
+        "seen": 1
+      },
+      "rs_ti06": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772789191686,
+        "correct": 1
+      },
+      "pr_ti11": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789422939,
+        "wrong": 0
+      },
+      "tm05": {
+        "seen": 1,
+        "lastSeen": 1772789456252,
+        "correct": 0,
+        "wrong": 1
+      },
+      "tg25": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211101867,
+        "wrong": 0
+      },
+      "sv02": {
+        "seen": 1,
+        "lastSeen": 1772789773338,
+        "correct": 1,
+        "wrong": 0
+      },
+      "tg44": {
+        "seen": 1,
+        "lastSeen": 1772778038677,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ar02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772789259617,
+        "seen": 1
+      },
+      "sv_b03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772211153349,
+        "seen": 1
+      },
+      "ar_03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211058392,
+        "wrong": 0
+      },
+      "aph04": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772789738054,
+        "wrong": 1
+      },
+      "ig01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789731835,
+        "wrong": 0
+      },
+      "fc05": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772777951488
+      },
+      "gx13": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772789398996,
+        "seen": 1
+      },
+      "dc02": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789412443
+      },
+      "mc08": {
+        "correct": 0,
+        "lastSeen": 1772789901933,
+        "seen": 1,
+        "wrong": 1
+      },
+      "rb02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772778123610,
+        "seen": 1
+      },
+      "adv02": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772789223162,
+        "correct": 1
+      },
+      "aa03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772778098593,
+        "wrong": 0
+      },
+      "rc02": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211213023
+      },
+      "eo01": {
+        "wrong": 0,
+        "lastSeen": 1772211278410,
+        "correct": 1,
+        "seen": 1
+      },
+      "pp_a04": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772211372960,
+        "seen": 1
+      },
+      "tg49": {
+        "seen": 1,
+        "lastSeen": 1772778075368,
+        "correct": 0,
+        "wrong": 1
+      },
+      "el03": {
+        "seen": 1,
+        "lastSeen": 1772777991685,
+        "correct": 1,
+        "wrong": 0
+      },
+      "co_b04": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211217617
+      },
+      "sv10": {
+        "lastSeen": 1772778162459,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0
+      },
+      "aa04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772789253714,
+        "seen": 1
+      },
+      "op03": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789382667
+      },
+      "so03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772211304688,
+        "seen": 1
+      },
+      "dc05": {
+        "wrong": 0,
+        "lastSeen": 1772789701475,
+        "correct": 1,
+        "seen": 1
+      },
+      "mvp09": {
+        "seen": 1,
+        "lastSeen": 1772789765388,
+        "correct": 1,
+        "wrong": 0
+      },
+      "pv_b06": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211069780
+      },
+      "ti03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789464037,
+        "wrong": 0
+      },
+      "gsp02": {
+        "seen": 1,
+        "lastSeen": 1772789393434,
+        "correct": 1,
+        "wrong": 0
+      },
+      "pr05": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772777996935
+      },
+      "gi_b04": {
+        "lastSeen": 1772778029014,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1
+      },
+      "fo02": {
+        "wrong": 0,
+        "lastSeen": 1772789272932,
+        "correct": 1,
+        "seen": 1
+      },
+      "pv_a01": {
+        "correct": 1,
+        "lastSeen": 1772789249061,
+        "seen": 1,
+        "wrong": 0
+      },
+      "cr03": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772778063435
+      },
+      "pr_ti09": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772778168637,
+        "wrong": 0
+      },
+      "yr04": {
+        "seen": 1,
+        "lastSeen": 1772778147413,
+        "correct": 0,
+        "wrong": 1
+      },
+      "mc07": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772211253829,
+        "wrong": 1
+      },
+      "ar03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789215589,
+        "wrong": 0
+      },
+      "bf01": {
+        "wrong": 1,
+        "lastSeen": 1772789822116,
+        "correct": 0,
+        "seen": 1
+      },
+      "ff02": {
+        "correct": 1,
+        "lastSeen": 1772211287690,
+        "seen": 1,
+        "wrong": 0
+      },
+      "tg45": {
+        "lastSeen": 1772789417622,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1
+      },
+      "mm06": {
+        "seen": 1,
+        "lastSeen": 1772778105566,
+        "correct": 0,
+        "wrong": 1
+      },
+      "tg43": {
+        "lastSeen": 1772789718738,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0
+      },
+      "pg02": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772778133625,
+        "wrong": 0
+      },
+      "gx04": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772211197809,
+        "wrong": 0
+      },
+      "md01": {
+        "lastSeen": 1772211130101,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1
+      },
+      "zf02": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789206277,
+        "wrong": 0
+      },
+      "al10": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772789435973,
+        "seen": 1
+      },
+      "ut2_07": {
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1772789876628
+      },
+      "sayt04": {
+        "lastSeen": 1772789753222,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1
+      },
+      "tg05": {
+        "lastSeen": 1772789845806,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0
+      },
+      "rb01": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772789474441,
+        "wrong": 1
+      },
+      "irv02": {
+        "wrong": 1,
+        "seen": 1,
+        "lastSeen": 1772789355900,
+        "correct": 0
+      },
+      "lnk04": {
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772789779683
+      },
+      "mc15": {
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1772778017961
+      },
+      "mc10": {
+        "seen": 1,
+        "lastSeen": 1772777978847,
+        "correct": 1,
+        "wrong": 0
+      }
+    },
+    "recentSessions": [
+      {
+        "lvlBreakdown": {
+          "B2": {
+            "correct": 9,
+            "seen": 11
+          },
+          "C1": {
+            "correct": 0,
+            "seen": 2
+          },
+          "B1": {
+            "seen": 7,
+            "correct": 6
+          }
+        },
+        "catBreakdown": {
+          "Prepositions": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Phrasal Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 2,
+            "seen": 3
+          },
+          "Relative Clauses": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Word Choice": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Articles": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Reported Speech": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Comparisons": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Tenses": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Word Order": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Passive Voice": {
+            "correct": 1,
+            "seen": 1
+          }
+        },
+        "total": 20,
+        "score": 15,
+        "pct": 75,
+        "mode": "smart",
+        "date": "2026-03-06T09:31:16.095Z"
+      },
+      {
+        "lvlBreakdown": {
+          "B1": {
+            "correct": 1,
+            "seen": 4
+          },
+          "C1": {
+            "correct": 1,
+            "seen": 2
+          },
+          "B2": {
+            "seen": 14,
+            "correct": 12
+          }
+        },
+        "catBreakdown": {
+          "Prepositions": {
+            "correct": 3,
+            "seen": 3
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Vocabulary": {
+            "seen": 5,
+            "correct": 3
+          },
+          "Articles": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 3,
+            "seen": 5
+          },
+          "Grammar": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Stative Verbs": {
+            "seen": 1,
+            "correct": 1
+          }
+        },
+        "total": 20,
+        "score": 14,
+        "pct": 70,
+        "mode": "smart",
+        "date": "2026-03-06T06:22:49.521Z"
+      },
+      {
+        "date": "2026-02-27T16:56:15.769Z",
+        "mode": "smart",
+        "pct": 80,
+        "total": 20,
+        "catBreakdown": {
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Stative Verbs": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Present Perfect": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Prepositions": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "correct": 5,
+            "seen": 5
+          },
+          "Phrasal Verbs": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Grammar": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Gerunds & Infinitives": {
+            "seen": 4,
+            "correct": 3
+          },
+          "Relative Clauses": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Collocations": {
+            "seen": 1,
+            "correct": 0
+          }
+        },
+        "score": 16,
+        "lvlBreakdown": {
+          "C1": {
+            "seen": 3,
+            "correct": 2
+          },
+          "B1": {
+            "correct": 5,
+            "seen": 5
+          },
+          "B2": {
+            "seen": 12,
+            "correct": 9
+          }
+        }
+      }
+    ],
+    "catStats": {
+      "Present Perfect": {
+        "seen": 1,
+        "correct": 0
+      },
+      "Comparisons": {
+        "correct": 2,
+        "seen": 2
+      },
+      "Vocabulary": {
+        "correct": 9,
+        "seen": 12
+      },
+      "Gerunds & Infinitives": {
+        "correct": 10,
+        "seen": 14
+      },
+      "Modal Verbs": {
+        "seen": 1,
+        "correct": 1
+      },
+      "Linking Words": {
+        "seen": 1,
+        "correct": 0
+      },
+      "Conditionals": {
+        "correct": 3,
+        "seen": 3
+      },
+      "Tenses": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Word Order": {
+        "seen": 1,
+        "correct": 1
+      },
+      "Stative Verbs": {
+        "correct": 2,
+        "seen": 2
+      },
+      "Passive Voice": {
+        "correct": 1,
+        "seen": 1
+      },
+      "Prepositions": {
+        "correct": 6,
+        "seen": 6
+      },
+      "Phrasal Verbs": {
+        "seen": 3,
+        "correct": 3
+      },
+      "Grammar": {
+        "seen": 9,
+        "correct": 6
+      },
+      "Relative Clauses": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Collocations": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Word Choice": {
+        "correct": 2,
+        "seen": 2
+      },
+      "Articles": {
+        "seen": 8,
+        "correct": 4
+      },
+      "Reported Speech": {
+        "correct": 1,
+        "seen": 2
+      }
+    }
+  },
+  "exercises": [],
+  "coach_sessions": []
+}
