@@ -10,6 +10,33 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-08 · Session r3
+### v20260508-r3 — Wave 3: Ernest scaffolding (10 hint rewrites + 5 new B1 Articles)
+
+Smaller follow-on to r2. Targets Ernest's documented recognition→production gap on Articles.
+
+**Wave 3a — Hint scaffolding pass (10 existing items)**
+Upgraded terse `(1 word)` hints to explicit semantic cues:
+- Articles input (6 items: `art_d01`, `art_d03`, `art_d06`, `art_d07`, `art_d10`, `art_d11`) → `"article: a, an, the, or – (1 word)"` — matches the new `art_e*` pattern, gives Ernest the explicit four-token MCQ-equivalent he needs.
+- Modal Verbs input (`mvc24` → "modal: weak guess / possibility"; `mvc25` → "modal: past ability").
+- Adjectives -ed/-ing (`adj_i01` → "-ed adjective: how the person feels"; `adj_i02` → "-ing adjective: property of the thing").
+
+**Wave 3b — 5 new B1 Articles input items (`art_e01`–`art_e05`)**
+All target uncountable / zero-article patterns (canonical Russian L1 errors):
+- `art_e01` "useful information" → zero
+- `art_e02` "pass the salt" → the (shared knowledge)
+- `art_e03` "made good progress at padel training" → zero
+- `art_e04` "drink coffee every morning before school" → zero (generic)
+- `art_e05` "bought a new fridge" → a (first mention)
+
+All `biz: false`, themes from Ernest's set. Hint pattern uniform: `"article: a, an, the, or – (1 word; – means no article)"`. `ans` accepts case + glyph variants (`–`, `—`, `-`).
+
+Pre-deploy: `tools/lint_questions.js` clean (2196); `tools/check_transform_keywords.js` clean (55 transforms).
+
+Q count: 2191 → 2196 (+5) · Version: v20260508-r3
+
+---
+
 ## 2026-05-08 · Session r2
 ### v20260508-r2 — Bank overhaul: themes + Pronouns category + error_correction type + Waves 1/2/4 (+166 questions) + UX
 

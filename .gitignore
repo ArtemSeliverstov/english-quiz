@@ -43,7 +43,7 @@ index.html.*.bak
 tools/batches/
 tools/wave*_*.json
 tools/wave*_rubric.md
-tools/wave*_apply.js
+tools/wave*_*.js
 tools/wordform_*.json
 tools/wordform_export.js
 tools/wordform_base_apply.js
