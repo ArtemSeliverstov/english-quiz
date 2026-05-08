@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-08 · Session r1
+### v20260508-r1 — Mistakes-review fixes: 1 stem rewrite + 2 alt-answer widenings
+
+Landed the 3 quality bugs surfaced by today's `mistakes-review` daily routine. All three user-approved before edit. Two of the three hit a second player as well as the player whose mistake surfaced them.
+
+- **`mn03`** (Modal Verbs, B1, mcq): replaced ambiguous opt [2] *"People are usually unhappy hearing criticism, aren't they?"* (a valid tag question — the exp itself conceded it) with a negation-form distractor *"People are usually no happy to hear criticism."* (Russian L1 trap, parallel to mn01/mn02). Exp updated to drop the tag-question note and add the *no* (negates nouns) vs *not* (negates verbs/adjectives) contrast. Hit artem 2/4, nicole 1/2.
+- **`ee25`** (Everyday English, B1, input): widened `ans` to accept *be going*. *"I'd better be going!"* is a textbook 2-word casual British leave-taking; matches the existing hint. Exp updated. Hit artem 0/2, anna 1/3.
+- **`emph_fr05`** (Emphasis, C1, transform): widened `ans` from *'proposal I would never'* to also accept *'proposal I wouldn't ever'* and *'proposal I would not'*, mirroring sibling `emph_fr04`. "Under any circumstances" is a strong NPI that licenses plain *not*; sibling-pair consistency was the gap. Both schema invariants still hold (lint clean). Hit artem 0/1.
+
+Pre-deploy validation: `tools/lint_questions.js` clean (2025 questions); `tools/check_transform_keywords.js` clean (54 transforms).
+
+Q count: 2025 → 2025 (no count change) · Version: v20260508-r1
+
+---
+
 ## 2026-05-08
 ### v20260508 — Phrase Swaps rotation + claude_collab tag
 

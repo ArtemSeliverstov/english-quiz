@@ -78,6 +78,14 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Question schema / authoring
 
+### Mistakes-review batch — mn03 stem ambiguity + ee25/emph_fr05 alt-answer (2026-05-08)
+**Bug**: Three quality issues surfaced by `mistakes-review`:
+- `mn03` (Modal Verbs, B1, mcq): "Which sentence is correct?" admitted two grammatically correct options. Option [2] *People are usually unhappy hearing criticism, aren't they?* is a valid tag question — the exp itself conceded it was "grammatically fine but a different sentence type". Hit two players (artem 2/4, nicole 1/2).
+- `ee25` (Everyday English, B1, input): keyed `ans:'get going|be off|head off|crack on'` rejected *be going*, but "I'd better be going!" is a textbook 2-word casual British leave-taking. Hit two players (artem 0/2, anna 1/3).
+- `emph_fr05` (Emphasis, C1, transform): keyed `ans:'proposal I would never'` rejected *proposal I would not*, despite "under any circumstances" being a strong NPI that licenses plain *not*. Sibling `emph_fr04` (input, same fronting+negation pattern) already accepted *I would not* — the transform sibling was inconsistent.
+**Fix**: `mn03` opt [2] replaced with negation-form distractor *People are usually no happy to hear criticism.* (Russian L1 trap, parallel to mn01/mn02 anti-patterns); exp updated to drop tag-question note and add no/not contrast. `ee25` ans widened to `'…|be going'`; exp updated. `emph_fr05` ans widened to `'…|proposal I wouldn\'t ever|proposal I would not'` to match sibling; both schema rules still pass (`check_transform_keywords.js` clean).
+**Rule**: For mcq "Which is correct?" stems, every distractor must be unambiguously wrong. If the exp has to explain why a distractor is "grammatically fine but…", the option doesn't belong in that stem. For sibling pairs across question types (input ↔ transform) testing the same construction, ans coverage must be parallel — widen one, audit the other in the same pass.
+
 ### `gi_b04` referenced in profile but missing from index.html (flagged 2026-04-30)
 **Bug**: `gi_b04` had 9 cross-player attempts logged in Firestore qStats (Artem 0/2, Anna 1/2, Nicole 0/4, Egor 0/1) and was listed as a known stuck question for Nicole in `family-profiles.md`, but the qid is not present in `ALL_QUESTIONS` in `index.html`. Either deleted in a past edit without scrubbing references, or never authored — but stats accumulated regardless.
 **Fix**: TBD. Either author the question (Gerunds & Infinitives B1) or scrub the qStats entries from all five players via a one-off script. Removed the dangling profile reference in same-day edit.
