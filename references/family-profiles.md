@@ -33,10 +33,11 @@ accuracy alongside being a player.
 - Skip excessive caveats and apologies.
 - Real-world context: business / O&G / cycling / sports / Bahrain settings.
 
-**Exercise context themes** (tags: `[biz_oil] | [leisure_sport] | [brit_expat]`):
+**Exercise context themes** (tags: `[biz_oil] | [leisure_sport] | [brit_expat] | [claude_collab]`):
 - `[biz_oil]` — business meetings, O&G operations, finance, strategy, Bahrain settings. Operational/hallway register — "never got around to it last quarter," "contractor's pushing back," "let's crack on." Avoid pitch-deck register.
 - `[leisure_sport]` — cycling, F1, gym, sports talk
 - `[brit_expat]` — pubs, padel club, rugby/F1 banter, dinner parties, dropped-by-the-club casual register
+- `[claude_collab]` — prompts to Claude Code / claude.ai, project shared vocab ("learning ladder", "weak_patterns", "phrase_swap_drill"), system-behaviour talk (UI counters, drill caps, tracker entries), git/CLI collab. Real daily register — Artem spends hours/day in this context driving the project.
 - If Artem mentions travel at session start ("we're in Turkey this week"), shift to location-appropriate scenarios for that session
 
 **Weekly slot plan**: see `weekly-slots.md`.

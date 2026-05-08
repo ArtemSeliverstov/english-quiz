@@ -51,7 +51,7 @@ Two shapes are accepted:
    `"we will investigate → we'll look into it [biz_oil]"`.
 
 Recognised tags (must match a player's profile themes in `family-profiles.md`):
-`[biz_oil] | [brit_expat] | [leisure_sport] | [home_daily] | [academic_ielts] | [kpmg_consulting] | [almaty_daily]`.
+`[biz_oil] | [brit_expat] | [leisure_sport] | [home_daily] | [academic_ielts] | [kpmg_consulting] | [almaty_daily] | [claude_collab]`.
 Untagged grammar entries apply across all contexts. Lexical swaps without a tag
 default to all contexts (use sparingly — most lexical swaps are register-bound).
 

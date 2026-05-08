@@ -8515,6 +8515,18 @@ function coachBuildPhrasePool({ weakPatterns, phraseTracker, target }) {
       status: 'retest_due',
       also_accept: Array.isArray(e.also_accept) ? e.also_accept : undefined,
     }));
+  // Shuffle both pools so each session draws a different subset when the
+  // available list is larger than `target`. Without this the pickers below
+  // always take the first N entries, so items past index 6 never get drilled.
+  const shuffle = arr => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  };
+  shuffle(active);
+  shuffle(retestDue);
   // Mix: prefer 4 active + 2 retest, but fill from whichever pool has stock.
   // Total capped at target; if neither pool has anything, return empty.
   const want = target || PSD_DEFAULT_TARGET;

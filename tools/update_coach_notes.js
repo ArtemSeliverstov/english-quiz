@@ -54,7 +54,7 @@ const VALID_KEYS = new Set([
 // Per-player context tag lists. Used by --regen-tracker-md to render the coverage
 // table. Mirrors references/family-profiles.md theme tags.
 const PLAYER_TAGS = {
-  artem:  ['biz_oil', 'leisure_sport', 'brit_expat'],
+  artem:  ['biz_oil', 'leisure_sport', 'brit_expat', 'claude_collab'],
   anna:   ['home_daily', 'leisure_sport', 'brit_expat'],
   nicole: ['home_daily', 'leisure_sport', 'brit_expat'],
   ernest: ['home_daily', 'leisure_sport', 'brit_expat'],
@@ -288,6 +288,7 @@ function renderTrackerMarkdown(player, tracker) {
     academic_ielts: 'IELTS Writing/Speaking, academic register',
     kpmg_consulting:'English-speaking consulting work at KPMG Almaty',
     almaty_daily:   'Almaty city life, weekend, family',
+    claude_collab:  'prompts to Claude Code / claude.ai, project shared vocab, system-behaviour talk, git/CLI collab',
   };
   const tagLines = tags.map(t => `\`[${t}]\` — ${tagDescriptions[t] || ''}`).join('\n');
 
