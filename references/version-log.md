@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-09 · Session r2
+### v20260509-r2 — Translation grader: iOS L-for-I autocorrect + curly-quote normalization
+
+Anna reported "one answer is always incorrect, even if I repeat the suggestion" on `tr_anna_b16` ("After training I'm very tired"). Root cause: iOS autocorrect swaps capital `I` → lowercase `l` in contractions (visually identical, byte-different), and the smart-punctuation feature replaces straight `'` with curly `’`. The grader's contraction-expansion regex (`\bi'm\b`) matches neither, so a verbatim retype of the suggestion was scored at Levenshtein 4 against the expanded form and rejected.
+
+- **`coachNormalize` ([index.html:10314](index.html:10314))** — added two pre-steps before the existing contraction expansion: (1) curly `’`/`‘` → straight `'`; (2) `l'm`/`l'll`/`l've`/`l'd` → `i'<same>`. The standalone tokens are not English words, so no risk of false-correct on unrelated input. Verified in preview: `"After a training l'm very tired"` (curly + lowercase L) and `"After training I'm very tired"` now normalize identically. Real errors (`at the kitchen`) correctly stay wrong.
+- **`tr_anna_b04` (Firestore — live, no deploy needed)** — `correct_answers` widened from 5 → 8 forms to accept `"my keys"` variants. Russian *Я ищу ключи* almost always means *my keys* in real life; rejecting that form was a question-quality bug, not a learner gap.
+- **`tr_anna_b11` (Firestore — live)** — added `at_the_kitchen` to `common_errors` between the two existing entries. Anna repeatedly typed `at the kitchen` (calque of *на кухне*) and only got the generic fallback feedback; she now gets a targeted *на → in* explanation.
+
+Q count: 2196 → 2196 (no change) · Version: v20260509-r2
+
+---
+
 ## 2026-05-09 · Session r1
 ### v20260509 — Mistakes/stats-review batch: 9 stem tightenings (single-correct-answer pass)
 - **9 questions stem-tightened** to enforce one defensible correct answer (Artem's stated preference: tighten stems over widening alt-answers).
