@@ -10,6 +10,23 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-09 · Session r1
+### v20260509 — Mistakes/stats-review batch: 9 stem tightenings (single-correct-answer pass)
+- **9 questions stem-tightened** to enforce one defensible correct answer (Artem's stated preference: tighten stems over widening alt-answers).
+- `co_b06` (B1 Conditionals): tail rewritten "You burn yourself." — was "You will burn yourself" mixing first/zero conditional, licensed key `happens` and distractor `will happen` simultaneously.
+- `pv_l02_i` (B2 PV input): rewritten to ongoing-now framing ("I'm in the middle of a really tough stretch — my family is helping me ___ it day by day") to block the "get over" reading enabled by past-period framing.
+- `gt03/gt04/gt10` (PV B1/B2): GET-family alt-answer cluster — three siblings where decoy and key were both natural. Stems tightened with explicit vehicle (`gt03`: "the bus"), past-finished + "finally" (`gt04`: blocks endure-during), and "day by day — no shortcut" (`gt10`: blocks recover-after).
+- `hw03` (B1 RC): meta-trap dropped — was "Which is most natural for habit?" with key=[3] "All three are correct" punishing correct intuition; rewritten to "Which is the most formal?" key=[0] with-whom.
+- `aph35` (B2 Articles): removed anaphoric "we have been here before" licence for `the`; new stem "neither path is clearly better, steering committee is split" forces the indefinite idiom.
+- `ga10` (B2 Adjectives): swapped extreme-adjective from `delicious` (register-debatable) to `enormous` (unambiguous size collocation); "very enormous" cleanly wrong.
+- `ex05` (B1 Vocab): distractor pruned from `[wound, winded, ended, found]` to `[wound, winded, wind, wounded]` — eliminates "ended up" alt-answer; now isolates the wind-past distinction.
+- **`zc08` removed from queue** after closer audit: ans is `'aren't'` (1-word zero conditional); Anna's "will not be" is a genuine Russian-L1 future-for-zero error, not a validation bug.
+- `lint_questions.js` clean (2196 questions). `check_transform_keywords.js` clean (55 transforms).
+
+Q count: 2196 → 2196 (no change) · Version: v20260509
+
+---
+
 ## 2026-05-08 · Session r3
 ### v20260508-r3 — Wave 3: Ernest scaffolding (10 hint rewrites + 5 new B1 Articles)
 

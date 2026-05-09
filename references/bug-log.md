@@ -78,6 +78,33 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Question schema / authoring
 
+### Mistakes-review + stats-review batch — 9 stem tightenings to enforce single correct answer (2026-05-09)
+**Bug**: Cross-player quality flags (≥60% error across 2+ players) and 31h mistakes review surfaced 9 questions where at least two distinct answers were defensibly natural, or the stem internally licensed the "wrong" key:
+- `co_b06` (Conditionals B1 gap): stem mixed first-conditional tail "You will burn yourself" with zero-conditional key `happens` — "will happen" is defensible. Artem 1/3, lw="would happen".
+- `pv_l02_i` (PV B2 input): "I had a lot of doubts during that period" framed the period as past, so key `get through` (endure-during) and "get over" (recover-after) are both natural. Artem 0/2, lw="get over".
+- `gt04` (PV B1 gap): "It took her a month to ___ the cold" — "get through the cold" (endure during the illness) defensible alongside key `get over`. Artem + Nicole each 1/3.
+- `gt10` (PV B2 gap): "first few months abroad were hard, but she managed to ___ them" — past completion licenses both `get through` (endure) and "get over" (recovered after). Artem 0/6, lw="get over".
+- `gt03` (PV B1 gap): "You should ___ at Central Station" — without an explicit vehicle, "get out" (cars/taxis) is as defensible as `get off` (buses/trains). Artem 0/6 + Nicole 0/2, lw="get out".
+- `hw03` (Relative Clauses B1 mcq): "Which is most natural for habit?" with key=[3] "All three are correct" — meta-trap; options [1] and [2] are equally natural informal English, so picking either was punished. Artem 1/3 + Anna 0/2 + Ernest 0/2.
+- `aph35` (Articles B2 gap): "We are at ___ crossroads, but we have been here before" — "we have been here before" anaphorically licenses `the`, but key is `a` (idiom). Artem 1/3 + Anna 0/2.
+- `ga10` (Adjectives B2 mcq): "Which is INCORRECT?" with [1] "very delicious" — *very + delicious* is increasingly accepted in informal register, so the "incorrect" judgment is register-dependent. Artem + Anna each 0/2.
+- `ex05` (Vocabulary B1 gap): "I ___ up moving to the suburbs" with `ended` as a distractor — "ended up moving" is fully natural alongside key `wound`. Artem + Anna + Nicole hit; lw="ended" repeatedly.
+
+**Fix**: Stem-tightened all 9 to enforce a single correct answer (Artem's stated preference: prefer one correct answer over alt-answer widening):
+- `co_b06`: tail rewritten "You burn yourself." (consistent zero conditional).
+- `pv_l02_i`: rewritten to ongoing-now framing — "I'm in the middle of a really tough stretch — my family is helping me ___ it day by day." Blocks "get over".
+- `gt04`: "She had a really nasty cold last month, but she's finally managed to ___ it." Past + "finally" = retrospective, blocks "get through".
+- `gt10`: "She had to ___ those first lonely months abroad day by day — there was no shortcut." Endure-during, blocks "get over".
+- `gt03`: "You should ___ the bus at Central Station …" — vehicle now explicit, blocks "get out".
+- `hw03`: rewritten to "Which is the most formal?" key=[0] "with whom"; meta-trap option [3] dropped.
+- `aph35`: "We are at ___ crossroads here — neither path is clearly better, and the steering committee is split." Removes the "we have been here before" anaphoric licence for `the`.
+- `ga10`: opt [0]/[1]/[2] swapped from "delicious" → "enormous"/"big" register — "very enormous" is unambiguously wrong (size collocation, no register debate).
+- `ex05`: distractors pruned from `[wound, winded, ended, found]` → `[wound, winded, wind, wounded]` — only "wound" works; tests the wind-past distinction the question is actually for.
+
+`lint_questions.js` clean (2196), `check_transform_keywords.js` clean (55).
+
+**Rule**: When a quality flag fires across ≥2 players, run the stem-sufficiency test before considering alt-answer widening. If two answers are both natural English, the stem is the bug — narrow context cues until exactly one answer fits. Alt-answer widening is the right fix only when the variants are formally different surface forms of the same answer (e.g. contraction vs spelt-out). For meta-trap MCQs ("all three are correct" as the key), always rewrite — the trick punishes correct linguistic intuition.
+
 ### Mistakes-review batch — mn03 stem ambiguity + ee25/emph_fr05 alt-answer (2026-05-08)
 **Bug**: Three quality issues surfaced by `mistakes-review`:
 - `mn03` (Modal Verbs, B1, mcq): "Which sentence is correct?" admitted two grammatically correct options. Option [2] *People are usually unhappy hearing criticism, aren't they?* is a valid tag question — the exp itself conceded it was "grammatically fine but a different sentence type". Hit two players (artem 2/4, nicole 1/2).
