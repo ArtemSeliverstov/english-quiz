@@ -1,0 +1,4099 @@
+{
+  "_meta": {
+    "snapshotTs": "2026-05-09T05:47:09.549Z",
+    "player": "nicole"
+  },
+  "doc": {
+    "ui_shell": "learner",
+    "totalAnswered": 870,
+    "emoji": "👧",
+    "currentStreak": 2,
+    "totalCorrect": 530,
+    "lastPlayedDate": "2026-05-06",
+    "catStats": {
+      "Idioms": {
+        "correct": 6,
+        "seen": 10
+      },
+      "Vocabulary": {
+        "correct": 28,
+        "seen": 48
+      },
+      "Used To": {
+        "correct": 4,
+        "seen": 10
+      },
+      "Word Choice": {
+        "correct": 12,
+        "seen": 25
+      },
+      "Question Formation": {
+        "correct": 9,
+        "seen": 21
+      },
+      "Adjectives": {
+        "seen": 11,
+        "correct": 9
+      },
+      "Quantifiers": {
+        "seen": 54,
+        "correct": 32
+      },
+      "Linking Words": {
+        "seen": 24,
+        "correct": 15
+      },
+      "Tenses": {
+        "seen": 89,
+        "correct": 60
+      },
+      "Reported Speech": {
+        "correct": 15,
+        "seen": 18
+      },
+      "Gerunds & Infinitives": {
+        "seen": 28,
+        "correct": 20
+      },
+      "Passive Voice": {
+        "correct": 6,
+        "seen": 9
+      },
+      "Conditionals": {
+        "correct": 13,
+        "seen": 27
+      },
+      "Comparisons": {
+        "correct": 15,
+        "seen": 27
+      },
+      "Prepositions": {
+        "seen": 27,
+        "correct": 22
+      },
+      "Indirect Questions": {
+        "correct": 5,
+        "seen": 5
+      },
+      "Everyday English": {
+        "seen": 10,
+        "correct": 7
+      },
+      "Modal Verbs": {
+        "correct": 13,
+        "seen": 20
+      },
+      "Word Order": {
+        "seen": 7,
+        "correct": 6
+      },
+      "Irregular Verbs": {
+        "correct": 72,
+        "seen": 129
+      },
+      "?": {
+        "correct": 5,
+        "seen": 10
+      },
+      "Grammar": {
+        "seen": 148,
+        "correct": 92
+      },
+      "Emphasis": {
+        "correct": 1,
+        "seen": 1
+      },
+      "Relative Clauses": {
+        "correct": 6,
+        "seen": 13
+      },
+      "Articles": {
+        "seen": 58,
+        "correct": 31
+      },
+      "Phrasal Verbs": {
+        "correct": 26,
+        "seen": 41
+      }
+    },
+    "qStats": {
+      "co_tc03": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1740614400000
+      },
+      "gt01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "mv04": {
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "co_i06": {
+        "lastSeen": 1743465600000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0,
+        "lastWrong": "would told"
+      },
+      "ti04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irvpp01": {
+        "lastSeen": 1743638400000,
+        "seen": 4,
+        "correct": 4,
+        "wrong": 0,
+        "consec": 2
+      },
+      "en01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741219200000
+      },
+      "sc01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741132800000
+      },
+      "sv_b01": {
+        "lastSeen": 1742256000000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "art_c03": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741996800000
+      },
+      "zc10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 2,
+        "correct": 2
+      },
+      "qf07": {
+        "correct": 0,
+        "seen": 4,
+        "locked_until": 1781630154503,
+        "lastSeen": 1778001354503,
+        "consec": 0,
+        "lastWrong": "Why he didn't call?",
+        "wrong": 4
+      },
+      "dc01": {
+        "lastSeen": 1741219200000,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 0
+      },
+      "but07": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740614400000
+      },
+      "tc_hw03": {
+        "wrong": 2,
+        "lastWrong": "and have",
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "correct": 1,
+        "seen": 3
+      },
+      "adv05": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1
+      },
+      "pspp03": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740873600000
+      },
+      "pf_a02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "av01": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "st02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "seen": 1,
+        "correct": 1
+      },
+      "qu02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "irv18": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1
+      },
+      "mc02": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1740528000000
+      },
+      "gx04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1
+      },
+      "adv01": {
+        "lastSeen": 1743465600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ta03": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741219200000
+      },
+      "fy03": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "reflby06": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742515200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "tg36": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740528000000
+      },
+      "fu02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742515200000
+      },
+      "zc13": {
+        "lastSeen": 1741392000000,
+        "seen": 3,
+        "correct": 1,
+        "wrong": 2,
+        "consec": 0
+      },
+      "pa04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742947200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "co_b06": {
+        "consec": 0,
+        "wrong": 2,
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1742256000000
+      },
+      "qt03": {
+        "lastSeen": 1741219200000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0
+      },
+      "mm01": {
+        "lastSeen": 1741737600000,
+        "correct": 2,
+        "seen": 3,
+        "wrong": 1,
+        "consec": 0
+      },
+      "ee04": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1743465600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "iq03": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741737600000
+      },
+      "fy02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "co_b03": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740528000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "cr02": {
+        "seen": 3,
+        "correct": 1,
+        "lastSeen": 1777704219739,
+        "consec": 0,
+        "lastWrong": "those",
+        "wrong": 2
+      },
+      "fu01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "gi_b05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741392000000
+      },
+      "id02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "ff04": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740528000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "id_ti01": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "zc11": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 1,
+        "correct": 0
+      },
+      "gr_b01": {
+        "consec": 1,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1775330785498
+      },
+      "pspp02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "but08": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0
+      },
+      "qf03": {
+        "lastSeen": 1777704243982,
+        "locked_until": 1781333043982,
+        "seen": 4,
+        "correct": 0,
+        "wrong": 4,
+        "lastWrong": "What time did he arrived?",
+        "consec": 0
+      },
+      "pv_a01": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "fy01": {
+        "consec": 0,
+        "wrong": 2,
+        "seen": 4,
+        "correct": 2,
+        "lastSeen": 1742947200000
+      },
+      "pt_b04": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1778075478364,
+        "seen": 3,
+        "correct": 3
+      },
+      "irv09": {
+        "lastWrong": "flied",
+        "consec": 0,
+        "wrong": 4,
+        "correct": 0,
+        "seen": 4,
+        "lastSeen": 1778075620354,
+        "locked_until": 1781704420354
+      },
+      "ptc02": {
+        "lastSeen": 1743465600000,
+        "seen": 3,
+        "correct": 1,
+        "wrong": 2,
+        "lastWrong": "had",
+        "consec": 0
+      },
+      "irv07": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 3,
+        "correct": 2
+      },
+      "ie02": {
+        "consec": 1,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1777703949235
+      },
+      "gi_b04": {
+        "wrong": 4,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "correct": 0,
+        "seen": 4
+      },
+      "art_c07": {
+        "lastSeen": 1777701712416,
+        "locked_until": 1781330512416,
+        "correct": 0,
+        "seen": 3,
+        "wrong": 3,
+        "lastWrong": "— / the",
+        "consec": 0
+      },
+      "pr08": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_i10": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742256000000
+      },
+      "wt17": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "seen": 1,
+        "correct": 0
+      },
+      "irvpp11": {
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 3,
+        "wrong": 2,
+        "consec": 0
+      },
+      "gi07": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741132800000
+      },
+      "tc01": {
+        "lastWrong": "It tooks a lot of time.",
+        "consec": 0,
+        "wrong": 3,
+        "correct": 1,
+        "seen": 4,
+        "lastSeen": 1775330763725
+      },
+      "nm06": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "na01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "rc_b02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741392000000
+      },
+      "cr06": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "fl02": {
+        "lastSeen": 1777704212478,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 1
+      },
+      "art_d08": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742515200000
+      },
+      "inf_b02": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ap06": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv25": {
+        "lastSeen": 1743465600000,
+        "correct": 0,
+        "seen": 2,
+        "wrong": 2,
+        "consec": 0,
+        "lastWrong": "ate"
+      },
+      "si01": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741996800000
+      },
+      "tns_i02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1742256000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ptc01": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "co_i09": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742256000000,
+        "correct": 1,
+        "seen": 1
+      },
+      "tg07": {
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "voc09": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741132800000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "gr_b16": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "ma03": {
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "sv_b05": {
+        "lastSeen": 1741392000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pspp04": {
+        "lastSeen": 1775058926792,
+        "correct": 1,
+        "seen": 3,
+        "wrong": 2,
+        "consec": 1
+      },
+      "art_b04": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741737600000
+      },
+      "pp_ex01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1
+      },
+      "mm08": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "correct": 0,
+        "seen": 2
+      },
+      "irv21": {
+        "lastSeen": 1778075473226,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "gr_b04": {
+        "wrong": 2,
+        "lastWrong": "So",
+        "consec": 0,
+        "lastSeen": 1777701724066,
+        "seen": 2,
+        "correct": 0
+      },
+      "pt_b05": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742083200000,
+        "correct": 1,
+        "seen": 1
+      },
+      "ut2_07": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1
+      },
+      "qf08": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1777701803630,
+        "consec": 1,
+        "wrong": 0
+      },
+      "cu02": {
+        "consec": 1,
+        "wrong": 1,
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1777703386965
+      },
+      "gs03": {
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "mv05": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741737600000
+      },
+      "cp07": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742083200000
+      },
+      "irv14": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741737600000
+      },
+      "ee12": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1778001336370,
+        "correct": 1,
+        "seen": 1
+      },
+      "psc10": {
+        "lastSeen": 1741392000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "tc03": {
+        "consec": 0,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1741824000000
+      },
+      "nb02": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 1,
+        "seen": 2
+      },
+      "art_b09": {
+        "lastSeen": 1742083200000,
+        "correct": 1,
+        "seen": 3,
+        "wrong": 2,
+        "consec": 0
+      },
+      "ptc10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 2,
+        "correct": 2
+      },
+      "wc10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742947200000,
+        "correct": 1,
+        "seen": 1
+      },
+      "ex05": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "correct": 2,
+        "seen": 4
+      },
+      "pf01": {
+        "consec": 0,
+        "wrong": 3,
+        "correct": 0,
+        "seen": 3,
+        "lastSeen": 1741392000000
+      },
+      "tg08": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741132800000
+      },
+      "art_b16": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1775058684818
+      },
+      "art_b06": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740528000000,
+        "correct": 1,
+        "seen": 1
+      },
+      "gc01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 3,
+        "correct": 2,
+        "lastSeen": 1742256000000
+      },
+      "sv_b06": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "mm10": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741737600000,
+        "seen": 2,
+        "correct": 0
+      },
+      "psc04": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "pv_c15": {
+        "lastSeen": 1775330802731,
+        "correct": 4,
+        "seen": 4,
+        "wrong": 0,
+        "consec": 3
+      },
+      "art_b07": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "seen": 3,
+        "correct": 2
+      },
+      "pp_b04": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741824000000
+      },
+      "pv_c05": {
+        "lastSeen": 1742083200000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "id_ti06": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pt_b02": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pp_i05": {
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "zc08": {
+        "consec": 0,
+        "lastWrong": "willn't",
+        "wrong": 3,
+        "seen": 4,
+        "correct": 1,
+        "lastSeen": 1777703674630
+      },
+      "pp_pr05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000
+      },
+      "reflop04": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1777701697260,
+        "seen": 1,
+        "correct": 1
+      },
+      "pp_i02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "nc03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 2,
+        "correct": 2
+      },
+      "gt07": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1742947200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ma02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "pt_b03": {
+        "consec": 0,
+        "lastWrong": "at the morning / in night / on Friday",
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1778075507833
+      },
+      "irvpp19": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "correct": 3,
+        "seen": 4
+      },
+      "mv03": {
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "art01": {
+        "lastSeen": 1741132800000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0
+      },
+      "art_b03": {
+        "lastSeen": 1741219200000,
+        "seen": 2,
+        "correct": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "adv04": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741996800000
+      },
+      "reflop06": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1777704058272,
+        "lastWrong": "us",
+        "consec": 0,
+        "wrong": 1
+      },
+      "pv_c14": {
+        "lastSeen": 1742256000000,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 0
+      },
+      "el01": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "gi_b02": {
+        "lastSeen": 1742515200000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "tg48": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741132800000
+      },
+      "qu03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1
+      },
+      "et03": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1742083200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "ptc07": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741392000000
+      },
+      "reflop01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1743638400000
+      },
+      "wu03": {
+        "lastSeen": 1740528000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv12": {
+        "correct": 2,
+        "seen": 3,
+        "lastSeen": 1777703704141,
+        "consec": 1,
+        "wrong": 1
+      },
+      "reflby01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742256000000
+      },
+      "ut2_05": {
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ao01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "mo03": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1777701688320,
+        "lastWrong": "Much opportunities / many opportunity / much chance",
+        "consec": 0,
+        "wrong": 2
+      },
+      "cv03": {
+        "wrong": 5,
+        "consec": 1,
+        "lastSeen": 1777702572232,
+        "correct": 1,
+        "seen": 6
+      },
+      "irvpp07": {
+        "consec": 0,
+        "lastWrong": "flew",
+        "wrong": 5,
+        "seen": 5,
+        "correct": 0,
+        "lastSeen": 1743638400000
+      },
+      "iq02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740873600000
+      },
+      "wh02": {
+        "lastSeen": 1777703840943,
+        "seen": 3,
+        "correct": 1,
+        "wrong": 2,
+        "lastWrong": "way how",
+        "consec": 0
+      },
+      "art_c02": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "seen": 2,
+        "correct": 0
+      },
+      "sayt08": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1777704254162,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_b12": {
+        "lastSeen": 1777704247677,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 1
+      },
+      "ex06": {
+        "wrong": 2,
+        "consec": 0,
+        "lastWrong": "I live on the outskirts.",
+        "lastSeen": 1778075498267,
+        "seen": 2,
+        "correct": 0
+      },
+      "irv15": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "correct": 2,
+        "seen": 3
+      },
+      "id06": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000
+      },
+      "eo02": {
+        "lastSeen": 1740528000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "voc13": {
+        "lastSeen": 1743638400000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "lastWrong": "in",
+        "consec": 0
+      },
+      "cu06": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1777703402403,
+        "consec": 1,
+        "wrong": 0
+      },
+      "pp_i01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "tag02": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 3,
+        "correct": 2
+      },
+      "cp_i02": {
+        "lastSeen": 1777704278755,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "sayt07": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv08": {
+        "seen": 4,
+        "correct": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 3
+      },
+      "ut01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "fo02": {
+        "lastSeen": 1741996800000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "gc03": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740614400000
+      },
+      "ec02": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pa05": {
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "art_d02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742256000000
+      },
+      "art_b22": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "rc01": {
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "irv11": {
+        "wrong": 1,
+        "consec": 1,
+        "lastSeen": 1778075544814,
+        "seen": 4,
+        "correct": 3
+      },
+      "irv35": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1
+      },
+      "ben02": {
+        "lastSeen": 1741737600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ei02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741132800000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pr_ti11": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1778075422148,
+        "consec": 1,
+        "wrong": 1
+      },
+      "qf02": {
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "cr01": {
+        "lastSeen": 1742515200000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "cc05": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pp_i06": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 2,
+        "seen": 3,
+        "lastSeen": 1743638400000
+      },
+      "re02": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1743120000000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "pr_ti10": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000
+      },
+      "irv05": {
+        "consec": 1,
+        "wrong": 2,
+        "correct": 2,
+        "seen": 4,
+        "lastSeen": 1778075645578
+      },
+      "art_c12": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv26": {
+        "correct": 1,
+        "seen": 3,
+        "lastSeen": 1778075440313,
+        "consec": 0,
+        "lastWrong": "fallen",
+        "wrong": 2
+      },
+      "pf02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_b20": {
+        "lastSeen": 1741824000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv24": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "cp02": {
+        "lastSeen": 1741824000000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0
+      },
+      "gt02": {
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1743638400000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "irv04": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1778075512990,
+        "consec": 1,
+        "wrong": 0
+      },
+      "mm04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "correct": 2,
+        "seen": 2
+      },
+      "psc07": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "sayt02": {
+        "lastSeen": 1742515200000,
+        "seen": 2,
+        "correct": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "cr05": {
+        "lastSeen": 1741824000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_b05": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1777702710286,
+        "seen": 3,
+        "correct": 3
+      },
+      "gr_b11": {
+        "lastSeen": 1742515200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "mo01": {
+        "seen": 5,
+        "correct": 4,
+        "lastSeen": 1778001395756,
+        "consec": 1,
+        "wrong": 1
+      },
+      "sa02": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "fo01": {
+        "lastSeen": 1742515200000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "gr_b15": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 0
+      },
+      "pt_b01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "seen": 2,
+        "correct": 2
+      },
+      "lnk06": {
+        "consec": 1,
+        "wrong": 0,
+        "correct": 3,
+        "seen": 3,
+        "lastSeen": 1777701667496
+      },
+      "ex_b02": {
+        "consec": 0,
+        "lastWrong": "are exist",
+        "wrong": 2,
+        "seen": 3,
+        "correct": 1,
+        "lastSeen": 1777704162797
+      },
+      "art_c06": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "co_b01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741392000000
+      },
+      "wc02": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1740528000000
+      },
+      "ar01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1740614400000
+      },
+      "lnk04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742515200000,
+        "correct": 2,
+        "seen": 2
+      },
+      "irvpp09": {
+        "lastSeen": 1778001240015,
+        "locked_until": 1781630040015,
+        "seen": 4,
+        "correct": 0,
+        "wrong": 4,
+        "consec": 0,
+        "lastWrong": "chosed"
+      },
+      "tc_hw01": {
+        "lastSeen": 1741219200000,
+        "seen": 2,
+        "correct": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_c18": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741392000000
+      },
+      "cc07": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1740528000000
+      },
+      "sayt06": {
+        "lastSeen": 1741996800000,
+        "seen": 3,
+        "correct": 3,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ptc08": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ee06": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1743465600000,
+        "lastWrong": "hop in",
+        "consec": 0,
+        "wrong": 2
+      },
+      "nm09": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1740614400000
+      },
+      "voc03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "correct": 2,
+        "seen": 2
+      },
+      "mvc23": {
+        "lastWrong": "need",
+        "consec": 0,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1775330777277
+      },
+      "gr_b02": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "gi_ut02": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0
+      },
+      "ptc06": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740614400000
+      },
+      "tns_i09": {
+        "wrong": 2,
+        "lastWrong": "was studding",
+        "consec": 0,
+        "lastSeen": 1775330828250,
+        "seen": 2,
+        "correct": 0
+      },
+      "cp03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "lnk08": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv33": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742256000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "sp01": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1742515200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "inf_b01": {
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1775058933382,
+        "consec": 2,
+        "wrong": 0
+      },
+      "cp05": {
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "mft02": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000
+      },
+      "voc06": {
+        "lastSeen": 1741132800000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_ti64": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "voc04": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "correct": 1,
+        "seen": 2
+      },
+      "voc45": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1777704298757,
+        "lastWrong": "give",
+        "consec": 0,
+        "wrong": 1
+      },
+      "irv19": {
+        "lastSeen": 1742947200000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "mft05": {
+        "lastSeen": 1741132800000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "cv01": {
+        "lastSeen": 1741219200000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0
+      },
+      "pp_b01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "seen": 2,
+        "correct": 2
+      },
+      "mo02": {
+        "lastSeen": 1743120000000,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "voc42": {
+        "wrong": 1,
+        "lastWrong": "?",
+        "consec": 0,
+        "lastSeen": 1775058729304,
+        "seen": 1,
+        "correct": 0
+      },
+      "art_b17": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1743465600000
+      },
+      "re03": {
+        "lastSeen": 1778075624616,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "eo03": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1743638400000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pp_b03": {
+        "lastSeen": 1778075640001,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "sayt01": {
+        "correct": 2,
+        "seen": 3,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "an03": {
+        "lastSeen": 1743465600000,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 0
+      },
+      "gs02": {
+        "lastWrong": "get",
+        "consec": 0,
+        "wrong": 2,
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1743465600000
+      },
+      "mp02": {
+        "correct": 0,
+        "seen": 3,
+        "lastSeen": 1778001183277,
+        "locked_until": 1781629983277,
+        "consec": 0,
+        "lastWrong": "Most of",
+        "wrong": 3
+      },
+      "irvpp23": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1778075414111,
+        "lastWrong": "ran",
+        "consec": 0,
+        "wrong": 2
+      },
+      "ps03": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "enou02": {
+        "consec": 1,
+        "wrong": 0,
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1777701744668
+      },
+      "mm03": {
+        "wrong": 2,
+        "consec": 0,
+        "lastWrong": "There isn't much traffic today.",
+        "lastSeen": 1777704236817,
+        "correct": 0,
+        "seen": 2
+      },
+      "mv01": {
+        "lastSeen": 1775058757724,
+        "seen": 3,
+        "correct": 2,
+        "wrong": 1,
+        "consec": 0,
+        "lastWrong": "You should try it."
+      },
+      "irvpp05": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "ti02": {
+        "consec": 0,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1741737600000
+      },
+      "pv_b01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ee07": {
+        "lastSeen": 1778001505449,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "ut03": {
+        "consec": 0,
+        "wrong": 2,
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1742256000000
+      },
+      "tg41": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740528000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "nc02": {
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv38": {
+        "consec": 1,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1778001265585
+      },
+      "ben01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742515200000,
+        "correct": 1,
+        "seen": 1
+      },
+      "irv17": {
+        "lastSeen": 1741392000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "tag05": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741824000000
+      },
+      "ta02": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "ti01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "mp03": {
+        "lastSeen": 1778001247958,
+        "correct": 2,
+        "seen": 2,
+        "wrong": 0,
+        "consec": 1
+      },
+      "cr04": {
+        "lastSeen": 1741996800000,
+        "correct": 0,
+        "seen": 3,
+        "wrong": 3,
+        "consec": 0
+      },
+      "pp_ap03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "seen": 2,
+        "correct": 2
+      },
+      "gsp03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "id03": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "fi02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "art_b01": {
+        "correct": 2,
+        "seen": 4,
+        "lastSeen": 1743465600000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "voc48": {
+        "wrong": 1,
+        "consec": 2,
+        "lastSeen": 1778075635164,
+        "seen": 3,
+        "correct": 2
+      },
+      "irvpp03": {
+        "consec": 0,
+        "lastWrong": "drove",
+        "wrong": 3,
+        "correct": 0,
+        "seen": 3,
+        "lastSeen": 1778075531070,
+        "locked_until": 1781704331070
+      },
+      "tr03": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1777702703269,
+        "correct": 1,
+        "seen": 1
+      },
+      "rc_b13": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1741132800000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "sayt03": {
+        "wrong": 1,
+        "consec": 1,
+        "lastSeen": 1777704205888,
+        "seen": 3,
+        "correct": 2
+      },
+      "pf_a01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741737600000
+      },
+      "pp_b02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "cp01": {
+        "correct": 0,
+        "seen": 3,
+        "lastSeen": 1775330798547,
+        "consec": 0,
+        "lastWrong": "that",
+        "wrong": 3
+      },
+      "qf10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_b13": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_l01_i": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1777702131803,
+        "consec": 0,
+        "lastWrong": "leave train",
+        "wrong": 1
+      },
+      "mft01": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 3,
+        "seen": 4,
+        "lastSeen": 1741996800000
+      },
+      "mft03": {
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 0
+      },
+      "sv_b04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "aa03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "fl01": {
+        "consec": 0,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1741996800000
+      },
+      "irvpp04": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000
+      },
+      "qf01": {
+        "lastSeen": 1741392000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "an02": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "en02": {
+        "lastSeen": 1778001172996,
+        "correct": 2,
+        "seen": 4,
+        "wrong": 2,
+        "consec": 1
+      },
+      "gr_b06": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv01": {
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv02": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740528000000
+      },
+      "irvpp10": {
+        "lastSeen": 1777702580434,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "lastWrong": "heqrd",
+        "consec": 0
+      },
+      "aa01": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 2,
+        "seen": 3,
+        "lastSeen": 1743465600000
+      },
+      "irvpp14": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 2,
+        "correct": 1
+      },
+      "irv32": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv20": {
+        "lastSeen": 1743465600000,
+        "correct": 2,
+        "seen": 4,
+        "wrong": 2,
+        "consec": 0
+      },
+      "psc05": {
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "gt03": {
+        "lastWrong": "get out",
+        "consec": 0,
+        "wrong": 2,
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1777702916442
+      },
+      "art_b08": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1742515200000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "zc04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_c11": {
+        "lastSeen": 1775330793914,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "gc02": {
+        "correct": 2,
+        "seen": 3,
+        "lastSeen": 1742256000000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pspp01": {
+        "lastSeen": 1775058893289,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0,
+        "lastWrong": "I lost my keys."
+      },
+      "pspp05": {
+        "seen": 3,
+        "correct": 1,
+        "lastSeen": 1742947200000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "df03": {
+        "lastSeen": 1740528000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv40": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742947200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "sp03": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1743120000000,
+        "correct": 1,
+        "seen": 3
+      },
+      "cp04": {
+        "lastSeen": 1741996800000,
+        "seen": 3,
+        "correct": 2,
+        "wrong": 1,
+        "consec": 0
+      },
+      "pv02": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "pp_b05": {
+        "consec": 0,
+        "lastWrong": "He works in the office at Oxford Street.",
+        "wrong": 3,
+        "seen": 3,
+        "correct": 0,
+        "locked_until": 1781704336326,
+        "lastSeen": 1778075536325
+      },
+      "lnk01": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 3,
+        "correct": 2
+      },
+      "voc52": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1743120000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "gadj04": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741132800000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "qf09": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv28": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art_i04": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1742947200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pg04": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pc01": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "rc_b05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000
+      },
+      "nc01": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741392000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ptc05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740528000000
+      },
+      "mm09": {
+        "consec": 0,
+        "wrong": 3,
+        "correct": 1,
+        "seen": 4,
+        "lastSeen": 1743120000000
+      },
+      "art_c10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "art_i02": {
+        "wrong": 1,
+        "lastWrong": "an",
+        "consec": 0,
+        "lastSeen": 1777704224290,
+        "correct": 0,
+        "seen": 1
+      },
+      "lnk02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741737600000
+      },
+      "pa08": {
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "reflop09": {
+        "lastSeen": 1778001322508,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "psc08": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 1
+      },
+      "fo03": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "ptc09": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741219200000
+      },
+      "art_d09": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742947200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "wh01": {
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "mn01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741219200000
+      },
+      "tm02": {
+        "consec": 0,
+        "wrong": 2,
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1741132800000
+      },
+      "tr02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "correct": 2,
+        "seen": 2
+      },
+      "gsp01": {
+        "lastSeen": 1778001134638,
+        "seen": 7,
+        "correct": 3,
+        "wrong": 4,
+        "lastWrong": "I try to avoid it so I will not get stuck on one preposition.",
+        "consec": 0
+      },
+      "co_b02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "correct": 2,
+        "seen": 2
+      },
+      "ie03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "voc46": {
+        "consec": 0,
+        "lastWrong": "return",
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1777702782686
+      },
+      "ee24": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1743120000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "art_c04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "correct": 1,
+        "seen": 1
+      },
+      "sv01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "co_b04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "lt02": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1742947200000,
+        "seen": 4,
+        "correct": 3
+      },
+      "iq01": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742947200000
+      },
+      "pv04": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "art_b15": {
+        "lastSeen": 1741737600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ee02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1743638400000
+      },
+      "qf05": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "but04": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0
+      },
+      "tc05": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741737600000
+      },
+      "art_i13": {
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1775058972777,
+        "consec": 3,
+        "wrong": 0
+      },
+      "tag03": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 2,
+        "correct": 1
+      },
+      "irvpp16": {
+        "locked_until": 1781704261193,
+        "lastSeen": 1778075461193,
+        "seen": 3,
+        "correct": 0,
+        "wrong": 3,
+        "consec": 0,
+        "lastWrong": "swam"
+      },
+      "art_i18": {
+        "lastSeen": 1777703013606,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "lastWrong": "-",
+        "consec": 0
+      },
+      "zc07": {
+        "lastSeen": 1778001295577,
+        "seen": 2,
+        "correct": 0,
+        "wrong": 2,
+        "consec": 0,
+        "lastWrong": "got"
+      },
+      "id_ti04": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "tc02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "voc07": {
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "inf_b04": {
+        "lastSeen": 1741737600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "yr06": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 1,
+        "seen": 1
+      },
+      "art06": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0
+      },
+      "ee30": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777703001280,
+        "consec": 1,
+        "wrong": 0
+      },
+      "mp01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 1,
+        "correct": 1
+      },
+      "id04": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pa03": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740873600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "qf06": {
+        "correct": 0,
+        "seen": 3,
+        "lastSeen": 1742947200000,
+        "consec": 0,
+        "wrong": 3
+      },
+      "ptc04": {
+        "seen": 3,
+        "correct": 2,
+        "lastSeen": 1778001178871,
+        "consec": 2,
+        "wrong": 1
+      },
+      "sp02": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1742256000000
+      },
+      "inf_b03": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741996800000
+      },
+      "irvpp20": {
+        "wrong": 0,
+        "consec": 1,
+        "lastSeen": 1775330756797,
+        "correct": 1,
+        "seen": 1
+      },
+      "ex_b03": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "gt04": {
+        "lastSeen": 1778001271240,
+        "seen": 3,
+        "correct": 1,
+        "wrong": 2,
+        "consec": 1
+      },
+      "lt03": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740528000000,
+        "correct": 0,
+        "seen": 1
+      },
+      "irvpp08": {
+        "consec": 2,
+        "wrong": 1,
+        "seen": 4,
+        "correct": 3,
+        "lastSeen": 1778001486141
+      },
+      "mft06": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "gi09": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1
+      },
+      "tg29": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv37": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1743465600000
+      },
+      "irv16": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742256000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "irv13": {
+        "lastSeen": 1743638400000,
+        "correct": 2,
+        "seen": 5,
+        "wrong": 3,
+        "consec": 0
+      },
+      "irv29": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "cu04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "ut02": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741219200000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pp_i04": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "tt02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "correct": 1,
+        "seen": 1
+      },
+      "tag04": {
+        "correct": 2,
+        "seen": 4,
+        "lastSeen": 1777701739567,
+        "consec": 0,
+        "lastWrong": "don't",
+        "wrong": 2
+      },
+      "iq_i01": {
+        "lastSeen": 1743465600000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pp_i03": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1775058856447,
+        "consec": 0,
+        "wrong": 2
+      },
+      "rc_b04": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741824000000
+      },
+      "st10": {
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "en03": {
+        "lastSeen": 1741392000000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "but03": {
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "nb01": {
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 3,
+        "wrong": 2,
+        "consec": 0
+      },
+      "art_b18": {
+        "consec": 0,
+        "wrong": 2,
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1743120000000
+      },
+      "cu03": {
+        "wrong": 2,
+        "consec": 0,
+        "lastWrong": "a",
+        "lastSeen": 1743465600000,
+        "seen": 3,
+        "correct": 1
+      },
+      "wh03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1
+      },
+      "fe04": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 0,
+        "seen": 2
+      },
+      "ee08": {
+        "wrong": 1,
+        "lastWrong": "7 o'clock precisely?",
+        "consec": 0,
+        "lastSeen": 1778001405305,
+        "correct": 0,
+        "seen": 1
+      },
+      "tt01": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000
+      },
+      "pa10": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741996800000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "pa02": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 0
+      },
+      "lnk07": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1742083200000
+      },
+      "fm01": {
+        "consec": 0,
+        "lastWrong": "I'm usually feeling myself more confident in person.",
+        "wrong": 3,
+        "seen": 3,
+        "correct": 0,
+        "locked_until": 1781332195145,
+        "lastSeen": 1777703395145
+      },
+      "irv36": {
+        "lastSeen": 1741996800000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "qt01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "correct": 3,
+        "seen": 3
+      },
+      "gi_b03": {
+        "seen": 3,
+        "correct": 1,
+        "lastSeen": 1777704283939,
+        "consec": 1,
+        "wrong": 2
+      },
+      "pa07": {
+        "lastSeen": 1740873600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_b03": {
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "pv_b02": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 2,
+        "seen": 2,
+        "lastSeen": 1741824000000
+      },
+      "an01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1742083200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "pp_ap29": {
+        "lastSeen": 1778075580690,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 1
+      },
+      "gs01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1742083200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "pv_c10": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742083200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "reflby10": {
+        "consec": 1,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1777701771425
+      },
+      "iq05": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "reflby03": {
+        "consec": 1,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1777704182468
+      },
+      "bf03": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "lt01": {
+        "lastSeen": 1741219200000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "id01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1741219200000
+      },
+      "ss01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1775058913671,
+        "seen": 1,
+        "correct": 1
+      },
+      "pa09": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "seen": 2,
+        "correct": 2
+      },
+      "psc02": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741392000000
+      },
+      "se01": {
+        "lastSeen": 1740614400000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "rs09": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 0,
+        "seen": 1
+      },
+      "fi03": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740614400000
+      },
+      "zc05": {
+        "lastSeen": 1741737600000,
+        "seen": 2,
+        "correct": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "gr_b05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742256000000
+      },
+      "wt01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 1,
+        "seen": 1
+      },
+      "pv_c12": {
+        "wrong": 1,
+        "consec": 1,
+        "lastSeen": 1777703048850,
+        "correct": 4,
+        "seen": 5
+      },
+      "irv31": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1740873600000
+      },
+      "lnk03": {
+        "locked_until": 1781333063075,
+        "lastSeen": 1777704263075,
+        "seen": 4,
+        "correct": 0,
+        "wrong": 4,
+        "consec": 0,
+        "lastWrong": "Despite she was tired, she finished all the work."
+      },
+      "nb03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "correct": 1,
+        "seen": 1
+      },
+      "qu01": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1743465600000,
+        "consec": 0,
+        "lastWrong": "I don't feel quite good today.",
+        "wrong": 2
+      },
+      "mx07": {
+        "seen": 1,
+        "correct": 0,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 1
+      },
+      "pp_a05": {
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "rc_b01": {
+        "lastSeen": 1743465600000,
+        "correct": 2,
+        "seen": 4,
+        "wrong": 2,
+        "consec": 0
+      },
+      "dc04": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741392000000
+      },
+      "mn03": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 2,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "lkc01": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1741132800000,
+        "correct": 0,
+        "seen": 1
+      },
+      "ma01": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "seen": 2,
+        "correct": 0
+      },
+      "adj_i02": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1742083200000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "mm06": {
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "mm05": {
+        "seen": 2,
+        "correct": 0,
+        "lastSeen": 1778001164818,
+        "lastWrong": "There is too many traffic on the road.",
+        "consec": 0,
+        "wrong": 2
+      },
+      "pf03": {
+        "lastSeen": 1741737600000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "aa04": {
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "ti03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 2,
+        "correct": 2
+      },
+      "irv10": {
+        "seen": 3,
+        "correct": 0,
+        "locked_until": 1781330593039,
+        "lastSeen": 1777701793039,
+        "lastWrong": "teched",
+        "consec": 0,
+        "wrong": 3
+      },
+      "tc04": {
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741737600000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "gr_b14": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1742947200000
+      },
+      "pp_ap13": {
+        "lastSeen": 1741132800000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "sayt05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1775058980145
+      },
+      "mv02": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741392000000,
+        "correct": 1,
+        "seen": 3
+      },
+      "ta01": {
+        "consec": 0,
+        "wrong": 1,
+        "seen": 3,
+        "correct": 2,
+        "lastSeen": 1742256000000
+      },
+      "irvpp15": {
+        "lastSeen": 1778075450613,
+        "locked_until": 1781704250613,
+        "correct": 0,
+        "seen": 3,
+        "wrong": 3,
+        "lastWrong": "spoke",
+        "consec": 0
+      },
+      "sayt04": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1741219200000
+      },
+      "irv34": {
+        "seen": 2,
+        "correct": 2,
+        "lastSeen": 1741392000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "art_b02": {
+        "correct": 1.5,
+        "seen": 3,
+        "lastSeen": 1778001201018,
+        "lastWrong": "[2]:—",
+        "consec": 0,
+        "wrong": 1.5
+      },
+      "irv30": {
+        "wrong": 1,
+        "lastWrong": "sild",
+        "consec": 0,
+        "lastSeen": 1743465600000,
+        "correct": 3,
+        "seen": 4
+      },
+      "bf01": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 3,
+        "seen": 3,
+        "lastSeen": 1741392000000
+      },
+      "tag01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742083200000,
+        "seen": 2,
+        "correct": 2
+      },
+      "irv03": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1741824000000
+      },
+      "irv22": {
+        "lastSeen": 1741737600000,
+        "correct": 3,
+        "seen": 3,
+        "wrong": 0,
+        "consec": 0
+      },
+      "tg43": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1740614400000,
+        "consec": 0,
+        "wrong": 2
+      },
+      "pv_a02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "correct": 2,
+        "seen": 2
+      },
+      "enou03": {
+        "lastSeen": 1741996800000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "gn02": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "seen": 1,
+        "correct": 1
+      },
+      "art_c08": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1742256000000,
+        "seen": 2,
+        "correct": 2
+      },
+      "hw03": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000
+      },
+      "el03": {
+        "lastSeen": 1740528000000,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1,
+        "consec": 0
+      },
+      "ie01": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741737600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "aa02": {
+        "lastSeen": 1775330814560,
+        "seen": 4,
+        "correct": 1,
+        "wrong": 3,
+        "lastWrong": "at all",
+        "consec": 0
+      },
+      "mn02": {
+        "lastSeen": 1741824000000,
+        "seen": 2,
+        "correct": 2,
+        "wrong": 0,
+        "consec": 0
+      },
+      "refl05": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1742515200000
+      },
+      "pva_i01": {
+        "lastWrong": "was build",
+        "consec": 0,
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1777703421141
+      },
+      "gt06": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741996800000,
+        "seen": 2,
+        "correct": 0
+      },
+      "dc03": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1740873600000,
+        "seen": 1,
+        "correct": 1
+      },
+      "ex_b01": {
+        "consec": 0,
+        "lastWrong": "They don't know what problems are existing.",
+        "wrong": 3,
+        "seen": 4,
+        "correct": 1,
+        "lastSeen": 1778001222782
+      },
+      "pv_b04": {
+        "wrong": 3,
+        "lastWrong": "wakes",
+        "consec": 0,
+        "lastSeen": 1775330808613,
+        "seen": 3,
+        "correct": 0
+      },
+      "cp_i03": {
+        "correct": 1,
+        "seen": 3,
+        "lastSeen": 1777702849941,
+        "consec": 1,
+        "wrong": 2
+      },
+      "art_c09": {
+        "lastSeen": 1742515200000,
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1,
+        "consec": 0
+      },
+      "irvpp12": {
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "voc12": {
+        "correct": 3,
+        "seen": 3,
+        "lastSeen": 1778075489079,
+        "consec": 1,
+        "wrong": 0
+      },
+      "adv03": {
+        "lastSeen": 1777703798290,
+        "correct": 1,
+        "seen": 2,
+        "wrong": 1,
+        "consec": 1
+      },
+      "dc05": {
+        "lastSeen": 1741996800000,
+        "correct": 1,
+        "seen": 1,
+        "wrong": 0,
+        "consec": 0
+      },
+      "irv27": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740873600000
+      },
+      "ft03": {
+        "consec": 0,
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1740528000000
+      },
+      "gr_b13": {
+        "wrong": 1,
+        "consec": 2,
+        "lastSeen": 1778001141339,
+        "correct": 2,
+        "seen": 3
+      },
+      "ptc03": {
+        "consec": 0,
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1740528000000
+      },
+      "irvpp18": {
+        "correct": 3,
+        "seen": 5,
+        "lastSeen": 1777704268182,
+        "consec": 1,
+        "wrong": 2
+      },
+      "pperf04": {
+        "wrong": 1,
+        "consec": 0,
+        "lastSeen": 1740614400000,
+        "seen": 1,
+        "correct": 0
+      },
+      "pv_c04": {
+        "wrong": 0,
+        "consec": 0,
+        "lastSeen": 1741824000000,
+        "seen": 1,
+        "correct": 1
+      },
+      "rc_b03": {
+        "wrong": 2,
+        "consec": 0,
+        "lastSeen": 1741219200000,
+        "correct": 0,
+        "seen": 2
+      },
+      "si02": {
+        "seen": 3,
+        "correct": 3,
+        "lastSeen": 1741824000000,
+        "consec": 0,
+        "wrong": 0
+      },
+      "pt_b06": {
+        "consec": 0,
+        "wrong": 0,
+        "seen": 1,
+        "correct": 1,
+        "lastSeen": 1741219200000
+      },
+      "psc03": {
+        "lastSeen": 1741996800000,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0,
+        "consec": 0
+      }
+    },
+    "updatedAt": 1778075646196,
+    "totalSessions": 42,
+    "aggregated_exercises": {},
+    "learning_path": {
+      "active_categories": [
+        "Prepositions",
+        "Irregular Verbs",
+        "Vocabulary"
+      ],
+      "active_window_size": 3,
+      "mastered_categories": [],
+      "stretch_allowance": 0.1,
+      "composition_last_checked": "2026-05-01T14:12:52.109Z",
+      "promotion_threshold": {
+        "window_days": 14,
+        "accuracy": 0.8,
+        "min_attempts": 20
+      },
+      "next_unlock_options": [
+        {
+          "rationale": "At 86% n=21, closest to mastery; B2 prepositional phrasing (depend on, account for) is the natural depth step",
+          "category": "Prepositions",
+          "pathway": "deepen"
+        },
+        {
+          "pathway": "broaden",
+          "category": "Articles",
+          "rationale": "57% n=53 — family-wide focus area, ships alongside §4.3 article batches"
+        },
+        {
+          "category": "Question Formation",
+          "rationale": "44% n=18 — coach_notes weak_pattern, three 0% items (qf03/qf06/qf07)",
+          "pathway": "broaden"
+        },
+        {
+          "pathway": "broaden",
+          "rationale": "66% n=86 — large sample, productive struggle; surfaces only present-tense variants until promotion",
+          "category": "Tenses"
+        }
+      ],
+      "level_cap": "B1",
+      "floor_bouncers": []
+    },
+    "lvlStats": {
+      "C1": {
+        "seen": 18,
+        "correct": 10
+      },
+      "B2": {
+        "seen": 78,
+        "correct": 37
+      },
+      "B1": {
+        "seen": 774,
+        "correct": 483
+      }
+    },
+    "recentSessions": [
+      {
+        "mode": "smart",
+        "score": 11,
+        "date": "2026-05-06T13:54:06.173Z",
+        "pct": 55,
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 17,
+            "correct": 8
+          },
+          "B2": {
+            "seen": 3,
+            "correct": 3
+          }
+        },
+        "total": 20,
+        "catBreakdown": {
+          "Irregular Verbs": {
+            "seen": 10,
+            "correct": 4
+          },
+          "Vocabulary": {
+            "seen": 4,
+            "correct": 3
+          },
+          "Prepositions": {
+            "seen": 6,
+            "correct": 4
+          }
+        }
+      },
+      {
+        "total": 20,
+        "catBreakdown": {
+          "Everyday English": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Word Choice": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Question Formation": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Grammar": {
+            "seen": 5,
+            "correct": 3
+          },
+          "Quantifiers": {
+            "seen": 3,
+            "correct": 1
+          },
+          "Conditionals": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Tenses": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Phrasal Verbs": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Irregular Verbs": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Articles": {
+            "seen": 1,
+            "correct": 0
+          }
+        },
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 20,
+            "correct": 11
+          }
+        },
+        "pct": 55,
+        "date": "2026-05-05T17:18:26.206Z",
+        "score": 11,
+        "mode": "smart"
+      },
+      {
+        "lvlBreakdown": {
+          "B1": {
+            "seen": 50,
+            "correct": 28
+          }
+        },
+        "total": 50,
+        "catBreakdown": {
+          "Tenses": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Reported Speech": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Irregular Verbs": {
+            "seen": 5,
+            "correct": 3
+          },
+          "Vocabulary": {
+            "seen": 4,
+            "correct": 2
+          },
+          "Everyday English": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Linking Words": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Quantifiers": {
+            "seen": 4,
+            "correct": 3
+          },
+          "Question Formation": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Word Choice": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Word Order": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Conditionals": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Comparisons": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Articles": {
+            "seen": 4,
+            "correct": 1
+          },
+          "Phrasal Verbs": {
+            "seen": 4,
+            "correct": 2
+          },
+          "Gerunds & Infinitives": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Grammar": {
+            "seen": 12,
+            "correct": 5
+          },
+          "Passive Voice": {
+            "seen": 2,
+            "correct": 0
+          }
+        },
+        "pct": 56,
+        "mode": "smart",
+        "score": 28,
+        "date": "2026-05-02T06:45:00.168Z"
+      },
+      {
+        "mode": "smart",
+        "date": "2026-04-04T19:27:10.764Z",
+        "score": 4,
+        "pct": 40,
+        "lvlBreakdown": {
+          "B1": {
+            "correct": 4,
+            "seen": 10
+          }
+        },
+        "total": 10,
+        "catBreakdown": {
+          "Tenses": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Irregular Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Phrasal Verbs": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Grammar": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Word Choice": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Modal Verbs": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Comparisons": {
+            "correct": 0,
+            "seen": 1
+          }
+        }
+      },
+      {
+        "date": "2026-04-03",
+        "total": 10,
+        "mode": "smart",
+        "pct": "70%"
+      },
+      {
+        "pct": "55%",
+        "mode": "smart",
+        "date": "2026-04-01",
+        "total": 20
+      },
+      {
+        "mode": "smart",
+        "date": "2026-04-01",
+        "total": 10,
+        "pct": "80%"
+      },
+      {
+        "pct": "70%",
+        "mode": "smart",
+        "total": 10,
+        "date": "2026-04-01"
+      },
+      {
+        "pct": "65%",
+        "total": 20,
+        "date": "2026-03-30",
+        "mode": "smart"
+      },
+      {
+        "pct": "65%",
+        "mode": "smart",
+        "date": "2026-03-28",
+        "total": 20
+      }
+    ],
+    "longestStreak": 4,
+    "displayName": "Nicole",
+    "aggregated_coach_sessions": {},
+    "color": "#d4a94e",
+    "createdAt": "2026-03-01T00:00:00.000Z",
+    "coach_notes": {
+      "recent_observations": [
+        {
+          "author": "claude_code",
+          "date": "2026-04-30",
+          "session_id": "stats_review_2026-04-30",
+          "note": "Stats sweep: 780 answers / 39 sessions. Question Formation B1 newly identified weak (44%, three 0% items). Irregular verb input still the hardest cluster — irvpp07 0/5. Prepositions/Reported Speech/Adjectives are strengths."
+        },
+        {
+          "author": "claude_code",
+          "session_id": "stats_review_2026-05-07",
+          "note": "[data] First active session in 4 weeks, 2026-05-06 burst: 86 qids touched, 217 attempts, 44% acc. Profile gaps confirmed and sharpened: irvpp directional (past-simple-for-3rd-form), L1 calques surfacing in mcq decoys (Despite-clause, feel-myself, traffic countability, missing 'the' in 'Most of'). New stuck items added. [inferred] Profile rule 'no irregular-verb input items until accuracy >70%' should be checked — many irv/irvpp 0% items still being served by Smart-mode.",
+          "date": "2026-05-07"
+        }
+      ],
+      "strong_patterns": [
+        "prepositions (86%, n=21)",
+        "reported speech (81%, n=16)",
+        "adjectives (82%, n=11)"
+      ],
+      "last_updated": "2026-05-07T09:31:05.541Z",
+      "stuck_questions": [
+        "cv03",
+        "irvpp07",
+        "qf07",
+        "qf03",
+        "pf01",
+        "pv_b04",
+        "lnk03",
+        "cp01",
+        "gt03",
+        "fm01",
+        "art_c07",
+        "mp02",
+        "irv09",
+        "irv10",
+        "irvpp03",
+        "irvpp09",
+        "irvpp15",
+        "irvpp16",
+        "irvpp23",
+        "ex06",
+        "mm03",
+        "mm05",
+        "mo03",
+        "pp_b05",
+        "gr_b04",
+        "zc07"
+      ],
+      "engagement_notes": "Player-initiated only per profile. Last active 2026-04-04 (~4 weeks gap). When she returns, brief sessions; no irregular-verb input items until accuracy >70%. K-pop / school context.",
+      "last_updated_by": "claude_code",
+      "weak_patterns": [
+        "question formation B1 (auxiliary order, do-support) — qf03/qf06/qf07 all 0%",
+        "comparison form (than/that confusion, cp01 lastWrong 'that')",
+        "irregular past participle confusion — supplies past simple form when 3rd form requested (spoke/swam/ran/drove/chosed/teched/flied for past participle). irvpp 27% across n=26 in 2026-05-06 burst. Direction is consistent: past simple is lexicalised, 3rd form unstable.",
+        "L1 Russian calques surfacing in mcq decoys — 'Despite + clause' (lnk03), reflexive 'feel myself' (fm01), countability slips much/many + traffic (mm03/mm05), 'Most of students' missing 'the' (mp02). 4+ surface forms in 2026-05-06 burst."
+      ]
+    }
+  },
+  "exercises": [],
+  "coach_sessions": []
+}
