@@ -1,7 +1,7 @@
 {
   "name": "English Grammar Quiz — Artem",
   "short_name": "English Quiz",
-  "description": "English grammar practice quiz with 472 questions",
+  "description": "English grammar practice quiz",
   "start_url": "/english-quiz/",
   "scope": "/english-quiz/",
   "display": "standalone",

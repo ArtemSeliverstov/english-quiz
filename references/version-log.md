@@ -10,6 +10,23 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-10
+### v20260510 — Stage 2 ★★★★★ PV gap closure: 25 high-frequency PVs × pair format (+50 items)
+
+Consolidated-plan Stage 2. Closes the 25 PVs the post-Stage-0 tracker still showed as `✗ 📅` at ★★★★★ frequency. Each PV gets a `pv_l{NN}_g` + `pv_l{NN}_i` pair (gap + input); mcq dropped from the pattern based on Stage 0 evidence that triple scaffolds plateau (`get through ¹` was 0/9 despite having `pv_l02_*`).
+
+- **25 new PVs covered** (`pv_l07`–`pv_l31`): break down² / come from / crack on / cut off / end up / fall behind / fall through / figure out / fill in² / get round to / get through³ / go through / head off / hold up / kick off / knock off / let down / make up² (constitute) / pay off / point out / set up² / take on² / take up² / top up / wrap up.
+- **Format choice**: gap + input only. Gap items test particle/PV selection with 4 opts; input items are cold-production (no PV named in hint; word-count cue mandatory; `hard: true` flag set).
+- **Themes**: `biz_oil` / `kpmg_consulting` for the business-essential cluster. `brit_expat` / `home_daily` for the lighter ones (top up, crack on, head off, come from, end up, let down). `claude_collab` on `pv_l14_i` (figure out — "structural recalibration" jargon).
+- **Hint design audit (preview probe)**: zero hint-leaks across all 25 input items — no hint contains the base verb of the answer. Cold-production validity preserved.
+- **make up² scope confirmed**: constitute-only (`oil and gas makes up 80% of exports`). Invent sense remains in `pv_c16`; compensate-for sense in `pv_ti31–33`.
+- `lint_questions.js` clean (2196 → 2246). `check_transform_keywords.js` clean (55 transforms unchanged).
+- `manifest.json` drift fixed (was claiming "472 questions"; now no count claimed).
+
+Q count: 2196 → 2246 (+50) · Version: v20260510
+
+---
+
 ## 2026-05-09 · Session r2
 ### v20260509-r2 — Translation grader: iOS L-for-I autocorrect + curly-quote normalization
 
