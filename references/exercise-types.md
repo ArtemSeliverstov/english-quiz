@@ -115,18 +115,18 @@ them at the end with corrections.
 
 ---
 
-## 7. `article_drill`
+## 7. `article_drill` (alias: `article_drill_live`)
 
-High-density article practice. Mixed gap-fill + error correction format. Specifically
-designed for the article weakness all family members share.
+High-density article practice. Single-blank gap-fill in live AI; mixed gap-fill + error correction format in legacy library. Specifically designed for the article weakness all family members share (Russian L1 doesn't mark articles).
 
-**Use for**: Artem (articles are his fossilised pattern), Nicole, Ernest.
-**Item count**: 10-15 (high density, fast pace)
-**Player input**: a / an / the / — for each blank
-**Scoring**: per-blank, with reasoning surfaced for each error
+**Use for**: Artem (articles are his fossilised pattern), Nicole, Ernest, all family.
+**Item count**: 10-15 (live AI default 10, capped 15; library per-player overrides preserved)
+**Player input**: types one article per turn — `a` / `an` / `the` / `—` / `zero` / `no article` (all accepted)
+**Scoring**: per-item against the rule-required article; conversational explanation on miss
+**Source**: live-AI worker (`mode: 'article_drill_live'`) when online + API available; `exercises_library/article_drill/items` as offline fallback (router in `coachStartType` picks at click-time).
+**Logging**: `coach_sessions/{ad_*}` for live AI; legacy `players/{name}/exercises/{ts}` for library fallback. Same metadata merge + proficiency fold as `translation_drill`.
 
-This is a canonical exercise type — `exercise: 'article_drill'` in Firestore. Do NOT
-fall back to `error_correction` when running an article drill.
+This is a canonical exercise type — `exercise: 'article_drill'` in Firestore. Do NOT fall back to `error_correction` when running an article drill.
 
 ---
 

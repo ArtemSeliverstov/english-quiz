@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r4">
+  <meta name="app-version" content="v20260511-r5">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r4</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r5</span></p>
 </header>
 
 <!-- TABS -->
@@ -8743,6 +8743,15 @@ const coachState = {
   ecModel: '',
   ecTargetCount: 8,
   ecBusy: false,
+  // Article Drill (live) flow — Phase D-3 T1 rollout
+  adMessages: [],
+  adTurnCount: 0,
+  adSessionId: '',
+  adStartedAt: 0,
+  adTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  adModel: '',
+  adTargetCount: 10,
+  adBusy: false,
   // Escalate retry flow (s92)
   escalateRetryActive: false,    // input field routes to coachEscalateRetrySubmit while true
   escalateRetryStartedAt: 0,
@@ -8896,10 +8905,10 @@ function coachUpdateLiveDrillBadges() {
   setBadge('error_correction', liveDrillLabel, 'library only', { enableLive: true });
 
   // Article Drill: category accuracy from qStats, e.g. "62% on Articles". Falls
-  // back to library count when no qStats data yet ("start fresh"). Not yet
-  // converted to live AI (D-3 pending) — badge is informative regardless.
+  // back to "start fresh" when no qStats data yet. Live-AI converted (D-3) —
+  // button enables on liveAvail regardless of library count.
   const articlePct = coachCategoryAccuracyPct('Articles');
-  setBadge('article_drill', articlePct != null ? `${articlePct}% on Articles` : 'start fresh', null);
+  setBadge('article_drill', articlePct != null ? `${articlePct}% on Articles` : 'start fresh', null, { enableLive: true });
 
   // Particle Sort: "X% on PVs"
   const pvPct = coachCategoryAccuracyPct('Phrasal Verbs');
@@ -9087,6 +9096,7 @@ function coachMakeSessionId(player, mode) {
     mode === 'weak_spots_drill' ? 'ws' :
     mode === 'translation_drill' ? 'td' :
     mode === 'error_correction_drill' ? 'ec' :
+    mode === 'article_drill_live' ? 'ad' :
     'sess';
   return player + '_' + prefix + '_' + Date.now() + '_' + r;
 }
@@ -10318,6 +10328,234 @@ async function coachErrorCorrectionDrillEnd() {
   document.getElementById('coachExitRow').style.display = '';
 }
 
+// ─── Article Drill (live AI) — Phase D-3 T1 rollout ────────────────────────
+// Live single-blank article gap-fill. Replaces library `article_drill` as the
+// primary path when online + API up; library remains offline fallback. Same
+// shape as translation_drill / error_correction_drill — conversational scoring,
+// per-item logging, proficiency assessment fold.
+const COACH_ADL_MODEL = COACH_FW_MODEL;
+const COACH_ADL_DEFAULT_ITEMS = 10;
+const COACH_ADL_MAX_ITEMS = 15;
+
+async function coachStartArticleDrillLive(opts) {
+  opts = opts || {};
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable || !navigator.onLine) {
+    return coachStartType('article_drill', { forceLibrary: true });
+  }
+  let playerDoc;
+  try {
+    playerDoc = await fsGet('players/' + currentPlayer);
+  } catch (e) {
+    return coachStartType('article_drill', { forceLibrary: true });
+  }
+  const cn = (playerDoc && playerDoc.coach_notes) || {};
+  coachState.playerCoachNotes = cn;
+  const planOverride = (COACH_PLANNED_TOTAL_OVERRIDES.article_drill || {})[currentPlayer];
+  const targetCount = Math.min(
+    planOverride || COACH_ADL_DEFAULT_ITEMS,
+    COACH_ADL_MAX_ITEMS
+  );
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  coachState.type = 'article_drill_live';
+  coachState.adMessages = [];
+  coachState.adTurnCount = 0;
+  coachState.adSessionId = coachMakeSessionId(currentPlayer, 'article_drill_live');
+  coachState.adStartedAt = Date.now();
+  coachState.adTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.adModel = COACH_ADL_MODEL;
+  coachState.adTargetCount = targetCount;
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Article Drill · ${targetCount} items · live AI</div>`
+  );
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Setting up…</span>');
+  const initMsg = { role: 'user', content: 'ready' };
+  coachState.adMessages.push(initMsg);
+  const result = await coachWorkerCall({
+    mode: 'article_drill_live',
+    model: coachState.adModel,
+    messages: coachState.adMessages,
+    context: coachBuildContext({
+      target_item_count: targetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.adSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Live drill unavailable — falling back to library items.</em>',
+      'feedback-wrong');
+    coachState.type = null;
+    return coachStartType('article_drill', { forceLibrary: true });
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.adMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.adTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.adTokensTotal.input += t.input || 0;
+  coachState.adTokensTotal.output += t.output || 0;
+  coachState.adTokensTotal.cache_read += t.cache_read || 0;
+  coachState.adTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.adModel = result.model_used;
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowArticleDrillEndRow();
+  document.getElementById('coachExitRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowArticleDrillEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End drill';
+  endBtn.onclick = () => coachArticleDrillEnd();
+  row.appendChild(endBtn);
+  if (coachState.adTurnCount >= coachState.adTargetCount) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "That's the lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachArticleDrillSendUserTurn() {
+  if (coachState.type !== 'article_drill_live' || coachState.adBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.adBusy = true;
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  coachState.adMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'article_drill_live',
+    model: coachState.adModel,
+    messages: coachState.adMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.adTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.adSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    coachState.adMessages.pop();
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.adBusy = false;
+    coachShowArticleDrillEndRow();
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.adMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.adTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.adTokensTotal.input += t.input || 0;
+  coachState.adTokensTotal.output += t.output || 0;
+  coachState.adTokensTotal.cache_read += t.cache_read || 0;
+  coachState.adTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.adModel = result.model_used;
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.adBusy = false;
+  coachShowArticleDrillEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachArticleDrillEnd() {
+  if (coachState.type !== 'article_drill_live') return;
+  if (coachState.adBusy) return;
+  if (!coachState.adMessages.filter(m => m.role === 'user' && m.content !== 'ready').length) {
+    coachShowPicker();
+    return;
+  }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.adBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the drill…</span>');
+  const closingMessages = coachState.adMessages.concat([{ role: 'user', content: "That's it — wrap up the drill." }]);
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'article_drill_live',
+    model: coachState.adModel,
+    messages: closingMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.adTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.adSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the drill: ' + escapeHtml(coachFriendlyError(result)) + ' (your responses will not be logged)</em>',
+      'feedback-wrong');
+    coachState.adBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.adMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.adMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.adTokensTotal.input += t.input || 0;
+  coachState.adTokensTotal.output += t.output || 0;
+  coachState.adTokensTotal.cache_read += t.cache_read || 0;
+  coachState.adTokensTotal.cache_creation += t.cache_creation || 0;
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: coachState.adSessionId,
+      mode: 'article_drill_live',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.adMessages,
+      model_used: result.model_used || coachState.adModel,
+      tokens_used: coachState.adTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
+      const summary = (result.session_metadata.session_summary || '').slice(0, 280);
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed, {
+        session_id: coachState.adSessionId,
+        note: 'Article Drill — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (items: ' + coachState.adTurnCount + ')',
+      });
+    }
+    coachFoldFreeWriteAssessment(result.session_metadata && result.session_metadata.assessment, coachState.adSessionId);
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Drill saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  const tot = coachState.adTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Drill tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.adBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
+}
+
 // ─── Spell Help (D7) ────────────────────────────────────────────────────────
 // Persistent button on the Coach picker. Player types a word as best they can;
 // system asks the Worker (free_write mode, single-turn) for the correct spelling
@@ -10988,6 +11226,9 @@ async function coachStartType(type, opts) {
   }
   if (type === 'error_correction' && liveAvail && !opts.forceLibrary) {
     return coachStartErrorCorrectionDrillLive(opts);
+  }
+  if (type === 'article_drill' && liveAvail && !opts.forceLibrary) {
+    return coachStartArticleDrillLive(opts);
   }
   const libCollection = COACH_TYPE_TO_LIBRARY[type];
   if (!libCollection) return; // unsupported type
@@ -11823,6 +12064,7 @@ function coachSendDispatch() {
   if (coachState.type === 'weak_spots_drill') return coachWeakSpotsSendUserTurn();
   if (coachState.type === 'translation_drill') return coachTranslationDrillSendUserTurn();
   if (coachState.type === 'error_correction_drill') return coachErrorCorrectionDrillSendUserTurn();
+  if (coachState.type === 'article_drill_live') return coachArticleDrillSendUserTurn();
   return coachSubmitAnswer(); // translation default
 }
 

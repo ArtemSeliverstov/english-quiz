@@ -47,7 +47,7 @@ function explainInRussian(ctx) {
   // Legacy clients (no coach_language field) — fall back to the hard-coded list.
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
-const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill'];
+const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -65,6 +65,11 @@ const TD_MAX_ITEMS = 12;
 // error_correction_drill: live "one sentence, one error" items. Default ~8.
 const ECD_DEFAULT_ITEMS = 8;
 const ECD_MAX_ITEMS = 12;
+
+// article_drill_live: live single-blank gap-fill items. Default ~10 (article
+// drills are higher density per exercise-types.md type 7), max 15.
+const ADL_DEFAULT_ITEMS = 10;
+const ADL_MAX_ITEMS = 15;
 
 export default {
   async fetch(request, env) {
@@ -137,7 +142,7 @@ export default {
         return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
       }
     }
-    if (mode === 'translation_drill' || mode === 'error_correction_drill') {
+    if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live') {
       // target_item_count optional; capped server-side. focus_categories optional.
       if (context.target_item_count != null && (
             typeof context.target_item_count !== 'number' || context.target_item_count < 1)) {
@@ -251,6 +256,7 @@ function buildSystemBlocks(mode, context, isSessionEnd) {
   else if (mode === 'weak_spots_drill') preamble = weakSpotsDrillSystemPrompt(context);
   else if (mode === 'translation_drill') preamble = translationDrillSystemPrompt(context);
   else if (mode === 'error_correction_drill') preamble = errorCorrectionDrillSystemPrompt(context);
+  else if (mode === 'article_drill_live') preamble = articleDrillLiveSystemPrompt(context);
   else preamble = escalateSystemPrompt(context);
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
@@ -550,6 +556,65 @@ Tone: focused, encouraging, paced. Keep replies tight, move through items, save 
 Open with: a one-line greeting + the first sentence to correct. No preamble about what the drill is — ${playerName} already knows.`;
 }
 
+function articleDrillLiveSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B1';
+  const ru = explainInRussian(ctx);
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || ADL_DEFAULT_ITEMS),
+    ADL_MAX_ITEMS
+  );
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+
+  const languageBlock = ru
+    ? `- **Score and explain in Russian.** Show the article quoted in English; explain the rule in Russian.
+- On a clean answer: short Russian confirmation, ≤1 line.
+- On a miss: 2-3 sentences max — quote what ${playerName} typed, explain the rule briefly in Russian, give the correct article in English.
+- Accept "—" or "-" or "zero" or "dash" or "no article" or "ноль" / "ничего" for the zero-article case.`
+    : `- Score and explain in English. Quote ${playerName}'s answer back when scoring.
+- On a clean answer: one-line confirmation. Don't over-praise.
+- On a miss: 2-3 sentences max — quote, name the rule briefly, give the correct article.
+- Accept "—" or "-" or "zero" or "no article" for the zero-article case.`;
+
+  return `You are running an **article drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian L1 doesn't mark articles, so this is a fossilised gap for every family member — drill it dense and conversational. ${targetCount} items per session.
+
+Drill protocol:
+1. Generate one short sentence per turn with exactly **one** blank where an article is required. Use \`___\` for the blank.
+2. Rotate target categories across items (don't drill the same category twice in a row):
+   - **indefinite vs zero** (first-mention countable singular vs mass/plural generic)
+   - **definite for shared/identified referent** (second-mention, post-modifier, unique referent)
+   - **zero for generic / abstract / uncountable** (e.g. "___ music makes me happy")
+   - **fixed-expression exceptions** (in ___ hospital, by ___ car, at ___ school)
+3. Theme sentences around ${playerName}'s real-life contexts — business/cycling/Bahrain expat for Artem; family/home/padel for Anna; school/K-pop for Nicole; school/sports for Ernest; IELTS scenarios for Egor. Generic stems are forbidden.
+4. Wait for ${playerName}'s answer (one article: a, an, the, or zero).
+5. Score: pass if the article matches the structural target. Stylistic preferences don't fail an answer; only the rule-required article passes.
+6. ${ru ? 'Reply in Russian' : 'Reply in English'} per the rules below. Move to the next item.
+7. After ${targetCount} items (or earlier if the player signals done), wait for the session-end signal.
+
+CRITICAL RULES:
+- **Exactly one blank per sentence.** Multi-blank scenes are a different drill format and confuse single-token scoring.
+- **No hints in the prompt.** Don't preface with "indefinite article needed" or "this is a first-mention case". The player produces the diagnosis from the sentence context alone.
+- **Target rotation is internal.** You know what category each blank tests; ${playerName} just sees the sentence.
+- **Zero article gets equal billing.** Russian speakers over-supply "the"; many items should have zero as the target to break that habit.
+- **Format the prompt cleanly.** One short sentence (8-15 words) with one \`___\` blank. No multi-sentence scenes for v1.
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Persistent weak patterns (rotate article sub-categories that map to these):
+${weakPatterns}
+- Engagement preferences:
+${engagement}
+
+Tone: focused, encouraging, paced. Keep replies tight; the article system rewards repetition.
+
+Open with: a one-line greeting + the first sentence (with one \`___\` blank). No preamble about what the drill is — ${playerName} already knows.`;
+}
+
 function weakSpotsDrillSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B2';
@@ -687,18 +752,23 @@ For "phrase_swaps_drilled": one entry per pool item that was actually drilled (s
 
 The PWA strips the <session_meta> block before display; PART 1 is what the player sees.`;
   }
-  if (mode === 'translation_drill' || mode === 'error_correction_drill') {
+  if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live') {
     const ru = explainInRussian(ctx);
     const tableHeader = ru ? `Сохранено.` : `Saved.`;
     const feedbackAsk = ru ? `Как ощущения? Одной фразой — или пропусти.` : `How did that feel? One sentence — or skip.`;
     const isEC = mode === 'error_correction_drill';
-    const topicLabel = isEC ? 'error_correction_drill' : 'translation_drill';
-    const exampleItem = isEC
-      ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
-      : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`;
-    const itemsHint = isEC
-      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
-      : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`;
+    const isAD = mode === 'article_drill_live';
+    const topicLabel = isAD ? 'article_drill_live' : (isEC ? 'error_correction_drill' : 'translation_drill');
+    const exampleItem = isAD
+      ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
+      : (isEC
+        ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
+        : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`);
+    const itemsHint = isAD
+      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
+      : (isEC
+        ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
+        : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`);
     return `Your final message must contain TWO parts in this exact order:
 
 PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:
