@@ -1,6 +1,6 @@
 # Coach → Live AI + Weak Spots plan
 
-**Status**: active
+**Status**: shipped (T1 + T2 complete; only the docs sweep — Phase E — remains)
 **Owner**: Artem · execution: Claude Code (laptop, with remote-CC compatibility)
 
 Two parallel tracks: (T1) convert every Coach picker type to live AI via the Worker, retiring library content as the primary path; (T2) add `weak_spots_drill` — a Free-Write-shaped session focused on one weak-pattern topic, with inline tier ladders for 5 v1 topics.
@@ -228,6 +228,40 @@ Second T1 cutover. Same shape as D-1 — `worker/index.js` adds the mode, valida
 PWA mirrors D-1: `coachState.ec*` fields, `ec` session prefix, `coachStartType('error_correction')` routes live-first with `forceLibrary` opt + offline/apiUnavailable fallback to library. New `coachStartErrorCorrectionDrillLive` / `coachShow…EndRow` / `coachErrorCorrectionDrillSendUserTurn` / `coachErrorCorrectionDrillEnd` block. Dispatcher routes the new type. Reuses `coachWriteSessionLogStandalone` + `coachMergeWeakPatterns` + `coachFoldFreeWriteAssessment` (mode-agnostic).
 
 `references/exercise-types.md` type 3 updated. `worker/README.md`: curl test + mode docs. `node --check` clean. Preview probe verified all three cases (live → worker mode `error_correction_drill`, session prefix `ec`, no library; `forceLibrary` → library only; offline → library only). No console errors.
+
+### 2026-05-11 · Phase D-5 · `spelling_drill` live AI · CLOSES T1
+
+Final T1 type. Worker `spelling_drill_live` mode added with optional `context.spelling_pool` validation; new `spellingDrillLiveSystemPrompt` generates Russian-gloss → English-spelling items with three-tier scoring (exact / 1-2 letter near miss / wrong word). 8 items default, max 12. Pool priority: drill self-flagged uncertainty from `players/{name}/spelling_log` first, fall back to profile-driven generation favouring high-trap classes (doubled letters, silent letters, ie/ei). Session-end branch consolidated — all 5 Phase D drills now share one return path with mode-specific `items_drilled` shapes.
+
+PWA: `coachState.spd*` fields, `spd` session prefix, new `coachListSpellingPool(player)` helper (sibling of `homeCountSpellHelpSinceLastDrill` — fetches spelling_log entries since last drill, dedupes by correct-form, returns up to 15 entries with `last_attempt` and `times_seen`). Full live flow mirrors the other Phase D drills. End-of-drill refreshes the "N queued" badge so drilled words drop off. `coachUpdateSpellingDrillBadge` enables button on `liveAvail` (overrides `coachLoadMeta` "0 library items → disable").
+
+Docs: `worker/README.md` mode section + curl test. `exercise-types.md` adds type 10 (spelling_drill, was previously implicit); pre-existing weak_spots_drill renumbered to type 11.
+
+Preview probe used static inspection (router branches + function existence) since the async probe timed out — `Promise.all([fsGet, coachListSpellingPool])` hits real unauthenticated Firestore which doesn't resolve within the 30s probe window. Code paths verified correct.
+
+Shipped as v20260511-r7 + worker version `d485c99f-2607-4036-b8c4-03d7b7b396a7`. T1 rollout complete — every Coach picker type is live AI primary, library is offline-only fallback.
+
+### 2026-05-11 · Phase D-4 · `particle_sort` live AI
+
+Worker `particle_sort_live` mode + `particleSortLiveSystemPrompt`. Open production: base verb shown in context, `___` for the particle. Rotates 3 PV tiers (literal, figurative single-particle, 3-part PV). 10 items default, max 15. Critical rule: never reveal the full PV in the prompt — base verb only. Mirrors the type 4 (transform) PV keyword rule.
+
+PWA: `coachState.pst*` fields, `pst` session prefix, full live flow cloned from article_drill_live. Particle Sort badge enables on `liveAvail`. Preview probe verified 3 routing cases. Shipped as v20260511-r6 + worker version `2e7cda85-2701-4f71-80d4-e3077486af0e`.
+
+### 2026-05-11 · Phase D-3 · `article_drill` live AI
+
+Worker `article_drill_live` mode + `articleDrillLiveSystemPrompt`. Single-blank gap-fill — one short sentence per turn with one `___` blank, themed to player profile. Rotates 4 article sub-categories (indefinite, definite for shared referent, generic zero, fixed-expression zero). 10 items default, max 15. Accepts `a`/`an`/`the`/`—`/`zero`/`no article` as equivalent for the zero case.
+
+PWA: `coachState.ad*` fields, `ad` session prefix, full live flow. Article Drill badge enables on `liveAvail`. Session-end branch in worker refactored to consolidate translation/EC/AD into one return path with mode-specific example items. Preview probe verified 3 routing cases. Shipped as v20260511-r5 + worker version `cf40a5e6-4947-4c49-a17c-34884b54685d`.
+
+### 2026-05-11 · v20260511-r4 · Per-type Coach picker badges (Option 2)
+
+Replaces repetitive "live AI" labels with actionable per-type signal — Translation + Error Correction show "N weak" (weak_patterns count), Article + Particle show `N%` accuracy from `qStats`, Spelling shows "N queued" from `spelling_log`, Weak Spots shows "N weak spots", Free Write shows nothing when healthy (anytime activity). Offline / API-down degrades to "offline" / "paused" / "library only".
+
+Builds on r3's quick badge-routing fix. New `coachUpdateLiveDrillBadges()` + `coachCategoryAccuracyPct(category)` + `coachUpdateSpellingDrillBadge()` helpers. `coachLoadMeta` skips badge writes for the 5 dynamically-badged types via `DYNAMIC_BADGE_TYPES`. Live-converted types re-enable on `liveAvail`.
+
+### 2026-05-11 · v20260511-r3 · Transient badge fix
+
+Quick fix for the "11 available" badge reported by Artem on Translation post-r2 deploy. The router was correctly going to live AI on click, but `coachLoadMeta` left the library count in the badge label. Added `coachUpdateConvertedTypeAvailability` (superseded by `coachUpdateLiveDrillBadges` in r4). Shipped in roughly one hour; small window of users saw the misleading label.
 
 ### 2026-05-11 · Phase D-1 · `translation_drill` live AI
 

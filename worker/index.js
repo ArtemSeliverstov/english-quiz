@@ -6,11 +6,20 @@
 // and returns a structured envelope per references/phase2-coach-tab.md §7.2.
 //
 // Modes:
-//   - free_write       : conversational tutoring on free-typed English
-//   - escalate         : one-shot deeper explanation after pre-generated feedback
-//   - phrase_swap_drill: lexical/register swap drill — RU cue, EN production,
-//                        lenient scoring, register explanation on stiff production
-//                        (added 2026-05-06; see references/exercise-types.md type 9)
+//   - free_write             : conversational tutoring on free-typed English
+//   - escalate               : one-shot deeper explanation after pre-generated feedback
+//   - phrase_swap_drill      : lexical/register swap drill (added 2026-05-06)
+//   - weak_spots_drill       : ~30-min depth session on one topic, tier-walked
+//                              (added 2026-05-11; see exercise-types.md type 11)
+//   - translation_drill      : live RU→EN drill (Phase D-1; replaces library translation)
+//   - error_correction_drill : live one-sentence-one-error drill (Phase D-2)
+//   - article_drill_live     : live single-blank article gap-fill (Phase D-3)
+//   - particle_sort_live     : live PV particle production drill (Phase D-4)
+//   - spelling_drill_live    : live Russian-gloss → English-spelling drill with
+//                              spelling_pool support (Phase D-5; closes T1 rollout)
+// Phase D modes replace library content as the primary path; library survives
+// as offline-only fallback on the PWA side. See worker/README.md per-mode docs
+// and plans/coach-live-ai-and-weak-spots.md for the full rollout.
 //
 // Secrets / vars (configure via Cloudflare dashboard or wrangler):
 //   - ANTHROPIC_API_KEY  (Secret, encrypted)

@@ -10,8 +10,26 @@ specifics live in their dedicated reference files.
 
 ---
 
-## 2026-05-11 · Session r3
-### v20260511-r2 — Weak Spots drill + Phase D-1/D-2 live-AI rollout
+## 2026-05-11 · Session r4 — Phase D-3/4/5 live AI + per-type badges (v20260511-r3 → r7)
+
+Five sub-deploys in one build session, closing the T1 rollout from `plans/coach-live-ai-and-weak-spots.md`. After r4 every Coach picker type is live-AI primary; library survives as offline-only fallback across the board.
+
+- **r3 (transient)** — quick label fix for Artem's reported "11 available" badge on Translation. The router was correctly going to live AI but `coachLoadMeta` left the library count in the badge text. Added `coachUpdateConvertedTypeAvailability` (superseded by r4 below). Visible to a small window of users between deploys.
+- **r4 — Per-type badge signal (Option 2)**. Replaces "live AI" / "library only" with actionable per-type info: Translation + Error Correction show "N weak" (weak_patterns count), Article Drill + Particle Sort show `N%` accuracy from `qStats` for their category, Spelling Drill shows "N queued" from `spelling_log` since last drill, Weak Spots shows "N weak spots". Free Write empty when healthy (anytime activity). Offline / API-down degrades to "offline" / "paused" / "library only". New `coachUpdateLiveDrillBadges` + `coachCategoryAccuracyPct` helpers; `coachLoadMeta` skips dynamically-badged types via a `DYNAMIC_BADGE_TYPES` list. Live-converted types re-enable on `liveAvail`.
+- **r5 — Phase D-3 `article_drill_live`**. One short sentence per turn with one `___` blank, rotates 4 article sub-categories (indefinite / definite for shared referent / generic zero / fixed-expression zero). 10 items default, max 15. Accepts `a`/`an`/`the`/`—`/`zero`/`no article` as equivalent for the zero case.
+- **r6 — Phase D-4 `particle_sort_live`**. Base verb shown in context with `___` for the particle (player produces from semantic understanding, no menu). Rotates 3 PV tiers (literal, figurative single-particle, 3-part PV). 10 items default, max 15. Critical rule enforced in prompt: never reveal the full PV.
+- **r7 — Phase D-5 `spelling_drill_live`**. Russian-gloss → English-spelling with three-tier scoring (exact / 1-2 letter near miss / wrong word). 8 items default, max 12. PWA passes `players/{name}/spelling_log` entries since last drill as `context.spelling_pool`; worker drills self-flagged uncertainty first, falls back to profile-driven generation. End-of-drill refreshes the "N queued" badge so drilled words drop off.
+
+Worker session-end branch now handles all 5 Phase D drills via one consolidated return path with mode-specific `items_drilled` shapes. Each deploy: PWA + worker, `node --check` + version consistency + doc caps green, preview probe (3 routing cases per type). All 5 modes covered by curl tests in `worker/README.md`.
+
+Plan in `plans/coach-live-ai-and-weak-spots.md` status log has per-phase detail. T1 + T2 tracks fully shipped per the plan; only Phase E (this docs sweep) remains.
+
+Q count: 2246 → 2246 (no change) · Version: v20260511-r7 (final of five)
+
+---
+
+## 2026-05-11 · Session r3 — Weak Spots drill + Phase D-1/D-2 live-AI rollout
+### v20260511-r2
 
 Three new Worker modes shipped — all conversational live-AI bound by `coach_notes.weak_patterns` and emitting the standard `<session_meta>.assessment` block so proficiency tracking continues uniformly across modes.
 

@@ -135,7 +135,7 @@ Subcollection. One document per Free Write / coach chat session (no per-item sco
 
 | Field | Type | Writer | Reader | Purpose |
 |---|---|---|---|---|
-| `mode` | string | Coach tab, `tools/log_coach_session.js` | stats-review, free-write skill | `free_write` \| `cc_session` \| `escalate` \| `phrase_swap_drill` |
+| `mode` | string | Coach tab, `tools/log_coach_session.js` | stats-review, free-write skill | `free_write` \| `cc_session` \| `escalate` \| `phrase_swap_drill` \| `weak_spots_drill` \| `translation_drill` \| `error_correction_drill` \| `article_drill_live` \| `particle_sort_live` \| `spelling_drill_live` |
 | `messages` | array | both writers | stats-review | Transcript |
 | `error_patterns_observed`, `topics_covered` | arrays | both writers | stats-review | Pattern tags + topics |
 | `pvs_used_correctly` | array of strings | free-write skill, Coach tab (Artem only) | stats-review, `phrasal-verbs-tracker.md` refresh | PVs Artem produced correctly and unprompted; tier-1 evidence for 🏆 graduation |
@@ -144,7 +144,9 @@ Subcollection. One document per Free Write / coach chat session (no per-item sco
 | `source` | string | `log_coach_session.js` only | stats-review | `cc_session` distinguishes CC- from PWA-driven |
 | `assessment` | map | Coach tab (PWA), `log_coach_session.js` (CC) | stats-review (audit), backfill | Silent CEFR grade. `{estimated_level: A1\|...\|C2, sentence_count: int, error_count: int, confidence: 'high'\|'low'}`. Folded into player root `lvlStats / totalAnswered / totalCorrect` via the dedup map above. Confidence-low or sample-<3 → folded skipped silently. Per-session sentence cap of 20 prevents one long Free Write from dominating stats. Never shown to the learner — see `worker/index.js` `sessionEndInstructions`. |
 
-`sessionId` format: `{player}_{prefix}_{ts}_{rand}` where prefix is `fw` (free_write), `esc` (escalate), `psd` (phrase_swap_drill), or `sess`.
+`sessionId` format: `{player}_{prefix}_{ts}_{rand}` where prefix is `fw` (free_write), `esc` (escalate), `psd` (phrase_swap_drill), `ws` (weak_spots_drill), `td` (translation_drill), `ec` (error_correction_drill), `ad` (article_drill_live), `pst` (particle_sort_live), `spd` (spelling_drill_live), or `sess`.
+
+For per-item drill modes (translation_drill, error_correction_drill, article_drill_live, particle_sort_live, spelling_drill_live, weak_spots_drill), session_metadata includes an `items_drilled[]` array with mode-specific per-item shape (see `worker/index.js → sessionEndInstructions` for each mode's example item). All modes carry the `assessment` block above for the silent CEFR fold; `spelling_drill_live` is the exception where `confidence: "low"` is the norm (sessions don't carry meaningful sentence_count signal).
 
 ---
 
