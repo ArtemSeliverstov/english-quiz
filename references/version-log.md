@@ -10,6 +10,25 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-11 · Session r3
+### v20260511-r2 — Weak Spots drill + Phase D-1/D-2 live-AI rollout
+
+Three new Worker modes shipped — all conversational live-AI bound by `coach_notes.weak_patterns` and emitting the standard `<session_meta>.assessment` block so proficiency tracking continues uniformly across modes.
+
+- **`weak_spots_drill`**: ~30-min depth session on one topic, tier-walked simple → hard. Inline 5-topic catalog (`emphasis_clefts`, `article_system`, `present_perfect_vs_past_simple`, `preposition_clusters`, `phrasal_verb_production`). Tutorial vs drill emerges from `coach_notes.recent_observations` — prior trace within ~14 days → drill-first; no trace → mechanics-first. PWA picker gains "Weak Spots" button gated on `weak_patterns.length > 0`. New `.claude/skills/weak-spots-session/` (596w, MCP-only reads/writes — remote-CC friendly; references `worker/index.js → weakSpotsDrillSystemPrompt` as canonical catalog).
+- **`translation_drill` (Phase D-1)**: live RU→EN themed to player profile, rotates target structures from `weak_patterns`. Default 8 items, capped 12. `coachStartType('translation')` now routes live-first; library survives as offline fallback via `opts.forceLibrary` + offline/apiUnavailable check. Per-player `COACH_PLANNED_TOTAL_OVERRIDES.translation` honored.
+- **`error_correction_drill` (Phase D-2)**: one English sentence per turn with exactly one embedded error in a target structure. No hints in the prompt. Accepts full sentence or just the fix. Same router pattern as translation.
+
+Plan in `plans/coach-live-ai-and-weak-spots.md` lays out T1 (all coach types → live AI, library → offline fallback) + T2 (Weak Spots). Phases A (Worker), B (PWA Weak Spots), C (CC skill), D-1 (translation), D-2 (error_correction) shipped here. Remaining T1: `article_drill`, `particle_sort`, `spelling_drill`.
+
+CLAUDE.md trimmed 523 → 486 words (skills table extended + reference-table descriptions tightened). exercise-types.md adds type 10 + extends per-player table. coach-notes-schema.md adds `weak_spots_drill` read-out template. worker/README.md adds three mode sections + curl tests.
+
+Preview probes verified all gating + routing cases for Weak Spots (4 states) and live/library routing for translation + error_correction (3 cases each). No console errors. `node --check` clean. Q count unchanged.
+
+Q count: 2246 → 2246 (no change) · Version: v20260511-r2
+
+---
+
 ## 2026-05-11 · Session r2
 ### v20260511 — Learner-shell §4.4 polish: mid-quiz exit affordance + active-window-aware Coach picker filter
 
