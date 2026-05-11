@@ -33,10 +33,10 @@
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
 | `[biz_oil]` | 0 | 5 | 4 | 0 | 0 | 0 | 9 |
-| `[leisure_sport]` | 0 | 1 | 1 | 0 | 0 | 0 | 2 |
+| `[leisure_sport]` | 0 | 11 | 1 | 0 | 0 | 0 | 12 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 22 | 8 | 0 | 0 | 0 | 30 |
-| **Total** | 0 | 29 | 13 | 0 | 0 | 0 | 42 |
+| `[claude_collab]` | 0 | 24 | 8 | 0 | 0 | 0 | 32 |
+| **Total** | 0 | 41 | 13 | 0 | 0 | 0 | 54 |
 
 ---
 
@@ -86,6 +86,18 @@
 | I need the explanation to read and select options | I need it readable enough that I can scan and pick | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
 | after reading, I decide that I prefer X | after reading, I've decided I prefer X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
 | drop the idea with HTML | drop the HTML idea | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| two last outdoor rides | the last two outdoor rides | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| actual load previous week | last week's actual load | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| Unlikely that the load will be substantially different | the load probably won't change much | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| it's not acceptable | that won't work | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| is it appropriate for this stage? | is it the right call at this stage? | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| as the coach already drew | as the coach already has it laid out | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| where you want to spend an effort | where the effort should go | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| What is the value of the AeT test in Bahrain | What's the point of the AeT test in Bahrain | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| with sufficient details | with enough detail | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| Prepare to make the changes as discussed to the plan | Get ready to apply the changes we discussed | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| Propose what to do best | Suggest the best approach | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| what should I say to you to send the changes | how do I tell you to push the changes | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
 
 ---
 

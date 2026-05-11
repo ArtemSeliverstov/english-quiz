@@ -1,0 +1,88 @@
+{
+  "phrase_tracker_add": [
+    {
+      "awkward": "two last outdoor rides",
+      "natural": "the last two outdoor rides",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "L1 word-order calque (два последних → the last two)"
+    },
+    {
+      "awkward": "actual load previous week",
+      "natural": "last week's actual load",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Possessive restructuring; stiff postmodifier"
+    },
+    {
+      "awkward": "Unlikely that the load will be substantially different",
+      "natural": "the load probably won't change much",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: written-formal -> conversational"
+    },
+    {
+      "awkward": "it's not acceptable",
+      "natural": "that won't work",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: formal/contractual -> conversational"
+    },
+    {
+      "awkward": "is it appropriate for this stage?",
+      "natural": "is it the right call at this stage?",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: formal -> conversational"
+    },
+    {
+      "awkward": "as the coach already drew",
+      "natural": "as the coach already has it laid out",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Word choice: 'drew' from нарисовал; native idiom is 'laid out'"
+    },
+    {
+      "awkward": "where you want to spend an effort",
+      "natural": "where the effort should go",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "L1 calque (приложить усилие -> spend an effort)"
+    },
+    {
+      "awkward": "What is the value of the AeT test in Bahrain",
+      "natural": "What's the point of the AeT test in Bahrain",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: 'value of' is academic; 'point of' is the conversational form"
+    },
+    {
+      "awkward": "with sufficient details",
+      "natural": "with enough detail",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: 'sufficient' is formal; 'enough' is conversational. Also detail uncountable here."
+    },
+    {
+      "awkward": "Prepare to make the changes as discussed to the plan",
+      "natural": "Get ready to apply the changes we discussed",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Stiff verb chain + dangling 'to the plan'"
+    },
+    {
+      "awkward": "Propose what to do best",
+      "natural": "Suggest the best approach",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "Register: 'propose' is formal; 'what to do best' is awkward word order"
+    },
+    {
+      "awkward": "what should I say to you to send the changes",
+      "natural": "how do I tell you to push the changes",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_2026-05-11"],
+      "event_note": "L1 phrasing ('что мне сказать тебе чтобы') + git vocab ('send' -> 'push')"
+    }
+  ]
+}
