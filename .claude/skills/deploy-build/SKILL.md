@@ -16,7 +16,7 @@ Validates and pushes to GitHub Pages. Live URL: `artemseliverstov.github.io/engl
 
 **1. Determine version string.** Format `vYYYYMMDD` (date-only, since 2026-05-07). Same-day rebuild: append `-r2`, `-r3` (e.g. `v20260508-r2`). Legacy `-sN` and `-tN[rM]` tags remain in git history and CI still accepts them, but new deploys use date-only. Find last via `grep -oE "v202[0-9]{5}(-[stre0-9]+)?" index.html | head`.
 
-**2. Run pre-deploy checklist.** Walk every step in `pre-deploy-checklist.md`. Don't skip. The critical items: `node --check` on extracted JS, question count, LEVEL_TOTALS / CAT_TOTALS sync, no duplicate const, no sparse arrays, duplicate stem check, version string consistency in 3 places.
+**2. Run pre-deploy checklist.** Walk every step in `pre-deploy-checklist.md`. Don't skip. The critical items: `node --check` on extracted JS, question count, LEVEL_TOTALS / CAT_TOTALS sync, no duplicate const, no sparse arrays, duplicate stem check, version string consistency in 3 places. If touching CLAUDE.md or any SKILL.md, run `node tools/check_doc_caps.js` (matches CI's `wc -w` count on UTF-8 content — local Windows `wc` undercounts by ~3%).
 
 **3. Bump version in 4 places.** HTML `<meta name="app-version">`, `id="hdr-ver"` span, `sw.js` CACHE constant, git commit message prefix. After bumping, re-run version consistency check (CI also verifies, but local-first).
 

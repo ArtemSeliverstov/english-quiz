@@ -1,0 +1,335 @@
+{
+  "_note": "Egor article_drill batch 1 — 15 items at B2, weighted toward his documented 'articles 50% (n=8)' weak pattern from coach_notes. IELTS Academic + B2 business register. Pattern distribution: 4 a_the_swap (second mention / inherited specificity), 5 zero_uncountable (research, information, advice, knowledge, mathematics — IELTS-critical), 3 generic_vs_specific (definite unique concept / generic plural), 2 fixed_phrase (on the basis of, at the heart of), 1 country_with_the (the UK). Themes: KPMG audit/consulting, Almaty, mathematics, UK master's, research papers. Single-blank chip UX (a/an/the/—). EN coach language. Push to exercises_library/article_drill/{id} via tools/push_library.js.",
+  "exercises": [
+    {
+      "id": "ad_egor_b01",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention", "audit"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "The team finalised an audit report yesterday. {1} report was sent to the client this morning.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention. The report was introduced with 'an audit report' — once it's identified, switch to 'the'. Russian 'отчёт' carries no article cue, so this swap is the most common B2 calque slip."
+        }
+      ],
+      "fallback_feedback": "Second-mention rule: introduce with 'a/an', refer back with 'the'."
+    },
+    {
+      "id": "ad_egor_b02",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["zero_uncountable", "research", "ielts_academic"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "My supervisor said I need to do {1} more research before submitting my master's application.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_uncountable",
+          "reasoning": "'Research' is always uncountable in academic English — no 'a/an', no plural 'researches'. Russian 'исследование' is countable; this calque is the top RU slip in IELTS Writing Task 2."
+        }
+      ],
+      "fallback_feedback": "Research / information / evidence / advice / knowledge are all uncountable — never 'a research'."
+    },
+    {
+      "id": "ad_egor_b03",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["zero_uncountable", "information", "audit"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "The auditor asked for {1} information about the company's revenue from last quarter.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_uncountable",
+          "reasoning": "'Information' is always uncountable — no 'a/an', no plural. Russian 'информация' patterns differently; 'an information' / 'informations' are top RU calques in business English."
+        }
+      ],
+      "fallback_feedback": "Information is uncountable — use 'some information' or 'a piece of information' if a unit is needed."
+    },
+    {
+      "id": "ad_egor_b04",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["fixed_phrase", "prep_art", "audit"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "On {1} basis of these findings, the partner decided to expand the audit scope.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "prep_art_fixed",
+          "reasoning": "'On the basis of' — fixed prepositional phrase, always 'the'. Same family: 'in the light of', 'in the case of'. Compare: 'in line with' (no article)."
+        }
+      ],
+      "fallback_feedback": "Memorise as a chunk: on the basis of, in the light of, in the case of."
+    },
+    {
+      "id": "ad_egor_b05",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_indefinite", "first_mention", "uk_master"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "After two years at KPMG, Egor decided to apply to {1} university in the UK.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "a",
+          "pattern": "a_indefinite",
+          "reasoning": "First mention, indefinite — one of many possible UK universities. Compare: 'apply to the university' = the specific one we already discussed."
+        }
+      ],
+      "fallback_feedback": "First mention of a non-unique noun → 'a/an'."
+    },
+    {
+      "id": "ad_egor_b06",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["country_with_the", "fixed", "uk_master"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "He's planning to do his master's in {1} UK, probably at LSE or Imperial.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "fixed_country",
+          "reasoning": "Country names containing 'kingdom', 'states', 'republic', or that are plural ('the Netherlands', 'the Philippines') take 'the'. Compare: 'Kazakhstan' (no article), 'Britain' (no article)."
+        }
+      ],
+      "fallback_feedback": "The UK / The USA / The UAE / The Netherlands — fixed list to memorise."
+    },
+    {
+      "id": "ad_egor_b07",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["zero_generic_plural", "professions"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "{1} mathematicians often work alone, but consulting requires constant collaboration.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_generic_plural",
+          "reasoning": "Generic plural — talking about mathematicians as a class. ✗ 'The mathematicians' would mean a specific group. Russian plural carries no article cue, so the gap defaults correctly to no article here."
+        }
+      ],
+      "fallback_feedback": "Generic plural class statement → no article. 'The X' would specify a particular group."
+    },
+    {
+      "id": "ad_egor_b08",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention", "research_paper"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "Last week I read a paper on stochastic models. {1} paper completely changed how I think about risk.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention. Paper introduced with 'a paper'; reference back uses 'the'."
+        }
+      ],
+      "fallback_feedback": "Sentence-1 'a' / sentence-2 'the' is the canonical second-mention pattern."
+    },
+    {
+      "id": "ad_egor_b09",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["zero_uncountable", "advice", "ielts_academic"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "My professor gave me {1} excellent advice about which UK programmes to target.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_uncountable",
+          "reasoning": "'Advice' is uncountable — even with an adjective. ✗ 'an excellent advice' is the top B2 RU calque. Use 'a piece of advice' if a singular unit is needed."
+        }
+      ],
+      "fallback_feedback": "Advice is uncountable. 'A piece of advice' for a unit; otherwise no article."
+    },
+    {
+      "id": "ad_egor_b10",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 4,
+      "linked_question_ids": [],
+      "tags": ["definite_unique_concept", "named_concept", "maths"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "In game theory, {1} prisoner's dilemma is the most-studied example of strategic interaction.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "definite_unique_concept",
+          "reasoning": "'The prisoner's dilemma' — a named, unique concept. Use 'the' for definite named ideas: the central limit theorem, the Pythagorean theorem, the Black-Scholes model."
+        }
+      ],
+      "fallback_feedback": "Named theoretical concepts take 'the' — the X theorem / the Y dilemma / the Z paradox."
+    },
+    {
+      "id": "ad_egor_b11",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_indefinite", "first_mention"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "After his master's he wants to work at {1} university, maybe even teach part-time.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "a",
+          "pattern": "a_indefinite",
+          "reasoning": "First mention, indefinite — any university. Compare: 'work at the university' = the specific one previously named."
+        }
+      ],
+      "fallback_feedback": "First mention of a non-unique entity → indefinite article."
+    },
+    {
+      "id": "ad_egor_b12",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["fixed_phrase", "almaty"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "Almaty is at {1} heart of Central Asia's tech startup scene.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "fixed_phrase",
+          "reasoning": "'At the heart of' — fixed phrase. Memorise as a chunk: at the heart of, at the centre of, at the core of."
+        }
+      ],
+      "fallback_feedback": "At the heart of / at the centre of — fixed phrases, always 'the'."
+    },
+    {
+      "id": "ad_egor_b13",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["zero_subject", "academic_subject"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "{1} mathematics has always been Egor's strongest subject.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_subject",
+          "reasoning": "Academic subject names take no article — mathematics, physics, history, economics. ✗ 'The mathematics' would mean specific maths (e.g. of a particular paper)."
+        }
+      ],
+      "fallback_feedback": "Subject names (maths, physics, history) → no article."
+    },
+    {
+      "id": "ad_egor_b14",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["a_the_swap", "second_mention", "audit"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "KPMG won a major audit contract last month. {1} contract is worth over five million dollars in fees.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "the",
+          "pattern": "a_the_swap",
+          "reasoning": "Second mention — contract introduced with 'a major audit contract', now identified."
+        }
+      ],
+      "fallback_feedback": "Once introduced, the same noun in the next sentence takes 'the'."
+    },
+    {
+      "id": "ad_egor_b15",
+      "type": "article_drill",
+      "target_player": "egor",
+      "level": "B2",
+      "focus_categories": ["Articles"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["zero_uncountable", "knowledge", "consulting"],
+      "created": "2026-05-05T20:00:00Z",
+      "version": 1,
+      "sentence_template": "For consulting, {1} knowledge of Excel is more important than knowledge of advanced maths.",
+      "blanks": [
+        {
+          "idx": 1,
+          "correct": "—",
+          "pattern": "zero_uncountable",
+          "reasoning": "'Knowledge' is uncountable. Same family as information / evidence / research / advice. ✗ 'a knowledge' is a top B2 RU calque."
+        }
+      ],
+      "fallback_feedback": "Knowledge is uncountable — no 'a/an'."
+    }
+  ]
+}
