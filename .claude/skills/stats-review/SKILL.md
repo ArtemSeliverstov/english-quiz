@@ -38,17 +38,9 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Speculation marking — mandatory
 
-Every claim carries an evidence tag:
+Every claim carries an evidence tag: **[data]** (stat field or `lastWrong`), **[inferred]** (pattern visible, causation unstated), **[speculation]** (beyond what data shows). Untagged claims default to [data] — an unmarked guess is a skill violation.
 
-| Tag | When |
-|---|---|
-| **[data]** | Direct from a stat field or `lastWrong` |
-| **[inferred]** | Pattern visible in stats, causation unstated |
-| **[speculation]** | Interpretation beyond what data shows |
-
-Untagged claims default to [data] — an unmarked claim that turns out to be a guess is a skill violation.
-
-Never write `[speculation]` into `weak_patterns`. Only [data] or [inferred] qualify there. [speculation] stays in `recent_observations` and is marked: `{"note": "[speculation] ..."}`. Profile edits require [data] only.
+`weak_patterns` accepts only [data] or [inferred]. [speculation] stays in `recent_observations` marked `{"note": "[speculation] ..."}`. Profile edits require [data].
 
 ## Output structure
 
