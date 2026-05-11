@@ -117,9 +117,9 @@ update.
 
 ### 3.2 Floor-bouncing categories or questions
 
-Per D5 in the build plan: <30% accuracy across 15+ attempts with no
-improvement curve over 4 weeks at the category level, or 3+ attempts at
-100% error rate at the question level.
+Threshold: <30% accuracy across 15+ attempts with no improvement curve
+over 4 weeks at the category level, or 3+ attempts at 100% error rate at
+the question level.
 
 **Filter by level cap before diagnosing.** A learner-shell player's
 accuracy on items above their `level_cap` is not productive-struggle
@@ -139,9 +139,9 @@ Actions:
 
 ### 3.3 Active window composition violations
 
-Per D4: each window should have ≥1 strong area, ≥2 productive struggle,
-≤1 new narrow focus. CC checks composition during stats reviews and
-during any unlock event.
+Composition rule: each window should have ≥1 strong area, ≥2 productive
+struggle, ≤1 new narrow focus. CC checks composition during stats
+reviews and during any unlock event.
 
 Violation cases:
 - Window has 4 categories all in productive struggle zone (no easy wins
@@ -176,8 +176,10 @@ is eligible for promotion at the current level cap. Actions:
 - Surface to Artem: "Anna is ready to promote Prepositions at B1.
   Proposed deepen option: raise level_cap to B2 within Prepositions.
   Proposed broaden options: X, Y, Z (each at B1 level)."
-- Per D3 mechanic: present the player with the choice between deepen
-  (one option) and broaden (three curated options).
+- Mastery promotion mechanic: present the player with the choice between
+  deepen (raise `level_cap` for that category by one CEFR level) and
+  broaden (promote category to mastered, add a new one at current
+  `level_cap`). 1 deepen option + 3 curated broaden candidates.
 - After player picks: update `learning_path` accordingly (either bump
   `level_cap` for the category and keep it active, or move category to
   mastered and add new category at current level_cap).
