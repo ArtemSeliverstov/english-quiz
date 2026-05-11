@@ -13,9 +13,9 @@ If the player asks for general drills mid-session — that's `exercise-session`.
 
 - `references/family-profiles.md` — level, communication style, themes, `coachLanguage`
 - `players/{name}` via `mcp__firebase__firestore_get_document` — `coach_notes.{weak_patterns, recent_observations, engagement_notes}`
-- `worker/index.js` → `weakSpotsDrillSystemPrompt` — **canonical topic catalog**. Same 5 IDs and tier ladders as PWA. Read before running; do not re-derive.
+- `worker/index.js` → `weakSpotsDrillSystemPrompt` — **canonical topic catalog**. Same 6 IDs and tier ladders as PWA. Read before running; do not re-derive.
 
-Canonical IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production`.
+Canonical IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety`.
 
 ## Topic selection
 

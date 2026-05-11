@@ -209,7 +209,7 @@ Depth-focused live AI session on one topic, ladder-walked simple → hard. ~30 m
 **Source**: live-AI worker (`mode: 'weak_spots_drill'`); CC counterpart via `weak-spots-session` skill — both read the canonical 5-topic catalog from `worker/index.js → weakSpotsDrillSystemPrompt`.
 **Logging**: `coach_sessions/{ws_*}` with `mode: 'weak_spots_drill'`. Session metadata feeds `error_patterns_observed` into `coach_notes.weak_patterns` and the `assessment` block into the silent CEFR fold (`aggregated_coach_sessions.estimated_level`).
 
-Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production`. Off-catalog free-typed topics improvise a 3-tier ladder under a snake_case slug.
+Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety`. Off-catalog free-typed topics improvise a 3-tier ladder under a snake_case slug.
 
 **Critical authoring rule**: do not re-derive tier ladders. The catalog in `worker/index.js` is the single source of truth — both the worker preamble and the `weak-spots-session` skill reference it. Changes to a ladder happen there.
 

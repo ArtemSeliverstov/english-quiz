@@ -849,6 +849,11 @@ For each topic: matching regex against weak_patterns, then the tier ladder. Each
   - T2 figurative single-particle. Mechanic: opaque meaning, must be memorised: *get across* (communicate), *bring about* (cause), *follow up on* (chase), *take on* (accept responsibility), *put off* (postpone). Cue: produce the PV; if learner uses the base verb only or a wrong particle, give the semantic rationale.
   - T3 3-part PV + register switching. Mechanic: *put up with*, *get away with*, *look forward to*, *come up against*; formal-vs-informal pairs (*tolerate* / *put up with*; *cause* / *bring about*). Cue: rewrite a stiff/formal sentence into a register-appropriate PV form.
 
+**6. hedge_variety** — Matches: /hedge|intensifier|maybe.*default|definitely.*default|productive variety|register variety/i
+  - T1 spot-and-substitute. Mechanic: Russian *может быть / наверное / пожалуй / возможно* all default to "maybe"; intensifiers *безусловно / однозначно / точно* default to "definitely". One occurrence is fine; back-to-back makes speech monotonous. Pick ONE alternative per default. Hedges: *perhaps / I think / possibly / I'd say*. Intensifiers: *clearly / absolutely / certainly* — or zero-marking, which is often the strongest move ("it's not a managerial position" beats "it's definitely not a managerial position"). Cue: rewrite 2-3 short sentences, replacing one "maybe" or "definitely" each with a different alternative.
+  - T2 match-to-register. Mechanic: alternatives carry different weights. *Perhaps* leans formal/written; *I wonder if* signals genuine speculation; *could we / what if we* turns a hedge into a suggestion; *possibly* is a light hedge; *I think* is mid-strength commitment. For intensifiers: *clearly* (assertion-strengthening), *absolutely* (agreement), *certainly* (formal), zero-marking (strongest). Cue: pick the right alternative for a sentence with a stated register target — pub chat vs business email vs CC instruction.
+  - T3 variety across consecutive sentences. Mechanic: in a longer turn, avoid back-to-back same-hedge. The natural rhythm is hedge → assertion → soft-hedge, not maybe → maybe → maybe. Alternate based on subtle differences: speculation, commitment, suggestion. Cue: produce a 4-5 sentence opinion paragraph on a player-themed topic (Artem: a business call, a ride-strategy debate, a CC plan; Anna: a padel match, a parenting choice; Nicole: a school decision; Ernest: a sports debate; Egor: an IELTS opinion prompt) using **at least 3 different** hedge/intensifier patterns.
+
 ### Session protocol
 
 ${openingDirective}
@@ -1009,7 +1014,7 @@ PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session
   }
 }
 
-For "topic_id": use the canonical catalog id (emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production) for in-catalog topics. For an improvised off-catalog topic, use a snake_case slug derived from the player's named topic ("passive_voice", "reported_speech").
+For "topic_id": use the canonical catalog id (emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety) for in-catalog topics. For an improvised off-catalog topic, use a snake_case slug derived from the player's named topic ("passive_voice", "reported_speech").
 
 For "tiers_touched" / "tier_results": one entry per tier actually drilled. \`attempted\` = total production items at that tier; \`clean\` = items where the player produced the target structure without an L1 calque or structural slip on first attempt. These feed the daily review — informs whether the topic should reappear next session or graduate.
 
