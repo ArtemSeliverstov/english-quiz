@@ -76,9 +76,21 @@ Add a "step 0: integrity check" line to `.claude/skills/stats-review/SKILL.md`. 
 
 ---
 
-## P1 — Root-cause audit in the PWA
+## P1 — Root-cause audit in the PWA ✅ DONE (2026-05-11)
 
-Without finding the actual contamination source, recurrence is likely. Worth a single focused session (1–2 hours).
+Root cause confirmed and fixed in v20260510-r2: `confirmPlayer()` (formerly synchronous, line 7255) used to call `syncToFirebase(true)` immediately after setting `currentPlayer = newKey`, while `DB` still held the previous player's stats. `buildPayload(DB)` then wrote the previous player's `qStats / catStats / lvlStats / recentSessions / totalAnswered / createdAt` to the new player's Firestore doc, while `displayName / emoji / color` were pulled from `FAMILY_MEMBERS[newKey]`. `coach_notes / ui_shell / learning_path` survived because they weren't in the payload. Compounded by a secondary bug at `loadFromFirebase()` line 7441: `if (remote.totalAnswered >= local.totalAnswered)` — on a player switch, "local" was the wrong player's data, so Nicole's 780 < Artem's 2800 rejected Nicole's actual remote data from ever loading. Exactly matches the 2026-05-02 forensics.
+
+Fix (3 coordinated edits in `index.html`):
+
+1. `confirmPlayer()` is now `async` and, on detecting a player switch, resets in-memory + IndexedDB to `defaultData()` then `await loadFromFirebase()` BEFORE the `syncToFirebase(true)` call. Sync now writes the correct player's data because `DB` was fresh-loaded.
+2. `loadFromFirebase()` stamps `_owner: currentPlayer` on the loaded DB.
+3. `syncToFirebase()` refuses to write when `DB._owner !== currentPlayer` (belt-and-braces guard — surfaces any future code path that switches player without reloading).
+
+`buildPayload()` strips `_owner` from the Firestore-bound payload so the marker doesn't appear in `players/{name}` (and doesn't trip the integrity check's cross-player overlap detection).
+
+Verified via browser preview probe: simulated the 2026-05-02 scenario (Artem signed in with stats in DB, switch to Nicole) — `DB._owner` is now `'nicole'`, `DB.totalAnswered` is `780` (Nicole's actual data), no `artem_*` keys in `DB.qStats`, and the deferred `syncToFirebase` call writes `players/nicole` with `qStatsKeys: ['nicole_q1']`, `totalAnswered: 780`. Contamination class closed.
+
+### Original plan
 
 ### What to look at in `index.html`
 

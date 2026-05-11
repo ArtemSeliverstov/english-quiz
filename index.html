@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260510">
+  <meta name="app-version" content="v20260510-r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260510</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260510-r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -7252,7 +7252,13 @@ async function hashPin(pin) {
 
 function capFirst(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
 
-function confirmPlayer(key) {
+async function confirmPlayer(key) {
+  // CRITICAL: data-integrity fix (2026-05-11) for the 2026-05-02 Nicole-overwritten-with-Artem
+  // contamination. If we're switching players, the in-memory DB still holds the previous
+  // player's stats — must reset and reload BEFORE any sync, or buildPayload writes the
+  // previous player's qStats/catStats/recentSessions to the new player's Firestore doc.
+  const previousPlayer = currentPlayer;
+  const isSwitch = previousPlayer && previousPlayer !== key;
   currentPlayer = key;
   localStorage.setItem('quizPlayerKey', key);
   // Grammar Reference language bridge — auto-switch for Russian-speaking players
@@ -7264,6 +7270,16 @@ function confirmPlayer(key) {
       el.textContent = member.emoji + ' ' + member.name;
       el.style.display = '';
   }
+  if (isSwitch) {
+    // Wipe in-memory + IndexedDB so the previous player's stats can't leak into the new player's doc.
+    const fresh = defaultData();
+    if (typeof DB !== 'undefined') Object.assign(DB, fresh, { _owner: null });
+    if (typeof saveData === 'function') await saveData(fresh);
+    // Load the new player's data from Firestore. Skip the totalAnswered>=local guard
+    // (it's irrelevant on a fresh wipe — and was the secondary trigger on 2026-05-02).
+    await loadFromFirebase();
+  }
+  // Only NOW is it safe to sync (DB._owner === currentPlayer, set by loadFromFirebase).
   syncToFirebase(true);
   startFamilyPoll();
   // B1 nudge: show warning if player's B1 accuracy < 75%
@@ -7372,6 +7388,9 @@ function showNamePicker() {
 //  BUILD PAYLOAD
 // ══════════════════════════════════════════════════════════════
 function buildPayload(db) {
+  // Note: db._owner is intentionally NOT included in the payload — it's a client-side
+  // ownership marker only, kept out of Firestore so it can't trigger false-positives
+  // in cross-player overlap checks (tools/check_player_integrity.js).
   const member = FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {};
   return {
     displayName: member.name || capFirst(currentPlayer),
@@ -7412,6 +7431,15 @@ async function syncToFirebase(immediate = false) {
   syncTimer = setTimeout(async () => {
     try {
       const db = typeof DB !== 'undefined' ? DB : await loadData();
+      // Belt-and-braces against the 2026-05-02 contamination class: refuse to write
+      // if DB was loaded under a different player. Pairs with the confirmPlayer reset
+      // and the _owner stamp in loadFromFirebase. Any future code path that switches
+      // player without reloading DB will trip this guard and surface in console.
+      if (db._owner && db._owner !== currentPlayer) {
+        console.warn('Sync refused — DB owner mismatch (db._owner=' + db._owner + ', currentPlayer=' + currentPlayer + '). Force-loading remote first.');
+        await loadFromFirebase();
+        return; // skip this sync cycle; next user action will trigger a clean one
+      }
       // Never overwrite Firebase with completely empty local data
       const hasAnyData = (db.totalAnswered || 0) > 0
         || (db.totalSessions || 0) > 0
@@ -7469,6 +7497,7 @@ async function loadFromFirebase() {
         ui_shell:       remote.ui_shell        || 'learner',
         learning_path:  remote.learning_path   || null,
         badges:         remote.badges          || {},
+        _owner:         currentPlayer,   // client-side marker; stripped from sync payload
       };
       if (typeof saveData === 'function') await saveData(merged);
       if (typeof DB !== 'undefined') {

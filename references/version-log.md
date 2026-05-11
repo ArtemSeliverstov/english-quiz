@@ -10,6 +10,22 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-11
+### v20260510-r2 — Data-integrity root-cause fix: confirmPlayer() no longer writes previous player's stats to new player's Firestore doc
+
+Closes the 2026-05-02 Nicole-overwritten-with-Artem contamination at source. Three coordinated edits in `index.html`:
+
+- `confirmPlayer(key)` is now `async`. On detecting a player switch (`previousPlayer && previousPlayer !== key`), wipes in-memory `DB` and IndexedDB to `defaultData()`, then `await loadFromFirebase()` BEFORE the existing `syncToFirebase(true)` call. The old synchronous path used to write `buildPayload(DB)` to `players/{newKey}` while `DB` still held the previous player's qStats/catStats/recentSessions/totalAnswered — the exact 2026-05-02 corruption pattern.
+- `loadFromFirebase()` stamps `_owner: currentPlayer` on the loaded DB.
+- `syncToFirebase()` refuses to write when `DB._owner !== currentPlayer`. Belt-and-braces guard for any future code path that mutates `currentPlayer` without reloading DB.
+- `buildPayload()` strips `_owner` from the Firestore-bound payload (client-side marker only — doesn't trip the cross-player overlap check in `tools/check_player_integrity.js`).
+
+Verified via browser preview probe simulating the contamination scenario (Artem signed in with stats, switch to Nicole): post-fix DB has Nicole's actual data (`totalAnswered: 780`), the deferred sync writes `players/nicole` with Nicole's qStats only, no Artem keys leak through. Plans `data-integrity-plan.md` P1 marked done.
+
+Q count: 2246 → 2246 (no change) · Version: v20260510-r2
+
+---
+
 ## 2026-05-10
 ### v20260510 — Stage 2 ★★★★★ PV gap closure: 25 high-frequency PVs × pair format (+50 items)
 
