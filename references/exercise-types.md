@@ -183,7 +183,22 @@ Example item:
 
 ---
 
-## 10. `weak_spots_drill`
+## 10. `spelling_drill` (alias: `spelling_drill_live`)
+
+Russian-gloss → English-spelling drill. Audio-cue substitute via Russian gloss + short English disambiguation hint. Player types the English word.
+
+**Use for**: Anna primary (her spelling needs the most work), Nicole + Ernest secondary, all family when `spelling_log` has captured uncertain words.
+**Item count**: 6-10 (live AI default 8, capped 12)
+**Player input**: typed English spelling
+**Scoring**: three tiers — exact match → pass; 1-2 letter near miss → pass with trap note; wrong word → fail with disambiguation
+**Source**: live-AI worker (`mode: 'spelling_drill_live'`) when online + API available; `exercises_library/spelling_drill/items` as offline fallback.
+**Logging**: `coach_sessions/{spd_*}` for live AI; legacy `players/{name}/exercises/{ts}` for library fallback.
+
+**Live AI pool sourcing**: PWA fetches the player's `spelling_log` entries since the last drill, dedupes by correct-form, and passes them as `context.spelling_pool: [{word, last_attempt?, times_seen?}]`. Worker drills pool words first (self-flagged uncertainty from Spell Help), falls back to profile-driven generation when the pool is exhausted. The badge "N queued" reflects this pool size.
+
+---
+
+## 11. `weak_spots_drill`
 
 Depth-focused live AI session on one topic, ladder-walked simple → hard. ~30 min, 15-20 items. Tutorial-vs-drill emerges from `coach_notes.recent_observations` — prior trace in last ~14 days → drill-first; no trace → mechanics-first per tier.
 

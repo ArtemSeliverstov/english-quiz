@@ -47,7 +47,7 @@ function explainInRussian(ctx) {
   // Legacy clients (no coach_language field) — fall back to the hard-coded list.
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
-const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live', 'particle_sort_live'];
+const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live', 'particle_sort_live', 'spelling_drill_live'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -76,6 +76,13 @@ const ADL_MAX_ITEMS = 15;
 // particle from semantic understanding (no menu).
 const PSL_DEFAULT_ITEMS = 10;
 const PSL_MAX_ITEMS = 15;
+
+// spelling_drill_live: live Russian-gloss → English-spelling drill. Default 8,
+// max 12. PWA can pass `spelling_pool` (entries from players/{name}/spelling_log
+// since last drill) — worker prefers pool words when present, falls back to
+// profile-driven generation otherwise.
+const SDL_DEFAULT_ITEMS = 8;
+const SDL_MAX_ITEMS = 12;
 
 export default {
   async fetch(request, env) {
@@ -148,7 +155,7 @@ export default {
         return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
       }
     }
-    if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live') {
+    if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live' || mode === 'spelling_drill_live') {
       // target_item_count optional; capped server-side. focus_categories optional.
       if (context.target_item_count != null && (
             typeof context.target_item_count !== 'number' || context.target_item_count < 1)) {
@@ -156,6 +163,18 @@ export default {
       }
       if (context.focus_categories != null && !Array.isArray(context.focus_categories)) {
         return jsonError(400, 'WORKER_VALIDATION', 'context.focus_categories must be an array when set', false, cors);
+      }
+    }
+    if (mode === 'spelling_drill_live') {
+      // spelling_pool optional — array of {word, last_attempt?, times_seen?} from spelling_log
+      if (context.spelling_pool != null) {
+        if (!Array.isArray(context.spelling_pool)) {
+          return jsonError(400, 'WORKER_VALIDATION', 'context.spelling_pool must be an array when set', false, cors);
+        }
+        const bad = context.spelling_pool.find(e => !e || typeof e.word !== 'string' || !e.word.trim());
+        if (bad) {
+          return jsonError(400, 'WORKER_VALIDATION', 'spelling_pool entries require a non-empty word string', false, cors);
+        }
       }
     }
 
@@ -264,6 +283,7 @@ function buildSystemBlocks(mode, context, isSessionEnd) {
   else if (mode === 'error_correction_drill') preamble = errorCorrectionDrillSystemPrompt(context);
   else if (mode === 'article_drill_live') preamble = articleDrillLiveSystemPrompt(context);
   else if (mode === 'particle_sort_live') preamble = particleSortLiveSystemPrompt(context);
+  else if (mode === 'spelling_drill_live') preamble = spellingDrillLiveSystemPrompt(context);
   else preamble = escalateSystemPrompt(context);
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
@@ -563,6 +583,77 @@ Tone: focused, encouraging, paced. Keep replies tight, move through items, save 
 Open with: a one-line greeting + the first sentence to correct. No preamble about what the drill is — ${playerName} already knows.`;
 }
 
+function spellingDrillLiveSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B1';
+  const ru = explainInRussian(ctx);
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || SDL_DEFAULT_ITEMS),
+    SDL_MAX_ITEMS
+  );
+  const pool = Array.isArray(ctx.spelling_pool) ? ctx.spelling_pool : [];
+  const poolBlock = pool.length
+    ? pool.slice(0, 15).map((e, i) => {
+        const last = e.last_attempt ? ` (last typed: "${e.last_attempt}")` : '';
+        const times = e.times_seen ? ` ×${e.times_seen}` : '';
+        return `  ${i + 1}. "${e.word}"${last}${times}`;
+      }).join('\n')
+    : '  (empty — generate from profile + weak_patterns)';
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+
+  const languageBlock = ru
+    ? `- **Score and explain in Russian.** Show the target word in English; explain spelling rules in Russian.
+- On exact match: short Russian confirmation, ≤1 line.
+- On 1-2 letter typo (e.g. "definately" for "definitely"): pass but show the correct form quoted in English + a 1-line Russian note on the trap ("двойная f, не одиночная" / "silent letters", etc.).
+- On wrong word entirely: fail, give the correct word in English, briefly explain in Russian what the Russian gloss meant (so player learns the disambiguation).`
+    : `- Score in English. Quote the player's attempt.
+- On exact match: one-line confirmation. Don't over-praise.
+- On 1-2 letter typo: pass but show the correct form + a short note on the spelling trap (doubled letters, silent letters, ie/ei rule).
+- On wrong word entirely: fail, give the correct word + brief disambiguation of the gloss.`;
+
+  return `You are running a **spelling drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian-gloss → English-spelling. ${targetCount} items per session.
+
+Drill protocol:
+1. Generate one item per turn. Each item presents a **Russian gloss** as the primary cue, plus a short **English disambiguation hint** that does NOT give away the spelling. Format:
+   "часы (наручные) — worn on the wrist"  (target: watch)
+   "решение (задачи) — answer to a problem"  (target: solution)
+2. Word selection priority:
+   a. If \`spelling_pool\` below is non-empty, drill those words first — these are words ${playerName} has actively asked Spell Help about (= self-flagged uncertainty).
+   b. After the pool is exhausted (or if empty), generate words tied to ${playerName}'s profile themes + weak_patterns. Favour high-trap words at level ${level}: doubled letters (accommodate, occurrence), silent letters (Wednesday, receipt), ie/ei (achieve, ceiling), -tion/-sion, common confusables (their/there/they're at lower levels).
+3. Wait for ${playerName}'s English spelling.
+4. Score with three tiers:
+   - **Exact match** (case-insensitive, whitespace-normalised): pass.
+   - **Near miss** (1-2 letter typo, transposition, missing doubled letter): pass with a note quoting their attempt vs. correct + the spelling rule.
+   - **Wrong word** (different word entirely, or >2 letter difference): fail; give the correct word + brief disambiguation of what the Russian gloss meant.
+5. ${ru ? 'Reply in Russian' : 'Reply in English'} per the rules below. Move to the next item.
+6. After ${targetCount} items (or earlier if the player signals done), wait for the session-end signal.
+
+CRITICAL RULES:
+- **Russian gloss is the primary cue.** The English hint is for disambiguation only — it must not contain or rhyme with the target word, and must not be a synonym so obvious the player can guess without spelling.
+- **No spelling hints in the prompt.** Don't write "starts with W" or "5 letters" or any letter-by-letter scaffolding.
+- **One word per item.** Don't drill phrases or compounds (except hyphenated compounds where the hyphen is part of the spelling, e.g. "well-being").
+- **Pool words first.** When \`spelling_pool\` is populated, every pool entry should appear before you generate new ones. Mix order so the player doesn't see them in source-list order.
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Persistent weak patterns (use as hints for which trap classes to favour):
+${weakPatterns}
+- Engagement preferences:
+${engagement}
+
+Today's spelling pool (${pool.length} entries; aim for ${targetCount} items total):
+${poolBlock}
+
+Tone: focused, encouraging, paced. Spelling rewards repetition + targeted rules.
+
+Open with: a one-line greeting + the first item (Russian gloss + English hint). No preamble about what the drill is — ${playerName} already knows.`;
+}
+
 function particleSortLiveSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
@@ -814,28 +905,33 @@ For "phrase_swaps_drilled": one entry per pool item that was actually drilled (s
 
 The PWA strips the <session_meta> block before display; PART 1 is what the player sees.`;
   }
-  if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live') {
+  if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live' || mode === 'spelling_drill_live') {
     const ru = explainInRussian(ctx);
     const tableHeader = ru ? `Сохранено.` : `Saved.`;
     const feedbackAsk = ru ? `Как ощущения? Одной фразой — или пропусти.` : `How did that feel? One sentence — or skip.`;
     const isEC = mode === 'error_correction_drill';
     const isAD = mode === 'article_drill_live';
     const isPS = mode === 'particle_sort_live';
-    const topicLabel = isPS ? 'particle_sort_live' : (isAD ? 'article_drill_live' : (isEC ? 'error_correction_drill' : 'translation_drill'));
-    const exampleItem = isPS
-      ? `{"prompt_sentence": "She finally figured ___ the answer.", "submitted": "out", "target_structure": "pv_figure_out", "produced_correct": true}`
-      : (isAD
-        ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
-        : (isEC
-          ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
-          : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`));
-    const itemsHint = isPS
-      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the base verb visible and \`___\` for the particle. \`submitted\` is the particle (or verb+particle) the player typed. \`target_structure\` is a snake_case label of the PV being drilled, prefixed \`pv_\` (e.g. "pv_figure_out", "pv_get_across", "pv_put_up_with"). \`produced_correct: true\` only if the player's particle yields the rule-correct PV on first attempt.`
-      : (isAD
-        ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
-        : (isEC
-          ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
-          : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`));
+    const isSD = mode === 'spelling_drill_live';
+    const topicLabel = isSD ? 'spelling_drill_live' : (isPS ? 'particle_sort_live' : (isAD ? 'article_drill_live' : (isEC ? 'error_correction_drill' : 'translation_drill')));
+    const exampleItem = isSD
+      ? `{"prompt_gloss": "часы (наручные) — worn on the wrist", "submitted": "wach", "target_word": "watch", "produced_correct": false}`
+      : (isPS
+        ? `{"prompt_sentence": "She finally figured ___ the answer.", "submitted": "out", "target_structure": "pv_figure_out", "produced_correct": true}`
+        : (isAD
+          ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
+          : (isEC
+            ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
+            : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`)));
+    const itemsHint = isSD
+      ? `For "items_drilled": one entry per item drilled. \`prompt_gloss\` is the Russian gloss + English hint you presented. \`submitted\` is what the player typed. \`target_word\` is the correct English spelling. \`produced_correct: true\` for exact match OR 1-2 letter near miss; \`false\` for wrong word entirely. Track the trap-class hint in \`target_structure\` when set (e.g. "doubled_letters", "silent_letters", "ie_ei_rule") — optional.`
+      : (isPS
+        ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the base verb visible and \`___\` for the particle. \`submitted\` is the particle (or verb+particle) the player typed. \`target_structure\` is a snake_case label of the PV being drilled, prefixed \`pv_\` (e.g. "pv_figure_out", "pv_get_across", "pv_put_up_with"). \`produced_correct: true\` only if the player's particle yields the rule-correct PV on first attempt.`
+        : (isAD
+          ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
+          : (isEC
+            ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
+            : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`)));
     return `Your final message must contain TWO parts in this exact order:
 
 PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:
