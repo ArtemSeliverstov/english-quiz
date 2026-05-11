@@ -133,9 +133,9 @@ Total repo word count is incidental. Per-conversation loaded context is the metr
 
 Ordered by risk-reduction-per-hour.
 
-### 3.1 CI workflow (≈1h)
+### 3.1 CI workflow (≈1h) — ✅ done
 
-GitHub Actions: assert version string matches in 4 places, `node --check` on `tools/*.js` and `worker/index.js`, run question-bank linter (3.2). Prevents most deploy footguns.
+`.github/workflows/ci.yml` runs five lint steps on every push to `main`: syntax check on `tools/*.js` + `worker/index.js`, question schema lint (3.2), transform keyword lint, doc word caps (via `tools/check_doc_caps.js` since 2026-05-11 — Node-based, Unicode-aware to match contributors' local checks), and version-string consistency across the three canonical locations (HTML meta, header badge, sw.js cache key). The pre-deploy-checklist also lists `manifest.json` as a fourth optional location but it doesn't currently claim a version — kept as a defensive note rather than a CI assertion.
 
 ### 3.2 Question-bank linter (≈2h)
 
@@ -163,14 +163,14 @@ Cloudflare KV or Durable Object counter: N req/min/player, N/hour/IP. Closes the
 
 GitHub Action that runs `tools/get_all_players.js` weekly and commits JSON to a `backups/` branch. Free, fits existing tooling. Becomes the recovery path for 3.3.
 
-### 3.6 Service worker update toast (≈1h)
+### 3.6 Service worker update toast (≈1h) — ✅ done
 
-Add `controllerchange` listener in `index.html` — show "New version available — tap to reload". Stops iOS users running stale builds.
+`index.html:8342–8375` implements the recipe: capture `swHadController` pre-load to distinguish first-install from update, attach `controllerchange` listener, render single toast ("New version available — Tap to reload") only on update, `click` → `location.reload()`. Single-toast guard via `#sw-update-toast` id check. Paired with `self.skipWaiting()` + `self.clients.claim()` in `sw.js` so the toast fires when the new bundle takes over.
 
 ### 3.7 Smaller fixes
 
 - `.mcp.json` hardcodes `D:/Claude/...` — make relative or env-driven (confirm whether anyone other than Artem clones this repo before acting)
-- `manifest.json` says "472 questions" — drift from 1,872; fix or remove count
+- `manifest.json` "472 questions" claim — ✅ removed 2026-05-10 (was drifting; no count claimed now)
 - Worker `RUSSIAN_FALLBACK_PLAYERS` should log a warning when hit (signal old PWA bundles)
 - `archive/` and `ref/index.html` deployed publicly via Pages — **verify nothing references them before** moving out of scope or adding to `.gitignore` for Pages
 
