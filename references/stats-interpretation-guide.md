@@ -17,6 +17,21 @@ philosophy wins on intent and this guide gets patched.
 
 ---
 
+## Contents
+
+1. Audiences for stats analysis
+2. Metrics that exist
+3. What to act on (weak patterns, floor-bouncers, window composition, engagement decline, mastery promotion, spell help, new observations)
+4. What to ignore
+5. Engagement signals worth surfacing
+6. CC stats review workflow
+7. Things that look like signal but aren't
+8. Output format conventions
+9. Categories with structural caveats (Idioms calibration anchor — most load-bearing)
+10. Updating this guide
+
+---
+
 ## 1. The audiences for stats analysis
 
 Stats reviews serve different people for different reasons. CC should be
@@ -35,8 +50,10 @@ their active windows, content authoring, and unlock options. The player
 sees only the simplified narrative on their landing page.
 
 **Reviews of Artem's and Egor's own stats** (builder profile): standard
-detail. Artem reads his own. Egor's data is reviewed for IELTS prep
-context if he asks; otherwise low-priority.
+detail. Artem reads his own. Egor has full parity with the family on
+supplementary surfaces (Free Write, Phrase Swaps, exercises) as of
+2026-05-06 — focus on academic / IELTS-relevant patterns and include
+Coach-tab activity. See `family-profiles.md` Egor section.
 
 CC names which mode it's in at the start of any substantial stats
 analysis, since the appropriate detail level differs.
@@ -197,14 +214,15 @@ sessions or a clear before/after intervention shape. Don't propose content
 or window changes based on a single session unless something dramatic
 (complete disengagement, error rate at 0% suggesting a UI bug) is present.
 
-### 4.2 Builder-shell players' affective patterns
+### 4.2 Artem's affective patterns
 
-Artem and Egor are self-regulating. Their session length, time-of-day, and
-engagement curves are not actionable signals — they make their own
-decisions about practice. Don't analyze their engagement; analyze their
-performance. The exception: if their performance shows a real pattern
-(Artem's PV production weakness), surface that as a content/exercise
-proposal.
+Artem is self-regulating on engagement. Session length, time-of-day, and
+engagement curves are not actionable for him — he makes his own decisions
+about practice. Don't analyze his engagement; analyze his performance.
+The exception: if performance shows a real pattern (Artem's PV production
+weakness), surface that as a content/exercise proposal. Egor's
+engagement signals (including Coach-tab activity) are treated like the
+rest of the family per §1 and §5.
 
 ### 4.3 Stats from locked categories
 
@@ -316,10 +334,8 @@ A standard stats review session has this shape:
    changes (active window restructuring, unlock execution) await Artem's
    explicit go.
 
-10. **Update doc B status log** with what was done.
-
 The workflow scales down for ad-hoc checks (just steps 1, 7, 8) and
-scales up for major reviews (all 10 steps with deeper data analysis).
+scales up for major reviews (all 9 steps with deeper data analysis).
 
 ---
 
@@ -474,8 +490,8 @@ This document is updated when:
 - Artem identifies a stats review output convention that's not landing
   well
 
-Updates happen in claude.ai chat conversations, not in CC sessions. CC
-reads this guide as reference; CC doesn't edit it autonomously.
+CC reads this guide as reference; CC doesn't edit it autonomously.
+Artem updates it directly.
 
 ---
 

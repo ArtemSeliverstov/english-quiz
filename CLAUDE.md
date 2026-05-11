@@ -29,16 +29,17 @@ The KB is the authoritative source. CLAUDE.md is only a routing layer.
 | `references/weekly-slots.md` | Artem's weekly schedule. |
 | `references/question-schema.md` | Authoring or editing questions. |
 | `references/question-authoring-standards.md` | Writing q/exp/hint fields. |
-| `references/pre-deploy-checklist.md` | Before any push. Includes deploy workflow and version-stamp invariant. |
+| `references/pre-deploy-checklist.md` | Before any push. |
 | `references/firestore-schema.md` | Reading/writing player or exercise data. |
 | `references/coach-notes-schema.md` | Updating `coach_notes`. Two-layer memory model + promotion rule. |
 | `references/coverage-matrix.md` | Coverage targets per category. |
+| `references/stats-interpretation-guide.md` | Stats reviews. Act-on/ignore rules + structurally-compromised categories. |
 | `references/question-bank-taxonomy.md` | Auditing the bank. Categories, theme-tags, relevance matrix. |
 | `references/bug-log.md` | Before changing existing code, search this. |
 | `references/design-decisions.md` | Why-we-did-X notes. |
-| `references/roadmap.md` | What's next, what's deferred. |
+| `references/roadmap.md` | Next, deferred. |
 | `references/version-log.md` | Session-by-session history. |
-| `tools/README.md` | Firestore CRUD scripts (`get_player.js`, `log_exercise.js`, `update_coach_notes.js`). The canonical write path while Firebase MCP lacks document tools. |
+| `tools/README.md` | Firestore CRUD scripts. Canonical write path while Firebase MCP lacks document tools. |
 | `worker/README.md` | Cloudflare worker (AI proxy). |
 
 When standards in references conflict with this CLAUDE.md, **references win**.

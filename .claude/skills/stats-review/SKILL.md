@@ -13,6 +13,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 - `references/family-profiles.md` — profile + focus
 - `references/coverage-matrix.md` — category targets
 - `references/coach-notes-schema.md` — update protocol + promotion rule + phrase tracker lifecycle
+- `references/stats-interpretation-guide.md` — interpretation rules: what to act on / ignore, engagement signals, structurally-compromised categories (Idioms MCQ artifact)
 - `progress/phrasal-verbs-tracker.md` (Artem), `progress/phrasal-verbs-tracker-anna.md` (Anna) — refresh per-PV status; methodology in Artem's file
 - `progress/natural-phrases-tracker-{name}.md` × 5 — **generated** views of `players/{name}.phrase_tracker`. Regenerate via `update_coach_notes.js --regen-tracker-md`. Never hand-edit.
 
