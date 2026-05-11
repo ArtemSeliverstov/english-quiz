@@ -1,0 +1,74 @@
+{
+  "phrase_tracker_add": [
+    {
+      "awkward": "elaborate on analysis technic",
+      "natural": "explain the analysis approach",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: 'elaborate on' is academic; 'explain' is conversational"
+    },
+    {
+      "awkward": "in case of shorter periods",
+      "natural": "for shorter periods",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "L1 calque (в случае X -> in case of X). Native form is the bare preposition."
+    },
+    {
+      "awkward": "exclude a warm-up period",
+      "natural": "skip the warm-up period",
+      "tag": "leisure_sport",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: 'exclude' is formal/written; 'skip' is conversational"
+    },
+    {
+      "awkward": "to avoid API attempt",
+      "natural": "to skip the API call",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Word choice: 'API attempt' is calqued/stiff; 'API call' is the native term"
+    },
+    {
+      "awkward": "Probably you've decided not to extract them",
+      "natural": "Looks like you decided to leave them out",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: 'probably you've X' is L1 word order; 'looks like you X' is the native hedge"
+    },
+    {
+      "awkward": "find weaknesses in my proposal",
+      "natural": "poke holes in my proposal",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: written/formal -> native idiom"
+    },
+    {
+      "awkward": "on top try to compare",
+      "natural": "also try to compare / on top of that, try to compare",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "L1 calque (сверху/на ⊕ -> on top). Native is 'on top of that' or just 'also'."
+    },
+    {
+      "awkward": "a document explaining the instrument",
+      "natural": "a document explaining the tool",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Word choice: 'instrument' for software is L1 calque (инструмент); native English uses 'tool'"
+    },
+    {
+      "awkward": "did you include all problems you have encountered",
+      "natural": "did you include all the issues you've run into",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: 'problems you have encountered' is formal; 'issues you've run into' is conversational"
+    },
+    {
+      "awkward": "I'll initiate a separate branch",
+      "natural": "I'll spin up a separate branch",
+      "tag": "claude_collab",
+      "sources": ["harvest_cycling_worktrees_2026-05-11"],
+      "event_note": "Register: 'initiate' is formal/legal; native dev usage is 'spin up' or 'create'"
+    }
+  ]
+}

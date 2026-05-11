@@ -33,10 +33,10 @@
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
 | `[biz_oil]` | 0 | 5 | 4 | 0 | 0 | 0 | 9 |
-| `[leisure_sport]` | 0 | 11 | 1 | 0 | 0 | 0 | 12 |
+| `[leisure_sport]` | 0 | 14 | 1 | 0 | 0 | 0 | 15 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 24 | 8 | 0 | 0 | 0 | 32 |
-| **Total** | 0 | 41 | 13 | 0 | 0 | 0 | 54 |
+| `[claude_collab]` | 0 | 31 | 8 | 0 | 0 | 0 | 39 |
+| **Total** | 0 | 51 | 13 | 0 | 0 | 0 | 64 |
 
 ---
 
@@ -98,6 +98,16 @@
 | Prepare to make the changes as discussed to the plan | Get ready to apply the changes we discussed | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
 | Propose what to do best | Suggest the best approach | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
 | what should I say to you to send the changes | how do I tell you to push the changes | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| elaborate on analysis technic | explain the analysis approach | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| in case of shorter periods | for shorter periods | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| exclude a warm-up period | skip the warm-up period | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| to avoid API attempt | to skip the API call | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| Probably you've decided not to extract them | Looks like you decided to leave them out | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| find weaknesses in my proposal | poke holes in my proposal | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| on top try to compare | also try to compare / on top of that, try to compare | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| a document explaining the instrument | a document explaining the tool | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| did you include all problems you have encountered | did you include all the issues you've run into | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| I'll initiate a separate branch | I'll spin up a separate branch | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
 
 ---
 
