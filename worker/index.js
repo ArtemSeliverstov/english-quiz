@@ -47,7 +47,7 @@ function explainInRussian(ctx) {
   // Legacy clients (no coach_language field) — fall back to the hard-coded list.
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
-const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live'];
+const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live', 'particle_sort_live'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -70,6 +70,12 @@ const ECD_MAX_ITEMS = 12;
 // drills are higher density per exercise-types.md type 7), max 15.
 const ADL_DEFAULT_ITEMS = 10;
 const ADL_MAX_ITEMS = 15;
+
+// particle_sort_live: live phrasal-verb particle production drill. Default ~10,
+// max 15. Per exercise-types.md type 8 — base verb shown, player produces the
+// particle from semantic understanding (no menu).
+const PSL_DEFAULT_ITEMS = 10;
+const PSL_MAX_ITEMS = 15;
 
 export default {
   async fetch(request, env) {
@@ -142,7 +148,7 @@ export default {
         return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
       }
     }
-    if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live') {
+    if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live') {
       // target_item_count optional; capped server-side. focus_categories optional.
       if (context.target_item_count != null && (
             typeof context.target_item_count !== 'number' || context.target_item_count < 1)) {
@@ -257,6 +263,7 @@ function buildSystemBlocks(mode, context, isSessionEnd) {
   else if (mode === 'translation_drill') preamble = translationDrillSystemPrompt(context);
   else if (mode === 'error_correction_drill') preamble = errorCorrectionDrillSystemPrompt(context);
   else if (mode === 'article_drill_live') preamble = articleDrillLiveSystemPrompt(context);
+  else if (mode === 'particle_sort_live') preamble = particleSortLiveSystemPrompt(context);
   else preamble = escalateSystemPrompt(context);
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
@@ -556,6 +563,61 @@ Tone: focused, encouraging, paced. Keep replies tight, move through items, save 
 Open with: a one-line greeting + the first sentence to correct. No preamble about what the drill is — ${playerName} already knows.`;
 }
 
+function particleSortLiveSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B1';
+  const ru = explainInRussian(ctx);
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || PSL_DEFAULT_ITEMS),
+    PSL_MAX_ITEMS
+  );
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+
+  const languageBlock = ru
+    ? `- **Score and explain in Russian.** Quote the player's particle back in English; explain the rule in Russian.
+- On a clean answer: short Russian confirmation, ≤1 line. Optionally one sentence on the PV's meaning if it's not common.
+- On a miss: 2-3 sentences — quote what ${playerName} typed, name the meaning their particle would convey, then give the rule-correct particle in English with a Russian gloss of the intended meaning.`
+    : `- Score and explain in English. Quote ${playerName}'s particle back when scoring.
+- On a clean answer: one-line confirmation. Optionally one sentence on the PV's meaning if uncommon.
+- On a miss: 2-3 sentences — quote, name the meaning the player's particle would convey, give the rule-correct particle.`;
+
+  return `You are running a **phrasal-verb particle drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. PV production challenge — base verb shown, player produces the particle from semantic understanding of the context. ${targetCount} items per session.
+
+Drill protocol:
+1. Generate one short sentence per turn that uses a phrasal verb. The **base verb appears in the sentence** (correctly conjugated); the **particle(s) are replaced with \`___\`**. Example: "She finally figured ___ what was wrong with the engine." (target particle: out)
+2. Rotate across 3 PV difficulty tiers — don't drill the same tier twice in a row unless a slip warrants it:
+   - **literal/transparent** (high-frequency: pick up, turn on/off, look for, put down)
+   - **figurative single-particle** (opaque meaning, must be memorised: get across, bring about, follow up on, take on, put off)
+   - **3-part PV + register switching** (put up with, get away with, look forward to, come up against; formal-vs-informal pairs like tolerate / put up with)
+3. Theme sentences around ${playerName}'s real-life contexts (business/cycling/Bahrain expat for Artem; family/home/padel for Anna; school/K-pop for Nicole; school/sports for Ernest; IELTS scenarios for Egor). Generic stems are forbidden.
+4. Wait for ${playerName}'s particle response. Accept the particle alone ("out"), or the verb+particle pair ("figured out"). For 3-part PVs, the entire particle group fills \`___\` (e.g. "forward to" for "look ___ the meeting" if the intended PV is "look forward to").
+5. Score: pass if the player's particle yields the rule-correct PV given the sentence's intended meaning. Fail if it produces a different meaning or no valid PV.
+6. ${ru ? 'Reply in Russian' : 'Reply in English'} per the rules below. Move to the next item.
+7. After ${targetCount} items (or earlier if the player signals done), wait for the session-end signal.
+
+CRITICAL RULES:
+- **Never reveal the full PV anywhere in the prompt.** Show only the base verb + \`___\`. Don't write "the phrasal verb is FIGURE OUT" or hint at the particle. The production challenge is recalling the particle.
+- **Don't drill ambiguous slots.** Pick PVs where exactly one particle yields the intended meaning given the context. If multiple particles could fit ("look up" vs "look at" vs "look for" all grammatical), tighten the context until only one is meaningful.
+- **Conjugate the base verb correctly.** Past tense, third-person -s, etc. The verb gives ${playerName} the syntactic anchor; the particle is the semantic challenge.
+- **For 3-part PVs**, place the entire particle group at \`___\`. Don't split across multiple blanks.
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Persistent weak patterns (favor PV families that map to these):
+${weakPatterns}
+- Engagement preferences:
+${engagement}
+
+Tone: focused, encouraging, paced. PV production rewards repetition over explanation.
+
+Open with: a one-line greeting + the first sentence (base verb visible, \`___\` for the particle). No preamble about what the drill is — ${playerName} already knows.`;
+}
+
 function articleDrillLiveSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
@@ -752,23 +814,28 @@ For "phrase_swaps_drilled": one entry per pool item that was actually drilled (s
 
 The PWA strips the <session_meta> block before display; PART 1 is what the player sees.`;
   }
-  if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live') {
+  if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live') {
     const ru = explainInRussian(ctx);
     const tableHeader = ru ? `Сохранено.` : `Saved.`;
     const feedbackAsk = ru ? `Как ощущения? Одной фразой — или пропусти.` : `How did that feel? One sentence — or skip.`;
     const isEC = mode === 'error_correction_drill';
     const isAD = mode === 'article_drill_live';
-    const topicLabel = isAD ? 'article_drill_live' : (isEC ? 'error_correction_drill' : 'translation_drill');
-    const exampleItem = isAD
-      ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
-      : (isEC
-        ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
-        : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`);
-    const itemsHint = isAD
-      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
-      : (isEC
-        ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
-        : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`);
+    const isPS = mode === 'particle_sort_live';
+    const topicLabel = isPS ? 'particle_sort_live' : (isAD ? 'article_drill_live' : (isEC ? 'error_correction_drill' : 'translation_drill'));
+    const exampleItem = isPS
+      ? `{"prompt_sentence": "She finally figured ___ the answer.", "submitted": "out", "target_structure": "pv_figure_out", "produced_correct": true}`
+      : (isAD
+        ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
+        : (isEC
+          ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
+          : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`));
+    const itemsHint = isPS
+      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the base verb visible and \`___\` for the particle. \`submitted\` is the particle (or verb+particle) the player typed. \`target_structure\` is a snake_case label of the PV being drilled, prefixed \`pv_\` (e.g. "pv_figure_out", "pv_get_across", "pv_put_up_with"). \`produced_correct: true\` only if the player's particle yields the rule-correct PV on first attempt.`
+      : (isAD
+        ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
+        : (isEC
+          ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
+          : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`));
     return `Your final message must contain TWO parts in this exact order:
 
 PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:

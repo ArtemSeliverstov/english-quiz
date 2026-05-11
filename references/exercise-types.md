@@ -130,18 +130,20 @@ This is a canonical exercise type — `exercise: 'article_drill'` in Firestore. 
 
 ---
 
-## 8. `particle_sort`
+## 8. `particle_sort` (alias: `particle_sort_live`)
 
-Phrasal verb particle drill. Player matches verb + particle pairs, or selects the
-correct particle for a given verb in context.
+Phrasal verb particle production drill. In live AI: base verb shown in context, player produces the particle from semantic understanding (no menu). In legacy library: player matches verb + particle pairs or selects from distractors.
 
-**Use for**: Artem (PV production gap), occasional Anna.
-**Item count**: 10-15
-**Player input**: particle selection or pairing
-**Scoring**: per-item with feedback on direction/meaning of each particle
+**Use for**: Artem (PV production gap), occasional Anna, all family for PV exposure.
+**Item count**: 10-15 (live AI default 10, capped 15)
+**Player input**: typed particle ("out", "across") or verb+particle pair ("figured out"). For 3-part PVs, the whole particle group ("forward to" for "look forward to").
+**Scoring**: per-item against the rule-correct PV given the sentence's intended meaning; conversational semantic explanation on miss.
+**Source**: live-AI worker (`mode: 'particle_sort_live'`) when online + API available; `exercises_library/particle_sort/items` as offline fallback (router in `coachStartType` picks at click-time).
+**Logging**: `coach_sessions/{pst_*}` for live AI; legacy `players/{name}/exercises/{ts}` for library fallback. Same metadata merge + proficiency fold as other Phase D drills.
 
-This is a canonical exercise type — `exercise: 'particle_sort'` in Firestore. Do NOT
-fall back to `error_correction`.
+**Critical authoring rule** (live + library both): the prompt never reveals the full PV. Base verb only — the particle is the production challenge. Mirrors the PV keyword rule in type 4 (transform).
+
+This is a canonical exercise type — `exercise: 'particle_sort'` in Firestore. Do NOT fall back to `error_correction`.
 
 ---
 

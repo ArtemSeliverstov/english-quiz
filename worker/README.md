@@ -151,6 +151,28 @@ curl -s -X POST "$WORKER_URL" \
     "is_session_end": false
   }' | jq
 
+# particle_sort_live
+curl -s -X POST "$WORKER_URL" \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://artemseliverstov.github.io" \
+  -d '{
+    "mode": "particle_sort_live",
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "ready"}],
+    "context": {
+      "player": "artem",
+      "level": "C1",
+      "coach_language": "en",
+      "target_item_count": 8,
+      "coach_notes": {
+        "weak_patterns": ["PV production gap (figurative single-particle)"],
+        "engagement_notes": "Fast pace, semantic feedback on misses."
+      }
+    },
+    "session_id": "artem_pst_test_1",
+    "is_session_end": false
+  }' | jq
+
 # article_drill_live
 curl -s -X POST "$WORKER_URL" \
   -H "Content-Type: application/json" \
@@ -293,9 +315,9 @@ Error shape:
 In order:
 1. Origin header must equal `ALLOWED_ORIGIN` (403 otherwise).
 2. Body ≤ 50 KB (413 otherwise).
-3. `mode` must be `"free_write"`, `"escalate"`, `"phrase_swap_drill"`, `"weak_spots_drill"`, `"translation_drill"`, `"error_correction_drill"`, or `"article_drill_live"` (400 otherwise).
+3. `mode` must be `"free_write"`, `"escalate"`, `"phrase_swap_drill"`, `"weak_spots_drill"`, `"translation_drill"`, `"error_correction_drill"`, `"article_drill_live"`, or `"particle_sort_live"` (400 otherwise).
 4. `model` must be in `ALLOWED_MODELS` whitelist (400 otherwise).
-5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest, artem, egor}; for `escalate`, `context.exercise` is required; for `phrase_swap_drill`, `context.phrase_pool` is required as a non-empty array of `{awkward, natural, tag?, status?, also_accept?}` entries; for `weak_spots_drill`, `context.topic_hint` (if set) must be a string; for `translation_drill`, `error_correction_drill`, and `article_drill_live`, `context.target_item_count` (if set) must be a positive number and `context.focus_categories` (if set) must be an array (400 otherwise).
+5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest, artem, egor}; for `escalate`, `context.exercise` is required; for `phrase_swap_drill`, `context.phrase_pool` is required as a non-empty array of `{awkward, natural, tag?, status?, also_accept?}` entries; for `weak_spots_drill`, `context.topic_hint` (if set) must be a string; for `translation_drill`, `error_correction_drill`, `article_drill_live`, and `particle_sort_live`, `context.target_item_count` (if set) must be a positive number and `context.focus_categories` (if set) must be an array (400 otherwise).
 
 ## phrase_swap_drill mode (added 2026-05-06)
 
@@ -363,6 +385,16 @@ PWA payload shape:
 Session-end response shape (when `is_session_end: true`):
 
 Player-facing summary table + a `<session_meta>` block with `items_drilled[]` (per-item: `prompt_ru`, `submitted`, `target_structure`, `produced_correct`), `error_patterns_observed[]`, `topics_covered: ["translation_drill"]`, `pvs_used_correctly[]`, `session_summary`, and `assessment{}`. The `assessment` block feeds `aggregated_coach_sessions.estimated_level` for proficiency tracking — same path as `free_write` and `weak_spots_drill`. `items_drilled[].produced_correct` feeds per-item stats aggregation.
+
+## particle_sort_live mode (added 2026-05-11)
+
+Live phrasal-verb particle production drill. Replaces the library-driven `particle_sort` Coach type as primary when online + API up; library remains offline fallback.
+
+Each turn: AI presents one short sentence with the base verb visible and `___` where the particle goes — e.g. "She finally figured ___ the answer." Player types the particle ("out"), or verb+particle pair ("figured out"). AI scores against the rule-correct PV given the sentence's intended meaning, rotates across 3 PV tiers (literal, figurative single-particle, 3-part PV).
+
+Critical authoring rule (mirrors `exercise-types.md` type 4 PV transform rule): the prompt **never** reveals the full PV. Base verb only. The particle is the production challenge.
+
+Payload + session-end shape mirror the other Phase D drills. `target_item_count` default 10, max 15. Session-end emits `items_drilled[]` with `prompt_sentence`, `submitted`, `target_structure` (snake_case PV id like `pv_figure_out`), `produced_correct`. Proficiency tracking via `assessment.estimated_level`.
 
 ## article_drill_live mode (added 2026-05-11)
 
