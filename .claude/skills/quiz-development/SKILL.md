@@ -12,12 +12,13 @@ The bank lives inline in `index.html` as `const ALL_QUESTIONS = [...]`. Don't ex
 - `references/question-schema.md` — schema, ID conventions, retired IDs
 - `references/question-authoring-standards.md` — type hierarchy, hint/exp format, anti-patterns, per-question checklist
 - `references/coverage-matrix.md` — current priorities, per-category input share
-- `references/family-profiles.md` — target players' theme tags. Every stem must use a tagged real-life context. → `operational-rules.md` "generic exercise sentences"
+- `plans/question-bank-plan.md` — active content authoring (supersedes coverage-matrix.md Phase-1).
+- `references/family-profiles.md` — target players' theme tags. Every stem grounded in a tagged context. → `operational-rules.md`.
 - `references/bug-log.md` — for the prefix or category being edited
 
 ## Adding new questions
 
-1. **Identify priority** from `coverage-matrix.md` and `roadmap.md`. Pick highest-priority gap matching today's intent.
+1. **Identify priority** from `question-bank-plan.md`. Pick highest-priority gap matching today's intent.
 2. **Identify target player(s)** and pull their theme tags from `family-profiles.md`. Every stem must sit in one of those tags. Generic stems (unnamed pronouns, no real-life context, "the man went to the shop") are rejected pre-table.
 3. **Find next IDs** by grepping the prefix. Continue from highest existing number. Never reuse retired IDs.
 4. **Show proposed table** for review BEFORE any edit (Theme column shows the chosen tag):
@@ -68,7 +69,7 @@ Run `references/pre-deploy-checklist.md` before push. CI re-runs `tools/lint_que
 
 ## Output
 
-After a successful authoring session:
+After session:
 
 1. New/changed questions in `index.html`
 2. Updated `LEVEL_TOTALS` / `CAT_TOTALS`

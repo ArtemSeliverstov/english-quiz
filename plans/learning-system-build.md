@@ -1,25 +1,16 @@
-# Phase 2D Build Plan
+# Learning System Build Plan
 
 **Status**: active execution document
 **Owner**: Artem · primary execution surface: Claude Code (laptop)
-**Predecessor**: `phase2-coach-tab.md` (Phase 2A–2C, now archived as
-historical record). This document carries forward Phase 2D and beyond.
-**Companion docs**: `docs/learning-system-design.md` (philosophy),
-`references/stats-interpretation-guide.md` (CC stats reference).
+**Predecessor**: `phase2-coach-tab.md` (Phase 2A–2C, archived as historical record). Carries forward Phase 2D and beyond.
+**Companion docs**: `docs/learning-system-design.md` (philosophy).
+**Content authoring**: lives in `plans/question-bank-plan.md` — quiz waves, PV ladder, article intervention, Coach library per player, quiz orthography, bank quality audits, tier ordering for content.
 
-This is the active build document for Phase 2D. It contains the build
-sequence, content authoring targets, schemas, decisions amended from the
-predecessor doc, parallel work tiers, and an append-only status log. CC
-executes against this document without coming back to claude.ai chat
-between sessions.
+This is the active **engineering** build document. It contains the build sequence for the learning system (active windows, learner shell, spelling layer, medal display), schemas, decisions amended from the predecessor doc, and an append-only status log. CC executes against this document without coming back to claude.ai chat between sessions.
 
-If something is ambiguous when CC reads this, that's a doc bug — flag it
-and patch the doc rather than guess. If a build decision conflicts with
-the philosophy in `docs/learning-system-design.md`, surface it to Artem rather
-than silently override.
+If something is ambiguous when CC reads this, that's a doc bug — flag it and patch the doc rather than guess. If a build decision conflicts with the philosophy in `docs/learning-system-design.md`, surface it to Artem rather than silently override.
 
-The document avoids calendar references. Work proceeds as fast as it
-proceeds. Restart events are gated on readiness criteria, not dates.
+The document avoids calendar references. Work proceeds as fast as it proceeds. Restart events are gated on readiness criteria, not dates.
 
 ---
 
@@ -59,10 +50,9 @@ Concretely, the end state is:
 - Builder shell unchanged for Artem and Egor
 - Active window model implemented and populated for the three learner-shell
   players
-- Coach library populated to minimum thresholds per player per type (§4.5)
-- Spelling layer shipped (capture, drill type, typo tolerance, quiz
-  orthography category)
-- Medal display tweaked per the asymmetric rule (§4.6)
+- Coach library populated to minimum thresholds per player per type (see `plans/question-bank-plan.md` §4 Coach library)
+- Spelling layer engine shipped (Spell Help capture, Spelling Drill exercise type, typo tolerance); spelling/orthography content in `plans/question-bank-plan.md` §3.3 + §4
+- Medal display tweaked per the asymmetric rule (§4.3)
 - Free Write themed prompts authored per player
 - Restart-readiness checklist (§7) green
 
@@ -82,10 +72,10 @@ then this section's amendments and additions.
 
 | Original lock | Amendment | Rationale |
 |---|---|---|
-| **PV2** (CC picks gap/input/MCQ mix per PV based on existing per-category input share table and observed weakness) | CC picks the type mix per PV per the PV ladder rebalance specification (§4.2), weighted toward recognition rungs. The original lock pointed toward more input items where stuck patterns lived; the rebalance recognizes that those input failures are downstream of a missing recognition substrate, and the right intervention is more MCQ items, not more input items. | The 3.4% MCQ → 32% input inverted pyramid (Apr 30 status log) is a substrate problem, not a retrieval-practice problem. Adding more input drills on a thin recognition foundation perpetuates the production gap. |
+| **PV2** (CC picks gap/input/MCQ mix per PV based on existing per-category input share table and observed weakness) | CC picks the type mix per PV per the PV ladder rebalance specification (`plans/question-bank-plan.md` §3.1), weighted toward recognition rungs. The original lock pointed toward more input items where stuck patterns lived; the rebalance recognizes that those input failures are downstream of a missing recognition substrate, and the right intervention is more MCQ items, not more input items. | The 3.4% MCQ → 32% input inverted pyramid (Apr 30 status log) is a substrate problem, not a retrieval-practice problem. Adding more input drills on a thin recognition foundation perpetuates the production gap. |
 | **A1** (Hybrid: pre-generated default for family + Free Write live AI + escalate-to-AI button. Artem can use either CC OR the Worker path. Library content remains family-only.) | Carries forward unchanged. Phase 2D adds player-specific scoping of *which* library content surfaces for which learner-shell player via the active window model (§4.1). Library content is still family-only in the sense that Artem doesn't read from it; the change is intra-family scoping. | Active windows are about player-side surfacing, not library construction. |
-| **A6** (§4.4 primary action routing was Coach-only — Translation Drill / Spelling Drill / Free Write fallback) | Quiz inserted as priority step 3 (between Spelling Drill and Free Write). Quiz uses Smart mode + `applyLearnerWindowFilter` so the pool respects `learning_path.active_categories` and `level_cap` automatically. Fresh Translation Drill removed from primary routing — still accessible via "Practice something else →" picker. Resume-partial-Translation stays at top priority (a commitment in flight is more urgent than a fresh default). | Coach has 10–30 items per family-shell player; Quiz has ~2,000 questions filtered to the active window. Treating Coach as the primary daily practice burns through library content in days, leaving Free Write as the default — a worse experience than mixed-format Quiz. Coach is correctly framed as targeted intervention (calque drills, orthographic fragility) layered on top of Quiz background practice. |
-| **A7** (§4.4 single "Start practice" button — A6 had it routing primarily to Quiz) | Two buttons on the learner-shell landing instead of one. **Primary (gold) "Start practice"** routes to Coach exercises by priority order (translation → article_drill → particle_sort → error_correction → spelling_drill), with Free Write as the always-available fallback. **Secondary (subtle) "Start quiz"** routes directly to the Smart-mode quiz that A6 had wired into the primary path. **Tertiary text-link "Practice something else →"** stays as the fine-grained Coach picker escape hatch. | A6 was supply-side reasoning: rationing Coach use against Quiz capacity. Real-life signal from the family contradicts it — Quiz is the *boring* path; the engagement-positive surfaces are Free Write and the chip-UX drills. Engagement trumps supply, because if the player stops opening the app, supply doesn't matter. The two-button layout keeps Quiz one tap away (so A6's supply concern is mitigated, not ignored), and lets the player self-route to drill mode when they want it instead of being silently routed there as the default. The supply problem is the right thing to fix by authoring more Coach content faster (already on §4.5/§4.6/§4.7 roadmap), not by burying the engaging surface behind a click. |
+| **A6** (§4.2 primary action routing was Coach-only — Translation Drill / Spelling Drill / Free Write fallback) | Quiz inserted as priority step 3 (between Spelling Drill and Free Write). Quiz uses Smart mode + `applyLearnerWindowFilter` so the pool respects `learning_path.active_categories` and `level_cap` automatically. Fresh Translation Drill removed from primary routing — still accessible via "Practice something else →" picker. Resume-partial-Translation stays at top priority (a commitment in flight is more urgent than a fresh default). | Coach has 10–30 items per family-shell player; Quiz has ~2,000 questions filtered to the active window. Treating Coach as the primary daily practice burns through library content in days, leaving Free Write as the default — a worse experience than mixed-format Quiz. Coach is correctly framed as targeted intervention (calque drills, orthographic fragility) layered on top of Quiz background practice. |
+| **A7** (§4.2 single "Start practice" button — A6 had it routing primarily to Quiz) | Two buttons on the learner-shell landing instead of one. **Primary (gold) "Start practice"** routes to Coach exercises by priority order (translation → article_drill → particle_sort → error_correction → spelling_drill), with Free Write as the always-available fallback. **Secondary (subtle) "Start quiz"** routes directly to the Smart-mode quiz that A6 had wired into the primary path. **Tertiary text-link "Practice something else →"** stays as the fine-grained Coach picker escape hatch. | A6 was supply-side reasoning: rationing Coach use against Quiz capacity. Real-life signal from the family contradicts it — Quiz is the *boring* path; the engagement-positive surfaces are Free Write and the chip-UX drills. Engagement trumps supply, because if the player stops opening the app, supply doesn't matter. The two-button layout keeps Quiz one tap away (so A6's supply concern is mitigated, not ignored), and lets the player self-route to drill mode when they want it instead of being silently routed there as the default. The supply problem is the right thing to fix by authoring more Coach content faster (in `plans/question-bank-plan.md`), not by burying the engaging surface behind a click. |
 
 ### 3.2 New locks for Phase 2D
 
@@ -163,11 +153,11 @@ players/{name}/learning_path:
   fraction of selections permitted at `level_cap + 1` (i.e., a B1-capped
   player gets ~10% B2 items mixed in for ceiling-testing per Krashen i+1
   framing).
-- Coach exercise picker (§4.4) reads from the same filter when surfacing
+- Coach exercise picker (§4.2) reads from the same filter when surfacing
   exercise type availability per player. Coach exercises authored above
   the player's level_cap don't appear in the picker; stretch allowance
   applies for incrementally harder Coach items the same way.
-- Stats display (§4.4) renders only active and mastered categories for
+- Stats display (§4.2) renders only active and mastered categories for
   learner shell; locked categories don't appear.
 
 **Level cap rationale**: per `docs/learning-system-design.md` §3 (orthographic-fluency
@@ -214,101 +204,7 @@ the category filter, not above or below it.
 - Floor-bouncer auto-lock works for new failures (test with a synthetic
   case)
 
-### 4.2 PV ladder rebalance
-
-Content authoring work. Reshapes the planned PV Phase 2 batches per the
-recognition-first analysis.
-
-**Sourcing**: `phrasal_verbs_mastery_plan.html` in project knowledge stays
-as the canonical analytical reference (verb families, CEFR ladder, family
-diagnostic). Doc B reshapes the *authoring sequence and type mix*; the
-analytical content is unchanged.
-
-**Revised Batch 1 + Batch 2 combined target** (~100 items total, replaces
-the original ~130 across the two batches):
-
-| Rung | Format | Target count | Purpose |
-|---|---|---|---|
-| Receptive — meaning | MCQ "what does X mean here?" | ~25 | Anchor PV semantics in context |
-| Receptive — particle | MCQ "which particle fits?" | ~20 | Build particle intuition |
-| Selection | gap-fill | ~25 | Bridge to production |
-| Production | input | ~15 | Test transfer, not foundation |
-| Coach — particle_sort | library | ~15 | Receptive→productive bridge in chat form |
-
-**Authoring sequence**:
-1. First, the 6 stuck PVs from the Apr 30 transform session — for each,
-   author 1 MCQ + 1 gap + 1 input with shared `linked_question_ids` so
-   ladder-pair tracking works. ~18 items dedicated to ladder completion on
-   the weakest cluster.
-2. Then the remaining ~32 items skewed toward MCQ (~20 MCQ, ~8 gap, ~4
-   input) for the rest of the GET/BRING/TURN/SET/COME/TAKE family coverage.
-3. Then Batch 2 verb families (give up, find out, sort out, work out, call
-   off, figure out, point out, rule out, end up, take over) following the
-   same ladder split.
-4. Coach particle_sort items (~15) authored in parallel, targeting the
-   same PV families.
-
-**Active window implications**:
-- Phrasal Verbs is **locked in Anna's active window** initially. Authored
-  content sits in library; she does not encounter it. Eligible for unlock
-  after prepositions consolidate (likely several months out).
-- For Nicole, PV is not in initial active window. Authored content is
-  similarly invisible to her until much later in her progression.
-- For Ernest, PV may enter active window earlier depending on observed
-  performance (his 6-category window has more room).
-- For Artem and Egor, content surfaces as authored (open pool).
-
-**Acceptance for §4.2**:
-- Total PV bank shape after rebalance: Recognition (MCQ) ~50, Selection
-  (gap) ~120, Production (input) ~60. Approximate 5:12:6 ratio is the
-  target; current 5:96:47 is the diagnosed problem.
-- ~15 Coach particle_sort items authored and pushed to library
-- All new questions pass the standard build quality checklist (per session
-  prompt and KB)
-
-### 4.3 Article intervention
-
-Content authoring work. The existing `article_diagnostic_2026-04-05.html`
-plan (~95 questions across three phases) gets folded into the active window
-model.
-
-**Sourcing**: `article_diagnostic_2026-04-05.html` in project knowledge
-stays as the canonical analytical reference. Doc B adapts the *delivery
-cadence* and *active-window-awareness* of the original plan.
-
-**Authoring sequence**:
-- Verify the original plan's three phases map to receptive → selection →
-  production. If they don't, CC restructures so they do. This is the same
-  ladder principle as PV.
-- Author in batches of ~25–30 questions, not all 95 at once. This matches
-  Anna's consumption rate and prevents the everything-appears-at-once
-  overload.
-- First batch lands when active window plumbing is ready and Articles is
-  in Anna's window.
-- Subsequent batches land as Anna works through the prior batch.
-
-**Coach article_drill content** (~15 items per family member):
-- Schema in current phase2-coach-tab.md §6.1.2.
-- For Anna: in her initial active window; ships with the first batch of
-  quiz article additions.
-- For Ernest: high priority because his profile flags articles as a
-  recognition-vs-production gap.
-- For Nicole: initial batch authored; surfaces only when articles enters
-  her active window.
-
-**Article Decision Drill in Artem's weekly slots**: unchanged. Artem's
-article work happens through CC live sessions and is distinct from the
-family-side library content. Doc C (stats interpretation) flags this
-separation explicitly so CC doesn't conflate the two when reviewing stats.
-
-**Acceptance for §4.3**:
-- ~95 article quiz questions authored across 3 batches
-- ~15 article_drill items authored per family member
-- Article quiz content surfaces correctly in Anna's active window when
-  Articles is active
-- Ernest's article_drill items surface when his window opens to articles
-
-### 4.4 Learner shell
+### 4.2 Learner shell
 
 Engineering work. The simplified UI for Anna, Nicole, Ernest.
 
@@ -417,7 +313,7 @@ Behind overflow menu. Standard fields (PIN, name, emoji, plan). The
 (Artem manages this via builder shell or CC). The `active_window_size`
 field is similarly admin-only.
 
-**Acceptance for §4.4**:
+**Acceptance for §4.2**:
 - Anna can navigate from app open to in-progress Free Write conversation
   in 2 taps
 - Nicole can navigate from app open to in-progress translation in 2 taps
@@ -426,47 +322,7 @@ field is similarly admin-only.
 - Family card surfaces today's active players correctly
 - Medal display follows asymmetric rule (positive deltas only)
 
-### 4.5 Coach library content authoring
-
-Per-player content thresholds for restart-readiness. CC authors against
-these targets in parallel with engineering work.
-
-**Anna** (active window: Prepositions, Articles, Spelling, plus one
-strong-area category TBD per §9 — see §9 Everyday Idioms caveat;
-**not** Everyday Idioms):
-- Translation Drill: existing 10 items + ~10 more (~20 total)
-- Spelling Drill: ~15-20 items (mix of captured + predicted L1 traps)
-- Russian Trap: ~10 items (post-Spelling Drill; see §4.6 sequencing)
-- Article Drill: ~15 items (overlaps with §4.3 article work)
-- Free Write: 5 themed starter prompts (D12)
-
-**Nicole** (active window: Irregular Verbs, Present Tense, themed
-Vocabulary; subject to CC composition review):
-- Translation Drill: ~10 items, B1, themed K-pop/school/friends, Russian
-  explanations
-- Spelling Drill: ~10 items, focused on common kid-relevant
-  high-frequency words
-- Article Drill: deferred until articles enters her window
-- Free Write: 5 themed starter prompts (D12), short and concrete
-
-**Ernest** (active window: 6 categories; CC composes from his profile
-including articles, error correction priorities):
-- Translation Drill: ~10 items, B1+
-- Article Drill: ~15 items (his documented gap)
-- Error Correction: ~15 items focused on articles and prepositions
-- Free Write: 5 themed starter prompts (D12)
-
-**Authoring quality bar**: per current phase2-coach-tab.md §10.
-
-**Acceptance for §4.5**:
-- All three learner-shell players have minimum library coverage to
-  populate their active window for the restart push
-- Russian-language content (Translation Drill, Spelling Drill, Article
-  Drill explanations) verified for Anna and Nicole
-- English-language content for Ernest verified
-- All Free Write themed prompts authored and bundled in PWA
-
-### 4.6 Spelling layer + medals tweak
+### 4.3 Spelling layer + medals tweak
 
 Engineering and small content work. Implements D6, D7, D8, D9.
 
@@ -515,14 +371,14 @@ Engineering and small content work. Implements D6, D7, D8, D9.
   exact-match fails
 
 **Medal display tweak (per D9)**:
-- See §4.4 learner shell stats display
-- Schema addition: `players/{name}/medals_history` per §4.4
+- See §4.2 learner shell stats display
+- Schema addition: `players/{name}/medals_history` per §4.2
 - Asymmetric display logic: compute delta = current_count - prior_snapshot
   count. If delta > 0, show "(+{delta} this week)". Else show count only.
 - Session-end card: track which medals exist before session vs after; show
   only newly-earned medals; never show lost medals
 
-**Acceptance for §4.6**:
+**Acceptance for §4.3**:
 - Spell Help button live in learner shell Coach tab
 - ≥10 spell help captures land in `spelling_log` during Anna's first
   week of usage post-deploy
@@ -534,112 +390,21 @@ Engineering and small content work. Implements D6, D7, D8, D9.
 - Medal display follows asymmetric rule
 - New medal callout fires when medal earned in session
 
-**Russian Trap sequencing note** (per §4.5 Anna threshold):
-
-The `russian_trap` exercise type (predecessor doc §6.1.5 schema, with the
-explicit `calque_trap` field) is authored *after* Spelling Drill ships
-and Anna has accumulated 2-3 sessions of Spell Help captures and Free
-Write turns. Rationale: real calque patterns from Anna's early sessions
-provide stronger authoring signal than predicted L1 traps. Authoring on
-predicted traps alone risks items that don't match her actual error
-profile.
-
-Russian Trap is Anna-only at restart-readiness scope. Nicole and Ernest
-do not get Russian Trap content in initial active windows — the calque
-pattern is much milder for kids and the existing exercise types serve
-their needs better. Defer authoring for them indefinitely; revisit only
-if their session data shows a calque pattern emerging.
-
-### 4.7 Quiz orthography category additions
-
-Content work. Three small additions to address orthographic gaps not
-covered by Spelling Drill (which is single-word focused) or existing
-quiz content.
-
-**Sub-categories** (~60 items total):
-1. **Tricky orthographic patterns** (~25 items): irregular plurals
-   (knife/knives, child/children), -y → -ies, doubled consonants in -ing
-   forms, common silent letters
-2. **Compound noun spelling** (~15 items): every day vs everyday, no one
-   vs no-one, on to vs onto, all right vs alright
-3. **Homophone confusables** (~20 items): their/there/they're, your/you're,
-   its/it's, then/than, lose/loose, advice/advise
-
-**Format**: input or MCQ as appropriate. These are quiz questions, not
-Coach exercises. They surface in Smart mode when the orthography category
-is in active window.
-
-**Active window implications**: this category is in Anna's initial active
-window (under "Spelling" or a similar warm label). For Nicole, deferred
-until her foundation consolidates. For Artem, surfaces in open pool.
-
-**Acceptance for §4.7**:
-- ~60 questions authored across the 3 sub-categories
-- New category visible in builder shell stats grid
-- Category appears as "Spelling" in learner shell active window for Anna
-
 ---
 
-## 5. Parallel work tiers
+## 5. Parallel work — engineering Tier 1
 
-Content and audit work alongside the build sequence. CC follows §1
-priority: build sequence first when unblocked, parallel work otherwise,
-Tier 1 before Tier 2 etc.
+Engineering items required for restart-readiness. Content tiers (Tier 2 builder-pool content, Tier 3 data-driven, Tier 4 background fill-in) live in `plans/question-bank-plan.md` §6.
 
-### 5.1 Tier 1 — Required for restart-readiness
+| Item | Where it lives | Notes |
+|---|---|---|
+| Active window plumbing | §4.1 | Foundational. |
+| Learner shell landing + routing | §4.2 | Anna is testbed first. |
+| Spell Help capture + Spelling Drill exercise type + typo tolerance | §4.3 | Engineering. |
+| Medal display tweak (D9) | §4.3 | Small engineering. |
+| Family card on learner shell (D11) | §4.2 | Small engineering. |
 
-| Item | Notes |
-|---|---|
-| Active window plumbing (§4.1) | Engineering. Foundational. |
-| Learner shell landing + routing (§4.4) | Engineering. Anna is testbed first. |
-| Spell Help capture + Spelling Drill schema + typo tolerance (§4.6) | Small engineering + small content. |
-| Anna's library content (§4.5 Anna line — translation, spelling, article drill, free write prompts) | Required for Anna learner-shell experience. |
-| Anna's Russian Trap content (~10 items) | Tier 1 but **dependency-gated**: authored after Spelling Drill ships and Anna has 2-3 sessions of Spell Help / Free Write data per §4.6 sequencing note. |
-| Nicole's library content (§4.5 Nicole line) | Required for Nicole restart. |
-| Ernest's library content (§4.5 Ernest line) | Required for Ernest restart. |
-| Themed Free Write prompts (D12) | Small content; bundled in PWA. |
-| Medal display tweak (§4.6, D9) | Small engineering. |
-| Family card on learner shell (D11) | Small engineering. |
-
-### 5.2 Tier 2 — Builder-pool content (Artem and Egor benefit immediately; family benefit when active windows open)
-
-| Item | Notes |
-|---|---|
-| PV ladder rebalance Batch 1 (§4.2 step 1-2, ~50 items) | Ships to library; surfaces for Artem/Egor in Smart mode immediately, gated for Anna/Nicole. |
-| Article intervention first batch (§4.3, ~25-30 quiz items + ~15 article_drill per player) | Ships in batches; surfaces per active window. |
-| Quiz orthography additions (§4.7, ~60 items) | Surfaces in Anna's window as "Spelling". |
-| B2 Idioms (~15 items, from predecessor doc Tier 2) | Fills genuine level hole; can later seed Russian Trap exercises. **Note**: this is a new B2 category authored from scratch with proper distractors — distinct from the structurally-compromised B1 Everyday Idioms category (see `references/stats-interpretation-guide.md` §9). Author with form-shortcut diagnostic in mind. |
-| Used To input (~7 items, from predecessor doc Tier 2) | 6.3% input share — highest priority among gap-fill. |
-| Word Formation input cleanup (any remaining gaps from s87 work) | If applicable per CC's review of current state. |
-
-### 5.3 Tier 3 — Data-driven; starts after restart push and observation period
-
-| Item | Notes |
-|---|---|
-| PV ladder rebalance Batch 2 (§4.2 step 3, remaining ~50 items including new verb families) | Inform with observed PV usage from Artem CC sessions and any family encounters. |
-| C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations) (~60 items) | Authored against observed weakness from CC + family Coach data. |
-| Additional library content as active windows expand for Anna/Nicole/Ernest | Author against unlock events as they happen. |
-| Coach particle_sort full coverage (~15 items per player) | Per family member as PV enters their active window. |
-| **MCQ distractor audit Pass 1 (triage)** — single session, ~30 min | Sample 5-10 MCQ items per category across the bank's 27 categories. For each sample, apply the form-shortcut diagnostic from `references/stats-interpretation-guide.md` §9: can the correct answer be identified from option form alone (length asymmetry, register asymmetry, obvious grammar errors visible without semantic processing)? Output: per-category trust rating table (clean / needs-fuller-audit / structurally-compromised). Everyday Idioms is presumed structurally-compromised and provides the calibration anchor. |
-| **MCQ distractor audit Pass 2 (full audit of flagged categories)** | Sizing TBD per Pass 1 output. Question-by-question audit of categories Pass 1 flags as compromised or needs-fuller-audit. For each flagged question, document whether form-shortcut is present and what the re-engineering scope would be (distractor rewrite vs full question rewrite). Defer this item until Pass 1 lands. |
-| **Everyday Idioms category re-engineering** | Known structurally-compromised per stats-interpretation-guide §9. ~80 items requiring distractor rewrite (plausible options of similar length and register, no obvious-wrong distractor) or selective full rewrite where distractors can't be salvaged. Sizing depends on Pass 2 audit. Authored against Anna's productive vocabulary needs once she resumes the category at corrected calibration. |
-
-### 5.4 Tier 4 — Background fill-in (opt-in only)
-
-CC does not pick Tier 4 work autonomously. Tier 4 runs only when:
-- Artem explicitly requests it ("do an audit session"), OR
-- Every item in Tiers 1–3 is genuinely complete
-
-| Item | Notes |
-|---|---|
-| s78 input hint/q redundancy audit (~406 items) | Polish, not correctness. |
-| `exp` contrastive rewrite (~585 fields) | Polish. `exp_rewriter` tool already exists. |
-
-### 5.5 Tier ordering rule
-
-Same as predecessor doc: build sequence > Tier 1 > Tier 2 > Tier 3.
-Within a tier, items can be done in any order. Tier 4 never picked
-autonomously.
+**Ordering rule**: build sequence (§4) > Tier 1 engineering above > content tiers in question-bank-plan.md §6. Within a tier, items can be done in any order.
 
 ---
 
@@ -650,11 +415,11 @@ Consolidated for CC reference. Detail in the relevant sections above.
 ```
 players/{name}.ui_shell                  // "builder" | "learner" — D1
 players/{name}/learning_path             // active window data — §4.1
-players/{name}/medals_history            // for delta computation — §4.4
-players/{name}/spelling_log              // Spell Help captures — §4.6
+players/{name}/medals_history            // for delta computation — §4.2
+players/{name}/spelling_log              // Spell Help captures — §4.3
 players/{name}/qStats[id].locked_until   // question-level floor-bouncer — §4.1
 
-exercises_library/spelling_drill/{id}    // Spelling Drill items — §4.6
+exercises_library/spelling_drill/{id}    // Spelling Drill items — §4.3
 ```
 
 All additions are write-safe and additive. Older clients absent these
@@ -677,7 +442,7 @@ fully green. Per D13: no calendar pressure, no compromise on items.
 - [ ] Nicole's `learning_path.active_categories` populated
 - [ ] Ernest's `learning_path.active_categories` populated
 - [ ] Coach library coverage for all three learner-shell players meets
-      §4.5 thresholds
+      `plans/question-bank-plan.md` §4 thresholds
 - [ ] Spelling layer (Spell Help, Spelling Drill, typo tolerance) shipped
       and tested with Anna
 - [ ] Medal display tweak shipped and verified (positive deltas only,
@@ -734,7 +499,7 @@ without coming back to chat.
   form alone (one short/natural, one over-formal, one obviously wrong),
   without parsing idiom meaning. Do NOT use Everyday Idioms as the
   strong-area anchor in Anna's window. See `references/stats-interpretation-guide.md`
-  §9 (Categories with structural caveats) and §5.3 Tier 3 for the
+  §9 (Categories with structural caveats) and `plans/question-bank-plan.md` §5 (Bank quality audits) for the
   category re-engineering work item. Default proposal (revised):
   Prepositions (B1, productive struggle), Articles (B1, productive
   struggle), Spelling (new narrow focus), and one strong-area category
@@ -778,8 +543,8 @@ authoring sequences.
 
 | Source plan | Where it lands here | Status of original |
 |---|---|---|
-| `phrasal_verbs_mastery_plan.html` | §4.2 (ladder rebalance), §4.5 Anna gating, §5.2/5.3 (tier sequencing) | Stays as analytical reference; not superseded |
-| `article_diagnostic_2026-04-05.html` | §4.3 (intervention), §4.5 Coach article_drill, §5.2 (tier) | Stays as analytical reference; not superseded |
+| `phrasal_verbs_mastery_plan.html` | `plans/question-bank-plan.md` §3.1 (PV ladder rebalance), §4 (Coach library per-player), §6 (tier sequencing) | Stays as analytical reference; not superseded |
+| `article_diagnostic_2026-04-05.html` | `plans/question-bank-plan.md` §3.2 (article intervention), §4 (Coach article_drill per player), §6 (tier) | Stays as analytical reference; not superseded |
 | `phase2-coach-tab.md` (current) | Largely absorbed; locks preserved with explicit amendments in §3.1; this document picks up at Phase 2D. Phase 3 housekeeping items from its §13.4 carry forward to §11 below. | Becomes archived historical record after this doc lands |
 | `PHASE2_PLAN.md` predecessor | Phase 2A–2C items already shipped; Phase 3 housekeeping items carry forward to §11 below; content backlog absorbed into §5; Live Log Stage 1.5 superseded (see §11.5) | Deletion confirmed once §11 items are tracked here |
 
@@ -787,15 +552,15 @@ authoring sequences.
 included a cross-the-board criterion "all 5 pre-generated exercise types
 ≥10 exercises per type for at least one family member." This criterion
 is **explicitly superseded** by per-player active-window thresholds in
-§4.5 and engagement-based acceptance in §8. Rationale: with per-player
+per-player thresholds in `plans/question-bank-plan.md` §4 and engagement-based acceptance in §8. Rationale: with per-player
 active windows, a player only encounters their window's content, so
 requiring uniform exercise-type coverage across players makes no sense.
 The underlying intent (coverage breadth so each player has variety, not
-just one drill type) survives in §4.5 per-player thresholds, which
+just one drill type) survives in question-bank-plan.md §4 per-player thresholds, which
 specify ≥3 exercise types per player at restart-readiness. The
 `russian_trap` exercise type, dropped from the cross-the-board count
 during initial absorption, is restored to Anna's authoring threshold
-(§4.5) with sequencing per §4.6.
+(question-bank-plan.md §4.1) with sequencing per question-bank-plan.md §4.4.
 
 ---
 

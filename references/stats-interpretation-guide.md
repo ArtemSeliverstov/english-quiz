@@ -2,8 +2,7 @@
 
 **Status**: living reference document
 **Owner**: Artem · primary user: Claude Code (CC) during stats reviews
-**Companion docs**: `docs/learning-system-design.md` (philosophy),
-`plans/phase2-build-plan.md` (operational sequence)
+**Companion doc**: `docs/learning-system-design.md` (philosophy).
 
 This document tells CC how to read player data — what each metric means in
 the current model, what to act on, what to ignore, what to surface to
@@ -433,14 +432,14 @@ The accuracy is a measurement artifact.
   window composition; do NOT count toward mastery promotion until the
   category is re-engineered; the high `catStats` accuracy is not a
   signal of genuine idiom competence
-- Re-engineering: Tier 3 work item (`plans/phase2-build-plan.md` §5.3,
+- Re-engineering: Tier 3 work item (`plans/question-bank-plan.md` §5.3,
   "Everyday Idioms category re-engineering")
 - Calibration anchor: this category provides the reference pattern for
   Pass 1 of the MCQ distractor audit
 
 ### 9.2 Audit status
 
-A bank-wide MCQ distractor audit (`plans/phase2-build-plan.md` §5.3, "MCQ
+A bank-wide MCQ distractor audit (`plans/question-bank-plan.md` §5.1, "MCQ
 distractor audit Pass 1") is queued to identify additional categories
 with the same artifact. Until that audit runs, CC should:
 
@@ -466,7 +465,7 @@ through the audit, via Artem's recall, or through CC's own observation
 during stats reviews), add it as a §9.1 sub-entry following the same
 shape: pattern description, effect on accuracy, action implications,
 re-engineering status, and any cross-references to relevant tier work
-items in `plans/phase2-build-plan.md` §5.
+items in `plans/question-bank-plan.md` §5–§6.
 
 When a re-engineered category lands and the form-shortcut is removed,
 move the entry to a new "§9.4 Resolved structural caveats" section
