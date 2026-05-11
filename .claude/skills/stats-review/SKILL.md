@@ -18,13 +18,13 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Workflow
 
-**0. Integrity check.** Run `node tools/check_player_integrity.js`. Three invariants probe for cross-player contamination (the 2026-05-02 Nicole-overwritten-with-Artem incident pattern): cross-player qStats overlap with byte-identical `lastSeen`, `createdAt` drift vs baseline, and unexplained `totalAnswered` jumps. Exit code 0 = proceed; exit 1 = a flag fired — **stop and surface to user before continuing**. Don't try to "review around" a flagged contamination. Baseline lives at `tools/data-integrity-baseline.json` and auto-updates on a clean run.
+**0. Integrity check.** Run `node tools/check_player_integrity.js`. Three invariants (cross-player `qStats` overlap with identical `lastSeen`, `createdAt` drift, unexplained `totalAnswered` jumps) probe for contamination — the 2026-05-02 Nicole-overwritten-with-Artem pattern. Exit 0 = proceed; exit 1 = **stop and surface to user**. Baseline at `tools/data-integrity-baseline.json`, auto-updates on clean run.
 
 **1. Pull stats.** Run `get_all_players.js -S` for all 5 docs + subcollections. For one player deep-dive: `get_player.js {name}`. Filter out `auto_suspected: true` sessions before pattern aggregation.
 
-**1a. Signal selection.** Post-Option-D (2026-05-05) every surface bumps `lastPlayedDate / currentStreak / longestStreak` — use these for recency/streak, subcollections for volume/surface/type/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Pre-Option-D rows: subcollection wins on disagreement.
+**1a. Signal selection.** Post-Option-D (2026-05-05) every surface bumps streak fields — use these for recency, subcollections for volume/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Pre-Option-D: subcollection wins on disagreement.
 
-**2. Coverage review per player** (mandatory). For each: category breakdown (count, level distribution, accuracy), type distribution, trends vs prior session if available, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error rate), quality flags (≥60% error across 3+ players).
+**2. Coverage review per player.** For each: category breakdown, type distribution, trends vs prior session, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error rate), quality flags (≥60% error across 3+ players).
 
 **2.5. Per-question mistake audit** for any flagged item. Pull `qStats[qid].lastWrong` from every player who's seen it via `node tools/get_question_mistakes.js <qid>`. The actual mistake is the highest-value signal — diagnosis without it is speculation. MCQ index sometimes resolves to `<no log>` — when unavailable, mark `[speculation]`.
 
@@ -34,7 +34,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **5. Action recommendations.** Don't apply here — this skill produces, the user triggers `quiz-development` or `exercise-session` to act.
 
-**6. Phrase tracker maintenance** (auto, after step-4 confirmations). Per player: read `players/{name}.phrase_tracker`, apply lifecycle transitions from the period's `coach_sessions` (full state machine in `coach-notes-schema.md` "Phrase tracker lifecycle"), surface retest-due entries in the output, then `node tools/update_coach_notes.js {name} <patch.json> --regen-tracker-md` to refresh the markdown view.
+**6. Phrase tracker maintenance** (auto, after step-4). Per player: apply lifecycle transitions from the period's `coach_sessions` (state machine in `coach-notes-schema.md`), surface retest-due entries, then `node tools/update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
 
 ## Speculation marking — mandatory
 
