@@ -14,6 +14,28 @@ The document avoids calendar references. Work proceeds as fast as it proceeds. R
 
 ---
 
+## Contents
+
+1. How CC uses this document
+2. Goal and end state
+3. Locked decisions (D1–D14: shell split, active window model, mastery promotion, composition rule, floor-bouncing, spelling layer, level cap, etc.)
+4. Build sequence — engineering workstreams
+   - 4.1 Active window plumbing (Firestore schema + PWA filter logic)
+   - 4.2 Learner shell (UI for Anna/Nicole/Ernest)
+   - 4.3 Spelling layer + medals tweak
+5. Parallel work — engineering Tier 1 (content tiers in `question-bank-plan.md` §6)
+6. Schemas summary
+7. Restart-readiness checklist
+8. Acceptance: Phase 2D complete when
+9. Open items (initial active-window composition per player, etc.)
+10. Source plans absorbed
+11. Phase 3 follow-on cleanup (userMemories, RTDB sunset, App Check)
+12. Status log — archived
+
+Content authoring is in `plans/question-bank-plan.md`. Operational backlog is in `plans/open-items.md`.
+
+---
+
 ## 1. How CC uses this document
 
 At the start of any CC session related to Phase 2D:
