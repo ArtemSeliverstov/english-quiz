@@ -128,6 +128,77 @@ curl -s -X POST "$WORKER_URL" \
     "is_session_end": false
   }' | jq
 
+# translation_drill
+curl -s -X POST "$WORKER_URL" \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://artemseliverstov.github.io" \
+  -d '{
+    "mode": "translation_drill",
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "ready"}],
+    "context": {
+      "player": "anna",
+      "level": "B1",
+      "coach_language": "ru",
+      "target_item_count": 6,
+      "focus_categories": ["tenses", "prepositions"],
+      "coach_notes": {
+        "weak_patterns": ["preposition swap (arrive to → at)", "present perfect omission"],
+        "engagement_notes": "RU translation for grammar rules helps."
+      }
+    },
+    "session_id": "anna_td_test_1",
+    "is_session_end": false
+  }' | jq
+
+# error_correction_drill
+curl -s -X POST "$WORKER_URL" \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://artemseliverstov.github.io" \
+  -d '{
+    "mode": "error_correction_drill",
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "ready"}],
+    "context": {
+      "player": "ernest",
+      "level": "A2",
+      "coach_language": "en",
+      "target_item_count": 6,
+      "focus_categories": ["prepositions", "articles"],
+      "coach_notes": {
+        "weak_patterns": ["preposition swap (arrive to → at)", "article: zero where the needed"],
+        "engagement_notes": "Prefers short, targeted feedback."
+      }
+    },
+    "session_id": "ernest_ec_test_1",
+    "is_session_end": false
+  }' | jq
+
+# weak_spots_drill
+curl -s -X POST "$WORKER_URL" \
+  -H "Content-Type: application/json" \
+  -H "Origin: https://artemseliverstov.github.io" \
+  -d '{
+    "mode": "weak_spots_drill",
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "ready"}],
+    "context": {
+      "player": "artem",
+      "level": "C1",
+      "coach_language": "en",
+      "topic_hint": "emphasis_clefts",
+      "coach_notes": {
+        "weak_patterns": ["cleft + inversion under-use", "article: zero where 'the' needed"],
+        "recent_observations": [
+          {"date": "2026-05-08", "note": "Strong on it-clefts, shaky on negative fronting (Only after...did we)."}
+        ],
+        "engagement_notes": "Prefers fast pace, explicit mechanics blocks."
+      }
+    },
+    "session_id": "artem_ws_test_1",
+    "is_session_end": false
+  }' | jq
+
 # escalate
 curl -s -X POST "$WORKER_URL" \
   -H "Content-Type: application/json" \
@@ -200,9 +271,9 @@ Error shape:
 In order:
 1. Origin header must equal `ALLOWED_ORIGIN` (403 otherwise).
 2. Body ≤ 50 KB (413 otherwise).
-3. `mode` must be `"free_write"`, `"escalate"`, or `"phrase_swap_drill"` (400 otherwise).
+3. `mode` must be `"free_write"`, `"escalate"`, `"phrase_swap_drill"`, `"weak_spots_drill"`, `"translation_drill"`, or `"error_correction_drill"` (400 otherwise).
 4. `model` must be in `ALLOWED_MODELS` whitelist (400 otherwise).
-5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest, artem, egor}; for `escalate`, `context.exercise` is required; for `phrase_swap_drill`, `context.phrase_pool` is required as a non-empty array of `{awkward, natural, tag?, status?, also_accept?}` entries (400 otherwise).
+5. `messages` non-empty array; `context.player` ∈ {anna, nicole, ernest, artem, egor}; for `escalate`, `context.exercise` is required; for `phrase_swap_drill`, `context.phrase_pool` is required as a non-empty array of `{awkward, natural, tag?, status?, also_accept?}` entries; for `weak_spots_drill`, `context.topic_hint` (if set) must be a string; for `translation_drill` and `error_correction_drill`, `context.target_item_count` (if set) must be a positive number and `context.focus_categories` (if set) must be an array (400 otherwise).
 
 ## phrase_swap_drill mode (added 2026-05-06)
 
@@ -237,6 +308,82 @@ Default `target_item_count` is 6, max 10 (capped server-side). PWA is responsibl
 Session-end response shape (when `is_session_end: true`):
 
 The model's reply contains both a player-facing close (markdown table + feedback ask) and a `<session_meta>` block with `phrase_swaps_drilled`, `topics_covered`, `session_summary`. The Worker strips and parses the `<session_meta>` block into `session_metadata` on the response. `phrase_swaps_drilled[].produced_natural` (boolean, per pool entry actually drilled) feeds the phrase_tracker lifecycle transitions in `stats-review`.
+
+## translation_drill mode (added 2026-05-11)
+
+Live RU→EN translation drill, conversational scoring, one item at a time. Replaces the library-driven `translation` Coach type as the primary path; library survives as offline fallback (PWA routes live-first when online + API up, falls back to `exercises_library/translation/items` otherwise).
+
+PWA payload shape:
+
+```json
+{
+  "mode": "translation_drill",
+  "model": "claude-sonnet-4-6",
+  "messages": [{"role": "user", "content": "ready"}],
+  "context": {
+    "player": "anna",
+    "level": "B1",
+    "coach_language": "ru",
+    "target_item_count": 8,
+    "focus_categories": ["tenses", "prepositions"],
+    "coach_notes": {
+      "weak_patterns": ["preposition swap (arrive to → at)", "present perfect omission"],
+      "engagement_notes": "RU translation for grammar rules helps."
+    }
+  },
+  "session_id": "anna_td_test_1",
+  "is_session_end": false
+}
+```
+
+`target_item_count` default 8, max 12 (capped server-side). `focus_categories` and `coach_notes.weak_patterns` shape which structures the AI rotates through. Cues are themed to the player's real-life contexts per `family-profiles.md` — no generic stems.
+
+Session-end response shape (when `is_session_end: true`):
+
+Player-facing summary table + a `<session_meta>` block with `items_drilled[]` (per-item: `prompt_ru`, `submitted`, `target_structure`, `produced_correct`), `error_patterns_observed[]`, `topics_covered: ["translation_drill"]`, `pvs_used_correctly[]`, `session_summary`, and `assessment{}`. The `assessment` block feeds `aggregated_coach_sessions.estimated_level` for proficiency tracking — same path as `free_write` and `weak_spots_drill`. `items_drilled[].produced_correct` feeds per-item stats aggregation.
+
+## error_correction_drill mode (added 2026-05-11)
+
+Live "one sentence, one error" drill, conversational scoring. Replaces the library-driven `error_correction` Coach type as the primary path when online + API up; library survives as offline fallback.
+
+PWA payload shape mirrors `translation_drill` (same `target_item_count` default 8, max 12; `focus_categories` + `coach_notes` shape target structures). The AI generates one English sentence per turn containing exactly one error in a target structure drawn from `weak_patterns` / `focus_categories`. Player corrects (full sentence or just the fix); AI scores conversationally.
+
+Session-end emits the same shape as `translation_drill` — `items_drilled[]` (with `prompt_sentence` instead of `prompt_ru`), `error_patterns_observed[]`, `topics_covered: ["error_correction_drill"]`, `pvs_used_correctly[]`, `session_summary`, and `assessment{}`. Proficiency tracking via the same `assessment.estimated_level` → `aggregated_coach_sessions` path.
+
+## weak_spots_drill mode (added 2026-05-11)
+
+Depth-focused live AI session on a single topic. ~30 minutes, 15-20 production items, tier-ladder structure. Tutorial-vs-drill emerges from `coach_notes.recent_observations` — if the AI finds a prior session on the same topic in the last ~14 days, it skips long mechanics blocks and drops into production.
+
+PWA payload shape:
+
+```json
+{
+  "mode": "weak_spots_drill",
+  "model": "claude-sonnet-4-6",
+  "messages": [{"role": "user", "content": "ready"}],
+  "context": {
+    "player": "artem",
+    "level": "C1",
+    "coach_language": "en",
+    "topic_hint": null,
+    "coach_notes": {
+      "weak_patterns": ["cleft + inversion under-use", "article: zero where 'the' needed"],
+      "recent_observations": [
+        {"date": "2026-05-08", "note": "Strong on it-clefts, shaky on negative fronting."}
+      ],
+      "engagement_notes": "Prefers fast pace, explicit mechanics blocks."
+    }
+  },
+  "session_id": "artem_ws_test_1",
+  "is_session_end": false
+}
+```
+
+`topic_hint` is optional. When `null`, the AI proposes 2-3 topics on turn 1 from the catalog matching the player's `weak_patterns`; player picks. When set, the AI skips the propose-and-pick turn and walks the ladder directly. Canonical catalog ids: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production`. Off-catalog free-text values are accepted — the AI improvises a 3-tier ladder.
+
+Session-end response shape (when `is_session_end: true`):
+
+Player-facing tier-by-tier recap + a `<session_meta>` block with `topic_id`, `tiers_touched`, `tier_results[]`, `error_patterns_observed[]`, `topics_covered[]` (prefixed `weak_spots:<topic_id>`), `pvs_used_correctly[]`, `session_summary`, and `assessment{}`. The `assessment` block feeds `aggregated_coach_sessions.estimated_level` for proficiency tracking — same path as `free_write`. `tier_results[]` feeds the daily review to inform whether a topic should reappear next session or graduate.
 
 ## Threat model
 

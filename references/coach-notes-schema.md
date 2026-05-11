@@ -152,6 +152,20 @@ How did it feel? One sentence — or skip.
 How did it feel? One sentence — or skip.
 ```
 
+**`weak_spots_drill`**:
+
+```
+**Saved.**
+
+| | |
+|---|---|
+| Topic | Emphasis (clefts + fronting) |
+| Tiers landed | T1 it-clefts ✓ · T2 wh-clefts ✓ · T3 fronting + inversion partial |
+| Up next | Drill T3 again next session |
+
+How did it feel? One sentence — or skip.
+```
+
 ### Batch review skill (`stats-review`)
 
 Confirm-first protocol stays in place — operator-mode, multi-player, no learner present.

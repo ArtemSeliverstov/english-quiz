@@ -9,6 +9,7 @@ Active plans, what they cover, which SKILL (if any) loads them.
 | `learning-system-build.md` | Engineering / system build (Phase 2D): active windows, learner shell, spelling layer engine, medal display, schemas, restart-readiness, Phase 3 cleanup. Decisions D1–D14 locked here. | none — Artem's working execution doc |
 | `question-bank-plan.md` | Content authoring + bank quality: waves 0–5 per player, workstreams (PV ladder, articles, orthography), Coach library per player, MCQ distractor audit, Idioms re-engineering, tier priorities. | `quiz-development` |
 | `open-items.md` | Operational backlog: log caps, App Check, worker rate limit, smaller fixes. | none — picked up on Artem's prompt |
+| `coach-live-ai-and-weak-spots.md` | T1: convert all Coach types to live AI via Worker (library → offline fallback). T2: add `weak_spots_drill` — Free-Write-shaped session with inline 5-topic ladder catalog. PWA + CC mirror. | none — Artem's execution doc |
 
 `learning-system-build.md` and `question-bank-plan.md` cross-reference each other; the split is by concern (engineering vs content authoring), not chronology. Read the one matching your task.
 

@@ -8,14 +8,16 @@ themes from `family-profiles.md`. Generic stems are forbidden.
 
 ---
 
-## 1. `translation`
+## 1. `translation` (alias: `translation_drill`)
 
 Russian → English translation, single sentence, focused on a target structure.
 
 **Use for**: Anna (her primary mode), preposition focus, conditionals, articles.
-**Item count**: 5-10
+**Item count**: 5-10 (live AI default 8, capped 12; library per-player overrides preserved e.g. Anna=10)
 **Player input**: typed English translation
 **Scoring**: tolerant of synonyms, strict on target structure
+**Source**: live-AI worker (`mode: 'translation_drill'`) when online + API available; `exercises_library/translation/items` as offline fallback (router in `coachStartType` picks at click-time). CC counterpart authored via `exercise-session` skill — same logging shape regardless of source.
+**Logging**: `coach_sessions/{td_*}` for live AI (mode `translation_drill`); legacy `players/{name}/exercises/{ts}` for library fallback. Session metadata feeds `error_patterns_observed` into `coach_notes.weak_patterns` and the `assessment` block into the silent CEFR fold.
 
 Example item:
 - RU: «Я жду вас в аэропорту с трёх часов.»
@@ -41,15 +43,17 @@ something using present perfect"). Pattern-prompts produce stilted output.
 
 ---
 
-## 3. `error_correction`
+## 3. `error_correction` (alias: `error_correction_drill`)
 
 Claude presents a sentence with a deliberate error. Player identifies and corrects.
 
 **Use for**: Ernest (his preferred format), recognition-vs-production work,
 fossilised L1 errors (Anna's prepositions).
-**Item count**: 6-10
+**Item count**: 6-10 (live AI default 8, capped 12)
 **Player input**: typed corrected sentence (or just the corrected portion)
 **Scoring**: exact match on the target word/phrase, tolerant of unrelated changes
+**Source**: live-AI worker (`mode: 'error_correction_drill'`) when online + API available; `exercises_library/error_correction/items` as offline fallback (router in `coachStartType` picks at click-time).
+**Logging**: `coach_sessions/{ec_*}` for live AI (mode `error_correction_drill`); legacy `players/{name}/exercises/{ts}` for library fallback. Same metadata merge + proficiency fold as `translation_drill`.
 
 Example:
 - Sentence: "She arrived to Paris yesterday."
@@ -177,15 +181,34 @@ Example item:
 
 ---
 
+## 10. `weak_spots_drill`
+
+Depth-focused live AI session on one topic, ladder-walked simple → hard. ~30 min, 15-20 items. Tutorial-vs-drill emerges from `coach_notes.recent_observations` — prior trace in last ~14 days → drill-first; no trace → mechanics-first per tier.
+
+**Use for**: all 5 players, when the player has ≥1 `coach_notes.weak_patterns` entry. Anna/Nicole explanations in Russian (`coachLanguage: 'ru'`); Artem/Ernest/Egor in English.
+**Item count**: 15-20 production items across 3-4 tiers
+**Player input**: typed English production per tier-appropriate cue (translation, transformation, free-form depending on tier)
+**Scoring**: per-item structural pass/fail; tier escalation gated on ≥1 clean production
+**Source**: live-AI worker (`mode: 'weak_spots_drill'`); CC counterpart via `weak-spots-session` skill — both read the canonical 5-topic catalog from `worker/index.js → weakSpotsDrillSystemPrompt`.
+**Logging**: `coach_sessions/{ws_*}` with `mode: 'weak_spots_drill'`. Session metadata feeds `error_patterns_observed` into `coach_notes.weak_patterns` and the `assessment` block into the silent CEFR fold (`aggregated_coach_sessions.estimated_level`).
+
+Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production`. Off-catalog free-typed topics improvise a 3-tier ladder under a snake_case slug.
+
+**Critical authoring rule**: do not re-derive tier ladders. The catalog in `worker/index.js` is the single source of truth — both the worker preamble and the `weak-spots-session` skill reference it. Changes to a ladder happen there.
+
+**Critical scoring rule**: tier escalation requires structural success on the target mechanic. Stylistic preferences (word choice, register variation) do not gate tier moves.
+
+---
+
 ## Type selection by player
 
 | Player | Primary types | Secondary | Avoid |
 |---|---|---|---|
-| Artem | free_write, transform, article_drill, particle_sort | error_correction, dictation, phrase_swap_drill | translation (too easy at C1) |
-| Anna | translation, error_correction, conversation, phrase_swap_drill | dictation | free_write (too unstructured) |
-| Nicole | translation, article_drill (light) | error_correction, phrase_swap_drill (light) | free_write, transform (too hard) |
-| Ernest | error_correction, translation, phrase_swap_drill | article_drill | free_write, transform |
-| Egor | translation, free_write, phrase_swap_drill | article_drill | transform (later, after B2 article gap closes) |
+| Artem | free_write, transform, article_drill, particle_sort, weak_spots_drill | error_correction, dictation, phrase_swap_drill | translation (too easy at C1) |
+| Anna | translation, error_correction, conversation, phrase_swap_drill, weak_spots_drill | dictation | free_write (too unstructured) |
+| Nicole | translation, article_drill (light), weak_spots_drill (light) | error_correction, phrase_swap_drill (light) | free_write, transform (too hard) |
+| Ernest | error_correction, translation, phrase_swap_drill | article_drill, weak_spots_drill | free_write, transform |
+| Egor | translation, free_write, phrase_swap_drill, weak_spots_drill | article_drill | transform (later, after B2 article gap closes) |
 
 ---
 

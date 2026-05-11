@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511">
+  <meta name="app-version" content="v20260511-r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -1462,6 +1462,10 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <button class="coach-type-btn" data-type="phrase_swap_drill" onclick="coachStartPhraseSwapDrill()" title="Live AI — practise stiff/calqued phrases, swap them for natural ones">
           <span class="coach-type-name">Phrase Swaps</span>
           <span class="coach-type-count" data-count-for="phrase_swap_drill">…</span>
+        </button>
+        <button class="coach-type-btn" data-type="weak_spots_drill" onclick="coachStartWeakSpotsDrill()" title="Live AI — ~30-min depth session on one weak spot, simple → hard">
+          <span class="coach-type-name">Weak Spots</span>
+          <span class="coach-type-count" data-count-for="weak_spots_drill">…</span>
         </button>
       </div>
       <button id="spellHelpBtn" class="coach-spellhelp-btn" onclick="coachOpenSpellHelp()" title="Quick spelling lookup with example sentence">
@@ -8712,6 +8716,33 @@ const coachState = {
   psdPool: [],            // resolved pool sent in the worker context
   psdTargetCount: 6,
   psdBusy: false,
+  // Weak Spots Drill flow — depth session on one topic, ~30 min, ladder-walked
+  wsMessages: [],
+  wsTurnCount: 0,
+  wsSessionId: '',
+  wsStartedAt: 0,
+  wsTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  wsModel: '',
+  wsTopicHint: null,      // optional canonical catalog id, set when player picks a specific topic
+  wsBusy: false,
+  // Translation Drill (live) flow — Phase D T1 rollout; replaces library translation as primary
+  tdMessages: [],
+  tdTurnCount: 0,
+  tdSessionId: '',
+  tdStartedAt: 0,
+  tdTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  tdModel: '',
+  tdTargetCount: 8,
+  tdBusy: false,
+  // Error Correction Drill (live) flow — Phase D T1 rollout
+  ecMessages: [],
+  ecTurnCount: 0,
+  ecSessionId: '',
+  ecStartedAt: 0,
+  ecTokensTotal: { input: 0, output: 0, cache_read: 0, cache_creation: 0 },
+  ecModel: '',
+  ecTargetCount: 8,
+  ecBusy: false,
   // Escalate retry flow (s92)
   escalateRetryActive: false,    // input field routes to coachEscalateRetrySubmit while true
   escalateRetryStartedAt: 0,
@@ -8731,6 +8762,7 @@ async function coachOpenTab() {
   coachShowPicker();
   await Promise.all([coachLoadMeta(), coachRenderStatsCard(), coachLoadPlayerCoachNotes()]);
   coachUpdateLiveAIAvailability();
+  coachUpdateWeakSpotsAvailability();
   coachApplyShellLayout();
   exLoadHistory();
 }
@@ -8764,8 +8796,8 @@ function coachApplyShellLayout() {
     const type = btn.dataset.type;
     const countEl = btn.querySelector('.coach-type-count');
     const txt = countEl ? countEl.textContent.trim() : '';
-    // Free Write & Phrase Swaps availability is governed by liveAI gating — leave alone.
-    if (type === 'free_write' || type === 'phrase_swap_drill') { btn.style.display = ''; return; }
+    // Free Write, Phrase Swaps, Weak Spots availability is governed by liveAI gating — leave alone.
+    if (type === 'free_write' || type === 'phrase_swap_drill' || type === 'weak_spots_drill') { btn.style.display = ''; return; }
     if (!learner) { btn.style.display = ''; return; }
     // Hide if disabled (no library content) or count parses to zero.
     const numMatch = txt.match(/^(\d+)/);
@@ -8798,6 +8830,33 @@ async function coachLoadPlayerCoachNotes() {
   }
   // Refresh the Phrase Swaps button count if the picker is on screen.
   coachUpdatePhraseSwapAvailability();
+  coachUpdateWeakSpotsAvailability();
+}
+
+// Compute weak_patterns count and update the Weak Spots button. Hidden when the
+// API is down, the network is off, or the player has no weak_patterns. Visible-
+// with-disabled state is used while data is loading.
+function coachUpdateWeakSpotsAvailability() {
+  const btn = document.querySelector('.coach-type-btn[data-type="weak_spots_drill"]');
+  if (!btn) return;
+  const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  const cn = coachState.playerCoachNotes || {};
+  const wpCount = Array.isArray(cn.weak_patterns) ? cn.weak_patterns.length : 0;
+  const usable = liveAvail && wpCount > 0;
+  btn.disabled = !usable;
+  const countEl = btn.querySelector('[data-count-for="weak_spots_drill"]');
+  if (countEl) {
+    if (!liveAvail) {
+      countEl.textContent = !navigator.onLine ? 'offline' : 'paused';
+    } else if (wpCount === 0) {
+      countEl.textContent = '0 weak spots';
+    } else {
+      countEl.textContent = 'live AI';
+    }
+  }
+  // Learner-shell hides disabled live-AI buttons (parity with Phrase Swaps); builder-shell shows them
+  const learner = (typeof isLearnerShell === 'function') && isLearnerShell();
+  if (learner) btn.style.display = usable ? '' : 'none';
 }
 
 // Compute the size of the available phrase pool (active + retest-due) and update
@@ -8879,6 +8938,7 @@ function coachShowPicker() {
   coachState.escalateRetryStartedAt = 0;
   // Reflect any availability changes (network, API_402)
   coachUpdateLiveAIAvailability();
+  coachUpdateWeakSpotsAvailability();
 }
 
 // ─── Worker call helper ─────────────────────────────────────────────────────
@@ -8910,6 +8970,7 @@ async function coachWorkerCall(payload, { retries = 1, timeoutMs = 30000 } = {})
       if (json && json.error_code === 'API_402') {
         coachState.apiUnavailable = true;
         coachUpdateLiveAIAvailability();
+        coachUpdateWeakSpotsAvailability();
         return json;
       }
       // Non-retriable validation errors, bail immediately.
@@ -8931,6 +8992,9 @@ function coachMakeSessionId(player, mode) {
     mode === 'free_write' ? 'fw' :
     mode === 'escalate' ? 'esc' :
     mode === 'phrase_swap_drill' ? 'psd' :
+    mode === 'weak_spots_drill' ? 'ws' :
+    mode === 'translation_drill' ? 'td' :
+    mode === 'error_correction_drill' ? 'ec' :
     'sess';
   return player + '_' + prefix + '_' + Date.now() + '_' + r;
 }
@@ -9432,6 +9496,734 @@ async function coachApplyPhraseSwapTransitions(drilled) {
   await fsMerge('players/' + currentPlayer, { coach_notes: newCn, phrase_tracker: tracker });
   coachState.playerCoachNotes = newCn;
   coachState.playerPhraseTracker = tracker;
+}
+
+// ─── Weak Spots Drill — depth session on one weak topic, ~30 min ────────────
+// Live AI. Mirrors Free Write's session shape (chat loop, soft-cap nudge, end-
+// session → <session_meta> → coach_sessions write + weak_patterns merge +
+// proficiency fold) but routes to mode 'weak_spots_drill' and passes through
+// the player's coach_notes (worker reads weak_patterns + recent_observations
+// to propose topics and decide tutorial-vs-drill).
+const COACH_WS_MODEL = COACH_FW_MODEL;
+const COACH_WS_SOFT_TURN_CAP = 12;  // matches worker prompt's wrap-up nudge
+
+async function coachStartWeakSpotsDrill() {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable) {
+    alert('Live AI is temporarily unavailable. Translation Drill still works.');
+    return;
+  }
+  if (!navigator.onLine) {
+    alert('You appear to be offline. Weak Spots needs a connection.');
+    return;
+  }
+  // Refresh player doc so we pick up overnight weak_patterns changes from the
+  // daily stats review (parity with Phrase Swaps' fresh-pull at session start).
+  let playerDoc;
+  try {
+    playerDoc = await fsGet('players/' + currentPlayer);
+  } catch (e) {
+    alert('Could not load your profile. Try again in a moment.');
+    return;
+  }
+  const cn = (playerDoc && playerDoc.coach_notes) || {};
+  coachState.playerCoachNotes = cn;
+  if (!Array.isArray(cn.weak_patterns) || cn.weak_patterns.length === 0) {
+    alert("No weak spots yet — do a Free Write or a few quiz sessions first, then we'll know what to work on.");
+    return;
+  }
+  // Reset state
+  coachState.type = 'weak_spots_drill';
+  coachState.wsMessages = [];
+  coachState.wsTurnCount = 0;
+  coachState.wsSessionId = coachMakeSessionId(currentPlayer, 'weak_spots_drill');
+  coachState.wsStartedAt = Date.now();
+  coachState.wsTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.wsModel = COACH_WS_MODEL;
+  coachState.wsTopicHint = null;  // populated only if a future UX adds quick-pick chips
+  // Switch UI
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Weak Spots · ~30 min</div>`
+  );
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Looking at your weak spots…</span>');
+  // First worker call — synthetic "ready" so the model emits the topic proposal turn
+  const initMsg = { role: 'user', content: 'ready' };
+  coachState.wsMessages.push(initMsg);
+  const result = await coachWorkerCall({
+    mode: 'weak_spots_drill',
+    model: coachState.wsModel,
+    messages: coachState.wsMessages,
+    context: coachBuildContext({
+      topic_hint: coachState.wsTopicHint,
+      coach_notes: {
+        weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
+        engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
+        recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
+      },
+    }),
+    session_id: coachState.wsSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    document.getElementById('coachExitRow').style.display = '';
+    coachState.type = null;
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.wsMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.wsTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.wsTokensTotal.input += t.input || 0;
+  coachState.wsTokensTotal.output += t.output || 0;
+  coachState.wsTokensTotal.cache_read += t.cache_read || 0;
+  coachState.wsTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.wsModel = result.model_used;
+  // Show input row + end button
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowWeakSpotsEndRow();
+  document.getElementById('coachExitRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowWeakSpotsEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End session';
+  endBtn.onclick = () => coachWeakSpotsEnd();
+  row.appendChild(endBtn);
+  if (coachState.wsTurnCount >= COACH_WS_SOFT_TURN_CAP) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "We've covered a lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachWeakSpotsSendUserTurn() {
+  if (coachState.type !== 'weak_spots_drill' || coachState.wsBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.wsBusy = true;
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  coachState.wsMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  const cn = coachState.playerCoachNotes || {};
+  const result = await coachWorkerCall({
+    mode: 'weak_spots_drill',
+    model: coachState.wsModel,
+    messages: coachState.wsMessages,
+    context: coachBuildContext({
+      topic_hint: coachState.wsTopicHint,
+      coach_notes: {
+        weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
+        engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
+        recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
+      },
+    }),
+    session_id: coachState.wsSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    coachState.wsMessages.pop();
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.wsBusy = false;
+    coachShowWeakSpotsEndRow();
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.wsMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.wsTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.wsTokensTotal.input += t.input || 0;
+  coachState.wsTokensTotal.output += t.output || 0;
+  coachState.wsTokensTotal.cache_read += t.cache_read || 0;
+  coachState.wsTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.wsModel = result.model_used;
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.wsBusy = false;
+  coachShowWeakSpotsEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachWeakSpotsEnd() {
+  if (coachState.type !== 'weak_spots_drill') return;
+  if (coachState.wsBusy) return;
+  // If no real user turns yet (only the synthetic "ready"), just go back
+  if (!coachState.wsMessages.filter(m => m.role === 'user' && m.content !== 'ready').length) {
+    coachShowPicker();
+    return;
+  }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.wsBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the session…</span>');
+  const closingMessages = coachState.wsMessages.concat([{ role: 'user', content: "That's it — wrap up the session." }]);
+  const cn = coachState.playerCoachNotes || {};
+  const result = await coachWorkerCall({
+    mode: 'weak_spots_drill',
+    model: coachState.wsModel,
+    messages: closingMessages,
+    context: coachBuildContext({
+      topic_hint: coachState.wsTopicHint,
+      coach_notes: {
+        weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
+        engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
+        recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
+      },
+    }),
+    session_id: coachState.wsSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the session: ' + escapeHtml(coachFriendlyError(result)) + ' (your conversation will not be logged)</em>',
+      'feedback-wrong');
+    coachState.wsBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.wsMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.wsMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.wsTokensTotal.input += t.input || 0;
+  coachState.wsTokensTotal.output += t.output || 0;
+  coachState.wsTokensTotal.cache_read += t.cache_read || 0;
+  coachState.wsTokensTotal.cache_creation += t.cache_creation || 0;
+  // Persist coach_sessions doc + merge weak_patterns + fold proficiency assessment.
+  // coachWriteSessionLogStandalone accepts mode='weak_spots_drill' directly; it
+  // writes the canonical coach_sessions shape (includes topics_covered, which is
+  // how stats-review filters for weak_spots:* entries).
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: coachState.wsSessionId,
+      mode: 'weak_spots_drill',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.wsMessages,
+      model_used: result.model_used || coachState.wsModel,
+      tokens_used: coachState.wsTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
+      const summary = (result.session_metadata.session_summary || '').slice(0, 280);
+      const topicId = (result.session_metadata.topic_id || '').toString().trim() || 'unknown';
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed, {
+        session_id: coachState.wsSessionId,
+        note: 'Weak Spots (' + topicId + ') — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (turns: ' + coachState.wsTurnCount + ')',
+      });
+    }
+    // Silent CEFR fold — same path as Free Write; coachFoldFreeWriteAssessment
+    // is mode-agnostic (works on session_metadata.assessment + sessionId).
+    coachFoldFreeWriteAssessment(result.session_metadata && result.session_metadata.assessment, coachState.wsSessionId);
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Session saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  const tot = coachState.wsTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Session tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.wsBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
+}
+
+// ─── Translation Drill (live AI) — Phase D T1 rollout ──────────────────────
+// Live RU→EN translation drill. Replaces library `translation` as the primary
+// path when online + API available; library remains offline fallback (router in
+// coachStartType handles the cutover). Mirrors phrase_swap_drill in shape —
+// conversational scoring via the worker, session-end emits per-item results +
+// assessment block for proficiency tracking.
+const COACH_TD_MODEL = COACH_FW_MODEL;
+const COACH_TD_DEFAULT_ITEMS = 8;
+const COACH_TD_MAX_ITEMS = 12;
+
+async function coachStartTranslationDrillLive(opts) {
+  opts = opts || {};
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable || !navigator.onLine) {
+    // Defensive — router checks this, but if reached anyway, fall back to library
+    return coachStartType('translation', { forceLibrary: true });
+  }
+  // Pull fresh player doc so we pick up overnight weak_patterns updates from
+  // the daily stats review (parity with Weak Spots / Phrase Swaps).
+  let playerDoc;
+  try {
+    playerDoc = await fsGet('players/' + currentPlayer);
+  } catch (e) {
+    // Network/auth issue reading Firestore — drop to library
+    return coachStartType('translation', { forceLibrary: true });
+  }
+  const cn = (playerDoc && playerDoc.coach_notes) || {};
+  coachState.playerCoachNotes = cn;
+  // Per-player target_item_count: respect existing planned-total overrides
+  // (Anna's translation is capped at 10 in the legacy library path) but cap to
+  // worker's TD_MAX_ITEMS.
+  const planOverride = (COACH_PLANNED_TOTAL_OVERRIDES.translation || {})[currentPlayer];
+  const targetCount = Math.min(
+    planOverride || COACH_TD_DEFAULT_ITEMS,
+    COACH_TD_MAX_ITEMS
+  );
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  // Reset state
+  coachState.type = 'translation_drill';
+  coachState.tdMessages = [];
+  coachState.tdTurnCount = 0;
+  coachState.tdSessionId = coachMakeSessionId(currentPlayer, 'translation_drill');
+  coachState.tdStartedAt = Date.now();
+  coachState.tdTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.tdModel = COACH_TD_MODEL;
+  coachState.tdTargetCount = targetCount;
+  // UI
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Translation Drill · ${targetCount} items · live AI</div>`
+  );
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Setting up…</span>');
+  const initMsg = { role: 'user', content: 'ready' };
+  coachState.tdMessages.push(initMsg);
+  const result = await coachWorkerCall({
+    mode: 'translation_drill',
+    model: coachState.tdModel,
+    messages: coachState.tdMessages,
+    context: coachBuildContext({
+      target_item_count: targetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.tdSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    // Live failed before the first turn — drop to library so the player still gets a session
+    coachAppendMessage('assistant',
+      '<em>Live drill unavailable — falling back to library items.</em>',
+      'feedback-wrong');
+    // Clear state and route to library path
+    coachState.type = null;
+    return coachStartType('translation', { forceLibrary: true });
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.tdMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.tdTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.tdTokensTotal.input += t.input || 0;
+  coachState.tdTokensTotal.output += t.output || 0;
+  coachState.tdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.tdTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.tdModel = result.model_used;
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowTranslationDrillEndRow();
+  document.getElementById('coachExitRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowTranslationDrillEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End drill';
+  endBtn.onclick = () => coachTranslationDrillEnd();
+  row.appendChild(endBtn);
+  // Soft nudge once the player has hit the target item count
+  if (coachState.tdTurnCount >= coachState.tdTargetCount) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "That's the lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachTranslationDrillSendUserTurn() {
+  if (coachState.type !== 'translation_drill' || coachState.tdBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.tdBusy = true;
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  coachState.tdMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'translation_drill',
+    model: coachState.tdModel,
+    messages: coachState.tdMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.tdTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.tdSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    coachState.tdMessages.pop();
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.tdBusy = false;
+    coachShowTranslationDrillEndRow();
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.tdMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.tdTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.tdTokensTotal.input += t.input || 0;
+  coachState.tdTokensTotal.output += t.output || 0;
+  coachState.tdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.tdTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.tdModel = result.model_used;
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.tdBusy = false;
+  coachShowTranslationDrillEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachTranslationDrillEnd() {
+  if (coachState.type !== 'translation_drill') return;
+  if (coachState.tdBusy) return;
+  if (!coachState.tdMessages.filter(m => m.role === 'user' && m.content !== 'ready').length) {
+    coachShowPicker();
+    return;
+  }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.tdBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the drill…</span>');
+  const closingMessages = coachState.tdMessages.concat([{ role: 'user', content: "That's it — wrap up the drill." }]);
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'translation_drill',
+    model: coachState.tdModel,
+    messages: closingMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.tdTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.tdSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the drill: ' + escapeHtml(coachFriendlyError(result)) + ' (your responses will not be logged)</em>',
+      'feedback-wrong');
+    coachState.tdBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.tdMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.tdMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.tdTokensTotal.input += t.input || 0;
+  coachState.tdTokensTotal.output += t.output || 0;
+  coachState.tdTokensTotal.cache_read += t.cache_read || 0;
+  coachState.tdTokensTotal.cache_creation += t.cache_creation || 0;
+  // Persist: coach_sessions log + weak_patterns merge + proficiency fold (same path as Weak Spots / Free Write)
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: coachState.tdSessionId,
+      mode: 'translation_drill',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.tdMessages,
+      model_used: result.model_used || coachState.tdModel,
+      tokens_used: coachState.tdTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
+      const summary = (result.session_metadata.session_summary || '').slice(0, 280);
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed, {
+        session_id: coachState.tdSessionId,
+        note: 'Translation Drill — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (items: ' + coachState.tdTurnCount + ')',
+      });
+    }
+    coachFoldFreeWriteAssessment(result.session_metadata && result.session_metadata.assessment, coachState.tdSessionId);
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Drill saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  const tot = coachState.tdTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Drill tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.tdBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
+}
+
+// ─── Error Correction Drill (live AI) — Phase D T1 rollout ─────────────────
+// Live "one sentence, one error" drill. Replaces library `error_correction` as
+// the primary path when online + API up; library remains offline fallback.
+// Same shape as translation_drill — conversational scoring, per-item logging,
+// proficiency assessment fold. Items per session capped to ECD_MAX_ITEMS=12.
+const COACH_ECD_MODEL = COACH_FW_MODEL;
+const COACH_ECD_DEFAULT_ITEMS = 8;
+const COACH_ECD_MAX_ITEMS = 12;
+
+async function coachStartErrorCorrectionDrillLive(opts) {
+  opts = opts || {};
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  if (coachState.apiUnavailable || !navigator.onLine) {
+    return coachStartType('error_correction', { forceLibrary: true });
+  }
+  let playerDoc;
+  try {
+    playerDoc = await fsGet('players/' + currentPlayer);
+  } catch (e) {
+    return coachStartType('error_correction', { forceLibrary: true });
+  }
+  const cn = (playerDoc && playerDoc.coach_notes) || {};
+  coachState.playerCoachNotes = cn;
+  const planOverride = (COACH_PLANNED_TOTAL_OVERRIDES.error_correction || {})[currentPlayer];
+  const targetCount = Math.min(
+    planOverride || COACH_ECD_DEFAULT_ITEMS,
+    COACH_ECD_MAX_ITEMS
+  );
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  coachState.type = 'error_correction_drill';
+  coachState.ecMessages = [];
+  coachState.ecTurnCount = 0;
+  coachState.ecSessionId = coachMakeSessionId(currentPlayer, 'error_correction_drill');
+  coachState.ecStartedAt = Date.now();
+  coachState.ecTokensTotal = { input: 0, output: 0, cache_read: 0, cache_creation: 0 };
+  coachState.ecModel = COACH_ECD_MODEL;
+  coachState.ecTargetCount = targetCount;
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  document.getElementById('coachChat').style.display = '';
+  document.getElementById('coachChat').innerHTML = '';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Error Correction · ${targetCount} items · live AI</div>`
+  );
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Setting up…</span>');
+  const initMsg = { role: 'user', content: 'ready' };
+  coachState.ecMessages.push(initMsg);
+  const result = await coachWorkerCall({
+    mode: 'error_correction_drill',
+    model: coachState.ecModel,
+    messages: coachState.ecMessages,
+    context: coachBuildContext({
+      target_item_count: targetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.ecSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Live drill unavailable — falling back to library items.</em>',
+      'feedback-wrong');
+    coachState.type = null;
+    return coachStartType('error_correction', { forceLibrary: true });
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.ecMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.ecTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.ecTokensTotal.input += t.input || 0;
+  coachState.ecTokensTotal.output += t.output || 0;
+  coachState.ecTokensTotal.cache_read += t.cache_read || 0;
+  coachState.ecTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.ecModel = result.model_used;
+  document.getElementById('coachInputRow').style.display = '';
+  coachShowErrorCorrectionDrillEndRow();
+  document.getElementById('coachExitRow').style.display = 'none';
+  const fld = document.getElementById('coachInputField');
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  setTimeout(() => fld.focus(), 80);
+}
+
+function coachShowErrorCorrectionDrillEndRow() {
+  const row = document.getElementById('coachActionRow');
+  row.innerHTML = '';
+  const endBtn = document.createElement('button');
+  endBtn.textContent = '✓ End drill';
+  endBtn.onclick = () => coachErrorCorrectionDrillEnd();
+  row.appendChild(endBtn);
+  if (coachState.ecTurnCount >= coachState.ecTargetCount) {
+    const nudge = document.createElement('div');
+    nudge.style.cssText = 'flex-basis:100%;font-size:.78rem;color:var(--muted);text-align:center;margin-top:.2rem;';
+    nudge.textContent = "That's the lot — wrap up?";
+    row.appendChild(nudge);
+  }
+  row.style.display = '';
+}
+
+async function coachErrorCorrectionDrillSendUserTurn() {
+  if (coachState.type !== 'error_correction_drill' || coachState.ecBusy) return;
+  const fld = document.getElementById('coachInputField');
+  const text = (fld.value || '').trim();
+  if (!text) { fld.focus(); return; }
+  coachState.ecBusy = true;
+  fld.value = '';
+  coachAutoGrowInput();
+  fld.disabled = true;
+  document.getElementById('coachSendBtn').disabled = true;
+  coachState.ecMessages.push({ role: 'user', content: text });
+  coachAppendMessage('user', escapeHtml(text));
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Coach is thinking…</span>');
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'error_correction_drill',
+    model: coachState.ecModel,
+    messages: coachState.ecMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.ecTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.ecSessionId,
+    is_session_end: false,
+  });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>' + escapeHtml(coachFriendlyError(result)) + '</em>',
+      'feedback-wrong');
+    coachState.ecMessages.pop();
+    fld.disabled = false;
+    document.getElementById('coachSendBtn').disabled = false;
+    coachState.ecBusy = false;
+    coachShowErrorCorrectionDrillEndRow();
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''));
+  coachState.ecMessages.push({ role: 'assistant', content: result.content || '' });
+  coachState.ecTurnCount += 1;
+  const t = result.tokens_used || {};
+  coachState.ecTokensTotal.input += t.input || 0;
+  coachState.ecTokensTotal.output += t.output || 0;
+  coachState.ecTokensTotal.cache_read += t.cache_read || 0;
+  coachState.ecTokensTotal.cache_creation += t.cache_creation || 0;
+  if (result.model_used) coachState.ecModel = result.model_used;
+  fld.disabled = false;
+  document.getElementById('coachSendBtn').disabled = false;
+  coachState.ecBusy = false;
+  coachShowErrorCorrectionDrillEndRow();
+  setTimeout(() => fld.focus(), 80);
+}
+
+async function coachErrorCorrectionDrillEnd() {
+  if (coachState.type !== 'error_correction_drill') return;
+  if (coachState.ecBusy) return;
+  if (!coachState.ecMessages.filter(m => m.role === 'user' && m.content !== 'ready').length) {
+    coachShowPicker();
+    return;
+  }
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  coachState.ecBusy = true;
+  const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Wrapping up the drill…</span>');
+  const closingMessages = coachState.ecMessages.concat([{ role: 'user', content: "That's it — wrap up the drill." }]);
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const result = await coachWorkerCall({
+    mode: 'error_correction_drill',
+    model: coachState.ecModel,
+    messages: closingMessages,
+    context: coachBuildContext({
+      target_item_count: coachState.ecTargetCount,
+      focus_categories: Array.isArray(profile.focus_categories) ? profile.focus_categories : [],
+    }),
+    session_id: coachState.ecSessionId,
+    is_session_end: true,
+  }, { retries: 1, timeoutMs: 45000 });
+  if (typingEl && typingEl.parentNode) typingEl.parentNode.removeChild(typingEl);
+  if (!result.ok) {
+    coachAppendMessage('assistant',
+      '<em>Could not finalise the drill: ' + escapeHtml(coachFriendlyError(result)) + ' (your responses will not be logged)</em>',
+      'feedback-wrong');
+    coachState.ecBusy = false;
+    document.getElementById('coachExitRow').style.display = '';
+    return;
+  }
+  coachAppendMessage('assistant', coachRenderMarkdownLite(result.content || ''), 'feedback-correct');
+  coachState.ecMessages.push({ role: 'user', content: closingMessages[closingMessages.length - 1].content });
+  coachState.ecMessages.push({ role: 'assistant', content: result.content || '' });
+  const t = result.tokens_used || {};
+  coachState.ecTokensTotal.input += t.input || 0;
+  coachState.ecTokensTotal.output += t.output || 0;
+  coachState.ecTokensTotal.cache_read += t.cache_read || 0;
+  coachState.ecTokensTotal.cache_creation += t.cache_creation || 0;
+  try {
+    await coachWriteSessionLogStandalone({
+      session_id: coachState.ecSessionId,
+      mode: 'error_correction_drill',
+      session_metadata: result.session_metadata || null,
+      messages: coachState.ecMessages,
+      model_used: result.model_used || coachState.ecModel,
+      tokens_used: coachState.ecTokensTotal,
+      exercise_id: null,
+      exercise_version: null,
+    });
+    if (result.session_metadata && Array.isArray(result.session_metadata.error_patterns_observed)) {
+      const summary = (result.session_metadata.session_summary || '').slice(0, 280);
+      await coachMergeWeakPatterns(result.session_metadata.error_patterns_observed, {
+        session_id: coachState.ecSessionId,
+        note: 'Error Correction — ' + (summary || 'patterns: ' + result.session_metadata.error_patterns_observed.join(', ')) + ' (items: ' + coachState.ecTurnCount + ')',
+      });
+    }
+    coachFoldFreeWriteAssessment(result.session_metadata && result.session_metadata.assessment, coachState.ecSessionId);
+  } catch (e) {
+    coachAppendMessage('assistant', '<em>Drill saved locally but could not write to Firestore: ' + escapeHtml(e.message) + '</em>');
+  }
+  const tot = coachState.ecTokensTotal;
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);">Drill tokens: ${tot.input} in / ${tot.output} out` +
+    (tot.cache_read ? ` (${tot.cache_read} from cache)` : '') + '</div>'
+  );
+  coachState.ecBusy = false;
+  document.getElementById('coachExitRow').style.display = '';
 }
 
 // ─── Spell Help (D7) ────────────────────────────────────────────────────────
@@ -10088,6 +10880,16 @@ const COACH_TYPE_LABEL = {
 async function coachStartType(type, opts) {
   opts = opts || {};
   if (!currentPlayer) { alert('Sign in first.'); return; }
+  // Phase D T1 routing: live-AI is primary for converted types; library is the
+  // offline fallback. opts.forceLibrary bypasses the live path (used by error
+  // handlers that drop back to library after a worker failure).
+  const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  if (type === 'translation' && liveAvail && !opts.forceLibrary) {
+    return coachStartTranslationDrillLive(opts);
+  }
+  if (type === 'error_correction' && liveAvail && !opts.forceLibrary) {
+    return coachStartErrorCorrectionDrillLive(opts);
+  }
   const libCollection = COACH_TYPE_TO_LIBRARY[type];
   if (!libCollection) return; // unsupported type
   let exercises;
@@ -10919,6 +11721,9 @@ function coachSendDispatch() {
   if (coachState.escalateRetryActive) return coachEscalateRetrySubmit();
   if (coachState.type === 'free_write') return coachFreeWriteSendUserTurn();
   if (coachState.type === 'phrase_swap_drill') return coachPhraseSwapSendUserTurn();
+  if (coachState.type === 'weak_spots_drill') return coachWeakSpotsSendUserTurn();
+  if (coachState.type === 'translation_drill') return coachTranslationDrillSendUserTurn();
+  if (coachState.type === 'error_correction_drill') return coachErrorCorrectionDrillSendUserTurn();
   return coachSubmitAnswer(); // translation default
 }
 

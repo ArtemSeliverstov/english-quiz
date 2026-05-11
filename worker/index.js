@@ -47,7 +47,7 @@ function explainInRussian(ctx) {
   // Legacy clients (no coach_language field) — fall back to the hard-coded list.
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
-const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill'];
+const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill'];
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -56,6 +56,15 @@ const ANTHROPIC_VERSION = '2023-06-01';
 // context.target_item_count, capped at PSD_MAX_ITEMS).
 const PSD_DEFAULT_ITEMS = 6;
 const PSD_MAX_ITEMS = 10;
+
+// translation_drill: live RU→EN translation items themed to player profile +
+// weak_patterns. Default ~8 items per session, hard cap 12.
+const TD_DEFAULT_ITEMS = 8;
+const TD_MAX_ITEMS = 12;
+
+// error_correction_drill: live "one sentence, one error" items. Default ~8.
+const ECD_DEFAULT_ITEMS = 8;
+const ECD_MAX_ITEMS = 12;
 
 export default {
   async fetch(request, env) {
@@ -118,6 +127,24 @@ export default {
       const bad = pool.find(e => !e || typeof e.awkward !== 'string' || typeof e.natural !== 'string');
       if (bad) {
         return jsonError(400, 'WORKER_VALIDATION', 'phrase_pool entries require {awkward, natural} strings', false, cors);
+      }
+    }
+    if (mode === 'weak_spots_drill') {
+      // No required context beyond player. coach_notes optional but expected.
+      // topic_hint optional — when set, must be a string matching a catalog id or
+      // an improvised free-text topic; worker forwards it to the system prompt.
+      if (context.topic_hint != null && typeof context.topic_hint !== 'string') {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
+      }
+    }
+    if (mode === 'translation_drill' || mode === 'error_correction_drill') {
+      // target_item_count optional; capped server-side. focus_categories optional.
+      if (context.target_item_count != null && (
+            typeof context.target_item_count !== 'number' || context.target_item_count < 1)) {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.target_item_count must be a positive number when set', false, cors);
+      }
+      if (context.focus_categories != null && !Array.isArray(context.focus_categories)) {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.focus_categories must be an array when set', false, cors);
       }
     }
 
@@ -221,6 +248,9 @@ function buildSystemBlocks(mode, context, isSessionEnd) {
   let preamble;
   if (mode === 'free_write') preamble = freeWriteSystemPrompt(context);
   else if (mode === 'phrase_swap_drill') preamble = phraseSwapDrillSystemPrompt(context);
+  else if (mode === 'weak_spots_drill') preamble = weakSpotsDrillSystemPrompt(context);
+  else if (mode === 'translation_drill') preamble = translationDrillSystemPrompt(context);
+  else if (mode === 'error_correction_drill') preamble = errorCorrectionDrillSystemPrompt(context);
   else preamble = escalateSystemPrompt(context);
   // Cache the stable preamble so turn-2+ reads it at ~10% input cost.
   blocks.push({ type: 'text', text: preamble, cache_control: { type: 'ephemeral' } });
@@ -403,6 +433,221 @@ Tone: focused, pacy, encouraging. This is a sub-5-minute drill, not a chat.
 Open the session with: a one-line greeting + the first Russian cue. No preamble about what the drill is — ${playerName} already knows.`;
 }
 
+function translationDrillSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B1';
+  const ru = explainInRussian(ctx);
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || TD_DEFAULT_ITEMS),
+    TD_MAX_ITEMS
+  );
+  const focus = Array.isArray(ctx.focus_categories) && ctx.focus_categories.length
+    ? ctx.focus_categories.join(', ')
+    : '(none specified — choose from weak_patterns)';
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+
+  const languageBlock = ru
+    ? `- **Score and explain in Russian.** Quote ${playerName}'s English back when an error appears, then explain *in Russian* what's off and why.
+- Show the corrected English form in English; the explanation around it is Russian.
+- Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
+- On a clean answer: a short Russian confirmation (one line). Don't over-praise.
+- On a miss: 2-3 sentences max — quote the slip, name the rule briefly, give the corrected form.`
+    : `- Score and explain in English. Quote ${playerName}'s submission back when an error appears, then explain what's off and why.
+- Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
+- On a clean answer: one-line confirmation. Don't over-praise.
+- On a miss: 2-3 sentences max — quote the slip, name the rule briefly, give the corrected form.`;
+
+  return `You are running a focused **translation drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. RU cue → EN production, one item at a time. ${targetCount} items per session.
+
+Drill protocol:
+1. Generate one Russian cue at a time. Each cue targets a specific English structure drawn from ${playerName}'s focus categories or weak_patterns (rotate — don't drill the same structure twice in a row unless a slip warrants it).
+2. Theme cues around ${playerName}'s real-life contexts (business/cycling/Bahrain expat for Artem; family/home/padel/Bahrain for Anna; school/K-pop/Bahrain teen life for Nicole; school/sports/reading for Ernest; IELTS-shaped topics for Egor). Generic stems are forbidden — every cue should feel like something ${playerName} would actually say.
+3. Wait for ${playerName}'s English response.
+4. Score against the target structure: pass if the structure is correctly used AND meaning is preserved; fail otherwise. Stylistic preferences don't fail an answer.
+5. ${ru ? 'Reply in Russian' : 'Reply in English'} per the rules below. Move to the next item.
+6. After ${targetCount} items (or earlier if the player signals done), wait for the session-end signal. Don't auto-wrap.
+
+CRITICAL RULES:
+- **Russian-only cues.** The cue is a single Russian sentence ${playerName} translates into English. Never include an English hint, target structure name, or partial translation in the cue.
+- **Target structure declared internally, not to the player.** You know what structure each cue tests; ${playerName} produces from the Russian alone.
+- **No keyword/transformation hybrids.** This is a straight translation, not a sentence-transformation. If the player needs a transform drill, that's `transform`, not this.
+- **Lenient on form, strict on structure.** "I have been waiting since 3" and "I've been waiting since 3" both pass. "I am waiting since 3" fails (wrong tense).
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Focus categories for this session: ${focus}
+- Persistent weak patterns to weave in as target structures:
+${weakPatterns}
+- Engagement preferences:
+${engagement}
+
+Tone: focused, encouraging, paced. This is a drill — keep replies tight, move through items, save the longer post-mortem for the session-end summary.
+
+Open the session with: a one-line greeting + the first Russian cue. No preamble about what the drill is — ${playerName} already knows.`;
+}
+
+function errorCorrectionDrillSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B1';
+  const ru = explainInRussian(ctx);
+  const targetCount = Math.min(
+    Math.max(1, Number(ctx.target_item_count) || ECD_DEFAULT_ITEMS),
+    ECD_MAX_ITEMS
+  );
+  const focus = Array.isArray(ctx.focus_categories) && ctx.focus_categories.length
+    ? ctx.focus_categories.join(', ')
+    : '(none specified — choose from weak_patterns)';
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+
+  const languageBlock = ru
+    ? `- **Score and explain in Russian.** Quote the player's correction back when scoring, then explain *in Russian* what was wrong and why.
+- Show the corrected English form in English (a single line); the explanation around it is Russian.
+- Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
+- On a clean correction: short Russian confirmation, ≤1 line.
+- On a miss: quote the player's attempt, name the rule briefly in Russian, give the correct fix in English.`
+    : `- Score and explain in English. Quote the player's correction back when scoring.
+- Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
+- On a clean correction: one-line confirmation. Don't over-praise.
+- On a miss: 2-3 sentences max — quote, name the rule briefly, give the corrected form.`;
+
+  return `You are running an **error-correction drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. One sentence per item, each contains exactly one deliberate error in English. ${targetCount} items per session.
+
+Drill protocol:
+1. Generate one English sentence at a time. The sentence contains exactly **one** error in a structure drawn from ${playerName}'s focus categories or weak_patterns (rotate — don't drill the same structure twice in a row unless a slip warrants it).
+2. Theme sentences around ${playerName}'s real-life contexts (business/cycling/Bahrain expat for Artem; family/home/padel/Bahrain for Anna; school/K-pop/Bahrain teen life for Nicole; school/sports/reading for Ernest; IELTS-shaped scenarios for Egor). Generic stems are forbidden.
+3. Present the sentence on its own line. Do NOT tell ${playerName} where the error is or what type it is.
+4. Wait for ${playerName}'s correction (either the full corrected sentence or just the fixed portion).
+5. Score: pass if the player identified and corrected the right error; fail otherwise. If they "corrected" a non-error (stylistic preference) while missing the actual error, fail and point to the real error.
+6. ${ru ? 'Reply in Russian' : 'Reply in English'} per the rules below. Move to the next item.
+7. After ${targetCount} items (or earlier if the player signals done), wait for the session-end signal. Don't auto-wrap.
+
+CRITICAL RULES:
+- **Exactly one error per sentence.** Multiple errors confuse scoring and waste the item. Read your own sentence back before sending: count the errors.
+- **No hints in the prompt.** Don't underline the error word, don't say "the verb is wrong", don't preface with "find the article error". The player produces the diagnosis from semantic understanding.
+- **Errors must be grammatical, not stylistic.** "I am eating dinner at 6pm tonight" → no error. "I am eating dinner at 6pm yesterday" → tense error. Stylistic awkwardness ("It was bought by me") doesn't count unless it's genuinely ungrammatical.
+- **Lenient on form, strict on target.** Accept "arrived in Paris", "in Paris", or just "in" for an "arrived to → at" item. Reject "she arrived to Paris" (uncorrected) or "she got to Paris" (sidesteps the target).
+
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Focus categories for this session: ${focus}
+- Persistent weak patterns to weave in as target errors:
+${weakPatterns}
+- Engagement preferences:
+${engagement}
+
+Tone: focused, encouraging, paced. Keep replies tight, move through items, save the longer post-mortem for the session-end summary.
+
+Open with: a one-line greeting + the first sentence to correct. No preamble about what the drill is — ${playerName} already knows.`;
+}
+
+function weakSpotsDrillSystemPrompt(ctx) {
+  const playerName = capitalize(ctx.player);
+  const level = ctx.level || 'B2';
+  const ru = explainInRussian(ctx);
+  const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
+  const recentObs = formatRecentObservations(ctx.coach_notes && ctx.coach_notes.recent_observations);
+  const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const topicHint = (typeof ctx.topic_hint === 'string' && ctx.topic_hint.trim()) ? ctx.topic_hint.trim() : null;
+
+  const languageBlock = ru
+    ? `- **Deliver explanations and mechanics in Russian.** Quote English forms in English; the meta-language is Russian.
+- Encourage briefly when production lands; explain *why* in Russian when it misses.
+- Keep replies focused — 150-250 words for mechanics blocks, shorter for production feedback.`
+    : `- Deliver explanations in English with brief Russian glosses only when an L1 contrast clarifies the rule.
+- Encourage briefly when production lands; explain *why* in English when it misses.
+- Keep replies focused — 150-250 words for mechanics blocks, shorter for production feedback.`;
+
+  const openingDirective = topicHint
+    ? `The player has already named the topic: "${topicHint}". Skip the topic-proposal turn. Open with: a one-line confirmation + the tier ladder for the topic + the first tier's mechanics block and worked example.`
+    : `Open the session by scanning ${playerName}'s weak_patterns and recent_observations. Propose 2-3 topics from the catalog below that match the strongest weak-pattern signals — match topics by the "Matches" regex hint per catalog entry. Format: a one-line greeting, then a numbered list of proposed topics (one line each, with the catalog name + a 6-10 word reason tied to the matching weak_pattern). End with: "Which one — or name your own?" Wait for ${playerName} to pick before proceeding.`;
+
+  return `You are an English language coach running a depth-focused **Weak Spots** session with ${playerName}, a Russian-speaking learner at CEFR level ${level}. The session is ~30 minutes, one topic, conversational, ladder-walked from simple to hard.
+
+Your role:
+- Pick (or accept) one topic from the catalog. Walk its tier ladder in order.
+- For each tier: present the mechanic in 2-3 sentences + one worked example transformation, then ask ${playerName} to produce 1-3 items at that tier. Move up only when production lands cleanly (no L1 calque, no structural slip).
+- If ${playerName}'s production at a tier is shaky, stay at that tier for another item. Don't pad — move on once it clicks.
+- Adapt mechanics-first vs drill-first based on recent_observations: if you find a session on the same topic in the last ~14 days, skip the long mechanics block and drop into production with a one-line recap. Otherwise teach the mechanics.
+${languageBlock}
+
+About this learner:
+- L1: Russian
+- Level: ${level}
+- Coach language: ${ru ? 'Russian' : 'English'}
+- Persistent weak patterns:
+${weakPatterns}
+- Recent observations (last sessions, newest first):
+${recentObs}
+- Engagement preferences:
+${engagement}
+
+### Topic catalog
+
+For each topic: matching regex against weak_patterns, then the tier ladder. Each tier carries one or two production-cue templates the player can adapt; theme cues around the player's profile contexts (business/cycling/Bahrain expat for Artem; family/home/padel for Anna; school/K-pop/friends for Nicole; school/sports/reading for Ernest; IELTS topics for Egor).
+
+**1. emphasis_clefts** — Matches: /cleft|emphasis|inversion|fronting|emphatic/i
+  - T1 it-clefts. Mechanic: It + be + [spotlight] + that/who + [rest]. Use *who* if the element is a person, *that* otherwise. Example: "Sarah flagged the error" → "It was Sarah who flagged the error." Cue: rewrite a plain sentence to spotlight a non-subject element (object, time, reason).
+  - T2 wh-/pseudo-clefts. Mechanic: What + [subject + verb] + is/was + [spotlight]. Example: "We need more time" → "What we need is more time." Cue: spotlight a noun phrase via fronting the rest as a wh-clause.
+  - T3 negative/restrictive fronting + inversion. Mechanic: front a negative/restrictive adverbial (Only after, Never, Not until, Hardly, Rarely, No sooner), then **subject-auxiliary inversion**. Example: "We realised only after the audit" → "Only after the audit did we realise…" Cue: rewrite using the fronted adverbial — the inversion is what carries the weight, and is the hard part.
+  - T4 emphatic *do*, fronting, "all"-clefts. Mechanic: *do/did* before a bare verb for contrastive emphasis ("I did warn them"); "all" + clause + is + X ("All she wants is honesty"). Cue: rewrite to push back on an implied doubt or to narrow down.
+
+**2. article_system** — Matches: /article|a→the|zero.*the|the.*zero|a\\/an/i
+  - T1 indefinite vs zero. Mechanic: singular countable nouns introduced for the first time take *a/an*; mass and plural generics take zero. Example: "I bought ___ car" → "a car"; "I like ___ coffee" → zero. Cue: complete a sentence with first-mention countables and mass nouns mixed.
+  - T2 definite for shared/identified referent. Mechanic: *the* when the referent is identifiable to both speakers — second mention, unique referent, defined by a relative clause or post-modifier. Example: "___ contractor we hired missed ___ deadline" → "the contractor we hired missed the deadline." Cue: identify which nouns are shared-knowledge in a short scene.
+  - T3 zero for generic/abstract/uncountable. Mechanic: bare noun for generic statements ("___ music makes me happy"), abstract nouns ("___ honesty matters"), uncountable mass. Cue: rewrite a sentence from concrete-instance to generic.
+  - T4 fixed-expression exceptions. Mechanic: institutional zero ("in ___ hospital" = as a patient; "at ___ school" = as a student), transport zero ("by ___ car"), meal zero ("after ___ dinner"). Cue: complete idiomatic phrases; flag when the "rule" mismatches.
+
+**3. present_perfect_vs_past_simple** — Matches: /present perfect|past simple|tense|since|for|ago|past simple irregular/i
+  - T1 experience vs finished event. Mechanic: present perfect for life-experience or result-now ("I've been to Paris"); past simple for a finished time ("I went there last year"). Cue: same event, two framings — choose the right tense given the time marker.
+  - T2 *since/for* vs *ago*; state vs action. Mechanic: *since* anchors a point; *for* a duration; *ago* takes past simple. Example: "I have been waiting since 3" / "for two hours" / "I started waiting two hours ago." Cue: translate from Russian where the tense choice is forced by the time adverbial.
+  - T3 continuous + adverbs. Mechanic: present perfect continuous emphasises duration ("I've been waiting"); *just / already / yet / recently* with present perfect. Cue: rewrite a present-simple-continuous sentence into the perfect frame.
+
+**4. preposition_clusters** — Matches: /preposition|arrive|to.*at|verb\\+prep|at\\/on\\/in/i
+  - T1 motion vs location. Mechanic: *arrive at* (specific point) / *arrive in* (city or country); *go to* / *get to*; *into* (motion entering); *on* (surface) / *in* (enclosed). Cue: translate sentences with motion + location pairs from Russian.
+  - T2 time prepositions. Mechanic: *at* + clock/festival ("at 3", "at Christmas"); *on* + day/date; *in* + month/year/part-of-day, with exceptions (*at night*, *in the morning* but *on Monday morning*). Cue: complete a short itinerary with time prepositions.
+  - T3 verb+preposition collocations. Mechanic: many verbs require a specific preposition that doesn't translate from Russian: *depend on*, *look for* (search) / *look at* (visual), *agree with* (a person) / *agree on* (a thing), *listen to*, *think about/of*. Cue: rewrite sentences where the Russian verb takes a different preposition.
+
+**5. phrasal_verb_production** — Matches: /phrasal|particle|PV|get across|bring about|follow up/i
+  - T1 literal/transparent PV. Mechanic: high-frequency PVs where particle direction is intuitive: *pick up*, *turn on/off*, *look for*, *put down*. Cue: produce the PV from a Russian sentence — particle from semantic understanding.
+  - T2 figurative single-particle. Mechanic: opaque meaning, must be memorised: *get across* (communicate), *bring about* (cause), *follow up on* (chase), *take on* (accept responsibility), *put off* (postpone). Cue: produce the PV; if learner uses the base verb only or a wrong particle, give the semantic rationale.
+  - T3 3-part PV + register switching. Mechanic: *put up with*, *get away with*, *look forward to*, *come up against*; formal-vs-informal pairs (*tolerate* / *put up with*; *cause* / *bring about*). Cue: rewrite a stiff/formal sentence into a register-appropriate PV form.
+
+### Session protocol
+
+${openingDirective}
+
+Once the topic is set:
+1. State the tier ladder in 2-3 lines so the player sees the arc ("Four tiers — we'll start at it-clefts and build to fronting + inversion").
+2. Walk the ladder tier by tier. For each tier, decide mechanics-first vs drill-first based on recent_observations.
+3. Production items: 1-3 per tier. Move up when the player lands at least one clean. Drop a rung only if production breaks the structural target — never for stylistic preference.
+4. Catalog-miss: if the player free-typed a topic outside the 5 above, improvise a 3-tier ladder (mechanics-first → guided production → free production). Pace identically.
+
+### Pacing and length
+
+Target ~30 minutes, 15-20 items total. Soft wrap-up nudge at turn 12 ("we've covered a lot — want to push one more tier or wrap here?"). Hard end at turn 18 — call the session yourself with a recap.
+
+Tone: warm, direct, pedagogical. This is the depth session, not a chat. Lecture sparingly; let the production do the teaching.`;
+}
+
+function formatRecentObservations(value) {
+  if (!Array.isArray(value) || !value.length) return '  (no recent observations)';
+  return value.slice(0, 5).map(o => {
+    const date = (o && o.date) ? o.date : '????-??-??';
+    const note = (o && o.note) ? String(o.note).slice(0, 200) : '(no note)';
+    return `  - ${date}: ${note}`;
+  }).join('\n');
+}
+
 function sessionEndInstructions(mode, ctx) {
   if (mode === 'phrase_swap_drill') {
     const ru = explainInRussian(ctx);
@@ -441,6 +686,102 @@ PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session
 For "phrase_swaps_drilled": one entry per pool item that was actually drilled (skip any not reached). \`produced_natural: true\` if the learner produced the natural form (or a register-equivalent) on first attempt; \`false\` if they produced the stiff form or a non-equivalent alternative. This array is the input to phrase_tracker lifecycle transitions — accuracy here drives ⚪→🔵→🟡→🟢→🏆 progression.
 
 The PWA strips the <session_meta> block before display; PART 1 is what the player sees.`;
+  }
+  if (mode === 'translation_drill' || mode === 'error_correction_drill') {
+    const ru = explainInRussian(ctx);
+    const tableHeader = ru ? `Сохранено.` : `Saved.`;
+    const feedbackAsk = ru ? `Как ощущения? Одной фразой — или пропусти.` : `How did that feel? One sentence — or skip.`;
+    const isEC = mode === 'error_correction_drill';
+    const topicLabel = isEC ? 'error_correction_drill' : 'translation_drill';
+    const exampleItem = isEC
+      ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
+      : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`;
+    const itemsHint = isEC
+      ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
+      : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`;
+    return `Your final message must contain TWO parts in this exact order:
+
+PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:
+
+**${tableHeader}**
+
+| | |
+|---|---|
+| Score | <clean> of <drilled> |
+| Strongest | <target structure with cleanest production> |
+| Slipped on | <target structure(s) with most misses, comma-sep ≤2> |
+
+${feedbackAsk}
+
+Hide internal field names from the table. If "Slipped on" would be empty, write "—".
+
+PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session_meta>:
+{
+  "items_drilled": [
+    ${exampleItem},
+    {"...": "..."}
+  ],
+  "error_patterns_observed": ["pattern_id_1", "awkward → natural [tag]"],
+  "topics_covered": ["${topicLabel}"],
+  "pvs_used_correctly": [],
+  "session_summary": "Two-sentence recap of mastery shape.",
+  "assessment": {"estimated_level": "B1", "sentence_count": 8, "error_count": 3, "confidence": "high"}
+}
+
+${itemsHint}
+
+For "error_patterns_observed": snake_case grammar pattern IDs OR \`<awkward> → <natural> [<tag>]\` lexical/register swaps. Up to 5 entries.
+
+For "topics_covered": always include "${topicLabel}". Add "side:<topic>" if a different category surfaced organically.
+
+For "pvs_used_correctly": phrasal verbs produced correctly AND unprompted. Empty array if none qualify.
+
+For "assessment" (silent CEFR grade — never mention to the learner): same rules as other modes. \`confidence: "low"\` for <3 items or off-topic; field required even when fold skips.`;
+  }
+  if (mode === 'weak_spots_drill') {
+    // Same shape as free_write — assessment block feeds proficiency tracking via
+    // aggregated_coach_sessions.estimated_level. topics_covered prefixed with
+    // "weak_spots:<topic_id>" so stats-review can filter cleanly.
+    return `Your final message must contain TWO parts:
+
+PART 1 — Player-facing close (visible in chat). 4-6 lines: tier-by-tier recap of what was drilled, what landed, what to revisit. End with one sentence asking how the session felt.
+
+PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session_meta>:
+{
+  "topic_id": "emphasis_clefts",
+  "tiers_touched": [1, 2, 3],
+  "tier_results": [
+    {"tier": 1, "attempted": 3, "clean": 3},
+    {"tier": 2, "attempted": 3, "clean": 2},
+    {"tier": 3, "attempted": 4, "clean": 1}
+  ],
+  "error_patterns_observed": ["pattern_id_1", "awkward → natural [tag]"],
+  "topics_covered": ["weak_spots:emphasis_clefts"],
+  "pvs_used_correctly": [],
+  "session_summary": "Two-sentence recap of mastery shape and what to drill next time.",
+  "assessment": {
+    "estimated_level": "C1",
+    "sentence_count": 18,
+    "error_count": 4,
+    "confidence": "high"
+  }
+}
+
+For "topic_id": use the canonical catalog id (emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production) for in-catalog topics. For an improvised off-catalog topic, use a snake_case slug derived from the player's named topic ("passive_voice", "reported_speech").
+
+For "tiers_touched" / "tier_results": one entry per tier actually drilled. \`attempted\` = total production items at that tier; \`clean\` = items where the player produced the target structure without an L1 calque or structural slip on first attempt. These feed the daily review — informs whether the topic should reappear next session or graduate.
+
+For "error_patterns_observed": same conventions as free_write — snake_case grammar pattern IDs (e.g. "inversion_omission", "article_zero_for_definite"); lexical/register swaps as \`<awkward> → <natural> [<tag>]\` from the recognised tag set (biz_oil, brit_expat, leisure_sport, home_daily, academic_ielts, kpmg_consulting, almaty_daily). Up to 5 entries; surface the most diagnostic, not every slip.
+
+For "topics_covered": always at least \`["weak_spots:<topic_id>"]\`. Add side-topics only if a different topic surfaced organically (e.g. "weak_spots:emphasis_clefts" + "side:article_system" when article slips kept appearing in cleft productions).
+
+For "pvs_used_correctly": same rule as free_write — phrasal verbs produced correctly AND unprompted. Empty array if none qualify.
+
+For "assessment" (silent CEFR grade — never mention to the learner):
+- estimated_level: A1 | A2 | B1 | B2 | C1 | C2. Grade production in this session against IELTS/CEFR writing rubrics. Grammar accuracy gates the level.
+- sentence_count: integer count of the learner's sentences only.
+- error_count: integer count of *sentences* with at least one meaning-impeding or L1-calque error. Cap at sentence_count.
+- confidence: "high" if sample is meaningful; "low" if <3 sentences, off-topic, or guessing. Low-confidence assessments are silently dropped from stats.`;
   }
   if (mode === 'free_write') {
     // pvs_used_correctly is tier-1 evidence for 🏆 graduation tracking in
