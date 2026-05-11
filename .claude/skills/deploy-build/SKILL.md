@@ -52,6 +52,10 @@ Same push or follow-up commit.
 
 **6. Smoke test (live).** Tell Artem to open `artemseliverstov.github.io/english-quiz?reset=1` (busts SW cache), confirm version badge, log in as one player, answer one item, verify Firestore write, refresh, verify reload, tap any new deeplinks.
 
+## Preview probe safety
+
+Never exercise `syncToFirebase` / `fsMerge` / any deferred-write path from a `preview_*` probe against live Firestore. `setTimeout` fires AFTER your `await` returns, so mocks restored synchronously leak writes to real data. Either keep probes read-only, or mock ALL write fns AND `await new Promise(r => setTimeout(r, 100))` before unmocking. Caused the 2026-05-11 Nicole-wipe.
+
 ## Revert
 
 If anything fails after push:
