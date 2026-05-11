@@ -10,7 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
-## 2026-05-11
+## 2026-05-11 · Session r2
+### v20260511 — Learner-shell §4.4 polish: mid-quiz exit affordance + active-window-aware Coach picker filter
+
+Two scoped UI changes from the Stage 5 menu.
+
+- **Mid-quiz exit affordance**: subtle "End early" link below the progress bar on the quiz screen. New `exitQuizEarly()` function: zero answers → route to `learner-home` / `home`; one or more answers → confirm, truncate `sessionQs` to the answered count, call `finishSession()` so the partial counts toward streak, stats, and shows the results card with the correct score/total. Closes a long-standing escape-hatch gap noted as open in `phase2-build-plan.md` §4.4.
+- **Active-window-aware Coach picker filter**: new `COACH_TYPE_TO_CATEGORY` mapping (`article_drill`→Articles, `particle_sort`→Phrasal Verbs, `spelling_drill`→Spelling; translation + error_correction = cross-category). `coachApplyShellLayout` now hides type buttons whose required category isn't in `DB.learning_path.active_categories` — when the learner is on the learner shell with an active set. Builder shell (Artem, Egor) and players with no active_categories set bypass the filter and see every type with library content. Free Write + Phrase Swaps remain liveAI-gated, untouched.
+
+Preview probe verified both behaviours: simulated Anna's `active_categories=['Phrasal Verbs']` and confirmed picker hides article_drill + spelling_drill while showing particle_sort + translation + error_correction. `exitQuizEarly` with zero answers routes cleanly to learner-home; with answers, confirms and truncates correctly. No console errors.
+
+Q count: 2246 → 2246 (no change) · Version: v20260511
+
+---
+
+## 2026-05-11 · Session r1
 ### v20260510-r2 — Data-integrity root-cause fix: confirmPlayer() no longer writes previous player's stats to new player's Firestore doc
 
 Closes the 2026-05-02 Nicole-overwritten-with-Artem contamination at source. Three coordinated edits in `index.html`:
