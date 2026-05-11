@@ -3,8 +3,10 @@
 Canonical PV inventory A1→C1 with quiz coverage, current accuracy, and frequency in your context. Refreshed at each stats-review.
 
 **Baseline source**: `archive/phrasal_verbs_mastery_plan.html` (stats export 2026-04-04)
-**Last refresh**: 2026-05-05
+**Last refresh**: 2026-05-10 (Stage 0 stats-review; status values reflect Artem's `qStats` as of 2026-04-30 last-played)
 **Next refresh trigger**: any `stats-review` skill run that uploads fresh `family_stats_ai` JSON.
+
+**Methodology note (2026-05-10)**: the v20260508-r2 commit only added 3 truly new PV IDs (`cc_01–cc_03`); the other ~277 PV-question diff lines were existing bank items getting the new `themes` field. PVs flagged below as "added v20260508-r2" are baseline items that Artem already has months of attempts on — re-attribute to their original commit at next stats-review. Status values now derived from real `qStats`, not bank-presence inference.
 
 ---
 
@@ -15,7 +17,7 @@ Canonical PV inventory A1→C1 with quiz coverage, current accuracy, and frequen
 | PV input accuracy | 50% | 65% | 75%+ |
 | PV overall accuracy | 69% | 75% | 80%+ |
 | B2/C1 unique PVs in quiz | 90 / 153 (41%) | +7 scaffolds | ~140 (~90%) |
-| Chronic failures (≥50% error) | 11 | ≤5 | 0 |
+| Chronic failures (≥50% error) | 11 → 12 (2026-05-10) | ≤5 | 0 |
 
 ---
 
@@ -100,10 +102,10 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 |---|---|---|---|---|---|---|
 | break down ² | negotiations fail | B1 | ★★★★★ | ✗ | 📅 | Phase 3 — "talks broke down" |
 | bring up ² | mention a topic | B2 | ★★★★★ | ✓ | 🟡 | meeting-essential |
-| catch up | meet socially / restore progress | B1 | ★★★★★ | ✗ | 📅 | "catch up over a brew"; "catching up on emails" |
+| catch up | meet socially / restore progress | B1 | ★★★★★ | ✓ | ⚪ | added pv_g18 (v20260508-r2); "catch up over a brew"; "catching up on emails" |
 | come back | return | A2 | ★★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — direction trap with *go back*. Drill: tr_artem_b03. Use as distractor only after re-test passes. |
 | come from | originate | A2 | ★★★★★ | ✗ | — | A2 distractor |
-| come up | arise / be mentioned | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — "this came up" |
+| come up | arise / be mentioned | B2 | ★★★★★ | ✓ | ⚪ | added pv_f17 (v20260508-r2) — "this came up" |
 | come up with | propose / produce idea | B2 | ★★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
 | crack on | get on with it | B1 | ★★★★★ | ✗ | 📅 | already in style notes — meeting-end / hallway register |
 | cut off | disconnect / isolate | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — "cut off funding" |
@@ -112,15 +114,16 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | fall through | fail to happen | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — "deals fall through" |
 | figure out | understand / solve | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
 | fill in ² | inform someone | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "fill me in" |
-| find out | discover | B1 | ★★★★★ | ✗ | 📅 | Batch 1 — A2-level but never tested |
+| find out | discover | B1 | ★★★★★ | ✓ | ⚪ | added pv_g01 (v20260508-r2) |
 | follow up (on) | revisit / pursue | B2 | ★★★★★ | ✓ | 🟠 | obligatory *on* — keeps dropping it |
-| get across | communicate an idea | B2 | ★★★★★ | ✓ | 🔴 | 2/6 — board comms essential |
+| get across | communicate an idea | B2 | ★★★★★ | ✓ | 🔴 | 3/7 (43%) — slight improvement; still chronic. Board comms essential. |
 | get back | return | A2 | ★★★★★ | ✓ | 🟡 | |
-| get out of | avoid / escape obligation | B2 | ★★★★★ | ✓ | 🔴 | 0/3 — meeting-essential |
+| get out of | avoid / escape obligation | B2 | ★★★★★ | ✓ | 🟠 | 4/8 (50%) — promoted off chronic. Meeting-essential. |
 | get round to | finally do | B2 | ★★★★★ | ✗ | — | candidate — you use the calque "never got around to" |
 | get through ³ | finish a task | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "get through these emails" |
 | get up | rise from bed | A1 | ★★★★★ | ✓ | 🟢 | foundational |
 | give up | stop trying | B1 | ★★★★★ | ✓ | ⚪ | only MCQ — no production test (Batch 1) |
+| go ahead | proceed / give permission | B2 | ★★★★★ | ✓ | 🟡 | 5/6 (83%) on pv_ti04 — high-frequency meeting cue |
 | go through | experience / examine | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
 | head off / head out / head back | depart / leave | B1 | ★★★★★ | ✗ | 📅 | expat travel + meeting-end ("right, I'm heading off") |
 | hold up | delay / rob / remain strong | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — 3 meanings |
@@ -129,55 +132,62 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | make up ² | constitute | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "make up 60% of revenue" |
 | pay off | repay / be worthwhile | B2 | ★★★★★ | ✗ | 📅 | Batch 2 — business-critical |
 | point out | draw attention to | B2 | ★★★★★ | ✗ | 📅 | Batch 1 |
-| pop in / pop out / pop round / pop over | visit briefly | A2 | ★★★★★ | ✗ | 📅 | replaces "go briefly to" — Carrefour / Saar / neighbours |
+| pop in / pop out / pop round / pop over | visit briefly | A2 | ★★★★★ | ✓ | 🟠 | 3/5 (60%) via pv_ti06 (drop/pop/stop/swing by overlap); Carrefour / Saar / neighbours |
 | put off ¹ | postpone | B2 | ★★★★★ | ✓ | 🟢 | |
-| run into ² | encounter problems | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "ran into delays" |
+| read up on | research a subject thoroughly | B2 | ★★★★★ | ✓ | 🔴 | 2/5 (40%) — pv_ti17 is 0/3, pv_ti16 weak. Pre-meeting prep lexicon, 7 bank items including cold-production set (`pv_l03_*`). Drill priority. |
+| run into ² | encounter problems | B2 | ★★★★★ | ✓ | ⚪ | added pv_ti76 (v20260508-r2) — "ran into delays" |
 | set up ¹ | establish | B2 | ★★★★★ | ✓ | 🟡 | "set up a JV" |
 | set up ² | arrange / prepare | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "set up a meeting" |
-| sign up | register / enrol | B2 | ★★★★★ | ✗ | 📅 | Batch 2 |
-| sort out | organise / resolve | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — *убрать* calque target |
-| take off ³ | become successful | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "product took off" |
+| sign up | register / enrol | B2 | ★★★★★ | ✓ | ⚪ | added pv_g40 (v20260508-r2) |
+| sort out | organise / resolve | B2 | ★★★★★ | ✓ | ⚪ | added pv_g12 (v20260508-r2) — *убрать* calque target |
+| take off ³ | become successful | B2 | ★★★★★ | ✓ | ⚪ | added pv_f20 (v20260508-r2) — "product took off" |
 | take on ² | accept a challenge | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "take on the project" |
-| take over | assume control | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — M&A, ops |
+| take over | assume control | B2 | ★★★★★ | ✓ | ⚪ | added pv_f28 (v20260508-r2) — M&A, ops |
 | take up ² | occupy time | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "merger taking up all my time" |
 | top up | refill / add credit | B1 | ★★★★★ | ✗ | 📅 | petrol, Batelco, drinks |
-| turn down | reject | B2 | ★★★★★ | ✓ | 🔴 | "turn down an offer" |
-| turn into | become / transform | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — strategy lexicon |
+| turn down | reject | B2 | ★★★★★ | ✓ | 🟡 | 7/9 (78%) — promoted off chronic since baseline. "turn down an offer" |
+| turn into | become / transform | B2 | ★★★★★ | ✓ | ⚪ | added pv_f09 (v20260508-r2) — strategy lexicon |
 | turn off ¹ | switch off | A2 | ★★★★★ | ✓ | ⚪ | Batch 1 |
 | turn on | activate | A2 | ★★★★★ | ✓ | 🟢 | |
-| turn out ¹ | prove to be | B2 | ★★★★★ | ✓ | 🔴 | 0/4 — every analysis |
-| work out | calculate / exercise / succeed | B2 | ★★★★★ | ✗ | 📅 | Batch 1 — 3 meanings |
+| turn out ¹ | prove to be | B2 | ★★★★★ | ✓ | 🔴 | 4/9 (44%) — slight improvement off baseline 0/4 but still chronic. `pv_l06_*` scaffolds available. |
+| work out | calculate / exercise / succeed | B2 | ★★★★★ | ✓ | ⚪ | added pv_g11 (v20260508-r2) — calculate sense only; exercise + succeed senses still 📅 |
 | wrap up | conclude (meeting/task) | B2 | ★★★★★ | ✗ | 📅 | meeting essential — "let's wrap up" |
+| zero in on | narrow focus precisely | B2 | ★★★★★ | ✓ | 🟡 | 8/10 (80%) on pv_ti01/09/10 — analyst-speak; 3 cold-production items |
+| back out of | withdraw from a deal/commitment | C1 | ★★★★ | ✓ | ⚪ | cc_03 — 0 attempts; claude_collab register; negotiation lexicon |
 | break out | start suddenly / escape | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
-| break up | end relationship / disintegrate | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
-| bring about | cause | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
+| break up | end relationship / disintegrate | B2 | ★★★★ | ✓ | ⚪ | added pv_g20 (v20260508-r2) — relationship sense only |
+| bring about | cause | B2 | ★★★★ | ✓ | 🔴 | 1/6 (17%) — Phase 1 gap-scaffold; no improvement, still chronic |
 | bring forward | move earlier | B2 | ★★★★ | ✓ | 🟠 | meeting register |
-| bring in | introduce / earn | B2 | ★★★★ | ✗ | — | candidate — "bring in revenue" |
+| bring in | introduce / earn | B2 | ★★★★ | ✓ | 🔴 | 0/4 (0%) on pv_c07 — NEW chronic surfaced 2026-05-10. "bring in revenue" |
 | build up | increase gradually | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | call off | cancel | B1 | ★★★★ | ✓ | 🟠 | only particle gap (Batch 1) |
 | check out | examine / leave hotel | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | chill out | relax | B1 | ★★★★ | ✗ | 📅 | compound / weekend register |
 | come across ¹ | seem / appear | B2 | ★★★★ | ✓ | 🟡 | |
-| come across ² | find by chance | B2 | ★★★★ | ✗ | 📅 | Phase 3 |
-| come in | enter | A2 | ★★★★ | ✗ | — | A2 distractor |
+| come across ² | find by chance | B2 | ★★★★ | ✓ | ⚪ | added pv05, pv_f14 (v20260508-r2) |
+| come down to | depend on / boil down to | B2 | ★★★★ | ✓ | ⚪ | added pv_f16 (v20260508-r2) — analytical close ("it comes down to cost") |
+| come in | enter | A2 | ★★★★ | ✓ | ⚪ | added pv_g25 (v20260508-r2) |
 | come on | encouragement / progress | A2 | ★★★★ | ✗ | — | A2 distractor |
-| cut down on | reduce | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold |
-| drill down into | analyse in depth | B2 | ★★★★ | ✓ | 🔴 | Phase 1 gap-scaffold — analysis lexicon |
-| drop off | set down / fall asleep / decline | B1 | ★★★★ | ✗ | 📅 | "drop the kids off"; "dropped off mid-meeting"; "demand dropped off Q3" — 3 senses |
+| cut down on | reduce | B2 | ★★★★ | ✓ | 🔴 | 1/3 (33%) — Phase 1 gap-scaffold; tf_21 0/2 still failing |
+| drill down into | analyse in depth | B2 | ★★★★ | ✓ | 🟠 | 4/7 (57%) — promoted off chronic. Phase 1 gap-scaffold — analysis lexicon |
+| drop off | set down / fall asleep / decline | B1 | ★★★★ | ✓ | ⚪ | added pv_g05 (v20260508-r2) — set-down sense only; fall-asleep + decline still 📅 |
 | drum up | generate (interest, support) | C1 | ★★★★ | ✓ | — | "drum up support" |
 | fill in ¹ | complete a form | B2 | ★★★★ | ✓ | 🟡 | |
-| get along (with) | have good relations | B2 | ★★★★ | ✗ | — | candidate addition |
-| get away with | escape punishment | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
-| get by | manage / survive | B2 | ★★★★ | ✗ | — | candidate addition |
-| get in | enter (vehicle/place) | A2 | ★★★★ | ✗ | — | add as distractor in *get* gaps |
+| flag up | bring to attention | C1 | ★★★★ | ✓ | 🟢 | 3/3 (100%) — UK office register. Cold streak: 3/3 across pv_ti43/44/45 — candidate for 🏆 once an additional cold-production format hits. |
+| get along (with) | have good relations | B2 | ★★★★ | ✓ | ⚪ | added pv_f01, gt12 (v20260508-r2) |
+| get around (obstacle) | overcome an obstacle | B2 | ★★★★ | ✓ | 🔴 | 1/3 (33%) on pv_ti07 — NEW chronic surfaced 2026-05-10 |
+| get away with | escape punishment | B2 | ★★★★ | ✓ | ⚪ | added pv_f02, pv_f29 (v20260508-r2) |
+| get by | manage / survive | B2 | ★★★★ | ✓ | ⚪ | added gt06 (v20260508-r2) |
+| get in | enter (vehicle/place) | A2 | ★★★★ | ✓ | ⚪ | added pv_g27 (v20260508-r2) |
 | get into ¹ | be accepted / enter | B2 | ★★★★ | ✓ | ⚪ | |
-| get into ² | become interested in | B2 | ★★★★ | ✗ | 📅 | Phase 3 — "got into cycling" |
-| get off | exit transport | A2 | ★★★★ | ✓ | 🔴 | 0/4 — confused with *get out of* |
+| get into ² | become interested in | B2 | ★★★★ | ✓ | ⚪ | added gt07, pv_f04, pv_f22 (v20260508-r2) — "got into cycling" |
+| get off | exit transport | A2 | ★★★★ | ✓ | 🔴 | 1/7 (14%) — confused with *get out of*; gt03 still 0/6 after 6 attempts. `pv_l01_*` scaffolds available. |
 | get on | board transport | A2 | ★★★★ | ✓ | 🟡 | |
-| get on with | continue / have a relationship with | B1 | ★★★★ | ✗ | 📅 | "get on with it"; "I get on with him fine" |
-| get over | recover from | B2 | ★★★★ | ✓ | 🔴 | 1/2 |
-| get through ¹ | survive difficulty | B2 | ★★★★ | ✓ | 🔴 | 0/3 |
+| get on with | continue / have a relationship with | B1 | ★★★★ | ✓ | ⚪ | added gt01 (v20260508-r2) — "get on with it"; "I get on with him fine" |
+| get over | recover from | B2 | ★★★★ | ✓ | 🟠 | 7/12 (58%) — promoted off chronic |
+| get through ¹ | survive difficulty | B2 | ★★★★ | ✓ | 🔴 | 0/9 — chronic, got worse since baseline. gt10 alone 0/6. `pv_l02_*` scaffolds available; not converting. |
 | give back | return (an object) | A2 | ★★★★ | ✓ | — | |
+| go about | approach a task / handle | C1 | ★★★★ | ✓ | 🔴 | 1/4 (25%) on ga01/02/03 — NEW chronic surfaced 2026-05-10. Approach-to-task lexicon. |
 | go away | leave | A2 | ★★★★ | ✗ | — | A2 distractor |
 | go back | return | A2 | ★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — direction trap with *come back*. Drill: tr_artem_b03. |
 | go off | explode / alarm sounds / deteriorate | B2 | ★★★★ | ✗ | 📅 | Batch 2 — 3 meanings |
@@ -190,80 +200,107 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | keep up with | maintain pace | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | kick off | start (event/meeting/match) | B2 | ★★★★ | ✗ | 📅 | meeting + project + sports |
 | look at | examine | A2 | ★★★★ | ✗ | — | A2 distractor |
-| look for | seek | A2 | ★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — confused with *look after* (caregiving). Drills: tr_artem_b02 + rt_artem_b01/b02. |
+| look for | seek | A2 | ★★★★ | ✓ | ⚠ | **A2 production-weak (2026-05-03 test)** — confused with *look after* (caregiving). Drills: tr_artem_b02 + rt_artem_b01/b02. Now also pv_g02 (v20260508-r2). |
 | look like | resemble | A2 | ★★★★ | ✗ | — | A2 distractor |
+| make up for | compensate / redeem | B2 | ★★★★ | ✓ | 🟢 | 3/3 (100%) — pv_ti31/32/33 |
 | pack in / pack up | quit / stop functioning | B2 | ★★★★ | ✗ | 📅 | "I'm packing it in"; "the AC's packed up" |
+| pencil in | provisionally schedule | B2 | ★★★★ | ✓ | 🟢 | 4/4 (100%) — calendar-talk |
 | pick up ¹ | collect someone | B1 | ★★★★ | ✓ | 🟢 | |
-| pick up ² | learn informally | B1 | ★★★★ | ✗ | 📅 | Phase 3 — "picked up Arabic" |
+| pick up ² | learn informally | B1 | ★★★★ | ✓ | ⚪ | added pv_c13 (v20260508-r2) — "picked up Arabic" |
 | pick up ³ | improve | B1 | ★★★★ | ✗ | — | candidate — "sales picked up" |
-| push back | delay / resist | B2 | ★★★★ | ✗ | 📅 | already echoed in style notes — "contractor's pushing back" |
-| put on | wear / apply | A2 | ★★★★ | ✗ | — | A2 distractor |
-| put up with | tolerate | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
+| push back | delay / resist / postpone | B2 | ★★★★ | ✓ | 🟡 | 5/7 (71%) — pv_ti52/53/54; "contractor's pushing back" |
+| put out | extinguish / inconvenience / publish | B2 | ★★★★ | ✓ | 🟡 | 8/11 (73%) — po01/02/03 cover inconvenience sense; pv_ti15 covers extinguish |
+| stand out | be noticeably different | B2 | ★★★★ | ✓ | 🟡 | 9/11 (82%) — so01/02/03 + pv_ti13 |
+| put on | wear / apply | A2 | ★★★★ | ✓ | ⚪ | added pv_g19 (v20260508-r2) |
+| put up with | tolerate | B2 | ★★★★ | ✓ | ⚪ | added pv_g22 (v20260508-r2) |
 | rule out | eliminate possibility | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
-| run by (sb) | show for review | B2 | ★★★★ | ✗ | 📅 | "run that by Sara" — pure office register |
-| set aside | reserve | B2 | ★★★★ | ✗ | — | candidate — "set aside funds" |
-| set off | begin a journey | B2 | ★★★★ | ✗ | 📅 | Batch 2 — flagged |
+| run by (sb) | show for review | B2 | ★★★★ | ✓ | ⚪ | added pv_ti02 (v20260508-r2) — "run that by Sara" |
+| set aside | reserve | B2 | ★★★★ | ✓ | ⚪ | added pv_f13 (v20260508-r2) — "set aside funds" |
+| set back | delay / cost a lot | B2 | ★★★★ | ✓ | 🟡 | 7/10 (70%) — delay sense in pv_ti73/74/f25; noun setback in pv_ti75 |
+| set off | begin a journey | B2 | ★★★★ | ✓ | ⚪ | added pv_f12 (v20260508-r2) |
 | set out | depart / present formally | B2 | ★★★★ | ✓ | 🟠 | "set out the opportunity for" — wrong dep prep |
 | shore up | strengthen / reinforce | C1 | ★★★★ | ✓ | — | "shore up the balance sheet" |
 | show up | arrive / appear | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
 | sign off | approve / end | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
 | step down | resign from position | B2 | ★★★★ | ✗ | 📅 | Batch 1 — business-critical |
+| step in | intervene | B2 | ★★★★ | ✓ | 🟠 | 2/4 (50%) on pv_ti03 — board / regulator register |
+| sum up | summarise / conclude | B2 | ★★★★ | ✓ | 🟢 | 5/5 (100%) — meeting-end essential |
 | take off ¹ | plane departs | B1 | ★★★★ | ✓ | 🟢 | |
 | take on ¹ | hire | B2 | ★★★★ | ✓ | 🟡 | |
 | take up ¹ | start a hobby | B2 | ★★★★ | ✓ | 🟡 | |
-| turn up | arrive / appear | B2 | ★★★★ | ✓ | 🔴 | 2/4 |
+| turn around | reverse a failing situation | B2 | ★★★★ | ✓ | ⚪ | added pv_f31 (v20260508-r2) — strategy lexicon ("turn the business around") |
+| turn up | arrive / appear | B2 | ★★★★ | ✓ | 🟡 | 5/7 (71%) — promoted off chronic |
 | wake up | stop sleeping | A2 | ★★★★ | ✓ | — | |
 | water down | weaken | C1 | ★★★★ | ✓ | — | "watered-down version" |
 | weed out | eliminate the unwanted | C1 | ★★★★ | ✓ | — | "weed out underperformers" |
 | wind down | relax / gradually end | B2 | ★★★★ | ✗ | 📅 | Batch 2 — *расслабиться* calque trap |
-| wind up | annoy / end up | B2 | ★★★★ | ✗ | 📅 | "stop winding me up"; "wound up in Manama" — 2 senses |
-| write down | record on paper | A2 | ★★★★ | ✗ | — | A2 distractor |
+| wind up ¹ | annoy / end up | B2 | ★★★★ | ✗ | 📅 | "stop winding me up"; "wound up in Manama" — 2 senses |
+| work around | bypass a constraint | B2 | ★★★★ | ✓ | ⚪ | added wa01, wa03 (v20260508-r2) — adapt-not-fix register |
+| work on | actively develop / improve | B2 | ★★★★ | ✓ | 🟡 | 8/11 (73%) — daily exec lexicon |
+| write down | record on paper | A2 | ★★★★ | ✓ | ⚪ | added pv_g07 (v20260508-r2) |
+| ask around | ask multiple people informally | B2 | ★★★ | ✓ | ⚪ | added pv_ti05 (v20260508-r2) |
 | break down ¹ | machine stops | B1 | ★★★ | ✓ | 🟢 | |
-| break down ³ | cry / lose control | B1 | ★★★ | ✗ | — | candidate |
-| bring out | release / reveal | B2 | ★★★ | ✗ | — | candidate |
+| break down ³ | cry / lose control | B1 | ★★★ | ✓ | ⚪ | added pv_c05 (v20260508-r2) |
+| bring back | evoke memories | B2 | ★★★ | ✓ | ⚪ | added pv_f07, pv_f30 (v20260508-r2) — distinct meaning from "bring back" = return |
+| bring out | release / reveal | B2 | ★★★ | ✓ | ⚪ | added pv_f23, pv_ti84 (v20260508-r2) |
 | bring up ¹ | raise (a child) | B2 | ★★★ | ✓ | 🟡 | |
 | brush aside | dismiss | C1 | ★★★ | ✓ | — | dismissive lexicon |
 | come about | happen | B2 | ★★★ | ✗ | — | candidate |
+| come out | be released (book/film/album) | B2 | ★★★ | ✓ | ⚪ | added pv_f26 (v20260508-r2) |
 | come round ¹ | change opinion | B2 | ★★★ | ✗ | 📅 | Batch 2 |
 | cut through | find quick route / bypass | B2 | ★★★ | ✗ | 📅 | Batch 2 — flagged |
-| get through ² | contact by phone | B2 | ★★★ | ✓ | 🔴 | 1/2 |
+| drop by / pop by / stop by / swing by | brief casual visit | B2 | ★★★ | ✓ | 🟠 | 3/5 (60%) on pv_ti06 (same item as *pop in/out/round/over* row above) |
+| get through ² | contact by phone | B2 | ★★★ | ✓ | 🟠 | 3/6 (50%) — gt11; promoted off chronic |
 | give out ¹ | distribute | B2 | ★★★ | ✓ | 🟡 | |
-| give out ² | stop working | B2 | ★★★ | ✗ | 📅 | Phase 3 — "legs gave out" |
+| give out ² | stop working | B2 | ★★★ | ✓ | 🔴 | 1/4 (25%) on pv_ti79 — NEW chronic surfaced 2026-05-10. "legs gave out" |
 | gloss over | downplay | C1 | ★★★ | ✓ | — | analyst-speak |
 | hurry up | move faster | A2 | ★★★ | ✗ | — | A2 distractor |
+| land (a deal/PR) | complete / ship | B2 | ★★★ | ✓ | ⚪ | added cc_01 (v20260508-r2; claude_collab register); not a particle PV but tracked here for completeness |
 | lie down | recline | A2 | ★★★ | ✗ | — | A2 distractor |
-| log in / log on | authenticate | A2 | ★★★ | ✗ | — | tech distractor |
+| log in / log on | authenticate | A2 | ★★★ | ✓ | ⚪ | added pv_g39 (v20260508-r2) |
 | look out for | watch for / protect | B2 | ★★★ | ✗ | 📅 | Batch 2 — flagged |
 | make up ¹ | fabricate | B2 | ★★★ | ✓ | 🟡 | |
+| map onto | correspond to / align with | C1 | ★★★ | ✓ | 🟡 | 4/5 (80%) — pv_ti40/41/42; analytical |
+| miss out (on) | fail to take an opportunity | B2 | ★★★ | ✓ | 🟢 | 4/4 (100%) — pv_ti28/29/30 |
 | paper over | conceal a flaw | C1 | ★★★ | ✓ | — | "paper over the cracks" |
 | press on | continue despite difficulty | B2 | ★★★ | ✗ | 📅 | Batch 2 — flagged |
 | pull over | stop vehicle at roadside | B2 | ★★★ | ✗ | 📅 | Batch 2 — flagged |
 | put down | place on a surface | A2 | ★★★ | ✗ | — | A2 distractor |
 | put off ² | discourage | B2 | ★★★ | ✗ | 📅 | Phase 3 |
+| reel off | list quickly from memory | B2 | ★★★ | ✓ | 🟢 | 3/3 (100%) — UK casual |
 | run away | flee | A2 | ★★★ | ✗ | — | A2 distractor |
 | run into ¹ | meet by chance | B2 | ★★★ | ✓ | 🟡 | |
-| sit down | take a seat | A1 | ★★★ | ✗ | — | passive only — too basic to add |
-| stand up | rise to feet | A1 | ★★★ | ✗ | — | passive only — too basic to add |
-| switch off / switch on | toggle | A2 | ★★★ | ✗ | — | A2 distractor |
-| take back | retract | B2 | ★★★ | ✗ | — | candidate |
+| sit down | take a seat | A1 | ★★★ | ✓ | ⚪ | added pv_g33 (v20260508-r2) |
+| spin up | start a service / instance | B2 | ★★★ | ✓ | ⚪ | added cc_02 (v20260508-r2; claude_collab register; dev/devops) |
+| stand up | rise to feet | A1 | ★★★ | ✓ | ⚪ | added pv_g32 (v20260508-r2) |
+| stay behind | remain after others leave | B2 | ★★★ | ✓ | 🟢 | 7/8 (88%) — pv_ti22/23/24 |
+| switch off / switch on | toggle | A2 | ★★★ | ✓ | ⚪ | added pv_g17 (v20260508-r2) |
+| tack on | append after the fact | C1 | ★★★ | ✓ | 🔴 | 2/5 (40%) — pv_ti63 alone 0/3. NEW chronic surfaced 2026-05-10 |
+| take back | retract | B2 | ★★★ | ✓ | ⚪ | added pv_ti87 (v20260508-r2) |
+| take down | record / note information | B2 | ★★★ | ✓ | ⚪ | added pv_f27 (v20260508-r2) — meeting minutes register |
 | take in | absorb / deceive | B2 | ★★★ | ✓ | 🟠 | flagged PV |
 | take off ² | remove clothing | A2 | ★★★ | ✓ | 🟢 | |
 | take out | remove / extract | A2 | ★★★ | ✗ | — | A2 distractor |
-| try on | test-fit clothing | A2 | ★★★ | ✗ | — | A2 distractor |
-| turn off ² | repel / disgust | B2 | ★★★ | ✗ | 📅 | Batch 1 |
+| try on | test-fit clothing | A2 | ★★★ | ✓ | ⚪ | added pv_g42 (v20260508-r2) |
+| turn off ² | repel / disgust | B2 | ★★★ | ✓ | ⚪ | added pv_g43 (v20260508-r2) |
 | turn out ² | attend an event | B2 | ★★★ | ✗ | 📅 | Phase 3 — "200 turned out" |
 | turn out ³ | produce | B2 | ★★★ | ✗ | — | candidate |
 | turn round | reverse direction | A2 | ★★★ | ✗ | — | candidate |
 | wear out | exhaust / deteriorate | B2 | ★★★ | ✗ | 📅 | Batch 2 — flagged |
 | come round ² | visit | B2 | ★★ | ✗ | 📅 | Batch 2 — UK-leaning |
 | knuckle down | apply oneself | C1 | ★★ | ✓ | — | British, casual |
+| make do | manage with what's available | B2 | ★★ | ✓ | 🟠 | 2/4 (50%) on pv_c17 |
 | make up ³ | reconcile | B2 | ★★ | ✗ | — | candidate |
 | set up ³ | frame someone | C1 | ★★ | ✗ | — | candidate |
-| take after | resemble | B2 | ★★ | ✗ | — | candidate |
+| snap up | quickly buy in limited supply | B2 | ★★ | ✓ | 🟠 | 4/6 (67%) on pv_ti08 |
+| take after | resemble | B2 | ★★ | ✓ | ⚪ | added pv_f18 (v20260508-r2) |
 | take off ⁴ | leave quickly | C1 | ★★ | ✗ | — | candidate |
+| tear down | demolish | B2 | ★★ | ✓ | ⚪ | added pv10 (v20260508-r2) — physical, low freq for finance exec |
+| wind up ² | close down (a business) | B2 | ★★ | ✓ | 🟡 | 3/4 (75%) on pv03 — distinct from *wind up ¹* (annoy / end up) |
+| wipe out | eliminate completely | B2 | ★★ | ✓ | ⚪ | added pv02 (v20260508-r2) |
 | come round ³ | regain consciousness | B2 | ★ | ✗ | 📅 | Batch 2 — niche |
 
-**Counts**: 50 ★★★★★ · 70 ★★★★ · 37 ★★★ · 6 ★★ · 1 ★ · **164 PV-meanings total**
+**Counts**: 53 ★★★★★ · 85 ★★★★ · 49 ★★★ · 11 ★★ · 1 ★ · **199 PV-meanings total** (164 baseline + 35 net new tracked rows; bank-presence reconciled at 2026-05-10 stage-0 stats-review)
 
 ---
 

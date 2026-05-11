@@ -18,6 +18,8 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Workflow
 
+**0. Integrity check.** Run `node tools/check_player_integrity.js`. Three invariants probe for cross-player contamination (the 2026-05-02 Nicole-overwritten-with-Artem incident pattern): cross-player qStats overlap with byte-identical `lastSeen`, `createdAt` drift vs baseline, and unexplained `totalAnswered` jumps. Exit code 0 = proceed; exit 1 = a flag fired — **stop and surface to user before continuing**. Don't try to "review around" a flagged contamination. Baseline lives at `tools/data-integrity-baseline.json` and auto-updates on a clean run.
+
 **1. Pull stats.** Run `get_all_players.js -S` for all 5 docs + subcollections. For one player deep-dive: `get_player.js {name}`. Filter out `auto_suspected: true` sessions before pattern aggregation.
 
 **1a. Signal selection.** Post-Option-D (2026-05-05) every surface bumps `lastPlayedDate / currentStreak / longestStreak` — use these for recency/streak, subcollections for volume/surface/type/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Pre-Option-D rows: subcollection wins on disagreement.

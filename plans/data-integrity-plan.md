@@ -52,7 +52,11 @@ The remaining items in this plan (P1 integrity check, P1 PWA root-cause audit) a
 
 ---
 
-## P1 — Integrity check that catches contamination within hours
+## P1 — Integrity check that catches contamination within hours ✅ DONE (2026-05-10)
+
+`tools/check_player_integrity.js` ships. Three invariants implemented (cross-player overlap, createdAt drift, catastrophic shift). Baseline at `tools/data-integrity-baseline.json`, seeded 2026-05-10 18:04 UTC. Wired in as Step 0 of `stats-review` SKILL.md — flagged runs halt the review until the user reviews. Tested: forging baseline values triggers the expected critical flags, exit code 1; `--reset-baseline` recovers cleanly. Daily cron not yet scheduled — defer until the first false-positive surfaces or `stats-review` runs aren't catching incidents fast enough.
+
+### Original plan
 
 A small `tools/check_player_integrity.js` that runs as part of `stats-review` (and ideally as its own daily job).
 
@@ -125,11 +129,11 @@ Both require billing. **Not recommending an upgrade just for this** — the P0 +
 
 | Step | What | Time | Blocking? |
 |---|---|---|---|
-| 1 | Write `tools/backup_players.js`, run once manually for an immediate snapshot | ~15 min | **Yes — do before anything else** |
-| 2 | Schedule the backup (local cron) | ~15 min | No |
-| 3 | Write `tools/check_player_integrity.js`, wire into `stats-review` SKILL.md | ~30 min | No |
-| 4 | PWA root-cause audit | 1–2 hr | No (can run in parallel) |
-| 5 | Schema validation in `_firestore.js` | ~30 min | No |
+| 1 | Write `tools/backup_players.js`, run once manually for an immediate snapshot | ~15 min | **Yes — do before anything else** ✅ |
+| 2 | Schedule the backup (local cron) | ~15 min | No ✅ (GitHub Actions) |
+| 3 | Write `tools/check_player_integrity.js`, wire into `stats-review` SKILL.md | ~30 min | No ✅ (2026-05-10) |
+| 4 | PWA root-cause audit | 1–2 hr | No (can run in parallel) — still open |
+| 5 | Schema validation in `_firestore.js` | ~30 min | No ✅ (t7) |
 
 Total active work: ~3 hours, spread across one or two sessions. The first 30 minutes (steps 1–2) eliminate the dependency on RTDB before sunset.
 

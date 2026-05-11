@@ -1,0 +1,857 @@
+{
+  "_note": "Artem PV chronic-failure cold-production drills (Stage 1 of consolidated plan, batch 1). 17 items: tr_artem_b04-b11 (8 translations) + rt_artem_b03-b11 (9 russian_traps). Targets the 12 chronic PVs surfaced by 2026-05-10 stats-review; 8 highest-priority by Freq×failure-rate, plus 1 paired item for the bring-about/bring-in confusion (rt_artem_b06 + rt_artem_b11 form a mirror pair, like the existing rt_artem_b01/b02 look_for/look_after). Regex traps anchored on actual lastWrong from Artem's qStats. All B2 except go-about (C1). Themes: O&G, KPMG, cycling, Bahrain expat, exec-business.",
+  "exercises": [
+    {
+      "id": "tr_artem_b04",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "read_up_on",
+        "pv_substitution"
+      ],
+      "source_observation": "2026-05-10 stats-review: pv_ti17 chronic 0/3, lastWrong = 'drill down into'. Artem reaches for the analyst PV when the prep-PV is wanted.",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Перед встречей с советом я подготовлюсь по последним финансовым показателям.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Before the board meeting I'll read up on the latest financial figures",
+        "Before the board meeting I will read up on the latest financial figures",
+        "I'll read up on the latest financial figures before the board meeting",
+        "Before the board meeting I'm going to read up on the latest financial figures"
+      ],
+      "common_errors": [
+        {
+          "id": "drill_down_substitute",
+          "pattern_label": "drill down into (analyst-PV substitute)",
+          "regex": "\\bdrill\\s+down\\s+(into|on)\\b",
+          "feedback": "✗ 'Drill down into' = analyse a result you already have, looking deeper. For *preparing* by studying a topic before encountering it: ✓ 'read up on'. Different timing — drill down is post-data analysis; read up on is pre-meeting prep."
+        },
+        {
+          "id": "study_calque",
+          "pattern_label": "study (Russian-leaning, formal)",
+          "regex": "\\bstudy\\s+(the\\s+)?latest\\b",
+          "feedback": "'Study' is correct but textbook-formal. The exec-register PV is 'read up on' — what you do over coffee before the board meeting."
+        },
+        {
+          "id": "no_on",
+          "pattern_label": "read up without 'on'",
+          "regex": "\\bread\\s+up\\s+(the|latest|financial)\\b",
+          "feedback": "✗ 'Read up the figures' — missing the obligatory particle. ✓ 'read up ON the figures'. Without 'on', the phrasal verb is incomplete."
+        },
+        {
+          "id": "go_through_substitute",
+          "pattern_label": "go through (review, not preparation)",
+          "regex": "\\bgo\\s+through\\s+(the\\s+)?latest\\b",
+          "feedback": "'Go through' = review existing material in order, often together. 'Read up on' = research a topic in advance, alone. Pre-meeting solo prep → read up on."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'll read up on the latest financial figures.' PV is 'read up on' (research in advance). The 'on' is obligatory.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b05",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "get_across",
+        "pv_substitution"
+      ],
+      "source_observation": "2026-05-10 stats-review: get across cluster 3/7 chronic. Board-comms essential but Artem reaches for 'explain' or 'communicate' (calques, less natural).",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мне нужно донести эту мысль до правления так, чтобы они поняли срочность.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I need to get this point across to the board so they understand the urgency",
+        "I need to get my point across to the board so they understand the urgency",
+        "I need to get this across to the board so they understand the urgency",
+        "I need to get this point across to the board so they understand how urgent it is"
+      ],
+      "common_errors": [
+        {
+          "id": "explain_calque",
+          "pattern_label": "explain (textbook substitute)",
+          "regex": "\\b(explain|clarify)\\s+(this|the)\\s+(point|idea|message)\\s+to\\s+the\\s+board\\b",
+          "feedback": "'Explain to the board' is correct but flat. For making sure they GET it — register-natural PV: 'get this across to the board'. The PV signals successful transmission, not just delivery."
+        },
+        {
+          "id": "communicate_calque",
+          "pattern_label": "communicate (Russian-leaning)",
+          "regex": "\\bcommunicate\\s+(this|the)\\s+(point|idea|message)\\b",
+          "feedback": "Russian 'донести' tempts 'communicate' — but exec-register English is 'get X across'. 'Communicate' is corporate-speak; 'get across' is what people actually say in a board meeting."
+        },
+        {
+          "id": "deliver_calque",
+          "pattern_label": "deliver (wrong sense)",
+          "regex": "\\bdeliver\\s+(this|the)\\s+(point|idea|message|thought)\\b",
+          "feedback": "✗ 'Deliver a point' — you deliver speeches and packages, not points. ✓ 'get the point across'."
+        },
+        {
+          "id": "no_to",
+          "pattern_label": "get across without target",
+          "regex": "\\bget\\s+(this|the|my)?\\s*(point|idea)?\\s*across\\s*\\.?\\s*$",
+          "feedback": "When using 'get across' with an audience, name the audience: 'get this across TO the board'. Without 'to + audience' the sentence sounds incomplete."
+        }
+      ],
+      "fallback_feedback": "Target: 'I need to get this point across to the board.' PV is 'get X across (to Y)' — successfully convey. Don't substitute 'explain' or 'communicate'.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b06",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "turn_out",
+        "pv_substitution"
+      ],
+      "source_observation": "2026-05-10 stats-review: turn out ¹ chronic 4/9. Frequent in analyses ('turned out to be') but Artem still reaches for 'appeared' or 'was'.",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Оказалось, что задержка возникла из-за проблемы с поставщиком, а не из-за нашей логистики.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "It turned out the delay was due to a supplier issue, not our logistics",
+        "It turned out that the delay was due to a supplier issue, not our logistics",
+        "The delay turned out to be due to a supplier issue, not our logistics",
+        "It turned out the delay came from a supplier issue, not our logistics",
+        "As it turned out, the delay was due to a supplier issue, not our logistics"
+      ],
+      "common_errors": [
+        {
+          "id": "it_appeared_calque",
+          "pattern_label": "it appeared (Russian 'оказалось' calque)",
+          "regex": "\\bit\\s+appear(s|ed)\\s+(that\\s+)?the\\b",
+          "feedback": "✗ 'It appeared that' = it seemed (uncertainty). Russian 'оказалось' = was revealed to be → ✓ 'it TURNED OUT that'. Different epistemic load: appeared = guess; turned out = confirmed-after-the-fact."
+        },
+        {
+          "id": "found_out_substitute",
+          "pattern_label": "we found out (different angle)",
+          "regex": "\\bwe\\s+found\\s+out\\b",
+          "feedback": "'We found out' = we discovered (focuses on the discoverer). 'It turned out' = it was revealed (focuses on the fact). Russian 'оказалось' is impersonal — closer to 'turned out'."
+        },
+        {
+          "id": "it_was_revealed",
+          "pattern_label": "it was revealed (formal/passive)",
+          "regex": "\\bit\\s+was\\s+revealed\\b",
+          "feedback": "'It was revealed' is correct but report-formal. Conversational/exec register: 'it turned out'. Save the passive for written communications."
+        },
+        {
+          "id": "turned_out_no_to_be",
+          "pattern_label": "turned out missing copula structure",
+          "regex": "\\bturned\\s+out\\s+(due|because)\\b",
+          "feedback": "✗ 'turned out due to' — needs a verb between. ✓ 'turned out the delay WAS due to' or 'turned out TO BE due to'. 'Turn out' takes either a 'that'-clause or 'to be + ...'."
+        }
+      ],
+      "fallback_feedback": "Target: 'It turned out the delay was due to a supplier issue.' PV is 'turn out' (= prove to be / be revealed as). Russian 'оказалось' → 'turned out', not 'appeared'.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b07",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "bring_about",
+        "pv_pair_confusion"
+      ],
+      "source_observation": "2026-05-10 stats-review: bring about chronic 1/6, bring in chronic 0/4. Artem confuses the two: lastWrong on pv_c07 = 'bring in' (when target was bring about).",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Новая ценовая политика приведёт к существенному изменению нашей маржи.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The new pricing policy will bring about a significant change in our margin",
+        "The new pricing policy will bring about a significant change to our margin",
+        "The new pricing policy will bring about significant change in our margin",
+        "The new pricing policy is going to bring about a significant change in our margin"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_in_swap",
+          "pattern_label": "bring in (introduce/earn) instead of bring about (cause)",
+          "regex": "\\bbring(s|ing)?\\s+in\\b",
+          "feedback": "✗ 'Bring in' = introduce something new (a rule, a person, revenue). For *cause* something to happen: ✓ 'bring ABOUT'. The pair: bring IN = introduce; bring ABOUT = cause/result in. Artem-specific trap — pv_c07 lastWrong was 'bring in' here."
+        },
+        {
+          "id": "lead_to_calque",
+          "pattern_label": "lead to (correct but textbook)",
+          "regex": "\\blead\\s+to\\s+a\\s+significant\\s+change\\b",
+          "feedback": "'Lead to' is correct and natural — but the target PV here is 'bring about' (more agentive: the policy actively causes the change). Both work; this drill targets 'bring about' specifically."
+        },
+        {
+          "id": "cause_calque",
+          "pattern_label": "cause (Russian leaning)",
+          "regex": "\\bcause\\s+a\\s+significant\\s+change\\b",
+          "feedback": "'Cause a change' is OK but slightly clinical. Exec-natural: 'bring about a change'. The PV softens 'cause' while keeping the agency."
+        },
+        {
+          "id": "result_in_substitute",
+          "pattern_label": "result in (passive register)",
+          "regex": "\\bresult\\s+in\\s+a?\\s*significant\\s+change\\b",
+          "feedback": "'Result in' is OK but pushes the policy into passive role. 'Bring about' keeps the policy as active cause — better for board narrative."
+        }
+      ],
+      "fallback_feedback": "Target: 'The new pricing policy will bring about a significant change in our margin.' PV is 'bring about' (= cause/result in). Don't confuse with 'bring in' (= introduce/earn).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b08",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "phrasal_verb",
+        "get_off",
+        "pv_pair_confusion"
+      ],
+      "source_observation": "2026-05-10 stats-review: get off chronic 1/7, lastWrong on gt03 = 'get out'. Confused with 'get out of' (non-vehicle).",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я выйду на следующей остановке — мне нужно зайти в магазин.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'll get off at the next stop — I need to drop in at the shop",
+        "I will get off at the next stop — I need to drop in at the shop",
+        "I'll get off at the next stop — I need to pop into the shop",
+        "I'm getting off at the next stop — I need to drop in at the shop",
+        "I'll get off at the next stop — I need to stop by the shop"
+      ],
+      "common_errors": [
+        {
+          "id": "get_out_swap",
+          "pattern_label": "get out (instead of get off, for bus/train)",
+          "regex": "\\bget\\s+out\\s+(at|on)\\s+the\\s+next\\b",
+          "feedback": "✗ 'Get out at the next stop' — wrong PV. The split: get OUT OF = car/taxi (small enclosed); get OFF = bus/train/plane (transport you stand and walk inside). For 'выйду' on a bus → ✓ 'get OFF'. Artem-specific trap — gt03 lastWrong was 'get out' here."
+        },
+        {
+          "id": "exit_calque",
+          "pattern_label": "exit (formal calque)",
+          "regex": "\\bexit\\s+(at|on)\\s+the\\s+next\\b",
+          "feedback": "'Exit' is sign-language English, not spoken. ✓ 'get off at the next stop'."
+        },
+        {
+          "id": "leave_substitute",
+          "pattern_label": "leave (no PV)",
+          "regex": "\\bleave\\s+(at|on)\\s+the\\s+next\\s+stop\\b",
+          "feedback": "✗ 'Leave at the next stop' — sounds like you're leaving the bus driver. ✓ 'get OFF at the next stop'. The PV is what disambiguates."
+        },
+        {
+          "id": "step_off_calque",
+          "pattern_label": "step off (literal calque)",
+          "regex": "\\bstep\\s+off\\s+(at|on)\\s+the\\s+next\\b",
+          "feedback": "'Step off' is OK in narrative writing but unusual in speech. ✓ 'get off' is the standard."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'll get off at the next stop.' Bus/train/plane → 'get OFF'. Car/taxi → 'get OUT OF'. The vehicle decides the particle.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b09",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "get_through",
+        "pv_pair_confusion"
+      ],
+      "source_observation": "2026-05-10 stats-review: get through ¹ chronic 0/9 (got worse from baseline), lastWrong on gt10 = 'get over'. Confused endure-during with recovery-after.",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Эта неделя была изматывающая, но как-то я пережил её — день за днём.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "It was an exhausting week, but somehow I got through it — day by day",
+        "It was an exhausting week, but somehow I got through it day by day",
+        "This week was exhausting, but somehow I got through it — day by day",
+        "It was an exhausting week, but I managed to get through it — day by day"
+      ],
+      "common_errors": [
+        {
+          "id": "get_over_swap",
+          "pattern_label": "get over (recovery-after, wrong timing)",
+          "regex": "\\bgot\\s+over\\s+(it|the\\s+week)\\b",
+          "feedback": "✗ 'Got over it' = recovered AFTER (illness, breakup, shock). For ENDURING DURING a difficult period: ✓ 'got THROUGH it'. Time difference: get over happens after; get through happens during. Artem-specific trap — gt10 lastWrong was 'get over' here."
+        },
+        {
+          "id": "survived_calque",
+          "pattern_label": "survived (Russian leaning)",
+          "regex": "\\bsurvived\\s+(it|the\\s+week)\\b",
+          "feedback": "'Survived the week' is OK conversational hyperbole — but the natural PV is 'got through it'. 'Survive' is dramatic; 'get through' is the everyday register."
+        },
+        {
+          "id": "lived_through_calque",
+          "pattern_label": "lived through (literary/formal)",
+          "regex": "\\blived\\s+through\\s+(it|the\\s+week)\\b",
+          "feedback": "'Lived through' works but is reserved for major periods (wars, decades). For an exhausting week — 'got through it'."
+        },
+        {
+          "id": "passed_calque",
+          "pattern_label": "passed (Russian 'прошла' calque)",
+          "regex": "\\bpassed\\s+(it|through\\s+it)\\b",
+          "feedback": "✗ 'Passed it' — Russian-style. English uses 'got through it' for enduring difficulty."
+        }
+      ],
+      "fallback_feedback": "Target: 'I got through it day by day.' PV is 'get through' (endure during). Don't confuse with 'get over' (recover after — different timing).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b10",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "phrasal_verb",
+        "cut_down_on",
+        "pv_substitution"
+      ],
+      "source_observation": "2026-05-10 stats-review: cut down on chronic 1/3, tf_21 0/2. Artem under-uses the PV — reaches for 'reduce' or 'decrease consumption'.",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "После проверки кардиолога я постарался сократить кофе на тренировках.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "After the cardiologist's check-up I tried to cut down on coffee during training",
+        "After my cardiologist's check-up I tried to cut down on coffee during training",
+        "After the cardiologist's check I tried to cut down on coffee during training",
+        "After seeing the cardiologist I tried to cut down on coffee during training",
+        "After the cardiologist's check-up I've tried to cut down on coffee during training"
+      ],
+      "common_errors": [
+        {
+          "id": "reduce_calque",
+          "pattern_label": "reduce (textbook substitute)",
+          "regex": "\\breduce\\s+(coffee|my\\s+coffee|caffeine)\\b",
+          "feedback": "'Reduce coffee' is correct but clinical. Exec-natural / cycling-club register: 'cut down on coffee'. The PV signals deliberate, sustained cutback — not a one-off measurement reduction."
+        },
+        {
+          "id": "decrease_calque",
+          "pattern_label": "decrease (Russian-leaning, formal)",
+          "regex": "\\bdecrease\\s+(coffee|my\\s+coffee|caffeine)\\b",
+          "feedback": "'Decrease' is what you do to interest rates, not coffee. Habit-cutting: ✓ 'cut down on'."
+        },
+        {
+          "id": "no_on",
+          "pattern_label": "cut down without 'on'",
+          "regex": "\\bcut\\s+down\\s+(coffee|caffeine|drinks)\\b",
+          "feedback": "✗ 'Cut down coffee' — missing the obligatory particle. ✓ 'cut down ON coffee'. Without 'on', the verb sounds transitive ('cut down' = chop down, like a tree)."
+        },
+        {
+          "id": "cut_back_variant",
+          "pattern_label": "cut back on (acceptable variant)",
+          "regex": "\\bcut\\s+back\\s+on\\s+coffee\\b",
+          "feedback": "✓ 'Cut back on' works (~95% interchangeable with 'cut down on'). Both are correct. This drill targets 'cut down on' specifically — practise that one."
+        }
+      ],
+      "fallback_feedback": "Target: 'I tried to cut down on coffee during training.' PV is 'cut down on' (reduce a habit). The 'on' is obligatory.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "tr_artem_b11",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "phrasal_verb",
+        "go_about",
+        "pv_meaning_confusion"
+      ],
+      "source_observation": "2026-05-10 stats-review: go about chronic 1/4, lastWrong on ga01 = 'To avoid a topic' (selected wrong meaning entirely). Artem misreads the PV.",
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "prompt_ru": "Как ты обычно подходишь к выбору поставщиков на крупных тендерах?",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "How do you usually go about choosing suppliers on big tenders",
+        "How do you usually go about selecting suppliers on big tenders",
+        "How do you typically go about choosing suppliers on big tenders",
+        "How do you usually go about choosing suppliers on large tenders",
+        "How do you usually go about picking suppliers on big tenders"
+      ],
+      "common_errors": [
+        {
+          "id": "approach_calque",
+          "pattern_label": "approach (textbook substitute)",
+          "regex": "\\bhow\\s+do\\s+you\\s+(usually\\s+)?approach\\s+(choosing|selecting|picking)\\b",
+          "feedback": "'How do you approach choosing X' is correct but flat-formal. Exec-natural / process-talk register: 'how do you go about choosing X'. The PV signals interest in the *method*, not just the activity."
+        },
+        {
+          "id": "go_about_no_gerund",
+          "pattern_label": "go about + bare verb",
+          "regex": "\\bgo\\s+about\\s+(choose|select|pick)\\s+suppliers\\b",
+          "feedback": "✗ 'Go about choose' — needs gerund. ✓ 'go about CHOOSING'. Pattern: go about + Ving."
+        },
+        {
+          "id": "go_around_swap",
+          "pattern_label": "go around (different meaning)",
+          "regex": "\\bgo\\s+around\\s+(choosing|selecting|picking)\\b",
+          "feedback": "✗ 'Go around' = move from place to place / spread (a rumour). ✓ 'go ABOUT' = approach a task. Different particle, different meaning."
+        },
+        {
+          "id": "do_calque",
+          "pattern_label": "how do you do (Russian-leaning)",
+          "regex": "\\bhow\\s+do\\s+you\\s+(usually\\s+)?do\\s+(choosing|selecting|the\\s+choice)\\b",
+          "feedback": "'How do you do choosing' is unidiomatic. ✓ 'How do you go about choosing'. The PV is what makes the question natural."
+        }
+      ],
+      "fallback_feedback": "Target: 'How do you usually go about choosing suppliers on big tenders?' PV is 'go about + Ving' (= approach a task). Asks for *method*, not just activity.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b03",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_substitution",
+        "read_up_on"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'почитать о теме перед встречей' = read up on (NOT 'study', NOT 'go through', NOT 'drill down into'). Artem reaches for analyst-PVs (drill down) when prep-PV is wanted. Failure mode: confusing pre-meeting prep (read up on) with post-data analysis (drill down into).",
+      "prompt_ru": "Я почитаю о клиенте перед звонком.",
+      "correct_answers": [
+        "I'll read up on the client before the call",
+        "I will read up on the client before the call",
+        "I'm going to read up on the client before the call"
+      ],
+      "common_errors": [
+        {
+          "id": "drill_down_substitute",
+          "pattern_label": "drill down into (analyst PV, wrong timing)",
+          "regex": "\\bdrill\\s+down\\s+(into|on)\\b",
+          "feedback": "✗ 'Drill down' = analyse data already in front of you. For *preparing* by researching the client beforehand: ✓ 'read up on the client'. Read up on = pre-meeting; drill down = mid-analysis."
+        },
+        {
+          "id": "study_calque",
+          "pattern_label": "study (textbook formal)",
+          "regex": "\\bstudy\\s+(the\\s+)?client\\b",
+          "feedback": "Russian 'почитать' is casual; English 'study' is exam-formal. The natural PV: 'read up on'."
+        },
+        {
+          "id": "no_on",
+          "pattern_label": "read up without 'on'",
+          "regex": "\\bread\\s+up\\s+(the\\s+)?client\\b",
+          "feedback": "✗ 'Read up the client' — missing 'on'. ✓ 'read up ON the client'. The 'on' is obligatory."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'll read up on the client before the call.' Russian 'почитать о' → 'read up ON'. Don't substitute 'drill down into' (that's for analysing data, not preparing).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b04",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "pv_substitution",
+        "get_across"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'донести (мысль)' = get across. Artem reaches for 'communicate' or 'explain' (calque-safe but flat). Get across signals successful transmission, not just delivery — and is the exec-natural choice.",
+      "prompt_ru": "Не уверен, что мне удалось донести свою мысль.",
+      "correct_answers": [
+        "I'm not sure I got my point across",
+        "I am not sure I got my point across",
+        "I'm not sure I managed to get my point across",
+        "I'm not sure I got the point across"
+      ],
+      "common_errors": [
+        {
+          "id": "explain_calque",
+          "pattern_label": "explain (textbook substitute)",
+          "regex": "\\bI\\s+(could|managed\\s+to)\\s+explain\\s+(my|the)\\s+(point|idea|thought|message)\\b",
+          "feedback": "'Explain my point' = stated it. 'Got my point across' = stated it AND landed. Russian 'донести' has the landing-implied — match it with 'get across'."
+        },
+        {
+          "id": "communicate_calque",
+          "pattern_label": "communicate (corporate-speak)",
+          "regex": "\\bcommunicate(d)?\\s+(my|the)\\s+(point|idea|thought|message)\\b",
+          "feedback": "'Communicate' is corporate-presentation-deck. 'Get across' is what people say in real conversation. Use the PV."
+        },
+        {
+          "id": "deliver_calque",
+          "pattern_label": "deliver (wrong sense)",
+          "regex": "\\bdeliver(ed)?\\s+(my|the)\\s+(point|idea|message)\\b",
+          "feedback": "✗ 'Deliver a point' — collocates poorly. You deliver speeches, packages, and bad news. Points and ideas: ✓ 'get across'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I got my point across.' Russian 'донести' → 'get X across'. Not 'explain' (no landing-implied), not 'communicate' (too formal).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b05",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_substitution",
+        "turn_out"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'оказаться (X)' = turn out (to be X). Artem substitutes 'appeared' (Russian-leaning, weaker epistemic load) or 'was' (drops the after-the-fact framing). Turn out implies confirmation-after-the-fact.",
+      "prompt_ru": "Этот контракт оказался выгоднее, чем мы ожидали.",
+      "correct_answers": [
+        "This contract turned out to be more profitable than we expected",
+        "The contract turned out to be more profitable than we expected",
+        "This contract turned out more profitable than we expected",
+        "It turned out the contract was more profitable than we expected"
+      ],
+      "common_errors": [
+        {
+          "id": "appeared_calque",
+          "pattern_label": "appeared (Russian-leaning, wrong epistemic load)",
+          "regex": "\\b(this|the)\\s+contract\\s+appeared\\s+(more|to\\s+be)\\b",
+          "feedback": "✗ 'The contract appeared more profitable' = it seemed (uncertain). Russian 'оказаться' = was confirmed-after-the-fact → ✓ 'turned out'. Different epistemic strength: appeared = guess; turned out = settled fact."
+        },
+        {
+          "id": "was_substitute",
+          "pattern_label": "was (drops the after-the-fact framing)",
+          "regex": "\\b(this|the)\\s+contract\\s+was\\s+more\\s+profitable\\s+than\\s+we\\s+expected\\b",
+          "feedback": "'The contract was more profitable' is grammatical but loses the *revelation* — the fact that we found out only in retrospect. Russian 'оказался' carries that surprise; English: 'turned out to be'."
+        },
+        {
+          "id": "happened_to_be_substitute",
+          "pattern_label": "happened to be (chance-implied, different)",
+          "regex": "\\bhappened\\s+to\\s+be\\s+more\\s+profitable\\b",
+          "feedback": "'Happened to be' = by chance / coincidentally. Russian 'оказался' here = was revealed-after-analysis. 'Turned out to be' is the right match."
+        }
+      ],
+      "fallback_feedback": "Target: 'This contract turned out to be more profitable than we expected.' Russian 'оказался' → 'turned out (to be)'. The PV carries the after-the-fact revelation.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b06",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_pair_confusion",
+        "bring_about",
+        "bring_in"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'привести к (изменению)' = bring about (cause). Artem confuses with 'bring in' (introduce). The pair: bring ABOUT = cause; bring IN = introduce. Russian 'привести к' specifically maps to bring about.",
+      "prompt_ru": "Реструктуризация привела к серьёзному снижению затрат.",
+      "correct_answers": [
+        "The restructuring brought about a significant reduction in costs",
+        "The restructuring has brought about a significant reduction in costs",
+        "The restructuring brought about significant cost reduction",
+        "The restructuring has brought about significant cost reduction"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_in_swap",
+          "pattern_label": "bring in (introduce, wrong PV)",
+          "regex": "\\bbrought\\s+in\\s+(a\\s+)?(significant|serious|big)\\s+(reduction|decrease)\\b",
+          "feedback": "✗ 'Brought in a reduction' — 'bring in' = introduce something new (a person, a rule, revenue). For *cause* a result: ✓ 'bring ABOUT'. Pair trap: bring IN = introduce; bring ABOUT = cause."
+        },
+        {
+          "id": "led_to_substitute",
+          "pattern_label": "led to (correct synonym, but target is bring about)",
+          "regex": "\\bled\\s+to\\s+(a\\s+)?(significant|serious|big)\\s+(reduction|decrease)\\b",
+          "feedback": "✓ 'Led to' is correct and natural. This drill targets 'bring about' specifically. Try the PV: 'brought about a significant reduction'."
+        },
+        {
+          "id": "caused_calque",
+          "pattern_label": "caused (clinical)",
+          "regex": "\\bcaused\\s+(a\\s+)?(significant|serious|big)\\s+(reduction|decrease)\\b",
+          "feedback": "'Caused a reduction' is correct but accident-tinged ('what caused this?'). For deliberate restructuring outcomes: ✓ 'brought about'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The restructuring brought about a significant reduction in costs.' Russian 'привести к' → 'bring about'. Don't confuse with 'bring in' (= introduce/earn).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b07",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_pair_confusion",
+        "get_off"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'выйти из автобуса/поезда' = get OFF (NOT get out of). Vehicle decides the particle: small enclosed (car/taxi) → get out of; transport-you-walk-inside (bus/train/plane) → get off. Artem swaps to 'get out' for buses.",
+      "prompt_ru": "Я вышел из метро на станции Манама и пошёл пешком до офиса.",
+      "correct_answers": [
+        "I got off the metro at Manama station and walked to the office",
+        "I got off at Manama station and walked to the office",
+        "I got off the metro at Manama and walked to the office",
+        "I got off the train at Manama station and walked to the office"
+      ],
+      "common_errors": [
+        {
+          "id": "get_out_swap",
+          "pattern_label": "get out (wrong PV for metro/train)",
+          "regex": "\\bgot\\s+out\\s+(of\\s+the\\s+)?(metro|train|bus|tube)\\b",
+          "feedback": "✗ 'Got out of the metro' — wrong particle. Vehicle rule: car/taxi (small enclosed) → get OUT OF; metro/bus/train/plane (transport you walk inside) → get OFF. ✓ 'got OFF the metro'."
+        },
+        {
+          "id": "left_substitute",
+          "pattern_label": "left (no PV, weaker)",
+          "regex": "\\bleft\\s+(the\\s+)?(metro|train|bus|tube)\\b",
+          "feedback": "'Left the metro' is OK but loses the boundary-crossing meaning. ✓ 'got OFF the metro' is the standard."
+        },
+        {
+          "id": "exited_calque",
+          "pattern_label": "exited (formal sign-language)",
+          "regex": "\\bexited\\s+(the\\s+)?(metro|train|bus)\\b",
+          "feedback": "'Exited' is bureaucratic. Speech: 'got off'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I got off the metro at Manama station.' Vehicle rule: bus/train/metro/plane → get OFF; car/taxi → get OUT OF.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b08",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "pv_pair_confusion",
+        "get_through"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'пережить (трудный период)' = get through (endure during). Artem swaps to 'get over' (recover after) — wrong timing. Pair distinction: get THROUGH = during the difficulty; get OVER = after it ended.",
+      "prompt_ru": "Не знаю как, но я пережил этот квартал.",
+      "correct_answers": [
+        "I don't know how, but I got through this quarter",
+        "I don't know how, but I got through the quarter",
+        "I'm not sure how, but I got through this quarter",
+        "Somehow I got through this quarter"
+      ],
+      "common_errors": [
+        {
+          "id": "get_over_swap",
+          "pattern_label": "get over (recovery-after, wrong timing)",
+          "regex": "\\bgot\\s+over\\s+(this|the)\\s+quarter\\b",
+          "feedback": "✗ 'Got over the quarter' — 'get over' = recovered AFTER (illness, loss, shock). Russian 'пережить' here = endured DURING → ✓ 'got THROUGH'. Time difference: through = during; over = after. Artem-specific trap — gt10 lastWrong was 'get over' here."
+        },
+        {
+          "id": "survived_calque",
+          "pattern_label": "survived (Russian leaning, dramatic)",
+          "regex": "\\bsurvived\\s+(this|the)\\s+quarter\\b",
+          "feedback": "'Survived the quarter' is OK conversational hyperbole — but the PV is 'got through it'. Save 'survive' for catastrophes."
+        },
+        {
+          "id": "passed_calque",
+          "pattern_label": "passed (Russian 'прошёл' calque)",
+          "regex": "\\bpassed\\s+(this|the)\\s+quarter\\b",
+          "feedback": "✗ 'Passed the quarter' = Russian-style. English: 'got through it'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I got through this quarter.' Russian 'пережить' (endure) → 'get THROUGH' (during). Different from 'get OVER' (after).",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b09",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_substitution",
+        "cut_down_on"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'сократить (что-то в рационе/расходах)' = cut down on. Artem reaches for 'reduce' or 'decrease' (clinical). The 'on' is obligatory and frequently dropped.",
+      "prompt_ru": "Я сократил сахар после анализов.",
+      "correct_answers": [
+        "I've cut down on sugar after the test results",
+        "I cut down on sugar after the test results",
+        "I have cut down on sugar after the test results",
+        "I've cut down on sugar after the blood tests",
+        "I cut down on sugar after the blood tests"
+      ],
+      "common_errors": [
+        {
+          "id": "no_on",
+          "pattern_label": "cut down without 'on'",
+          "regex": "\\bcut\\s+down\\s+sugar\\b",
+          "feedback": "✗ 'Cut down sugar' — missing 'on'. ✓ 'cut down ON sugar'. Without 'on' the verb sounds like chopping (cut down a tree). The 'on' is obligatory before the consumed thing."
+        },
+        {
+          "id": "reduce_calque",
+          "pattern_label": "reduce (textbook substitute)",
+          "regex": "\\b(reduced|reduce(d)?\\s+my)?\\s*sugar\\s+(intake|consumption|after)\\b",
+          "feedback": "'Reduce sugar' is clinical (like a prescription). Habit-cutting register: 'cut down on sugar'."
+        },
+        {
+          "id": "cut_back_variant",
+          "pattern_label": "cut back on (acceptable variant)",
+          "regex": "\\bcut\\s+back\\s+on\\s+sugar\\b",
+          "feedback": "✓ 'Cut back on' is correct (~95% interchangeable). This drill targets 'cut down on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'I've cut down on sugar.' Russian 'сократить (в рационе)' → 'cut down ON'. The 'on' is obligatory.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b10",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 3,
+      "tags": [
+        "pv_meaning_confusion",
+        "go_about"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'подходить к (задаче/процессу)' = go about + Ving. Artem misreads the PV (selected 'avoid a topic' as the meaning on ga01). Pattern: go about = approach a task; needs gerund object.",
+      "prompt_ru": "Я не уверен, как подходить к этому переговорному процессу.",
+      "correct_answers": [
+        "I'm not sure how to go about this negotiation",
+        "I am not sure how to go about this negotiation",
+        "I'm not sure how to go about negotiating this",
+        "I'm not sure how to go about handling this negotiation",
+        "I'm not sure how to go about approaching this negotiation"
+      ],
+      "common_errors": [
+        {
+          "id": "approach_calque",
+          "pattern_label": "approach (textbook substitute)",
+          "regex": "\\bhow\\s+to\\s+approach\\s+(this\\s+)?negotiation\\b",
+          "feedback": "'How to approach' is correct but flat. Process-talk register: 'how to go about this negotiation'. The PV invites discussion of *method*."
+        },
+        {
+          "id": "go_about_no_gerund",
+          "pattern_label": "go about + bare verb",
+          "regex": "\\bgo\\s+about\\s+(handle|negotiate|approach)\\b",
+          "feedback": "✗ 'Go about handle' — needs gerund. ✓ 'go about HANDLING' / 'go about NEGOTIATING'. Pattern: go about + Ving (or + noun)."
+        },
+        {
+          "id": "go_around_swap",
+          "pattern_label": "go around (different meaning)",
+          "regex": "\\bgo\\s+around\\s+(this\\s+)?negotiation\\b",
+          "feedback": "✗ 'Go around' = avoid / move from place to place. ✓ 'go ABOUT' = approach methodically."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm not sure how to go about this negotiation.' Russian 'подходить к (процессу)' → 'go about'. Followed by gerund or noun. Don't substitute 'approach'.",
+      "linked_question_ids": []
+    },
+    {
+      "id": "rt_artem_b11",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": [
+        "Phrasal Verbs"
+      ],
+      "expected_difficulty": 2,
+      "tags": [
+        "pv_pair_confusion",
+        "bring_in"
+      ],
+      "created": "2026-05-10T12:00:00Z",
+      "version": 1,
+      "calque_trap": "Russian 'привлечь / ввести / привнести' = bring in (introduce or earn). Artem confuses with 'bring about' (cause). Pair direction here: bring IN = introduce/recruit/earn revenue. Mirror of rt_artem_b05b.",
+      "prompt_ru": "Мы хотим привлечь нового подрядчика для второго этапа.",
+      "correct_answers": [
+        "We want to bring in a new contractor for the second phase",
+        "We'd like to bring in a new contractor for the second phase",
+        "We want to bring in a new contractor for phase two",
+        "We're looking to bring in a new contractor for the second phase"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_about_swap",
+          "pattern_label": "bring about (cause, wrong PV)",
+          "regex": "\\bbring\\s+about\\s+a?\\s*new\\s+contractor\\b",
+          "feedback": "✗ 'Bring about a new contractor' — 'bring about' = cause/result in (an outcome). For *introduce / recruit*: ✓ 'bring IN'. Pair trap mirror: bring ABOUT = cause; bring IN = introduce. Russian 'привлечь' here = recruit → bring in."
+        },
+        {
+          "id": "attract_calque",
+          "pattern_label": "attract (Russian 'привлечь' literal)",
+          "regex": "\\battract\\s+a?\\s*new\\s+contractor\\b",
+          "feedback": "'Attract a contractor' is OK in marketing-speak. For *deliberately bringing one onto the project*: ✓ 'bring in a contractor'."
+        },
+        {
+          "id": "hire_calque",
+          "pattern_label": "hire (correct but different angle)",
+          "regex": "\\bhire\\s+a?\\s*new\\s+contractor\\b",
+          "feedback": "'Hire' is correct and direct. 'Bring in' is preferred when you want to signal a new addition to an existing team — softer than 'hire'. Both work; this drill targets 'bring in'."
+        }
+      ],
+      "fallback_feedback": "Target: 'We want to bring in a new contractor for the second phase.' Russian 'привлечь / ввести' → 'bring IN'. Different from 'bring about' (= cause an outcome).",
+      "linked_question_ids": []
+    }
+  ]
+}

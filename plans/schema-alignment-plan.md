@@ -1,6 +1,8 @@
 # Schema Alignment Plan
 
-`players/{name}/exercises/{ts}` is written by two paths in two different shapes. Docs cover one. CC-driven sessions land sparse (no per-item answers, no `time_to_answer_ms`); PWA Coach tab sessions land rich; readers must handle either shape.
+**Status: ✅ all three tracks shipped (2026-05-10).** Plan kept for historical context.
+
+`players/{name}/exercises/{ts}` was written by two paths in two different shapes. Docs covered one. CC-driven sessions landed sparse (no per-item answers, no `time_to_answer_ms`); PWA Coach tab sessions landed rich; readers had to handle either shape. Resolution below: docs updated to canonical shape, CC writer accepts the rich shape, sparse-legacy explicitly documented as readable-but-not-emitted.
 
 Deeplinks (`?exlog=`, `?exstart=`, `?exupd=`, `?exfin=`) are out of scope — being hard-removed in a parallel change. This plan covers only the two live writers.
 
@@ -67,18 +69,18 @@ Sparse legacy rows (pre-rich `tools/log_exercise.js` writes) keep working — `i
 
 ## Migration tracks
 
-| # | Change | Files | Est. |
+| # | Change | Files | Status |
 |---|---|---|---|
-| **1** | Update exercises section with full canonical shape; mark sparse as legacy-acceptable | `references/firestore-schema.md` | ~80w added |
-| **2** | Add per-item construction guidance + rich JSON example | `.claude/skills/exercise-session/SKILL.md` | ~60w added |
-| **3** | Accept `items[]`, validate per-item fields, compute `tta_stats` and `auto_suspected` at write time. Update README example. | `tools/log_exercise.js`, `tools/README.md` | ~40 lines + ~20w |
+| **1** | Update exercises section with full canonical shape; mark sparse as legacy-acceptable | `references/firestore-schema.md` | ✅ done 2026-05-10. Per-item table covers `exercise_id` (CC live-author vs CC library-mode vs PWA Coach), `exercise_version`, `escalation_used`. Sparse-legacy clause refined to note new writes from both surfaces emit rich shape. |
+| **2** | Add per-item construction guidance + rich JSON example | `.claude/skills/exercise-session/SKILL.md` | ✅ done 2026-05-10. SKILL §2a "Library opt-in (Artem only)" specifies setting `exercise_id` + `exercise_version` per library item; step 5 cites rich-shape requirements. |
+| **3** | Accept `items[]`, validate per-item fields, compute `tta_stats` and `auto_suspected` at write time. Update README example. | `tools/log_exercise.js`, `tools/README.md` | ✅ shipped earlier 2026-05; verified 2026-05-10 by a CC library-mode run that returned `items_aggregated: 8`, `tta_stats` populated, idempotency map (`aggregated_exercises`) honoured. |
 
-Order: 1 → 2 → 3. Each independent post-1.
+Order: 1 → 2 → 3 — completed in that order; each is independent post-1.
 
-## Open questions
+## Open questions — resolved
 
-- **`time_to_answer_ms` for CC sessions** — no clean "rendered → submitted" pair in chat. Options: (a) skip the field on CC-logged items (loss of integrity-flag signal for CC sessions), (b) approximate from message turn timestamps if available, (c) require CC to record per-item start/end deliberately. Recommend (b) default + (c) opt-in.
-- **`auto_suspected` write-time vs read-time** — write-time means historical sessions never get the flag; read-time means every consumer recomputes. Recommend write-time for new sessions plus a one-time backfill script for any historical rows worth flagging.
+- **`time_to_answer_ms` for CC sessions** — Resolved with option (b) default + (c) opt-in: CC sessions estimate timings from Bash `Date.now()` boundaries when convenient, mark as rough; the `auto_suspected` 500ms threshold tolerates sub-second imprecision. The 2026-05-10 library-mode run logged plausible timings (30–60s/item) without ceremony.
+- **`auto_suspected` write-time vs read-time** — Resolved as write-time: `tools/log_exercise.js` and the Coach tab both compute it at write when `items[]` carries timing on ≥5 items. Historical sparse rows simply don't carry the flag; no backfill judged worth the effort.
 
 ## Acceptance
 

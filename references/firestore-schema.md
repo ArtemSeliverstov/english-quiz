@@ -58,9 +58,9 @@ Subcollection. One document per supplementary exercise session. `timestamp` is `
 | `date` | string | both writers | both readers | YYYY-MM-DD |
 | `source` | string | both writers | stats-review | `coach_tab` \| `cc_session` |
 | `partial`, `planned_total` | bool, number | Coach tab | stats-review | Set when session ended mid-pool |
-| `items` | array of maps | Coach tab; `log_exercise.js` once schema-alignment Track 3 ships | stats-review, history tab | Per-item detail. Sparse pre-rich rows omit. |
+| `items` | array of maps | Coach tab, `log_exercise.js` (rich shape) | stats-review, history tab | Per-item detail. Sparse pre-rich rows omit; readers treat absence as legacy, not a violation. |
 | `categories`, `error_types`, `errors` | arrays | both writers | stats-review | Aggregated tags + per-item descriptions |
-| `tta_stats`, `auto_suspected` | map, bool | Coach tab; CC after Track 3 | stats-review (integrity flag) | Time-to-answer aggregates and auto-play suspicion |
+| `tta_stats`, `auto_suspected` | map, bool | both writers (computed at write when `items[]` has timing on ≥5 items) | stats-review (integrity flag) | Time-to-answer aggregates and auto-play suspicion |
 | `chat_url` | string | both writers (optional) | history tab | Claude chat URL for traceability |
 | `meta` | map | both writers | — | Optional extras |
 
@@ -87,7 +87,7 @@ firestore_query("players/{playerName}/exercises", orderBy: "date desc", limit: 2
 
   "items": [
     {
-      "exercise_id": "tr_anna_b04",   // library id, or null for CC-authored
+      "exercise_id": "tr_anna_b04",   // library id; null only when CC live-authored
       "submitted_answer": "I have been waiting for you...",
       "correct": true,
       "matched_pattern_id": "preposition_for_duration",
@@ -113,19 +113,19 @@ firestore_query("players/{playerName}/exercises", orderBy: "date desc", limit: 2
 
 | Field | Required | Notes |
 |---|---|---|
-| `exercise_id` | yes | Library item id, or `null` for CC-authored |
+| `exercise_id` | yes | Library item id when reading from `exercises_library/` (Coach tab + CC library-mode sessions per `exercise-session` SKILL §2a). `null` only for CC live-authored items where no library record exists. |
 | `submitted_answer` | yes | What the player typed/picked. Field name is canonical — old `?exfin=` deeplinks used `given`; not used anymore |
 | `correct` | yes | Boolean |
 | `matched_pattern_id` | yes on wrong items | Snake_case slug. Aligned vocabulary across surfaces — same slugs as `error_types[]` (e.g. `a_the_swap`, `dropped_article`, `wait_no_for`). PWA library items carry the slug in `blanks[].pattern`. |
 | `time_to_answer_ms` | yes | Coach tab measures it directly; CC captures via Bash `Date.now()` calls at item boundaries. Rough timings (sub-second imprecision) are fine — `auto_suspected` uses a 500ms threshold. |
-| `exercise_version` | when applicable | Library items: the version of the prompt at answer time. CC-authored items: `null` (no library version exists). |
-| `escalation_used` | yes | True when the player used the "Hmm, explain more" path. CC sessions: always `false` (no escalate path). |
+| `exercise_version` | when applicable | Set to the library item's `version` at answer time whenever `exercise_id` is set (Coach tab + CC library-mode). `null` only for CC live-authored items. |
+| `escalation_used` | yes | True when the player used the "Hmm, explain more" path. CC sessions (live-author or library-mode): always `false` (no escalate path). |
 
 **Integrity flags**:
 - `tta_stats` is computed at write time when `items[]` has timing on ≥5 items (ignored otherwise).
 - `auto_suspected: true` when `tta_stats.mean < 500ms` over ≥5 items — flags suspected auto-play / answer-leak.
 
-**Sparse legacy**: pre-Track-3 rows from `tools/log_exercise.js` may omit `items[]`, `tta_stats`, `auto_suspected`. Readers treat absence as legacy, not a violation.
+**Sparse legacy**: pre-rich rows from `tools/log_exercise.js` (before schema-alignment Track 3 shipped 2026-05) may omit `items[]`, `tta_stats`, `auto_suspected`. Readers treat absence as legacy, not a violation. New writes from both Coach tab and `log_exercise.js` now produce the rich shape when `items[]` is provided.
 
 ---
 

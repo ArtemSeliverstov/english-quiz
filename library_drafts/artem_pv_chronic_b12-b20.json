@@ -1,0 +1,481 @@
+{
+  "_note": "Artem PV chronic-failure cold-production drills — Stage 1 batch 2 of consolidated plan. 10 items: tr_artem_b12-b20 (9 translations) + rt_artem_b12 (1 russian_trap). Two purposes: (a) retest the 5 PVs Artem missed in batch 1 run (2026-05-10) with DIFFERENT scenarios than b04-b11 — same PV targets, different lexical scaffold; (b) first-time cold-production coverage for 4 chronic PVs not in batch 1 (tack on, give out ², get around obstacle, bring in translation pair). Every retest item carries the *specific adjacent-PV substitute Artem used in batch 1* as an explicit common_errors regex with feedback that names the substitution mechanism. **DO NOT PUSH TO FIRESTORE OR DISPLAY PROMPTS TO ARTEM UNTIL ~2026-05-12 (48h spacing).** Mark this batch sealed.",
+  "exercises": [
+    {
+      "id": "tr_artem_b12",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "get_across", "pv_substitution", "batch_2_retest"],
+      "source_observation": "Retest of 2026-05-10 batch-1 miss tr_artem_b05 (wrote 'bring up the idea to management'). New scenario: HR/transformation context, larger audience. Substitute trap explicit.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Эту культурную перестройку очень тяжело донести до 200 человек одновременно.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "This cultural transformation is very hard to get across to 200 people at once",
+        "This cultural change is very hard to get across to 200 people at once",
+        "It's very hard to get this cultural transformation across to 200 people at once",
+        "This cultural shift is very hard to get across to 200 people at once",
+        "It's really hard to get this cultural transformation across to 200 people at once"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_up_for_get_across_recurrence",
+          "pattern_label": "bring up the (idea|change|transformation) — repeat of batch-1 b05 miss",
+          "regex": "\\bbring(s|ing)?\\s+up\\s+(the|this|my)?\\s*(cultural|transformation|change|idea|topic|message)\\b",
+          "feedback": "✗ Same substitute as 2026-05-10 b05 (bring_up_for_get_across). Bring up = mention/raise for discussion; doesn't carry the audience-landing implication that *донести* requires. The PV is **get across** = convey-so-they-land-it. Meta-pattern: 'does this PV carry the SPECIFIC collocation (landing-implied), or just the direction (mentioning)?'"
+        },
+        {
+          "id": "communicate_calque",
+          "pattern_label": "communicate (corporate-speak)",
+          "regex": "\\bcommunicate(d|s|ing)?\\s+(this|the)\\s+(cultural|change|transformation)\\b",
+          "feedback": "'Communicate' is HR-deck formal. Spoken/exec register: 'get across'."
+        },
+        {
+          "id": "explain_calque",
+          "pattern_label": "explain (textbook substitute)",
+          "regex": "\\bexplain(s|ed|ing)?\\s+(this|the)\\s+(cultural|change|transformation)\\b",
+          "feedback": "'Explain' = stated it. 'Get across' = stated it AND landed. Different epistemic strength. Use the PV."
+        },
+        {
+          "id": "deliver_calque",
+          "pattern_label": "deliver (wrong sense for abstractions)",
+          "regex": "\\bdeliver(s|ed|ing)?\\s+(this|the)\\s+(cultural|change|transformation|message)\\b",
+          "feedback": "✗ 'Deliver' takes speeches and packages, not transformations. ✓ 'get across'."
+        }
+      ],
+      "fallback_feedback": "Target: 'This cultural transformation is very hard to get across to 200 people at once.' PV is 'get X across (to Y)'. Russian 'донести' carries the landing-implied that 'communicate' / 'explain' drop."
+    },
+    {
+      "id": "tr_artem_b13",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "turn_out", "pv_substitution", "batch_2_retest"],
+      "source_observation": "Retest of 2026-05-10 batch-1 miss rt_artem_b05 (wrote 'This contract ends up better'). New scenario: recruitment / CV-vs-interview reality. Substitute trap explicit.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Этот кандидат оказался совсем не таким, как казалось по резюме.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "This candidate turned out to be quite different from what their CV suggested",
+        "This candidate turned out to be quite different from how the CV looked",
+        "The candidate turned out to be nothing like what the CV suggested",
+        "It turned out the candidate was quite different from what the CV suggested",
+        "This candidate turned out to be very different from what the CV showed"
+      ],
+      "common_errors": [
+        {
+          "id": "end_up_for_turn_out_recurrence",
+          "pattern_label": "end up (final-state) — repeat of batch-1 b05 miss",
+          "regex": "\\bend(s|ed)?\\s+up\\s+(quite\\s+|very\\s+)?(different|not\\s+the\\s+same|being|to\\s+be)\\b",
+          "feedback": "✗ Same substitute as 2026-05-10 rt_artem_b05. End up = finally be in a state (location/condition); doesn't carry the after-the-fact *revelation* the Russian *оказаться* needs. The PV is **turn out** = was revealed to be (with discovery-tone). Meta-pattern is consistent across PVs: adjacent direction, wrong epistemic load."
+        },
+        {
+          "id": "appeared_calque",
+          "pattern_label": "appeared (Russian-leaning, wrong epistemic load)",
+          "regex": "\\bappeared\\s+(to\\s+be\\s+|very\\s+|quite\\s+)?different\\b",
+          "feedback": "✗ 'Appeared different' = it seemed (uncertainty). *Оказаться* here = confirmed-after-the-fact → ✓ 'turned out to be different'. Epistemic strength differs."
+        },
+        {
+          "id": "was_substitute",
+          "pattern_label": "was (drops the revelation framing)",
+          "regex": "\\bthis\\s+candidate\\s+was\\s+(quite\\s+|very\\s+)?different\\b",
+          "feedback": "'Was different' is grammatical but loses the *we found out after interviewing him* implication. Russian 'оказался' carries that surprise; English: 'turned out to be'."
+        }
+      ],
+      "fallback_feedback": "Target: 'This candidate turned out to be quite different from what their CV suggested.' PV is 'turn out (to be X)'. 'Оказаться' → 'turn out', not 'end up' (final-state without revelation)."
+    },
+    {
+      "id": "tr_artem_b14",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "bring_about", "pv_substitution", "batch_2_retest"],
+      "source_observation": "Retest of 2026-05-10 batch-1 miss tr_artem_b07 (wrote 'A new pricing policy get to a significant change'). New scenario: M&A / culture impact. Substitute traps explicit for both 'get to' AND 'bring in' (the two confusion sources).",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Слияние привело к серьёзным культурным изменениям в команде.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The merger brought about significant cultural changes in the team",
+        "The merger brought about serious cultural changes in the team",
+        "The merger has brought about significant cultural changes in the team",
+        "The merger brought about significant cultural change in the team",
+        "The merger has brought about serious cultural changes in the team"
+      ],
+      "common_errors": [
+        {
+          "id": "get_to_for_bring_about_recurrence",
+          "pattern_label": "get to (reach) — repeat of batch-1 b07 miss",
+          "regex": "\\bg(et|ot|ets)\\s+to\\s+(a\\s+|significant\\s+|serious\\s+)?(cultural\\s+)?change\\b",
+          "feedback": "✗ Same substitute as 2026-05-10 b07. Get to = reach/have-the-chance-to; not in the cause/result semantic field. The PV is **bring about** = cause / result in. Russian 'привести к' maps to bring about (or lead to as synonym), never to 'get to'."
+        },
+        {
+          "id": "bring_in_for_bring_about_recurrence",
+          "pattern_label": "bring in (introduce) — pair confusion seen on pv_c07",
+          "regex": "\\bbrought\\s+in\\s+(significant|serious|a)\\s+(cultural\\s+)?change\\b",
+          "feedback": "✗ Pair trap (you confused these on pv_c07 too). Bring IN = introduce/recruit/earn; Bring ABOUT = cause/result in. Russian 'привести к' = cause → bring about."
+        },
+        {
+          "id": "led_to_substitute",
+          "pattern_label": "led to (correct synonym, but target is bring about)",
+          "regex": "\\bled\\s+to\\s+(significant|serious|a)\\s+(cultural\\s+)?change\\b",
+          "feedback": "✓ 'Led to' is correct and natural — both work. This drill targets bring about specifically because the chronic 🔴 stat is on that PV (1/6). Try the PV form."
+        },
+        {
+          "id": "caused_calque",
+          "pattern_label": "caused (clinical)",
+          "regex": "\\bcaused\\s+(significant|serious|a)\\s+(cultural\\s+)?change\\b",
+          "feedback": "'Caused' is fine but slightly accident-tinged. For deliberate M&A outcomes: ✓ 'brought about'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The merger brought about significant cultural changes in the team.' Russian 'привести к' → 'bring about'. Don't confuse with 'bring in' (= introduce) or substitute 'get to' (= reach)."
+    },
+    {
+      "id": "tr_artem_b15",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "tags": ["phrasal_verb", "cut_down_on", "pv_substitution", "batch_2_retest"],
+      "source_observation": "Retest of 2026-05-10 batch-1 miss rt_artem_b09 (wrote 'I brought sugar down'). New scenario: cycling training. Substitute trap explicit.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Тренер посоветовал сократить интенсивные сессии до двух в неделю.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The coach advised me to cut down on intense sessions to two a week",
+        "The coach advised cutting down on intense sessions to two a week",
+        "My coach advised me to cut down on intense sessions to two a week",
+        "The coach told me to cut down on intense sessions to two a week",
+        "The coach advised me to cut down on hard sessions to two a week"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_down_for_cut_down_on_recurrence",
+          "pattern_label": "bring down (lower-an-abstract) — repeat of batch-1 b09 miss",
+          "regex": "\\bbr(ought|ing)\\s+(\\w+\\s+)?(intense\\s+sessions?|sessions?|the\\s+sessions?)\\s+down\\b",
+          "feedback": "✗ Same substitute as 2026-05-10 rt_artem_b09. Bring down = lower an abstract you actively control (price, fever, regime); doesn't collocate with training volume/habits. The PV is **cut down on** (the 'on' is obligatory before the consumed/practised thing)."
+        },
+        {
+          "id": "no_on",
+          "pattern_label": "cut down without 'on'",
+          "regex": "\\bcut\\s+down\\s+(intense|hard|the)?\\s*sessions?\\b",
+          "feedback": "✗ 'Cut down sessions' — missing 'on'. ✓ 'cut down ON sessions'. Without 'on' the verb sounds transitive (cut down a tree)."
+        },
+        {
+          "id": "reduce_calque",
+          "pattern_label": "reduce (textbook)",
+          "regex": "\\breduce\\s+(intense|hard|the)?\\s*sessions?\\b",
+          "feedback": "'Reduce sessions' is correct but clinical. Habit/training register: 'cut down on'."
+        },
+        {
+          "id": "cut_back_variant",
+          "pattern_label": "cut back on (acceptable variant)",
+          "regex": "\\bcut\\s+back\\s+on\\s+(intense|hard|the)?\\s*sessions?\\b",
+          "feedback": "✓ 'Cut back on' is correct (~95% interchangeable). Drill targets 'cut down on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The coach advised me to cut down on intense sessions to two a week.' PV is 'cut down on' — 'on' obligatory before habit/consumption."
+    },
+    {
+      "id": "tr_artem_b16",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "go_about", "pv_meaning_confusion", "batch_2_retest"],
+      "source_observation": "Retest of 2026-05-10 batch-1 miss tr_artem_b11 (wrote 'How do you usually get into the selection of major tender contractors?'). New scenario: KPMG audit context. Substitute trap explicit.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Не уверен, как правильно подойти к этой внутренней проверке.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I'm not sure how to go about this internal audit properly",
+        "I'm not sure how to go about this internal audit the right way",
+        "I am not sure how to go about this internal audit properly",
+        "I'm not sure how best to go about this internal audit",
+        "I'm not sure how to go about handling this internal audit properly"
+      ],
+      "common_errors": [
+        {
+          "id": "get_into_for_go_about_recurrence",
+          "pattern_label": "get into (enter-state) — repeat of batch-1 b11 miss",
+          "regex": "\\bget\\s+into\\s+(the\\s+|this\\s+)?(internal\\s+)?(audit|check|review)\\b",
+          "feedback": "✗ Same substitute as 2026-05-10 tr_artem_b11. Get into = become interested in / enter a state (got into cycling); doesn't mean 'approach methodically'. The PV is **go about + Ving/noun** = approach a task. *Подходить к процессу* → go about."
+        },
+        {
+          "id": "approach_calque",
+          "pattern_label": "approach (textbook substitute)",
+          "regex": "\\bhow\\s+to\\s+approach\\s+(this|the)\\s+(internal\\s+)?(audit|check|review)\\b",
+          "feedback": "'How to approach' is correct but flat-formal. Process-talk register: 'how to go about this audit'. The PV invites discussion of *method*."
+        },
+        {
+          "id": "go_about_no_gerund",
+          "pattern_label": "go about + bare verb (wrong pattern)",
+          "regex": "\\bgo\\s+about\\s+(handle|conduct|do|run)\\s+(this|the)\\s+audit\\b",
+          "feedback": "✗ Bare verb after 'go about' — needs gerund. ✓ 'go about HANDLING' / 'go about CONDUCTING'. Pattern: go about + Ving (or + noun)."
+        },
+        {
+          "id": "go_around_swap",
+          "pattern_label": "go around (different PV meaning)",
+          "regex": "\\bgo\\s+around\\s+(this|the)\\s+(audit|internal\\s+audit)\\b",
+          "feedback": "✗ 'Go around' = avoid / move from place to place. ✓ 'go ABOUT' = approach methodically. Particle decides the meaning."
+        }
+      ],
+      "fallback_feedback": "Target: 'I'm not sure how to go about this internal audit properly.' Russian 'подходить к (процессу)' → 'go about'. Followed by gerund or noun. Don't substitute 'get into' (= enter-state) or 'approach' (= flat textbook)."
+    },
+    {
+      "id": "tr_artem_b17",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "tack_on", "pv_substitution", "first_time_coverage"],
+      "source_observation": "First-time cold-production for tack_on (chronic 🔴 2/5; lastWrong on pv_ti63 = 'add … on'). KPMG/legal context.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Они добавили дополнительную поправку в самый последний момент перед подписанием.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "They tacked on an additional clause at the very last minute before signing",
+        "They tacked on an extra clause at the very last minute before signing",
+        "They tacked on an additional amendment at the very last minute before signing",
+        "They tacked an extra clause on at the very last minute before signing",
+        "They tacked on one more clause at the very last minute before signing"
+      ],
+      "common_errors": [
+        {
+          "id": "add_on_substitute",
+          "pattern_label": "add … on (non-PV avoidance — Artem's actual miss on pv_ti63)",
+          "regex": "\\badded\\s+(an?\\s+)?(additional|extra)\\s+(clause|amendment|provision)\\s+on\\b",
+          "feedback": "✗ Same construction Artem produced on pv_ti63 (lastWrong = 'add … on'). 'Add on' is a noun phrase ('add-on'); as a verb, native is 'tack on' for the last-minute / unwelcome / appended sense. **Tack on** carries the connotation of late, often unwelcome attachment — exactly the audit/legal register."
+        },
+        {
+          "id": "added_no_on",
+          "pattern_label": "added (no particle, drops PV register)",
+          "regex": "\\badded\\s+(an?\\s+)?(additional|extra)\\s+(clause|amendment|provision)\\s+(at|in)\\b",
+          "feedback": "'Added a clause' is grammatical but loses the *late and slightly-irritating* connotation. ✓ 'tacked on' carries that. Use the PV."
+        },
+        {
+          "id": "attached_calque",
+          "pattern_label": "attached (formal/written register)",
+          "regex": "\\battached\\s+(an?\\s+)?(additional|extra)\\s+(clause|amendment)\\b",
+          "feedback": "'Attached' is appendix-formal — for cover letters and emails. For *late-minute add to a contract*: ✓ 'tacked on'."
+        },
+        {
+          "id": "appended_calque",
+          "pattern_label": "appended (very formal)",
+          "regex": "\\bappended\\s+(an?\\s+)?(additional|extra)\\s+(clause|amendment)\\b",
+          "feedback": "'Appended' is correct but reserved for very formal documents (legislation, regulations). Negotiation register: 'tacked on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'They tacked on an additional clause at the very last minute before signing.' PV is 'tack on' — appended late, often unwelcome. Carries connotation 'added' / 'attached' don't."
+    },
+    {
+      "id": "tr_artem_b18",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "tags": ["phrasal_verb", "give_out", "pv_substitution", "first_time_coverage"],
+      "source_observation": "First-time cold-production for give_out ² (legs/body fail sense, chronic 🔴 1/4; lastWrong on pv_ti79 = 'gave up'). Cycling context.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "На пятом часу гонки у меня просто отказали ноги.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "On the fifth hour of the race my legs just gave out",
+        "On the fifth hour of the race my legs just gave out on me",
+        "In the fifth hour of the race my legs just gave out",
+        "In the fifth hour of the race my legs simply gave out",
+        "On the fifth hour of the race my legs gave out"
+      ],
+      "common_errors": [
+        {
+          "id": "gave_up_for_gave_out",
+          "pattern_label": "gave up (volitional, wrong PV) — Artem's actual miss on pv_ti79",
+          "regex": "\\b(my\\s+)?legs\\s+(just\\s+|simply\\s+)?gave\\s+up\\b",
+          "feedback": "✗ Same substitute Artem used on pv_ti79 (lastWrong = 'gave up'). Give UP = voluntarily stop trying (with intent); Give OUT = involuntarily fail (the legs aren't the one deciding). For body parts/systems failing: ✓ 'gave out'. The legs didn't quit — they failed mechanically."
+        },
+        {
+          "id": "failed_calque",
+          "pattern_label": "failed (no PV, weaker)",
+          "regex": "\\b(my\\s+)?legs\\s+(just\\s+|simply\\s+)?failed\\b",
+          "feedback": "'Legs failed' is OK but flat. Native cycling/endurance register: 'legs gave out' or 'legs blew up' (more dramatic). 'Gave out' is the standard."
+        },
+        {
+          "id": "stopped_calque",
+          "pattern_label": "stopped (Russian-leaning literal)",
+          "regex": "\\b(my\\s+)?legs\\s+(just\\s+|simply\\s+)?stopped\\s+(working|to\\s+work)?\\b",
+          "feedback": "✗ 'Legs stopped' / 'stopped working' — Russian-style literal. ✓ 'gave out'."
+        },
+        {
+          "id": "refused_calque",
+          "pattern_label": "refused (Russian 'отказали' literal)",
+          "regex": "\\b(my\\s+)?legs\\s+(just\\s+|simply\\s+)?refused\\b",
+          "feedback": "✗ Russian *отказали* tempts 'refused' — but legs don't refuse (only people do). Mechanical failure: ✓ 'gave out'."
+        }
+      ],
+      "fallback_feedback": "Target: 'On the fifth hour of the race my legs just gave out.' PV is 'give out' (= stop functioning, for body parts / mechanical things). Distinct from 'give up' (voluntary stop)."
+    },
+    {
+      "id": "tr_artem_b19",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["phrasal_verb", "get_around", "pv_substitution", "first_time_coverage"],
+      "source_observation": "First-time cold-production for get_around (obstacle sense, chronic 🔴 1/3; lastWrong on pv_ti07 = 'work around'). Biz/licensing context.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Нам нужно обойти ограничения по лицензии, чтобы запустить пилот в первом квартале.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We need to get around the licensing restrictions to launch the pilot in Q1",
+        "We need to get around the licence restrictions to launch the pilot in Q1",
+        "We need to get around these licensing restrictions to launch the pilot in Q1",
+        "We need to get around the licensing restrictions in order to launch the pilot in Q1",
+        "We need to get around the licensing constraints to launch the pilot in Q1"
+      ],
+      "common_errors": [
+        {
+          "id": "work_around_for_get_around",
+          "pattern_label": "work around (near-synonym, different angle) — Artem's actual miss on pv_ti07",
+          "regex": "\\bwork\\s+around\\s+(the|these)\\s+(licensing|licence|license)\\s+(restrictions?|constraints?)\\b",
+          "feedback": "✓ 'Work around' is correct and natural here — close synonym. But this drill targets **get around** specifically (chronic 🔴 1/3). Distinction: get around = bypass entirely (find a way *not* to deal with it); work around = adapt to it (proceed despite). Russian 'обойти' is the bypass sense → get around."
+        },
+        {
+          "id": "bypass_calque",
+          "pattern_label": "bypass (formal substitute)",
+          "regex": "\\bbypass\\s+(the|these)\\s+(licensing|licence|license)\\s+(restrictions?|constraints?)\\b",
+          "feedback": "'Bypass' is correct and slightly more formal. Native business-speech default: 'get around'."
+        },
+        {
+          "id": "avoid_calque",
+          "pattern_label": "avoid (Russian 'обойти' literal)",
+          "regex": "\\bavoid\\s+(the|these)\\s+(licensing|licence|license)\\s+(restrictions?|constraints?)\\b",
+          "feedback": "'Avoid' = stay away from. 'Get around' = navigate past while still proceeding. Different — for 'обойти' (work-around-and-proceed): get around."
+        },
+        {
+          "id": "go_around_calque",
+          "pattern_label": "go around (different PV meaning)",
+          "regex": "\\bgo\\s+around\\s+(the|these)\\s+(licensing|licence|license)\\s+(restrictions?|constraints?)\\b",
+          "feedback": "✗ 'Go around' usually = move around physically / spread (a rumour). For overcoming obstacles: ✓ 'get around' (find a way past)."
+        }
+      ],
+      "fallback_feedback": "Target: 'We need to get around the licensing restrictions to launch the pilot in Q1.' Russian 'обойти (ограничения)' → 'get around'. Bypass-not-confront sense, distinct from 'work around' (adapt while confronting)."
+    },
+    {
+      "id": "tr_artem_b20",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 2,
+      "tags": ["phrasal_verb", "bring_in", "pv_pair_confusion", "format_pair_completion"],
+      "source_observation": "Translation pair-partner for rt_artem_b11 (bring_in russian_trap). Completes ≥2-format coverage for the bring_in / bring_about chronic pair. KPMG context.",
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "prompt_ru": "Мы хотим привлечь внешнего консультанта на этап проектирования системы.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We want to bring in an external consultant for the system design phase",
+        "We'd like to bring in an external consultant for the system design phase",
+        "We want to bring in an external consultant for the design phase",
+        "We're looking to bring in an external consultant for the system design phase",
+        "We plan to bring in an external consultant for the system design phase"
+      ],
+      "common_errors": [
+        {
+          "id": "bring_about_for_bring_in",
+          "pattern_label": "bring about (cause) — mirror of the b07/b14 pair-trap",
+          "regex": "\\bbring\\s+about\\s+(an?\\s+)?(external\\s+)?consultant\\b",
+          "feedback": "✗ Pair-trap mirror. Bring ABOUT = cause/result in (an outcome); doesn't collocate with people. For *bring a person onto the team*: ✓ 'bring IN'. Pair direction: bring IN = introduce/recruit; bring ABOUT = cause."
+        },
+        {
+          "id": "attract_calque",
+          "pattern_label": "attract (Russian 'привлечь' literal)",
+          "regex": "\\battract\\s+(an?\\s+)?(external\\s+)?consultant\\b",
+          "feedback": "'Attract a consultant' is OK in marketing-speak (attracting talent). For *deliberately bringing one onto the project*: ✓ 'bring in'."
+        },
+        {
+          "id": "engage_calque",
+          "pattern_label": "engage (formal alternative)",
+          "regex": "\\bengage\\s+(an?\\s+)?(external\\s+)?consultant\\b",
+          "feedback": "'Engage a consultant' is correct and slightly more formal (contracting register). 'Bring in' is the team-narrative register — what you say in conversation. Both work; drill targets 'bring in'."
+        },
+        {
+          "id": "hire_substitute",
+          "pattern_label": "hire (correct but different angle)",
+          "regex": "\\bhire\\s+(an?\\s+)?(external\\s+)?consultant\\b",
+          "feedback": "'Hire' is direct and correct. 'Bring in' softens 'hire' and emphasises *adding to existing team* — drill targets that nuance."
+        }
+      ],
+      "fallback_feedback": "Target: 'We want to bring in an external consultant for the system design phase.' Russian 'привлечь (на этап)' → 'bring IN'. Different from 'bring about' (= cause an outcome) — pair-trap mirror."
+    },
+    {
+      "id": "rt_artem_b12",
+      "type": "russian_trap",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": ["Phrasal Verbs"],
+      "expected_difficulty": 3,
+      "tags": ["pv_substitution", "tack_on", "first_time_coverage"],
+      "created": "2026-05-10T18:30:00Z",
+      "version": 1,
+      "linked_question_ids": [],
+      "calque_trap": "Russian 'приписать (в самом конце)' / 'добавить дополнительно' = tack on. Artem reaches for 'add ... on' (avoidance — non-PV) per pv_ti63 lastWrong. Tack on carries late/unwelcome connotation that 'add' loses.",
+      "prompt_ru": "Они приписали ещё один пункт в самом конце документа.",
+      "correct_answers": [
+        "They tacked on another clause at the very end of the document",
+        "They tacked on one more clause at the very end of the document",
+        "They tacked another clause on at the very end of the document",
+        "They tacked on an extra clause at the end of the document"
+      ],
+      "common_errors": [
+        {
+          "id": "add_on_substitute_rt",
+          "pattern_label": "add … on (non-PV avoidance, pv_ti63 miss)",
+          "regex": "\\badded\\s+(an?\\s+|one\\s+more\\s+|another\\s+)?(clause|pun?t|item|provision)\\s+(at\\s+the\\s+(very\\s+)?end\\s+)?on\\b",
+          "feedback": "✗ Same construction Artem produced on pv_ti63 (lastWrong = 'add … on'). 'Add on' as a verb in this sense is non-standard; the PV for late/unwelcome appended items is **tack on**."
+        },
+        {
+          "id": "added_no_pv",
+          "pattern_label": "added (no particle — drops late/unwelcome implication)",
+          "regex": "\\bthey\\s+added\\s+(an?\\s+|one\\s+more\\s+|another\\s+)?(clause|item|provision)\\s+at\\s+the\\s+(very\\s+)?end\\b",
+          "feedback": "'Added' is grammatical but loses the *late and slightly-irritating* connotation. ✓ 'tacked on' carries that — exactly what the Russian *приписать* hints at."
+        },
+        {
+          "id": "appended_too_formal",
+          "pattern_label": "appended (very formal)",
+          "regex": "\\bappended\\s+(an?\\s+|one\\s+more\\s+|another\\s+)?(clause|item|provision)\\b",
+          "feedback": "'Appended' is correct but legislative-formal. Negotiation/document register: 'tacked on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'They tacked on another clause at the very end of the document.' Russian 'приписать (в самом конце)' → 'tack on'. Late/unwelcome connotation that 'added' and 'appended' miss."
+    }
+  ]
+}

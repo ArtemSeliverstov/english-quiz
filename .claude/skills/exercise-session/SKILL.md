@@ -5,7 +5,7 @@ description: Run a supplementary exercise session for any family member (Anna, N
 
 # Exercise Session
 
-Structured supplementary exercise session for one named player. Family path (Anna, Nicole, Ernest, Egor) uses pre-generated library content where available; Artem path is live-authored, conversational, no library reuse. Logging schema is identical across all players.
+Structured supplementary exercise session for one named player. Family path (Anna, Nicole, Ernest, Egor) uses pre-generated library content where available; Artem path defaults to live-authored, conversational, no library reuse — but explicitly opts into library content when the request names a pre-authored drill set ("PV chronic drills", "translation drills", "russian trap drills", "the b04 batch", or any phrasing that picks a library exercise type). Logging schema is identical across all players and surfaces.
 
 ## Reads
 
@@ -21,6 +21,8 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 **1. Retrieve context.** From the player doc: `stats`, `coach_notes.weak_patterns`, `coach_notes.recent_observations`, `coach_notes.engagement_notes`, `phrase_tracker` (active+retest entries). Combine with profile.
 
 **2. Select exercise type.** Match profile + recent weak patterns + (Artem) slot plan. Use canonical type names — `article_drill` not `error_correction`, `particle_sort` not `transform`. Slot-matching depends on exact values (validator enforces). Propose options if ambiguous; don't auto-select.
+
+**2a. Library opt-in (Artem only).** If Artem's request names a pre-authored drill set — examples: "PV chronic drills", "translation drills", "russian trap drills", "let's run the b04 batch", or any phrasing that explicitly invokes library content — pull items from `exercises_library/{type}/items/` filtered by `target_player == 'artem'` (Firestore via `tools/_firestore.js`-style fetch, or read the relevant `library_drafts/*.json` locally if Firestore is unreachable). Run them as authored — present `prompt_ru`, score against `correct_answers` with normalisation, fire `common_errors[].regex` against the submission for targeted feedback, fall back to `fallback_feedback`. Do NOT live-author replacements. The default Artem live-author path still applies to unscoped requests like "let's do exercises". When library mode is used, set `exercise_id` and `exercise_version` on each `items[]` entry (not null) so the per-question stats in `qStats[<exercise_id>]` accumulate the same way Coach-tab attempts do.
 
 **3. Run session.** One item at a time, score each, build error pattern map. Use the player's real-life themes from profile (tags from `family-profiles.md`).
 
