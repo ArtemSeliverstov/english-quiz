@@ -32,11 +32,11 @@
 
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
-| `[biz_oil]` | 0 | 5 | 4 | 0 | 0 | 0 | 9 |
-| `[leisure_sport]` | 0 | 14 | 1 | 0 | 0 | 0 | 15 |
+| `[biz_oil]` | 0 | 11 | 4 | 0 | 0 | 0 | 15 |
+| `[leisure_sport]` | 0 | 18 | 1 | 0 | 0 | 0 | 19 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 31 | 8 | 0 | 0 | 0 | 39 |
-| **Total** | 0 | 51 | 13 | 0 | 0 | 0 | 64 |
+| `[claude_collab]` | 0 | 35 | 8 | 0 | 0 | 0 | 43 |
+| **Total** | 0 | 65 | 13 | 0 | 0 | 0 | 78 |
 
 ---
 
@@ -108,6 +108,20 @@
 | a document explaining the instrument | a document explaining the tool | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
 | did you include all problems you have encountered | did you include all the issues you've run into | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
 | I'll initiate a separate branch | I'll spin up a separate branch | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| memorize that | note that | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| elaborate on next steps | lay out next steps | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| put on paper X | put X on paper | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| at the end | in the end | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| exactly opposite | exactly reversed / the other way around | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| jointly with X | combined with X | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| restart to V | start V-ing again | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| make swift movement | move quickly | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| cycling volume activity | volume rides | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| muscle section | muscle session | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| propose how to add modifications | suggest changes | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| with problem to V | couldn't V | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| hand to hand with | hand in hand with | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| I thought to V | I was thinking of V-ing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 
 ---
 

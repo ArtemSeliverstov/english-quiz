@@ -1,0 +1,130 @@
+{
+  "phrase_tracker_add": [
+    {
+      "awkward": "memorize that",
+      "natural": "note that",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 calque (запомни/запомните). ~10x across 2026-02 to 2026-05 chats. Default opener for instructions."
+    },
+    {
+      "awkward": "elaborate on next steps",
+      "natural": "lay out next steps",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Register: 'elaborate on' is academic; 'lay out' is the business-email native"
+    },
+    {
+      "awkward": "put on paper X",
+      "natural": "put X on paper",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 word order"
+    },
+    {
+      "awkward": "at the end",
+      "natural": "in the end",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 calque (в конце); 'at the end' is location, 'in the end' is conclusion"
+    },
+    {
+      "awkward": "exactly opposite",
+      "natural": "exactly reversed / the other way around",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Adverb without noun; native uses 'reversed' or 'the other way around'"
+    },
+    {
+      "awkward": "jointly with X",
+      "natural": "combined with X",
+      "tag": "biz_oil",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Register: 'jointly' is legal/formal"
+    },
+    {
+      "awkward": "restart to V",
+      "natural": "start V-ing again",
+      "tag": "leisure_sport",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 calque (запустить снова) + gerund-after-start pattern"
+    },
+    {
+      "awkward": "make swift movement",
+      "natural": "move quickly",
+      "tag": "leisure_sport",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Calque (делать движение); native uses the verb directly"
+    },
+    {
+      "awkward": "cycling volume activity",
+      "natural": "volume rides",
+      "tag": "leisure_sport",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Stiff nominalization for the ride type"
+    },
+    {
+      "awkward": "muscle section",
+      "natural": "muscle session",
+      "tag": "leisure_sport",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Word choice (section vs session)"
+    },
+    {
+      "awkward": "propose how to add modifications",
+      "natural": "suggest changes",
+      "tag": "claude_collab",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Register: 'propose how to add modifications' is academic; native is just 'suggest changes'"
+    },
+    {
+      "awkward": "with problem to V",
+      "natural": "couldn't V",
+      "tag": "claude_collab",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 calque (с проблемой сделать)"
+    },
+    {
+      "awkward": "hand to hand with",
+      "natural": "hand in hand with",
+      "tag": "claude_collab",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "Idiom misremembering. 'Hand to hand' is combat; 'hand in hand' is cooperation."
+    },
+    {
+      "awkward": "I thought to V",
+      "natural": "I was thinking of V-ing",
+      "tag": "claude_collab",
+      "sources": ["harvest_claude_ai_2026-05-11"],
+      "event_note": "L1 calque (я подумал сделать); native uses 'thinking of/about'"
+    }
+  ],
+  "weak_patterns_add": [
+    "gerund after suggest/start/help/recommend/avoid — defaults to 'to V' form. 4-month evidence across claude.ai chats: 'I started to have my doubts' (2026-02 + 2026-05), 'I suggest to draw out' (2026-04), 'I suggest to keep' (2026-05), 'Helped to avert' (2026-04). Cross-context [biz_oil] + [claude_collab]. Candidate for focused 8-10 item error_correction drill on the closed verb set (suggest/start/help/recommend/avoid/finish/keep/consider + V-ing).",
+    "'in case of X' calque (в случае X) — defaults to 'in case of' where native uses 'for X' / 'when X' / 'if X'. Recurred 2026-02 ('in case of large modeling exercises' [biz_oil]) and 2026-04 ('in case of shorter periods' [leisure_sport]). Cross-context, easy drill: 4-6 item error_correction on the conditional substitutes."
+  ],
+  "strong_patterns_add": [
+    "business/CV register — comfortable with Latinate vocabulary (professionalise, facilitated, modernization, stakeholder engagement, project finance, EPC dynamics), structured bullets, formal email conventions. Clear growth Feb→May 2026: Feb avoided multi-syllable Latinate vocabulary; May reaches for it confidently across CV-editing sessions.",
+    "descriptive narrative (travel/cycling) — well-paced descriptive prose by March 2026. Examples: Fethiye camp feedback email (2026-03-28), Lycian coast descent narrative (2026-03-29). Register is in active production, not just receptive."
+  ],
+  "recent_observations_add": [
+    {
+      "date": "2026-05-11",
+      "session_id": "harvest_claude_ai_4mo",
+      "note": "[data] Volume-driven register growth — 1,507 substantive English messages across 4 months in claude.ai (Feb 165, Mar 586, Apr 506, May 250 partial). Business/CV vocabulary by May shows real comfort vs Feb baseline. Volume in Mar-Apr (1,092 msgs) likely the engine.",
+      "author": "claude_code"
+    },
+    {
+      "date": "2026-05-11",
+      "session_id": "harvest_claude_ai_4mo",
+      "note": "[inferred] Sentence structure improving — Feb msgs run long/rambly (single sentences with 4+ clauses joined by 'while'/'and'); May msgs more punctual (Q:/A: pattern, short fragments OK, less subordination). Likely shaped by claude.ai chat format expectations.",
+      "author": "claude_code"
+    },
+    {
+      "date": "2026-05-11",
+      "session_id": "harvest_claude_ai_4mo",
+      "note": "[data] Persistent gerund-after-X (suggest/start/help) across all 4 months — same surface error Feb to May, no self-correction. Distinct from PV cold-production gap (already captured). Drilling target — see weak_patterns_add.",
+      "author": "claude_code"
+    }
+  ]
+}
