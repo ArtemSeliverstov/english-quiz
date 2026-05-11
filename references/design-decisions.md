@@ -62,7 +62,7 @@ to move.
 - **GitHub repo** (this) — stable facts, version-controlled, manually curated
 - **Firestore `coach_notes`** — dynamic per-player observations, written during sessions
 
-No auto-memory because workflow is mobile-first (auto-memory is laptop-only filesystem).
+Auto-memory (laptop CC) holds only CC-behavior facts. Player observations go to Firestore `coach_notes` — auto-memory is laptop-only and would never reach the mobile PWA.
 See `coach-notes-schema.md`.
 
 ### Don't move profile content to Firestore (t7)
