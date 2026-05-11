@@ -32,11 +32,11 @@
 
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
-| `[biz_oil]` | 0 | 2 | 4 | 0 | 0 | 0 | 6 |
+| `[biz_oil]` | 0 | 5 | 4 | 0 | 0 | 0 | 9 |
 | `[leisure_sport]` | 0 | 1 | 1 | 0 | 0 | 0 | 2 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 12 | 8 | 0 | 0 | 0 | 20 |
-| **Total** | 0 | 16 | 13 | 0 | 0 | 0 | 29 |
+| `[claude_collab]` | 0 | 22 | 8 | 0 | 0 | 0 | 30 |
+| **Total** | 0 | 29 | 13 | 0 | 0 | 0 | 42 |
 
 ---
 
@@ -73,6 +73,19 @@
 | impact us mainly by delayed revenue | hit us mainly through delayed revenue | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | fw |
 | always overbudget and time delay | always over budget and behind schedule | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | fw |
 | bringing the issue up to the execs | getting this in front of the execs | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | fw |
+| takes 3 lines anyway | takes up 3 lines anyway | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| something of mentoring | something about mentoring / a mention of mentoring | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| it was a bunch of technical persons | they were a group of technical specialists | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| it was a difficult discussion | the discussion was difficult | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| maybe it's worthwhile to show | I wonder if it's worth showing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| maybe it's better to merge | what if we merged | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| maybe it worth to say | could we say | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| it worth to discuss | it's worth discussing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| it's definitely not X | it's clearly not X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| I definitely think X | I think X (or omit definitely) | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| I need the explanation to read and select options | I need it readable enough that I can scan and pick | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| after reading, I decide that I prefer X | after reading, I've decided I prefer X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| drop the idea with HTML | drop the HTML idea | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
 
 ---
 
