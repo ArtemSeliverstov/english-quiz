@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r3">
+  <meta name="app-version" content="v20260511-r4">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r3</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r4</span></p>
 </header>
 
 <!-- TABS -->
@@ -1457,7 +1457,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         </button>
         <button class="coach-type-btn" data-type="free_write" onclick="coachStartFreeWrite()" title="Live AI — chat with the coach about anything you write">
           <span class="coach-type-name">Free Write</span>
-          <span class="coach-type-count">live AI</span>
+          <span class="coach-type-count" data-count-for="free_write"></span>
         </button>
         <button class="coach-type-btn" data-type="phrase_swap_drill" onclick="coachStartPhraseSwapDrill()" title="Live AI — practise stiff/calqued phrases, swap them for natural ones">
           <span class="coach-type-name">Phrase Swaps</span>
@@ -8763,7 +8763,7 @@ async function coachOpenTab() {
   await Promise.all([coachLoadMeta(), coachRenderStatsCard(), coachLoadPlayerCoachNotes()]);
   coachUpdateLiveAIAvailability();
   coachUpdateWeakSpotsAvailability();
-  coachUpdateConvertedTypeAvailability();
+  coachUpdateLiveDrillBadges();
   coachApplyShellLayout();
   exLoadHistory();
 }
@@ -8837,40 +8837,92 @@ async function coachLoadPlayerCoachNotes() {
 // Compute weak_patterns count and update the Weak Spots button. Hidden when the
 // API is down, the network is off, or the player has no weak_patterns. Visible-
 // with-disabled state is used while data is loading.
-// Phase D rollout — types converted to live-AI primary. Badge shows "live AI"
-// when the worker is reachable; falls back to library count when offline/API
-// down. Button stays enabled when liveAvail (the worker generates items on
-// demand) regardless of library inventory. Add new entries here as types ship.
-const COACH_LIVE_CONVERTED_TYPES = ['translation', 'error_correction'];
+// Per-type badge labels showing personally-relevant signal instead of repetitive
+// "live AI" text. Replaces the r3 placeholder. Each type pulls from a different
+// data source — coach_notes.weak_patterns for live drills (translation, EC),
+// qStats accuracy for category drills (article, particle), spelling_log for
+// spelling. Free Write shows nothing when healthy (anytime activity). Always
+// degrades to "offline" / "paused" when liveAvail false (info still visible to
+// the player so they know the state).
+//
+// Helpers below — `coachUpdateLiveDrillBadges()` is the entry point.
 
-function coachUpdateConvertedTypeAvailability() {
+function coachCategoryAccuracyPct(category) {
+  if (typeof ALL_QUESTIONS === 'undefined' || !DB || !DB.qStats) return null;
+  let seen = 0, correct = 0;
+  for (const q of ALL_QUESTIONS) {
+    if (q.cat !== category) continue;
+    const st = DB.qStats[q.id];
+    if (!st) continue;
+    seen += st.seen || 0;
+    correct += st.correct || 0;
+  }
+  if (seen < 3) return null; // not enough samples for a meaningful number
+  return Math.round(100 * correct / seen);
+}
+
+function coachUpdateLiveDrillBadges() {
   const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
-  for (const t of COACH_LIVE_CONVERTED_TYPES) {
-    const btn = document.querySelector(`.coach-type-btn[data-type="${t}"]`);
-    if (!btn) continue;
-    const countEl = btn.querySelector(`[data-count-for="${t}"]`);
-    if (liveAvail) {
-      btn.disabled = false;
-      btn.classList.remove('disabled');
-      if (countEl) countEl.textContent = 'live AI';
+  const offlineLabel = !navigator.onLine ? 'offline' : (coachState.apiUnavailable ? 'paused' : null);
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const level = profile.level || '';
+  const cn = coachState.playerCoachNotes || {};
+  const weakCount = Array.isArray(cn.weak_patterns) ? cn.weak_patterns.length : 0;
+
+  const setBadge = (type, liveLabel, libraryFallback, { enableLive } = {}) => {
+    const btn = document.querySelector(`.coach-type-btn[data-type="${type}"]`);
+    if (!btn) return;
+    const countEl = btn.querySelector(`[data-count-for="${type}"]`);
+    if (!countEl) return;
+    if (!liveAvail && offlineLabel) {
+      countEl.textContent = libraryFallback || offlineLabel;
     } else {
-      // Offline / API down — leave library count as-is (coachLoadMeta sets it)
-      // but flag the state so the player knows. If library count is "0 avail",
-      // disable the button.
-      if (countEl) {
-        const txt = countEl.textContent.trim();
-        const num = parseInt(txt, 10);
-        if (!navigator.onLine) {
-          countEl.textContent = 'offline (library)';
-        } else if (coachState.apiUnavailable) {
-          countEl.textContent = 'library only';
-        }
-        if (!isNaN(num) && num === 0) {
-          btn.disabled = true;
-          btn.classList.add('disabled');
-        }
+      countEl.textContent = liveLabel;
+      // Live-AI-converted types: enable the button regardless of library count
+      // (worker generates items on demand). Without this, coachLoadMeta's "0
+      // library items → disable" gating sticks even when live AI is available.
+      if (enableLive) {
+        btn.disabled = false;
+        btn.classList.remove('disabled');
       }
     }
+  };
+
+  // Translation + Error Correction: "4 weak" — count of weak_patterns to drill.
+  // Empty weak → "ready". Offline → "library only" since the legacy library
+  // path still works without the worker.
+  const liveDrillLabel = weakCount > 0 ? `${weakCount} weak` : 'ready';
+  setBadge('translation', liveDrillLabel, 'library only', { enableLive: true });
+  setBadge('error_correction', liveDrillLabel, 'library only', { enableLive: true });
+
+  // Article Drill: category accuracy from qStats, e.g. "62% on Articles". Falls
+  // back to library count when no qStats data yet ("start fresh"). Not yet
+  // converted to live AI (D-3 pending) — badge is informative regardless.
+  const articlePct = coachCategoryAccuracyPct('Articles');
+  setBadge('article_drill', articlePct != null ? `${articlePct}% on Articles` : 'start fresh', null);
+
+  // Particle Sort: "X% on PVs"
+  const pvPct = coachCategoryAccuracyPct('Phrasal Verbs');
+  setBadge('particle_sort', pvPct != null ? `${pvPct}% on PVs` : 'start fresh', null);
+
+  // Spelling Drill: count of unique attempted words since last drill in
+  // spelling_log. Async — kick off and update when it lands.
+  coachUpdateSpellingDrillBadge();
+
+  // Free Write: no badge when healthy. Offline → "offline".
+  setBadge('free_write', '', null);
+}
+
+async function coachUpdateSpellingDrillBadge() {
+  const btn = document.querySelector('.coach-type-btn[data-type="spelling_drill"]');
+  if (!btn || !currentPlayer) return;
+  const countEl = btn.querySelector('[data-count-for="spelling_drill"]');
+  if (!countEl) return;
+  try {
+    const n = await homeCountSpellHelpSinceLastDrill(currentPlayer);
+    countEl.textContent = n > 0 ? `${n} queued` : 'start fresh';
+  } catch (e) {
+    // Leave whatever coachLoadMeta wrote
   }
 }
 
@@ -8886,10 +8938,8 @@ function coachUpdateWeakSpotsAvailability() {
   if (countEl) {
     if (!liveAvail) {
       countEl.textContent = !navigator.onLine ? 'offline' : 'paused';
-    } else if (wpCount === 0) {
-      countEl.textContent = '0 weak spots';
     } else {
-      countEl.textContent = 'live AI';
+      countEl.textContent = wpCount + ' weak spot' + (wpCount === 1 ? '' : 's');
     }
   }
   // Learner-shell hides disabled live-AI buttons (parity with Phrase Swaps); builder-shell shows them
@@ -8934,9 +8984,11 @@ function coachUpdateLiveAIAvailability() {
   fwBtn.classList.toggle('disabled', !liveAvail);
   const countEl = fwBtn.querySelector('.coach-type-count');
   if (countEl) {
+    // Healthy state: empty (anytime activity, no inventory worth surfacing).
+    // Degraded state: show what's wrong so the player knows.
     countEl.textContent = !navigator.onLine ? 'offline' :
                           coachState.apiUnavailable ? 'unavailable' :
-                          !COACH_WORKER_URL ? 'soon' : 'live AI';
+                          !COACH_WORKER_URL ? 'soon' : '';
   }
   // Phrase Swaps button rides the same liveAI gating + a per-player pool count.
   coachUpdatePhraseSwapAvailability();
@@ -8977,7 +9029,7 @@ function coachShowPicker() {
   // Reflect any availability changes (network, API_402)
   coachUpdateLiveAIAvailability();
   coachUpdateWeakSpotsAvailability();
-  coachUpdateConvertedTypeAvailability();
+  coachUpdateLiveDrillBadges();
 }
 
 // ─── Worker call helper ─────────────────────────────────────────────────────
@@ -9010,7 +9062,7 @@ async function coachWorkerCall(payload, { retries = 1, timeoutMs = 30000 } = {})
         coachState.apiUnavailable = true;
         coachUpdateLiveAIAvailability();
         coachUpdateWeakSpotsAvailability();
-        coachUpdateConvertedTypeAvailability();
+        coachUpdateLiveDrillBadges();
         return json;
       }
       // Non-retriable validation errors, bail immediately.
@@ -10827,12 +10879,19 @@ async function coachLoadMeta() {
     const allCov = cov.all || {};
     const TYPES = ['translation','spelling_drill','article_drill','particle_sort','error_correction','russian_trap'];
     const SHIPPED_TYPES = ['translation','spelling_drill'];
+    // Types whose badge label is owned by `coachUpdateLiveDrillBadges` — skip
+    // writing `N avail` here so the richer per-type signal isn't overwritten.
+    // Keep the per-type library count for totalAvail (player-facing summary at
+    // the bottom of the picker) but don't render it on the button.
+    const DYNAMIC_BADGE_TYPES = ['translation','error_correction','article_drill','particle_sort','spelling_drill'];
     let totalAvail = 0;
     for (const t of TYPES) {
       const n = (playerCov[t] || 0) + (allCov[t] || 0);
       totalAvail += n;
-      const el = document.querySelector(`[data-count-for="${t}"]`);
-      if (el) el.textContent = n + ' avail';
+      if (!DYNAMIC_BADGE_TYPES.includes(t)) {
+        const el = document.querySelector(`[data-count-for="${t}"]`);
+        if (el) el.textContent = n + ' avail';
+      }
       const btn = document.querySelector(`.coach-type-btn[data-type="${t}"]`);
       if (btn && SHIPPED_TYPES.includes(t)) {
         btn.disabled = (n === 0);
