@@ -471,7 +471,7 @@ Drill protocol:
 CRITICAL RULES:
 - **Russian-only cues.** The cue is a single Russian sentence ${playerName} translates into English. Never include an English hint, target structure name, or partial translation in the cue.
 - **Target structure declared internally, not to the player.** You know what structure each cue tests; ${playerName} produces from the Russian alone.
-- **No keyword/transformation hybrids.** This is a straight translation, not a sentence-transformation. If the player needs a transform drill, that's `transform`, not this.
+- **No keyword/transformation hybrids.** This is a straight translation, not a sentence-transformation. If the player needs a transform drill, that's a separate type — not this.
 - **Lenient on form, strict on structure.** "I have been waiting since 3" and "I've been waiting since 3" both pass. "I am waiting since 3" fails (wrong tense).
 
 ${languageBlock}
