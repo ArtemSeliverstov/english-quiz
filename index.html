@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260512">
+  <meta name="app-version" content="v20260512-r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260512</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260512-r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -11978,11 +11978,71 @@ async function coachMergeWeakPatterns(newPatterns, sessionContext) {
   const today = new Date().toISOString().slice(0, 10);
   const sessionId = sessionContext?.session_id || coachState.fwSessionId || '';
 
-  // Partition newPatterns: lexical (already handled by phrase_tracker) vs grammar.
+  // Partition newPatterns: lexical → phrase_tracker (PWA capture path), grammar → recent_session_signals.
   // Lexical = matches "X → Y" or "X → Y [tag]" — the arrow with whitespace is the discriminator.
   const isLexical = (s) => typeof s === 'string' && /\s(?:→|->)\s/.test(s);
   const grammarSignals = newPatterns.filter(p => typeof p === 'string' && p.trim() && !isLexical(p));
-  // Lexical entries: no-op here; phrase_tracker is canonical.
+  const lexicalRaw = newPatterns.filter(isLexical);
+
+  // PWA capture-source rule: new lexical swaps land at ⚪ first_pass and promote to
+  // 🔵 active only on a 2nd-session hit. CC capture (tools/capture_swaps.js) skips
+  // first_pass — higher signal because the coach observed the slip in real time.
+  // Schema: coach-notes-schema.md "Phrase tracker lifecycle".
+  const sourcePrefix = (() => {
+    const m = sessionContext?.mode || coachState.type || '';
+    if (m === 'free_write') return 'fw';
+    if (m === 'weak_spots_drill') return 'wsd';
+    if (m === 'translation_drill') return 'td';
+    if (m === 'error_correction_drill') return 'ec';
+    if (m === 'article_drill_live') return 'ad';
+    if (m === 'particle_sort_live') return 'pst';
+    if (m === 'spelling_drill_live') return 'spd';
+    return 'pwa';
+  })();
+  const trackerEntries = (player && player.phrase_tracker && Array.isArray(player.phrase_tracker.entries))
+    ? player.phrase_tracker.entries.slice() : [];
+  const sameKey = (a, b) =>
+    (a.awkward || '').trim().toLowerCase() === (b.awkward || '').trim().toLowerCase()
+    && (a.natural || '').trim().toLowerCase() === (b.natural || '').trim().toLowerCase()
+    && (a.tag || null) === (b.tag || null);
+  let trackerDirty = false;
+  for (const raw of lexicalRaw) {
+    const parsed = coachParseLexicalWeakPattern(raw);
+    if (!parsed) continue;  // parser enforces tag-or-multi-word-natural rule (mirrors capture_swaps.js)
+    const key = { awkward: parsed.awkward, natural: parsed.natural, tag: parsed.tag };
+    const existing = trackerEntries.find(e => e && sameKey(e, key));
+    if (!existing) {
+      trackerEntries.push({
+        awkward: parsed.awkward,
+        natural: parsed.natural,
+        tag: parsed.tag,
+        status: 'first_pass',
+        first_seen: today,
+        last_drilled: null,
+        next_retest: null,
+        reps: 0,
+        sources: [sourcePrefix],
+        events: [{ date: today, event: 'captured', session: sessionId, source_mode: sourcePrefix }],
+      });
+      trackerDirty = true;
+    } else if (existing.status === 'first_pass') {
+      // 2nd-session hit on a quarantined entry → promote, but only when the session is new.
+      const seen = (existing.events || []).map(e => e && e.session).filter(Boolean);
+      if (sessionId && !seen.includes(sessionId)) {
+        existing.status = 'active';
+        existing.events = [...(existing.events || []), { date: today, event: 'promoted_from_first_pass', session: sessionId, source_mode: sourcePrefix }];
+        if (Array.isArray(existing.sources) && !existing.sources.includes(sourcePrefix)) existing.sources.push(sourcePrefix);
+        trackerDirty = true;
+      }
+    } else {
+      // active / retest_due / mastered / owned / failed_retest — log re-observation only, no status change.
+      const seen = (existing.events || []).map(e => e && e.session).filter(Boolean);
+      if (sessionId && !seen.includes(sessionId)) {
+        existing.events = [...(existing.events || []), { date: today, event: 're_observed', session: sessionId, source_mode: sourcePrefix }];
+        trackerDirty = true;
+      }
+    }
+  }
 
   // Merge grammar signals into recent_session_signals (cap 20, priority-weighted eviction).
   const signals = Array.isArray(cn.recent_session_signals) ? cn.recent_session_signals.slice() : [];
@@ -12042,8 +12102,16 @@ async function coachMergeWeakPatterns(newPatterns, sessionContext) {
   };
   // weak_patterns NOT touched — stats-review owns durable signal promotion.
   const newCn = Object.assign({}, cn, patch);
-  await fsMerge('players/' + currentPlayer, { coach_notes: newCn });
+  const writePayload = { coach_notes: newCn };
+  if (trackerDirty) {
+    writePayload.phrase_tracker = {
+      entries: trackerEntries,
+      last_updated: new Date().toISOString(),
+    };
+  }
+  await fsMerge('players/' + currentPlayer, writePayload);
   coachState.playerCoachNotes = newCn;
+  if (trackerDirty) coachState.playerPhraseTracker = writePayload.phrase_tracker;
 }
 
 // ─── Friendly error text from a Worker error envelope ──────────────────────
