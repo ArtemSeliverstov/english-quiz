@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r12">
+  <meta name="app-version" content="v20260511-r13">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r12</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r13</span></p>
 </header>
 
 <!-- TABS -->
@@ -3911,6 +3911,7 @@ function defaultData() {
     qStats: {},
     catStats: {},
     lvlStats: {},
+    coach_drill_stats: {},  // per-target_structure {seen, correct, last_seen, last_correct, category} — written by coachFoldDrillStats
     totalSessions: 0,
     totalCorrect: 0,
     totalAnswered: 0,
@@ -5043,9 +5044,33 @@ function homeReturnFromStats() {
 // mastered (date-tagged), and coming-next (1 deepen + up to 3 broaden) per §4.4 D3.
 // Locked categories are not surfaced. Tapping a card toggles a detail line with
 // raw counts for transparency.
+// Combined per-category progress = quiz signal (catStats) + drill signal (coach_drill_stats
+// aggregated over entries whose .category matches). Quiz is recognition-side; drill is
+// production-side. Returning both separately + a combined total lets the UI surface
+// the recognition-vs-production gap that Anna's profile flags.
+function getCategoryProgress(cat) {
+  const qs = (DB.catStats || {})[cat] || { seen: 0, correct: 0 };
+  const ds = DB.coach_drill_stats || {};
+  let drill_seen = 0, drill_correct = 0;
+  for (const key of Object.keys(ds)) {
+    const e = ds[key];
+    if (e && e.category === cat) {
+      drill_seen += Number(e.seen) || 0;
+      drill_correct += Number(e.correct) || 0;
+    }
+  }
+  return {
+    quiz_seen: qs.seen || 0,
+    quiz_correct: qs.correct || 0,
+    drill_seen,
+    drill_correct,
+    combined_seen: (qs.seen || 0) + drill_seen,
+    combined_correct: (qs.correct || 0) + drill_correct,
+  };
+}
+
 function renderLearnerStats() {
   const lp = (DB && DB.learning_path) || {};
-  const cs = DB.catStats || {};
   const activeEl = document.getElementById('ls-active');
   const masteredEl = document.getElementById('ls-mastered');
   const comingEl = document.getElementById('ls-coming');
@@ -5056,13 +5081,35 @@ function renderLearnerStats() {
     activeEl.innerHTML = '<div class="ls-empty">No active categories yet — your path is being set up.</div>';
   } else {
     activeEl.innerHTML = active.map(cat => {
-      const s = cs[cat] || { seen: 0, correct: 0 };
-      const pct = s.seen > 0 ? Math.round((s.correct / s.seen) * 100) : null;
+      const p = getCategoryProgress(cat);
+      // Bar fill: combined accuracy when there's data either side.
+      const pct = p.combined_seen > 0
+        ? Math.round((p.combined_correct / p.combined_seen) * 100)
+        : null;
       const fill = pct == null ? 0 : Math.max(0, Math.min(100, pct));
-      const meta = s.seen > 0 ? (s.seen + ' attempt' + (s.seen === 1 ? '' : 's')) : 'No attempts yet';
-      const detail = s.seen > 0
-        ? ('Accuracy: ' + pct + '% · ' + s.correct + '/' + s.seen + ' correct')
-        : 'Pick "Start practice" on home to begin.';
+      // Meta line: total attempts across both sources.
+      const meta = p.combined_seen > 0
+        ? (p.combined_seen + ' attempt' + (p.combined_seen === 1 ? '' : 's'))
+        : 'No attempts yet';
+      // Detail line: show quiz + drill split when both exist; single-source when only one.
+      let detail;
+      if (p.quiz_seen === 0 && p.drill_seen === 0) {
+        detail = 'Pick "Start practice" on home to begin.';
+      } else if (p.drill_seen === 0) {
+        // Quiz only — same as legacy behaviour
+        const qPct = Math.round((p.quiz_correct / p.quiz_seen) * 100);
+        detail = 'Quiz: ' + qPct + '% · ' + p.quiz_correct + '/' + p.quiz_seen + ' correct';
+      } else if (p.quiz_seen === 0) {
+        // Drill only — newer player who's only used Coach tab
+        const dPct = Math.round((p.drill_correct / p.drill_seen) * 100);
+        detail = 'Drill: ' + dPct + '% · ' + p.drill_correct + '/' + p.drill_seen + ' correct';
+      } else {
+        // Both signals — show recognition vs production split
+        const qPct = Math.round((p.quiz_correct / p.quiz_seen) * 100);
+        const dPct = Math.round((p.drill_correct / p.drill_seen) * 100);
+        detail = 'Quiz: ' + qPct + '% (' + p.quiz_correct + '/' + p.quiz_seen + ') · '
+               + 'Drill: ' + dPct + '% (' + p.drill_correct + '/' + p.drill_seen + ')';
+      }
       return '<div class="ls-card" onclick="this.classList.toggle(\'expanded\')">'
         + '<div class="ls-card-row">'
         +   '<div class="ls-card-name">' + escapeHtml(cat) + '</div>'
@@ -7523,6 +7570,7 @@ async function loadFromFirebase() {
         qStats:         remote.qStats         || {},
         catStats:       remote.catStats        || {},
         lvlStats:       remote.lvlStats        || {},
+        coach_drill_stats: remote.coach_drill_stats || {},
         totalSessions:  remote.totalSessions   || 0,
         totalAnswered:  remote.totalAnswered    || 0,
         totalCorrect:   remote.totalCorrect     || 0,

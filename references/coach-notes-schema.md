@@ -127,8 +127,7 @@ player works best. Updated when something durable shifts.
 session_id (if from an exercise session), note (1-3 sentences), and author. Drop oldest
 when adding 11th. This is the rolling working memory.
 
-**`stuck_questions`** — question IDs the player consistently fails. Used to flag for
-content review (restructuring or removal).
+**`stuck_questions`** — question IDs the player consistently fails. Used by CC tools (stats-review writes here, `quiz-development` reads here when auditing content quality). **No PWA consumer** as of 2026-05-12 audit — the field is content-review-only, not surfaced to the player. Keep writing where stats-review identifies 100% error rate qids; consume during quiz-development sweeps.
 
 **`coach_drill_stats`** (sibling field on `players/{name}`, not under `coach_notes`) — per-target-structure mastery map written by the 5 Phase D live drills. Shape:
 
