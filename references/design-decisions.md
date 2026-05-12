@@ -216,7 +216,7 @@ Counter: `s1`–`s100` ran historically; `t1` onward is current. Same-session re
 HTML KB deprecated as the source of truth. Markdown files in `references/` are now
 authoritative. HTML KB retained as `archive/` snapshot for human readability.
 
-### MCQ retained for Everyday English
+### MCQ retained for Natural English
 Default ~40% target for EE category, vs reducing-over-time elsewhere. Reason:
 naturalness is a whole-sentence judgement; MCQ is the right shape. Wrong options
 are register-inappropriate, not ungrammatical.

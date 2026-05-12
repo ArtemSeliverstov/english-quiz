@@ -23,7 +23,7 @@ What's next, what's deferred. Ordered by category, not strict priority.
 | 1 | B2 Idioms | ~15 q | New questions needed | Idioms category entirely C1; B2 absent |
 | 2 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations C1) | ~60 q | Scraped exercises partially done | C1 at 250/330 target. Egor IELTS focus. |
 | 3 | C2 — initial batch | ~40 q | New questions needed | C2 at 16; needed for Artem ceiling push |
-| 4 | Everyday English — new category | ~30 q | New questions needed | Pragmatics & natural register. Anna engagement driver. |
+| 4 | Natural English — new category | ~30 q | New questions needed | Pragmatics & natural register. Anna engagement driver. |
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.

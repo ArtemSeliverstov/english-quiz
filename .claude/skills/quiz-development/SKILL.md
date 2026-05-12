@@ -56,7 +56,7 @@ The bank lives inline in `index.html` as `const ALL_QUESTIONS = [...]`. Don't ex
 - **Articles** — `question-authoring-standards.md` § "Articles — additional checks (S84)"
 - **Transform** — `tools/check_transform_keywords.js` enforces: keyword in every accepted ans, keyword not a whole word in stem
 - **Multi-blank** — re-entry guard mandatory (see `bug-log.md`)
-- **Everyday English** — MCQ default ~40%, register-inappropriate (not ungrammatical) wrong options
+- **Natural English** — MCQ default ~40%, register-inappropriate (not ungrammatical) wrong options
 
 ## Pre-deploy
 

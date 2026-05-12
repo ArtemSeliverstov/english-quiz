@@ -62,10 +62,11 @@ accuracy alongside being a player.
 
 ## Anna 👩
 
-**Player key**: `anna` · **Level**: B2 · **Coach language**: `ru` · **Defaults**: B1+B2, `biz: false`
+**Player key**: `anna` · **Level**: B1 → B2 · **Coach language**: `ru` · **Defaults**: B1+B2, `biz: false`
 
 Conversational English, daily interaction. Less need for formal register.
 Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
+**Active categories** (`learning_path.active_categories`, window 5): Tenses, Prepositions, Spelling, Phrasal Verbs, Natural English (added 2026-05-12 — phrase_swap_drill is gated on this category).
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Preposition errors (Russian L1 interference: arrive to → at, waiting us → for, at the next week → zero article)
@@ -164,6 +165,8 @@ Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
 English-speaking consulting work (Russian-speaking colleagues, English-language deliverables and clients). Applying to UK/Western master's.
 
 As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA Free Write, PWA Phrase Swaps drill, exercise sessions. Quiz remains primary. Coach tab access via the family PWA login — no CC channel.
+
+**Active categories** (`learning_path.active_categories`, window 5): Articles, Conditionals, Tenses, Linking Words, Vocabulary (populated 2026-05-12 — IELTS B2-prep focus; phrase_swap_drill not active for him since Natural English isn't in his window).
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Academic vocabulary (IELTS preparation)

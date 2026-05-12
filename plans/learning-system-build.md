@@ -515,7 +515,7 @@ without coming back to chat.
 - **Composition of Anna's initial 4-category active window at level_cap B1**:
   CC pulls current `catStats` filtered to B1 items, proposes per the
   composition rule (D4) and the level cap (D14), Artem confirms.
-  **Important caveat**: Anna's high accuracy on Everyday English Idioms
+  **Important caveat**: Anna's high accuracy on Natural English Idioms
   is a measurement artifact, not a competence signal — the category's
   MCQ structure permits identification of correct answers from option
   form alone (one short/natural, one over-formal, one obviously wrong),

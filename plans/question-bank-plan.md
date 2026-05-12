@@ -31,7 +31,7 @@ Every player has at least adequate practice volume in every topic relevant to th
 
 | Track | Categories | Threshold | Why |
 |---|---|---|---|
-| **A. Open-class** (each item = its own concept) | Vocabulary, Phrasal Verbs, Idioms, Collocations, Irregular Verbs, Word Formation, Everyday English | Per-category variety floor: **≥40** for high-frequency (Vocabulary, PV); **≥15** for niche | Each item is one concept. Variety > depth. |
+| **A. Open-class** (each item = its own concept) | Vocabulary, Phrasal Verbs, Idioms, Collocations, Irregular Verbs, Word Formation, Natural English | Per-category variety floor: **≥40** for high-frequency (Vocabulary, PV); **≥15** for niche | Each item is one concept. Variety > depth. |
 | **B. Structural** (closed sub-topic set) | All other categories | **≥8 unique items per major sub-topic** | Below 8, learners memorise the items rather than generalising the rule. With SR re-exposure (1d→2d→4d→7d→14d), 8 items × 4–5 cycles = 32–40 exposures per topic — clears the automaticity threshold (Walberg 2009). |
 
 Plus the existing **≥20% input share per category per player** (production-vs-recognition target).
@@ -213,7 +213,7 @@ Most of Wave 1 (Nicole's B1 batch) and Wave 2 (Anna's B2 batch) also serve Ernes
 
 ### 2.8 Wave 5 — Egor
 
-**Skipped** per 2026-05-08 decision. Egor's zero cells (Everyday English B2, Irregular Verbs B2/C1, Quantifiers B2/C1) accepted as gaps. Existing C1 vocab authoring continues per his profile — not a wave priority.
+**Skipped** per 2026-05-08 decision. Egor's zero cells (Natural English B2, Irregular Verbs B2/C1, Quantifiers B2/C1) accepted as gaps. Existing C1 vocab authoring continues per his profile — not a wave priority.
 
 ---
 
@@ -465,7 +465,7 @@ Workstreams add: PV ladder ~100 items, article intervention ~95 quiz + ~75 Coach
 | B2 Idioms | Folded into Wave 2 (Anna) + Tier 2 (§6.2) |
 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations C1) | Mostly folded into Wave 2 + Tier 3 (§6.3); G&I is over-target so dropped |
 | C2 — initial batch | **Deferred** (out of scope per 2026-05-08) |
-| Everyday English | Done (already 30 in bank) |
+| Natural English | Done (already 30 in bank) |
 
 `references/roadmap.md` § Phase-1 Content & Family/engagement: same items, same status.
 

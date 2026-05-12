@@ -85,7 +85,7 @@ From source KB Roadmap → "Phase 1 Content priorities":
 | 1 | B2 Idioms | ~15 q | New questions | Idioms entirely C1; B2 absent |
 | 2 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations) | ~60 q | Scraped exercises partial | C1 at 250/330. Egor IELTS focus. |
 | 3 | C2 — initial batch | ~40 q | New questions | C2 at 16; needed for Artem ceiling |
-| 4 | Everyday English — new category | ~30 q | New questions | Pragmatics, register. Anna engagement driver. |
+| 4 | Natural English — new category | ~30 q | New questions | Pragmatics, register. Anna engagement driver. |
 
 Done items (from S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.

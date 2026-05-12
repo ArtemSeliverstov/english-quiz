@@ -98,7 +98,7 @@ mapping see §6.
 | **Quantifiers** | much/many, few/little, some/any, all/every, both/either/neither | vs Articles (quant = quantity; art = definiteness). |
 | **Reported Speech** | Backshift, time/place shifts, reporting-verb patterns | vs Tenses (RS = cross-clause transformation). |
 | **Comparisons** | Comparative/superlative adjectives, `as…as`, `the more…the more` | vs Adjectives (this = degree forms; adj = position/order). |
-| **Everyday English** | Pragmatic functions and register: requests, complaints, small talk, register fit | All B1. Anna engagement driver per coverage-matrix Phase-1. |
+| **Natural English** | Pragmatic functions and register: requests, complaints, small talk, register fit | All B1. Anna engagement driver per coverage-matrix Phase-1. |
 | **Collocations** | Word pairings: `make a decision`, `heavy rain`, `commit a crime` | vs Vocabulary (coll = pairing; voc = single word). vs PV. |
 | **Passive Voice** | Active ↔ passive transformation, agent omission, get-passive | Often appears as **type=`transform`** (see §4). |
 | **Adjectives** | -ed / -ing pairs, adjective order, position, postposed | vs Comparisons (adj = base form usage; comp = degree). |
@@ -268,7 +268,7 @@ this is a navigation aid.
 | `mvc` | 33 | Modal Verbs | C1 |
 | `iq_c` | 25 | Indirect Questions | C-series |
 | `gi_c`, `gi_b` | ≥27 | Gerunds & Infinitives | |
-| `ee` | 30 | Everyday English | |
+| `ee` | 30 | Natural English | |
 | `wt` | 19 | Relative Clauses | |
 | `gr_b` | 18 | Grammar | B-series |
 | `ut_b` | 16 | Used To | B-series |
@@ -361,7 +361,7 @@ s89 snapshot. Sort by Total descending.
 | Quantifiers | 34 | 34 | 0 | 0 | 0 | 20 | 14 | 0 | 0 | 2 |
 | Reported Speech | 32 | 10 | 20 | 2 | 0 | 11 | 3 | 6 | 6 | 9 |
 | Comparisons | 30 | 18 | 11 | 1 | 0 | 13 | 8 | 6 | 0 | 5 |
-| Everyday English | 30 | 30 | 0 | 0 | 0 | 13 | 10 | 7 | 0 | 0 |
+| Natural English | 30 | 30 | 0 | 0 | 0 | 13 | 10 | 7 | 0 | 0 |
 | Collocations | 29 | 0 | 29 | 0 | 0 | 12 | 9 | 8 | 0 | 11 |
 | Passive Voice | 28 | 5 | 8 | 15 | 0 | 9 | 9 | 4 | 0 | 11 |
 | Adjectives | 26 | 13 | 13 | 0 | 0 | 19 | 1 | 6 | 0 | 2 |

@@ -223,7 +223,7 @@ The `exp` teaches the rule; the `hint` guides production. Never overlap.
 ## Critical schema rules
 
 **Never use `stem:` as field name.** `renderQ` reads `q:` only — `stem:` is silently
-ignored, producing a blank question card. Everyday English questions historically used
+ignored, producing a blank question card. Natural English questions historically used
 `stem:` (s66r4 bug); the runtime now normalises but new questions must use `q:`.
 
 **`gap`/`mcq` `ans` must be an integer.** `ans: 0` not `ans: 'Sounds lovely'`. String
@@ -289,7 +289,7 @@ Articles · Tenses · Gerunds & Infinitives · Vocabulary · Word Choice · Prep
 · Indirect Questions · Modal Verbs · Linking Words · Conditionals · Collocations
 · Reported Speech · Relative Clauses · Idioms · Emphasis · Adjectives · Word Order
 · Comparisons · Quantifiers · Word Formation · Pronouns · Irregular Verbs
-· Everyday English · Grammar (≈0 after migration; reserved as fallback only)
+· Natural English · Grammar (≈0 after migration; reserved as fallback only)
 
 Authoritative count and per-category numbers live in the **Coverage Matrix** section
 of the source KB and are dynamically generated.

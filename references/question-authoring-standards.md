@@ -162,7 +162,7 @@ Run on every new or edited question before adding to the batch.
 ### MCQ quality
 - Stem specificity — does q name the topic/structure being tested? "Which is correct?" alone is too generic.
 - Minimum 3 options (2-option MCQ = 50% guess rate; unacceptable)
-- All wrong options grammatically well-formed (Grammar categories) OR register-inappropriate not ungrammatical (Everyday English)
+- All wrong options grammatically well-formed (Grammar categories) OR register-inappropriate not ungrammatical (Natural English)
 
 ### Answer / structure
 - Answer NOT in stem (does stem already contain or imply the answer word? → rewrite)

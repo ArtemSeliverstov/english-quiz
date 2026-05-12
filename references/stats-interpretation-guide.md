@@ -425,7 +425,7 @@ The accuracy is a measurement artifact.
 
 ### 9.1 Currently flagged categories
 
-**Everyday English Idioms** (structurally compromised):
+**Natural English Idioms** (structurally compromised):
 - Pattern: 3 options where one is short-and-natural, one is markedly
   over-formal, and the third is wrong in some clearly identifiable way
 - Effect: Anna scores ~70%+ here despite weak idiom knowledge — she's

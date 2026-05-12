@@ -154,8 +154,7 @@ or calqued original, themed to a context tag. Driven by `weak_patterns` lexical
 entries (`awkward → natural [tag]` notation) and `phrase_tracker` retest-due
 entries.
 
-**Use for**: Anna, Nicole, Ernest, Egor (PWA Coach tab), Artem (PWA + organic CC
-mirror-recast). Source: live-AI worker, no library content.
+**Use for**: Players with **Natural English** in `learning_path.active_categories` — the drill is gated on that category (added 2026-05-12). Anna has it active; others promote into it when ready. Artem (builder shell with empty active_categories) sees it regardless. Source: live-AI worker, no library content.
 **Item count**: 6 per session (4 active + 2 retest-due, mixed by worker)
 **Player input**: typed English production
 **Scoring**: lenient — multiple natural forms accepted ("a while ago" / "a few
