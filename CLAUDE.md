@@ -1,6 +1,6 @@
 # CLAUDE.md — english-quiz repo
 
-Repo-level instructions for Claude Code. Read this before any task.
+Repo-level instructions. Read before any task.
 
 ---
 
@@ -21,25 +21,28 @@ The KB is the authoritative source. CLAUDE.md is only a routing layer.
 
 | File | Use when |
 |---|---|
-| `references/operational-rules.md` | Before any change. Inviolable do/don'ts. |
-| `references/doc-style.md` | Before writing or editing any doc. |
-| `references/family-profiles.md` | Any session involving a player. Stable level/focus per person. |
+| `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill rules, don't-build. Surface conflicts. |
+| `docs/audience-profiles.md` | Per-player design + orthographic-fluency case study. |
+| `docs/system-mechanisms.md` | Active window, surfaces, AI roles, stats stores. |
+| `references/operational-rules.md` | Before any change. Do/don'ts + P1-P3 + read-philosophy triggers. |
+| `references/doc-style.md` | Writing/editing any doc. |
+| `references/family-profiles.md` | Any player session. Stable level/focus. |
 | `references/exercise-types.md` | Running exercises. Type definitions. |
 | `references/weekly-slots.md` | Artem's weekly schedule. |
-| `references/question-schema.md` | Authoring or editing questions. |
-| `references/question-authoring-standards.md` | Writing q/exp/hint fields. |
+| `references/question-schema.md` | Authoring questions. |
+| `references/question-authoring-standards.md` | q/exp/hint field standards. |
 | `references/pre-deploy-checklist.md` | Before any push. |
-| `references/firestore-schema.md` | Reading/writing player or exercise data. |
-| `references/coach-notes-schema.md` | Updating `coach_notes`. Two-layer memory + promotion rule. |
+| `references/firestore-schema.md` | Reading/writing player data. |
+| `references/coach-notes-schema.md` | Updating `coach_notes`. |
 | `references/coverage-matrix.md` | Coverage targets per category. |
-| `references/stats-interpretation-guide.md` | Stats reviews. Act-on rules + compromised categories. |
+| `references/stats-interpretation-guide.md` | Stats reviews. |
 | `references/question-bank-taxonomy.md` | Auditing the bank. |
 | `references/bug-log.md` | Before changing code. |
 | `references/design-decisions.md` | Why-we-did-X notes. |
 | `references/roadmap.md` | Next, deferred. |
 | `references/version-log.md` | Session history. |
-| `tools/README.md` | Firestore CRUD scripts. Firebase MCP preferred for new paths. |
-| `worker/README.md` | Cloudflare worker (AI proxy). |
+| `tools/README.md` | Firestore CRUD. MCP preferred for new paths. |
+| `worker/README.md` | Cloudflare worker. |
 
 When standards in references conflict with this CLAUDE.md, **references win**.
 

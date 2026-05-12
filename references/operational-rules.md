@@ -2,6 +2,29 @@
 
 Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're tempted to break one, read the rationale first.
 
+## Read philosophy before design-shaping work
+
+`docs/learning-system-design.md` is the doctrine. Read §1, §3 (conversation keystone), §4 (drill design rules), §6 (don't-build list) before any **design-shaping** proposal. If the proposal conflicts with a section, surface the conflict ("this conflicts with §X — does philosophy need revising, or should the proposal back off?"). Don't silently override.
+
+**Design-shaping triggers** (read the doc):
+- Proposing a new exercise type, picker button, surface, or tab
+- Adding/removing a Firestore field or schema element
+- Renaming a player-facing concept
+- Changing how the AI behaves cross-cuttingly (prompt protocol, verbosity, scoring)
+- Drafting a new skill or substantively reshaping an existing one
+- Any chat-side proposal that introduces a new pattern (not just executing an old one)
+- Architectural root-cause debugging (a missing rule usually wants to land in doctrine)
+
+**Skip when** (operational, no read needed):
+- Running an existing skill (free-write, exercise-session, weak-spots-session)
+- `stats-review` / `mistakes-review` (analysis within the design, not changing the design)
+- Question authoring in existing categories
+- Bug fixes that preserve behaviour
+- Doc edits without semantic change
+- `deploy-build` (validate + push)
+
+→ `docs/learning-system-design.md` §7 (Living evolution).
+
 ## Don'ts
 
 - **Don't bypass `tools/update_coach_notes.js`** for `coach_notes` writes. The script handles the FIFO cap and `last_updated` automatically. → `coach-notes-schema.md`
