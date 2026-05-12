@@ -35,11 +35,11 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **5. Action recommendations.** Don't apply here — user triggers `quiz-development` or `exercise-session`.
 
-**6. Phrase tracker maintenance** (auto, after step-4). Per player: apply lifecycle transitions from `coach_sessions`, surface retest-due, then `update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
+**6. Phrase tracker maintenance** (auto, after step-4). **Every player**, even zero-session: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. Run `update_coach_notes.js {name} <patch.json> --regen-tracker-md` (empty patch when md is just stale).
 
-**7. recent_session_signals promotion + audit** (2026-05-12 stats-sprawl cleanup). Per player:
-- For each `recent_session_signals[]` entry with `count >= 2`: compose a durable prose label (e.g. `"plural noun omission — 3 sessions across free_write+translation_drill since 2026-05-01"`). Patch `weak_patterns_add` + `recent_session_signals_promote: [pattern_id]`.
-- Audit `weak_patterns` for legacy `(coach_session DATE)`-tagged entries (shouldn't exist post-cleanup) and lexical `X → Y [tag]` entries (belong in `phrase_tracker`). Remove via `weak_patterns_remove`; migrate lexical to `phrase_tracker_add` if missing.
+**7. recent_session_signals promotion + audit** (per 2026-05-12 cleanup). Per player:
+- Each `recent_session_signals[]` entry with `count >= 2`: compose a durable prose label, patch `weak_patterns_add` + `recent_session_signals_promote: [pattern_id]`.
+- Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries and lexical `X → Y [tag]` rows (migrate lexicals to `phrase_tracker_add` if missing).
 
 ## Speculation marking — mandatory
 
