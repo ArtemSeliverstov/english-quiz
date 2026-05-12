@@ -72,6 +72,24 @@ when adding 11th. This is the rolling working memory.
 **`stuck_questions`** — question IDs the player consistently fails. Used to flag for
 content review (restructuring or removal).
 
+**`coach_drill_stats`** (sibling field on `players/{name}`, not under `coach_notes`) — per-target-structure mastery map written by the 5 Phase D live drills. Shape:
+
+```js
+players/{name}.coach_drill_stats = {
+  "preposition_at_arrive":     { seen: 12, correct: 8, last_seen: "2026-05-11", last_correct: "2026-05-09" },
+  "indefinite_first_mention":  { seen: 8,  correct: 7, last_seen: "2026-05-10", last_correct: "2026-05-10" },
+  "pv_figure_out":             { seen: 4,  correct: 4, last_seen: "2026-05-08", last_correct: "2026-05-08" },
+  ...
+}
+```
+
+Updater: `coachFoldDrillStats(items_drilled)` in `index.html`, called from inside
+`coachWriteSessionLogStandalone` whenever `session_metadata.items_drilled[]` is
+non-empty. Read by future home-page status bars; consumed by drill prompts to
+skip already-mastered structures; used by Weak Spots to suggest topics from the
+bottom-N structures by accuracy. Keys come straight from `items_drilled[].target_structure`
+(snake_case, mode-prefixed where relevant — e.g. `pv_*` for phrasal verbs).
+
 **`last_updated_by`** — which surface wrote last. Helps debug cross-surface conflicts.
 Possible values:
 - `claude_code` — Claude Code (laptop) via `tools/update_coach_notes.js` bash script (or future Firebase MCP if Firestore document tools become available)

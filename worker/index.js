@@ -57,6 +57,10 @@ function explainInRussian(ctx) {
   return RUSSIAN_FALLBACK_PLAYERS.includes(ctx && ctx.player);
 }
 const VALID_MODES = ['free_write', 'escalate', 'phrase_swap_drill', 'weak_spots_drill', 'translation_drill', 'error_correction_drill', 'article_drill_live', 'particle_sort_live', 'spelling_drill_live'];
+
+// feedback_depth tiers drive per-player verbosity in drill prompts. See
+// FAMILY_MEMBERS in index.html for the mapping. Worker validates the enum.
+const FEEDBACK_DEPTH_TIERS = new Set(['light', 'medium-light', 'medium', 'medium-kid', 'detailed']);
 const MAX_BODY_BYTES = 50 * 1024;
 const MAX_TOKENS = 1024;
 const ANTHROPIC_VERSION = '2023-06-01';
@@ -163,6 +167,10 @@ export default {
       if (context.topic_hint != null && typeof context.topic_hint !== 'string') {
         return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
       }
+    }
+    // feedback_depth optional on every mode — drives drill verbosity per player.
+    if (context.feedback_depth != null && !FEEDBACK_DEPTH_TIERS.has(context.feedback_depth)) {
+      return jsonError(400, 'WORKER_VALIDATION', `context.feedback_depth must be one of: ${[...FEEDBACK_DEPTH_TIERS].join(', ')}`, false, cors);
     }
     if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live' || mode === 'spelling_drill_live') {
       // target_item_count optional; capped server-side. focus_categories optional.
@@ -405,6 +413,7 @@ function phraseSwapDrillSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B2';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const pool = Array.isArray(ctx.phrase_pool) ? ctx.phrase_pool : [];
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || PSD_DEFAULT_ITEMS),
@@ -422,28 +431,16 @@ function phraseSwapDrillSystemPrompt(ctx) {
     return `  ${i + 1}. "${e.awkward}" → "${e.natural}"${tag}${status}${altNatural}`;
   }).join('\n');
 
-  // Level-aware feedback depth (option 2):
-  //   B1 / B1+ → 2 sentences of register reasoning + 1 short example sentence in context
-  //   B2 / C1 → 1 sentence of register reasoning, no example needed
-  // Always surface the awkward alternative (option 1) — even on a correct natural production —
-  // so the player builds explicit awareness of which stiff form they avoided.
-  const isLowerLevel = /^(A[12]|B1)$/i.test(String(level || ''));
-  const depthHint = isLowerLevel
-    ? `Use 2 short sentences explaining the register/frequency difference, then one short example sentence using the natural form in the tagged context.`
-    : `Use 1 short sentence on the register/frequency difference. Skip example sentences unless the player asks.`;
+  const cleanExample = ru
+    ? '"Хорошо — \'a while ago\' звучит естественнее в обстановке паба, чем \'sometime ago\'."'
+    : '"Nice — \'a while ago\' lands more natural in pub talk than \'sometime ago\'."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Deliver each cue and explanation in Russian.** ${playerName} reads English fluently but absorbs register feedback faster in her L1.
-- The cue is a Russian sentence ${playerName} should translate into natural English. The "awkward" form in the pool is the L1-calque or stiff alternative — never include it in the cue.
-- **Always surface the awkward alternative**, even on a correct natural production. Format: confirm the natural form, then briefly contrast it with the stiff version she avoided. Example: "Хорошо — 'a while ago' звучит естественнее в обстановке паба, чем 'sometime ago' (которое читается чуть формально/письменно)." This builds explicit awareness for next time.
-- When she produces the stiff form (or another non-natural alternative), explain *why* the natural form lands better in the tagged context. Do NOT call her sentence "wrong" — both forms are grammatical; the issue is register/frequency.
-- ${depthHint}
-- Keep replies focused. This is a drill, not a tutorial — but lower-level players need the example sentence to anchor the natural form in context.`
-    : `- Deliver each cue in Russian (the player's L1) so the production challenge is genuinely from-scratch English. The "awkward" form in the pool is the stiff alternative — never include it in the cue.
-- **Always surface the awkward alternative**, even on a correct natural production. Format: confirm the natural form, then briefly contrast it with the stiff version they avoided. Example: "Nice — 'a while ago' lands more natural in pub talk than 'sometime ago' (which reads slightly formal/written)." This builds explicit awareness for next time.
+Drill-specific (register, not grammar):
+- The cue is a Russian sentence ${playerName} translates into natural English. Never include the "awkward" form in the cue — the production challenge is recalling the natural form from semantic understanding.
+- **Always surface the awkward alternative**, even on a correct natural production. Format: confirm the natural form, then briefly contrast with the stiff version they avoided. This builds explicit awareness for next time.
 - When ${playerName} produces the stiff form (or another non-natural alternative), explain *why* the natural form lands better in the tagged context. Do NOT call the sentence "wrong" — both forms are grammatical; the issue is register/frequency.
-- ${depthHint}
-- Keep replies focused. This is a drill, not a tutorial — but lower-level players need the example sentence to anchor the natural form in context.`;
+- For phrase_swap_drill specifically, the ADAPTIVE FLOW sibling on a miss = another pool entry with the same tag (e.g. another [brit_expat] swap), so the lesson stays in-context.`;
 
   return `You are running a focused phrase-swap drill with ${playerName}, a Russian-speaking learner at CEFR level ${level}. The goal is to move stiff/calqued lexical phrases from passive recognition into active production by forcing them through a Russian→English cue.
 
@@ -462,6 +459,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -470,7 +469,7 @@ About this learner:
 Today's drill pool (${pool.length} entries; aim for ${targetCount} cues):
 ${poolBlock || '  (empty — fall back to small-talk, end the session politely)'}
 
-Tone: focused, pacy, encouraging. This is a sub-5-minute drill, not a chat.
+Tone: focused, pacy, encouraging per your feedback-depth tier.
 
 Open the session with TWO lines, then the first cue:
 1. One-line greeting.
@@ -482,6 +481,7 @@ function translationDrillSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || TD_DEFAULT_ITEMS),
     TD_MAX_ITEMS
@@ -491,19 +491,12 @@ function translationDrillSystemPrompt(ctx) {
     : '(none specified — choose from weak_patterns)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const cleanExample = ru
+    ? '"Хорошо — present perfect для опыта жизни."'
+    : '"Got it — present perfect for life experience."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Score and explain in Russian.** Quote ${playerName}'s English back when an error appears, then explain *in Russian* what's off and why.
-- Show the corrected English form in English; the explanation around it is Russian.
-- Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
-- **On EVERY turn, name the target structure in Russian** so ${playerName} learns the rule, not just the example.
-- On a clean answer: confirm + name the rule that applied in one short Russian sentence (e.g. "Хорошо — present perfect для опыта жизни."). Don't over-praise.
-- On a miss: 2-3 sentences — quote the slip, explain the rule in Russian, give the corrected form in English.`
-    : `- Score and explain in English. Quote ${playerName}'s submission back when an error appears, then explain what's off and why.
-- Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
-- **On EVERY turn, name the target structure** so ${playerName} learns the rule, not just the example.
-- On a clean answer: confirm + name the rule in one short sentence (e.g. "Got it — present perfect for life experience."). Don't over-praise.
-- On a miss: 2-3 sentences — quote the slip, name the rule, give the corrected form.`;
+Drill-specific: quote ${playerName}'s English when an error appears; show the corrected English form in English; multiple correct answers are common — accept any form that preserves meaning AND uses the target structure.`;
 
   return `You are running a focused **translation drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. RU cue → EN production, one item at a time. ${targetCount} items per session.
 
@@ -523,6 +516,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -533,7 +528,7 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: focused, encouraging, paced. This is a drill — keep replies tight but always name the rule, move through items, save the longer post-mortem for the session-end summary.
+Tone: focused, encouraging, paced. Keep replies tight per your feedback-depth tier, but always name the rule. Save the longer post-mortem for the session-end summary.
 
 Open the session with TWO lines, then the first cue:
 1. One-line greeting tied to ${playerName}.
@@ -545,6 +540,7 @@ function errorCorrectionDrillSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || ECD_DEFAULT_ITEMS),
     ECD_MAX_ITEMS
@@ -554,19 +550,12 @@ function errorCorrectionDrillSystemPrompt(ctx) {
     : '(none specified — choose from weak_patterns)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const cleanExample = ru
+    ? '"Точно — \'arrive\' с местом берёт *at* или *in*, не *to*."'
+    : '"Right — \'arrive\' takes *at* or *in* for places, not *to*."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Score and explain in Russian.** Quote the player's correction back when scoring, then explain *in Russian* what was wrong and why.
-- Show the corrected English form in English (a single line); the explanation around it is Russian.
-- Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
-- **On EVERY turn, name the rule** that the error tested in Russian, so the player learns the rule not just the fix.
-- On a clean correction: confirm + name the rule in one short Russian sentence (e.g. "Точно — 'arrive' с местом берёт *at* или *in*, не *to*."). Don't over-praise.
-- On a miss: 2-3 sentences — quote the player's attempt, name the rule in Russian, give the correct fix in English.`
-    : `- Score and explain in English. Quote the player's correction back when scoring.
-- Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
-- **On EVERY turn, name the rule** that the error tested, so the player learns the rule not just the fix.
-- On a clean correction: confirm + name the rule in one short sentence (e.g. "Right — 'arrive' takes *at* or *in* for places, not *to*."). Don't over-praise.
-- On a miss: 2-3 sentences — quote the player's attempt, name the rule, give the corrected form.`;
+Drill-specific: quote the player's correction when scoring; accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").`;
 
   return `You are running an **error-correction drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. One sentence per item, each contains exactly one deliberate error in English. ${targetCount} items per session.
 
@@ -587,6 +576,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -597,7 +588,7 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: focused, encouraging, paced. Keep replies tight, move through items, save the longer post-mortem for the session-end summary.
+Tone: focused, encouraging, paced. Keep replies tight per your feedback-depth tier; the longer post-mortem comes at session-end.
 
 Open with TWO lines, then the first item:
 1. One-line greeting.
@@ -609,6 +600,7 @@ function spellingDrillLiveSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || SDL_DEFAULT_ITEMS),
     SDL_MAX_ITEMS
@@ -623,18 +615,15 @@ function spellingDrillLiveSystemPrompt(ctx) {
     : '  (empty — generate from profile + weak_patterns)';
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const cleanExample = ru
+    ? '"Молодец — двойная *m* в \'accommodate\' — это всегда ловушка."'
+    : '"Got it — doubled *m* in \'accommodate\' is a classic trap."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Score and explain in Russian.** Show the target word in English; explain spelling rules in Russian.
-- **On EVERY turn, name the spelling trap class** (doubled letters, silent letters, ie/ei, etc.) in Russian so the player learns the rule.
-- On exact match: confirm + name the trap class in one short Russian sentence (e.g. "Молодец — двойная *m* в 'accommodate' — это всегда ловушка."). Don't over-praise.
-- On 1-2 letter typo: pass but show the correct form quoted in English + a 1-line Russian note on the trap.
-- On wrong word entirely: fail, give the correct word in English, briefly explain in Russian what the Russian gloss meant.`
-    : `- Score in English. Quote the player's attempt.
-- **On EVERY turn, name the spelling trap class** (doubled letters, silent letters, ie/ei, etc.) so the player learns the rule.
-- On exact match: confirm + name the trap in one short sentence (e.g. "Got it — doubled *m* in 'accommodate' is a classic trap."). Don't over-praise.
-- On 1-2 letter typo: pass but show the correct form + a short note on the trap.
-- On wrong word entirely: fail, give the correct word + brief disambiguation of the gloss.`;
+Drill-specific (spelling has three-tier scoring):
+- Exact match (case-insensitive, whitespace-normalised): pass with the rule-naming acknowledgment described above.
+- 1-2 letter typo / doubled letter / transposition: pass but show the correct form + the spelling trap note (this is the educate-on-near-miss path; treat it as a soft pass).
+- Wrong word entirely (>2 letter difference or different lexeme): fail; give the correct word + brief disambiguation of what the Russian gloss meant. Apply the ADAPTIVE FLOW protocol below — generate a sibling item targeting the same trap class.`;
 
   return `You are running a **spelling drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian-gloss → English-spelling. ${targetCount} items per session.
 
@@ -661,6 +650,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -673,7 +664,7 @@ ${engagement}
 Today's spelling pool (${pool.length} entries; aim for ${targetCount} items total):
 ${poolBlock}
 
-Tone: focused, encouraging, paced. Spelling rewards repetition + targeted rules.
+Tone: focused, encouraging, paced per your feedback-depth tier. Spelling rewards repetition + targeted rules.
 
 Open with TWO lines, then the first item:
 1. One-line greeting.
@@ -685,22 +676,19 @@ function particleSortLiveSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || PSL_DEFAULT_ITEMS),
     PSL_MAX_ITEMS
   );
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const cleanExample = ru
+    ? '"Точно — *figure out* = понять, разобраться."'
+    : '"Right — *figure out* = understand or solve."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Score and explain in Russian.** Quote the player's particle back in English; explain the meaning of the rule-correct PV in Russian.
-- **On EVERY turn, name the PV's meaning** in Russian so the player learns the verb, not just the particle.
-- On a clean answer: confirm + give the PV's meaning in one short Russian sentence (e.g. "Точно — *figure out* = понять, разобраться."). Don't over-praise.
-- On a miss: 2-3 sentences — quote what ${playerName} typed, name the meaning their particle would convey, then give the rule-correct particle in English with a Russian gloss.`
-    : `- Score and explain in English. Quote ${playerName}'s particle back when scoring.
-- **On EVERY turn, name the PV's meaning** so the player learns the verb, not just the particle.
-- On a clean answer: confirm + give the PV's meaning in one short sentence (e.g. "Right — *figure out* = understand or solve."). Don't over-praise.
-- On a miss: 2-3 sentences — quote, name the meaning the player's particle would convey, give the rule-correct particle + meaning.`;
+Drill-specific: on a miss, quote what ${playerName} typed, name the meaning their particle would convey, then give the rule-correct particle + meaning. Naming the PV's meaning (not just the particle) is what builds the production-side recall.`;
 
   return `You are running a **phrasal-verb particle drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. PV production challenge — base verb shown, player produces the particle from semantic understanding of the context. ${targetCount} items per session.
 
@@ -724,6 +712,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -733,7 +723,7 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: focused, encouraging, paced. PV production rewards repetition over explanation.
+Tone: focused, encouraging, paced per your feedback-depth tier. PV production rewards rule-naming + repetition.
 
 Open with TWO lines, then the first item:
 1. One-line greeting.
@@ -745,24 +735,19 @@ function articleDrillLiveSystemPrompt(ctx) {
   const playerName = capitalize(ctx.player);
   const level = ctx.level || 'B1';
   const ru = explainInRussian(ctx);
+  const depth = ctx.feedback_depth || 'medium';
   const targetCount = Math.min(
     Math.max(1, Number(ctx.target_item_count) || ADL_DEFAULT_ITEMS),
     ADL_MAX_ITEMS
   );
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
+  const cleanExample = ru
+    ? '"Правильно — нулевой артикль с generic countable plural."'
+    : '"Right — zero article for generic plural."';
+  const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
-  const languageBlock = ru
-    ? `- **Score and explain in Russian.** Show the article quoted in English; explain the rule in Russian.
-- **On EVERY turn, name the article rule** (first-mention indefinite, definite shared referent, generic zero, fixed-expression zero) in Russian so the player learns the rule.
-- On a clean answer: confirm + name the rule in one short Russian sentence (e.g. "Правильно — нулевой артикль с generic countable plural."). Don't over-praise.
-- On a miss: 2-3 sentences — quote what ${playerName} typed, name the rule in Russian, give the correct article in English.
-- Accept "—" or "-" or "zero" or "dash" or "no article" or "ноль" / "ничего" for the zero-article case.`
-    : `- Score and explain in English. Quote ${playerName}'s answer back when scoring.
-- **On EVERY turn, name the article rule** (first-mention indefinite, definite shared referent, generic zero, fixed-expression zero) so the player learns the rule.
-- On a clean answer: confirm + name the rule in one short sentence (e.g. "Right — zero article for generic plural."). Don't over-praise.
-- On a miss: 2-3 sentences — quote, name the rule, give the correct article.
-- Accept "—" or "-" or "zero" or "no article" for the zero-article case.`;
+Drill-specific: name the article rule by sub-category (first-mention indefinite / definite shared referent / generic zero / fixed-expression zero). Accept "—" or "-" or "zero" or "dash" or "no article" or "ноль" / "ничего" for the zero-article case.`;
 
   return `You are running an **article drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian L1 doesn't mark articles, so this is a fossilised gap for every family member — drill it dense and conversational. ${targetCount} items per session.
 
@@ -788,6 +773,8 @@ CRITICAL RULES:
 
 ${languageBlock}
 
+${adaptiveFlowProtocol()}
+
 About this learner:
 - L1: Russian
 - Level: ${level}
@@ -797,7 +784,7 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: focused, encouraging, paced. Keep replies tight; the article system rewards repetition.
+Tone: focused, encouraging, paced per your feedback-depth tier. The article system rewards rule-naming + repetition.
 
 Open with TWO lines, then the first item:
 1. One-line greeting.
@@ -1105,6 +1092,75 @@ For "assessment" (silent CEFR grade — never mention to the learner):
 
 function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+}
+
+// Per-player verbosity instructions for drill feedback. Called by every Phase D
+// + phrase_swap_drill system prompt to branch the languageBlock. Tiers map 1:1
+// to FAMILY_MEMBERS.feedbackDepth on the PWA side. `ru` flag toggles RU/EN
+// example wording — the instruction itself is always in English (it's coach-
+// prompt scaffolding, not learner-facing).
+function feedbackDepthInstructions(depth, ru, cleanExample) {
+  const tier = FEEDBACK_DEPTH_TIERS.has(depth) ? depth : 'medium';
+  const language = ru ? 'Russian' : 'English';
+  const example = cleanExample || (ru ? '"Хорошо — present perfect для опыта."' : '"Right — present perfect for life experience."');
+  const onCleanCommon = `On a CLEAN answer: one short ${language} sentence acknowledging + naming the rule that applied (e.g. ${example}). Don't over-praise. Then move to a new structure.`;
+  if (tier === 'light') {
+    return `Feedback tier: LIGHT (Artem-style — C1 learner who absorbs rules fast).
+
+- ${onCleanCommon}
+- On a MISS: **1-2 sentences** in ${language}. Name the rule + give the correct form. No L1 contrast, no extra examples — assume the learner knows the meta-language.
+- Tone: focused, direct, no filler praise.`;
+  }
+  if (tier === 'medium-light') {
+    return `Feedback tier: MEDIUM-LIGHT (Egor-style — B2 learner, brief L1 contrast helps).
+
+- ${onCleanCommon}
+- On a MISS: **1-2 sentences** in ${language}. Name the rule + give the correct form + briefly note the L1 contrast (one clause: "Russian 'X' works differently — it takes the direct object without a preposition, English needs 'for'.").
+- Tone: focused, encouraging.`;
+  }
+  if (tier === 'medium') {
+    return `Feedback tier: MEDIUM (Ernest-style — B2 learner, full L1 contrast).
+
+- ${onCleanCommon}
+- On a MISS: **2-3 sentences** in ${language}. Quote the slip, name the rule, explain the L1 contrast (where Russian and English diverge on this structure), give the correct form.
+- Tone: warm, supportive, paced.`;
+  }
+  if (tier === 'medium-kid') {
+    return `Feedback tier: MEDIUM-KID (Nicole-style — B1 learner, kid-friendly).
+
+- ${onCleanCommon}
+- On a MISS: **2-3 short sentences** in ${language}. Simple vocabulary (avoid linguistic jargon — say "the word for 'where'" instead of "the locative preposition"). Quote the slip, name the rule simply, briefly note the L1 contrast, give the correct form. Sprinkle in an occasional supportive emoji (✨ 🎯 💡) — not every turn.
+- Tone: warm, encouraging, kid-conversational.`;
+  }
+  // detailed (Anna)
+  return `Feedback tier: DETAILED (Anna-style — B1 learner who absorbs rules best with depth).
+
+- ${onCleanCommon}
+- On a MISS: **3-5 sentences** in ${language}. Quote the slip verbatim, name what's right (if anything), explain the rule with the L1 contrast (Russian "X" works this way, English "Y" works that way), give the correct form, then include **one additional example sentence** using the same pattern in a different context. Goal: lock in the rule, not just fix this item.
+- Tone: warm, pedagogical, patient.`;
+}
+
+// ADAPTIVE FLOW protocol — shared across all drill modes. Replaces the previous
+// "score → next item" pattern with educate-first sibling-drilling on misses.
+// Three strikes per structure: explain → sibling → deeper explain → sibling →
+// log+escape. Hard turn cap (per mode) still applies regardless.
+function adaptiveFlowProtocol() {
+  return `ADAPTIVE FLOW (educate-first — this is the most important rule):
+
+When the player MISSES an item, do NOT move to a new structure immediately. The drill is teaching, not measuring.
+
+Sibling-drill protocol:
+1. Score the miss + explain per your feedback_depth tier above.
+2. Generate a SIBLING item — same \`target_structure\`, different surface (different context, different vocabulary). Do NOT name the structure or hint at the rule in the sibling prompt — the production challenge stays the same.
+3. Wait for the player's attempt on the sibling.
+   - CLEAN on sibling → "Got it — you've got the rule" (one sentence per your tier) + move to a NEW structure.
+   - MISS on sibling → deeper explanation (same tier, but reframe the rule — different angle, different example) + ONE more sibling.
+     - CLEAN on third → "Now it clicks — solid." + move to a new structure.
+     - MISS on third → log as a serious gap. Say: "This one's sticking — want a deep dive on it in Weak Spots? Tap that button when you're ready." Move to a DIFFERENT structure for the next item.
+
+On CLEAN answers: one-sentence acknowledgment + rule name, then a new structure. Don't pad with sibling items when the player already has the rule.
+
+Track which structures you've drilled in this session — don't repeat a structure the player has already landed cleanly twice (they've got it). Prioritize fresh structures from weak_patterns over re-drilling mastered ones.`;
 }
 
 function formatNotes(value) {

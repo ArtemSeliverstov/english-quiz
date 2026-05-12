@@ -11,6 +11,22 @@ stuck-question IDs, engagement notes) lives in Firestore — `players/{name}.coa
 See `coach-notes-schema.md`, including the promotion rule for moving a measured pattern
 into a Learning Goal here (4+ sessions persistence + survives a deliberate intervention).
 
+## Coach drill feedback tiers
+
+Each player's verbosity in live AI drills is set via `FAMILY_MEMBERS.feedbackDepth`
+in `index.html` (5-tier scale, surfaces to worker as `context.feedback_depth`):
+
+| Player | Tier | Style |
+|---|---|---|
+| Artem | `light` (C1) | 1-2 sentences, name the rule + fix, no L1 contrast |
+| Egor | `medium-light` (B2) | 1-2 sentences + brief L1 contrast |
+| Anna | `detailed` (B1) | 3-5 sentences + L1 contrast + additional example |
+| Ernest | `medium` (B2) | 2-3 sentences + L1 contrast |
+| Nicole | `medium-kid` (B1) | 2-3 short sentences + simpler vocab + occasional emoji + L1 contrast |
+
+Source of truth: `FAMILY_MEMBERS` in `index.html`. Worker prompts branch on the
+field via `feedbackDepthInstructions(depth, ru)` in `worker/index.js`.
+
 ---
 
 ## Artem 👨
