@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r13">
+  <meta name="app-version" content="v20260511-r14">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r13</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r14</span></p>
 </header>
 
 <!-- TABS -->
@@ -8995,10 +8995,24 @@ function coachUpdateLiveDrillBadges() {
     }
   };
 
-  // Translation + Error Correction: "4 weak" — count of weak_patterns to drill.
-  // Empty weak → "ready". Offline → "library only" since the legacy library
-  // path still works without the worker.
-  const liveDrillLabel = weakCount > 0 ? `${weakCount} weak` : 'ready';
+  // Translation + Error Correction: badge reflects the actual content source.
+  // - active_categories populated (learner shell): "N cats" — drills rotate
+  //   across the active window. Granular pattern selection happens within each
+  //   category by the worker, not surfaced in the badge.
+  // - active_categories empty (Artem builder shell): "N patterns" — drills
+  //   fall back to weak_patterns-broad rotation. Different number than Weak
+  //   Spots ("N topics") because translation/EC drill specific structures,
+  //   while Weak Spots is high-level topic-walked.
+  const lp = (DB && DB.learning_path) || {};
+  const activeCats = Array.isArray(lp.active_categories) ? lp.active_categories : [];
+  let liveDrillLabel;
+  if (activeCats.length > 0) {
+    liveDrillLabel = activeCats.length + ' cat' + (activeCats.length === 1 ? '' : 's');
+  } else if (weakCount > 0) {
+    liveDrillLabel = weakCount + ' pattern' + (weakCount === 1 ? '' : 's');
+  } else {
+    liveDrillLabel = 'ready';
+  }
   setBadge('translation', liveDrillLabel, 'library only', { enableLive: true });
   setBadge('error_correction', liveDrillLabel, 'library only', { enableLive: true });
 
@@ -9040,20 +9054,51 @@ async function coachUpdateSpellingDrillBadge() {
   }
 }
 
+// Mirror of the 5-topic catalog from worker/index.js → weakSpotsDrillSystemPrompt.
+// Used by the badge to count high-level topic matches against the player's
+// weak_patterns — gives Weak Spots a different badge number than Translation/EC
+// even though they all derive from weak_patterns. Keep these regexes in sync
+// with the worker catalog when topics change.
+const COACH_WEAK_SPOTS_CATALOG = [
+  { id: 'emphasis_clefts',                match: /cleft|emphasis|inversion|fronting|emphatic/i },
+  { id: 'article_system',                 match: /article|a→the|zero.*the|the.*zero|definite|indefinite/i },
+  { id: 'present_perfect_vs_past_simple', match: /present perfect|past simple|tense|since|for|ago|past simple irregular/i },
+  { id: 'preposition_clusters',           match: /preposition|arrive|in.*time|verb\+prep|prep$|prep[s ]/i },
+  { id: 'phrasal_verb_production',        match: /phrasal|particle|PV|verb.*particle/i },
+];
+
+function coachCountWeakSpotsCatalogMatches() {
+  const cn = coachState.playerCoachNotes || {};
+  const patterns = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
+  if (!patterns.length) return 0;
+  let hits = 0;
+  for (const topic of COACH_WEAK_SPOTS_CATALOG) {
+    if (patterns.some(p => typeof p === 'string' && topic.match.test(p))) hits++;
+  }
+  return hits;
+}
+
 function coachUpdateWeakSpotsAvailability() {
   const btn = document.querySelector('.coach-type-btn[data-type="weak_spots_drill"]');
   if (!btn) return;
   const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
   const cn = coachState.playerCoachNotes || {};
   const wpCount = Array.isArray(cn.weak_patterns) ? cn.weak_patterns.length : 0;
+  const topicCount = coachCountWeakSpotsCatalogMatches();
   const usable = liveAvail && wpCount > 0;
   btn.disabled = !usable;
   const countEl = btn.querySelector('[data-count-for="weak_spots_drill"]');
   if (countEl) {
     if (!liveAvail) {
       countEl.textContent = !navigator.onLine ? 'offline' : 'paused';
-    } else {
+    } else if (wpCount === 0) {
+      countEl.textContent = '0 topics';
+    } else if (topicCount === 0) {
+      // Player has weak_patterns but none match the catalog — drill will improvise topic ladders.
       countEl.textContent = wpCount + ' weak spot' + (wpCount === 1 ? '' : 's');
+    } else {
+      // Catalog matches found — show topic count (the high-level granularity Weak Spots targets).
+      countEl.textContent = topicCount + ' topic' + (topicCount === 1 ? '' : 's');
     }
   }
   // Learner-shell hides disabled live-AI buttons (parity with Phrase Swaps); builder-shell shows them
@@ -9068,14 +9113,15 @@ function coachUpdatePhraseSwapAvailability() {
   const btn = document.querySelector('.coach-type-btn[data-type="phrase_swap_drill"]');
   if (!btn) return;
   const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
-  const cn = coachState.playerCoachNotes || {};
   const tracker = coachState.playerPhraseTracker || { entries: [] };
   const today = new Date().toISOString().slice(0, 10);
-  const lexCount = (cn.weak_patterns || [])
-    .map(coachParseLexicalWeakPattern).filter(Boolean).length;
-  const retestCount = (tracker.entries || [])
+  // Post-r12: canonical source for both active + retest is phrase_tracker.entries.
+  // (Pre-r12 also counted weak_patterns lexicals — those are gone now.)
+  const trackerEntries = Array.isArray(tracker.entries) ? tracker.entries : [];
+  const activeCount = trackerEntries.filter(e => e && e.status === 'active').length;
+  const retestCount = trackerEntries
     .filter(e => e && e.status === 'retest_due' && (!e.next_retest || e.next_retest <= today)).length;
-  const total = lexCount + retestCount;
+  const total = activeCount + retestCount;
   const usable = liveAvail && total > 0;
   btn.disabled = !usable;
   btn.classList.toggle('disabled', !usable);
@@ -9311,13 +9357,21 @@ function coachParseLexicalWeakPattern(s) {
 
 function coachBuildPhrasePool({ weakPatterns, phraseTracker, target }) {
   const today = new Date().toISOString().slice(0, 10);
-  // Active entries (from weak_patterns)
-  const active = (weakPatterns || [])
-    .map(coachParseLexicalWeakPattern)
-    .filter(Boolean);
-  // Retest-due entries (from phrase_tracker)
   const trackerEntries = (phraseTracker && Array.isArray(phraseTracker.entries))
     ? phraseTracker.entries : [];
+  // Active entries (canonical source: phrase_tracker.entries with status='active').
+  // Pre-r12 read these from weak_patterns lexical strings (dual-write era); r12
+  // dropped that dual-write, so the canonical source is the tracker itself.
+  const active = trackerEntries
+    .filter(e => e && e.status === 'active')
+    .map(e => ({
+      awkward: e.awkward,
+      natural: e.natural,
+      tag: e.tag || null,
+      status: 'active',
+      also_accept: Array.isArray(e.also_accept) ? e.also_accept : undefined,
+    }));
+  // Retest-due entries (also from phrase_tracker).
   const retestDue = trackerEntries
     .filter(e => e && e.status === 'retest_due' && (!e.next_retest || e.next_retest <= today))
     .map(e => ({
