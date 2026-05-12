@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r7">
+  <meta name="app-version" content="v20260511-r8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r7</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r8</span></p>
 </header>
 
 <!-- TABS -->
@@ -11553,6 +11553,7 @@ async function coachWriteSessionLogStandalone({ session_id, mode, session_metada
   bumpDailyStreak(DB);
   saveData(DB);
   const meta = session_metadata || {};
+  const startedAt = coachLookupStartedAt(mode);
   const doc = {
     session_id,
     player: currentPlayer,
@@ -11566,10 +11567,160 @@ async function coachWriteSessionLogStandalone({ session_id, mode, session_metada
     session_summary: typeof meta.session_summary === 'string' ? meta.session_summary : '',
     tokens_used: tokens_used || null,
     model_used: model_used || '',
-    created: new Date(coachState.fwStartedAt || Date.now()).toISOString(),
+    created: new Date(startedAt).toISOString(),
     ended: new Date().toISOString(),
   };
   await fsSet('players/' + currentPlayer + '/coach_sessions/' + session_id, doc);
+  // Surface the session in the Coach-tab history view by ALSO writing a legacy
+  // exercises/{ts} summary. The exercises collection is what exLoadHistory
+  // reads; without this mirror, live-AI sessions write only to coach_sessions
+  // and never appear in the player's exercise count or recent list. Cross-link
+  // via session_id so future stats-review can recover the authoritative log.
+  if (COACH_HISTORY_MIRROR_MODES.has(mode)) {
+    try {
+      await coachWriteExerciseSummary({ session_id, mode, session_metadata: meta, startedAt });
+    } catch (e) {
+      console.warn('coachWriteExerciseSummary failed:', e);
+    }
+  }
+}
+
+// Modes whose sessions should appear in the Coach-tab history view. Escalate
+// is the only live-AI mode excluded — it's a one-shot explanation, not a drill.
+const COACH_HISTORY_MIRROR_MODES = new Set([
+  'free_write',
+  'phrase_swap_drill',
+  'weak_spots_drill',
+  'translation_drill',
+  'error_correction_drill',
+  'article_drill_live',
+  'particle_sort_live',
+  'spelling_drill_live',
+]);
+
+function coachLookupStartedAt(mode) {
+  const map = {
+    free_write: coachState.fwStartedAt,
+    phrase_swap_drill: coachState.psdStartedAt,
+    weak_spots_drill: coachState.wsStartedAt,
+    translation_drill: coachState.tdStartedAt,
+    error_correction_drill: coachState.ecStartedAt,
+    article_drill_live: coachState.adStartedAt,
+    particle_sort_live: coachState.pstStartedAt,
+    spelling_drill_live: coachState.spdStartedAt,
+  };
+  return map[mode] || Date.now();
+}
+
+// Compute total/correct counts from session_metadata. Per-mode shape:
+//   items_drilled[] (translation, error_correction, article, particle, spelling)
+//   phrase_swaps_drilled[] (phrase_swap_drill)
+//   tier_results[] (weak_spots_drill)
+//   assessment block (free_write — sentence-based)
+function coachComputeSummaryCounts(mode, meta) {
+  if (Array.isArray(meta.items_drilled) && meta.items_drilled.length) {
+    return {
+      total: meta.items_drilled.length,
+      correct: meta.items_drilled.filter(i => i && i.produced_correct).length,
+    };
+  }
+  if (Array.isArray(meta.phrase_swaps_drilled) && meta.phrase_swaps_drilled.length) {
+    return {
+      total: meta.phrase_swaps_drilled.length,
+      correct: meta.phrase_swaps_drilled.filter(s => s && s.produced_natural).length,
+    };
+  }
+  if (Array.isArray(meta.tier_results) && meta.tier_results.length) {
+    let total = 0, correct = 0;
+    for (const t of meta.tier_results) {
+      total += Number(t.attempted) || 0;
+      correct += Number(t.clean) || 0;
+    }
+    return { total, correct };
+  }
+  // Free Write fallback — use assessment if present (mirrors coachFoldFreeWriteAssessment).
+  const a = meta.assessment || {};
+  if (a.confidence === 'high' && Number(a.sentence_count) >= 3) {
+    const sn = Math.min(20, Number(a.sentence_count));
+    const er = Math.max(0, Math.min(Number(a.error_count) || 0, sn));
+    return { total: sn, correct: sn - er };
+  }
+  return { total: 0, correct: 0 };
+}
+
+// Adapt the mode-specific per-item shape into the legacy exercises items[]
+// shape (one entry per drilled item with submitted_answer + correct + matched_pattern_id).
+function coachAdaptItemsForExercises(mode, meta) {
+  if (Array.isArray(meta.items_drilled)) {
+    return meta.items_drilled.map(i => ({
+      exercise_id: null,
+      exercise_version: null,
+      prompt_ru: i.prompt_ru || i.prompt_sentence || i.prompt_gloss || null,
+      submitted_answer: i.submitted || '',
+      correct: !!i.produced_correct,
+      matched_pattern_id: i.target_structure || i.target_word || null,
+    }));
+  }
+  if (Array.isArray(meta.phrase_swaps_drilled)) {
+    return meta.phrase_swaps_drilled.map(s => ({
+      exercise_id: null,
+      submitted_answer: '',
+      correct: !!s.produced_natural,
+      matched_pattern_id: (s.awkward && s.natural)
+        ? s.awkward + ' → ' + s.natural + (s.tag ? ' [' + s.tag + ']' : '')
+        : null,
+    }));
+  }
+  if (Array.isArray(meta.tier_results)) {
+    return meta.tier_results.map(t => ({
+      exercise_id: null,
+      tier: t.tier || null,
+      attempted: t.attempted || 0,
+      clean: t.clean || 0,
+    }));
+  }
+  return [];
+}
+
+function coachExerciseTopicFor(mode, meta) {
+  if (mode === 'weak_spots_drill' && meta.topic_id) return 'Weak Spots: ' + meta.topic_id;
+  if (mode === 'free_write') return 'Free Write';
+  return 'Coach tab (live AI)';
+}
+
+// Write a legacy-shape summary entry to players/{name}/exercises/{ts} so the
+// Coach tab history view surfaces live-AI sessions. The authoritative log
+// stays in coach_sessions/{session_id}; this is a derived view-only mirror.
+// session_id is stored on the exercise doc for cross-link.
+async function coachWriteExerciseSummary({ session_id, mode, session_metadata, startedAt }) {
+  if (!currentPlayer || !session_id) return;
+  const meta = session_metadata || {};
+  const ts = startedAt || Date.now();
+  const counts = coachComputeSummaryCounts(mode, meta);
+  // Skip empty sessions — nothing useful to surface
+  if (counts.total < 1) return;
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const level = (meta.assessment && meta.assessment.estimated_level) || profile.level || 'B2';
+  const summary = {
+    exercise: mode,
+    topic: coachExerciseTopicFor(mode, meta),
+    level,
+    total: counts.total,
+    correct: counts.correct,
+    score: counts.total ? (counts.correct / counts.total) : 0,
+    date: new Date(ts).toISOString().slice(0, 10),
+    categories: [],
+    error_types: Array.isArray(meta.error_patterns_observed) ? meta.error_patterns_observed : [],
+    errors: [],
+    items: coachAdaptItemsForExercises(mode, meta),
+    source: 'coach_tab_live_ai',
+    partial: false,
+    planned_total: counts.total,
+    duration_min: Math.max(0, Math.round((Date.now() - ts) / 60000)),
+    session_id,        // cross-link to coach_sessions doc
+    summary_only: true, // flag — this is a derived view, not the authoritative log
+  };
+  await fsSet('players/' + currentPlayer + '/exercises/' + ts, summary);
 }
 
 // Merge new error_patterns_observed into players/{name}.coach_notes.weak_patterns

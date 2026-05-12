@@ -472,7 +472,10 @@ ${poolBlock || '  (empty — fall back to small-talk, end the session politely)'
 
 Tone: focused, pacy, encouraging. This is a sub-5-minute drill, not a chat.
 
-Open the session with: a one-line greeting + the first Russian cue. No preamble about what the drill is — ${playerName} already knows.`;
+Open the session with TWO lines, then the first cue:
+1. One-line greeting.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} — e.g. ${ru ? `"Я даю русскую фразу, ты переводишь на естественный английский — каждая фраза проверяет конкретный регистр-свап."` : `"I'll give you a Russian phrase — translate into natural English; each one tests a specific register swap."`}
+3. The first Russian cue, on its own line.`;
 }
 
 function translationDrillSystemPrompt(ctx) {
@@ -493,12 +496,14 @@ function translationDrillSystemPrompt(ctx) {
     ? `- **Score and explain in Russian.** Quote ${playerName}'s English back when an error appears, then explain *in Russian* what's off and why.
 - Show the corrected English form in English; the explanation around it is Russian.
 - Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
-- On a clean answer: a short Russian confirmation (one line). Don't over-praise.
-- On a miss: 2-3 sentences max — quote the slip, name the rule briefly, give the corrected form.`
+- **On EVERY turn, name the target structure in Russian** so ${playerName} learns the rule, not just the example.
+- On a clean answer: confirm + name the rule that applied in one short Russian sentence (e.g. "Хорошо — present perfect для опыта жизни."). Don't over-praise.
+- On a miss: 2-3 sentences — quote the slip, explain the rule in Russian, give the corrected form in English.`
     : `- Score and explain in English. Quote ${playerName}'s submission back when an error appears, then explain what's off and why.
 - Multiple correct answers are common — accept any English form that preserves meaning AND uses the target structure. Reject only when the target structure is missed or meaning is lost.
-- On a clean answer: one-line confirmation. Don't over-praise.
-- On a miss: 2-3 sentences max — quote the slip, name the rule briefly, give the corrected form.`;
+- **On EVERY turn, name the target structure** so ${playerName} learns the rule, not just the example.
+- On a clean answer: confirm + name the rule in one short sentence (e.g. "Got it — present perfect for life experience."). Don't over-praise.
+- On a miss: 2-3 sentences — quote the slip, name the rule, give the corrected form.`;
 
   return `You are running a focused **translation drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. RU cue → EN production, one item at a time. ${targetCount} items per session.
 
@@ -528,9 +533,12 @@ ${weakPatterns}
 - Engagement preferences:
 ${engagement}
 
-Tone: focused, encouraging, paced. This is a drill — keep replies tight, move through items, save the longer post-mortem for the session-end summary.
+Tone: focused, encouraging, paced. This is a drill — keep replies tight but always name the rule, move through items, save the longer post-mortem for the session-end summary.
 
-Open the session with: a one-line greeting + the first Russian cue. No preamble about what the drill is — ${playerName} already knows.`;
+Open the session with TWO lines, then the first cue:
+1. One-line greeting tied to ${playerName}.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} so the player knows what to do — e.g. ${ru ? `"Я даю русское предложение, ты переводишь на английский — целевая структура каждый раз новая."` : `"I'll give you a Russian sentence — translate it into English; each item targets a different structure."`}
+3. The first Russian cue on its own line.`;
 }
 
 function errorCorrectionDrillSystemPrompt(ctx) {
@@ -551,12 +559,14 @@ function errorCorrectionDrillSystemPrompt(ctx) {
     ? `- **Score and explain in Russian.** Quote the player's correction back when scoring, then explain *in Russian* what was wrong and why.
 - Show the corrected English form in English (a single line); the explanation around it is Russian.
 - Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
-- On a clean correction: short Russian confirmation, ≤1 line.
-- On a miss: quote the player's attempt, name the rule briefly in Russian, give the correct fix in English.`
+- **On EVERY turn, name the rule** that the error tested in Russian, so the player learns the rule not just the fix.
+- On a clean correction: confirm + name the rule in one short Russian sentence (e.g. "Точно — 'arrive' с местом берёт *at* или *in*, не *to*."). Don't over-praise.
+- On a miss: 2-3 sentences — quote the player's attempt, name the rule in Russian, give the correct fix in English.`
     : `- Score and explain in English. Quote the player's correction back when scoring.
 - Accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").
-- On a clean correction: one-line confirmation. Don't over-praise.
-- On a miss: 2-3 sentences max — quote, name the rule briefly, give the corrected form.`;
+- **On EVERY turn, name the rule** that the error tested, so the player learns the rule not just the fix.
+- On a clean correction: confirm + name the rule in one short sentence (e.g. "Right — 'arrive' takes *at* or *in* for places, not *to*."). Don't over-praise.
+- On a miss: 2-3 sentences — quote the player's attempt, name the rule, give the corrected form.`;
 
   return `You are running an **error-correction drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. One sentence per item, each contains exactly one deliberate error in English. ${targetCount} items per session.
 
@@ -589,7 +599,10 @@ ${engagement}
 
 Tone: focused, encouraging, paced. Keep replies tight, move through items, save the longer post-mortem for the session-end summary.
 
-Open with: a one-line greeting + the first sentence to correct. No preamble about what the drill is — ${playerName} already knows.`;
+Open with TWO lines, then the first item:
+1. One-line greeting.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} — e.g. ${ru ? `"Я даю предложение с одной ошибкой, ты исправляешь (полностью или только исправленную часть)."` : `"I'll show you sentences with one mistake — type the corrected version (or just the fix)."`}
+3. The first sentence to correct, on its own line.`;
 }
 
 function spellingDrillLiveSystemPrompt(ctx) {
@@ -613,12 +626,14 @@ function spellingDrillLiveSystemPrompt(ctx) {
 
   const languageBlock = ru
     ? `- **Score and explain in Russian.** Show the target word in English; explain spelling rules in Russian.
-- On exact match: short Russian confirmation, ≤1 line.
-- On 1-2 letter typo (e.g. "definately" for "definitely"): pass but show the correct form quoted in English + a 1-line Russian note on the trap ("двойная f, не одиночная" / "silent letters", etc.).
-- On wrong word entirely: fail, give the correct word in English, briefly explain in Russian what the Russian gloss meant (so player learns the disambiguation).`
+- **On EVERY turn, name the spelling trap class** (doubled letters, silent letters, ie/ei, etc.) in Russian so the player learns the rule.
+- On exact match: confirm + name the trap class in one short Russian sentence (e.g. "Молодец — двойная *m* в 'accommodate' — это всегда ловушка."). Don't over-praise.
+- On 1-2 letter typo: pass but show the correct form quoted in English + a 1-line Russian note on the trap.
+- On wrong word entirely: fail, give the correct word in English, briefly explain in Russian what the Russian gloss meant.`
     : `- Score in English. Quote the player's attempt.
-- On exact match: one-line confirmation. Don't over-praise.
-- On 1-2 letter typo: pass but show the correct form + a short note on the spelling trap (doubled letters, silent letters, ie/ei rule).
+- **On EVERY turn, name the spelling trap class** (doubled letters, silent letters, ie/ei, etc.) so the player learns the rule.
+- On exact match: confirm + name the trap in one short sentence (e.g. "Got it — doubled *m* in 'accommodate' is a classic trap."). Don't over-praise.
+- On 1-2 letter typo: pass but show the correct form + a short note on the trap.
 - On wrong word entirely: fail, give the correct word + brief disambiguation of the gloss.`;
 
   return `You are running a **spelling drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian-gloss → English-spelling. ${targetCount} items per session.
@@ -660,7 +675,10 @@ ${poolBlock}
 
 Tone: focused, encouraging, paced. Spelling rewards repetition + targeted rules.
 
-Open with: a one-line greeting + the first item (Russian gloss + English hint). No preamble about what the drill is — ${playerName} already knows.`;
+Open with TWO lines, then the first item:
+1. One-line greeting.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} — e.g. ${ru ? `"Я даю русское слово + короткое английское определение; ты пишешь, как пишется это слово по-английски."` : `"I'll give you a Russian word + a short English hint; type the English spelling."`}
+3. The first item (Russian gloss + English hint), on its own line.`;
 }
 
 function particleSortLiveSystemPrompt(ctx) {
@@ -675,12 +693,14 @@ function particleSortLiveSystemPrompt(ctx) {
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
 
   const languageBlock = ru
-    ? `- **Score and explain in Russian.** Quote the player's particle back in English; explain the rule in Russian.
-- On a clean answer: short Russian confirmation, ≤1 line. Optionally one sentence on the PV's meaning if it's not common.
-- On a miss: 2-3 sentences — quote what ${playerName} typed, name the meaning their particle would convey, then give the rule-correct particle in English with a Russian gloss of the intended meaning.`
+    ? `- **Score and explain in Russian.** Quote the player's particle back in English; explain the meaning of the rule-correct PV in Russian.
+- **On EVERY turn, name the PV's meaning** in Russian so the player learns the verb, not just the particle.
+- On a clean answer: confirm + give the PV's meaning in one short Russian sentence (e.g. "Точно — *figure out* = понять, разобраться."). Don't over-praise.
+- On a miss: 2-3 sentences — quote what ${playerName} typed, name the meaning their particle would convey, then give the rule-correct particle in English with a Russian gloss.`
     : `- Score and explain in English. Quote ${playerName}'s particle back when scoring.
-- On a clean answer: one-line confirmation. Optionally one sentence on the PV's meaning if uncommon.
-- On a miss: 2-3 sentences — quote, name the meaning the player's particle would convey, give the rule-correct particle.`;
+- **On EVERY turn, name the PV's meaning** so the player learns the verb, not just the particle.
+- On a clean answer: confirm + give the PV's meaning in one short sentence (e.g. "Right — *figure out* = understand or solve."). Don't over-praise.
+- On a miss: 2-3 sentences — quote, name the meaning the player's particle would convey, give the rule-correct particle + meaning.`;
 
   return `You are running a **phrasal-verb particle drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. PV production challenge — base verb shown, player produces the particle from semantic understanding of the context. ${targetCount} items per session.
 
@@ -715,7 +735,10 @@ ${engagement}
 
 Tone: focused, encouraging, paced. PV production rewards repetition over explanation.
 
-Open with: a one-line greeting + the first sentence (base verb visible, \`___\` for the particle). No preamble about what the drill is — ${playerName} already knows.`;
+Open with TWO lines, then the first item:
+1. One-line greeting.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} — e.g. ${ru ? `"Я даю предложение с базовым глаголом и пропуском (\\\`___\\\`) на месте частицы; ты пишешь частицу, которая делает осмысленный фразовый глагол."` : `"I'll show you a sentence with the base verb in place and \\\`___\\\` for the particle — type the particle that completes the phrasal verb."`}
+3. The first sentence (base verb visible, \`___\` for the particle), on its own line.`;
 }
 
 function articleDrillLiveSystemPrompt(ctx) {
@@ -731,12 +754,14 @@ function articleDrillLiveSystemPrompt(ctx) {
 
   const languageBlock = ru
     ? `- **Score and explain in Russian.** Show the article quoted in English; explain the rule in Russian.
-- On a clean answer: short Russian confirmation, ≤1 line.
-- On a miss: 2-3 sentences max — quote what ${playerName} typed, explain the rule briefly in Russian, give the correct article in English.
+- **On EVERY turn, name the article rule** (first-mention indefinite, definite shared referent, generic zero, fixed-expression zero) in Russian so the player learns the rule.
+- On a clean answer: confirm + name the rule in one short Russian sentence (e.g. "Правильно — нулевой артикль с generic countable plural."). Don't over-praise.
+- On a miss: 2-3 sentences — quote what ${playerName} typed, name the rule in Russian, give the correct article in English.
 - Accept "—" or "-" or "zero" or "dash" or "no article" or "ноль" / "ничего" for the zero-article case.`
     : `- Score and explain in English. Quote ${playerName}'s answer back when scoring.
-- On a clean answer: one-line confirmation. Don't over-praise.
-- On a miss: 2-3 sentences max — quote, name the rule briefly, give the correct article.
+- **On EVERY turn, name the article rule** (first-mention indefinite, definite shared referent, generic zero, fixed-expression zero) so the player learns the rule.
+- On a clean answer: confirm + name the rule in one short sentence (e.g. "Right — zero article for generic plural."). Don't over-praise.
+- On a miss: 2-3 sentences — quote, name the rule, give the correct article.
 - Accept "—" or "-" or "zero" or "no article" for the zero-article case.`;
 
   return `You are running an **article drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. Russian L1 doesn't mark articles, so this is a fossilised gap for every family member — drill it dense and conversational. ${targetCount} items per session.
@@ -774,7 +799,10 @@ ${engagement}
 
 Tone: focused, encouraging, paced. Keep replies tight; the article system rewards repetition.
 
-Open with: a one-line greeting + the first sentence (with one \`___\` blank). No preamble about what the drill is — ${playerName} already knows.`;
+Open with TWO lines, then the first item:
+1. One-line greeting.
+2. **One-line drill instruction** in ${ru ? 'Russian' : 'English'} — e.g. ${ru ? `"Я даю короткое предложение с пропуском (\\\`___\\\`); ты пишешь нужный артикль (\\\`a\\\`, \\\`an\\\`, \\\`the\\\` или \\\`—\\\` для нулевого)."` : `"I'll give you a short sentence with one \\\`___\\\` blank — type the article that fits (\\\`a\\\`, \\\`an\\\`, \\\`the\\\`, or \\\`—\\\` for zero)."`}
+3. The first sentence (with one \`___\` blank), on its own line.`;
 }
 
 function weakSpotsDrillSystemPrompt(ctx) {
