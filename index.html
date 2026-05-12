@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r14">
+  <meta name="app-version" content="v20260511-r15">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r14</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r15</span></p>
 </header>
 
 <!-- TABS -->
@@ -1459,8 +1459,8 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Free Write</span>
           <span class="coach-type-count" data-count-for="free_write"></span>
         </button>
-        <button class="coach-type-btn" data-type="phrase_swap_drill" onclick="coachStartPhraseSwapDrill()" title="Live AI — practise stiff/calqued phrases, swap them for natural ones">
-          <span class="coach-type-name">Phrase Swaps</span>
+        <button class="coach-type-btn" data-type="phrase_swap_drill" onclick="coachStartPhraseSwapDrill()" title="Live AI — Natural English drill: swap stiff/calqued phrases for natural ones">
+          <span class="coach-type-name">Natural English</span>
           <span class="coach-type-count" data-count-for="phrase_swap_drill">…</span>
         </button>
         <button class="coach-type-btn" data-type="weak_spots_drill" onclick="coachStartWeakSpotsDrill()" title="Live AI — ~30-min depth session on one weak spot, simple → hard">
@@ -4209,13 +4209,13 @@ const SIMPLE_CARDS = {
       mode:'smart', cat:'All',              count:20, maxLvl:'C2' },
     { icon:'🎯', title:'Fix Weak Spots',    sub:null,
       mode:'weak',  cat:'All',              count:20, maxLvl:'C2' },
-    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+    { icon:'🗣️', title:'Natural English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Natural English', count:10, maxLvl:'C2' },
     { icon:'💼', title:'Business Focus',    sub:'Professional English',
       mode:'smart', cat:'All',              count:20, maxLvl:'C2', biz:true }
   ],
   anna: [
-    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+    { icon:'🗣️', title:'Natural English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Natural English', count:10, maxLvl:'B2' },
     { icon:'🧠', title:'Smart Practice',    sub:'Mix of everything',
       mode:'smart', cat:'All',              count:10, maxLvl:'B2' },
@@ -4231,7 +4231,7 @@ const SIMPLE_CARDS = {
       mode:'weak',  cat:'All',              count:20, maxLvl:'C1' },
     { icon:'📚', title:'Extended Session',  sub:'Deep practice — 30 questions',
       mode:'smart', cat:'All',              count:30, maxLvl:'C1' },
-    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+    { icon:'🗣️', title:'Natural English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Natural English', count:10, maxLvl:'B2' }
   ],
   nicole: [
@@ -4241,7 +4241,7 @@ const SIMPLE_CARDS = {
       mode:'weak',  cat:'All',              count:10, maxLvl:'B1' },
     { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
       mode:'consolidate', cat:'All',        count:10, maxLvl:'B1' },
-    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+    { icon:'🗣️', title:'Natural English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Natural English', count:10, maxLvl:'B1' }
   ],
   ernest: [
@@ -4249,7 +4249,7 @@ const SIMPLE_CARDS = {
       mode:'smart', cat:'All',              count:10, maxLvl:'B2' },
     { icon:'🌱', title:'Confidence Build',  sub:'Practise what you know',
       mode:'consolidate', cat:'All',        count:10, maxLvl:'B2' },
-    { icon:'🗣️', title:'Everyday English', sub:'Natural phrases for daily life',
+    { icon:'🗣️', title:'Natural English', sub:'Natural phrases for daily life',
       mode:'smart', cat:'Natural English', count:10, maxLvl:'B1' }
   ]
 };
@@ -9059,23 +9059,64 @@ async function coachUpdateSpellingDrillBadge() {
 // weak_patterns — gives Weak Spots a different badge number than Translation/EC
 // even though they all derive from weak_patterns. Keep these regexes in sync
 // with the worker catalog when topics change.
+//
+// `cat` field maps each topic to its quiz catStats category — used by P1
+// (Weakest quiz category is always a Weak Spots candidate, per
+// references/operational-rules.md). Without this mapping, a player whose
+// weakest quiz category is Emphasis (29% accuracy) wouldn't see emphasis_clefts
+// in topic proposals unless their weak_patterns prose happened to use the word.
 const COACH_WEAK_SPOTS_CATALOG = [
-  { id: 'emphasis_clefts',                match: /cleft|emphasis|inversion|fronting|emphatic/i },
-  { id: 'article_system',                 match: /article|a→the|zero.*the|the.*zero|definite|indefinite/i },
-  { id: 'present_perfect_vs_past_simple', match: /present perfect|past simple|tense|since|for|ago|past simple irregular/i },
-  { id: 'preposition_clusters',           match: /preposition|arrive|in.*time|verb\+prep|prep$|prep[s ]/i },
-  { id: 'phrasal_verb_production',        match: /phrasal|particle|PV|verb.*particle/i },
+  { id: 'emphasis_clefts',                cat: 'Emphasis',       match: /cleft|emphasis|inversion|fronting|emphatic/i },
+  { id: 'article_system',                 cat: 'Articles',       match: /article|a→the|zero.*the|the.*zero|definite|indefinite/i },
+  { id: 'present_perfect_vs_past_simple', cat: 'Tenses',         match: /present perfect|past simple|tense|since|for|ago|past simple irregular/i },
+  { id: 'preposition_clusters',           cat: 'Prepositions',   match: /preposition|arrive|in.*time|verb\+prep|prep$|prep[s ]/i },
+  { id: 'phrasal_verb_production',        cat: 'Phrasal Verbs',  match: /phrasal|particle|PV|verb.*particle/i },
 ];
 
-function coachCountWeakSpotsCatalogMatches() {
+// P1 (operational-rules.md): bottom-N catStats categories that map to a Weak
+// Spots topic must always be candidates, regardless of weak_patterns prose.
+// Threshold: <70% accuracy, min 5 attempts. Returns [{cat, topic_id, pct, n}].
+function coachWeakestQuizCategoriesForTopics(maxN = 3) {
+  const cs = (DB && DB.catStats) || {};
+  const candidates = [];
+  for (const topic of COACH_WEAK_SPOTS_CATALOG) {
+    const s = cs[topic.cat];
+    if (!s) continue;
+    const seen = Number(s.seen) || 0;
+    const correct = Number(s.correct) || 0;
+    if (seen < 5) continue;
+    const pct = (correct / seen) * 100;
+    if (pct >= 70) continue;
+    candidates.push({ cat: topic.cat, topic_id: topic.id, pct: Math.round(pct), n: seen });
+  }
+  // Sort by accuracy asc (weakest first), return top maxN.
+  candidates.sort((a, b) => a.pct - b.pct);
+  return candidates.slice(0, maxN);
+}
+
+// Union of two signal sources for "topics this player should see in Weak Spots":
+//   1. Catalog-regex matches against coach_notes.weak_patterns prose
+//   2. Bottom-N catStats categories mapped via COACH_WEAK_SPOTS_CATALOG.cat
+// Returns deduped array of topic_ids.
+function coachWeakSpotsTopicCandidates() {
   const cn = coachState.playerCoachNotes || {};
   const patterns = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
-  if (!patterns.length) return 0;
-  let hits = 0;
+  const hits = new Set();
+  // Source 1: regex match against weak_patterns prose
   for (const topic of COACH_WEAK_SPOTS_CATALOG) {
-    if (patterns.some(p => typeof p === 'string' && topic.match.test(p))) hits++;
+    if (patterns.some(p => typeof p === 'string' && topic.match.test(p))) {
+      hits.add(topic.id);
+    }
   }
-  return hits;
+  // Source 2: bottom-N catStats categories (P1)
+  for (const c of coachWeakestQuizCategoriesForTopics()) {
+    hits.add(c.topic_id);
+  }
+  return [...hits];
+}
+
+function coachCountWeakSpotsCatalogMatches() {
+  return coachWeakSpotsTopicCandidates().length;
 }
 
 function coachUpdateWeakSpotsAvailability() {
@@ -9424,7 +9465,7 @@ async function coachStartPhraseSwapDrill() {
     return;
   }
   if (!navigator.onLine) {
-    alert('You appear to be offline. Phrase Swaps needs a connection.');
+    alert('You appear to be offline. Natural English drill needs a connection.');
     return;
   }
   // Pull fresh player doc to get latest weak_patterns + phrase_tracker
@@ -9465,7 +9506,7 @@ async function coachStartPhraseSwapDrill() {
   document.getElementById('coachActionRow').style.display = 'none';
   // Header line + initial loading message
   coachAppendMessage('assistant',
-    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Phrase Swaps · ${coachState.psdTargetCount} cues</div>`
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Natural English · ${coachState.psdTargetCount} cues</div>`
   );
   const typingEl = coachAppendMessage('assistant', '<span class="coach-typing">Setting up…</span>');
   // First worker call — synthetic "ready" user turn to kick off the first cue
@@ -9821,6 +9862,8 @@ async function coachStartWeakSpotsDrill() {
   // First worker call — synthetic "ready" so the model emits the topic proposal turn
   const initMsg = { role: 'user', content: 'ready' };
   coachState.wsMessages.push(initMsg);
+  // P1 (operational-rules.md): weakest quiz categories must be candidates.
+  const weakestCats = coachWeakestQuizCategoriesForTopics();
   const result = await coachWorkerCall({
     mode: 'weak_spots_drill',
     model: coachState.wsModel,
@@ -9832,6 +9875,7 @@ async function coachStartWeakSpotsDrill() {
         engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
         recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
       },
+      weakest_categories: weakestCats,
     }),
     session_id: coachState.wsSessionId,
     is_session_end: false,
@@ -9907,6 +9951,7 @@ async function coachWeakSpotsSendUserTurn() {
         engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
         recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
       },
+      weakest_categories: coachWeakestQuizCategoriesForTopics(),
     }),
     session_id: coachState.wsSessionId,
     is_session_end: false,
@@ -9964,6 +10009,7 @@ async function coachWeakSpotsEnd() {
         engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
         recent_observations: Array.isArray(cn.recent_observations) ? cn.recent_observations : [],
       },
+      weakest_categories: coachWeakestQuizCategoriesForTopics(),
     }),
     session_id: coachState.wsSessionId,
     is_session_end: true,

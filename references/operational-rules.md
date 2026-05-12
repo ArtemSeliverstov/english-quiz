@@ -12,6 +12,14 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 - **Don't change a write path or surface without updating `docs/data-flow.md`.** Inventory + diagrams + pre-redesign checklist live there. → `docs/data-flow.md`
 - **After editing any capped doc, run `wc -w <file>` before committing.** Caps from `doc-style.md`; CI will fail otherwise. → `doc-style.md`
 
+## Cross-cutting principles
+
+- **P1 — Weakest quiz category is always a Weak Spots candidate.** The Weak Spots topic proposal must include the player's weakest catStats category (lowest accuracy, min sample size) mapped to its catalog topic — even if no `weak_patterns` entry mentions it by name. Implementation: `coachWeakSpotsTopicCandidates()` unions catalog-regex matches against `weak_patterns` with the `CAT_TO_TOPIC` mapping of bottom-N `catStats`. Worker context includes `weakest_categories` array; prompt instructed to surface them in topic proposals. → `worker/index.js` `weakSpotsDrillSystemPrompt`, `coachUpdateWeakSpotsAvailability`.
+
+- **P2 — PWA and CC exercise paths mirror.** Any exercise type runnable on PWA (Coach tab) must be runnable in CC (via skill), and vice versa. Both surfaces write to the same `coach_sessions/{prefix}_*` schema; differences are surface-level (input UI, model used) not data-level. Adding a new mode requires both a worker mode and a CC skill before the type is considered shipped. → `references/exercise-types.md`, `.claude/skills/{exercise-session,free-write,weak-spots-session}/SKILL.md`.
+
+- **P3 — Every response is captured for the feedback loop.** Every player-coach exchange persists to `players/{name}/coach_sessions/{id}.messages[]` (canonical) + mirrored summary to `players/{name}/exercises/{ts}` for the history view. `stats-review` skill reviews these in batch to update `weak_patterns` / `recent_session_signals` / `coach_drill_stats`. Sessions that bypass logging (e.g. errors that drop messages) are bugs, not allowed states. → `worker/index.js`, `coachWriteSessionLogStandalone`, `stats-review` SKILL §1.
+
 ## Invariants
 
 - **Version string format `vYYYYMMDD-tN`.** s series ended at s100; new sessions use the `t` prefix. Same-session rebuilds append `r2`, `r3`. → `pre-deploy-checklist.md` §7

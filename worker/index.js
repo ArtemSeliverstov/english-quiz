@@ -167,6 +167,13 @@ export default {
       if (context.topic_hint != null && typeof context.topic_hint !== 'string') {
         return jsonError(400, 'WORKER_VALIDATION', 'context.topic_hint must be a string when set', false, cors);
       }
+      // weakest_categories optional — array of {cat, topic_id, pct, n} from PWA-
+      // side catStats analysis. Per P1 (operational-rules.md): weakest quiz
+      // category is always a Weak Spots candidate, even if no weak_patterns
+      // entry mentions it.
+      if (context.weakest_categories != null && !Array.isArray(context.weakest_categories)) {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.weakest_categories must be an array when set', false, cors);
+      }
     }
     // feedback_depth optional on every mode — drives drill verbosity per player.
     if (context.feedback_depth != null && !FEEDBACK_DEPTH_TIERS.has(context.feedback_depth)) {
@@ -819,9 +826,18 @@ function weakSpotsDrillSystemPrompt(ctx) {
 - Encourage briefly when production lands; explain *why* in English when it misses.
 - Keep replies focused — 150-250 words for mechanics blocks, shorter for production feedback.`;
 
+  // P1 (operational-rules.md): weakest_categories from PWA catStats are
+  // MANDATORY candidates for the topic proposal, regardless of weak_patterns
+  // prose. The PWA computes bottom-N categories (<70%, n>=5) and maps each to
+  // its catalog topic_id; this list MUST appear in the proposal.
+  const weakestCats = Array.isArray(ctx.weakest_categories) ? ctx.weakest_categories : [];
+  const weakestCatsBlock = weakestCats.length
+    ? weakestCats.map(c => `  - ${c.cat || '?'} (${c.pct ?? '?'}%, n=${c.n ?? '?'}) → topic \`${c.topic_id || '?'}\``).join('\n')
+    : '  (none — empty signal, fall back to weak_patterns regex matching only)';
+
   const openingDirective = topicHint
     ? `The player has already named the topic: "${topicHint}". Skip the topic-proposal turn. Open with: a one-line confirmation + the tier ladder for the topic + the first tier's mechanics block and worked example.`
-    : `Open the session by scanning ${playerName}'s weak_patterns and recent_observations. Propose 2-3 topics from the catalog below that match the strongest weak-pattern signals — match topics by the "Matches" regex hint per catalog entry. Format: a one-line greeting, then a numbered list of proposed topics (one line each, with the catalog name + a 6-10 word reason tied to the matching weak_pattern). End with: "Which one — or name your own?" Wait for ${playerName} to pick before proceeding.`;
+    : `Open the session by scanning ${playerName}'s weak_patterns + recent_observations AND the weakest_categories block below. Propose 2-3 topics from the catalog. **MANDATORY**: every topic_id in weakest_categories MUST appear in the proposal (P1 — weakest quiz category is always a Weak Spots candidate, per references/operational-rules.md). Beyond those, add up to (3 minus weakest count) extra topics that match weak_patterns via the "Matches" regex hint. Format: a one-line greeting, then a numbered list of proposed topics (one line each, with the catalog name + a 6-10 word reason — for weakest_categories entries, mention the accuracy and sample size). End with: "Which one — or name your own?" Wait for ${playerName} to pick before proceeding.`;
 
   return `You are an English language coach running a depth-focused **Weak Spots** session with ${playerName}, a Russian-speaking learner at CEFR level ${level}. The session is ~30 minutes, one topic, conversational, ladder-walked from simple to hard.
 
@@ -842,6 +858,8 @@ ${weakPatterns}
 ${recentObs}
 - Engagement preferences:
 ${engagement}
+- Weakest quiz categories (P1 — mandatory candidates in topic proposal):
+${weakestCatsBlock}
 
 ### Topic catalog
 
