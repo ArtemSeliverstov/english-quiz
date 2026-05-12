@@ -1,9 +1,10 @@
 # Stats sprawl cleanup — `weak_patterns` split
 
-**Status**: active
+**Status**: shipped through r12 (Phase A–E complete; per-player migration via Firebase MCP done 2026-05-12)
 **Owner**: Artem · execution: Claude Code (laptop, with Firebase MCP)
+**Doctrine cross-refs**: `docs/system-mechanisms.md` §4 (stats stores inventory — canonical post-cleanup state), `references/operational-rules.md` (P3 single feedback DB), `references/coach-notes-schema.md` (schema + lifecycle authority).
 
-`coach_notes.weak_patterns` has drifted into three jobs. Anna's pool is the worked example: 17 entries against a stated cap of 8, mixing durable grammar signal (6), single-session captures (4), and lexical-swap dupes of `phrase_tracker.entries[]` (7). Drill prompts that read this pool get noisy context every turn. This plan splits the three jobs into three stores.
+`coach_notes.weak_patterns` had drifted into three jobs. Anna's pool was the worked example: 17 entries against a stated cap of 8, mixing durable grammar signal (6), single-session captures (4), and lexical-swap dupes of `phrase_tracker.entries[]` (7). Drill prompts that read this pool got noisy context every turn. This plan split the three jobs into three stores.
 
 ---
 
@@ -147,23 +148,26 @@ Anna's existing `[biz_general]` entries (7 lexical swaps) retag to context-appro
 
 ## 5. Per-player migration map
 
-| Player | Current `weak_patterns` count | After split: durable | recent_session_signals | (phrase_tracker — unchanged) |
+| Player | Pre-split `weak_patterns` count | After split: durable | recent_session_signals | (phrase_tracker — unchanged) |
 |---|---|---|---|---|
 | Anna | 17 | 6 | 4 | 7 (already in tracker) |
-| Artem | TBD (audit on migration day) | ? | ? | ? |
-| Ernest | TBD | ? | ? | ? |
-| Nicole | TBD | ? | ? | ? |
+| Artem | 49 | 11 | 5 | 33 (already in tracker) |
+| Ernest | 3 | 3 | 0 | 0 |
+| Nicole | 8 | 4 | 4 | 0 |
 | Egor | 2 | 2 | 0 | 0 |
 
-Audit each player's `weak_patterns` at migration time. Anna's table above is verified.
+All five players migrated 2026-05-12 via Firebase MCP. Anna's `[biz_general]` lexical retags applied per §3 table. No further per-player migration outstanding.
 
 ---
 
-## 6. Open items
+## 6. Decisions taken (closed) + still-open
 
-1. **Auto-promote vs flag-for-review** — when `recent_session_signals` entry hits `count >= 2`, does the PWA auto-promote (write to weak_patterns inline) or just flag for stats-review to confirm? Auto is simpler; stats-review-driven is safer (composes a better prose label with full context). I'm leaning **stats-review-driven** — daily cadence is fine, and the prose-label quality matters for drill prompt readability.
-2. **Promotion-threshold tuning** — 2 sessions might be too eager for some pattern types (e.g. typos shouldn't promote to durable). Could add a per-pattern-class threshold (typos = 3, grammar = 2, etc.) — but adds complexity. Defer until we see actual patterns of false promotion.
-3. **Coach drill stats overlap** — `coach_drill_stats[target_structure]` already aggregates per-structure seen/correct. There's some overlap with `recent_session_signals` (which tracks failure incidence). They serve different purposes (drill_stats = mastery accuracy; signals = trend-toward-promotion), so probably keep separate. Revisit if both turn out to be redundant in practice.
+**Closed**:
+1. **Auto-promote vs flag-for-review** — resolved **stats-review-driven**. Daily cadence is fine; the prose-label quality matters for drill prompt readability. PWA auto-merges signals on session end; stats-review composes durable labels and promotes.
+2. **Coach drill stats overlap** — `coach_drill_stats[target_structure]` serves a distinct purpose (mastery accuracy, drill side of recognition-vs-production split). Surfaced in `getCategoryProgress` from r13. Kept separate from `recent_session_signals`; both shipped.
+
+**Still open**:
+- **Promotion-threshold tuning** — 2 sessions might be too eager for some pattern types (e.g. typos shouldn't promote to durable). Per-pattern-class thresholds (typos = 3, grammar = 2) add complexity. Defer until we see actual patterns of false promotion in post-r12 data.
 
 ---
 
@@ -174,3 +178,19 @@ Append-only. One entry per session that advances this plan.
 ### 2026-05-12 · plan landed
 
 Plan written from conversation. Three-way split locked: weak_patterns (durable only) / recent_session_signals (single-session buffer with priority eviction) / phrase_tracker (lexical lifecycle, no change). Tag hygiene matrix specified. `biz_general` retired for non-business players; remains valid for Artem + Egor.
+
+### 2026-05-12 · Phase A–E shipped in r12 (commit 9a92a4e)
+
+**Phase A — Schema docs**: `references/coach-notes-schema.md` updated with narrowed `weak_patterns` scope, new `recent_session_signals` section + lifecycle + priority-weighted eviction, tag-hygiene matrix.
+
+**Phase B — PWA refactor**: `coachMergeWeakPatterns` in `index.html` split into durable-only path + new `coachMergeRecentSessionSignals` for the single-session buffer. Lexical entries (`X → Y [tag]` shape) now skip both paths — `phrase_tracker` is canonical. Eviction logic shipped as specified (sort by count ASC, then last_seen ASC, drop first). Drill end-handlers wired to call the new merge.
+
+**Phase C — CC tools**: `tools/capture_swaps.js` dropped the `weak_patterns_add` dual-write — phrase_tracker only. `tools/update_coach_notes.js` gained `recent_session_signals_add`, `recent_session_signals_promote`, `recent_session_signals_remove` keys.
+
+**Phase D — stats-review skill**: new step at session start scans `recent_session_signals` → promotes any `count >= 2` to `weak_patterns` with a stats-derived prose label, prunes source. Legacy session-tagged entries flagged for one-time migration.
+
+**Phase E — Per-player migration** (via Firebase MCP, one-off): Anna 17→6+4 / Artem 49→11+5 / Ernest 3→3+0 / Nicole 8→4+4 / Egor 2→2+0. Anna's `[biz_general]` lexicals retagged to `[home_daily]` / `[brit_expat]` per §3 matrix. No further migration outstanding.
+
+### 2026-05-12 · Post-r12 enhancement (informational)
+
+r13 surfaced `coach_drill_stats` alongside `qStats`/`catStats` in `getCategoryProgress` (closing the recognition-vs-production gap on the learner stats panel). r14 fixed a regression where `coachBuildPhrasePool` and `coachUpdatePhraseSwapAvailability` still read lexicals from the now-cleaned `weak_patterns` — switched both to `phrase_tracker.entries[status==='active']` (the canonical post-cleanup source). Both improvements are downstream of this plan but didn't reshape the split — logged here for cross-ref.

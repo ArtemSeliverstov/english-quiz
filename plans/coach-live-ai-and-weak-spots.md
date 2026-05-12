@@ -1,11 +1,14 @@
 # Coach → Live AI + Weak Spots plan
 
-**Status**: shipped (T1 + T2 complete; only the docs sweep — Phase E — remains)
+**Status**: shipped through r15 (T1 + T2 complete; subsequent enhancement waves r11–r15 captured in status log)
 **Owner**: Artem · execution: Claude Code (laptop, with remote-CC compatibility)
+**Doctrine cross-refs**: `docs/learning-system-design.md` §3 (Conversation as the keystone — this plan operationalises it) and §4 (Drill design rules — captures the patterns landed during the r9–r15 wave). The §6 don't-build list had "Live AI for every interaction" removed when this plan shipped (2026-05-11) per the explicit reversal noted in §7 of the design doc.
 
 Two parallel tracks: (T1) convert every Coach picker type to live AI via the Worker, retiring library content as the primary path; (T2) add `weak_spots_drill` — a Free-Write-shaped session focused on one weak-pattern topic, with inline tier ladders for 5 v1 topics.
 
 Firestore is the single source of truth for dynamic state. All reads/writes go through Firebase MCP (document tools landed; legacy `tools/*.js` workaround retired for new code paths). Skills must work in remote CC — no `node` scripts, no local-only env vars.
+
+**Post-Phase-E enhancement waves** (r11–r15) extended this plan substantially beyond its original scope. The patterns that emerged were codified back into doctrine: drill verbosity tiers (`feedbackDepth`), adaptive sibling protocol on miss, active_categories as content source for cross-category drills, the P1 "weakest quiz category is always a Weak Spots candidate" rule, and the Natural English category rename. All landed in `docs/learning-system-design.md` §4 (Drill design rules) and `references/operational-rules.md` (P1/P2/P3).
 
 ---
 
@@ -197,11 +200,17 @@ Phases A–C ship T2 in isolation. Phase D ships T1 incrementally without blocki
 
 ---
 
-## 7. Open decisions
+## 7. Decisions taken (closed)
 
-1. **Library content retirement timeline.** Offline fallback is decided. Open: do we keep authoring new library items in `quiz-development` skill (defensive depth) or stop and let it bit-rot? My recommendation: stop new authoring after Phase D ships; existing library survives untouched as offline-only.
-2. **CC skill trigger overlap.** "Let's do emphasis" could trigger either `exercise-session` (if interpreted as an exercise type) or `weak-spots-session`. Resolve by keyword: weak-spots-session description mentions "30 min", "weak spots", "deep dive", "tutorial"; exercise-session keeps "exercises", "упражнения", short-session language.
-3. **Topic catalog growth governance.** When a new topic recurs across ≥2 players' weak_patterns, who edits the worker prompt? Today: Artem hand-edits `worker/index.js` and redeploys. Future: catalog migrates to Firestore once it exceeds ~10 topics — out of scope for v1.
+1. **Library content retirement** — confirmed at ship time. New question authoring continues for the quiz bank; the `exercises_library/*` collection is frozen as offline-only fallback. No new library items authored against it since 2026-05-11.
+2. **CC skill trigger overlap** — resolved at ship time. `weak-spots-session` triggers on "30 min", "weak spots", "deep dive". `exercise-session` keeps "exercises", "упражнения", short-session language. Verified in CLAUDE.md skills table.
+3. **Topic catalog growth governance** — interim resolved: catalog lives inline in `worker/index.js → weakSpotsDrillSystemPrompt` (5 topics, ~250 words). The PWA-side mirror in `COACH_WEAK_SPOTS_CATALOG` (`index.html`) must stay in sync. Firestore migration deferred until catalog exceeds ~10 topics.
+
+## 7b. Post-r15 still-open
+
+1. **Egor learner-shell experiment** — moved 2026-05-12. Edge case: builder cognitive profile, learner shell visibility. Revisit when his catStats stabilise enough to confirm fit.
+2. **`avoidTypes: ['free_write']` for Nicole/Ernest** — precautionary flag. Flip criteria: stable `level_cap: B1+` AND ≥5 Phrase Swaps + Weak Spots sessions at ≥70%. Tracked in `docs/audience-profiles.md` §5.
+3. **PV-adjacent substitution drill** — Artem-specific pattern noted in his weak_patterns. No mode change required; surface during Weak Spots sessions when the player picks `phrasal_verb_production`.
 
 ---
 
@@ -274,3 +283,16 @@ Preview probe verified all four routing cases: online+API → worker `translatio
 ### 2026-05-11 · Phase C · CC skill
 
 `.claude/skills/weak-spots-session/SKILL.md` written (596 words, under SKILL cap). MCP-only reads/writes — first new code path to retire `tools/*.js` per the Firestore-SoT decision. References `worker/index.js → weakSpotsDrillSystemPrompt` as the canonical topic catalog (single source of truth, no markdown catalog file). End-of-session writes via `mcp__firebase__firestore_add_document` (coach_sessions) + `mcp__firebase__firestore_update_document` (coach_notes merge) + idempotent proficiency fold mirroring `coachFoldFreeWriteAssessment`. CLAUDE.md skills table updated (now 523 words — pre-existing overage from prior growth; Phase E sweep can trim). `references/exercise-types.md` adds type 10 + extends per-player selection table. `references/coach-notes-schema.md` adds `weak_spots_drill` read-out template. Trigger language scoped to avoid collision with `exercise-session` ("упражнения") and `free-write` ("поговорим"). Gate (E2E run on a real Artem topic) pending — same blocker as Phase B: needs deploy.
+
+
+### 2026-05-12 · Phase F · Post-rollout enhancement waves (r11–r15)
+
+Five sub-deploys after the original Phase E ship. Each one a targeted improvement that emerged from real smoke-test signal. Captured here for plan completeness; doctrine landed in `docs/learning-system-design.md` §4 and `references/operational-rules.md` cross-cutting principles.
+
+- **r11 — Phase 2: `active_categories` as content source.** Translation_drill + error_correction_drill now rotate items 1:1 across the player's `learning_path.active_categories` (when populated). Each item targets ONE category; `weak_patterns` refines the structure within. Builder-shell players (Artem, empty active_categories) fall back to weak_patterns-broad rotation. New worker helper `activeContentBlock`. Session-end `items_drilled[i]` gains `category` field (TD/EC modes only).
+- **r12 — Stats-sprawl cleanup.** Spawned its own plan: `plans/stats-sprawl-cleanup.md`. The `coach_notes.weak_patterns` field had drifted into a junk drawer mixing durable grammar, single-session captures, and lexical dupes of `phrase_tracker`. Split into three purpose-specific stores. Anna's pool 17 → 6, Artem 49 → 11, Nicole 8 → 4. Tag hygiene matrix codified. Lexical dual-write retired.
+- **r13 — `coach_drill_stats` surfaced in learner stats panel.** The field existed as of r9 with no consumer. `renderLearnerStats` active-category cards now show quiz-vs-drill split (`Quiz: 70% (14/20) · Drill: 80% (8/10)`) via new `getCategoryProgress(cat)` helper. Surfaces the recognition-vs-production gap that profile reviews keep flagging. `stuck_questions` documented as CC-only (no PWA consumer).
+- **r14 — Picker badge differentiation + Phrase Swaps regression fix.** Three issues: all modes showed same "11" badge (now Weak Spots shows catalog topic count, Translation/EC show active-cat count or weak-pattern count, Phrase Swaps shows actual pool size). And r12 had broken Phrase Swaps by stripping lexical entries from weak_patterns — `coachBuildPhrasePool` now reads active pool from `phrase_tracker.entries[status===active]` (canonical source post-cleanup). Anna's 80 phrase_tracker entries became visible again.
+- **r15 — Cross-cutting principles + P1 fix + Natural English rename.** Codified P1/P2/P3 in `operational-rules.md`. P1 implementation: bottom-N catStats categories map via `CAT_TO_TOPIC` to Weak Spots catalog topics; those are MANDATORY in topic proposals regardless of `weak_patterns` prose. Worker prompt updated. Closes the Emphasis-omitted regression: Artem's 29 0.000000E+00mphasis catStats now drives `emphasis_clefts` as a proposal candidate. Rename: Phrase Swaps button → Natural English (matches the category name). Home CTA tile "Everyday English" → "Natural English" for consistency.
+
+All five shipped to production. T2 (Weak Spots) gates fully met (E2E runs across players). T1 (live-AI rollout) gates fully met (per-player smoke tests). Phase F is closed; further enhancements track in new plans.
