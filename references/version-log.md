@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-12 · v20260512 — Nicole + Ernest free_write gate dropped
+
+Test the `learning-system-design.md` §3 conversation-keystone hypothesis (children engage naturally with conversational AI). Original flip criteria in `audience-profiles.md` §5 (`level_cap: B1+` stable OR ≥5 Phrase Swaps + Weak Spots sessions ≥70%) couldn't be met while the gate held back the very surface that drives engagement. Override is reversible — stats-review owns the reinstate-on-frustration call.
+
+- `index.html` FAMILY_MEMBERS: Nicole + Ernest `avoidTypes: []` (was `['free_write']`)
+- `docs/audience-profiles.md` §2/§5/§6: record override + watch-list (frustration signals to reinstate the gate)
+- `references/exercise-types.md`: free_write moved Avoid → Secondary (open hypothesis) for Nicole + Ernest
+- `plans/coach-live-ai-and-weak-spots.md` §7b: closed-with-experiment
+
+Q count: 2246 (no change) · Version: v20260512
+
+---
+
 ## 2026-05-11 · Session r4 — Phase D-3/4/5 live AI + per-type badges (v20260511-r3 → r7)
 
 Five sub-deploys in one build session, closing the T1 rollout from `plans/coach-live-ai-and-weak-spots.md`. After r4 every Coach picker type is live-AI primary; library survives as offline-only fallback across the board.
