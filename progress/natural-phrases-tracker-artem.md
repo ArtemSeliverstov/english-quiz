@@ -35,8 +35,8 @@
 | `[biz_oil]` | 0 | 11 | 4 | 0 | 0 | 0 | 15 |
 | `[leisure_sport]` | 0 | 18 | 1 | 0 | 0 | 0 | 19 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 37 | 8 | 0 | 0 | 0 | 45 |
-| **Total** | 0 | 67 | 13 | 0 | 0 | 0 | 80 |
+| `[claude_collab]` | 0 | 40 | 8 | 0 | 0 | 0 | 48 |
+| **Total** | 0 | 70 | 13 | 0 | 0 | 0 | 83 |
 
 ---
 
@@ -124,6 +124,9 @@
 | I thought to V | I was thinking of V-ing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | forget to say that | I forgot to mention | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | wrap |
 | as Artem, I see X | logged in as Artem, I see X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | wrap |
+| nicole and ernest gates for free write | the free_write gate for Nicole and Ernest | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
+| no problem with the word limit? | any issue with the word limit? / word limit OK? | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
+| update your plan that we executed before side-stepping | update the plan we were running before we side-stepped | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
 
 ---
 
