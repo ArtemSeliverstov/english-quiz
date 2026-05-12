@@ -209,7 +209,7 @@ Phases A–C ship T2 in isolation. Phase D ships T1 incrementally without blocki
 ## 7b. Post-r15 still-open
 
 1. **Egor learner-shell experiment** — moved 2026-05-12. Edge case: builder cognitive profile, learner shell visibility. Revisit when his catStats stabilise enough to confirm fit.
-2. **`avoidTypes: ['free_write']` for Nicole/Ernest** — precautionary flag. Flip criteria: stable `level_cap: B1+` AND ≥5 Phrase Swaps + Weak Spots sessions at ≥70%. Tracked in `docs/audience-profiles.md` §5.
+2. **`avoidTypes: ['free_write']` for Nicole/Ernest** — gate dropped 2026-05-12 ahead of the original flip criteria (`level_cap: B1+` stable OR ≥5 Phrase Swaps + Weak Spots sessions ≥70%) on §3 conversation-keystone hypothesis. Now an active experiment — stats-review owns the reversibility call. Tracked in `docs/audience-profiles.md` §5.
 3. **PV-adjacent substitution drill** — Artem-specific pattern noted in his weak_patterns. No mode change required; surface during Weak Spots sessions when the player picks `phrasal_verb_production`.
 
 ---

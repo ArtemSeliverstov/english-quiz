@@ -33,7 +33,7 @@ Engagement is fragile. Each session has to earn the next one.
 
 **Defaults**:
 - Curated picker: active categories filter category-specific drills (article, particle, spelling). Cross-category drills (translation, error correction) rotate items across the active window.
-- `avoidTypes`: per-player. Anna and Egor keep `[]` (they're capable of anything that's offered); Nicole and Ernest have `['free_write']` (too unstructured for their level, per design intent — Anna's profile actually thrives there per session data).
+- `avoidTypes`: per-player. All learner-shell players currently `[]` — Nicole and Ernest's `['free_write']` gate was dropped 2026-05-12 to test the §3 conversation hypothesis (see also `learning-system-design.md` §3). Anna's profile actually thrives in free_write per session data; Nicole and Ernest are the open experiment.
 - `feedbackDepth`: detailed (Anna) / medium-kid (Nicole) / medium (Ernest).
 - Stats display: simplified or hidden behind a "show details" toggle.
 - Learner-shell players write `coach_notes` only via the PWA's auto-merge at session end.
@@ -78,15 +78,17 @@ Default decision when in tension: **learner check wins on UI exposure; builder c
 
 ---
 
-## 5. Children and conversation — open hypothesis
+## 5. Children and conversation — open hypothesis (testing live since 2026-05-12)
 
-Nicole has zero Free Write sessions to date (as of plan landing). The engagement claim for conversation is unproven for her. The hypothesis is that conversation will work for her even better than for Anna — children typically engage with conversational AI naturally. K-pop-themed starter prompts and short turns are the right scaffolding.
+Nicole has zero Free Write sessions to date. The engagement claim for conversation is unproven for her. The hypothesis is that conversation will work for her even better than for Anna — children typically engage with conversational AI naturally. K-pop-themed starter prompts and short turns are the right scaffolding.
 
-The reason `avoidTypes: ['free_write']` is set for Nicole and Ernest currently is precautionary: at A2-B1 with intermittent practice, an unstructured chat could overwhelm. The flag flips when:
-- Nicole's `level_cap` graduates to B1+ stable, OR
-- She passes a Phrase Swaps + Weak Spots threshold (≥5 sessions, ≥70% accuracy) demonstrating production fluency
+**Gate dropped 2026-05-12.** The precautionary `avoidTypes: ['free_write']` for Nicole and Ernest was removed deliberately, overriding the original flip criteria (`level_cap` graduates to B1+ stable OR ≥5 Phrase Swaps + Weak Spots sessions ≥70%). Rationale: the criteria couldn't be met while the gate held back the very surface that drives engagement for the learner shell, and §3 doctrine says conversation is the keystone. Better to test the hypothesis than protect it.
 
-For Ernest, similar logic. He has more sessions but `avoidTypes: ['free_write']` reflects the same precautionary stance. Flip on the same criteria.
+**What to watch** (the override is reversible — stats-review owns the call):
+- Soft wrap-up nudges trigger correctly for short-turn fatigue (~6-8 turns for Nicole).
+- Russian-explanation calibration via `coachLanguage: 'ru'` produces age-appropriate output for Nicole.
+- Ernest's free_write session quality is not noticeably worse than Anna's at the same level.
+- If a Nicole or Ernest free_write session ends with high frustration signal (abandoned early, error volume swamps coach turns), reinstate the gate.
 
 ---
 
@@ -96,6 +98,6 @@ Revise this doc when:
 - A new player profile emerges (Ernest's behaviour diverges enough from Anna/Nicole to warrant a third profile)
 - The orthographic-fluency profile assumptions are challenged by data (Anna's spelling layer doesn't reduce her free-write burnout, or Nicole's pattern differs significantly)
 - The Egor learner-shell experiment produces a clear signal (closer to builder or closer to learner)
-- `avoidTypes` flags need to flip for Nicole or Ernest
+- The Nicole/Ernest free_write override produces signal — either thriving (codify) or struggle (reinstate gate)
 
 Revisions go to claude.ai chat first, then land here, then the slim philosophy doc reflects any changes at the doctrine level.

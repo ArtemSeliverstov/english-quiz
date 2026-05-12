@@ -7305,7 +7305,9 @@ let familyPollTimer = null;
 // avoidTypes: drill types hidden from this player's Coach picker (learner shell
 // only — builder shell sees everything). See references/exercise-types.md per-
 // player table for rationale. Artem has agency to drill anything; Anna's
-// free_write is kept on (her transcripts show it works for her).
+// free_write is kept on (her transcripts show it works for her). Nicole +
+// Ernest free_write gate dropped 2026-05-12 to test the §3 hypothesis that
+// conversation engages children naturally (docs/learning-system-design.md §3).
 const FAMILY_MEMBERS = [
   { key: 'artem',   name: 'Artem',   emoji: '👨', color: '#4a9eff', coachLanguage: 'en',
     level: 'C1', feedbackDepth: 'light', avoidTypes: [],
@@ -7314,10 +7316,10 @@ const FAMILY_MEMBERS = [
     level: 'B1', feedbackDepth: 'detailed', avoidTypes: [],
     pinHash: '0e70a832cb7a415716c3ba42776f795a905691b043e81a23895c8588a6268653' },
   { key: 'ernest',  name: 'Ernest',  emoji: '👦', color: '#4caf50', coachLanguage: 'en',
-    level: 'B2', feedbackDepth: 'medium', avoidTypes: ['free_write'],
+    level: 'B2', feedbackDepth: 'medium', avoidTypes: [],
     pinHash: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155' },
   { key: 'nicole',  name: 'Nicole',  emoji: '👧', color: '#d4a94e', coachLanguage: 'ru',
-    level: 'B1', feedbackDepth: 'medium-kid', avoidTypes: ['free_write'],
+    level: 'B1', feedbackDepth: 'medium-kid', avoidTypes: [],
     pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
   { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff', coachLanguage: 'en',
     level: 'B2', feedbackDepth: 'medium-light', avoidTypes: [],

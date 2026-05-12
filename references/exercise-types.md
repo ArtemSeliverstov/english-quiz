@@ -32,8 +32,7 @@ Example item:
 Player writes a short paragraph (3-6 sentences) on a situational prompt. Claude scores
 it for grammatical accuracy on the target structure(s).
 
-**Use for**: Artem (production practice), Egor (IELTS prep). NOT for Nicole/Ernest
-(too unstructured).
+**Use for**: Artem (production practice), Egor (IELTS prep), Anna (her keystone surface). Nicole + Ernest gate dropped 2026-05-12 to test §3 doctrine — short turns, themed prompts, watch for frustration signal.
 **Item count**: 1-2 paragraphs
 **Player input**: typed paragraph
 **Scoring**: identify all errors, categorise by type, rate target-structure usage
@@ -224,8 +223,8 @@ Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_pa
 |---|---|---|---|
 | Artem | free_write, transform, article_drill, particle_sort, weak_spots_drill | error_correction, dictation, phrase_swap_drill | translation (too easy at C1) |
 | Anna | translation, error_correction, conversation, phrase_swap_drill, weak_spots_drill | dictation | free_write (too unstructured) |
-| Nicole | translation, article_drill (light), weak_spots_drill (light) | error_correction, phrase_swap_drill (light) | free_write, transform (too hard) |
-| Ernest | error_correction, translation, phrase_swap_drill | article_drill, weak_spots_drill | free_write, transform |
+| Nicole | translation, article_drill (light), weak_spots_drill (light) | error_correction, phrase_swap_drill (light), free_write (open hypothesis since 2026-05-12) | transform (too hard) |
+| Ernest | error_correction, translation, phrase_swap_drill | article_drill, weak_spots_drill, free_write (open hypothesis since 2026-05-12) | transform |
 | Egor | translation, free_write, phrase_swap_drill, weak_spots_drill | article_drill | transform (later, after B2 article gap closes) |
 
 ---
