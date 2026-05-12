@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r11">
+  <meta name="app-version" content="v20260511-r12">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r11</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r12</span></p>
 </header>
 
 <!-- TABS -->
@@ -11807,48 +11807,91 @@ async function coachWriteExerciseSummary({ session_id, mode, session_metadata, s
   await fsSet('players/' + currentPlayer + '/exercises/' + ts, summary);
 }
 
-// Merge new error_patterns_observed into players/{name}.coach_notes.weak_patterns
-// + log a recent_observation for the session.
+// Merge new error_patterns_observed into players/{name}.coach_notes.
+// Post-2026-05-12 stats-sprawl cleanup: signals are routed to three stores:
 //
-// Cap at 8 entries TOTAL, but priority-aware: durable entries (those NOT tagged
-// "(coach_session...)") are always kept — they came from stats review with large
-// n and represent trusted signal. Session-tagged entries fight for the remaining
-// slots, newest wins. This fixes the s92 bug where chronological FIFO silently
-// dropped 4 durable stats-derived patterns to make room for 8 single-session
-// signals (issue surfaced when Anna's Apr-30 stats-derived patterns disappeared
-// after one Free Write session).
+//   - Lexical swaps (X → Y [tag]): SKIP. phrase_tracker handles them via
+//     tools/capture_swaps.js (CC) or coachApplyPhraseSwapTransitions (PWA).
+//     No more dual-write to weak_patterns.
+//   - Grammar pattern_ids (snake_case, no arrow): route to recent_session_signals
+//     (single-session capture buffer; cap 20, priority-weighted eviction). Stats-
+//     review promotes to weak_patterns when count >= 2 from distinct sessions.
+//   - weak_patterns ITSELF is no longer written by this function — only by CC
+//     stats-review after the promotion gate.
+//
+// recent_observations is still appended (free-text session summary, FIFO 10).
 async function coachMergeWeakPatterns(newPatterns, sessionContext) {
   if (!Array.isArray(newPatterns) || !newPatterns.length) return;
   let player;
   try { player = await fsGet('players/' + currentPlayer); } catch (e) { return; }
   const cn = (player && player.coach_notes) || {};
-  const existing = Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [];
-  const isSessionTagged = e => typeof e === 'string' && /\(coach_session/i.test(e);
-  const durable = existing.filter(e => !isSessionTagged(e));          // stats-derived; never displaced
-  const sessionTagged = existing.filter(isSessionTagged);             // FIFO among themselves
-  const tag = ' (coach_session ' + new Date().toISOString().slice(0, 10) + ')';
-  const newTagged = newPatterns
-    .filter(p => p && !existing.some(e => typeof e === 'string' && e.toLowerCase().includes(String(p).toLowerCase())))
-    .map(p => p + tag);
-  const allSessionTagged = [...sessionTagged, ...newTagged];
-  const sessionSlots = Math.max(0, 8 - durable.length);
-  const capped = [...durable, ...allSessionTagged.slice(-sessionSlots)];
-  // Append a recent_observation for the session (so the log shows what happened, not just patterns)
+  const today = new Date().toISOString().slice(0, 10);
+  const sessionId = sessionContext?.session_id || coachState.fwSessionId || '';
+
+  // Partition newPatterns: lexical (already handled by phrase_tracker) vs grammar.
+  // Lexical = matches "X → Y" or "X → Y [tag]" — the arrow with whitespace is the discriminator.
+  const isLexical = (s) => typeof s === 'string' && /\s(?:→|->)\s/.test(s);
+  const grammarSignals = newPatterns.filter(p => typeof p === 'string' && p.trim() && !isLexical(p));
+  // Lexical entries: no-op here; phrase_tracker is canonical.
+
+  // Merge grammar signals into recent_session_signals (cap 20, priority-weighted eviction).
+  const signals = Array.isArray(cn.recent_session_signals) ? cn.recent_session_signals.slice() : [];
+  const sourceMode = sessionContext?.mode || coachState.type || null;
+  for (const patternId of grammarSignals) {
+    const key = patternId.trim();
+    const existing = signals.find(s => s && s.pattern_id === key);
+    if (existing) {
+      const sessionIds = Array.isArray(existing.session_ids) ? existing.session_ids.slice() : [];
+      if (sessionId && !sessionIds.includes(sessionId)) sessionIds.push(sessionId);
+      existing.session_ids = sessionIds;
+      existing.count = sessionIds.length;
+      existing.last_seen = today;
+      if (sourceMode && Array.isArray(existing.source_modes) && !existing.source_modes.includes(sourceMode)) {
+        existing.source_modes.push(sourceMode);
+      }
+    } else {
+      const entry = {
+        pattern_id: key,
+        session_ids: sessionId ? [sessionId] : [],
+        count: sessionId ? 1 : 0,
+        first_seen: today,
+        last_seen: today,
+        category: sessionContext?.category || null,
+        source_modes: sourceMode ? [sourceMode] : [],
+      };
+      // Priority-weighted eviction when at cap 20: drop lowest count + oldest last_seen first.
+      if (signals.length >= 20) {
+        signals.sort((a, b) => {
+          const ca = a && a.count || 0;
+          const cb = b && b.count || 0;
+          if (ca !== cb) return ca - cb;
+          return String(a && a.last_seen || '').localeCompare(String(b && b.last_seen || ''));
+        });
+        signals.shift();  // remove lowest-priority entry
+      }
+      signals.push(entry);
+    }
+  }
+
+  // recent_observations summary (unchanged behaviour — free-text session note, FIFO 10)
   const recent = Array.isArray(cn.recent_observations) ? cn.recent_observations : [];
   const obs = {
-    date: new Date().toISOString().slice(0, 10),
+    date: today,
     author: 'coach_tab',
-    session_id: sessionContext?.session_id || coachState.fwSessionId || '',
+    session_id: sessionId,
     note: sessionContext?.note || ('Coach tab session — patterns observed: ' + newPatterns.join(', ')),
   };
-  const newRecent = [...recent, obs].slice(-10); // FIFO cap 10
-  const newCn = Object.assign({}, cn, {
-    weak_patterns: capped,
+  const newRecent = [...recent, obs].slice(-10);
+
+  const patch = {
+    recent_session_signals: signals,
     recent_observations: newRecent,
     last_updated: new Date().toISOString(),
     last_updated_by: 'coach_tab',
     update_count: (cn.update_count || 0) + 1,
-  });
+  };
+  // weak_patterns NOT touched — stats-review owns durable signal promotion.
+  const newCn = Object.assign({}, cn, patch);
   await fsMerge('players/' + currentPlayer, { coach_notes: newCn });
   coachState.playerCoachNotes = newCn;
 }

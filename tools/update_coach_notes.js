@@ -49,7 +49,11 @@ const VALID_KEYS = new Set([
   'stuck_questions_add', 'stuck_questions_remove',
   // Phase 2: phrase_tracker patches (lexical/register swaps; see references/coach-notes-schema.md)
   'phrase_tracker_add', 'phrase_tracker_transition', 'phrase_tracker_remove',
+  // 2026-05-12 stats-sprawl cleanup: single-session capture buffer with promotion lifecycle
+  'recent_session_signals_add', 'recent_session_signals_promote', 'recent_session_signals_remove',
 ]);
+
+const RECENT_SESSION_SIGNALS_CAP = 20;
 
 // Per-player context tag lists. Used by --regen-tracker-md to render the coverage
 // table. Mirrors references/family-profiles.md theme tags.
@@ -112,6 +116,79 @@ function applyObservationsPatch(current, addList) {
   return updated.length > RECENT_OBS_CAP
     ? updated.slice(updated.length - RECENT_OBS_CAP)
     : updated;
+}
+
+// ─── recent_session_signals helpers (2026-05-12 stats-sprawl cleanup) ───────
+//
+// Buffer of single-session pattern captures, cap 20. Promotion lifecycle:
+//   add: merge new captures by pattern_id (bump count + session_ids if exists)
+//   promote: remove an entry (caller appends a durable label to weak_patterns)
+//   remove: drop by pattern_id (e.g. obsolete pattern that no longer fires)
+//
+// Priority-weighted eviction when at cap: lowest count + oldest last_seen first.
+// Singletons go before multi-evidence entries — protects accumulating signals
+// from being churned out before they hit the promotion threshold.
+
+function applyRecentSessionSignalsPatch(current, patch) {
+  const signals = (current || []).map(s => Object.assign({}, s,
+    s.session_ids ? { session_ids: [...s.session_ids] } : {},
+    s.source_modes ? { source_modes: [...s.source_modes] } : {}));
+
+  // remove: drop entries by pattern_id
+  if (Array.isArray(patch.recent_session_signals_remove)) {
+    const removeSet = new Set(patch.recent_session_signals_remove);
+    return signals.filter(s => !removeSet.has(s.pattern_id));
+  }
+
+  // promote: drop entries that have been promoted to weak_patterns
+  if (Array.isArray(patch.recent_session_signals_promote)) {
+    const promoteSet = new Set(patch.recent_session_signals_promote);
+    return signals.filter(s => !promoteSet.has(s.pattern_id));
+  }
+
+  // add: merge captures by pattern_id
+  if (Array.isArray(patch.recent_session_signals_add)) {
+    for (const capture of patch.recent_session_signals_add) {
+      if (!capture || typeof capture.pattern_id !== 'string' || !capture.pattern_id.trim()) continue;
+      const key = capture.pattern_id.trim();
+      const existing = signals.find(s => s.pattern_id === key);
+      if (existing) {
+        const sids = capture.session_ids || (capture.session_id ? [capture.session_id] : []);
+        for (const sid of sids) {
+          if (sid && !existing.session_ids.includes(sid)) existing.session_ids.push(sid);
+        }
+        existing.count = existing.session_ids.length;
+        if (capture.last_seen) existing.last_seen = capture.last_seen;
+        if (capture.source_modes) {
+          for (const m of capture.source_modes) {
+            if (m && !existing.source_modes.includes(m)) existing.source_modes.push(m);
+          }
+        }
+        if (capture.category && !existing.category) existing.category = capture.category;
+      } else {
+        const sids = capture.session_ids || (capture.session_id ? [capture.session_id] : []);
+        signals.push({
+          pattern_id: key,
+          session_ids: [...sids],
+          count: sids.length,
+          first_seen: capture.first_seen || todayISO(),
+          last_seen: capture.last_seen || todayISO(),
+          category: capture.category || null,
+          source_modes: capture.source_modes || [],
+        });
+      }
+    }
+  }
+
+  // Priority-weighted eviction if over cap
+  while (signals.length > RECENT_SESSION_SIGNALS_CAP) {
+    signals.sort((a, b) => {
+      if (a.count !== b.count) return a.count - b.count;  // singletons first
+      return String(a.last_seen || '').localeCompare(String(b.last_seen || ''));  // oldest first
+    });
+    signals.shift();
+  }
+  return signals;
 }
 
 // ─── phrase_tracker helpers ────────────────────────────────────────────────
@@ -409,6 +486,10 @@ async function main() {
   const currentTracker = root.phrase_tracker || { entries: [], last_updated: null };
 
   // Apply coach_notes patch
+  const signalsTouched =
+    Array.isArray(patch.recent_session_signals_add) ||
+    Array.isArray(patch.recent_session_signals_promote) ||
+    Array.isArray(patch.recent_session_signals_remove);
   const updated = {
     weak_patterns: applyArrayPatch(
       current.weak_patterns,
@@ -427,6 +508,9 @@ async function main() {
       current.recent_observations,
       patch.recent_observations_add
     ),
+    recent_session_signals: signalsTouched
+      ? applyRecentSessionSignalsPatch(current.recent_session_signals, patch)
+      : (current.recent_session_signals || []),
     stuck_questions: applyArrayPatch(
       current.stuck_questions,
       patch.stuck_questions_add,
@@ -458,6 +542,11 @@ async function main() {
     weak_patterns: { before: current.weak_patterns?.length || 0, after: updated.weak_patterns.length },
     strong_patterns: { before: current.strong_patterns?.length || 0, after: updated.strong_patterns.length },
     recent_observations: { before: current.recent_observations?.length || 0, after: updated.recent_observations.length },
+    recent_session_signals: signalsTouched ? {
+      before: (current.recent_session_signals || []).length,
+      after: updated.recent_session_signals.length,
+      touched: true,
+    } : null,
     stuck_questions: { before: current.stuck_questions?.length || 0, after: updated.stuck_questions.length },
     engagement_notes_changed: 'engagement_notes' in patch &&
       patch.engagement_notes !== current.engagement_notes,

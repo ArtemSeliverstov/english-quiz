@@ -101,14 +101,14 @@ function buildPatch(input) {
     };
   });
 
-  // Dual-write: every active swap also goes into weak_patterns as a lexical
-  // string so the PWA's coachBuildPhrasePool picks it up. Without this the
-  // entry sits in phrase_tracker but the Phrase Swaps button stays grey.
-  const weak_patterns_add = swaps.map(formatLexicalSwap);
+  // 2026-05-12 stats-sprawl cleanup: lexical swaps live in phrase_tracker only.
+  // The previous dual-write to coach_notes.weak_patterns was redundant — the PWA
+  // coachBuildPhrasePool now reads phrase_tracker.entries[] directly (per the
+  // updated lexical-swap routing in coachMergeWeakPatterns). Untagged-validation
+  // below is kept because the PWA lexical parser still needs that shape.
 
   // Hard validation: untagged + single-word natural is invisible to the PWA
-  // parser (it treats those as grammar shorthand and skips them). Fail fast
-  // here so the swap doesn't silently miss the drill rotation.
+  // parser. Fail fast so the swap doesn't silently miss the drill rotation.
   const tooShort = swaps
     .map((s, i) => ({ i, s }))
     .filter(({ s }) => !s.tag && s.natural.split(/\s+/).length < 2);
@@ -119,7 +119,7 @@ function buildPatch(input) {
     throw new Error(
       'Untagged swaps require 2+ words in the natural form, otherwise the PWA parser skips them as grammar shorthand:\n' +
       lines.join('\n') +
-      '\n  Fix: expand the natural form (e.g., "fix" → "sort it out") OR add a tag (biz_oil/leisure_sport/brit_expat/...).'
+      '\n  Fix: expand the natural form (e.g., "fix" → "sort it out") OR add a tag (biz_oil/biz_general/brit_expat/home_daily/...).'
     );
   }
 
@@ -131,7 +131,7 @@ function buildPatch(input) {
 
   return {
     phrase_tracker_add,
-    weak_patterns_add,
+    // weak_patterns_add intentionally omitted — see comment above.
     recent_observations_add: [{
       date: todayISO(),
       session_id: sessionRef,

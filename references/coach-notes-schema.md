@@ -39,25 +39,83 @@ players/{name}.coach_notes = {
 
 ### Field semantics
 
-**`weak_patterns`** — short labels for confirmed weaknesses. Add only after 2+ sessions
-show the pattern. Remove when 3+ recent sessions show it resolved.
+**`weak_patterns`** — DURABLE GRAMMAR signal ONLY (since 2026-05-12 stats-sprawl cleanup).
+Short prose labels with sample sizes where available. Added by `stats-review` only,
+after a pattern accumulates ≥2 `session_ids` in `recent_session_signals` (promotion gate).
+Removed when 3+ recent clean sessions confirm the pattern is resolved.
 
-Two shapes are accepted:
+Shape — grammar pattern only:
+- `"a→the for shared knowledge"`
+- `"preposition swap (arrive to → at)"`
+- `"L1 calque cluster (verb+prep + time prepositions + verb+noun): wait_for, listen_to..."`
 
-1. **Grammar pattern** — short prose label, optionally with `→` showing the swap.
-   Examples: `"a→the for shared knowledge"`, `"preposition swap (arrive to → at)"`.
-2. **Lexical / register swap** — `"<awkward> → <natural> [<context_tag>]"`.
-   Examples: `"sometime ago → a while ago [brit_expat]"`,
-   `"we will investigate → we'll look into it [biz_oil]"`.
+**Lexical / register swaps live elsewhere** — they go into `phrase_tracker.entries[]` (canonical
+lifecycle) and `recent_session_signals` is bypassed for them. Format `"<awkward> → <natural> [<context_tag>]"`
+is recognised by the lexical-swap parser; if it appears in `weak_patterns`, it's legacy migration
+debt — stats-review should move it to `phrase_tracker` and drop it from this field.
 
-Recognised tags (must match a player's profile themes in `family-profiles.md`):
-`[biz_oil] | [brit_expat] | [leisure_sport] | [home_daily] | [academic_ielts] | [kpmg_consulting] | [almaty_daily] | [claude_collab]`.
-Untagged grammar entries apply across all contexts. Lexical swaps without a tag
-default to all contexts (use sparingly — most lexical swaps are register-bound).
+Cap: 8 entries total, priority-aware (durable entries kept; the cap is enforced when promotions
+land — see "Promotion lifecycle" below).
 
-Lifecycle for lexical swaps mirrors grammar entries (2+ sessions to add, 3+ clean
-to demote) — but demotion routes them through the `phrase_tracker` retest queue
-rather than dropping them outright. See "Phrase tracker lifecycle" below.
+### `recent_session_signals` — single-session capture buffer (NEW 2026-05-12)
+
+Where session-end auto-merges land. Replaces the prior practice of writing single-session
+captures directly to `weak_patterns` with a `(coach_session DATE)` tag.
+
+```javascript
+coach_notes.recent_session_signals = [
+  {
+    pattern_id: "plural_noun_omission",
+    session_ids: ["anna_fw_1778...", "anna_td_1778..."],
+    count: 2,
+    first_seen: "2026-05-01",
+    last_seen: "2026-05-11",
+    category: "Grammar",                   // optional — when active_categories context tagged it
+    source_modes: ["free_write", "translation_drill"]
+  },
+  ...
+]
+```
+
+**Cap**: 20 entries.
+
+**Eviction (priority-weighted)** when buffer full and a new pattern arrives:
+- Sort buffer by `count` ASC, then `last_seen` ASC (oldest singleton first).
+- Drop the first entry. Singletons go before multi-evidence entries — ensures patterns
+  accumulating evidence aren't churned out before they can promote.
+
+**Write path** — every drill end-handler (Free Write, Phrase Swap, Weak Spots, Translation,
+Error Correction, Article Drill, Particle Sort, Spelling Drill):
+1. For each `pattern_id` in `session_metadata.error_patterns_observed[]`:
+   - If lexical (`X → Y [tag]` format): skip — `phrase_tracker` handles it.
+   - If grammar (snake_case): look up by `pattern_id`. Found → append `session_id` if new,
+     bump `count`, update `last_seen`. Not found → append. Evict per rule if at cap.
+
+**Promotion** (stats-review skill, daily): for each entry with `count >= 2`, compose a durable
+prose label, append to `weak_patterns`, remove from this buffer.
+
+**Demotion**: none beyond eviction. Singletons that don't recur naturally roll off.
+
+### Recognised tags for lexical swaps
+
+Allowed tag → player matrix (since 2026-05-12 — `biz_general` retired for non-business players):
+
+| Tag | Artem | Egor | Anna | Nicole | Ernest |
+|---|---|---|---|---|---|
+| `biz_oil` | ✓ | — | — | — | — |
+| `biz_general` | ✓ | ✓ | — | — | — |
+| `kpmg_consulting` | — | ✓ | — | — | — |
+| `academic_ielts` | — | ✓ | — | — | — |
+| `brit_expat` | ✓ | — | ✓ | ✓ | ✓ |
+| `home_daily` | ✓ | — | ✓ | ✓ | ✓ |
+| `leisure_sport` | ✓ | — | ✓ | ✓ | ✓ |
+| `almaty_daily` | — | ✓ | — | — | — |
+| `claude_collab` | ✓ | — | — | — | — |
+
+Untagged lexical swaps default to all contexts (use sparingly — most lexical swaps are register-bound).
+
+Lifecycle for lexical swaps is the `phrase_tracker.entries[]` state machine — `active → retest_due → mastered`.
+See "Phrase tracker lifecycle" below. **No more dual-write to `weak_patterns`** as of 2026-05-12.
 
 **`strong_patterns`** — same threshold (2+ sessions confirming). Useful for adjusting
 question selection (don't waste time on what's solid).
