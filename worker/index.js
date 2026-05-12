@@ -1096,6 +1096,13 @@ For "assessment" (silent CEFR grade — never mention to the learner):
     "sentence_count": 14,
     "error_count": 2,
     "confidence": "high"
+  },
+  "register_rubric": {
+    "chunk_density": 3,
+    "register_match": 4,
+    "calque_count": 2,
+    "discourse_marker_variety": 3,
+    "confidence": "high"
   }
 }
 Use snake_case pattern IDs for grammar items, e.g. "preposition_omission", "tense_simplification", "article_zero_for_definite".
@@ -1112,7 +1119,14 @@ For "assessment" (silent CEFR grade — never mention to the learner):
 - estimated_level: A1 | A2 | B1 | B2 | C1 | C2. Grade the learner's *production* in this session against IELTS/CEFR writing rubrics (task achievement + coherence + lexical resource + grammatical range & accuracy). The grammar criterion gates the level.
 - sentence_count: integer count of the learner's sentences only (not yours).
 - error_count: integer count of *sentences* with at least one error that impedes meaning, distorts grammar, or reflects an L1 calque. Stylistic preferences don't count. Cap at sentence_count.
-- confidence: "high" if the sample is meaningful and unambiguous; "low" if too short (<3 sentences), off-topic, or you're guessing. Low-confidence assessments are silently dropped from stats.`;
+- confidence: "high" if the sample is meaningful and unambiguous; "low" if too short (<3 sentences), off-topic, or you're guessing. Low-confidence assessments are silently dropped from stats.
+
+For "register_rubric" (silent register-fluency measurement — never mention to the learner). Full anchors in references/register-rubric.md. Grade the learner's typed production against their CEFR level (a B1 producing two solid chunks ≈ 3 on chunk_density, not 1):
+- chunk_density (1-5): how much production reaches for native-typical multi-word chunks (collocations, idiomatic PVs, fixed phrases) vs L1-paraphrase rebuilding meaning word-by-word. 1 = almost everything paraphrased; 3 = mixed; 5 = native-typical chunk reach for the level.
+- register_match (1-5): fit of register to the stated context (player profile theme tags + any context cue from the chat). Both directions of mismatch count — textbook-formal in casual chat AND over-casual in business writing both lower the score. 1 = sustained mismatch; 3 = roughly right but uneven; 5 = register-fluent including hedges and softeners.
+- calque_count (integer >= 0): count of *distinct* L1 Russian calques surfaced this session. Surface-form repetitions don't double-count. Examples: preposition swaps (depend from, wait me, on next week), verb+noun (make homework, take a decision), structural (feel myself, despite of), intensifier+adj (very enormous). Don't count merely awkward production that isn't L1-derived.
+- discourse_marker_variety (integer >= 0): count of *distinct* conversational discourse markers the learner used unprompted (so, well, actually, I mean, the thing is, right, look, anyway, yeah, oh, hmm, you know, kind of, basically, honestly, I guess, to be fair, mind you, etc). Exclude essay-register connectors (however, furthermore, nevertheless).
+- confidence: "high" if the sample is meaningful; "low" if <3 learner sentences, off-topic, or you're guessing. Low-confidence rubrics are silently dropped from any trend.`;
   }
   return `Append a JSON block at the very end wrapped in <session_meta>...</session_meta>:
 {
