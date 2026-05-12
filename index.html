@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260511-r10">
+  <meta name="app-version" content="v20260511-r11">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1105,7 +1105,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r10</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260511-r11</span></p>
 </header>
 
 <!-- TABS -->
@@ -9164,6 +9164,8 @@ function coachMakeSessionId(player, mode) {
 function coachBuildContext(extra = {}) {
   const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
   const cn = coachState.playerCoachNotes || {};
+  const lp = (DB && DB.learning_path) || {};
+  const activeCategories = Array.isArray(lp.active_categories) ? lp.active_categories : [];
   const ctx = {
     player: currentPlayer,
     level: profile.level || 'B2',
@@ -9171,6 +9173,7 @@ function coachBuildContext(extra = {}) {
     coach_language: profile.coachLanguage || 'en',  // 'ru' or 'en' — Worker uses this to pick explanation language
     feedback_depth: profile.feedbackDepth || 'medium',  // light | medium-light | medium | medium-kid | detailed
     focus_categories: profile.focus_categories || [],
+    active_categories: activeCategories,  // Phase 2 — drives content rotation for translation/EC drills; empty for builder-shell-equivalent players (Artem)
     coach_notes: {
       weak_patterns: Array.isArray(cn.weak_patterns) ? cn.weak_patterns : [],
       engagement_notes: typeof cn.engagement_notes === 'string' ? cn.engagement_notes : '',
@@ -11648,12 +11651,18 @@ async function coachFoldDrillStats(items_drilled) {
     if (!item) continue;
     const key = (typeof item.target_structure === 'string' && item.target_structure.trim()) || null;
     if (!key) continue;
-    const entry = stats[key] || { seen: 0, correct: 0, last_seen: null, last_correct: null };
+    const entry = stats[key] || { seen: 0, correct: 0, last_seen: null, last_correct: null, category: null };
     entry.seen = (entry.seen || 0) + 1;
     entry.last_seen = today;
     if (item.produced_correct) {
       entry.correct = (entry.correct || 0) + 1;
       entry.last_correct = today;
+    }
+    // Phase 2: category tag enables per-category mastery rollups derived on
+    // read. Latest non-empty category wins (rarely changes; if it does, the
+    // newer source is canonical). Skip if item lacks one (legacy fallback).
+    if (typeof item.category === 'string' && item.category.trim()) {
+      entry.category = item.category.trim();
     }
     stats[key] = entry;
   }

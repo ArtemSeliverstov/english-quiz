@@ -11,6 +11,7 @@ themes from `family-profiles.md`. Generic stems are forbidden.
 ## 1. `translation` (alias: `translation_drill`)
 
 Russian → English translation, single sentence, focused on a target structure.
+**Content source (Phase 2, 2026-05-12)**: when the player has `learning_path.active_categories` populated, the worker rotates items 1:1 across those categories — each item targets one, picks a structure from `weak_patterns` that fits the category (or a high-utility fallback). Builder-shell players (Artem, empty active_categories) fall back to weak_patterns-broad generation. Each item emits a `category` field at session-end for `coach_drill_stats` rollup.
 
 **Use for**: Anna (her primary mode), preposition focus, conditionals, articles.
 **Item count**: 5-10 (live AI default 8, capped 12; library per-player overrides preserved e.g. Anna=10)
@@ -46,6 +47,7 @@ something using present perfect"). Pattern-prompts produce stilted output.
 ## 3. `error_correction` (alias: `error_correction_drill`)
 
 Claude presents a sentence with a deliberate error. Player identifies and corrects.
+**Content source (Phase 2, 2026-05-12)**: same `active_categories` rotation as `translation_drill` — each item embeds an error in a structure from one of the player's active categories. Builder-shell fallback to weak_patterns-broad generation. `category` field emitted per item.
 
 **Use for**: Ernest (his preferred format), recognition-vs-production work,
 fossilised L1 errors (Anna's prepositions).

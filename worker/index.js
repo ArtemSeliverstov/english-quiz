@@ -172,6 +172,16 @@ export default {
     if (context.feedback_depth != null && !FEEDBACK_DEPTH_TIERS.has(context.feedback_depth)) {
       return jsonError(400, 'WORKER_VALIDATION', `context.feedback_depth must be one of: ${[...FEEDBACK_DEPTH_TIERS].join(', ')}`, false, cors);
     }
+    // active_categories optional — Phase 2 routes cross-category drill content from these.
+    // Empty array (Artem builder-shell-equivalent) → fall back to weak_patterns-driven generation.
+    if (context.active_categories != null) {
+      if (!Array.isArray(context.active_categories)) {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.active_categories must be an array when set', false, cors);
+      }
+      if (context.active_categories.find(c => typeof c !== 'string' || !c.trim())) {
+        return jsonError(400, 'WORKER_VALIDATION', 'context.active_categories entries must be non-empty strings', false, cors);
+      }
+    }
     if (mode === 'translation_drill' || mode === 'error_correction_drill' || mode === 'article_drill_live' || mode === 'particle_sort_live' || mode === 'spelling_drill_live') {
       // target_item_count optional; capped server-side. focus_categories optional.
       if (context.target_item_count != null && (
@@ -486,9 +496,7 @@ function translationDrillSystemPrompt(ctx) {
     Math.max(1, Number(ctx.target_item_count) || TD_DEFAULT_ITEMS),
     TD_MAX_ITEMS
   );
-  const focus = Array.isArray(ctx.focus_categories) && ctx.focus_categories.length
-    ? ctx.focus_categories.join(', ')
-    : '(none specified — choose from weak_patterns)';
+  const activeCategories = Array.isArray(ctx.active_categories) ? ctx.active_categories : [];
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
   const cleanExample = ru
@@ -497,11 +505,14 @@ function translationDrillSystemPrompt(ctx) {
   const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
 Drill-specific: quote ${playerName}'s English when an error appears; show the corrected English form in English; multiple correct answers are common — accept any form that preserves meaning AND uses the target structure.`;
+  const contentBlock = activeContentBlock(activeCategories, weakPatterns, targetCount, 'translation');
 
   return `You are running a focused **translation drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. RU cue → EN production, one item at a time. ${targetCount} items per session.
 
+${contentBlock}
+
 Drill protocol:
-1. Generate one Russian cue at a time. Each cue targets a specific English structure drawn from ${playerName}'s focus categories or weak_patterns (rotate — don't drill the same structure twice in a row unless a slip warrants it).
+1. Generate one Russian cue at a time. Each cue targets a specific English structure within the content-source plan above.
 2. Theme cues around ${playerName}'s real-life contexts (business/cycling/Bahrain expat for Artem; family/home/padel/Bahrain for Anna; school/K-pop/Bahrain teen life for Nicole; school/sports/reading for Ernest; IELTS-shaped topics for Egor). Generic stems are forbidden — every cue should feel like something ${playerName} would actually say.
 3. Wait for ${playerName}'s English response.
 4. Score against the target structure: pass if the structure is correctly used AND meaning is preserved; fail otherwise. Stylistic preferences don't fail an answer.
@@ -522,8 +533,7 @@ About this learner:
 - L1: Russian
 - Level: ${level}
 - Coach language: ${ru ? 'Russian' : 'English'}
-- Focus categories for this session: ${focus}
-- Persistent weak patterns to weave in as target structures:
+- Persistent weak patterns (use to refine structure choice within each active category):
 ${weakPatterns}
 - Engagement preferences:
 ${engagement}
@@ -545,9 +555,7 @@ function errorCorrectionDrillSystemPrompt(ctx) {
     Math.max(1, Number(ctx.target_item_count) || ECD_DEFAULT_ITEMS),
     ECD_MAX_ITEMS
   );
-  const focus = Array.isArray(ctx.focus_categories) && ctx.focus_categories.length
-    ? ctx.focus_categories.join(', ')
-    : '(none specified — choose from weak_patterns)';
+  const activeCategories = Array.isArray(ctx.active_categories) ? ctx.active_categories : [];
   const weakPatterns = formatNotes(ctx.coach_notes && ctx.coach_notes.weak_patterns);
   const engagement = formatNotes(ctx.coach_notes && ctx.coach_notes.engagement_notes);
   const cleanExample = ru
@@ -556,11 +564,14 @@ function errorCorrectionDrillSystemPrompt(ctx) {
   const languageBlock = feedbackDepthInstructions(depth, ru, cleanExample) + `
 
 Drill-specific: quote the player's correction when scoring; accept either the full corrected sentence OR just the corrected portion (e.g. "in" suffices for "arrived to → arrived in").`;
+  const contentBlock = activeContentBlock(activeCategories, weakPatterns, targetCount, 'error_correction');
 
   return `You are running an **error-correction drill** with ${playerName}, a Russian-speaking learner at CEFR level ${level}. One sentence per item, each contains exactly one deliberate error in English. ${targetCount} items per session.
 
+${contentBlock}
+
 Drill protocol:
-1. Generate one English sentence at a time. The sentence contains exactly **one** error in a structure drawn from ${playerName}'s focus categories or weak_patterns (rotate — don't drill the same structure twice in a row unless a slip warrants it).
+1. Generate one English sentence at a time. The sentence contains exactly **one** error in a structure drawn from the content-source plan above.
 2. Theme sentences around ${playerName}'s real-life contexts (business/cycling/Bahrain expat for Artem; family/home/padel/Bahrain for Anna; school/K-pop/Bahrain teen life for Nicole; school/sports/reading for Ernest; IELTS-shaped scenarios for Egor). Generic stems are forbidden.
 3. Present the sentence on its own line. Do NOT tell ${playerName} where the error is or what type it is.
 4. Wait for ${playerName}'s correction (either the full corrected sentence or just the fixed portion).
@@ -582,8 +593,7 @@ About this learner:
 - L1: Russian
 - Level: ${level}
 - Coach language: ${ru ? 'Russian' : 'English'}
-- Focus categories for this session: ${focus}
-- Persistent weak patterns to weave in as target errors:
+- Persistent weak patterns (use to refine error choice within each active category):
 ${weakPatterns}
 - Engagement preferences:
 ${engagement}
@@ -950,8 +960,11 @@ The PWA strips the <session_meta> block before display; PART 1 is what the playe
         : (isAD
           ? `{"prompt_sentence": "I bought ___ car last week.", "submitted": "a", "target_structure": "indefinite_first_mention_countable", "produced_correct": true}`
           : (isEC
-            ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "target_structure": "preposition_at_arrive", "produced_correct": true}`
-            : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "target_structure": "present_perfect_continuous", "produced_correct": false}`)));
+            ? `{"prompt_sentence": "She arrived to Paris yesterday.", "submitted": "She arrived in Paris yesterday.", "category": "Prepositions", "target_structure": "preposition_at_arrive", "produced_correct": true}`
+            : `{"prompt_ru": "Я жду тебя в аэропорту с трёх.", "submitted": "I am waiting...", "category": "Tenses", "target_structure": "present_perfect_continuous", "produced_correct": false}`)));
+    const categoryFieldHint = (isEC || (!isSD && !isPS && !isAD && !isEC))  /* EC or TD */
+      ? ` Include a \`category\` field on each item matching the active category targeted (verbatim from the CONTENT SOURCE plan above); omit \`category\` only when no active window was set (then the plan said to fall back to weak_patterns).`
+      : '';
     const itemsHint = isSD
       ? `For "items_drilled": one entry per item drilled. \`prompt_gloss\` is the Russian gloss + English hint you presented. \`submitted\` is what the player typed. \`target_word\` is the correct English spelling. \`produced_correct: true\` for exact match OR 1-2 letter near miss; \`false\` for wrong word entirely. Track the trap-class hint in \`target_structure\` when set (e.g. "doubled_letters", "silent_letters", "ie_ei_rule") — optional.`
       : (isPS
@@ -959,8 +972,8 @@ The PWA strips the <session_meta> block before display; PART 1 is what the playe
         : (isAD
           ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the sentence you presented with the \`___\` blank. \`submitted\` is the article the player typed ("a" / "an" / "the" / "—" or equivalent). \`target_structure\` is a snake_case label for the article sub-category tested (e.g. "indefinite_first_mention_countable", "definite_shared_referent", "zero_generic_mass", "fixed_expression_zero"). \`produced_correct: true\` only if the article matches the rule-required answer on first attempt.`
           : (isEC
-            ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.`
-            : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.`)));
+            ? `For "items_drilled": one entry per item drilled. \`prompt_sentence\` is the English sentence you presented with the embedded error. \`submitted\` is what the player typed (full sentence or just the fix). \`target_structure\` is a snake_case label for the error type (e.g. "preposition_at_arrive", "article_definite_shared_referent", "present_perfect_omission"). \`produced_correct: true\` only if the player identified AND fixed the right error on first attempt.${categoryFieldHint}`
+            : `For "items_drilled": one entry per item actually drilled. \`target_structure\` is a snake_case label for the English structure tested (e.g. "present_perfect_continuous", "preposition_at_arrive", "article_definite_shared_referent"). \`produced_correct: true\` only if the target structure was correctly used AND meaning preserved on first attempt.${categoryFieldHint}`)));
     return `Your final message must contain TWO parts in this exact order:
 
 PART 1 — Player-facing close (visible in chat). Short closing line + a markdown table + feedback ask, total ≤10 lines:
@@ -1138,6 +1151,36 @@ function feedbackDepthInstructions(depth, ru, cleanExample) {
 - ${onCleanCommon}
 - On a MISS: **3-5 sentences** in ${language}. Quote the slip verbatim, name what's right (if anything), explain the rule with the L1 contrast (Russian "X" works this way, English "Y" works that way), give the correct form, then include **one additional example sentence** using the same pattern in a different context. Goal: lock in the rule, not just fix this item.
 - Tone: warm, pedagogical, patient.`;
+}
+
+// Content-source plan for cross-category drills (translation_drill,
+// error_correction_drill). When active_categories is populated (learner shell
+// with a curated window), the drill rotates items across those categories
+// 1:1 — each item targets ONE category, cycling so all categories get equal
+// representation. When empty (Artem builder-shell-equivalent), falls back to
+// weak_patterns-driven generation. The category tag also feeds items_drilled[i].category
+// at session end, enabling per-category mastery rollups in coach_drill_stats.
+function activeContentBlock(activeCategories, weakPatternsBlock, targetCount, mode) {
+  const cats = Array.isArray(activeCategories) ? activeCategories.filter(Boolean) : [];
+  if (!cats.length) {
+    return `CONTENT SOURCE (no active window — fall back to weak_patterns):
+Pick target structures freely from the player's weak_patterns. Rotate — don't drill the same structure twice in a row unless a slip warrants it. Mark each item's \`target_structure\` with a snake_case label of the rule (e.g. "preposition_at_arrive"). Skip the \`category\` field.`;
+  }
+  const list = cats.map((c, i) => `  ${i + 1}. ${c}`).join('\n');
+  const perCat = Math.max(1, Math.ceil(targetCount / cats.length));
+  return `CONTENT SOURCE — rotate across ${cats.length} ACTIVE CATEGORIES:
+${list}
+
+Plan: distribute ${targetCount} items across the ${cats.length} active categories above, roughly ${perCat} item${perCat === 1 ? '' : 's'} per category. Cycle through them — don't bunch one category at the start. Each item targets ONE category.
+
+Within a category, pick the structure to drill:
+1. **First preference**: a structure from the player's weak_patterns that falls in this category (e.g. for "Prepositions" + weak_pattern "preposition swap (arrive to → at)" → drill that exact rule).
+2. **Fallback**: a high-utility structure for this category at the player's level (e.g. for "Tenses" at B1 → present perfect with "since/for").
+
+On every item, emit at session-end:
+- \`category\`: the active category this item targeted (one of the ${cats.length} above, verbatim)
+- \`target_structure\`: snake_case rule label (e.g. "preposition_at_arrive", "present_perfect_continuous")
+- These two together let stats roll up per-category AND per-structure.`;
 }
 
 // ADAPTIVE FLOW protocol — shared across all drill modes. Replaces the previous
