@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-12 · v20260512-r3 — Free Write register-rubric instrumentation (silent measurement)
+
+Adds the project's first longitudinal signal for the stated mission ("improving conversational register"). Existing `assessment` block grades CEFR-general; this rubric scores register specifically — chunk reach, context fit, L1 calque load, conversational scaffolding. Dark instrumentation: never shown to learner, no `stats-review` consumer yet. Sets up P0.3 (tag register slips as `weak_pattern` subtypes) and P1.1 (productive-retrieval register-pair drill).
+
+- `worker/index.js` Free Write `sessionEndInstructions`: `<session_meta>` now includes `register_rubric{ chunk_density: 1-5, register_match: 1-5, calque_count: int, discourse_marker_variety: int, confidence: 'high'|'low' }`. Inline prose anchors guide scoring; full anchors live in the ref doc. Free Write only — other drill modes left untouched.
+- `index.html` `coachWriteSessionLogStandalone`: passes `meta.register_rubric` through to the `coach_sessions/{fw_*}` doc; defaults to `null` when worker hasn't been redeployed yet.
+- `references/register-rubric.md` (new): canonical scoring guide. 4 dimensions + per-score anchors + scoring discipline + consumers + versioning rule.
+- `references/firestore-schema.md`: `register_rubric` row added under the `coach_sessions/{sessionId}` table.
+
+**Two-surface deploy**: PWA shipped here. Worker change requires separate `cd worker && wrangler deploy` from Artem's machine. PWA-first order is safe — old worker continues to omit the field, new PWA writes `null` until worker catches up.
+
+Q count: 2246 (no change) · Version: v20260512-r3
+
+---
+
 ## 2026-05-12 · v20260512-r2 — fix PWA Free Write lexical-swap capture leak
 
 `coachMergeWeakPatterns` was dropping every lexical swap emitted by Free Write (and every Phase D drill) since the 2026-05-12 stats-sprawl cleanup — the partition branch said `// Lexical entries: no-op here; phrase_tracker is canonical` but no other code path wrote them to the canonical store. Net effect: Anna/Nicole/Ernest/Egor had **zero** Free Write lexical signal landing in `phrase_tracker`; only Artem's CC `capture_swaps.js` path worked. Anna's 7 entries were all from `psd` self-feedback; the other three players had 0 entries each.
