@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-12 · v20260512-r2 — fix PWA Free Write lexical-swap capture leak
+
+`coachMergeWeakPatterns` was dropping every lexical swap emitted by Free Write (and every Phase D drill) since the 2026-05-12 stats-sprawl cleanup — the partition branch said `// Lexical entries: no-op here; phrase_tracker is canonical` but no other code path wrote them to the canonical store. Net effect: Anna/Nicole/Ernest/Egor had **zero** Free Write lexical signal landing in `phrase_tracker`; only Artem's CC `capture_swaps.js` path worked. Anna's 7 entries were all from `psd` self-feedback; the other three players had 0 entries each.
+
+- `index.html` `coachMergeWeakPatterns` (~11985): lexical entries now parsed via `coachParseLexicalWeakPattern` and written to `phrase_tracker.entries[]` with PWA capture-source rule (⚪ `first_pass` → 🔵 `active` on 2nd-session hit). Untagged-single-word skip preserved (mirrors `capture_swaps.js`). Mode-prefix routing for `sources[]`: `fw`/`wsd`/`td`/`ec`/`ad`/`pst`/`spd`/`pwa`.
+- `fsMerge` payload extended to include `phrase_tracker` when the lexical handler dirties it; same single PATCH call.
+- No worker / schema / UI change. `coachBuildPhrasePool` already filters out `first_pass` so noisy single-session captures stay quarantined.
+- Verified end-to-end as Anna via `preview_eval` + independent Firebase MCP read; player state restored byte-exact post-test.
+
+Q count: 2246 (no change) · Version: v20260512-r2
+
+---
+
 ## 2026-05-12 · v20260512 — Nicole + Ernest free_write gate dropped
 
 Test the `learning-system-design.md` §3 conversation-keystone hypothesis (children engage naturally with conversational AI). Original flip criteria in `audience-profiles.md` §5 (`level_cap: B1+` stable OR ≥5 Phrase Swaps + Weak Spots sessions ≥70%) couldn't be met while the gate held back the very surface that drives engagement. Override is reversible — stats-review owns the reinstate-on-frustration call.
