@@ -11,6 +11,20 @@ compatibility_date = "2026-04-30"
 ALLOWED_ORIGIN = "https://artemseliverstov.github.io"
 ALLOWED_MODELS = "claude-sonnet-4-6,claude-opus-4-7"
 
+# Workers AI binding — used by interview_prep / shadow_feedback modes to run
+# Whisper-large-v3-turbo for speech-to-text transcription. Free tier covers
+# ~300k neurons/month; expected usage ~75k/month at family scale.
+[ai]
+binding = "AI"
+
+# R2 binding — private audio bucket for interview_prep / shadow_feedback uploads.
+# Create the bucket in the Cloudflare dashboard before `wrangler deploy`:
+#   R2 → Create bucket → name "english-quiz-audio" → Standard class.
+# Then add a 90-day object-lifecycle rule under Settings → Object lifecycle rules.
+[[r2_buckets]]
+binding = "AUDIO"
+bucket_name = "english-quiz-audio"
+
 # Secrets are NOT in this file. Set after first deploy:
 #   cd worker
 #   wrangler secret put ANTHROPIC_API_KEY

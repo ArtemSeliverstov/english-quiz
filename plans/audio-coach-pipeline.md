@@ -2,7 +2,49 @@
 
 Sister plan to [speaking-lane.md](speaking-lane.md). That plan defines family-wide doctrine (tiered rollout, engagement gates, kid privacy). **This plan is the Artem-only fast-track build** — single user, no tier gates, interview-prep deadline-aware, two modes on shared audio infrastructure.
 
-Created 2026-05-12. **Not yet started.** Pick up in a new session per "What to do first" below.
+Created 2026-05-12. **Partially executed and re-scoped 2026-05-13** — see "Status (2026-05-13)" below.
+
+---
+
+## Status (2026-05-13)
+
+**What landed**:
+- Worker side: `/v1/audio` endpoint deployed with `env.AI` (Workers AI Whisper-turbo) and `env.AUDIO` (R2 bucket `english-quiz-audio` with 90-day lifecycle rule). See [worker/index.js](../worker/index.js) `handleAudio` function. Live at `https://english-quiz-coach.artem2030.workers.dev/v1/audio`.
+- CC skill: `/interview-prep` ([.claude/skills/interview-prep/SKILL.md](../.claude/skills/interview-prep/SKILL.md)) — audio-first interview-prep session. Artem records on phone (Voice Memo), drops file path in CC, skill curls audio to the worker, gets Whisper transcript, plays interviewer with follow-ups.
+- Rubric reference: [references/interview-rubric.md](../references/interview-rubric.md) — `structure_score`, `specificity_score`, `confidence_balance`, delivery aggregates (WPM, filler density, pause ratio), `per_turn_summaries`, `confidence`, `rubric_version: 1`.
+- `tools/log_coach_session.js` extended: accepts `interview_prep` mode, `ip` session-id prefix, passes through `interview_rubric` + `register_rubric` + `audio_turns[]`, and folds `interview_prep` `assessment` blocks into the silent CEFR fold same as `free_write`.
+- CLAUDE.md skills table updated.
+
+**Pivot from original plan** (logged in the skill file too): Artem prefers running interview prep through CC for the conversational flexibility — generate questions live, follow up based on what surfaced, no PWA UI plumbing in the way. The audio-first call still holds (he wants spoken practice, not text); the surface changed from "PWA Coach-tab button with MediaRecorder UI" to "CC session with phone-recorded audio file drop." Days 1-5 of the original sprint plan collapse to:
+- Day 1 (audio plumbing) → done as worker `/v1/audio` deploy.
+- Day 2 (question bank + multi-turn state) → replaced by skill-prompt-driven question improvisation (no static `data/interview-questions.json` file).
+- Day 3 (per-turn feedback + AI follow-ups) → done as part of the conversational skill flow.
+- Day 4 (end-of-session scoring + persistence) → done as the skill's end-of-session protocol + `log_coach_session.js` passthrough.
+- Day 5 (polish, real session, deploy) → pending the first real session (smoke test below).
+
+**Parked but kept**: the PWA-side Coach-tab "Interview Prep" button + `MediaRecorder` UI + `coachStartInterviewPrep` flow are implemented in [index.html](../index.html) under the `FAMILY_MEMBERS.artem.interviewPrepEnabled` gating flag, but the PWA was not re-deployed. The code is a working starting point if family-wide spoken-practice rollout (per [speaking-lane.md](speaking-lane.md)) ever flips that flag for other players or for Artem on a non-CC surface.
+
+**Days 6-8 (`shadow_feedback` mode)** stay in the plan unchanged below — also unstarted, also CC-skill-shape when it lands.
+
+**Day-1 smoke test result (2026-05-13)**: round-trip works. Sent a 174 KB MP3 → R2 stored at `interview_prep/artem/<session>/turn-0-<ts>.mp3` → Whisper-turbo returned a clean transcript with timestamps. Audio infra is solid.
+
+### Resolved during Day-1 sprint
+
+- **Whisper turbo input format.** Initial attempts with `[...new Uint8Array(buf)]` and `new Uint8Array(buf)` were rejected — the schema actually wants `audio: <base64 string>`, not a byte array. Documented in [Cloudflare's whisper-large-v3-turbo model card](https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/). The misleading "Type mismatch '/audio', 'string' not in 'array','binary'" error was the schema saying our value didn't satisfy the union of allowed types. Fixed by base64-encoding the audio (chunked `btoa` to avoid stack overflow on multi-MB blobs) and adding the `language: "en"` hint — which also improves accuracy on Russian-accented English by disabling auto-language-detection (auto-detect can misfire on heavy L1 substrate).
+- **`duration_s`.** Whisper-turbo returns timestamped `segments[]` and a top-level `vtt` block; `extractDurationSeconds()` in the worker parses both shapes plus the rare top-level `duration` field. Eliminates the need for client-side `ffprobe`.
+
+### Smoke test before/after
+
+| Model | Transcript on the same test clip |
+|---|---|
+| base `@cf/openai/whisper` (no language hint) | `"This is Chuk, please tell me how to give you me."` — garbled |
+| `@cf/openai/whisper-large-v3-turbo` + `language: "en"` | `"This is Chuck. Please tell me how do you hear me?"` — clean, L2 slip preserved |
+
+---
+
+## Original plan (preserved below for context)
+
+Pick up in a new session per "What to do first" below.
 
 ---
 

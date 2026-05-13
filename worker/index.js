@@ -21,6 +21,13 @@
 // as offline-only fallback on the PWA side. See worker/README.md per-mode docs
 // and plans/coach-live-ai-and-weak-spots.md for the full rollout.
 //
+// Routing:
+//   - POST /v1/messages (or /) : JSON pipeline (modes above). 50 KB body cap.
+//   - POST /v1/audio           : multipart audio pipeline (interview_prep,
+//                                shadow_feedback later). Day-1 echoes Whisper
+//                                transcript; later days add Claude feedback.
+//                                See plans/audio-coach-pipeline.md.
+//
 // Secrets / vars (configure via Cloudflare dashboard or wrangler):
 //   - ANTHROPIC_API_KEY  (Secret, encrypted)
 //   - ALLOWED_MODELS     (Plain text, comma-separated whitelist)
@@ -97,6 +104,13 @@ const PSL_MAX_ITEMS = 15;
 const SDL_DEFAULT_ITEMS = 8;
 const SDL_MAX_ITEMS = 12;
 
+// Audio pipeline (/v1/audio): interview_prep + shadow_feedback. Hard caps:
+//   - 25 MB body (~25 min of mobile-recorder webm/opus @ ~16 kbps speech)
+//   - Artem-only at this stage; plans/audio-coach-pipeline.md gates rollout.
+const AUDIO_MAX_BODY_BYTES = 25 * 1024 * 1024;
+const AUDIO_VALID_MODES = new Set(['interview_prep']);
+const AUDIO_ALLOWED_PLAYERS = new Set(['artem']);
+
 export default {
   async fetch(request, env) {
     const cors = corsHeaders(env);
@@ -108,13 +122,20 @@ export default {
       return jsonError(405, 'WORKER_VALIDATION', 'Method not allowed', false, cors);
     }
 
-    // Origin check
+    // Origin check (shared by JSON + audio pipelines)
     const origin = request.headers.get('Origin');
     if (!env.ALLOWED_ORIGIN || origin !== env.ALLOWED_ORIGIN) {
       return jsonError(403, 'WORKER_VALIDATION', 'Origin not allowed', false, cors);
     }
 
-    // Body size
+    // Path-based dispatch. /v1/audio handles multipart audio uploads (Whisper +
+    // Claude feedback pipeline). Everything else stays on the JSON pipeline.
+    const pathname = new URL(request.url).pathname;
+    if (pathname === '/v1/audio') {
+      return handleAudio(request, env, cors);
+    }
+
+    // Body size (JSON pipeline only — audio path has its own cap)
     const declaredLen = parseInt(request.headers.get('Content-Length') || '0', 10);
     if (declaredLen > MAX_BODY_BYTES) {
       return jsonError(413, 'WORKER_VALIDATION', `Body exceeds ${MAX_BODY_BYTES} bytes`, false, cors);
@@ -305,6 +326,204 @@ function jsonError(status, code, message, retriable, cors) {
     JSON.stringify({ ok: false, error_code: code, error_message: message, retriable }),
     { status, headers: { 'content-type': 'application/json', ...cors } }
   );
+}
+
+// ─── audio pipeline (/v1/audio) ────────────────────────────────────────────
+//
+// Day-1 skeleton per plans/audio-coach-pipeline.md: accept multipart audio,
+// store to R2, transcribe via Workers AI Whisper-turbo, echo transcript back.
+// No Claude call yet — that lands on Day 3 once the loop is verified.
+//
+// Request shape: multipart/form-data with two fields:
+//   audio : Blob (webm/opus from MediaRecorder; <=25 MB)
+//   meta  : JSON string {mode, player, session_id, turn}
+//
+// Response shape (Day 1):
+//   { ok, transcript, audio_r2_key, mode, turn, duration_s? }
+async function handleAudio(request, env, cors) {
+  const declaredLen = parseInt(request.headers.get('Content-Length') || '0', 10);
+  if (declaredLen > AUDIO_MAX_BODY_BYTES) {
+    return jsonError(413, 'WORKER_VALIDATION', `Audio body exceeds ${AUDIO_MAX_BODY_BYTES} bytes`, false, cors);
+  }
+
+  let form;
+  try {
+    form = await request.formData();
+  } catch (e) {
+    return jsonError(400, 'WORKER_VALIDATION', `Invalid multipart body: ${e.message}`, false, cors);
+  }
+
+  const audio = form.get('audio');
+  const metaRaw = form.get('meta');
+  if (!audio || typeof audio === 'string') {
+    return jsonError(400, 'WORKER_VALIDATION', 'Missing audio blob field', false, cors);
+  }
+  if (typeof metaRaw !== 'string') {
+    return jsonError(400, 'WORKER_VALIDATION', 'Missing meta JSON field', false, cors);
+  }
+
+  let meta;
+  try {
+    meta = JSON.parse(metaRaw);
+  } catch (e) {
+    return jsonError(400, 'WORKER_VALIDATION', 'meta field is not valid JSON', false, cors);
+  }
+
+  if (!AUDIO_VALID_MODES.has(meta.mode)) {
+    return jsonError(400, 'WORKER_VALIDATION', `Invalid audio mode "${meta.mode}"`, false, cors);
+  }
+  if (!AUDIO_ALLOWED_PLAYERS.has(meta.player)) {
+    return jsonError(403, 'WORKER_VALIDATION', `Audio pipeline not enabled for player "${meta.player}"`, false, cors);
+  }
+  if (typeof meta.session_id !== 'string' || !meta.session_id.trim()) {
+    return jsonError(400, 'WORKER_VALIDATION', 'meta.session_id required', false, cors);
+  }
+  if (!Number.isInteger(meta.turn) || meta.turn < 0) {
+    return jsonError(400, 'WORKER_VALIDATION', 'meta.turn must be a non-negative integer', false, cors);
+  }
+  if (audio.size > AUDIO_MAX_BODY_BYTES) {
+    return jsonError(413, 'WORKER_VALIDATION', `Audio blob exceeds ${AUDIO_MAX_BODY_BYTES} bytes`, false, cors);
+  }
+
+  if (!env.AUDIO) {
+    return jsonError(500, 'WORKER_VALIDATION', 'R2 binding "AUDIO" not configured', false, cors);
+  }
+  if (!env.AI) {
+    return jsonError(500, 'WORKER_VALIDATION', 'Workers AI binding not configured', false, cors);
+  }
+
+  // Persist to R2. Key shape: <mode>/<player>/<session_id>/turn-<n>-<ts>.<ext>
+  const ts = Date.now();
+  const ext = audioExtensionFromType(audio.type);
+  const r2Key = `${meta.mode}/${meta.player}/${sanitizeId(meta.session_id)}/turn-${meta.turn}-${ts}.${ext}`;
+  const audioBuf = await audio.arrayBuffer();
+  try {
+    await env.AUDIO.put(r2Key, audioBuf, {
+      httpMetadata: { contentType: audio.type || 'application/octet-stream' },
+      customMetadata: {
+        mode: meta.mode,
+        player: meta.player,
+        session_id: meta.session_id,
+        turn: String(meta.turn),
+      },
+    });
+  } catch (e) {
+    return jsonError(502, 'WORKER_TIMEOUT', `R2 put failed: ${e.message}`, true, cors);
+  }
+
+  // Transcribe via Workers AI Whisper-large-v3-turbo. Input is a base64-encoded
+  // audio string (per Cloudflare's 2026-05-13 model docs — NOT number[] like
+  // the older base @cf/openai/whisper model; passing an array gets rejected
+  // with the misleading "Type mismatch of '/audio', 'string' not in 'array'"
+  // error). The `language: "en"` hint helps for accented speech where auto-
+  // detection sometimes misfires on heavy L1 substrate (e.g. Russian).
+  let transcript = '';
+  let whisperRaw = null;
+  let duration_s = null;
+  try {
+    const audioB64 = arrayBufferToBase64(audioBuf);
+    whisperRaw = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {
+      audio: audioB64,
+      language: 'en',
+    });
+    // Transcript: top-level `text` on most response shapes; some variants nest
+    // it under transcription_info. Handle both.
+    transcript = '';
+    if (whisperRaw) {
+      if (typeof whisperRaw.text === 'string') transcript = whisperRaw.text;
+      else if (whisperRaw.transcription_info && typeof whisperRaw.transcription_info.text === 'string') {
+        transcript = whisperRaw.transcription_info.text;
+      }
+    }
+    transcript = transcript.trim();
+    // Duration: prefer explicit field; otherwise compute from last segment's
+    // end timestamp (segments[].end is seconds; vtt is `MM:SS.mmm --> MM:SS.mmm`).
+    duration_s = extractDurationSeconds(whisperRaw);
+  } catch (e) {
+    return jsonError(502, 'WORKER_TIMEOUT', `Whisper transcription failed: ${e.message}`, true, cors);
+  }
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      transcript,
+      audio_r2_key: r2Key,
+      mode: meta.mode,
+      turn: meta.turn,
+      duration_s,
+      // Day-1 contract: caller knows no Claude feedback has run yet.
+      echo: true,
+    }),
+    { status: 200, headers: { 'content-type': 'application/json', ...cors } }
+  );
+}
+
+// Base64-encode an ArrayBuffer. Chunked to avoid `String.fromCharCode(...big)`
+// stack overflow on large audio blobs (~5 MB+ would otherwise blow up).
+function arrayBufferToBase64(buf) {
+  const u8 = new Uint8Array(buf);
+  const chunkSize = 8192;
+  let binary = '';
+  for (let i = 0; i < u8.length; i += chunkSize) {
+    binary += String.fromCharCode.apply(null, u8.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
+// Best-effort duration extraction from a Whisper response. Tries, in order:
+//   1. top-level `duration` field (some Whisper variants emit it)
+//   2. `segments[last].end` (seconds, native)
+//   3. last `vtt` cue's end timestamp parsed as MM:SS.mmm or HH:MM:SS.mmm
+// Returns null if no path yields a number.
+function extractDurationSeconds(resp) {
+  if (!resp || typeof resp !== 'object') return null;
+  if (typeof resp.duration === 'number' && isFinite(resp.duration)) return resp.duration;
+  const segs = Array.isArray(resp.segments) ? resp.segments : null;
+  if (segs && segs.length > 0) {
+    const last = segs[segs.length - 1];
+    if (last) {
+      if (typeof last.end === 'number' && isFinite(last.end)) return last.end;
+      if (typeof last.vtt === 'string') {
+        // Match the LAST timestamp range in the cue (segment may carry multi-line cues)
+        const m = last.vtt.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?\.(\d{1,3})\s*-->\s*(\d{1,2}):(\d{2})(?::(\d{2}))?\.(\d{1,3})/);
+        if (m) {
+          // groups 5..8 are the end timestamp: HH? MM SS? mmm
+          const hh = m[7] != null ? parseInt(m[5], 10) : 0;
+          const mm = m[7] != null ? parseInt(m[6], 10) : parseInt(m[5], 10);
+          const ss = m[7] != null ? parseInt(m[7], 10) : parseInt(m[6], 10);
+          const mmm = parseInt(m[8], 10);
+          return hh * 3600 + mm * 60 + ss + mmm / Math.pow(10, m[8].length);
+        }
+      }
+    }
+  }
+  // Top-level vtt fallback — parse the last cue's end timestamp the same way
+  if (typeof resp.vtt === 'string') {
+    const matches = [...resp.vtt.matchAll(/(\d{1,2}):(\d{2})(?::(\d{2}))?\.(\d{1,3})\s*-->\s*(\d{1,2}):(\d{2})(?::(\d{2}))?\.(\d{1,3})/g)];
+    if (matches.length > 0) {
+      const m = matches[matches.length - 1];
+      const hh = m[7] != null ? parseInt(m[5], 10) : 0;
+      const mm = m[7] != null ? parseInt(m[6], 10) : parseInt(m[5], 10);
+      const ss = m[7] != null ? parseInt(m[7], 10) : parseInt(m[6], 10);
+      const mmm = parseInt(m[8], 10);
+      return hh * 3600 + mm * 60 + ss + mmm / Math.pow(10, m[8].length);
+    }
+  }
+  return null;
+}
+
+function audioExtensionFromType(mime) {
+  if (!mime) return 'bin';
+  if (mime.includes('webm')) return 'webm';
+  if (mime.includes('ogg')) return 'ogg';
+  if (mime.includes('mp4') || mime.includes('m4a') || mime.includes('aac')) return 'm4a';
+  if (mime.includes('wav')) return 'wav';
+  if (mime.includes('mpeg') || mime.includes('mp3')) return 'mp3';
+  return 'bin';
+}
+
+function sanitizeId(s) {
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 64);
 }
 
 function buildSystemBlocks(mode, context, isSessionEnd) {

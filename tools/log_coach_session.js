@@ -50,7 +50,7 @@ const {
   fsSet, fsGet, fsPatch, docToPlain, PLAYERS, bumpDailyStreakRemote,
 } = require('./_firestore');
 
-const VALID_MODES = ['free_write', 'cc_session', 'escalate', 'phrase_swap_drill'];
+const VALID_MODES = ['free_write', 'cc_session', 'escalate', 'phrase_swap_drill', 'interview_prep'];
 
 function parseArgs(argv) {
   const out = { dryRun: false, player: null, jsonPath: null };
@@ -81,6 +81,7 @@ function makeSessionId(player, mode) {
     mode === 'free_write' ? 'fw' :
     mode === 'escalate' ? 'esc' :
     mode === 'phrase_swap_drill' ? 'psd' :
+    mode === 'interview_prep' ? 'ip' :
     'sess';
   const r = Math.random().toString(36).slice(2, 6);
   return `${player}_${prefix}_${Date.now()}_${r}`;
@@ -196,6 +197,14 @@ async function main() {
     ended: session.ended || now,
     source: 'cc_session', // distinguishes from PWA-driven Free Write (which omits this)
     assessment: session.assessment || null, // silent CEFR grade — see firestore-schema.md
+    // Rubric passthroughs — emitted by /free-write and /interview-prep skills.
+    // Persisted unchanged so future stats-review can aggregate. Low-confidence
+    // rubrics are kept (downstream consumers filter on `confidence: "low"`).
+    register_rubric: session.register_rubric || null,   // chunk_density, register_match, calque_count, discourse_marker_variety, confidence
+    interview_rubric: session.interview_rubric || null, // structure_score, specificity_score, confidence_balance, delivery metrics, per_turn_summaries, confidence
+    // Audio turns — populated by /interview-prep when each turn is transcribed
+    // via the worker /v1/audio endpoint. Mirrors the PWA's coachState.ipTurns.
+    audio_turns: Array.isArray(session.audio_turns) ? session.audio_turns : [],
   };
 
   const path = `players/${args.player}/coach_sessions/${session_id}`;
@@ -219,10 +228,13 @@ async function main() {
     console.warn(`[log_coach_session] WARNING: streak bump failed: ${e.message}`);
   }
 
-  // Silent CEFR grade fold (Free Write only). Idempotent via aggregated_coach_sessions
-  // map on the player root. Low-confidence assessments are skipped silently.
+  // Silent CEFR grade fold for conversational modes that produce sentence_count.
+  // Idempotent via aggregated_coach_sessions map on the player root. Low-confidence
+  // assessments are skipped silently. interview_prep folds the same way as
+  // free_write — same `assessment` block, same sentence-count cap.
+  const CEFR_FOLD_MODES = new Set(['free_write', 'interview_prep']);
   let assessmentFold = { applied: false };
-  if (session.mode === 'free_write' && session.assessment) {
+  if (CEFR_FOLD_MODES.has(session.mode) && session.assessment) {
     try {
       assessmentFold = await applyAssessmentFold(args.player, session_id, session.assessment);
     } catch (e) {

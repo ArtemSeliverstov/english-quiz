@@ -1467,6 +1467,10 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
           <span class="coach-type-name">Weak Spots</span>
           <span class="coach-type-count" data-count-for="weak_spots_drill">…</span>
         </button>
+        <button class="coach-type-btn" data-type="interview_prep" onclick="coachStartInterviewPrep()" title="Live AI — spoken interview practice (CFO / GCC / O&G). Records your voice, transcribes, gives feedback." style="display:none;">
+          <span class="coach-type-name">Interview Prep</span>
+          <span class="coach-type-count" data-count-for="interview_prep">…</span>
+        </button>
       </div>
       <button id="spellHelpBtn" class="coach-spellhelp-btn" onclick="coachOpenSpellHelp()" title="Quick spelling lookup with example sentence">
         <span style="font-size:.95rem;">🔤</span>
@@ -7311,6 +7315,7 @@ let familyPollTimer = null;
 const FAMILY_MEMBERS = [
   { key: 'artem',   name: 'Artem',   emoji: '👨', color: '#4a9eff', coachLanguage: 'en',
     level: 'C1', feedbackDepth: 'light', avoidTypes: [],
+    interviewPrepEnabled: true,  // Audio coach pipeline (plans/audio-coach-pipeline.md) — Artem-only fast track. Flag is read by coachUpdateInterviewPrepAvailability(); button stays hidden for everyone else.
     pinHash: 'aeb5d182368bc8faff9d186b46adca1c5b308dc80926ca96f8cf3dabe611df5c' },
   { key: 'anna',    name: 'Anna',    emoji: '👩', color: '#ff6b9d', coachLanguage: 'ru',
     level: 'B1', feedbackDepth: 'detailed', avoidTypes: [],
@@ -8837,6 +8842,17 @@ const coachState = {
   spdTargetCount: 8,
   spdPool: [],            // entries from spelling_log since last drill
   spdBusy: false,
+  // Interview Prep (audio coach) flow — plans/audio-coach-pipeline.md, Artem-only.
+  // Day 1 shape: single-turn record → upload → transcript echo. Multi-turn chat +
+  // Claude feedback land on Day 2-3. State fields mirror the other live drills.
+  ipSessionId: '',
+  ipTurnCount: 0,
+  ipStartedAt: 0,
+  ipTurns: [],            // [{turn, audio_r2_key, transcript, duration_s}] — kept locally for Day-1 visualisation
+  ipBusy: false,          // true while uploading/transcribing
+  ipMediaRecorder: null,  // active MediaRecorder, null when idle
+  ipMediaChunks: [],      // accumulated Blob chunks for the current recording
+  ipMediaStream: null,    // MediaStream so we can stop tracks on session-end
   // Escalate retry flow (s92)
   escalateRetryActive: false,    // input field routes to coachEscalateRetrySubmit while true
   escalateRetryStartedAt: 0,
@@ -8889,7 +8905,7 @@ const COACH_TYPE_TO_CATEGORY = {
 // coachUpdatePhraseSwapAvailability for phrase_swap_drill, coachUpdateWeakSpotsAvailability
 // for weak_spots_drill.) For these, only avoidTypes + active-category gating apply
 // here; the liveAI helpers handle everything else.
-const COACH_LIVE_AI_GATED_TYPES = new Set(['free_write', 'phrase_swap_drill', 'weak_spots_drill']);
+const COACH_LIVE_AI_GATED_TYPES = new Set(['free_write', 'phrase_swap_drill', 'weak_spots_drill', 'interview_prep']);
 
 function coachApplyShellLayout() {
   const picker = document.getElementById('coachPicker');
@@ -8904,6 +8920,10 @@ function coachApplyShellLayout() {
     const type = btn.dataset.type;
     // avoidTypes hides for ALL shells (Anna's design intent rules out free_write etc. regardless of shell).
     if (avoidTypes.has(type)) { btn.style.display = 'none'; return; }
+    // Profile-gated types: hidden unless the player's profile carries the enable flag.
+    // Currently: interview_prep (audio coach, Artem-only) per plans/audio-coach-pipeline.md.
+    // Must run before the liveAI-gated short-circuit below or the helper's hide would be overridden.
+    if (type === 'interview_prep' && !profile.interviewPrepEnabled) { btn.style.display = 'none'; return; }
     // Active-window category filter applies to ALL types with a category mapping (now includes phrase_swap_drill → Natural English).
     // Skipped when active_categories isn't set (Artem builder-shell-equivalent — sees all).
     if (learner && hasActiveWindow) {
@@ -9195,6 +9215,32 @@ function coachUpdateLiveAIAvailability() {
   }
   // Phrase Swaps button rides the same liveAI gating + a per-player pool count.
   coachUpdatePhraseSwapAvailability();
+  // Interview Prep button — Artem-only audio coach pipeline.
+  coachUpdateInterviewPrepAvailability();
+}
+
+// Interview Prep button visibility: hidden unless current player's profile carries
+// `interviewPrepEnabled: true` AND liveAI is up. Plan deliberately keeps it
+// invisible for other players (plans/audio-coach-pipeline.md privacy section).
+function coachUpdateInterviewPrepAvailability() {
+  const btn = document.querySelector('.coach-type-btn[data-type="interview_prep"]');
+  if (!btn) return;
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  const enabledForPlayer = !!profile.interviewPrepEnabled;
+  if (!enabledForPlayer) {
+    btn.style.display = 'none';
+    return;
+  }
+  btn.style.display = '';
+  const liveAvail = !!COACH_WORKER_URL && navigator.onLine && !coachState.apiUnavailable;
+  btn.disabled = !liveAvail;
+  btn.classList.toggle('disabled', !liveAvail);
+  const countEl = btn.querySelector('.coach-type-count');
+  if (countEl) {
+    countEl.textContent = !navigator.onLine ? 'offline' :
+                          coachState.apiUnavailable ? 'unavailable' :
+                          !COACH_WORKER_URL ? 'soon' : 'audio';
+  }
 }
 
 function coachShowPicker() {
@@ -9229,6 +9275,8 @@ function coachShowPicker() {
   // Reset escalate retry state
   coachState.escalateRetryActive = false;
   coachState.escalateRetryStartedAt = 0;
+  // Reset Interview Prep flow + tear down any active MediaRecorder/stream
+  coachInterviewPrepResetState();
   // Reflect any availability changes (network, API_402)
   coachUpdateLiveAIAvailability();
   coachUpdateWeakSpotsAvailability();
@@ -9293,6 +9341,7 @@ function coachMakeSessionId(player, mode) {
     mode === 'article_drill_live' ? 'ad' :
     mode === 'particle_sort_live' ? 'pst' :
     mode === 'spelling_drill_live' ? 'spd' :
+    mode === 'interview_prep' ? 'ip' :
     'sess';
   return player + '_' + prefix + '_' + Date.now() + '_' + r;
 }
@@ -9361,6 +9410,299 @@ async function coachStartFreeWrite() {
   fld.disabled = false;
   document.getElementById('coachSendBtn').disabled = false;
   setTimeout(() => fld.focus(), 80);
+}
+
+// ─── Interview Prep (audio coach pipeline) ─────────────────────────────────
+// Day-1 shape (plans/audio-coach-pipeline.md): record audio → POST to worker
+// /v1/audio → Whisper transcript → render in chat. No Claude feedback yet, no
+// multi-turn question loop. The full multi-turn interview simulation lands on
+// Days 2-3 once we know the audio plumbing is solid.
+//
+// Worker endpoint: ${COACH_WORKER_URL}/v1/audio (multipart form-data: audio + meta).
+// Gating: FAMILY_MEMBERS.{player}.interviewPrepEnabled. Currently Artem-only.
+
+const COACH_IP_AUDIO_PATH = '/v1/audio';
+const COACH_IP_MAX_BLOB_BYTES = 25 * 1024 * 1024; // matches worker AUDIO_MAX_BODY_BYTES
+
+// Pick the best MediaRecorder mimeType the browser supports. Safari iOS prefers
+// mp4/aac, Chrome/Firefox prefer webm/opus. Whisper-turbo handles all of these.
+function coachInterviewPrepPickMime() {
+  if (typeof MediaRecorder === 'undefined' || typeof MediaRecorder.isTypeSupported !== 'function') {
+    return '';
+  }
+  const candidates = [
+    'audio/webm;codecs=opus',
+    'audio/webm',
+    'audio/ogg;codecs=opus',
+    'audio/mp4',
+    'audio/mp4;codecs=mp4a.40.2',
+    'audio/aac',
+  ];
+  for (const t of candidates) {
+    if (MediaRecorder.isTypeSupported(t)) return t;
+  }
+  return ''; // let the browser pick its default
+}
+
+function coachInterviewPrepResetState() {
+  // Tear down any active recorder / stream so we don't leak the mic
+  try {
+    if (coachState.ipMediaRecorder && coachState.ipMediaRecorder.state !== 'inactive') {
+      coachState.ipMediaRecorder.stop();
+    }
+  } catch (e) { /* ignore */ }
+  try {
+    if (coachState.ipMediaStream) {
+      coachState.ipMediaStream.getTracks().forEach(t => t.stop());
+    }
+  } catch (e) { /* ignore */ }
+  coachState.ipMediaRecorder = null;
+  coachState.ipMediaStream = null;
+  coachState.ipMediaChunks = [];
+  coachState.ipSessionId = '';
+  coachState.ipTurnCount = 0;
+  coachState.ipStartedAt = 0;
+  coachState.ipTurns = [];
+  coachState.ipBusy = false;
+}
+
+async function coachStartInterviewPrep() {
+  if (!currentPlayer) { alert('Sign in first.'); return; }
+  const profile = (typeof FAMILY_MEMBERS !== 'undefined') ? (FAMILY_MEMBERS.find(m => m.key === currentPlayer) || {}) : {};
+  if (!profile.interviewPrepEnabled) {
+    // Defence in depth — button is hidden, but if it leaks through somehow, refuse.
+    alert('Interview Prep is not enabled for this player.');
+    return;
+  }
+  if (coachState.apiUnavailable) {
+    alert('Live AI is temporarily unavailable. Try again later.');
+    return;
+  }
+  if (!navigator.onLine) {
+    alert('You appear to be offline. Interview Prep needs a connection.');
+    return;
+  }
+  if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+    alert('Your browser does not support microphone capture. Try Safari (iOS 14.3+) or recent Chrome/Firefox.');
+    return;
+  }
+  if (typeof MediaRecorder === 'undefined') {
+    alert('Your browser does not support audio recording (MediaRecorder API missing).');
+    return;
+  }
+
+  // Initialise session state
+  coachState.type = 'interview_prep';
+  coachState.ipSessionId = coachMakeSessionId(currentPlayer, 'interview_prep');
+  coachState.ipTurnCount = 0;
+  coachState.ipStartedAt = Date.now();
+  coachState.ipTurns = [];
+  coachState.ipBusy = false;
+
+  // Switch UI: hide picker + history, show chat area
+  document.getElementById('coachPicker').style.display = 'none';
+  { const hist = document.getElementById('coachHistoryWrap'); if (hist) hist.style.display = 'none'; }
+  const chatEl = document.getElementById('coachChat');
+  chatEl.style.display = '';
+  chatEl.innerHTML = '';
+  document.getElementById('coachInputRow').style.display = 'none';
+  document.getElementById('coachActionRow').style.display = 'none';
+  document.getElementById('coachExitRow').style.display = 'none';
+
+  // Day-1 intro card. Day-2 replaces this with an AI-generated question.
+  coachAppendMessage('assistant',
+    `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Interview Prep · Day 1 (audio test)</div>` +
+    `<div style="margin-bottom:.5rem;">Hit record, say a sentence or two in English (try a 30-second mock answer to: <em>“Walk me through a difficult capital allocation decision you’ve had to make.”</em>), then stop. You’ll see the Whisper transcript come back. No feedback yet — this turn just verifies the audio loop.</div>`
+  );
+
+  // Render the recorder UI inside the chat thread
+  coachInterviewPrepRenderRecorder();
+}
+
+function coachInterviewPrepRenderRecorder() {
+  const chatEl = document.getElementById('coachChat');
+  if (!chatEl) return;
+  // Remove any prior recorder card so we don't stack them between turns
+  const old = document.getElementById('ipRecorderCard');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+
+  const card = document.createElement('div');
+  card.id = 'ipRecorderCard';
+  card.className = 'coach-msg assistant';
+  card.style.cssText = 'margin-top:.4rem;';
+  card.innerHTML =
+    `<div style="display:flex;flex-direction:column;gap:.6rem;">` +
+      `<div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">` +
+        `<button id="ipRecordBtn" class="btn btn-primary" style="font-size:.95rem;padding:.7rem 1.2rem;" onclick="coachInterviewPrepToggleRecord()">🎙️ Record</button>` +
+        `<span id="ipRecordStatus" style="font-size:.8rem;color:var(--muted);">Tap to start.</span>` +
+      `</div>` +
+      `<div style="display:flex;gap:.5rem;flex-wrap:wrap;">` +
+        `<button class="btn-outline" style="font-size:.8rem;padding:.5rem .9rem;" onclick="coachInterviewPrepEndSession()">End session</button>` +
+      `</div>` +
+    `</div>`;
+  chatEl.appendChild(card);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+async function coachInterviewPrepToggleRecord() {
+  if (coachState.ipBusy) return; // upload in progress; ignore taps
+  const rec = coachState.ipMediaRecorder;
+  if (rec && rec.state === 'recording') {
+    coachInterviewPrepStopRecording();
+    return;
+  }
+  await coachInterviewPrepStartRecording();
+}
+
+async function coachInterviewPrepStartRecording() {
+  const statusEl = document.getElementById('ipRecordStatus');
+  const btnEl = document.getElementById('ipRecordBtn');
+  try {
+    if (statusEl) statusEl.textContent = 'Requesting microphone…';
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    coachState.ipMediaStream = stream;
+    const mimeType = coachInterviewPrepPickMime();
+    const opts = mimeType ? { mimeType } : {};
+    let recorder;
+    try {
+      recorder = new MediaRecorder(stream, opts);
+    } catch (e) {
+      // Fallback: no mimeType — let the browser default kick in.
+      recorder = new MediaRecorder(stream);
+    }
+    coachState.ipMediaRecorder = recorder;
+    coachState.ipMediaChunks = [];
+    recorder.ondataavailable = (ev) => {
+      if (ev.data && ev.data.size > 0) coachState.ipMediaChunks.push(ev.data);
+    };
+    recorder.onstop = () => {
+      const chunks = coachState.ipMediaChunks;
+      const blobType = recorder.mimeType || (chunks[0] && chunks[0].type) || 'audio/webm';
+      const blob = new Blob(chunks, { type: blobType });
+      // Stop the mic stream so the browser tab indicator clears
+      try {
+        if (coachState.ipMediaStream) coachState.ipMediaStream.getTracks().forEach(t => t.stop());
+      } catch (e) { /* ignore */ }
+      coachState.ipMediaStream = null;
+      coachState.ipMediaRecorder = null;
+      coachState.ipMediaChunks = [];
+      coachInterviewPrepUploadBlob(blob);
+    };
+    recorder.start();
+    if (btnEl) btnEl.textContent = '⏹ Stop';
+    if (statusEl) statusEl.textContent = 'Recording… tap stop when finished.';
+  } catch (e) {
+    if (statusEl) statusEl.textContent = 'Microphone access denied or unavailable.';
+    if (btnEl) btnEl.textContent = '🎙️ Record';
+    coachState.ipMediaRecorder = null;
+    if (coachState.ipMediaStream) {
+      try { coachState.ipMediaStream.getTracks().forEach(t => t.stop()); } catch (_) {}
+      coachState.ipMediaStream = null;
+    }
+  }
+}
+
+function coachInterviewPrepStopRecording() {
+  const rec = coachState.ipMediaRecorder;
+  const statusEl = document.getElementById('ipRecordStatus');
+  const btnEl = document.getElementById('ipRecordBtn');
+  if (!rec || rec.state !== 'recording') return;
+  if (btnEl) { btnEl.textContent = '🎙️ Record'; btnEl.disabled = true; }
+  if (statusEl) statusEl.textContent = 'Uploading + transcribing…';
+  try {
+    rec.stop(); // triggers onstop → coachInterviewPrepUploadBlob
+  } catch (e) {
+    if (statusEl) statusEl.textContent = 'Recording failed: ' + (e.message || 'unknown error');
+    if (btnEl) btnEl.disabled = false;
+  }
+}
+
+async function coachInterviewPrepUploadBlob(blob) {
+  const statusEl = document.getElementById('ipRecordStatus');
+  const btnEl = document.getElementById('ipRecordBtn');
+  if (!blob || blob.size === 0) {
+    if (statusEl) statusEl.textContent = 'No audio captured. Try again.';
+    if (btnEl) btnEl.disabled = false;
+    return;
+  }
+  if (blob.size > COACH_IP_MAX_BLOB_BYTES) {
+    if (statusEl) statusEl.textContent = `Recording too large (${(blob.size/1024/1024).toFixed(1)} MB > 25 MB). Try a shorter take.`;
+    if (btnEl) btnEl.disabled = false;
+    return;
+  }
+  if (!COACH_WORKER_URL) {
+    if (statusEl) statusEl.textContent = 'Worker URL not configured.';
+    if (btnEl) btnEl.disabled = false;
+    return;
+  }
+
+  coachState.ipBusy = true;
+  const turn = coachState.ipTurnCount;
+  const meta = {
+    mode: 'interview_prep',
+    player: currentPlayer,
+    session_id: coachState.ipSessionId,
+    turn,
+  };
+  const form = new FormData();
+  form.append('audio', blob, `turn-${turn}.${(blob.type && blob.type.includes('mp4')) ? 'm4a' : 'webm'}`);
+  form.append('meta', JSON.stringify(meta));
+
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 60000); // Whisper can take a bit on long clips
+    const res = await fetch(COACH_WORKER_URL + COACH_IP_AUDIO_PATH, {
+      method: 'POST',
+      body: form,
+      signal: ctrl.signal,
+    });
+    clearTimeout(timer);
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json || !json.ok) {
+      const msg = (json && (json.error_message || json.error_code)) || ('HTTP ' + res.status);
+      if (statusEl) statusEl.textContent = 'Worker error: ' + msg;
+      if (btnEl) btnEl.disabled = false;
+      coachState.ipBusy = false;
+      return;
+    }
+
+    // Render the player turn (their audio) + the transcript echo
+    const transcript = (typeof json.transcript === 'string' && json.transcript.trim()) ? json.transcript.trim() : '(empty transcript)';
+    const audioUrl = URL.createObjectURL(blob);
+    coachAppendMessage('user',
+      `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">You · turn ${turn + 1}</div>` +
+      `<audio controls src="${audioUrl}" style="display:block;max-width:100%;margin-bottom:.4rem;"></audio>` +
+      `<div style="font-size:.9rem;">${escapeHtml(transcript)}</div>`
+    );
+    coachAppendMessage('assistant',
+      `<div style="font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Transcript echo (Day 1)</div>` +
+      `<div style="font-size:.85rem;color:var(--muted);">No feedback yet — Day 3 wires the Claude call. Stored as <code>${escapeHtml(json.audio_r2_key || '?')}</code>${typeof json.duration_s === 'number' ? ` · ${json.duration_s.toFixed(1)}s` : ''}.</div>`
+    );
+
+    coachState.ipTurns.push({
+      turn,
+      audio_r2_key: json.audio_r2_key,
+      transcript,
+      duration_s: typeof json.duration_s === 'number' ? json.duration_s : null,
+    });
+    coachState.ipTurnCount = turn + 1;
+    coachState.ipBusy = false;
+
+    // Re-render the recorder card at the bottom for the next turn
+    coachInterviewPrepRenderRecorder();
+  } catch (e) {
+    if (statusEl) statusEl.textContent = 'Upload failed: ' + (e.message || 'network error');
+    if (btnEl) btnEl.disabled = false;
+    coachState.ipBusy = false;
+  }
+}
+
+function coachInterviewPrepEndSession() {
+  // Day-1: no persistence to coach_sessions yet (that lands Day 4 with the rubric).
+  // Just tear down recorder + return to picker. The local ipTurns array is
+  // visible to the user in the chat thread but isn't logged anywhere yet.
+  coachInterviewPrepResetState();
+  coachShowPicker();
 }
 
 // ─── Phrase Swap Drill (Phase 3 — natural-phrases initiative) ──────────────

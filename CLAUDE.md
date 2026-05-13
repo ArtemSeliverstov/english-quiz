@@ -66,6 +66,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 |---|---|
 | `exercise-session` | "let's do exercises", "упражнения" — any of 5 players (Egor included) |
 | `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side; others via PWA |
+| `interview-prep` | "interview prep", "mock interview", "CFO interview practice" — Artem-only audio-first CC session; worker `/v1/audio` + Whisper-turbo |
 | `weak-spots-session` | "30 min on X", "weak spots session", "deep dive on Y" — tier-walked ~30-min depth on one topic |
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
