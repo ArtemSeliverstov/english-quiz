@@ -9718,6 +9718,24 @@ function coachInterviewPrepEndSession() {
 const COACH_PSD_MODEL = COACH_FW_MODEL;
 const PSD_DEFAULT_TARGET = 6;
 
+function coachLevenshtein(a, b) {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const v0 = new Array(b.length + 1);
+  const v1 = new Array(b.length + 1);
+  for (let i = 0; i <= b.length; i++) v0[i] = i;
+  for (let i = 0; i < a.length; i++) {
+    v1[0] = i + 1;
+    for (let j = 0; j < b.length; j++) {
+      const cost = a[i] === b[j] ? 0 : 1;
+      v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+    }
+    for (let k = 0; k <= b.length; k++) v0[k] = v1[k];
+  }
+  return v0[b.length];
+}
+
 // Parse a weak_patterns entry of the form "<awkward> → <natural> [<tag>]" into
 // an entry. Returns null if the entry isn't a lexical swap (no arrow + brackets).
 // Tag is optional in spec but recommended; entries without [tag] still parse.
@@ -9737,7 +9755,47 @@ function coachParseLexicalWeakPattern(s) {
   // multi-word natural form. Single-word natural without a tag is most likely a
   // grammar shorthand (e.g. "arrive to → at") — skip it.
   if (natural.split(/\s+/).length < 2 && !m[3]) return null;
+  // Orthographic-only guardrail (2026-05-13): reject typos that the worker
+  // prompt occasionally surfaces as lexical swaps (e.g. "one and a half ours
+  // → one and a half hours"). A real swap requires a word-choice difference,
+  // not characters missing from the same lemma.
+  // Heuristic: same word count, exactly one word position differs, AND that
+  // pair are subsequences of one another (shorter is contained in longer in
+  // order, ≤2 chars missing). Catches "ours⊂hours" while preserving
+  // "take/make" (no subsequence relationship — different lemmas) and "in/at"
+  // (no subsequence — different lemmas) and multi-word phrase swaps (word
+  // counts differ). Transpositions like "thier/their" leak through here; the
+  // worker prompt is the primary defense for those.
+  const aw = awkward.split(/\s+/);
+  const nw = natural.split(/\s+/);
+  if (aw.length === nw.length) {
+    let diffIdx = -1, diffCount = 0;
+    for (let i = 0; i < aw.length; i++) {
+      if (aw[i].toLowerCase() !== nw[i].toLowerCase()) {
+        diffIdx = i;
+        diffCount++;
+        if (diffCount > 1) break;
+      }
+    }
+    if (diffCount === 1) {
+      const a = aw[diffIdx].toLowerCase();
+      const b = nw[diffIdx].toLowerCase();
+      const shorter = a.length <= b.length ? a : b;
+      const longer  = a.length <= b.length ? b : a;
+      if (longer.length - shorter.length <= 2 && coachIsSubsequence(shorter, longer)) {
+        return null;
+      }
+    }
+  }
   return { awkward, natural, tag: (m[3] || '').toLowerCase() || null, status: 'active' };
+}
+
+function coachIsSubsequence(short, long) {
+  let i = 0;
+  for (let k = 0; k < long.length && i < short.length; k++) {
+    if (long[k] === short[i]) i++;
+  }
+  return i === short.length;
 }
 
 function coachBuildPhrasePool({ weakPatterns, phraseTracker, target }) {

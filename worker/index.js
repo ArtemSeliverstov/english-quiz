@@ -1330,6 +1330,12 @@ Use snake_case pattern IDs for grammar items, e.g. "preposition_omission", "tens
 - "sometime ago → a while ago [brit_expat]"
 - "we will investigate this matter → we'll look into it [biz_oil]"
 - "in the end of the day → at the end of the day [biz_oil]"
+
+**Not a lexical swap**: pure orthographic differences (typos, missing letters, hyphenation, capitalisation) are NOT register swaps even when the "fix" produces idiomatic English. A valid swap requires a **word-choice or grammar-pattern difference** — different lemma, different idiomatic chunk, different verb+prep collocation. Spelling/typo errors belong in \`error_patterns_observed\` as \`spelling_*\` snake_case pattern IDs and must not appear as \`→\` entries. Don't double-emit.
+- ❌ "one and a half ours → one and a half hours [leisure_sport]" — orthographic only; emit \`spelling_homophones\` instead.
+- ❌ "recieve → receive" — typo; emit \`spelling_ie_ei\` instead.
+- ✅ "in the end of the day → at the end of the day [biz_oil]" — preposition swap (different lemma).
+
 Tag must be one of: biz_oil, brit_expat, leisure_sport, home_daily, academic_ielts, kpmg_consulting, almaty_daily. Skip when no clearly-better natural form exists, or when the swap is style preference rather than register. These entries get auto-merged into the player's weak_patterns and become drillable in Phrase Swaps.
 
 For "pvs_used_correctly": list any phrasal verbs the learner produced correctly AND unprompted (no hint naming the PV, no leading question from the coach). Use space-separated lowercase form: "look for", "find out", "pick up", "follow up on", "get across". Empty array if none qualify.
