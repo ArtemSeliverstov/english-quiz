@@ -80,6 +80,20 @@ Phase 2 outcomes: Emphasis 44→55, input share 25%→29%. Business inversion 2�
 
 ---
 
+## Speaking lane (parallel to register-fluency)
+
+Separate track from the in-flight register-fluency work (v20260512-r2, r3). Three-tier mechanism plan, Tier 1 ($0, no recording) acts as the engagement gate before any audio infrastructure gets built. Full plan: [`plans/speaking-lane.md`](../plans/speaking-lane.md).
+
+| # | Tier | Estimate | Status |
+|---|---|---|---|
+| 1 | Tier 1 — listen + self-rate (no recording) | 1–2 days PWA work + clip curation | **Not yet started.** Pick up in a new session per "What to do first" section of the plan. |
+| 2 | Tier 2 — record + replay, no AI scoring | 3–5 days | Gated on Tier 1 engagement (2+ players using regularly for 4–6 wks). |
+| 3 | Tier 3 — Whisper + Claude feedback | 1–2 weeks | Gated on Tier 2 recordings happening. Costs ~$0.05/mo on existing Cloudflare + Anthropic accounts (validated 2026-05-12). |
+
+Prerequisites before starting: ~2–4 weeks of register-fluency rubric data first, so we know that lane is producing useful signal before splitting attention.
+
+---
+
 ## Long-term aspirations (no commitment)
 
 - C2 expansion to full 240 questions
