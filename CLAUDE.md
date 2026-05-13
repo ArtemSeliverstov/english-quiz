@@ -67,6 +67,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 | `exercise-session` | "let's do exercises", "упражнения" — any of 5 players (Egor included) |
 | `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side; others via PWA |
 | `weak-spots-session` | "30 min on X", "weak spots session", "deep dive on Y" — tier-walked ~30-min depth on one topic |
+| `register-check` | "register check", "check my phrasing", "review my messages" — retrospective B2/C1 + register-mismatch pass over Artem's own messages |
 | `quiz-development` | "add questions", "fix question", "audit", question authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA + batch alignment |
