@@ -10,6 +10,24 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-13 · v20260513 — typo-vs-swap quality fix + stats-review rubric consumer
+
+Two issues caught from Anna's first instrumented Free Write yesterday:
+
+1. **Typo masquerading as register swap.** The worker prompt allowed pure orthographic differences ("one and a half ours → one and a half hours [leisure_sport]") to be emitted as lexical swaps, and the PWA accepted them — polluting `phrase_tracker`. Two-layer fix shipped:
+   - `worker/index.js` Free Write `sessionEndInstructions`: explicit "Not a lexical swap" block with anti-pattern examples. Typos must go to `error_patterns_observed` as `spelling_*` pattern IDs only, no `→` entries. **Needs `wrangler deploy` to take effect.**
+   - `index.html` `coachParseLexicalWeakPattern`: subsequence-based guardrail. Rejects same-word-count pairs where one word is a subsequence of the other with ≤2 chars missing (`ours⊂hours`, `wnt⊂went`). Preserves real lemma swaps (`take/make`, `in/at`, `from/on`). Transpositions (`thier/their`, `recieve/receive`) leak through by design — worker prompt is primary defense. 10/10 unit tests pass.
+   - Anna's bad entry removed from `players/anna.phrase_tracker.entries` (8 → 7); independently verified.
+
+2. **Stats-review rubric consumer wired.** The register rubric instrumented in r3 was dark — `stats-review` didn't read it. Now does:
+   - `.claude/skills/stats-review/SKILL.md` step 3 + new `### Register fluency` output section.
+   - `references/register-rubric.md` gains the "Stats-review aggregation" section: procedure (last-5 rolling mean, Δ vs prior 5, sparse-data caveat at n<3), flag rules, per-player output shape.
+   - `references/firestore-schema.md` updated: stats-review consumer flipped to active.
+
+Q count: 2246 (no change) · Version: v20260513
+
+---
+
 ## 2026-05-12 · v20260512-r3 — Free Write register-rubric instrumentation (silent measurement)
 
 Adds the project's first longitudinal signal for the stated mission ("improving conversational register"). Existing `assessment` block grades CEFR-general; this rubric scores register specifically — chunk reach, context fit, L1 calque load, conversational scaffolding. Dark instrumentation: never shown to learner, no `stats-review` consumer yet. Sets up P0.3 (tag register slips as `weak_pattern` subtypes) and P1.1 (productive-retrieval register-pair drill).
