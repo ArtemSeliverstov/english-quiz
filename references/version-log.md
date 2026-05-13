@@ -10,6 +10,33 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-13 · v20260513-r2 — drill-mode prompt diet + structural item card
+
+Anna fed back that the live-AI drills "all look like Free Write" — exercises hard to spot, especially short ones like spelling. Today's EC#1 transcript surfaced a smoking-gun: she "corrected" an embedded illustrative example sentence because the real drill item was visually indistinguishable from the surrounding prose (a split-attention violation per Cognitive Load Theory).
+
+Web research informed two differentiated tracks. Adults: 2025 Frontiers study + multimedia-learning meta-analyses show KCR ("correct response only") outperforms KCR+elaboration; Babbel adult pattern (1-2 sentence rule + drill, not paragraph) wins on retention. Kids: explicit correction remains evidence-backed, but gamification + emoji rhythm (Duolingo pattern) pairs better than dense prose. Two prompt tracks shipped on this basis; rendering fix universal.
+
+**Worker** (6 drill modes — phrase_swap, translation, error_correction, spelling, particle, article; FW + weak_spots untouched):
+
+- New `feedbackDepthInstructionsForDrill`. Adult tiers (`light`/`medium-light`/`detailed`): `✓` + ≤4-word rule tag on CLEAN, 1-2 sentence MISS, no extra example. Kid tiers (`medium-kid`/`medium`): same brevity + streak counter every 2-3 CLEAN + occasional rule recap (1 of 3) + emoji rhythm.
+- Universal rules: ban standalone illustrative example sentences (the EC#1 bug); require `---` separator before next item; item-label format `**Item N/total:**`.
+- New `drillOpeningInstructions`: drops the FW-style greeting/meta-instruction opening across all 6 modes; turn 1 is just the item card.
+- Anna's `detailed` tier — original spec (3-5 sentences + L1 contrast + extra example) preserved only for FW; drill-mode variant capped at 1-2 sentences with no extra example.
+
+**PWA**:
+
+- New `coachRenderDrillTurn(content)` — splits assistant message on the last `---` and wraps trailing block in `.coach-msg-item-card`. Heuristics reject session-end tables (starts with `|`) and oversize trailing blocks (>320 chars); opening-only `**Item N/M:**` messages without separator also get carded.
+- New CSS `.coach-msg-item-card`: 3px accent left-border, subtle bg tint, accent-coloured `<strong>` for the "Item N/M:" label.
+- 12 drill mid-session call sites routed through new renderer (psd, td, ec, ad, pst, spd — each start + send). Weak spots, Free Write, escalation, and all `feedback-correct` end-of-session table renders kept on `coachRenderMarkdownLite`.
+
+Synthetic renderer probe: 6/6 cases pass, including the EC#1 regression scenario (embedded italic example stays in feedback prose, real drill item gets carded distinctly). Visual confirmed in preview — 3px accent left border + bg tint render as intended. `node --check` clean; question count unchanged.
+
+Worker version: `97416e24-f31c-43b7-865e-61aa9f50910f`.
+
+Q count: 2246 (no change) · Version: v20260513-r2
+
+---
+
 ## 2026-05-13 · v20260513 — typo-vs-swap quality fix + stats-review rubric consumer
 
 Two issues caught from Anna's first instrumented Free Write yesterday:
