@@ -82,15 +82,21 @@ Phase 2 outcomes: Emphasis 44→55, input share 25%→29%. Business inversion 2�
 
 ## Speaking lane (parallel to register-fluency)
 
-Separate track from the in-flight register-fluency work (v20260512-r2, r3). Three-tier mechanism plan, Tier 1 ($0, no recording) acts as the engagement gate before any audio infrastructure gets built. Full plan: [`plans/speaking-lane.md`](../plans/speaking-lane.md).
+Separate track from the in-flight register-fluency work (v20260512-r2, r3). Two coordinated plans:
 
-| # | Tier | Estimate | Status |
+**1. Artem fast-track build** — [`plans/audio-coach-pipeline.md`](../plans/audio-coach-pipeline.md). Single-user sprint, no tier gates, deadline-aware (CFO interview prep). Ships audio infrastructure + two modes (`interview_prep` multi-turn + `shadow_feedback`) on shared plumbing. ~5 days for interview_prep + 3 days for shadow_feedback. **Pick up in a new session.** Cost: ~$0.20/mo on existing accounts.
+
+**2. Family-wide rollout doctrine** — [`plans/speaking-lane.md`](../plans/speaking-lane.md). Three-tier mechanism with engagement gates (Tier 1 $0 listen-and-rate → Tier 2 record-and-replay → Tier 3 transcribe-and-score). Governs flag-flips beyond Artem once the fast-track infra exists.
+
+| # | Track | Estimate | Status |
 |---|---|---|---|
-| 1 | Tier 1 — listen + self-rate (no recording) | 1–2 days PWA work + clip curation | **Not yet started.** Pick up in a new session per "What to do first" section of the plan. |
-| 2 | Tier 2 — record + replay, no AI scoring | 3–5 days | Gated on Tier 1 engagement (2+ players using regularly for 4–6 wks). |
-| 3 | Tier 3 — Whisper + Claude feedback | 1–2 weeks | Gated on Tier 2 recordings happening. Costs ~$0.05/mo on existing Cloudflare + Anthropic accounts (validated 2026-05-12). |
+| 1 | Artem fast-track: `interview_prep` + audio infra | ~5 days | **Not started.** Plan in `audio-coach-pipeline.md`. |
+| 2 | Artem fast-track: `shadow_feedback` (sibling mode) | +3 days | Follows immediately on shared infra. |
+| 3 | Family rollout — Tier 1 (listen + self-rate) | 1–2 days + clip curation | Gated on Artem fast-track shipping + engagement signal. |
+| 4 | Family rollout — Tier 2 (record + replay, no AI) | 3–5 days | Gated on Tier 1 engagement. |
+| 5 | Family rollout — Tier 3 (Whisper + Claude feedback) | +1–2 days (infra exists from Artem fast-track) | Gated on Tier 2 recordings happening. |
 
-Prerequisites before starting: ~2–4 weeks of register-fluency rubric data first, so we know that lane is producing useful signal before splitting attention.
+Prerequisites before starting either track: ~2–4 weeks of register-fluency rubric data first, so we know that lane is producing useful signal before splitting attention. Override possible for the Artem fast-track if interview date pressures the timeline.
 
 ---
 

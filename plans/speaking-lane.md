@@ -4,6 +4,8 @@ Parallel track to the register-fluency lane. The text path (Free Write + Phrase 
 
 Created 2026-05-12. **Not yet started.** Pick up in a new session when register-fluency work has a few weeks of accumulating signal and you have appetite to open a second front.
 
+> **Sibling plan**: [audio-coach-pipeline.md](audio-coach-pipeline.md) — Artem fast-track build (interview_prep + shadow_feedback on shared audio infra, no tier gates). When that ships, it provides the audio infrastructure this plan's Tier 2/3 would use. This file remains the doctrine for family-wide rollout post-Artem.
+
 ---
 
 ## Why a separate lane
