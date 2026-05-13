@@ -89,14 +89,62 @@ Excluded: sentence connectors that aren't conversational management (`however`, 
 
 ## Consumers
 
-| Consumer | Purpose |
-|---|---|
-| Free Write worker prompt | Emits the rubric per session |
-| `coachWriteSessionLogStandalone` (PWA) | Persists to Firestore |
-| `stats-review` (future) | Aggregates per-player rolling means + trends; flags drift |
-| `mistakes-review` (future) | Cross-checks high `calque_count` against the captured swaps in `phrase_tracker` |
+| Consumer | Purpose | Status |
+|---|---|---|
+| Free Write worker prompt | Emits the rubric per session | Live (v20260512-r3) |
+| `coachWriteSessionLogStandalone` (PWA) | Persists to Firestore | Live (v20260512-r3) |
+| `stats-review` skill | Aggregates per-player rolling means + trends; flags drift (rules below) | **Live** (2026-05-13) |
+| `mistakes-review` (future) | Cross-checks high `calque_count` against the captured swaps in `phrase_tracker` | Future |
 
-Until `stats-review` reads the field, the rubric is **dark instrumentation** — accumulating on every Free Write session, available for inspection but not auto-actioned.
+---
+
+## Stats-review aggregation
+
+Daily `stats-review` runs read this field per player. Procedure:
+
+1. **Filter** `coach_sessions[]` to entries where `register_rubric.confidence == "high"`. Low-confidence rubrics are silently dropped (same convention as `assessment`).
+2. **Aggregate per axis** (`chunk_density`, `register_match`, `calque_count`, `discourse_marker_variety`):
+   - **Latest** value (most recent scored session).
+   - **Last-5 rolling mean** (chronological, most recent 5 scored sessions).
+   - **Trend Δ** vs the prior 5 sessions: `Δ ≥ 0.5` → up; `Δ ≤ -0.5` → down; else flat.
+3. **Sparse-data caveat**: if fewer than 3 scored sessions, render the numbers but suffix `[sparse]` and skip the flags. Don't infer trend on 1–2 data points.
+
+### Flag rules (per player, evaluated after the rolling mean computes)
+
+| Condition | Reading | Suggested action |
+|---|---|---|
+| `chunk_density` mean <3 across 3+ scored sessions | Low chunk reach. Player paraphrases L1-style instead of reaching for native chunks. | Phrase recall focus (P1.2-shape exercise) or natural-phrases-tracker review. |
+| `calque_count` mean ≥2/session AND `phrase_tracker.entries` has zero `fw`-sourced entries in the same period | Capture path may be silently failing for this player. | Investigate worker prompt or PWA passthrough; compare to Anna's working pipeline. |
+| `discourse_marker_variety` mean = 0 across 3+ sessions | Chat-style conversational scaffolding absent. May be the prompt format (narrative vs chat) suppressing them rather than a real gap. | Watchlist initially; if persists after a chat-prompted session, recent_observation note. |
+| `register_match` mean <3 across 2+ sessions | Context mismatch — over/under-formal for the stated theme. | `recent_observations` entry. Re-examine player's profile theme tags. |
+
+Flags emit as `[inferred]` evidence-tagged items (not `[data]`) since rubric scores are model-judged, not directly observed counts. Promotion to `weak_patterns` follows the standard 2-session rule.
+
+### Output shape in stats-review
+
+Per player, under `### Register fluency`:
+
+```
+| Axis | Latest | Last-5 mean | Δ vs prior 5 |
+|---|---|---|---|
+| chunk_density | 2 | 2.4 | ↓ |
+| register_match | 4 | 3.8 | flat |
+| calque_count | 2 | 1.6 | flat |
+| discourse_marker_variety | 0 | 0.2 | flat |
+
+Flags: [inferred] chunk_density <3 sustained — phrase recall focus recommended.
+```
+
+Sparse-data shape (n<3):
+
+```
+| Axis | Latest | n |
+|---|---|---|
+| chunk_density | 2 | 1 [sparse] |
+| ... |
+
+Flags: none (sparse data — need 3+ scored sessions for trend reading).
+```
 
 ---
 

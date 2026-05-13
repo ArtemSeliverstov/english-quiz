@@ -19,7 +19,7 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Workflow
 
-**0. Integrity check.** Run `node tools/check_player_integrity.js`. Exit 0 = proceed; exit 1 = **stop and surface to user**. Three invariants probe for contamination (cross-player `qStats`, `createdAt` drift, `totalAnswered` jumps).
+**0. Integrity check.** Run `node tools/check_player_integrity.js`. Exit 0 = proceed; exit 1 = **stop and surface to user**. Three invariants probe for contamination.
 
 **1. Pull stats.** Run `get_all_players.js -S` (or `get_player.js {name}` for deep-dive). Filter `auto_suspected: true` sessions before aggregation.
 
@@ -29,15 +29,15 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **2.5. Per-question audit** for flagged items. Pull `qStats[qid].lastWrong` per player via `node tools/get_question_mistakes.js <qid>`. The mistake is the highest-value signal. MCQ index may resolve to `<no log>` — mark `[speculation]`.
 
-**3. Synthesise patterns.** New weak patterns across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition-vs-production gaps.
+**3. Synthesise patterns.** New weak patterns across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition-vs-production gaps. **Register rubric**: aggregate `coach_sessions[].register_rubric` per `references/register-rubric.md` § "Stats-review aggregation".
 
 **4. Propose coach_notes updates.** ≤2 new patterns per player (removals + deferrals don't count). Scan prior `recent_observations` for unactioned recs → 'Pending'. Single-point items → 'Watchlist' (not stored). Protocol in `coach-notes-schema.md`.
 
 **5. Action recommendations.** Don't apply here — user triggers `quiz-development` or `exercise-session`.
 
-**6. Phrase tracker maintenance** (auto, after step-4). **Every player**, even zero-session: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. Run `update_coach_notes.js {name} <patch.json> --regen-tracker-md` (empty patch when md is just stale).
+**6. Phrase tracker maintenance** (auto, after step-4). **Every player**, even zero-session: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. Run `update_coach_notes.js {name} <patch.json> --regen-tracker-md` (empty patch if stale).
 
-**7. recent_session_signals promotion + audit** (per 2026-05-12 cleanup). Per player:
+**7. recent_session_signals promotion + audit.** Per player:
 - Each `recent_session_signals[]` entry with `count >= 2`: compose a durable prose label, patch `weak_patterns_add` + `recent_session_signals_promote: [pattern_id]`.
 - Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries and lexical `X → Y [tag]` rows (migrate lexicals to `phrase_tracker_add` if missing).
 
@@ -56,6 +56,7 @@ Every claim carries an evidence tag: **[data]**, **[inferred]**, **[speculation]
 ## {Player}
 ### Coverage    [table]
 ### Trends      [bullets]
+### Register fluency    [per rubric doc]
 ### Persistent patterns
 ### Quality flags    [qid: issue]
 ### Proposed coach_notes updates    [table — wait for confirmation]
