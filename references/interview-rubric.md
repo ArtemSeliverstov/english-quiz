@@ -142,6 +142,20 @@ The three are complementary. A session can show high `register_rubric.chunk_dens
 
 ---
 
+## Candidate pattern IDs for `coach_notes.recent_session_signals`
+
+When a session surfaces a recurring weakness, route it through `recent_session_signals` per `coach-notes-schema.md` "Promotion lifecycle" — never directly to `weak_patterns`. Interview-specific candidate IDs (snake_case, used as `pattern_id`):
+
+- `interview_under_specificity` — vague on numbers / dates / named stakeholders
+- `interview_hedge_inflation` — uncertainty markers on owned facts ("I think we cut DSO by..." when the speaker knows)
+- `interview_unstructured_narrative` — STAR breaks down, especially missing "result"
+- `interview_filler_density_high` — > 5 fillers/min sustained across the session
+- `interview_assumption_unflagged` — projections asserted without "the assumption here is..."
+
+`source_modes` should include `"interview_prep"` so future stats-review can isolate signals captured under speech-pressure vs typed.
+
+---
+
 ## Consumers
 
 | Consumer | Purpose |

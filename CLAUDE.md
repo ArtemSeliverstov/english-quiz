@@ -64,14 +64,14 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 
 | Skill | Triggers |
 |---|---|
-| `exercise-session` | "let's do exercises", "упражнения" — any of 5 players (Egor included) |
-| `free-write` | "let's free write", "поговорим", "пообщаемся" — CC-side; others via PWA |
-| `interview-prep` | "interview prep", "mock interview", "CFO interview practice" — Artem-only audio-first CC session; worker `/v1/audio` + Whisper-turbo |
-| `weak-spots-session` | "30 min on X", "weak spots session", "deep dive on Y" — tier-walked ~30-min depth on one topic |
-| `quiz-development` | "add questions", "fix question", "audit", question authoring |
-| `stats-review` | Stats JSON upload, "review stats", "analyse Anna's progress" |
-| `routing-audit` | "audit landing", "check routing" — learner-shell CTA + batch alignment |
-| `mistakes-review` | "review mistakes" + daily 07:30 — triage past-31h (genuine vs quality bug + sibling sweep) |
-| `deploy-build` | "deploy", "ship it", "push the changes", any pre-deploy validation |
+| `exercise-session` | "exercises", "упражнения" — 5 players |
+| `free-write` | "free write", "поговорим", "пообщаемся" — CC-side; PWA for others |
+| `interview-prep` | "interview prep", "mock interview" — Artem audio-first CC session |
+| `weak-spots-session` | "30 min on X", "weak spots", "deep dive" — depth on one topic |
+| `quiz-development` | "add questions", "fix question", "audit" — authoring |
+| `stats-review` | Stats JSON upload, "review stats", "analyse progress" |
+| `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
+| `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage + sibling sweep |
+| `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |
 
 Skills orchestrate; they don't repeat reference content.
