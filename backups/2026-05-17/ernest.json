@@ -1,0 +1,2460 @@
+{
+  "_meta": {
+    "snapshotTs": "2026-05-17T06:21:22.667Z",
+    "player": "ernest"
+  },
+  "doc": {
+    "longestStreak": 2,
+    "createdAt": "2026-02-28T07:48:57.619Z",
+    "totalCorrect": 191,
+    "totalAnswered": 285,
+    "displayName": "Ernest",
+    "lvlStats": {
+      "C1": {
+        "correct": 17,
+        "seen": 27
+      },
+      "B1": {
+        "correct": 83,
+        "seen": 108
+      },
+      "B2": {
+        "correct": 89,
+        "seen": 144
+      },
+      "C2": {
+        "correct": 2,
+        "seen": 6
+      }
+    },
+    "color": "#4caf50",
+    "ui_shell": "learner",
+    "lastPlayedDate": "2026-05-08",
+    "updatedAt": 1778261066502,
+    "aggregated_exercises": {
+      "1778167612196": 15,
+      "1774712481343": -1,
+      "1777817760539": 1,
+      "1777996822838": 15
+    },
+    "learning_path": {
+      "level_cap": "B1",
+      "active_window_size": 6,
+      "stretch_allowance": 0.15,
+      "next_unlock_options": [
+        {
+          "rationale": "Closest to mastery in active window (73% n=22)",
+          "pathway": "deepen",
+          "category": "Tenses"
+        },
+        {
+          "pathway": "broaden",
+          "rationale": "67% n=6 — small but encouraging signal, high-utility B1",
+          "category": "Modal Verbs"
+        },
+        {
+          "category": "Linking Words",
+          "rationale": "100% n=6 — small-n caveat; if it holds at scale, broaden to support discourse-level writing",
+          "pathway": "broaden"
+        },
+        {
+          "rationale": "No catStats yet — under-touched area family-wide; high-utility B1",
+          "pathway": "broaden",
+          "category": "Question Formation"
+        }
+      ],
+      "promotion_threshold": {
+        "accuracy": 0.8,
+        "window_days": 14,
+        "min_attempts": 20
+      },
+      "active_categories": [
+        "Tenses",
+        "Articles",
+        "Conditionals",
+        "Phrasal Verbs",
+        "Vocabulary",
+        "Relative Clauses"
+      ],
+      "composition_last_checked": "2026-05-01T14:12:52.109Z",
+      "mastered_categories": [],
+      "floor_bouncers": []
+    },
+    "emoji": "👦",
+    "currentStreak": 2,
+    "catStats": {
+      "Present Perfect": {
+        "seen": 1,
+        "correct": 1
+      },
+      "Stative Verbs": {
+        "correct": 1,
+        "seen": 1
+      },
+      "Everyday English": {
+        "seen": 4,
+        "correct": 2
+      },
+      "Vocabulary": {
+        "correct": 16,
+        "seen": 25
+      },
+      "Conditionals": {
+        "correct": 10,
+        "seen": 22
+      },
+      "Word Choice": {
+        "seen": 4,
+        "correct": 2
+      },
+      "Question Formation": {
+        "correct": 2,
+        "seen": 2
+      },
+      "Tenses": {
+        "seen": 22,
+        "correct": 16
+      },
+      "Articles": {
+        "seen": 27,
+        "correct": 12
+      },
+      "Relative Clauses": {
+        "seen": 17,
+        "correct": 11
+      },
+      "Adjectives": {
+        "seen": 4,
+        "correct": 4
+      },
+      "Phrasal Verbs": {
+        "seen": 16,
+        "correct": 10
+      },
+      "Passive Voice": {
+        "correct": 4,
+        "seen": 4
+      },
+      "Comparisons": {
+        "correct": 4,
+        "seen": 7
+      },
+      "Irregular Verbs": {
+        "seen": 3,
+        "correct": 3
+      },
+      "Gerunds & Infinitives": {
+        "seen": 24,
+        "correct": 20
+      },
+      "Word Formation": {
+        "seen": 2,
+        "correct": 2
+      },
+      "Modal Verbs": {
+        "seen": 6,
+        "correct": 4
+      },
+      "Reported Speech": {
+        "correct": 1,
+        "seen": 2
+      },
+      "Linking Words": {
+        "correct": 6,
+        "seen": 6
+      },
+      "Prepositions": {
+        "seen": 3,
+        "correct": 2
+      },
+      "Collocations": {
+        "seen": 5,
+        "correct": 2
+      },
+      "Grammar": {
+        "seen": 39,
+        "correct": 30
+      },
+      "Word Order": {
+        "seen": 4,
+        "correct": 4
+      },
+      "Quantifiers": {
+        "correct": 3,
+        "seen": 3
+      },
+      "Idioms": {
+        "correct": 1,
+        "seen": 1
+      }
+    },
+    "coach_notes": {
+      "stuck_questions": [],
+      "weak_patterns": [
+        "articles — uncountable nouns ('a good progress', 'an action') at 0%",
+        "multi-blank format — 6% across 4 attempts (small-n; matches cross-player pattern)",
+        "05-03 free_write mechanics cluster (single-session origin): relative-clause omission, dangling participle, preposition collocation ('on lessons'→'in class'), fixed-phrase ('feel control'→'feel in control'), comma splices, sentence fragments. Origin single session — needs 2nd-session confirmation before promotion to durable pattern."
+      ],
+      "engagement_notes": "Brief, low-friction format per profile; error-correction over MCQ. Last active 2026-05-07 (3 micro-sessions across 2026-05-03 / 2026-05-05 / 2026-05-07; one EC 1/1 most recent). Articles-uncountable trap freshly confirmed 2026-05-09 (art11 0/3 lastWrong 'a good progress'). 8+ sessions / 285 answers — limited data, treat conclusions as provisional.",
+      "strong_patterns": [],
+      "last_updated": "2026-05-13T12:54:22.194Z",
+      "recent_session_signals": [],
+      "recent_observations": [
+        {
+          "date": "2026-04-30",
+          "note": "Input accuracy improved to 48% (was 25% baseline in profile). Articles still dominant weakness, esp. uncountable nouns. Multi-blank format catastrophic but only 4 attempts.",
+          "session_id": "stats_review_2026-04-30",
+          "author": "claude_code"
+        },
+        {
+          "author": "coach_tab",
+          "session_id": "ernest_fw_1777793204602_l7yc",
+          "date": "2026-05-03",
+          "note": "Free Write — Ernest wrote about pre-exam stress across four subjects. Main issues were Russian-style topic-fronting without a bridge phrase, and minor word choice imprecision; articles did not arise this session. (turns: 3)"
+        },
+        {
+          "session_id": "ernest_fw_1777794307019_3mmd",
+          "author": "coach_tab",
+          "date": "2026-05-03",
+          "note": "Free Write — Ernest wrote a short descriptive paragraph about his friend Nael. Main issues were a comma splice, a dangling participle, and a preposition collocation error ('on lessons' vs 'in class'). (turns: 5)"
+        },
+        {
+          "note": "Free Write — Ernest wrote a short opinion piece about basketball. Key issues were a missing comma+which in a non-restrictive relative clause, a fixed-phrase error ('feel control' vs 'feel in control'), and a dangling subordinate clause used as a fragment. (turns: 1)",
+          "date": "2026-05-03",
+          "author": "coach_tab",
+          "session_id": "ernest_fw_1777818216284_mtd3"
+        },
+        {
+          "session_id": "stats_review_2026-05-09",
+          "author": "claude_code",
+          "date": "2026-05-09",
+          "note": "[data] Articles uncountable trap freshly confirmed: art11 0/3 lastWrong 'a good progress'. Also tf_12 0/2 'wish i studied' — past subjunctive in 'wish' clauses (had+PP). Both align with profile, no new pattern."
+        }
+      ],
+      "last_updated_by": "claude_code"
+    },
+    "qStats": {
+      "art15": {
+        "lastSeen": 1775056754153,
+        "correct": 0,
+        "consec": 0,
+        "seen": 2,
+        "wrong": 2
+      },
+      "mft02": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774694470794
+      },
+      "tg34": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1775211445834,
+        "correct": 1,
+        "consec": 1
+      },
+      "rs03": {
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1774365991593
+      },
+      "ad_ernest_b05": {
+        "wrong": 1,
+        "seen": 1,
+        "lastSeen": 1777997042067,
+        "correct": 0
+      },
+      "ptc07": {
+        "wrong": 0,
+        "lastSeen": 1772265675688,
+        "seen": 1,
+        "correct": 1
+      },
+      "ec_ernest_b07": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1778167757297,
+        "correct": 1
+      },
+      "mvp03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772878946044,
+        "seen": 1
+      },
+      "art_i16": {
+        "seen": 3,
+        "wrong": 1,
+        "correct": 2,
+        "lastSeen": 1778261050136,
+        "consec": 2
+      },
+      "nb02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772878961010,
+        "seen": 1
+      },
+      "voc45": {
+        "seen": 3,
+        "wrong": 1,
+        "correct": 2,
+        "lastSeen": 1778261042607,
+        "consec": 1
+      },
+      "tg53": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265619741
+      },
+      "iv04": {
+        "wrong": 1,
+        "lastSeen": 1772265147458,
+        "seen": 1,
+        "correct": 0
+      },
+      "pg04": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774694542739,
+        "wrong": 0
+      },
+      "mx05": {
+        "correct": 0,
+        "lastSeen": 1772878834800,
+        "seen": 1,
+        "wrong": 1
+      },
+      "ee15": {
+        "seen": 2,
+        "wrong": 2,
+        "correct": 0,
+        "lastSeen": 1775056609131,
+        "consec": 0
+      },
+      "sv09": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265331446,
+        "wrong": 0
+      },
+      "en01": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772265796405,
+        "correct": 1
+      },
+      "ad_ernest_b13": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1777997047033,
+        "wrong": 1
+      },
+      "tf_43": {
+        "seen": 2,
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1775056542779,
+        "consec": 1
+      },
+      "cr02": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1774366200327,
+        "wrong": 1
+      },
+      "pp_pr06": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775211108115,
+        "wrong": 1,
+        "seen": 2
+      },
+      "dc01": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265072313
+      },
+      "fi02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772879326626,
+        "seen": 1
+      },
+      "rc_b01": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1775056529540,
+        "correct": 1,
+        "consec": 1
+      },
+      "ob05": {
+        "seen": 2,
+        "wrong": 0,
+        "lastSeen": 1775211438303,
+        "correct": 2,
+        "consec": 1
+      },
+      "cp04": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265606440,
+        "wrong": 0
+      },
+      "ee26": {
+        "seen": 1,
+        "lastSeen": 1774365640022,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ut2_07": {
+        "seen": 1,
+        "lastSeen": 1772879446900,
+        "correct": 1,
+        "wrong": 0
+      },
+      "cu01": {
+        "lastSeen": 1775211370620,
+        "correct": 3,
+        "consec": 1,
+        "seen": 4,
+        "wrong": 1
+      },
+      "pp_ex01": {
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1772879527794,
+        "seen": 2
+      },
+      "ex02": {
+        "lastSeen": 1773748724643,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1
+      },
+      "ad_ernest_b06": {
+        "wrong": 1,
+        "lastSeen": 1777997228489,
+        "seen": 1,
+        "correct": 0
+      },
+      "ad_ernest_b09": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1777996981974,
+        "seen": 1
+      },
+      "ec_ernest_b15": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1778167875420,
+        "seen": 1
+      },
+      "mm01": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772265872737,
+        "correct": 1
+      },
+      "tf_12": {
+        "consec": 0,
+        "lastWrong": "wish i studied",
+        "lastSeen": 1778261007538,
+        "correct": 0,
+        "wrong": 2,
+        "seen": 2
+      },
+      "rc_b02": {
+        "seen": 2,
+        "wrong": 0,
+        "lastSeen": 1778261058498,
+        "correct": 2,
+        "consec": 1
+      },
+      "ma02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265734534,
+        "seen": 1
+      },
+      "sk01": {
+        "seen": 2,
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1775211337307,
+        "consec": 1
+      },
+      "gs03": {
+        "wrong": 0,
+        "lastSeen": 1773748245280,
+        "seen": 1,
+        "correct": 1
+      },
+      "qf08": {
+        "wrong": 0,
+        "lastSeen": 1772265905781,
+        "seen": 1,
+        "correct": 1
+      },
+      "tag02": {
+        "wrong": 1,
+        "seen": 3,
+        "consec": 2,
+        "lastSeen": 1775211095239,
+        "correct": 2
+      },
+      "nc01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774694704283,
+        "wrong": 0
+      },
+      "pv_ti01": {
+        "consec": 0,
+        "lastWrong": "dived into",
+        "lastSeen": 1775211139856,
+        "correct": 0,
+        "wrong": 2,
+        "seen": 2
+      },
+      "tf_26": {
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1774694364383
+      },
+      "ec_ernest_b04": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1778167683242,
+        "wrong": 1
+      },
+      "gt01": {
+        "lastSeen": 1778260980786,
+        "correct": 2,
+        "consec": 1,
+        "seen": 2,
+        "wrong": 0
+      },
+      "et03": {
+        "lastSeen": 1772708314423,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "cp01": {
+        "wrong": 1,
+        "lastSeen": 1772879094046,
+        "seen": 1,
+        "correct": 0
+      },
+      "ec_ernest_b12": {
+        "correct": 0,
+        "lastSeen": 1778167732506,
+        "seen": 1,
+        "wrong": 1
+      },
+      "pp_ex02": {
+        "seen": 1,
+        "lastSeen": 1772265662337,
+        "correct": 1,
+        "wrong": 0
+      },
+      "irvpp19": {
+        "seen": 1,
+        "wrong": 0,
+        "lastSeen": 1775211407305,
+        "correct": 1,
+        "consec": 1
+      },
+      "gt13": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774365772102,
+        "seen": 1
+      },
+      "sv06": {
+        "correct": 1,
+        "lastSeen": 1773748251984,
+        "seen": 1,
+        "wrong": 0
+      },
+      "fo03": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775211215396,
+        "wrong": 1,
+        "seen": 2
+      },
+      "ec_ernest_b08": {
+        "wrong": 0,
+        "lastSeen": 1778167662789,
+        "seen": 1,
+        "correct": 1
+      },
+      "tg52": {
+        "correct": 1,
+        "lastSeen": 1774694533918,
+        "seen": 1,
+        "wrong": 0
+      },
+      "sa03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265036365,
+        "seen": 1
+      },
+      "irvpp12": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774694743982,
+        "seen": 1
+      },
+      "gh02": {
+        "wrong": 0,
+        "lastSeen": 1772265113793,
+        "seen": 1,
+        "correct": 1
+      },
+      "ec_ernest_b14": {
+        "seen": 1,
+        "lastSeen": 1778167798148,
+        "correct": 0,
+        "wrong": 1
+      },
+      "co_b04": {
+        "correct": 2,
+        "lastSeen": 1778260975619,
+        "consec": 2,
+        "seen": 3,
+        "wrong": 1
+      },
+      "iv01": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772265242253,
+        "seen": 1
+      },
+      "pa09": {
+        "correct": 1,
+        "lastSeen": 1774694626786,
+        "seen": 1,
+        "wrong": 0
+      },
+      "cv01": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1772879168325,
+        "seen": 1
+      },
+      "ptc01": {
+        "consec": 1,
+        "lastSeen": 1775211320371,
+        "correct": 2,
+        "wrong": 0,
+        "seen": 2
+      },
+      "ao03": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1773748639545
+      },
+      "gi07": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1773748609050,
+        "wrong": 0
+      },
+      "ad_ernest_b07": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777997234088,
+        "wrong": 0
+      },
+      "ar_01": {
+        "seen": 1,
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1775211204408,
+        "consec": 1
+      },
+      "ec_ernest_b06": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1778167816162
+      },
+      "pg03": {
+        "wrong": 0,
+        "lastSeen": 1774694758262,
+        "seen": 1,
+        "correct": 1
+      },
+      "fc04": {
+        "seen": 2,
+        "wrong": 1,
+        "lastSeen": 1775211453219,
+        "correct": 1,
+        "lastWrong": "Unless",
+        "consec": 0
+      },
+      "ex_a03": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774365748618
+      },
+      "rc_b07": {
+        "seen": 1,
+        "lastSeen": 1772879291990,
+        "correct": 1,
+        "wrong": 0
+      },
+      "mx07": {
+        "lastSeen": 1774694408128,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1
+      },
+      "nm03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772879139433,
+        "seen": 1
+      },
+      "wt19": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775211342104,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ut03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265845191,
+        "seen": 1
+      },
+      "iq03": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774694437791
+      },
+      "ad_ernest_b02": {
+        "seen": 1,
+        "lastSeen": 1777996889194,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ec_ernest_b02": {
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1778167784296
+      },
+      "wt13": {
+        "wrong": 1,
+        "seen": 2,
+        "lastSeen": 1774365974423,
+        "correct": 1
+      },
+      "bp02": {
+        "wrong": 2,
+        "seen": 3,
+        "consec": 1,
+        "lastSeen": 1775056773352,
+        "correct": 1
+      },
+      "fe01": {
+        "wrong": 0,
+        "seen": 1,
+        "consec": 1,
+        "lastSeen": 1775211413884,
+        "correct": 1
+      },
+      "nm01": {
+        "lastSeen": 1772708390170,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1
+      },
+      "ad_ernest_b03": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777997063650
+      },
+      "pv_ti08": {
+        "consec": 0,
+        "lastWrong": "sold",
+        "correct": 0,
+        "lastSeen": 1775211276310,
+        "wrong": 2,
+        "seen": 2
+      },
+      "tg33": {
+        "consec": 1,
+        "correct": 2,
+        "lastSeen": 1775211287624,
+        "wrong": 0,
+        "seen": 2
+      },
+      "ec_ernest_b13": {
+        "seen": 1,
+        "lastSeen": 1778167648174,
+        "correct": 1,
+        "wrong": 0
+      },
+      "gi_b01": {
+        "correct": 1,
+        "lastSeen": 1772265683886,
+        "seen": 1,
+        "wrong": 0
+      },
+      "pu02": {
+        "seen": 1,
+        "lastSeen": 1772265887120,
+        "correct": 1,
+        "wrong": 0
+      },
+      "gadj08": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774365756237,
+        "wrong": 0
+      },
+      "cn03": {
+        "wrong": 1,
+        "lastSeen": 1772708378020,
+        "seen": 1,
+        "correct": 0
+      },
+      "fo02": {
+        "lastSeen": 1772265503628,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ad_ernest_b10": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1777997081148,
+        "correct": 1
+      },
+      "pv_b01": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772879305637,
+        "seen": 1
+      },
+      "asl06": {
+        "wrong": 0,
+        "lastSeen": 1772878884466,
+        "seen": 1,
+        "correct": 1
+      },
+      "pv01": {
+        "wrong": 0,
+        "lastSeen": 1772708258043,
+        "seen": 1,
+        "correct": 1
+      },
+      "ad_ernest_b14": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1777997050967,
+        "seen": 1
+      },
+      "tr02": {
+        "correct": 1,
+        "lastSeen": 1772878896480,
+        "seen": 1,
+        "wrong": 0
+      },
+      "tr_ernest_b06": {
+        "correct": 0,
+        "seen": 1,
+        "wrong": 1
+      },
+      "rc_b12": {
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1774366114353,
+        "wrong": 1
+      },
+      "ec_ernest_b09": {
+        "wrong": 1,
+        "correct": 0,
+        "lastSeen": 1778167831299,
+        "seen": 1
+      },
+      "tc04": {
+        "wrong": 1,
+        "seen": 2,
+        "lastSeen": 1774366078721,
+        "correct": 1
+      },
+      "tg43": {
+        "correct": 1,
+        "lastSeen": 1772265320861,
+        "seen": 1,
+        "wrong": 0
+      },
+      "ad_ernest_b08": {
+        "lastSeen": 1777996903059,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "tg48": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265360005,
+        "seen": 1
+      },
+      "pr_ti03": {
+        "wrong": 1,
+        "seen": 1,
+        "lastSeen": 1772265580550,
+        "correct": 0
+      },
+      "cu04": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265407155,
+        "seen": 1
+      },
+      "mn02": {
+        "lastSeen": 1773748629182,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ad_ernest_b11": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1777996895112,
+        "correct": 1
+      },
+      "ar03": {
+        "consec": 1,
+        "lastSeen": 1775056640995,
+        "correct": 2,
+        "wrong": 1,
+        "seen": 3
+      },
+      "irv22": {
+        "seen": 1,
+        "lastSeen": 1772879205113,
+        "correct": 1,
+        "wrong": 0
+      },
+      "ad_ernest_b15": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777996906429,
+        "wrong": 0
+      },
+      "st_a03": {
+        "seen": 1,
+        "lastSeen": 1772265466948,
+        "correct": 1,
+        "wrong": 0
+      },
+      "gt09": {
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1774365582614
+      },
+      "c1_m04": {
+        "lastSeen": 1774365962492,
+        "seen": 2,
+        "correct": 1,
+        "wrong": 1
+      },
+      "irv11": {
+        "lastSeen": 1774694752280,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "fu03": {
+        "correct": 1,
+        "lastSeen": 1774694454410,
+        "seen": 1,
+        "wrong": 0
+      },
+      "ev03": {
+        "consec": 1,
+        "correct": 2,
+        "lastSeen": 1775211327456,
+        "wrong": 0,
+        "seen": 2
+      },
+      "fc03": {
+        "wrong": 0,
+        "lastSeen": 1772879125060,
+        "seen": 1,
+        "correct": 1
+      },
+      "gx05": {
+        "consec": 1,
+        "lastSeen": 1775056521359,
+        "correct": 1,
+        "wrong": 2,
+        "seen": 3
+      },
+      "hw03": {
+        "correct": 0,
+        "seen": 2,
+        "lastSeen": 1774366090297,
+        "wrong": 2
+      },
+      "rc05": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265017836,
+        "wrong": 0
+      },
+      "bf02": {
+        "correct": 1,
+        "lastSeen": 1774694718963,
+        "seen": 1,
+        "wrong": 0
+      },
+      "ws03": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772708162378,
+        "correct": 1
+      },
+      "mo03": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1775211238225,
+        "consec": 1
+      },
+      "tg04": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772708136289,
+        "correct": 1
+      },
+      "art21": {
+        "lastSeen": 1772265048932,
+        "seen": 1,
+        "correct": 0,
+        "wrong": 1
+      },
+      "pv09": {
+        "wrong": 0,
+        "lastSeen": 1772708354100,
+        "seen": 1,
+        "correct": 1
+      },
+      "ad_ernest_b01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777996869317,
+        "wrong": 0
+      },
+      "pv_c15": {
+        "correct": 1,
+        "lastSeen": 1774694494674,
+        "seen": 1,
+        "wrong": 0
+      },
+      "irvpp01": {
+        "consec": 1,
+        "lastSeen": 1775211463570,
+        "correct": 1,
+        "wrong": 1,
+        "seen": 2
+      },
+      "ec_ernest_b10": {
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1778167713118
+      },
+      "tg22": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773748692863,
+        "seen": 1
+      },
+      "mx01": {
+        "wrong": 2,
+        "seen": 2,
+        "consec": 0,
+        "correct": 0,
+        "lastSeen": 1775056736832
+      },
+      "co_ti03": {
+        "wrong": 2,
+        "correct": 0,
+        "lastSeen": 1774366015054,
+        "seen": 2
+      },
+      "cn01": {
+        "seen": 1,
+        "lastSeen": 1772879482797,
+        "correct": 1,
+        "wrong": 0
+      },
+      "sy02": {
+        "consec": 1,
+        "lastSeen": 1775211349667,
+        "correct": 2,
+        "wrong": 0,
+        "seen": 2
+      },
+      "pppc01": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1773748260149,
+        "seen": 1
+      },
+      "wf_14": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775056460082,
+        "wrong": 0,
+        "seen": 1
+      },
+      "art_c11": {
+        "wrong": 0,
+        "lastSeen": 1773748654917,
+        "seen": 1,
+        "correct": 1
+      },
+      "col_b07": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1773748648862,
+        "wrong": 0
+      },
+      "ao02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265344978,
+        "seen": 1
+      },
+      "lkc21": {
+        "lastSeen": 1774365722106,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "wt08": {
+        "wrong": 1,
+        "correct": 1,
+        "lastSeen": 1774366048768,
+        "seen": 2
+      },
+      "gt02": {
+        "wrong": 1,
+        "seen": 1,
+        "consec": 0,
+        "lastWrong": "getting through",
+        "lastSeen": 1775211179870,
+        "correct": 0
+      },
+      "irvpp18": {
+        "lastSeen": 1775056766400,
+        "correct": 1,
+        "consec": 1,
+        "seen": 1,
+        "wrong": 0
+      },
+      "co02": {
+        "wrong": 1,
+        "seen": 2,
+        "consec": 1,
+        "lastSeen": 1775211366206,
+        "correct": 1
+      },
+      "cp05": {
+        "wrong": 1,
+        "lastSeen": 1772879078966,
+        "seen": 1,
+        "correct": 0
+      },
+      "ex06": {
+        "lastSeen": 1774365880032,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "lkc04": {
+        "correct": 1,
+        "lastSeen": 1774365667537,
+        "seen": 1,
+        "wrong": 0
+      },
+      "pp_ex04": {
+        "lastSeen": 1774366193414,
+        "seen": 2,
+        "correct": 0,
+        "wrong": 2
+      },
+      "mc14": {
+        "consec": 0,
+        "lastSeen": 1775056502773,
+        "correct": 0.25,
+        "wrong": 2.75,
+        "seen": 3
+      },
+      "art_c01": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1778260970238,
+        "consec": 1
+      },
+      "av01": {
+        "consec": 1,
+        "lastSeen": 1775211222875,
+        "correct": 1,
+        "wrong": 2,
+        "seen": 3
+      },
+      "caus09": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1775056658912,
+        "consec": 1
+      },
+      "wu03": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772265786960,
+        "correct": 1
+      },
+      "ad_ernest_b04": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1777997058600,
+        "wrong": 0
+      },
+      "ta03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772265633840,
+        "seen": 1
+      },
+      "ec_ernest_b03": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1778167676840,
+        "seen": 1
+      },
+      "ad_ernest_b12": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1777997237537,
+        "seen": 1
+      },
+      "voc47": {
+        "wrong": 1,
+        "lastSeen": 1774365825618,
+        "seen": 1,
+        "correct": 0
+      },
+      "pspp08": {
+        "wrong": 2,
+        "seen": 2,
+        "lastSeen": 1774366040056,
+        "correct": 0
+      },
+      "qf10": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775211299523,
+        "wrong": 0,
+        "seen": 1
+      },
+      "lki01": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1774694253014,
+        "seen": 1
+      },
+      "but01": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774694523356,
+        "wrong": 0
+      },
+      "eq01": {
+        "lastSeen": 1774365601261,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "wf_10": {
+        "consec": 1,
+        "correct": 1,
+        "lastSeen": 1775056688467,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ec_ernest_b11": {
+        "wrong": 0,
+        "lastSeen": 1778167847181,
+        "seen": 1,
+        "correct": 1
+      },
+      "lnk02": {
+        "seen": 1,
+        "lastSeen": 1774694277955,
+        "correct": 1,
+        "wrong": 0
+      },
+      "rc08": {
+        "wrong": 2,
+        "seen": 2,
+        "consec": 0,
+        "lastWrong": "When it is the subject of the relative clause",
+        "lastSeen": 1775211119641,
+        "correct": 0
+      },
+      "art14": {
+        "correct": 0,
+        "lastSeen": 1772265395590,
+        "seen": 1,
+        "wrong": 1
+      },
+      "wt15": {
+        "lastSeen": 1775211311914,
+        "correct": 2,
+        "consec": 1,
+        "seen": 3,
+        "wrong": 1
+      },
+      "pp_b06": {
+        "seen": 2,
+        "lastSeen": 1772879533111,
+        "correct": 2,
+        "wrong": 0
+      },
+      "tg25": {
+        "seen": 2,
+        "wrong": 0,
+        "correct": 2,
+        "lastSeen": 1775056557869,
+        "consec": 1
+      },
+      "ec_ernest_b05": {
+        "wrong": 0,
+        "lastSeen": 1778167638759,
+        "seen": 1,
+        "correct": 1
+      },
+      "iq04": {
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1772265494146,
+        "wrong": 0
+      },
+      "an02": {
+        "wrong": 0,
+        "lastSeen": 1772879516613,
+        "seen": 1,
+        "correct": 1
+      },
+      "gi_b05": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772708244176,
+        "seen": 1
+      },
+      "pp_i02": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772879217226,
+        "seen": 1
+      },
+      "al10": {
+        "correct": 0,
+        "lastSeen": 1774694734461,
+        "seen": 1,
+        "wrong": 1
+      },
+      "ut05": {
+        "wrong": 0,
+        "lastSeen": 1772708286343,
+        "seen": 1,
+        "correct": 1
+      },
+      "pa07": {
+        "correct": 1,
+        "lastSeen": 1772879311086,
+        "seen": 1,
+        "wrong": 0
+      },
+      "zc07": {
+        "consec": 2,
+        "lastSeen": 1775211054572,
+        "correct": 2,
+        "wrong": 1,
+        "seen": 3
+      },
+      "ec_ernest_b01": {
+        "wrong": 1,
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1778167763914
+      },
+      "cu02": {
+        "lastSeen": 1775056715624,
+        "correct": 2,
+        "consec": 1,
+        "seen": 2,
+        "wrong": 0
+      },
+      "pv_b03": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1774694332584,
+        "correct": 1
+      },
+      "tg50": {
+        "wrong": 0,
+        "correct": 1,
+        "seen": 1,
+        "lastSeen": 1774365659690
+      },
+      "art11": {
+        "seen": 3,
+        "wrong": 3,
+        "correct": 0,
+        "lastSeen": 1775211361254,
+        "lastWrong": "We made a good progress last quarter.",
+        "consec": 0
+      },
+      "ws01": {
+        "wrong": 0,
+        "correct": 1,
+        "lastSeen": 1772708360986,
+        "seen": 1
+      },
+      "caus01": {
+        "wrong": 0,
+        "seen": 1,
+        "lastSeen": 1772878874631,
+        "correct": 1
+      },
+      "tg14": {
+        "consec": 1,
+        "lastSeen": 1775211428037,
+        "correct": 1,
+        "wrong": 0,
+        "seen": 1
+      },
+      "ee27": {
+        "correct": 1,
+        "lastSeen": 1774365903059,
+        "seen": 1,
+        "wrong": 0
+      },
+      "cc07": {
+        "consec": 1,
+        "lastSeen": 1775211259957,
+        "correct": 3,
+        "wrong": 0,
+        "seen": 3
+      },
+      "caus02": {
+        "correct": 1,
+        "lastSeen": 1772878937174,
+        "seen": 1,
+        "wrong": 0
+      },
+      "but08": {
+        "correct": 2,
+        "lastSeen": 1772878909810,
+        "seen": 2,
+        "wrong": 0
+      },
+      "psc02": {
+        "lastSeen": 1773748615985,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "fw03": {
+        "correct": 0,
+        "seen": 1,
+        "lastSeen": 1772265281033,
+        "wrong": 1
+      },
+      "art17": {
+        "wrong": 0,
+        "lastSeen": 1772708120925,
+        "seen": 1,
+        "correct": 1
+      },
+      "gx02": {
+        "wrong": 2,
+        "lastSeen": 1774366206492,
+        "seen": 2,
+        "correct": 0
+      },
+      "fc01": {
+        "lastSeen": 1772265456085,
+        "seen": 1,
+        "correct": 1,
+        "wrong": 0
+      },
+      "asl04": {
+        "wrong": 0,
+        "seen": 2,
+        "consec": 1,
+        "correct": 2,
+        "lastSeen": 1775056446960
+      },
+      "pf_a03": {
+        "wrong": 1,
+        "correct": 1,
+        "seen": 2,
+        "lastSeen": 1774366070458
+      },
+      "gadj05": {
+        "correct": 1,
+        "lastSeen": 1774694461925,
+        "seen": 1,
+        "wrong": 0
+      }
+    },
+    "aggregated_coach_sessions": {},
+    "recentSessions": [
+      {
+        "mode": "smart",
+        "lvlBreakdown": {
+          "C1": {
+            "correct": 4,
+            "seen": 4
+          },
+          "B1": {
+            "seen": 10,
+            "correct": 9
+          },
+          "B2": {
+            "correct": 11,
+            "seen": 16
+          }
+        },
+        "catBreakdown": {
+          "Word Order": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Quantifiers": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Articles": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Grammar": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Collocations": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Relative Clauses": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Gerunds & Infinitives": {
+            "correct": 4,
+            "seen": 4
+          },
+          "Tenses": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Phrasal Verbs": {
+            "seen": 3,
+            "correct": 0
+          },
+          "Conditionals": {
+            "correct": 2,
+            "seen": 3
+          },
+          "Irregular Verbs": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Question Formation": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "seen": 5,
+            "correct": 5
+          }
+        },
+        "score": 24,
+        "date": "2026-04-03T10:17:45.003Z",
+        "total": 30,
+        "pct": 80
+      },
+      {
+        "mode": "smart",
+        "catBreakdown": {
+          "Quantifiers": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Relative Clauses": {
+            "seen": 3,
+            "correct": 1
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 3
+          },
+          "Word Formation": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Gerunds & Infinitives": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Word Choice": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Irregular Verbs": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Comparisons": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Everyday English": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Passive Voice": {
+            "seen": 1,
+            "correct": 1
+          }
+        },
+        "lvlBreakdown": {
+          "C2": {
+            "correct": 0,
+            "seen": 1
+          },
+          "B2": {
+            "correct": 7,
+            "seen": 11
+          },
+          "B1": {
+            "seen": 6,
+            "correct": 5
+          },
+          "C1": {
+            "correct": 2,
+            "seen": 2
+          }
+        },
+        "score": 14,
+        "pct": 70,
+        "total": 20,
+        "date": "2026-04-01T15:19:35.326Z"
+      },
+      {
+        "total": 30,
+        "pct": 60,
+        "date": "2026-03-28T10:45:59.448Z",
+        "catBreakdown": {
+          "Adjectives": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Collocations": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Grammar": {
+            "correct": 4,
+            "seen": 5
+          },
+          "Linking Words": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Articles": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Tenses": {
+            "seen": 4,
+            "correct": 3
+          },
+          "Gerunds & Infinitives": {
+            "correct": 4,
+            "seen": 4
+          },
+          "Everyday English": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Vocabulary": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Comparisons": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Conditionals": {
+            "seen": 4,
+            "correct": 0
+          },
+          "Word Choice": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Phrasal Verbs": {
+            "correct": 2,
+            "seen": 2
+          }
+        },
+        "score": 18,
+        "lvlBreakdown": {
+          "B2": {
+            "correct": 6,
+            "seen": 11
+          },
+          "C2": {
+            "correct": 0,
+            "seen": 1
+          },
+          "C1": {
+            "seen": 3,
+            "correct": 1
+          },
+          "B1": {
+            "seen": 15,
+            "correct": 11
+          }
+        },
+        "mode": "smart"
+      },
+      {
+        "mode": "weak",
+        "score": 11,
+        "lvlBreakdown": {
+          "C1": {
+            "seen": 3,
+            "correct": 1
+          },
+          "B1": {
+            "correct": 5,
+            "seen": 7
+          },
+          "B2": {
+            "correct": 5,
+            "seen": 10
+          }
+        },
+        "catBreakdown": {
+          "Collocations": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Relative Clauses": {
+            "correct": 3,
+            "seen": 3
+          },
+          "Vocabulary": {
+            "seen": 3,
+            "correct": 1
+          },
+          "Grammar": {
+            "seen": 5,
+            "correct": 4
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Modal Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Reported Speech": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Tenses": {
+            "correct": 0,
+            "seen": 2
+          },
+          "Gerunds & Infinitives": {
+            "correct": 0,
+            "seen": 2
+          }
+        },
+        "pct": 55,
+        "total": 20,
+        "date": "2026-03-24T15:30:09.692Z"
+      },
+      {
+        "date": "2026-03-24T15:25:40.532Z",
+        "total": 20,
+        "pct": 65,
+        "catBreakdown": {
+          "Word Order": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Adjectives": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Reported Speech": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Linking Words": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Phrasal Verbs": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Relative Clauses": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Everyday English": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Vocabulary": {
+            "seen": 5,
+            "correct": 2
+          },
+          "Grammar": {
+            "seen": 2,
+            "correct": 1
+          }
+        },
+        "lvlBreakdown": {
+          "C1": {
+            "seen": 2,
+            "correct": 2
+          },
+          "B1": {
+            "seen": 9,
+            "correct": 6
+          },
+          "B2": {
+            "correct": 5,
+            "seen": 9
+          }
+        },
+        "score": 13,
+        "mode": "smart"
+      },
+      {
+        "lvlBreakdown": {
+          "B2": {
+            "seen": 11,
+            "correct": 6
+          },
+          "C1": {
+            "correct": 1,
+            "seen": 2
+          },
+          "B1": {
+            "seen": 7,
+            "correct": 6
+          }
+        },
+        "score": 13,
+        "catBreakdown": {
+          "Tenses": {
+            "correct": 3,
+            "seen": 4
+          },
+          "Modal Verbs": {
+            "seen": 2,
+            "correct": 1
+          },
+          "Gerunds & Infinitives": {
+            "correct": 3,
+            "seen": 4
+          },
+          "Word Order": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Conditionals": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Word Choice": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Relative Clauses": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Collocations": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Articles": {
+            "correct": 2,
+            "seen": 3
+          }
+        },
+        "mode": "smart",
+        "pct": 65,
+        "total": 20,
+        "date": "2026-03-17T11:58:57.230Z"
+      },
+      {
+        "date": "2026-03-07T10:32:21.176Z",
+        "total": 20,
+        "pct": 80,
+        "mode": "random",
+        "catBreakdown": {
+          "Modal Verbs": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Tenses": {
+            "seen": 3,
+            "correct": 3
+          },
+          "Phrasal Verbs": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Vocabulary": {
+            "correct": 2,
+            "seen": 2
+          },
+          "Passive Voice": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Conditionals": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Word Choice": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Adjectives": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Prepositions": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Articles": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Relative Clauses": {
+            "correct": 2,
+            "seen": 3
+          },
+          "Collocations": {
+            "correct": 0,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 3,
+            "seen": 3
+          }
+        },
+        "score": 16,
+        "lvlBreakdown": {
+          "C1": {
+            "correct": 2,
+            "seen": 2
+          },
+          "B1": {
+            "correct": 7,
+            "seen": 8
+          },
+          "B2": {
+            "correct": 7,
+            "seen": 10
+          }
+        }
+      },
+      {
+        "score": 14,
+        "lvlBreakdown": {
+          "B1": {
+            "correct": 4,
+            "seen": 6
+          },
+          "C1": {
+            "correct": 0,
+            "seen": 2
+          },
+          "C2": {
+            "seen": 2,
+            "correct": 2
+          },
+          "B2": {
+            "correct": 8,
+            "seen": 10
+          }
+        },
+        "catBreakdown": {
+          "Phrasal Verbs": {
+            "seen": 2,
+            "correct": 2
+          },
+          "Articles": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Prepositions": {
+            "seen": 1,
+            "correct": 1
+          },
+          "Linking Words": {
+            "correct": 1,
+            "seen": 1
+          },
+          "Grammar": {
+            "correct": 1,
+            "seen": 2
+          },
+          "Conditionals": {
+            "correct": 3,
+            "seen": 3
+          },
+          "Vocabulary": {
+            "seen": 1,
+            "correct": 0
+          },
+          "Gerunds & Infinitives": {
+            "seen": 3,
+            "correct": 2
+          },
+          "Tenses": {
+            "correct": 3,
+            "seen": 4
+          },
+          "Modal Verbs": {
+            "seen": 1,
+            "correct": 0
+          }
+        },
+        "mode": "smart",
+        "date": "2026-03-05T11:00:17.423Z",
+        "pct": 70,
+        "total": 20
+      }
+    ],
+    "totalSessions": 8
+  },
+  "exercises": [
+    {
+      "topic": "Articles — common Russian-speaker errors",
+      "total": 6,
+      "error_types": [
+        "articles_zero_vs_the",
+        "articles_the_with_superlatives",
+        "articles_uncountable"
+      ],
+      "errors": [
+        {
+          "severity": "minor",
+          "correct": "the beach",
+          "given": "walked along a beach",
+          "item": 3
+        },
+        {
+          "item": 4,
+          "given": "didn't know",
+          "correct": "the memory → memory (zero article for abstract concepts)",
+          "severity": "critical"
+        },
+        {
+          "severity": "critical",
+          "item": 6,
+          "correct": "a Python code → Python code (uncountable)",
+          "given": "spent whole evening"
+        }
+      ],
+      "date": "2026-03-28",
+      "exercise": "error_correction",
+      "categories": [
+        "Articles"
+      ],
+      "score": 0.5,
+      "level": "B1",
+      "correct": 3,
+      "feedback": "not asked",
+      "chat_url": "https://claude.ai/chat/a5cb456d-5473-468a-873d-b0f350d7ddb3",
+      "_id": "1774712481343"
+    },
+    {
+      "error_types": [],
+      "partial": true,
+      "correct": 0,
+      "errors": [
+        "[tr_ernest_b06] If it rains tomorrow we will stay at home"
+      ],
+      "total": 1,
+      "topic": "Coach tab",
+      "date": "2026-05-03",
+      "source": "coach_tab",
+      "items": [
+        {
+          "escalation_used": false,
+          "exercise_id": "tr_ernest_b06",
+          "time_to_answer_ms": 49131,
+          "submitted_answer": "If it rains tomorrow we will stay at home",
+          "matched_pattern_id": null,
+          "correct": false,
+          "exercise_version": 1
+        }
+      ],
+      "level": "B2",
+      "exercise": "translation",
+      "categories": [],
+      "planned_total": 10,
+      "_id": "1777817760539"
+    },
+    {
+      "correct": 1,
+      "partial": true,
+      "error_types": [
+        "a_the_swap"
+      ],
+      "level": "B2",
+      "items": [
+        {
+          "escalation_used": false,
+          "time_to_answer_ms": 46431,
+          "exercise_id": "ad_ernest_b01",
+          "matched_pattern_id": "a_the_swap",
+          "submitted_answer": "the",
+          "correct": true,
+          "exercise_version": 1
+        }
+      ],
+      "source": "coach_tab",
+      "categories": [],
+      "planned_total": 15,
+      "exercise": "article_drill",
+      "date": "2026-05-05",
+      "errors": [],
+      "total": 1,
+      "topic": "Coach tab",
+      "_id": "1777996822838"
+    },
+    {
+      "error_types": [
+        "fixed_expression_phantom"
+      ],
+      "partial": true,
+      "correct": 1,
+      "total": 1,
+      "topic": "Coach tab",
+      "errors": [],
+      "date": "2026-05-07",
+      "categories": [],
+      "planned_total": 15,
+      "exercise": "error_correction",
+      "source": "coach_tab",
+      "level": "B2",
+      "items": [
+        {
+          "submitted_answer": "We need to take action immediately",
+          "matched_pattern_id": "fixed_expression_phantom",
+          "correct": true,
+          "exercise_version": 1,
+          "exercise_id": "ec_ernest_b05",
+          "time_to_answer_ms": 26527,
+          "escalation_used": false
+        }
+      ],
+      "_id": "1778167612196"
+    }
+  ],
+  "coach_sessions": [
+    {
+      "tokens_used": {
+        "input": 851,
+        "output": 684,
+        "cache_read": 0,
+        "cache_creation": 0
+      },
+      "error_patterns_observed": [
+        "comma_splice"
+      ],
+      "mode": "escalate",
+      "session_summary": "Learner's conditional structure was correct but they omitted the required comma after a fronted if-clause.",
+      "session_id": "ernest_esc_1777817873341_kzqu",
+      "model_used": "claude-opus-4-7",
+      "exercise_version": 1,
+      "created": "2026-05-03T14:18:08.210Z",
+      "topics_covered": [],
+      "exercise_id": "tr_ernest_b06",
+      "player": "ernest",
+      "messages": [
+        {
+          "content": "Please explain in more depth (after wrong submission: If it rains tomorrow we will stay at home)",
+          "role": "user"
+        },
+        {
+          "content": "Good news first, Ernest: your sentence \"If it rains tomorrow we will stay at home\" is almost entirely correct! You used the present tense (\"rains\") in the if-clause and \"will + base verb\" in the main clause — that's exactly the first conditional pattern. \"Stay at home\" is also perfectly natural English (just as valid as \"stay home\"). So grammatically, your answer works.\n\nSo why was it marked wrong? Two small things:\n\n**1. The missing comma.** When the if-clause comes *first*, English requires a comma before the main clause:\n- ✅ *If it rains tomorrow, we will stay at home.*\n- ✅ *We will stay at home if it rains tomorrow.* (no comma needed when reversed)\n\nThis is actually one of your recurring weak spots (comma usage), so it's worth locking in. Russian punctuation rules are different — Russian uses commas more freely with subordinate clauses regardless of order, but English only requires the comma when the subordinate clause comes first.\n\n**2. The accepted-answer list was strict.** The system was looking for specific variants and didn't include yours with \"at home\" + no comma. That's a limitation of the exercise, not really your error — but the comma is a genuine issue.\n\n**Quick reminder of the rule itself** (since the original feedback emphasized it):\n- if + **present simple**, **will** + base verb\n- Никогда: ~~If it will rain~~ → If it rains\n\nAnother example with the same pattern:\n- *If you finish your work early, I'll help you with dinner.* \n- (Если ты закончишь работу рано, я помогу тебе с ужином.)\n\nNotice: present tense after \"if\" even though the meaning is future, and a comma after the if-clause.\n\n**Takeaway:** Your conditional grammar was correct — just remember that a fronted if-clause needs a comma before the main clause.",
+          "role": "assistant"
+        }
+      ],
+      "ended": "2026-05-03T14:18:08.210Z",
+      "_id": "ernest_esc_1777817873341_kzqu"
+    },
+    {
+      "exercise_version": null,
+      "model_used": "claude-sonnet-4-6",
+      "session_id": "ernest_fw_1777793204602_l7yc",
+      "session_summary": "Ernest wrote about pre-exam stress across four subjects. Main issues were Russian-style topic-fronting without a bridge phrase, and minor word choice imprecision; articles did not arise this session.",
+      "mode": "free_write",
+      "error_patterns_observed": [
+        "topic_fronting_word_order",
+        "collocation_imprecision",
+        "vocabulary_nuance_forgot_vs_neglected"
+      ],
+      "tokens_used": {
+        "output": 960,
+        "input": 3059,
+        "cache_creation": 0,
+        "cache_read": 0
+      },
+      "ended": "2026-05-03T07:38:30.911Z",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I don't know, we have exams soon"
+        },
+        {
+          "role": "assistant",
+          "content": "That's a good topic to write about — exam stress, preparation, what's going well or not. Give it a go: write a few sentences about your exams. What are they, when are they, how do you feel?"
+        },
+        {
+          "role": "user",
+          "content": "I feel like I am not ready at all and there is so much to revise, I have no time."
+        },
+        {
+          "role": "assistant",
+          "content": "Good start — this is clear and natural. A couple of small things:\n\n**1. \"revise\" vs \"review\"**\nIn British English, *revise* is perfect here (= повторять материал). In American English they'd say *review* or *study*. Either is fine — just good to know.\n\n**2. \"I have no time\"**\nGrammatically correct, but more natural options:\n- *I have no time at all* (mirrors your \"not ready at all\" — stronger)\n- *I don't have enough time*\n\n**3. Missing connection between ideas**\nThe two halves feel a bit disconnected. A linking word helps:\n> \"…there is so much to revise, **and** I have no time.\"\n> or: \"…there is so much to revise **that** I have no time.\"\n\nThe second option (*so much… that…*) is particularly natural in English for this kind of cause-result structure.\n\n---\n\nNothing major here — your sentence is already solid. Keep going: **what subject are you most worried about, and why?**"
+        },
+        {
+          "content": "Everything, English I don't even know how to study for it, psychology and sceinces feel like too much information to revise, economics... I forgot about it",
+          "role": "user"
+        },
+        {
+          "content": "Ha, that's quite a list! A few things to fix:\n\n**1. Word order — \"English I don't even know…\"**\nIn English, you can't front a topic like this without a connector. Options:\n- *As for English, I don't even know how to study for it*\n- *With English, I don't even know how to study for it*\n\nIn Russian, «Английский — я вообще не знаю» works fine, but English needs that bridging phrase.\n\n**2. \"sciences feel like too much information\"**\nSlightly awkward. More natural:\n- *there's too much information to revise for sciences*\n- *sciences have so much material to cover*\n\n**3. \"I forgot about it\"**\nThis sounds like a one-time moment (\"I just forgot\"). You probably mean it's been neglected:\n- *I completely forgot about economics* ✓\n- *economics slipped my mind entirely*\n\n**4. Spelling:** *science* (not *sceince*) — easy typo, just flagging it.\n\n---\n\nYour list format gives it a natural, overwhelmed feeling — that actually works well here. \n\nOne question: you said you don't know how to study for English. **What does your English exam involve — speaking, writing, reading?**",
+          "role": "assistant"
+        },
+        {
+          "content": "That was helpful. Wrap up the session for me.",
+          "role": "user"
+        },
+        {
+          "content": "Good work today! Here's a quick summary of what came up:\n\n**Things you're doing well:**\n- Natural, expressive writing — your meaning always came through clearly\n- Good use of intensifiers (*at all*, *even*, *completely*)\n\n**Key patterns to watch:**\n1. **Topic-fronting** — English needs a bridge phrase: *As for X…* / *With X…* (Russian allows bare fronting; English doesn't)\n2. **\"so much… that…\"** — useful structure for cause-result\n3. **Word choice precision** — *forgot about it* vs *neglected it* (nuance matters)\n\n**From your persistent patterns** (flagged from previous sessions):\n- Keep an eye on **articles with uncountable nouns** — didn't come up today, but it's a recurring gap worth reviewing before exams.\n\nGood luck with everything — sounds like a busy few weeks ahead. Come back when you're ready to write more! 📝",
+          "role": "assistant"
+        }
+      ],
+      "player": "ernest",
+      "exercise_id": null,
+      "topics_covered": [
+        "topic_fronting",
+        "so_much_that_structure",
+        "word_choice_precision",
+        "linking_words"
+      ],
+      "created": "2026-05-03T07:26:44.602Z",
+      "_id": "ernest_fw_1777793204602_l7yc"
+    },
+    {
+      "messages": [
+        {
+          "content": "I have one friend, his name is Nael. He is from Pakistan. I enjoy spending time with him because he is funny",
+          "role": "user"
+        },
+        {
+          "role": "assistant",
+          "content": "Good start — clear and readable. A couple of things to fix:\n\n---\n\n**1. \"I have one friend, his name is Nael\"**\nThis is a comma splice — two separate sentences joined incorrectly with a comma. Fix it one of these ways:\n- *I have a friend **whose** name is Nael.*\n- *I have a friend. His name is Nael.*\n\nAlso: use **\"a friend\"**, not **\"one friend\"** — unless you're emphasising that he's your only friend. In Russian you'd naturally say «один друг», but in English \"one\" here sounds odd. \"A\" is the neutral choice.\n\n---\n\n**2. \"he is funny\"**\nGrammatically fine, but it only tells us *what* he is. At B2 level, try to show *why* — it makes your writing more vivid. For example:\n- *he always makes me laugh*\n- *he has a great sense of humour*\n\n---\n\n**Quick summary of fixes:**\n> *I have a friend whose name is Nael. He is from Pakistan. I enjoy spending time with him because he always makes me laugh.*\n\nTry continuing — tell me more about Nael or a memory you have with him."
+        },
+        {
+          "role": "user",
+          "content": "Sometimes he can be weird or kind of awkward trying to be cool."
+        },
+        {
+          "role": "assistant",
+          "content": "Nice sentence — the idea comes through well. One thing to tighten:\n\n---\n\n**\"weird or kind of awkward trying to be cool\"**\n\nThe phrase \"trying to be cool\" is floating — it's not clear *what* is trying to be cool. Grammatically, it attaches to the wrong thing. You mean: he acts weird *when he tries* to be cool. Fix it like this:\n\n- *Sometimes he can be weird or a bit awkward **when he tries to be cool**.*\n\nAlso, \"kind of\" and \"a bit\" — both mean «немного», but **\"a bit\"** fits better in written English. \"Kind of\" is more spoken/informal.\n\n---\n\n**Improved version:**\n> *Sometimes he can be weird or a bit awkward when he tries to be cool.*\n\nGood instinct using \"can be\" here — it correctly implies this happens occasionally, not always. That's a natural B2 choice.\n\nKeep going!"
+        },
+        {
+          "role": "user",
+          "content": "I don't know what to say"
+        },
+        {
+          "content": "That's fine — writer's block happens! Try one of these angles:\n\n- **A specific memory:** *Once we…* / *I remember when…*\n- **What you do together:** *We usually…* / *We like to…*\n- **How you met:** *We met…*\n\nPick whichever feels easiest and just write it naturally. Don't overthink it!",
+          "role": "assistant"
+        },
+        {
+          "role": "user",
+          "content": "We usually just talk and have fun during breaks or dead time on lessons"
+        },
+        {
+          "role": "assistant",
+          "content": "Good — natural and clear. One small fix:\n\n---\n\n**\"dead time on lessons\"**\n\nTwo issues here:\n- \"dead time\" works, but the more natural phrase is **\"free time\"** or **\"downtime\"**\n- \"on lessons\" should be **\"in class\"** or **\"during lessons\"** — \"on\" doesn't collocate here (like Russian «на уроке», but in English it's \"in class\" or \"during a lesson\")\n\n---\n\n**Improved version:**\n> *We usually just talk and have fun during breaks or free time in class.*\n\nShort and solid. Keep going — can you add something about what you talk about, or a funny moment with Nael?"
+        },
+        {
+          "content": "No",
+          "role": "user"
+        },
+        {
+          "content": "No problem! You've written a nice short paragraph overall. Want to wrap up here, or is there something specific about what you wrote that you'd like to look at more closely?",
+          "role": "assistant"
+        },
+        {
+          "content": "That was helpful. Wrap up the session for me.",
+          "role": "user"
+        },
+        {
+          "content": "Great work today! Here's a quick recap of what you practised:\n\n**What went well:**\n- Natural use of \"can be\" for habitual behaviour\n- Clear, simple sentences that are easy to follow\n\n**Key things to remember:**\n- \"a friend\" not \"one friend\" for neutral reference\n- Use \"whose\" to connect two clauses: *a friend whose name is…*\n- Watch floating participles: *awkward **when he tries** to be cool*\n- Collocations: **\"in class\"** not \"on lessons\" (similar to your earlier preposition work)\n\nSee you next time! 👋",
+          "role": "assistant"
+        }
+      ],
+      "player": "ernest",
+      "ended": "2026-05-03T07:52:58.107Z",
+      "topics_covered": [
+        "describing a friend",
+        "sentence joining",
+        "collocations with time/class"
+      ],
+      "exercise_id": null,
+      "created": "2026-05-03T07:45:07.019Z",
+      "exercise_version": null,
+      "model_used": "claude-sonnet-4-6",
+      "session_id": "ernest_fw_1777794307019_3mmd",
+      "session_summary": "Ernest wrote a short descriptive paragraph about his friend Nael. Main issues were a comma splice, a dangling participle, and a preposition collocation error ('on lessons' vs 'in class').",
+      "error_patterns_observed": [
+        "article_misuse",
+        "comma_splice",
+        "relative_clause_omission",
+        "dangling_participle",
+        "collocation_imprecision",
+        "preposition_omission"
+      ],
+      "tokens_used": {
+        "output": 1086,
+        "input": 6522,
+        "cache_creation": 0,
+        "cache_read": 0
+      },
+      "mode": "free_write",
+      "_id": "ernest_fw_1777794307019_3mmd"
+    },
+    {
+      "created": "2026-05-03T14:23:36.284Z",
+      "topics_covered": [
+        "relative_clauses",
+        "fixed_phrases",
+        "sentence_fragments",
+        "pronoun_agreement"
+      ],
+      "exercise_id": null,
+      "player": "ernest",
+      "messages": [
+        {
+          "role": "user",
+          "content": "I like basketball, because I feel it's quite skill driven, and you play with you hands that makes me feel more control compared to football. Although I still don't watch it"
+        },
+        {
+          "content": "Good start — the ideas come through clearly. Three things to fix:\n\n---\n\n**1. \"with you hands\" → \"with your hands\"**\nSimple typo, but worth catching.\n\n---\n\n**2. \"that makes me feel more control\" → \"which makes me feel more in control\"**\nTwo issues here:\n- Use **which** (not *that*) after a comma in a non-restrictive relative clause.\n- \"Feel in control\" is the fixed phrase — *чувствовать себя под контролем*. You can't say \"feel more control\" the same way.\n\n---\n\n**3. \"you play with your hands that makes me feel…\"**\nThe relative clause needs to refer to the whole idea before it, so a comma before *which* is essential:\n> \"…you play with your hands, **which** makes me feel more in control…\"\n\n---\n\n**4. The final sentence is a fragment.**\n\"Although I still don't watch it\" can't stand alone — *although* makes it a subordinate clause. Either attach it to the previous sentence or drop *although*:\n> \"…more in control compared to football, **although** I still don't watch it.\"\n> or: \"**Still**, I don't really watch it.\"\n\n---\n\nNo rewrite needed — these are small, clear fixes. Want to keep writing about basketball or sport, or try a different topic?",
+          "role": "assistant"
+        },
+        {
+          "content": "That was helpful. Wrap up the session for me.",
+          "role": "user"
+        },
+        {
+          "role": "assistant",
+          "content": "Good session! Here's a quick summary of what came up today:\n\n**Patterns to keep on your radar:**\n- **Relative clauses** — remember the comma + *which* for non-restrictive clauses (this has come up before)\n- **Fixed phrases** — \"feel in control\" not \"feel control\"; worth noticing these as chunks\n- **Sentence fragments** — subordinating conjunctions like *although/because* can't open a standalone sentence\n\nOverall your writing was clear and natural — the ideas landed well. These are polish-level fixes, not comprehension blockers.\n\nCome back when you're ready to write more. 👋"
+        }
+      ],
+      "ended": "2026-05-03T14:26:05.984Z",
+      "tokens_used": {
+        "output": 606,
+        "input": 1660,
+        "cache_creation": 0,
+        "cache_read": 0
+      },
+      "error_patterns_observed": [
+        "pronoun_typo",
+        "relative_clause_omission",
+        "fixed_phrase_error",
+        "sentence_fragment"
+      ],
+      "mode": "free_write",
+      "session_summary": "Ernest wrote a short opinion piece about basketball. Key issues were a missing comma+which in a non-restrictive relative clause, a fixed-phrase error ('feel control' vs 'feel in control'), and a dangling subordinate clause used as a fragment.",
+      "session_id": "ernest_fw_1777818216284_mtd3",
+      "model_used": "claude-sonnet-4-6",
+      "exercise_version": null,
+      "_id": "ernest_fw_1777818216284_mtd3"
+    }
+  ]
+}
