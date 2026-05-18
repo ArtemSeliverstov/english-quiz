@@ -129,6 +129,8 @@ High-density article practice. Single-blank gap-fill in live AI; mixed gap-fill 
 
 This is a canonical exercise type — `exercise: 'article_drill'` in Firestore. Do NOT fall back to `error_correction` when running an article drill.
 
+**Sequencing rule** (Ionin 2004): start each drill with 2 "convergence" items ([+def, +spec] or [−def, −spec], where the Russian-L1 specificity and English definiteness agree) before introducing "mismatch" items ([+def, −spec] or [−def, +spec], where they diverge and Russian speakers misselect). Research basis: `articles-research-basis.md`.
+
 ---
 
 ## 8. `particle_sort` (alias: `particle_sort_live`)

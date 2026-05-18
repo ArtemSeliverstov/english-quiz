@@ -253,6 +253,8 @@ genuinely cannot disambiguate without forcing artificial constraints.
 
 ### Articles — additional checks (S84)
 
+Research basis for these rules: `articles-research-basis.md` (Fluctuation Hypothesis, Master's binary system, Brown discourse-dependence, REALEC corpus, fossilisation).
+
 - DISCOURSE STEM: B2+ a→the questions MUST use two-sentence stems (sentence 1 establishes referent, sentence 2 has blank). Single-sentence stems only for zero-article rules and fixed expressions.
 - PATTERN TAG: exp ends with pattern label: a→the (shared knowledge), zero (phantom article), prep+art, fixed, dropped
 - L1 NOTE SPECIFICITY: use pattern-specific templates (above)
