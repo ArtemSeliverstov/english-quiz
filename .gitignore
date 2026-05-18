@@ -25,6 +25,12 @@ Thumbs.db
 .claude/sessions/
 .claude/conversations/
 .claude/cache/
+.claude/tmp/
+.claude/worktrees/
+
+# Personal materials kept in repo dir but not committed
+Interview/
+archive/
 
 # Local artefacts
 *.log
