@@ -42,7 +42,12 @@
       "prep_gerund": "Preposition + gerund where Russian licenses preposition + verbal noun in oblique case; L1 trap substitutes infinitive marker 'to'.",
       "comparatives": "than/that, double comparative, as...as, the more...the more, intensifier choice."
     },
-    "themes": ["biz_oil", "leisure_sport", "brit_expat", "claude_collab"],
+    "themes": [
+      "biz_oil",
+      "leisure_sport",
+      "brit_expat",
+      "claude_collab"
+    ],
     "item_count": 75,
     "format_breakdown": {
       "recognition": 37,
@@ -65,7 +70,11 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "___ refinery upgrade that the board approved in February is now eight months behind schedule.",
-      "options": ["The", "A", "—"],
+      "options": [
+        "The",
+        "—",
+        "A"
+      ],
       "answer": "The",
       "calque_distractor": "—",
       "explanation": "Post-modified definite NP: the restrictive relative clause ('that the board approved in February') makes the NP [+definite +specific]. Russian uses bare noun for definiteness via word order; English requires 'the'."
@@ -78,7 +87,11 @@
       "surface": "recognition",
       "theme": "leisure_sport",
       "stem": "Coaches usually agree that ___ cyclists who train above 80 km a week need at least one full recovery day.",
-      "options": ["the", "—", "a"],
+      "options": [
+        "the",
+        "—",
+        "a"
+      ],
       "answer": "—",
       "calque_distractor": "the",
       "explanation": "Generic bare plural with restrictive relative clause is still generic ('the kind of cyclist who...'). English uses zero article for generic plurals; L1-ru trap overgeneralises 'the' from the relative-clause cue."
@@ -91,7 +104,11 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "I need to speak to ___ manager on duty tonight — whoever happens to be in.",
-      "options": ["the", "a", "—"],
+      "options": [
+        "a",
+        "—",
+        "the"
+      ],
       "answer": "the",
       "calque_distractor": "a",
       "explanation": "Ionin Fluctuation Hypothesis cell [+definite −specific]. The role is unique and presupposed; the specific person is unknown to the speaker. English uses 'the'; L1-ru article-less learners fluctuate to 'a' when specificity is low."
@@ -170,7 +187,11 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "The final approval depends ___ the board, not on the operations team.",
-      "options": ["on", "from", "of"],
+      "options": [
+        "on",
+        "from",
+        "of"
+      ],
       "answer": "on",
       "calque_distractor": "from",
       "explanation": "English 'depend on'; Russian зависеть от ('from') is the canonical L1 calque trap. CLC tag RP (replacement preposition) high-frequency for L1-ru B2."
@@ -183,7 +204,11 @@
       "surface": "recognition",
       "theme": "leisure_sport",
       "stem": "I'll wait ___ you at the bike-hire place near the corniche entrance.",
-      "options": ["for", "—", "to"],
+      "options": [
+        "—",
+        "for",
+        "to"
+      ],
       "answer": "for",
       "calque_distractor": "—",
       "explanation": "English 'wait for someone'; Russian ждать takes direct genitive/accusative with no preposition. L1 trap omits 'for'. CLC tag MP."
@@ -196,7 +221,11 @@
       "surface": "recognition",
       "theme": "claude_collab",
       "stem": "The current code-review workflow consists ___ three stages: lint, peer review, and a final QA pass.",
-      "options": ["of", "from", "in"],
+      "options": [
+        "in",
+        "from",
+        "of"
+      ],
       "answer": "of",
       "calque_distractor": "from",
       "explanation": "English 'consist of'; Russian состоять из ('from') is the canonical calque. RP."
@@ -269,7 +298,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "I ___ in the Gulf since 2019, which makes me one of the longer-tenured people on the project.",
-      "options": ["have lived", "live", "am living", "lived"],
+      "options": [
+        "have lived",
+        "lived",
+        "live",
+        "am living"
+      ],
       "answer": "have lived",
       "calque_distractor": "live",
       "explanation": "Present perfect for state continuing from past into present, signalled by 'since 2019'. Russian past tense is unmarked for current relevance; L1 trap uses present simple ('I live here since 2019') or past simple."
@@ -283,10 +317,10 @@
       "theme": "brit_expat",
       "stem": "Which is the most natural reported version of: \"I'm tired and I need a break\" (said yesterday by a colleague)?",
       "options": [
+        "He said he has been tired and needs a break.",
         "He said he was tired and (he) needed a break.",
-        "He said he is tired and he needs a break.",
         "He said that he tired and need a break.",
-        "He said he has been tired and needs a break."
+        "He said he is tired and he needs a break."
       ],
       "answer": "He said he was tired and (he) needed a break.",
       "calque_distractor": "He said he is tired and he needs a break.",
@@ -360,7 +394,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "If the regulator ___ a stricter local-content threshold tomorrow, half of our shortlist of contractors would no longer qualify.",
-      "options": ["introduced", "would introduce", "introduces", "had introduced"],
+      "options": [
+        "would introduce",
+        "had introduced",
+        "introduced",
+        "introduces"
+      ],
       "answer": "introduced",
       "calque_distractor": "would introduce",
       "explanation": "Type 2 conditional (hypothetical present/future): past simple in if-clause, would + bare infinitive in result. L1 trap puts 'would' in both clauses because Russian uses single 'бы + past' form throughout."
@@ -374,10 +413,10 @@
       "theme": "leisure_sport",
       "stem": "Which is the natural counterfactual past form?",
       "options": [
-        "If I had checked the weather forecast, I would not have gone out on that ride.",
         "If I checked the weather forecast, I would not go out on that ride.",
+        "If I had checked the weather forecast, I would not go out on that ride.",
         "If I would have checked the weather forecast, I would not have gone out on that ride.",
-        "If I had checked the weather forecast, I would not go out on that ride."
+        "If I had checked the weather forecast, I would not have gone out on that ride."
       ],
       "answer": "If I had checked the weather forecast, I would not have gone out on that ride.",
       "calque_distractor": "If I would have checked the weather forecast, I would not have gone out on that ride.",
@@ -442,8 +481,8 @@
       "options": [
         "They must have lost network coverage — the whole industrial area was down at three.",
         "They must lose network coverage — the whole industrial area was down at three.",
-        "They must to have lost network coverage — the whole industrial area was down at three.",
-        "They had to lose network coverage — the whole industrial area was down at three."
+        "They had to lose network coverage — the whole industrial area was down at three.",
+        "They must to have lost network coverage — the whole industrial area was down at three."
       ],
       "answer": "They must have lost network coverage — the whole industrial area was down at three.",
       "calque_distractor": "They must lose network coverage — the whole industrial area was down at three.",
@@ -457,7 +496,12 @@
       "surface": "recognition",
       "theme": "brit_expat",
       "stem": "Looking back, I ___ the lease earlier — prices in this area have gone up nearly thirty percent since I signed it.",
-      "options": ["should have renewed", "should renew", "had to renew", "must renew"],
+      "options": [
+        "had to renew",
+        "should have renewed",
+        "should renew",
+        "must renew"
+      ],
       "answer": "should have renewed",
       "calque_distractor": "should renew",
       "explanation": "Past advice / regret: 'should have + past participle'. Russian uses 'нужно было' + infinitive; L1 trap maps to 'should + bare inf' (works for present advice, not past)."
@@ -506,7 +550,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "The consultants suggested ___ the kick-off until after the audit, which makes sense given how fragile the numbers still look.",
-      "options": ["postponing", "to postpone", "postpone", "that postpone"],
+      "options": [
+        "postpone",
+        "that postpone",
+        "postponing",
+        "to postpone"
+      ],
       "answer": "postponing",
       "calque_distractor": "to postpone",
       "explanation": "'Suggest' takes gerund (or 'that' + subjunctive). Russian предложить + infinitive is the canonical L1 trap. CLC tag FV."
@@ -519,7 +568,12 @@
       "surface": "recognition",
       "theme": "leisure_sport",
       "stem": "Most experienced riders here avoid ___ during the midday hours from May to September.",
-      "options": ["training", "to train", "of training", "train"],
+      "options": [
+        "train",
+        "to train",
+        "of training",
+        "training"
+      ],
       "answer": "training",
       "calque_distractor": "to train",
       "explanation": "'Avoid' is gerund-only. Russian избегать + genitive of verbal noun maps either to gerund or (incorrectly) to infinitive."
@@ -532,7 +586,12 @@
       "surface": "recognition",
       "theme": "claude_collab",
       "stem": "I actually enjoy ___ alongside an AI tool — the iteration loop is much faster than working alone.",
-      "options": ["working", "to work", "work", "of working"],
+      "options": [
+        "working",
+        "to work",
+        "work",
+        "of working"
+      ],
       "answer": "working",
       "calque_distractor": "to work",
       "explanation": "'Enjoy' is gerund-only. Russian нравится + infinitive is the dominant L1 surface form (мне нравится работать)."
@@ -618,10 +677,10 @@
       "theme": "claude_collab",
       "stem": "Which adverb placement is most natural in British/professional written English?",
       "options": [
+        "I start my day always with a quick review of overnight comments.",
         "I always start my day with a quick review of overnight comments.",
-        "Always I start my day with a quick review of overnight comments.",
         "I start always my day with a quick review of overnight comments.",
-        "I start my day always with a quick review of overnight comments."
+        "Always I start my day with a quick review of overnight comments."
       ],
       "answer": "I always start my day with a quick review of overnight comments.",
       "calque_distractor": "Always I start my day with a quick review of overnight comments.",
@@ -635,7 +694,12 @@
       "surface": "recognition",
       "theme": "brit_expat",
       "stem": "Where ___ usually buy groceries that aren't available at Lulu?",
-      "options": ["do you", "you", "are you", "you do"],
+      "options": [
+        "you do",
+        "you",
+        "do you",
+        "are you"
+      ],
       "answer": "do you",
       "calque_distractor": "you",
       "explanation": "Do-support obligatory in present-simple questions. Russian has no do-support; L1 trap omits ('Where you buy?'). Residual at B2 even when CC writing is otherwise clean."
@@ -684,7 +748,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "There aren't ___ tier-one EPC contractors with the capacity to handle a project of this scale in the Gulf.",
-      "options": ["many", "much", "few", "lots"],
+      "options": [
+        "much",
+        "few",
+        "lots",
+        "many"
+      ],
       "answer": "many",
       "calque_distractor": "much",
       "explanation": "Count noun ('contractors') → many. Russian много is count-mass-blind; L1 trap uses 'much' across the board. ID/Q tag."
@@ -699,9 +768,9 @@
       "stem": "Which is correct?",
       "options": [
         "We have very little time left if we want to ride before the heat builds up.",
+        "We have very less time left if we want to ride before the heat builds up.",
         "We have very few time left if we want to ride before the heat builds up.",
-        "We have very little times left if we want to ride before the heat builds up.",
-        "We have very less time left if we want to ride before the heat builds up."
+        "We have very little times left if we want to ride before the heat builds up."
       ],
       "answer": "We have very little time left if we want to ride before the heat builds up.",
       "calque_distractor": "We have very few time left if we want to ride before the heat builds up.",
@@ -763,7 +832,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "The procurement team ___ still finalising the shortlist; we'll have an answer by Thursday.",
-      "options": ["is", "are", "were", "have been"],
+      "options": [
+        "have been",
+        "is",
+        "are",
+        "were"
+      ],
       "answer": "is",
       "calque_distractor": "are",
       "explanation": "Collective noun 'team' takes singular in formal/written English when treated as a unit (especially with progressive aspect referring to a single coordinated action). Both 'is' and 'are' are acceptable in BrE generally; here the discourse frame ('the team' as a single decision-maker) favours singular. Either should be accepted; scoring focuses on consistency."
@@ -789,10 +863,10 @@
       "theme": "leisure_sport",
       "stem": "Which is correct?",
       "options": [
-        "Everyone in the Saturday group is supposed to bring their own spare tube.",
-        "Everyone in the Saturday group are supposed to bring their own spare tube.",
         "Everyone in the Saturday group is supposed to bring his own spare tube.",
-        "All in the Saturday group is supposed to bring their own spare tube."
+        "All in the Saturday group is supposed to bring their own spare tube.",
+        "Everyone in the Saturday group is supposed to bring their own spare tube.",
+        "Everyone in the Saturday group are supposed to bring their own spare tube."
       ],
       "answer": "Everyone in the Saturday group is supposed to bring their own spare tube.",
       "calque_distractor": "Everyone in the Saturday group are supposed to bring their own spare tube.",
@@ -830,7 +904,12 @@
       "surface": "recognition",
       "theme": "brit_expat",
       "stem": "By the time I left for work ___ was already 38 outside and the air had that thick pre-summer feel.",
-      "options": ["it", "—", "there", "that"],
+      "options": [
+        "—",
+        "that",
+        "there",
+        "it"
+      ],
       "answer": "it",
       "calque_distractor": "—",
       "explanation": "Expletive 'it' for weather/time/distance. Russian было is impersonal with no subject ('было 38 градусов'). L1 trap omits the dummy subject."
@@ -843,7 +922,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "On the seventh floor ___ is a small meeting room nobody seems to know about — perfect for one-on-ones.",
-      "options": ["there", "it", "—", "this"],
+      "options": [
+        "there",
+        "—",
+        "this",
+        "it"
+      ],
       "answer": "there",
       "calque_distractor": "—",
       "explanation": "Existential 'there + be' for first-mention of an entity at a location. Russian uses locative inversion + есть or just bare locative ('на седьмом этаже — есть / маленькая комната'). L1 trap omits 'there'."
@@ -892,7 +976,12 @@
       "surface": "recognition",
       "theme": "biz_oil",
       "stem": "For the next two weeks I want the team to focus ___ getting the lender presentations watertight before we move on to anything else.",
-      "options": ["on", "to", "in", "at"],
+      "options": [
+        "at",
+        "on",
+        "in",
+        "to"
+      ],
       "answer": "on",
       "calque_distractor": "to",
       "explanation": "Pattern: focus on + gerund. Russian сосредоточиться на + locative; L1 calques 'on' but high-frequency variant calques the infinitive marker ('focus to get'). This is the trap that surfaced 2026-05-17."
@@ -905,7 +994,12 @@
       "surface": "recognition",
       "theme": "claude_collab",
       "stem": "Would the wider team be interested ___ trialling the new commit-message workflow on the staging branch first?",
-      "options": ["in", "to", "for", "at"],
+      "options": [
+        "to",
+        "at",
+        "in",
+        "for"
+      ],
       "answer": "in",
       "calque_distractor": "to",
       "explanation": "'Be interested in + gerund'; Russian заинтересован в + locative also maps to 'in', but L1 surface frequently switches to 'to' by analogy with the infinitival sense of 'want/wish to'."
@@ -967,10 +1061,10 @@
       "theme": "biz_oil",
       "stem": "Which sentence is correct?",
       "options": [
-        "The new local supplier is almost as competitive as the European one, but their lead times are still longer.",
         "The new local supplier is almost as competitive than the European one, but their lead times are still longer.",
         "The new local supplier is almost as competitive, like the European one, but their lead times are still longer.",
-        "The new local supplier is almost so competitive as the European one, but their lead times are still longer."
+        "The new local supplier is almost so competitive as the European one, but their lead times are still longer.",
+        "The new local supplier is almost as competitive as the European one, but their lead times are still longer."
       ],
       "answer": "The new local supplier is almost as competitive as the European one, but their lead times are still longer.",
       "calque_distractor": "The new local supplier is almost so competitive as the European one, but their lead times are still longer.",
