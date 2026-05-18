@@ -10,6 +10,7 @@ Active plans, what they cover, which SKILL (if any) loads them.
 | `question-bank-plan.md` | Content authoring + bank quality: waves 0–5 per player, workstreams (PV ladder, articles, orthography), Coach library per player, MCQ distractor audit, Idioms re-engineering, tier priorities. | `quiz-development` |
 | `open-items.md` | Operational backlog: log caps, App Check, worker rate limit, smaller fixes. | none — picked up on Artem's prompt |
 | `coach-live-ai-and-weak-spots.md` | T1: convert all Coach types to live AI via Worker (library → offline fallback). T2: add `weak_spots_drill` — Free-Write-shaped session with inline 5-topic ladder catalog. PWA + CC mirror. | none — Artem's execution doc |
+| `russian-l1-b2-foundation-diagnostic.md` | Discovery diagnostic for hidden Russian-L1 B2 foundation gaps. Outside-in design from contrastive linguistics catalogues (not from `coach_notes.weak_patterns`). ~60-80 items across 10-12 clusters, 50/50 recognition/cold-production, one-shot ~60-90 min sitting. B1 fallback deferred to v2. Companion: `russian-l1-b2-foundation-diagnostic-sources.md` (per-cluster catalogue citations + item budget). | none — Artem instrument |
 
 `learning-system-build.md` and `question-bank-plan.md` cross-reference each other; the split is by concern (engineering vs content authoring), not chronology. Read the one matching your task.
 
