@@ -9,69 +9,71 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 ## Reads
 
-- `node tools/get_all_players.js -S` — 5 player docs + subcollections (or uploaded JSON)
-- `references/family-profiles.md` — profile + focus
-- `references/coverage-matrix.md` — category targets
-- `references/coach-notes-schema.md` — update protocol, promotion rule, phrase tracker lifecycle
-- `references/stats-interpretation-guide.md` — act-on/ignore, engagement, compromised categories
-- `progress/phrasal-verbs-tracker.md` (Artem), `progress/phrasal-verbs-tracker-anna.md` (Anna) — per-PV status; methodology in Artem's file
+- `node tools/get_all_players.js -S` — 5 player docs + subcollections
+- `references/family-profiles.md`, `coverage-matrix.md`, `coach-notes-schema.md`, `stats-interpretation-guide.md`
+- `progress/phrasal-verbs-tracker.md` (Artem), `phrasal-verbs-tracker-anna.md` (Anna)
 - `progress/natural-phrases-tracker-{name}.md` × 5 — **generated** views of `phrase_tracker`. Regen via `update_coach_notes.js --regen-tracker-md`.
 
 ## Workflow
 
-**0. Integrity check.** Run `node tools/check_player_integrity.js`. Exit 0 = proceed; exit 1 = **stop and surface to user**. Three invariants probe for contamination.
+**0. Integrity.** `node tools/check_player_integrity.js`. Exit 1 → stop and surface.
 
-**1. Pull stats.** Run `get_all_players.js -S` (or `get_player.js {name}` for deep-dive). Filter `auto_suspected: true` sessions before aggregation.
+**1. Pull stats.** `get_all_players.js -S`. Filter `auto_suspected: true`.
 
-**1a. Signal selection.** Streak fields = recency; subcollections = volume/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Pre-Option-D: subcollection wins on disagreement.
+**1a. Signal selection.** Streak fields = recency; subcollections = volume/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Subcollection wins on disagreement.
 
-**2. Coverage per player.** Category breakdown, type distribution, trends, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error), quality flags (≥60% error across 3+ players).
+**1b. Profile context.** Load `learning_path` (`active_categories`, `level_cap`, `next_unlock_options`) before step 2. Drives partitioning + gating for learner-shell (Anna/Nicole/Ernest). Builder (Artem/Egor): full sensitivity, no gating.
 
-**2.5. Per-question audit** for flagged items. Pull `qStats[qid].lastWrong` per player via `node tools/get_question_mistakes.js <qid>`. The mistake is the highest-value signal. MCQ index may resolve to `<no log>` — mark `[speculation]`.
+**2. Coverage.** Category breakdown, types, trends, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error), quality flags (≥60% across 3+ players).
 
-**3. Synthesise patterns.** New weak patterns across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition-vs-production gaps. **Register rubric**: aggregate `coach_sessions[].register_rubric` per `references/register-rubric.md` § "Stats-review aggregation".
+**2a. Window partition** (learner-shell). Two tables: (i) in-window primary; (ii) out-of-window one-liner. `seen>30` + zero hits last 31d = `[stale]`. Out-of-window weakness is exposure noise *unless* in `next_unlock_options` → unlock candidate, not weak_pattern.
 
-**4. Propose coach_notes updates.** ≤2 new patterns per player (removals + deferrals don't count). Scan prior `recent_observations` for unactioned recs → 'Pending'. Single-point items → 'Watchlist' (not stored). Protocol in `coach-notes-schema.md`.
+**2.5. Per-question audit.** `tools/get_question_mistakes.js <qid>`. MCQ index `<no log>` → `[speculation]`.
 
-**5. Action recommendations.** Don't apply here — user triggers `quiz-development` or `exercise-session`.
+**2.6. Session-id reconciliation.** When a note cites a session_id, verify ts matches `exercises[].id` or `coach_sessions[].id` (±5min). Mismatches → flag and use actual stored ID.
 
-**6. Phrase tracker maintenance** (auto, after step-4). **Every player**, even zero-session: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. Run `update_coach_notes.js {name} <patch.json> --regen-tracker-md` (empty patch if stale).
+**3. Synthesise.** New patterns across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition-vs-production gaps. Aggregate `coach_sessions[].register_rubric` per `references/register-rubric.md`.
 
-**7. recent_session_signals promotion + audit.** Per player:
-- Each `recent_session_signals[]` entry with `count >= 2`: compose a durable prose label, patch `weak_patterns_add` + `recent_session_signals_promote: [pattern_id]`.
-- Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries and lexical `X → Y [tag]` rows (migrate lexicals to `phrase_tracker_add` if missing).
+**3a. Pattern-id reuse.** Fuzzy-match new `recent_session_signals[].pattern_id` against existing pattern_ids + `weak_patterns` text. Mechanism match → fold into existing ID.
 
-## Speculation marking — mandatory
+**4. Propose updates.** ≤2 new patterns/player. Prior unactioned recs → 'Pending'. Single-point items → 'Watchlist' (not stored).
 
-Every claim carries an evidence tag: **[data]**, **[inferred]**, **[speculation]**. Untagged defaults to [data]. `weak_patterns` accepts only [data]/[inferred]; [speculation] stays in `recent_observations` as `{"note": "[speculation] ..."}`. Profile edits require [data].
+**4a. Window gating** (learner-shell). Out-of-window candidates → `next_unlock_options`, not `weak_patterns`. Rationale: focused-CF + affective-filter (see `docs/audience-profiles.md §3`).
+
+**4b. Ridge transparency.** Characterise promotion ridge: *independent emergence across N days* (strong) vs *N sessions same day* vs *second targeted at the first* (weaker).
+
+**5. Action recs.** User triggers `quiz-development` or `exercise-session`.
+
+**6. Phrase tracker** (auto, after 4). Every player: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. `update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
+
+**7. Signals promotion + audit.** Each `recent_session_signals[]` with `count >= 2`: compose prose label, patch `weak_patterns_add` + `recent_session_signals_promote`. Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries and lexical `X → Y [tag]` rows (migrate lexicals to `phrase_tracker_add`).
+
+## Speculation marking
+
+Tag every claim: **[data]**, **[inferred]**, **[speculation]**. Untagged defaults [data]. `weak_patterns` accepts only [data]/[inferred]; [speculation] → `recent_observations`. Profile edits require [data].
 
 ## Output structure
 
 ```
 # Stats Review — {date}
-
-## Pending from prior round    [unactioned recs]
-## Watchlist                   [single-point items — not stored]
-
-## {Player}
-### Coverage    [table]
-### Trends      [bullets]
-### Register fluency    [per rubric doc]
-### Persistent patterns
-### Quality flags    [qid: issue]
-### Proposed coach_notes updates    [table — wait for confirmation]
-### Action recommendations    [what + which skill]
+## Pending · Watchlist
+## {Player}  [level_cap · window (N) · volume (31d)]
+### Coverage   in-window primary; out-of-window one line
+### Trends · Register · Persistent patterns · Quality flags
+### Proposed coach_notes updates  [ridge per 4b — await confirmation]
+### Action recommendations
 ```
 
 ## Sparse data
 
-<5 sessions: flag explicitly, recommendations cautious. Don't over-interpret 3 data points.
+<5 sessions: flag explicitly, recs cautious. Don't over-interpret 3 data points.
 
 ## Forbidden
 
-- Bringing up sensitive observations (mental health, personal crises) unprompted
-- Restating stats fields in notes — `lvlStats`/`catStats` are canonical
-- Promoting single-qid or single-session evidence to `weak_patterns` — qid failures → `stuck_questions`; category needs ≥3 qids <60% or pattern across ≥2 sessions
-- Re-emitting recs already in prior notes — list once under 'Pending'
+- Sensitive observations (mental health, crises) unprompted
+- Restating canonical stats (`lvlStats`/`catStats`) in notes
+- Single-qid/single-session → `weak_patterns` (qid → `stuck_questions`; cat needs ≥3 qids <60% or pattern ≥2 sessions)
+- Out-of-window weakness → `weak_pattern` for learner-shell (route to `next_unlock_options` per 4a)
+- Re-emitting prior recs — list under 'Pending'
 - Cross-player findings on personal profiles — go to question-bank notes
-- Generic recommendations — every recommendation cites specific data
+- Generic recommendations — every rec cites specific data
