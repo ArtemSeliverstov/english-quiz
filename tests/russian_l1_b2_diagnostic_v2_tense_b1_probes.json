@@ -1,0 +1,86 @@
+{
+  "instrument": "russian_l1_b2_diagnostic_v2_tense_b1_probes",
+  "parent_instrument": "russian_l1_b2_diagnostic_v1",
+  "purpose": "v2 fallback probe authorised by v1 §Acceptance — confirm whether 2026-05-18 tense/aspect cluster failure (43%, foundation-suspect band) is at B2-level (perfect aspect itself, backshift, PPC) or at B1-level (past simple form, basic PS-vs-PP, PS-vs-past-continuous, time markers, used-to, stative). Hypothesis from v1 results: B2 — past simple was handled cleanly throughout v1.",
+  "spec_ref": "plans/russian-l1-b2-foundation-diagnostic.md",
+  "v1_ref": "tests/russian_l1_b2_diagnostic_v1_results.md",
+  "run_date": "2026-05-18",
+  "test_taker": "artem",
+  "protocol": "Single sitting, batched 6 per turn, no in-session feedback, no item-target labels in presentation (per 2026-05-18 feedback memory). 50/50 recognition/production. Themes: biz_oil | leisure_sport | brit_expat | claude_collab.",
+  "items": [
+    {
+      "id": "v2_b1_01", "type": "recognition_mcq", "target": "past_simple_irregular_form",
+      "stem": "Last Saturday I ___ 80 km on the new route round Janabiya.",
+      "options": {"A": "rided", "B": "rode", "C": "was riding", "D": "have ridden"},
+      "correct": "B", "theme": "leisure_sport"
+    },
+    {
+      "id": "v2_b1_02", "type": "recognition_mcq", "target": "past_simple_with_finished_time_marker",
+      "stem": "We ___ a new compliance officer last month.",
+      "options": {"A": "have hired", "B": "hired", "C": "had hired", "D": "were hiring"},
+      "correct": "B", "theme": "biz_oil"
+    },
+    {
+      "id": "v2_b1_03", "type": "recognition_mcq", "target": "present_perfect_with_since",
+      "stem": "She ___ for the regulator since 2020 — that's how she knows everyone there.",
+      "options": {"A": "worked", "B": "is working", "C": "has worked", "D": "was working"},
+      "correct": "C", "theme": "biz_oil"
+    },
+    {
+      "id": "v2_b1_04", "type": "recognition_mcq", "target": "past_simple_vs_past_continuous_interrupted",
+      "stem": "When the fire alarm went off, I ___ in the boardroom with Bessy.",
+      "options": {"A": "sat", "B": "was sitting", "C": "had sat", "D": "sit"},
+      "correct": "B", "theme": "brit_expat"
+    },
+    {
+      "id": "v2_b1_05", "type": "production_translation", "target": "past_simple_form",
+      "ru": "Я отправил черновик контракта вчера вечером.",
+      "target_en": "I sent the draft contract yesterday evening / last night.",
+      "theme": "biz_oil"
+    },
+    {
+      "id": "v2_b1_06", "type": "production_translation", "target": "past_simple_vs_past_continuous_interrupted",
+      "ru": "Когда позвонил клиент, я ехал на велосипеде.",
+      "target_en": "When the client called, I was cycling / riding.",
+      "theme": "leisure_sport"
+    },
+    {
+      "id": "v2_b1_07", "type": "recognition_mcq", "target": "present_perfect_time_marker_since_vs_for",
+      "stem": "I haven't ridden with Adam ___ Tuesday — he's been ill.",
+      "options": {"A": "for", "B": "since", "C": "ago", "D": "in"},
+      "correct": "B", "theme": "leisure_sport"
+    },
+    {
+      "id": "v2_b1_08", "type": "recognition_mcq", "target": "stative_verb_simple_aspect",
+      "stem": "I ___ what you mean about the regulator's tone — she's really lost patience.",
+      "options": {"A": "am understanding", "B": "understand", "C": "was understanding", "D": "have been understanding"},
+      "correct": "B", "theme": "biz_oil"
+    },
+    {
+      "id": "v2_b1_09", "type": "recognition_mcq", "target": "used_to_form",
+      "stem": "I ___ ride the seafront route every morning, but I've switched to the desert track now.",
+      "options": {"A": "use to", "B": "used to", "C": "was used to", "D": "am used to"},
+      "correct": "B", "theme": "leisure_sport"
+    },
+    {
+      "id": "v2_b1_10", "type": "production_translation", "target": "past_simple_irregular_form",
+      "ru": "Мы выбрали другого подрядчика в прошлом месяце.",
+      "target_en": "We chose / picked / selected a different contractor last month.",
+      "theme": "biz_oil"
+    },
+    {
+      "id": "v2_b1_11", "type": "production_translation", "target": "used_to_for_past_habit",
+      "ru": "Я раньше каждое утро ездил на велосипеде на работу.",
+      "target_en": "I used to cycle / ride my bike to work every morning.",
+      "theme": "leisure_sport"
+    },
+    {
+      "id": "v2_b1_12", "type": "production_translation", "target": "past_perfect_basic_bridge_to_b2",
+      "ru": "К пятнице мы согласовали с регулятором финальные условия.",
+      "target_en": "By Friday we'd agreed (the) final terms with the regulator. (past simple 'we agreed' also acceptable at B1)",
+      "theme": "biz_oil",
+      "bridge_to_b2": true,
+      "notes": "Bridges B1 substrate to B2 — past perfect with simple structural demand (had + V-ed). v1 past perfect failures (items 19, 34) were malformed ('had been already left' / 'have been already covered') — passive/intransitive interaction. This v2 item tests past perfect form WITHOUT that compound interference."
+    }
+  ]
+}

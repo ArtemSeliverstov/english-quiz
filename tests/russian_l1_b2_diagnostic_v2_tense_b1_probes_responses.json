@@ -1,0 +1,19 @@
+{
+  "instrument": "russian_l1_b2_diagnostic_v2_tense_b1_probes",
+  "run_date": "2026-05-18",
+  "test_taker": "artem",
+  "responses": [
+    {"id": "v2_b1_01", "response": "B", "score": "correct"},
+    {"id": "v2_b1_02", "response": "B", "score": "correct"},
+    {"id": "v2_b1_03", "response": "C", "score": "correct"},
+    {"id": "v2_b1_04", "response": "C", "score": "incorrect", "note": "Chose past perfect 'had sat' for past continuous interrupted-action slot; target B 'was sitting'. Production analog (item 06) deployed correctly — recognition-vs-production inverse pattern (cf. v1 Comparatives Δ −33 pts cluster)."},
+    {"id": "v2_b1_05", "response": "I sent the draft contract yesterday in the evening.", "score": "correct", "note": "Past simple form clean. 'in the evening' is grammatical but slightly non-native — native default 'yesterday evening' or 'last night'. PS form is the target; not penalised."},
+    {"id": "v2_b1_06", "response": "When the client called, I was riding a bike.", "score": "correct", "note": "Past continuous deployed cleanly. Note inverse pattern with item 04 — same structural template, recognition missed but production landed."},
+    {"id": "v2_b1_07", "response": "B", "score": "correct"},
+    {"id": "v2_b1_08", "response": "B", "score": "correct"},
+    {"id": "v2_b1_09", "response": "B", "score": "correct"},
+    {"id": "v2_b1_10", "response": "We selected another contractor last month.", "score": "correct", "note": "PS irregular form not required ('selected' is regular). Form clean either way."},
+    {"id": "v2_b1_11", "response": "I used to ride by bike every morning to work.", "score": "partial", "note": "'used to ride' deployed correctly. 'by bike' is a mild idiom miss — native 'ride my bike' / 'cycle' / 'ride to work by bike' (positional). Tense/aspect target is met; partial for idiomatic phrasing only."},
+    {"id": "v2_b1_12", "response": "By Friday we had agreed all final terms with the regulator.", "score": "correct", "note": "KEY RESULT: past perfect deployed CLEANLY in production with time anchor ('by Friday'). Russian 'к пятнице' triggers past perfect correctly. This is the bridge-to-B2 item — landing it cleanly refines v1's past_perfect_malformed_attempt finding (items 19, 34 v1 with 'had been already left') — the form basics are NOT the gap; the v1 failure was specifically the compound interaction with passive/intransitive selection + 'already' word order."}
+  ]
+}
