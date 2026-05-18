@@ -19,9 +19,11 @@ Canonical IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simpl
 
 ## Topic selection
 
-If the request names the topic ("30 min on emphasis"), confirm + state the ladder. Skip propose-and-pick.
+**Artem only — lead with a compact status table.** Before any topic proposal, scan `coach_notes.weak_patterns` + `recent_session_signals` + the last ~5 `recent_observations` to derive status per pattern. Render a single table, ≤10 rows (most actionable first), columns: `# | Pattern | Cat | Status | Last activity | Next move`. Status legend: 🔴 untouched drill candidate · 🟠 surfacing recently (count building) · 🟡 in consolidation (drilled ≤7 days) · 🟢 locked under intervention · ⚪ self-/data-only. Sort by priority: 🟠 promote-candidates first → 🔴 untouched → 🟡 in-consolidation → 🟢 locked. Drop the legend block if it pushes the response longer; the emojis carry the meaning. Then either confirm the named topic or propose 2-3 picks *from* the table. (Other players: skip the table — go straight to proposal.)
 
-Otherwise scan `weak_patterns`, match against catalog regex hints, propose 2-3 topics with 6-10 word reasons. Off-catalog free-text → improvise a 3-tier ladder (mechanics → guided → free production) under a snake_case slug.
+If the request names the topic ("30 min on emphasis"), still show the table briefly (Artem uses it to verify pick is on the right pattern), then confirm + state the ladder.
+
+Off-catalog free-text → improvise a 3-tier ladder (mechanics → guided → free production) under a snake_case slug.
 
 ## During session
 
