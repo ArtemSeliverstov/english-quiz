@@ -5,7 +5,7 @@ description: Analyze player stats from Firestore or uploaded JSON. Use when user
 
 # Stats Review
 
-Analyse player stats to identify patterns, weak spots, and adjustments. Output: structured review + ≤2 new `coach_notes` proposals per player (removals + deferrals don't count).
+Identify patterns, weak spots, adjustments. Output: structured review + ≤2 new `coach_notes` proposals/player (removals/deferrals don't count).
 
 ## Reads
 
@@ -20,37 +20,37 @@ Analyse player stats to identify patterns, weak spots, and adjustments. Output: 
 
 **1. Pull stats.** `get_all_players.js -S`. Filter `auto_suspected: true`.
 
-**1a. Signal selection.** Streak fields = recency; subcollections = volume/accuracy. Filter `exercises[]` on `ex.ts`, `coach_sessions[]` on `cs.created`. Subcollection wins on disagreement.
+**1a. Signal selection.** Streak fields = recency; subcollections = volume/accuracy. Filter by `ex.ts` / `cs.created`. Subcollection wins on disagreement.
 
 **1b. Profile context.** Load `learning_path` (`active_categories`, `level_cap`, `next_unlock_options`) before step 2. Drives partitioning + gating for learner-shell (Anna/Nicole/Ernest). Builder (Artem/Egor): full sensitivity, no gating.
 
-**2. Coverage.** Category breakdown, types, trends, persistent weak spots (<70% across 3+ sessions), stuck questions (100% error), quality flags (≥60% across 3+ players).
+**2. Coverage.** Category breakdown, types, trends; persistent weak spots <70%×3+ sessions; stuck qs 100% error; quality flags ≥60%×3+ players.
 
-**2a. Window partition** (learner-shell). Two tables: (i) in-window primary; (ii) out-of-window one-liner. `seen>30` + zero hits last 31d = `[stale]`. Out-of-window weakness is exposure noise *unless* in `next_unlock_options` → unlock candidate, not weak_pattern.
+**2a. Window partition** (learner-shell). Two tables: in-window primary + out-of-window one-liner. `seen>30` + zero 31d hits = `[stale]`. Out-of-window = exposure noise unless in `next_unlock_options` → unlock candidate, not weak_pattern.
 
-**2.5. Per-question audit.** `tools/get_question_mistakes.js <qid>`. MCQ index `<no log>` → `[speculation]`.
+**2.5. Per-qid audit.** `get_question_mistakes.js <qid>`. MCQ index `<no log>` → `[speculation]`.
 
-**2.6. Session-id reconciliation.** When a note cites a session_id, verify ts matches `exercises[].id` or `coach_sessions[].id` (±5min). Mismatches → flag and use actual stored ID.
+**2.6. Session-id reconciliation.** Verify cited session_ids vs stored `exercises[].id` / `coach_sessions[].id` (±5min); flag mismatches, use stored ID.
 
-**3. Synthesise.** New patterns across 2+ sessions, resolved weaknesses, engagement shifts, L1 interference, recognition-vs-production gaps. Aggregate `coach_sessions[].register_rubric` per `references/register-rubric.md`.
+**3. Synthesise.** Patterns ≥2 sessions, resolutions, engagement, L1 interference, recog-vs-prod. Aggregate `coach_sessions[].register_rubric` (`references/register-rubric.md`).
 
 **3a. Pattern-id reuse.** Fuzzy-match new `recent_session_signals[].pattern_id` against existing pattern_ids + `weak_patterns` text. Mechanism match → fold into existing ID.
 
 **4. Propose updates.** ≤2 new patterns/player. Prior unactioned recs → 'Pending'. Single-point items → 'Watchlist' (not stored).
 
-**4a. Window gating** (learner-shell). Out-of-window candidates → `next_unlock_options`, not `weak_patterns`. Rationale: focused-CF + affective-filter (see `docs/audience-profiles.md §3`).
+**4a. Window gating** (learner-shell). Out-of-window → `next_unlock_options`, not `weak_patterns`. Rationale: focused-CF + affective-filter (`docs/audience-profiles.md §3`).
 
-**4b. Ridge transparency.** Characterise promotion ridge: *independent emergence across N days* (strong) vs *N sessions same day* vs *second targeted at the first* (weaker).
+**4b. Ridge transparency.** Characterise ridge: *independent N-day emergence* / *learner self-confirmed* (strong); *N sessions same day* / *single discovery instrument multi-item* (medium — 7d re-confirm); *targeted follow-up* (weak).
 
-**5. Action recs.** User triggers `quiz-development` or `exercise-session`.
+**5. Action recs.** User triggers `quiz-development` or `exercise-session`. **Single front** when concentration is working: one drill area, not parallel — focused-CF (Anna 5→3).
 
-**6. Phrase tracker** (auto, after 4). Every player: apply lifecycle from `coach_sessions`, surface retest-due, regen md if `phrase_tracker.last_updated > md "Last refresh"`. `update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
+**6. Phrase tracker** (auto, after 4). Per player: apply lifecycle from `coach_sessions`, surface retest-due, regen md if tracker date > md `Last refresh`. `update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
 
-**7. Signals promotion + audit.** Each `recent_session_signals[]` with `count >= 2`: compose prose label, patch `weak_patterns_add` + `recent_session_signals_promote`. Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries and lexical `X → Y [tag]` rows (migrate lexicals to `phrase_tracker_add`).
+**7. Signals promotion + audit.** Signals with `count >= 2`: prose label + `weak_patterns_add` + `recent_session_signals_promote`. Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries + lexical `X → Y [tag]` rows (migrate to `phrase_tracker_add`).
 
 ## Speculation marking
 
-Tag every claim: **[data]**, **[inferred]**, **[speculation]**. Untagged defaults [data]. `weak_patterns` accepts only [data]/[inferred]; [speculation] → `recent_observations`. Profile edits require [data].
+Tag claims: **[data]** / **[inferred]** / **[speculation]**. Untagged → [data]. `weak_patterns` only [data]/[inferred]; [speculation] → `recent_observations`. Profile edits: [data].
 
 ## Output structure
 
@@ -72,7 +72,7 @@ Tag every claim: **[data]**, **[inferred]**, **[speculation]**. Untagged default
 
 - Sensitive observations (mental health, crises) unprompted
 - Restating canonical stats (`lvlStats`/`catStats`) in notes
-- Single-qid/single-session → `weak_patterns` (qid → `stuck_questions`; cat needs ≥3 qids <60% or pattern ≥2 sessions)
+- Single-qid/single-session → `weak_patterns` (qid → `stuck_questions`; cat needs ≥3 qids <60% or pattern ≥2 sessions; designed-discovery instruments are an exception per 4b)
 - Out-of-window weakness → `weak_pattern` for learner-shell (route to `next_unlock_options` per 4a)
 - Re-emitting prior recs — list under 'Pending'
 - Cross-player findings on personal profiles — go to question-bank notes
