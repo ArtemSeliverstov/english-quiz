@@ -5,7 +5,7 @@ description: Run a depth-focused ~30-min Weak Spots session for any family membe
 
 # Weak Spots — CC session
 
-Depth session, one topic, ~30 min, ladder-walked simple → hard. CC counterpart to the PWA Coach Weak Spots button. Remote-CC safe: all reads/writes via Firebase MCP, no `tools/*.js`.
+Depth session, one topic, ~30 min, simple → hard ladder. CC counterpart to the PWA Coach Weak Spots button. Remote-CC safe: reads/writes via Firebase MCP, no `tools/*.js`.
 
 Mid-session request for general drills → that's `exercise-session`; close cleanly first.
 
@@ -13,11 +13,11 @@ Mid-session request for general drills → that's `exercise-session`; close clea
 
 - `references/family-profiles.md` — level, communication style, themes, `coachLanguage`
 - `players/{name}` via `mcp__firebase__firestore_get_document` — `coach_notes.{weak_patterns, recent_observations, engagement_notes}`
-- `worker/index.js` → `weakSpotsDrillSystemPrompt` — **canonical topic catalog** (the 6 IDs + tier ladders, same as PWA). Read before running; do not re-derive.
+- `worker/index.js` → `weakSpotsDrillSystemPrompt` — **canonical topic catalog** (6 IDs + ladders, same as PWA). Read first; don't re-derive.
 
 ## Topic selection
 
-**Artem only — lead with a compact status table.** Before proposing, scan `coach_notes.weak_patterns` + `recent_session_signals` + last ~5 `recent_observations` → per-pattern status. Render one table, ≤10 rows, most actionable first: `# | Pattern | Cat | Status | Last activity | Next move`. Status: 🔴 untouched · 🟠 surfacing (count building) · 🟡 consolidating (drilled ≤7d) · 🟢 locked · ⚪ data-only. Sort 🟠→🔴→🟡→🟢; drop the legend if it runs long. Then confirm the named topic or propose 2-3 picks *from* the table. (Other players: skip the table, go straight to proposal.)
+**Artem only — lead with a compact status table.** Before proposing, scan `coach_notes.weak_patterns` + `recent_session_signals` + last ~5 `recent_observations` → per-pattern status. Render one table, ≤10 rows, most actionable first: `# | Pattern | Cat | Status | Last activity | Next move`. Status: 🔴 untouched · 🟠 surfacing · 🟡 consolidating (≤7d) · 🟢 locked · ⚪ data-only. Sort 🟠→🔴→🟡→🟢; drop the legend if it runs long. Then confirm the topic or propose 2-3 picks *from* it. (Other players: skip the table, go straight to proposal.)
 
 Named topic ("30 min on emphasis"): still show the table (Artem verifies the pick), then confirm + state the ladder.
 
@@ -31,7 +31,7 @@ Off-catalog free-text → improvise a 3-tier ladder (mechanics → guided → fr
 
 **Length.** ~30 min, 15-20 items. Soft nudge at exchange 12 ("push one more tier or wrap?"). Hard end at 18.
 
-**Coach language.** Per `family-profiles.md` `coachLanguage` — Russian for Anna/Nicole, English for Artem/Ernest/Egor; English quotes for forms either way. Tone: warm, direct, pedagogical.
+**Coach language.** Per `family-profiles.md` `coachLanguage` — Russian for Anna/Nicole, English for Artem/Ernest/Egor; English quotes for forms either way. Tone: warm, direct.
 
 ## End-of-session protocol
 
@@ -47,9 +47,9 @@ Auto-write at close, then read out.
 - **coach_notes patch** → re-read `players/{name}`, append a `recent_observations` entry (date, session_id, note `"Weak Spots ({topic_id}) — ..."`, `author: "claude_code"`), apply `weak_patterns` per the 2+ session rule (`coach-notes-schema.md`), cap `recent_observations` at 10, then `firestore_update_document`.
 - **Proficiency fold** — if `confidence==="high"`, `sentence_count>=3`, level `/^[ABC][12]$/`: cap `sentence_count` at 20, `correct=sentence_count-error_count` (≥0); increment `lvlStats[level].{seen,correct}`, `totalAnswered`, `totalCorrect`; set `aggregated_coach_sessions[session_id]=sentence_count`. Idempotent — skip if the session_id is already present.
 
-**3. Render the player-facing table** using the `weak_spots_drill` template in `coach-notes-schema.md`.
+**3. Render the player-facing table** (`weak_spots_drill` template, `coach-notes-schema.md`).
 
-**4. Ask** "How did it feel? — or skip." Non-blocking. If answered, append to `recent_observations`.
+**4. Ask** "How did it feel? — or skip." Non-blocking; if answered, append to `recent_observations`.
 
 ## Skip log when
 
@@ -61,5 +61,3 @@ Session was 1-2 turns and nothing of substance emerged. Don't log empty.
 - Skipping the proficiency fold when `confidence==="high"` (breaks `lvlStats`)
 - Lecturing the rule without making the player produce
 - Re-deriving tier ladders — read `worker/index.js` first
-
-(General prohibitions live in `references/operational-rules.md`.)
