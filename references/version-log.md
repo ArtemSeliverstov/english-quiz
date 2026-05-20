@@ -10,6 +10,15 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-05-20 · v20260520 — mistakes-review fixes: 3 stem tightenings
+
+Landed the 3 quality fixes from the 2026-05-20 mistakes review (issue #14). All re-stems keep biz_oil/kpmg/home_daily theme tags (Artem-relevant) and follow his documented preference for a single correct answer over alt-answer widening.
+
+- `aph32` (Articles): re-stemmed "We are at ___ stage where costs must be cut" → "There comes ___ stage in every turnaround when costs simply have to be cut." Existential *there comes a…* forces `a`; removes the defining-relative-clause licence for `the` that drove Artem 0/4.
+- `aph33` (Articles, latent): noun swap "point of no return" → "critical juncture" so the indefinite `a` key no longer competes with the fixed *the point of no return* idiom.
+- `lki25` (Linking Words): tightened hint + exp so plain `if` is off-target; the item now explicitly drills the emphatic proviso (provided/as long as). Was Artem 0/1, lw="if".
+- Backstops clean: `lint_questions.js` 2246, `check_transform_keywords.js` 55. No total/coverage change (no adds/removes).
+
 ## 2026-05-13 · v20260513-r2 — drill-mode prompt diet + structural item card
 
 Anna fed back that the live-AI drills "all look like Free Write" — exercises hard to spot, especially short ones like spelling. Today's EC#1 transcript surfaced a smoking-gun: she "corrected" an embedded illustrative example sentence because the real drill item was visually indistinguishable from the surrounding prose (a split-attention violation per Cognitive Load Theory).

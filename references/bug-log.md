@@ -78,6 +78,19 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Question schema / authoring
 
+### Mistakes-review batch — 3 stem tightenings (articles + conditional connector) (2026-05-20)
+**Bug**: 31h mistakes review (issue #14) surfaced 3 questions where the stem licensed the player's "wrong" answer:
+- `aph32` (Articles B2 gap): "We are at ___ stage where costs must be cut" keyed `a`, but the defining relative clause *where costs must be cut* specifies the stage and licenses `the`. Artem 0/4, lw="the".
+- `lki25` (Linking Words B2 input): "drop the kids … ___ you're definitely free" keyed provided/as long as, but plain `if` is grammatical, equivalent, and the old hint ("only if this is true") actively invited it. Artem 0/1, lw="if".
+- `aph33` (Articles B2 gap, latent — Artem 2/2 correct): keyed `a` for "reached ___ point of no return", but *the point of no return* is the dominant fixed idiom — a player picking the natural `the` would be marked wrong. Same defect class as `aph35`.
+
+**Fix** (Artem's preference: one correct answer over alt-answer widening — see 2026-05-09 entry):
+- `aph32`: re-stemmed to "There comes ___ stage in every turnaround when costs simply have to be cut." The existential frame *there comes a…* forces `a` (✗ *there comes the stage*); removes the relative-clause licence for `the`.
+- `aph33`: noun swapped "point of no return" → "critical juncture". *reached a critical juncture* is unambiguous first-mention `a`; drops the competing fixed idiom.
+- `lki25`: hint tightened to "condition connector setting a strict proviso — more emphatic/formal than plain 'if'"; exp now names `if` as the off-target neutral default. Stem unchanged.
+
+**Rule**: for indefinite-`a` article items, the stem must not contain a defining relative clause or a fixed-the idiom that licenses `the` (extends the `aph35` rule). `lint_questions.js` clean (2246), `check_transform_keywords.js` clean (55).
+
 ### Mistakes-review + stats-review batch — 9 stem tightenings to enforce single correct answer (2026-05-09)
 **Bug**: Cross-player quality flags (≥60% error across 2+ players) and 31h mistakes review surfaced 9 questions where at least two distinct answers were defensibly natural, or the stem internally licensed the "wrong" key:
 - `co_b06` (Conditionals B1 gap): stem mixed first-conditional tail "You will burn yourself" with zero-conditional key `happens` — "will happen" is defensible. Artem 1/3, lw="would happen".
