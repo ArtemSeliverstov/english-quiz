@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260520">
+  <meta name="app-version" content="v20260608">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1111,7 +1111,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260520</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260608</span></p>
 </header>
 
 <!-- TABS -->
@@ -7335,6 +7335,12 @@ const FAMILY_MEMBERS = [
   { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff', coachLanguage: 'en',
     level: 'B2', feedbackDepth: 'medium-light', avoidTypes: [],
     pinHash: 'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730' },
+  // TEMPORARY DEMO GUEST (2026-06-08) — friend trial, PIN 3092. Not a real learner.
+  // TEARDOWN: delete this entry + remove 'nikolay' from worker ALLOWED_PLAYERS,
+  // redeploy both, and delete the Firestore players/nikolay doc.
+  { key: 'nikolay', name: 'Nikolay', emoji: '👤', color: '#7a8aa0', coachLanguage: 'ru',
+    level: 'B1', feedbackDepth: 'medium', avoidTypes: [],
+    pinHash: '98b7d6e81d8c304fd21d3ef9a42d20b92c43bb00eb38d17e3945fe92312dfb18' },
 ];
 
 // ══════════════════════════════════════════════════════════════

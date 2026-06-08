@@ -46,7 +46,10 @@
 // 'egor' added 2026-05-06 alongside the natural-phrases initiative — full family
 // parity for supplementary surfaces (Free Write + phrase_swap_drill). See
 // design-decisions.md "Egor full family parity".
-const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem', 'egor'];
+// 'nikolay' — TEMPORARY DEMO GUEST (2026-06-08). Friend trial; not a real learner.
+// TEARDOWN: remove from this array + the FAMILY_MEMBERS roster in index.html, then
+// redeploy both surfaces and delete the Firestore players/nikolay doc.
+const ALLOWED_PLAYERS = ['anna', 'nicole', 'ernest', 'artem', 'egor', 'nikolay'];
 
 // The PWA sends `context.coach_language` ('ru' | 'en') derived from each player's
 // FAMILY_MEMBERS profile entry (which mirrors references/family-profiles.md). The
