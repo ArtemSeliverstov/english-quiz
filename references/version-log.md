@@ -10,6 +10,20 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-06-08 · v20260608 — temporary demo guest player (Nikolay)
+
+Added a short-lived guest identity so a friend can try both surfaces (HTML quiz + Coach/API exercises) without touching family data. Isolated Firestore identity; no contamination of the five real learners.
+
+- `index.html` — added `nikolay` to `FAMILY_MEMBERS` (PIN 3092, SHA-256 hashed; coachLanguage `ru`, level B1). Appears in the name picker.
+- `worker/index.js` — added `'nikolay'` to `ALLOWED_PLAYERS` (the Coach/API path hard-rejects unknown players at the validation gate). Worker redeployed (`english-quiz-coach`, version `97e216bb`); smoke test confirmed `ok:true` for player `nikolay`.
+- Both entries carry dated `TEARDOWN` comments. **Cleanup after the trial:** delete both entries, redeploy Pages + worker, delete the Firestore `players/nikolay` doc.
+- Caveat: daily `mistakes-review` / `stats-review` sweep all players, so his demo activity will surface as noise until torn down. Acceptable for a short window.
+- No question changes (count 2246). Version bumped in meta, hdr-ver badge, sw.js cache key.
+
+Q count: 2246 (Δ0) · Version: v20260608
+
+---
+
 ## 2026-05-20 · v20260520 — mistakes-review fixes: 3 stem tightenings
 
 Landed the 3 quality fixes from the 2026-05-20 mistakes review (issue #14). All re-stems keep biz_oil/kpmg/home_daily theme tags (Artem-relevant) and follow his documented preference for a single correct answer over alt-answer widening.
