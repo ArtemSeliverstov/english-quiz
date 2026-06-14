@@ -57,6 +57,7 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 | `progress/phrasal-verbs-tracker.md` | Artem (B1–C1, business + cycling) | `stats-review` (per-PV status + Freq) |
 | `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
 | `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
+| `progress/weak-spots-tracker-artem.md` | Artem (builder-shell only) | `stats-review` — two-tier (domain rollup + ranked pattern action list); never render for learner-shell |
 
 ---
 
