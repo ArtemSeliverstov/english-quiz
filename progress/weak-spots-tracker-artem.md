@@ -72,7 +72,8 @@ Edge-of-competence (§1 engagement) breaks ties.
 | **Phrasal verbs** | **lexical inventory** | → tracker | | | 2026-05-10 | `pv_cold_streak.js`, *not* the drill queue |
 | **L1 lexical / preposition** | rule · finite | 1 | 0 | 2 | 2026-05-20 | in-case-of meaning-grid (NEXT) |
 | **Emphasis** | rule · finite | 0 | 1 | 1 | 2026-05-13 | correlatives — ambient |
-| **Register & fluency** | **production / C1-polish** | 2 | 3 | 0 | 2026-05-18 | free-write / register-check — ambient, not drills |
+| **Register & fluency** | **production / C1-polish** | 2 | 4 | 0 | 2026-05-18 | free-write / register-check — ambient, not drills |
+| **Business English register** (domain · Learning Goal) | rule+production · **register-ladder** | 1 | 1 | 0 | 2026-05-14 | register-check: R1 direction (`register_mismatch`) + R2+ execution slips |
 
 PV and Register/fluency counts are pointers, not drill targets — see their lanes.
 
@@ -103,7 +104,8 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 | PV substitution — loses collocation force | Phrasal verbs | 🔴 | PV tracker + pre-submission self-check |
 | PV cold-production gap ("get across", "get around to") | Phrasal verbs | 🔴 | `pv_cold_streak.js` |
 | Chat-tempo function-word compression | Register/fluency | 🔴 | self-edit production reps |
-| Execution-layer slips after register direction lands | Register/fluency | 🔴 | register-ladder R2+ |
+| Execution-layer slips after register direction lands (**execution half** of Business English register) | Register/fluency | 🔴 | register-ladder R2+ |
+| `register_mismatch` — register-direction selection / "bleed" (**direction half**; restored 6/16) | Register/fluency | 🟡 | register-ladder R1 (direction largely lands; execution is the residue) |
 | Emphasis residual clefts (adverb placement, *for*-infinitive, "No sooner…**than**") | Emphasis | 🟡 | short correlatives drill when convenient |
 | Hedge variety (everything → "maybe") | Register/fluency | 🟡 | free-write; drilled 5/18 |
 | Intensifier overreliance ("definitely") | Register/fluency | 🟡 | register-marked rewriting |
