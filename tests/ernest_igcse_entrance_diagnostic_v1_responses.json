@@ -1,0 +1,34 @@
+{
+  "instrument": "ernest_igcse_entrance_diagnostic_v1",
+  "test_taker": "ernest",
+  "run_date": "2026-07-01",
+  "protocol_notes": [
+    "v1.1 rerun: first 4 MCQs restarted after a position-A authoring artifact was caught before scoring any real data (see meta.revision in the instrument file). All responses below are from the clean v1.1 run.",
+    "Item 18 required one instruction clarification mid-run: Ernest's first response was a Russian translation of the English stem instead of an English error-correction; he was told (without content hints) that item 18 is a fix-the-mistake task like 10-16, not a translation, and then answered correctly."
+  ],
+  "responses": [
+    {"id": "e_art_01", "given": "a"},
+    {"id": "e_tense_04", "given": "b"},
+    {"id": "e_prep_01", "given": "c"},
+    {"id": "e_cond_01", "given": "b"},
+    {"id": "e_count_02", "given": "c"},
+    {"id": "e_wo_03", "given": "a"},
+    {"id": "e_art_04", "given": "c"},
+    {"id": "e_ger_02", "given": "a"},
+    {"id": "e_tense_01", "given": "a"},
+    {"id": "e_prep_02", "given": "My little brotheris really good at minecraft"},
+    {"id": "e_wo_01", "given": "Where do you go to school now?"},
+    {"id": "e_count_01", "given": "The teacher gave us a lot of information about the exam"},
+    {"id": "e_cond_02", "given": "iIf i had more time, i would have learnt how to code"},
+    {"id": "e_art_02", "given": "i want to make games, so next year i will be studying computer science"},
+    {"id": "e_tense_02", "given": "I know him since three years old"},
+    {"id": "e_ger_01", "given": "i enjoy playing basketball after school"},
+    {"id": "e_prep_03", "given": "this depends on the teacher"},
+    {"id": "e_wo_02", "given": "i don't know where the bus stop is", "note": "second attempt after format clarification; first attempt was a Russian translation of the stem"},
+    {"id": "e_count_03", "given": "My best friend doesn't like football"},
+    {"id": "e_art_03", "given": "teacher gave me a good advice"},
+    {"id": "e_tense_03", "given": "Quiet. Baby is sleeping"},
+    {"id": "e_cond_03", "given": "If i were rich, I would have bought a new computer"},
+    {"id": "e_write_01", "given": "The one thing I really prefer in Kazakhstan over Bahrain is climate. It is not that hot here, though the summer is still pretty hot, other seasons are really nice. Also humidity plays a big role, and in Kazakhstan becasuse there are no seas close it feels much better compared to bahrain. About new school I still am not sure how to feel. I will be continueing IGCSE system, and that is a big relief. However the exam board will still slightly change and in subjects like English literature and language, this will be higly noticeable. thise were the subjects I found most challenging. My hobbies will stay the same there is no difference from bahrain, only that i wanna try acoustic guitar instead of classical. also that now i can workout outside"}
+  ]
+}

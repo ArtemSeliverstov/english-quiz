@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "instrument": "nicole_igcse_entrance_diagnostic_v1",
+    "title": "Nicole — IGCSE/IB Entrance Readiness Diagnostic (Russian-L1 focus)",
+    "authored_on": "2026-07-01",
+    "author": "Claude Code (CLI session)",
+    "test_taker": "nicole",
+    "coach_language": "ru",
+    "template_lineage": "Same architecture as ernest_igcse_entrance_diagnostic_v1 (clusters + per-item L1-trap IDs + recognition/production split + offline scoring + 3/3/3 MCQ answer-position balance), recalibrated for Nicole: pitched lower (A2 core, A1 floor, B1 stretch — capped at B1, no B2), ~20 items + short writing, K-pop/school/friends themes, Russian-language run and debrief.",
+    "purpose": "Reveal Nicole's strengths and weaknesses ahead of the family's move to Kazakhstan and her entrance/placement test at a Cambridge IGCSE / IB school. Finished Year 8 at British School of Bahrain → entering ~Year 9 (KS3/MYP). Diagnostic, not drill.",
+    "calibration_note": "Item weighting is DATA-DRIVEN from players/nicole.coach_notes.weak_patterns (2026-07-01), not generic L1: heavier on question formation (do-support), irregular past participle / 3rd form, articles ('most of the', a+uncountable), much/many, than/that, and the 'feel myself' reflexive calque. Prepositions are a measured STRENGTH (86%) so only one light check is included. Irregular-verb PRODUCTION limited to a single item per her profile rule ('no irregular-verb input items until accuracy >70%'); the 3rd-form gap is probed mainly by recognition.",
+    "level_design": "A2 core, A1 floor probes, B1 stretch. Hard cap at B1 (level_cap per profile) — no B2 items.",
+    "themes": ["kpop", "school", "friends", "home", "weekend", "dance"],
+    "instructions_for_test_taker_ru": [
+      "Один заход, примерно 25 минут. Сама — без словаря и без помощи.",
+      "Один ответ на вопрос. Не возвращайся назад менять ответы.",
+      "Для русских предложений напиши естественный английский, не слово-в-слово.",
+      "Если совсем не знаешь — напиши PASS и иди дальше. PASS — это нормально.",
+      "В конце — маленькое письменное задание."
+    ],
+    "instructions_for_scorer": [
+      "Score each item correct / partial / incorrect. Tag every miss with its l1_trap_id.",
+      "Compute per-cluster correctness AND the recognition-vs-production split (her documented articles + question-formation gaps are recognition-vs-production shaped).",
+      "For irregular verbs, separate past-simple (expected OK) from 3rd-form/past-participle (expected weak) when reading results — don't collapse them.",
+      "Per-cluster band: solid >= 85%; gap 50-85%; foundation-suspect < 50%.",
+      "Debrief + any student-facing materials in RUSSIAN, simple vocab, warm tone, occasional emoji (feedbackDepth: medium-kid). Score the writing for L1-trap density, not style."
+    ],
+    "answer_position_balance": "Correct MCQ options spread 3/3/3 across a/b/c. a = n_irr_01, n_art_01, n_cond_01; b = n_irr_02, n_cmp_02, n_tense_01; c = n_prep_01, n_q_03, n_ca_01.",
+    "scoring_bands": {"solid": ">= 0.85", "gap": "0.50-0.85", "foundation_suspect": "< 0.50"},
+    "clusters": {
+      "question_formation": "Do-support + auxiliary order in questions. Documented 0% weak spot (qf03/06/07).",
+      "irregular_verbs": "Past participle / 3rd form unstable (supplies past-simple form: drove→driven). Past simple itself is OK — one floor item confirms that.",
+      "articles": "No article system in Russian. Superlative 'the', 'most of THE students', 'a' on uncountables.",
+      "countability_agreement": "much/many (documented weak), third-person do-support agreement, irregular plurals (children).",
+      "comparisons": "than vs that (documented cp01 confusion), comparative form (better not more good).",
+      "tense_aspect": "Present simple vs present continuous for actions happening now (Russian has one present tense).",
+      "conditionals": "Zero/first conditional; no 'will' in the if-clause (Russian marks future in both halves).",
+      "prepositions": "Time on/in/at. MEASURED STRENGTH — one light check only.",
+      "reflexive_calque": "'feel myself' from Russian 'чувствую себя' (documented fm01)."
+    },
+    "format_legend": {
+      "gap_mcq": "English stem with ___; choose one option.",
+      "sentence_mcq": "Choose the correct full sentence.",
+      "error_correction": "Stem has one L1-typical error; rewrite it correctly.",
+      "ru_to_en": "Russian sentence; write the natural English.",
+      "writing_prompt": "Short constrained free-write (4-6 sentences)."
+    },
+    "item_count": 20,
+    "format_breakdown": {"recognition": 9, "production": 11, "writing_prompt": 1},
+    "presentation_order": [
+      "n_art_01", "n_irr_01", "n_prep_01", "n_q_03", "n_ca_01", "n_tense_01",
+      "n_cond_01", "n_cmp_02", "n_irr_02", "n_q_01", "n_art_02", "n_ca_02",
+      "n_cmp_01", "n_tense_02", "n_refl_01", "n_irr_03", "n_q_02", "n_art_03",
+      "n_ca_03", "n_cond_02", "n_write_01"
+    ]
+  },
+  "items": [
+    {
+      "id": "n_art_01", "cluster": "articles", "l1_trap_id": "superlative_the_drop",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "kpop",
+      "stem": "BTS is ___ most famous group in Korea.",
+      "options": ["the", "a", "—"],
+      "answer": "the",
+      "calque_distractor": "—",
+      "explanation": "Superlatives take 'the' — 'the most famous group'. Russian has no articles, so 'the' gets dropped after the superlative word."
+    },
+    {
+      "id": "n_irr_01", "cluster": "irregular_verbs", "l1_trap_id": "past_simple_irregular_form",
+      "format": "gap_mcq", "surface": "recognition", "level": "A1", "theme": "school",
+      "stem": "Yesterday I ___ to school by bus.",
+      "options": ["went", "goed", "have gone"],
+      "answer": "went",
+      "calque_distractor": "goed",
+      "explanation": "Past of 'go' is 'went' (irregular). Floor item — past simple is expected to be solid for her; confirms the gap is in the 3rd form, not the past."
+    },
+    {
+      "id": "n_prep_01", "cluster": "prepositions", "l1_trap_id": "on_in_at_time_confusion",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "dance",
+      "stem": "My dance class is ___ Monday.",
+      "options": ["in", "at", "on"],
+      "answer": "on",
+      "calque_distractor": "in",
+      "explanation": "Days take 'on' — 'on Monday'. Compare 'in the morning', 'at 3 o'clock'. Prepositions are her strength — this is a light confirmation only."
+    },
+    {
+      "id": "n_q_03", "cluster": "question_formation", "l1_trap_id": "yes_no_question_no_do_support",
+      "format": "sentence_mcq", "surface": "recognition", "level": "A2", "theme": "dance",
+      "stem": "Which sentence is correct?",
+      "options": [
+        "You like dancing?",
+        "Like you dancing?",
+        "Do you like dancing?"
+      ],
+      "answer": "Do you like dancing?",
+      "calque_distractor": "You like dancing?",
+      "explanation": "Yes/no questions invert with 'do': 'Do you like dancing?'. 'You like dancing?' (statement + question mark) is the Russian-style pattern. Targets her documented do-support gap."
+    },
+    {
+      "id": "n_ca_01", "cluster": "countability_agreement", "l1_trap_id": "much_many_confusion",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "friends",
+      "stem": "How ___ friends do you have?",
+      "options": ["much", "a lot", "many"],
+      "answer": "many",
+      "calque_distractor": "much",
+      "explanation": "'Friends' are countable → 'how many friends'. 'Much' is for uncountables (how much money). Russian doesn't split much/many. Documented weak spot (mm03/mm05)."
+    },
+    {
+      "id": "n_tense_01", "cluster": "tense_aspect", "l1_trap_id": "present_simple_for_continuous",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "kpop",
+      "stem": "Be quiet! I ___ to my favourite song right now.",
+      "options": ["listen", "am listening", "listened"],
+      "answer": "am listening",
+      "calque_distractor": "listen",
+      "explanation": "Happening right now → present continuous 'am listening', not present simple 'listen'. Russian uses one present tense for both."
+    },
+    {
+      "id": "n_cond_01", "cluster": "conditionals", "l1_trap_id": "first_conditional_will_in_if",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "weekend",
+      "stem": "If it ___ tomorrow, we will stay home.",
+      "options": ["rains", "will rain", "rained"],
+      "answer": "rains",
+      "calque_distractor": "will rain",
+      "explanation": "First conditional: 'if' + present simple, main clause 'will' — 'If it rains..., we will stay'. Don't put 'will' in the if-part. Russian marks the future in both halves."
+    },
+    {
+      "id": "n_cmp_02", "cluster": "comparisons", "l1_trap_id": "comparative_form_good_better",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "kpop",
+      "stem": "I think this song is ___ than the old one.",
+      "options": ["more good", "better", "gooder"],
+      "answer": "better",
+      "calque_distractor": "more good",
+      "explanation": "'Good' is irregular → 'better', not 'more good' or 'gooder'. Comparative form is a documented weak area."
+    },
+    {
+      "id": "n_irr_02", "cluster": "irregular_verbs", "l1_trap_id": "past_participle_supplied_as_past_simple",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "kpop",
+      "stem": "I have ___ that song so many times that I know all the words.",
+      "options": ["sang", "sung", "singed"],
+      "answer": "sung",
+      "calque_distractor": "sang",
+      "explanation": "Present perfect needs the 3rd form: 'have sung', not 'have sang' (past simple). This is her exact documented pattern — the past-simple form is stable, the 3rd form is not. 'sang' is the trap."
+    },
+    {
+      "id": "n_q_01", "cluster": "question_formation", "l1_trap_id": "wh_question_no_do_support",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "school",
+      "stem": "Where you live now?",
+      "answer": "Where do you live now?",
+      "explanation": "English questions need do-support: 'Where do you live?'. Russian uses intonation with no auxiliary. Her documented 0% weak spot."
+    },
+    {
+      "id": "n_art_02", "cluster": "articles", "l1_trap_id": "most_of_the_missing_the",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "school",
+      "stem": "Most of students in my class like K-pop.",
+      "answer": "Most of the students in my class like K-pop.",
+      "explanation": "'Most of' + a specific group needs 'the': 'most of the students'. Russian drops the article. Her exact documented pattern (mp02)."
+    },
+    {
+      "id": "n_ca_02", "cluster": "countability_agreement", "l1_trap_id": "third_person_do_support_agreement",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "home",
+      "stem": "My brother don't like K-pop.",
+      "answer": "My brother doesn't like K-pop.",
+      "explanation": "Third-person singular needs 'doesn't': 'My brother doesn't like...'. Russian has no do-support, so 'don't' leaks in for he/she."
+    },
+    {
+      "id": "n_cmp_01", "cluster": "comparisons", "l1_trap_id": "than_that_confusion",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "friends",
+      "stem": "My phone is better that yours.",
+      "answer": "My phone is better than yours.",
+      "explanation": "Comparisons use 'than', not 'that': 'better than yours'. Russian 'чем' has no English homophone, so 'than/that' get confused. Her documented cp01 pattern."
+    },
+    {
+      "id": "n_tense_02", "cluster": "tense_aspect", "l1_trap_id": "present_simple_for_continuous",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "home",
+      "stem": "Look! It rains outside.",
+      "answer": "Look! It's raining outside.",
+      "explanation": "Right now → present continuous 'it's raining', not 'it rains'. Russian present tense covers both, so the simple form is the L1 default."
+    },
+    {
+      "id": "n_refl_01", "cluster": "reflexive_calque", "l1_trap_id": "feel_myself_calque",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "dance",
+      "stem": "I feel myself happy when I dance.",
+      "answer": "I feel happy when I dance.",
+      "explanation": "'Feel' + adjective takes no reflexive: 'I feel happy'. Russian 'чувствую себя' calques to 'feel myself'. Her documented fm01 pattern."
+    },
+    {
+      "id": "n_irr_03", "cluster": "irregular_verbs", "l1_trap_id": "past_participle_supplied_as_past_simple",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "home",
+      "stem": "I have never drove a car.",
+      "answer": "I have never driven a car.",
+      "explanation": "Present perfect needs the 3rd form: 'have driven', not 'have drove'. 'Drove' is the past-simple form she lexicalises — exactly the documented irvpp pattern. (Only irregular PRODUCTION item, per her profile rule.)"
+    },
+    {
+      "id": "n_q_02", "cluster": "question_formation", "l1_trap_id": "wh_question_no_do_support",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "kpop",
+      "stem": "What music you like?",
+      "answer": "What music do you like?",
+      "explanation": "'What music do you like?' — questions need the auxiliary 'do'. Same do-support gap; a second surface confirms whether it's stable."
+    },
+    {
+      "id": "n_art_03", "cluster": "articles", "l1_trap_id": "uncountable_indefinite_article",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "school",
+      "stem": "The teacher gave us a homework for the weekend.",
+      "answer": "The teacher gave us homework for the weekend.",
+      "explanation": "'Homework' is uncountable — no 'a', no plural: 'gave us homework'. Russian 'домашнее задание' can feel countable, so 'a homework' slips in."
+    },
+    {
+      "id": "n_ca_03", "cluster": "countability_agreement", "l1_trap_id": "irregular_plural",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "home",
+      "stem": "There are three childrens in the garden.",
+      "answer": "There are three children in the garden.",
+      "explanation": "Plural of 'child' is 'children' (irregular) — no extra -s. Same family: man→men, mouse→mice, tooth→teeth."
+    },
+    {
+      "id": "n_cond_02", "cluster": "conditionals", "l1_trap_id": "first_conditional_will_in_if",
+      "format": "ru_to_en", "surface": "production", "level": "B1", "theme": "friends",
+      "stem_ru": "Если ты придёшь, мы посмотрим фильм.",
+      "answer": "If you come, we will watch a film.",
+      "accept": ["If you come, we'll watch a movie."],
+      "explanation": "First conditional: present in the if-part ('If you come'), 'will' in the main part. Russian marks the future in both halves, giving 'if you will come'."
+    },
+    {
+      "id": "n_write_01", "cluster": "writing_sample", "l1_trap_id": "free_production",
+      "format": "writing_prompt", "surface": "production", "level": "A2", "theme": "kpop",
+      "stem": "Write 4-6 sentences about your favourite music or K-pop group, and what you like doing at the weekend.",
+      "answer": null,
+      "scorer_note": "Free-production surface. Score for L1-trap density, not style. Watch for: articles (the/a/zero on group names, 'the weekend'), present simple habits vs present continuous, question-formation isn't triggered here but do-support/agreement in statements is ('my friends like', 'she sings'), much/many, and any 'feel myself' calque. Debrief in Russian."
+    }
+  ]
+}

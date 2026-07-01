@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "instrument": "ernest_igcse_entrance_diagnostic_v1",
+    "title": "Ernest — IGCSE/IB Entrance Readiness Diagnostic (Russian-L1 focus)",
+    "authored_on": "2026-07-01",
+    "revision": "v1.1 (2026-07-01) — rebalanced MCQ answer positions to 3/3/3 across a/b/c and refreshed the first four stems after a position-A authoring artifact was caught immediately pre-run (correct option sat at 'a' in 8/9 MCQs; test-taker's first four 'a' answers were discarded as position-confounded).",
+    "author": "Claude Code (CLI session)",
+    "test_taker": "ernest",
+    "template_lineage": "Reuses the architecture of russian_l1_b2_diagnostic_v1 (clusters + per-item L1-trap IDs + recognition/production split + offline scoring), recalibrated for Ernest: B1 core with A2 floor probes and light B2 stretch; school/gaming/friends/sport/expat-school themes; ~22 items + one writing sample sized for a 30-minute sitting.",
+    "purpose": "Reveal Ernest's strengths and weaknesses across the highest-frequency Russian-L1 error zones that also matter for a Cambridge IGCSE / IB entrance test, ahead of his move from British School of Bahrain to Kazakhstan. Diagnostic, not drill — clean signal first, targeted practice after.",
+    "context": "Finished Year 10 at BSB; ~2 years English-medium schooling on top of Russian-medium background, so the foundation is thin in places. Level B1/B2 with a documented articles recognition-vs-production gap (≈100% MCQ vs ≈50% error-correction).",
+    "level_design": "B1 core, A2 floor probes (find where the foundation is thin), light B2 stretch (find the ceiling). Entrance-realistic pitch.",
+    "themes": ["school", "gaming", "friends", "sport", "weekend", "home", "kazakhstan_move"],
+    "instructions_for_test_taker": [
+      "One sitting, about 30 minutes. Work on your own — no dictionary, no help.",
+      "One answer per item. Don't go back and change earlier answers.",
+      "For the Russian sentences: write the most natural English version, not word-by-word.",
+      "If you truly have no idea, write PASS and move on. PASS is fine — it tells us what to practise.",
+      "The last task is a short piece of writing (6-8 sentences)."
+    ],
+    "instructions_for_scorer": [
+      "Score each item correct / partial / incorrect. Tag every miss with its l1_trap_id (or 'other').",
+      "Compute per-cluster correctness AND the recognition-vs-production split — the recognition-passes / production-fails gap is the key signal for Ernest (his known articles pattern).",
+      "Per-cluster band: solid >= 85%; gap 50-85%; foundation-suspect < 50%.",
+      "Score the writing sample separately for L1-trap density (articles, tense, prepositions, word order) — not for style.",
+      "Feedback tier for the debrief: 'medium' (2-3 sentences + a brief Russian contrast), English coach language per Ernest's profile."
+    ],
+    "answer_position_balance": "Correct options are spread across positions a/b/c (3/3/3 over the 9 recognition MCQs) to prevent position-answering. Spread: a = e_art_01, e_wo_03, e_tense_01; b = e_tense_04, e_cond_01, e_ger_02; c = e_prep_01, e_count_02, e_art_04. Do NOT author with the correct option consistently first — the v1 Russian-L1 diagnostic hit exactly this artifact.",
+    "scoring_bands": {"solid": ">= 0.85", "gap": "0.50-0.85", "foundation_suspect": "< 0.50"},
+    "clusters": {
+      "articles": "No article system in Russian. Superlative 'the', abstract/uncountable zero-article, uncountable + no indefinite article, meal zero-article.",
+      "prepositions": "Time in/on/at and fixed verb/adjective + preposition (good at, depend on) where Russian case government / prepositions don't transfer.",
+      "tense_aspect": "Russian has no perfect or continuous aspect. Present perfect vs past simple, since/for, present continuous for actions now, basic irregular past.",
+      "word_order": "Do-support in questions, indirect-question word order, adverb placement ('very like' calque).",
+      "countability_agreement": "Uncountable-as-plural (informations), much/many, third-person do-support agreement (he don't).",
+      "gerund_infinitive": "Closed-set gerund licensors (enjoy, look forward to) where Russian defaults to the infinitive.",
+      "conditionals": "Russian single 'бы' form maps to English zero/first/second; 'will'/'would' leaking into the if-clause."
+    },
+    "format_legend": {
+      "gap_mcq": "English stem with ___; choose one option.",
+      "sentence_mcq": "Choose the correct full sentence.",
+      "error_correction": "Stem has one L1-typical error; rewrite it correctly.",
+      "ru_to_en": "Russian sentence; write the natural English.",
+      "writing_prompt": "Short constrained free-write (6-8 sentences)."
+    },
+    "item_count": 22,
+    "format_breakdown": {"recognition": 9, "production": 13, "writing_prompt": 1},
+    "presentation_order": [
+      "e_art_01", "e_tense_04", "e_prep_01", "e_cond_01", "e_count_02", "e_wo_03",
+      "e_art_04", "e_ger_02", "e_tense_01", "e_prep_02", "e_wo_01", "e_count_01",
+      "e_cond_02", "e_art_02", "e_tense_02", "e_ger_01", "e_prep_03", "e_wo_02",
+      "e_count_03", "e_art_03", "e_tense_03", "e_cond_03", "e_write_01"
+    ]
+  },
+  "items": [
+    {
+      "id": "e_art_01", "cluster": "articles", "l1_trap_id": "superlative_the_drop",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "sport",
+      "stem": "Football is ___ most popular sport at my school.",
+      "options": ["the", "a", "—"],
+      "answer": "the",
+      "calque_distractor": "—",
+      "explanation": "Superlatives take 'the' — 'the most popular sport'. Russian has no articles, so the superlative word alone (самый популярный) feels complete and 'the' gets dropped."
+    },
+    {
+      "id": "e_tense_04", "cluster": "tense_aspect", "l1_trap_id": "irregular_past_form",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "home",
+      "stem": "Yesterday we ___ pizza for dinner.",
+      "options": ["eated", "ate", "have eaten"],
+      "answer": "ate",
+      "calque_distractor": "have eaten",
+      "explanation": "Past of 'eat' is 'ate' (irregular). 'Eated' over-regularises; 'have eaten' can't go with 'yesterday' (a finished time). Floor check on basic past simple."
+    },
+    {
+      "id": "e_prep_01", "cluster": "prepositions", "l1_trap_id": "in_on_at_time_confusion",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "weekend",
+      "stem": "We always go on holiday ___ summer.",
+      "options": ["on", "at", "in"],
+      "answer": "in",
+      "calque_distractor": "on",
+      "explanation": "Seasons and months take 'in' — 'in summer', 'in July'. Compare 'on Saturday' (day), 'at seven' (clock time). Russian uses one preposition (в) for many of these, so in/on/at get mixed."
+    },
+    {
+      "id": "e_cond_01", "cluster": "conditionals", "l1_trap_id": "first_conditional_will_in_if",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "school",
+      "stem": "If I ___ my homework now, my mum will be happy.",
+      "options": ["will finish", "finish", "finished"],
+      "answer": "finish",
+      "calque_distractor": "will finish",
+      "explanation": "First conditional: 'if' + present simple, main clause 'will' — 'If I finish..., my mum will be happy'. Don't put 'will' in the if-clause. Russian marks the future in both halves."
+    },
+    {
+      "id": "e_count_02", "cluster": "countability_agreement", "l1_trap_id": "much_many_confusion",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "gaming",
+      "stem": "How ___ money do you spend on games?",
+      "options": ["many", "a lot of", "much"],
+      "answer": "much",
+      "calque_distractor": "many",
+      "explanation": "'Money' is uncountable → 'how much money'. 'Many' is for countable plurals ('how many games'). Russian doesn't split much/many, so they get swapped."
+    },
+    {
+      "id": "e_wo_03", "cluster": "word_order", "l1_trap_id": "very_like_adverb_calque",
+      "format": "sentence_mcq", "surface": "recognition", "level": "B1", "theme": "gaming",
+      "stem": "Which sentence is correct?",
+      "options": [
+        "I like this game very much.",
+        "I very like this game.",
+        "I like very this game."
+      ],
+      "answer": "I like this game very much.",
+      "calque_distractor": "I very like this game.",
+      "explanation": "'Very' can't sit in front of a verb — use 'very much' after the object (or 'really like'). 'I very like' calques Russian 'я очень люблю'."
+    },
+    {
+      "id": "e_art_04", "cluster": "articles", "l1_trap_id": "meal_zero_article",
+      "format": "gap_mcq", "surface": "recognition", "level": "A2", "theme": "home",
+      "stem": "I usually have ___ breakfast at seven o'clock.",
+      "options": ["a", "the", "—"],
+      "answer": "—",
+      "calque_distractor": "the",
+      "explanation": "Meals take zero article — 'have breakfast / lunch / dinner'. This one usually transfers correctly from Russian, so it's a floor check."
+    },
+    {
+      "id": "e_ger_02", "cluster": "gerund_infinitive", "l1_trap_id": "look_forward_to_gerund",
+      "format": "gap_mcq", "surface": "recognition", "level": "B2", "theme": "kazakhstan_move",
+      "stem": "I'm looking forward to ___ my new classmates.",
+      "options": ["meet", "meeting", "met"],
+      "answer": "meeting",
+      "calque_distractor": "meet",
+      "explanation": "In 'look forward to', 'to' is a preposition, so the next verb is -ing: 'looking forward to meeting'. It is NOT an infinitive 'to'. A common trap even at B2."
+    },
+    {
+      "id": "e_tense_01", "cluster": "tense_aspect", "l1_trap_id": "present_perfect_experience_collapse",
+      "format": "gap_mcq", "surface": "recognition", "level": "B1", "theme": "gaming",
+      "stem": "I ___ this game before, so I know what to do.",
+      "options": ["have played", "played", "play"],
+      "answer": "have played",
+      "calque_distractor": "played",
+      "explanation": "Experience with no stated time → present perfect: 'I have played this before'. Russian has no perfect aspect, so it often collapses to past simple ('I played') even with no past-time marker."
+    },
+    {
+      "id": "e_prep_02", "cluster": "prepositions", "l1_trap_id": "good_in_at_calque",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "gaming",
+      "stem": "My little brother is very good in Minecraft.",
+      "answer": "My little brother is very good at Minecraft.",
+      "explanation": "'Good at' something, not 'good in'. Russian 'хорош в' calques to 'good in'. English fixes the preposition to the adjective — 'good at', 'interested in'."
+    },
+    {
+      "id": "e_wo_01", "cluster": "word_order", "l1_trap_id": "do_support_drop_question",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "school",
+      "stem": "Where you go to school now?",
+      "answer": "Where do you go to school now?",
+      "explanation": "English questions need do-support: 'Where do you go...'. Russian makes questions by intonation with no auxiliary, so 'Where you go...' is the L1 pattern."
+    },
+    {
+      "id": "e_count_01", "cluster": "countability_agreement", "l1_trap_id": "uncountable_pluralised",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "school",
+      "stem": "The teacher gave us a lot of informations about the exam.",
+      "answer": "The teacher gave us a lot of information about the exam.",
+      "explanation": "'Information' is uncountable — no plural -s: 'a lot of information'. Russian 'информация' feels countable, producing 'informations'. Same family: advice, news, furniture, money."
+    },
+    {
+      "id": "e_cond_02", "cluster": "conditionals", "l1_trap_id": "would_in_if_clause",
+      "format": "error_correction", "surface": "production", "level": "B2", "theme": "school",
+      "stem": "If I would have more time, I would learn to code.",
+      "answer": "If I had more time, I would learn to code.",
+      "explanation": "Second conditional: 'if' + past simple, main clause 'would' — 'If I had..., I would...'. 'Would' does not go in the if-clause. Russian puts 'бы' in both clauses, giving 'If I would have...'."
+    },
+    {
+      "id": "e_art_02", "cluster": "articles", "l1_trap_id": "abstract_uncountable_overuse_the",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "gaming",
+      "stem": "I want to make games, so next year I will study the computer science.",
+      "answer": "I want to make games, so next year I will study computer science.",
+      "explanation": "School subjects and abstract fields take no article — 'study computer science', 'I like history'. The Russian-L1 trap is over-adding 'the' to a general uncountable idea."
+    },
+    {
+      "id": "e_tense_02", "cluster": "tense_aspect", "l1_trap_id": "present_for_perfect_plus_since_for",
+      "format": "error_correction", "surface": "production", "level": "B2", "theme": "friends",
+      "stem": "I know him since three years.",
+      "answer": "I have known him for three years.",
+      "explanation": "A state lasting up to now → present perfect + 'for' (a length of time): 'have known him for three years'. Russian uses the present tense here, giving the double error 'I know him since three years'."
+    },
+    {
+      "id": "e_ger_01", "cluster": "gerund_infinitive", "l1_trap_id": "enjoy_infinitive_substitution",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "sport",
+      "stem": "I enjoy to play basketball after school.",
+      "answer": "I enjoy playing basketball after school.",
+      "explanation": "'Enjoy' takes the -ing form: 'enjoy playing'. Russian uses the infinitive after most verbs (люблю играть), giving 'enjoy to play'. Same group: finish, avoid, mind, keep + -ing."
+    },
+    {
+      "id": "e_prep_03", "cluster": "prepositions", "l1_trap_id": "depend_from_on_calque",
+      "format": "ru_to_en", "surface": "production", "level": "B1", "theme": "school",
+      "stem_ru": "Это зависит от учителя.",
+      "answer": "It depends on the teacher.",
+      "explanation": "'Depend on', not 'depend from'. Russian 'зависеть от' (literally 'from') calques to 'depend from'. The preposition is fixed by the English verb, not translated."
+    },
+    {
+      "id": "e_wo_02", "cluster": "word_order", "l1_trap_id": "indirect_question_word_order",
+      "format": "error_correction", "surface": "production", "level": "B1", "theme": "friends",
+      "stem": "I don't know where is the bus stop.",
+      "answer": "I don't know where the bus stop is.",
+      "explanation": "Embedded (indirect) questions keep normal statement order: '...where the bus stop is', not '...where is the bus stop'. This is one of the most common Russian-L1 calques."
+    },
+    {
+      "id": "e_count_03", "cluster": "countability_agreement", "l1_trap_id": "third_person_do_support_agreement",
+      "format": "error_correction", "surface": "production", "level": "A2", "theme": "friends",
+      "stem": "My best friend don't like football.",
+      "answer": "My best friend doesn't like football.",
+      "explanation": "Third-person singular needs 'doesn't': 'My friend doesn't like...'. Russian verbs carry no do-support, so 'don't' leaks in for he/she/it. Floor check on agreement."
+    },
+    {
+      "id": "e_art_03", "cluster": "articles", "l1_trap_id": "uncountable_indefinite_article_or_plural",
+      "format": "ru_to_en", "surface": "production", "level": "B1", "theme": "school",
+      "stem_ru": "Учитель дал мне хороший совет.",
+      "answer": "The teacher gave me good advice.",
+      "accept": ["The teacher gave me some good advice."],
+      "explanation": "'Advice' is uncountable — no 'a', no plural -s: 'good advice', not 'a good advice' / 'advices'. Russian 'совет' is countable, so the L1 pattern produces 'an advice'. 'The teacher' is a specific, known person = definite."
+    },
+    {
+      "id": "e_tense_03", "cluster": "tense_aspect", "l1_trap_id": "present_simple_for_continuous",
+      "format": "ru_to_en", "surface": "production", "level": "B1", "theme": "home",
+      "stem_ru": "Тише! Малыш спит.",
+      "answer": "Be quiet! The baby is sleeping.",
+      "accept": ["Quiet! The baby is sleeping.", "Be quiet, the baby is sleeping."],
+      "explanation": "An action happening right now → present continuous ('is sleeping'), not present simple ('sleeps'). Russian uses one present tense for both, so 'sleeps' is the L1 default."
+    },
+    {
+      "id": "e_cond_03", "cluster": "conditionals", "l1_trap_id": "second_conditional_by_mapping",
+      "format": "ru_to_en", "surface": "production", "level": "B2", "theme": "gaming",
+      "stem_ru": "Если бы я был богатым, я бы купил новый компьютер.",
+      "answer": "If I were rich, I would buy a new computer.",
+      "accept": ["If I was rich, I would buy a new computer."],
+      "explanation": "Unreal present → second conditional: 'If I were rich, I would buy...'. Russian's single 'бы' maps here; 'were' is the textbook subjunctive and 'would' belongs only in the main clause."
+    },
+    {
+      "id": "e_write_01", "cluster": "writing_sample", "l1_trap_id": "free_production",
+      "format": "writing_prompt", "surface": "production", "level": "B1", "theme": "kazakhstan_move",
+      "stem": "Write 6-8 sentences about your move to Kazakhstan. Tell us: what are you looking forward to at your new school? What do you think will be different from Bahrain? And what do you like doing in your free time?",
+      "answer": null,
+      "scorer_note": "No single answer — this is the free-production surface. Score for L1-trap density, not style. Watch specifically for: articles (a/the/zero on 'school', 'a new country', abstract nouns), tense choice (present habits vs future 'will/going to' vs any past), prepositions ('in Kazakhstan', 'at school', 'on the weekend', 'looking forward to'), word order, and gerund vs infinitive after 'like' / 'looking forward to'. Tag surfaced traps against the catalogue above and cross-check them with the item-level results."
+    }
+  ]
+}

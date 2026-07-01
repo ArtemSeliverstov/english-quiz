@@ -1,0 +1,32 @@
+{
+  "instrument": "nicole_igcse_entrance_diagnostic_v1",
+  "test_taker": "nicole",
+  "run_date": "2026-07-01",
+  "protocol_notes": [
+    "Run in English per Artem's instruction (instrument's Russian framing was for the run-sheet/debrief only, not a requirement for this specific run).",
+    "No in-session feedback given. Two items (12, 15) show substitution/avoidance — the error-correction target structure was sidestepped by rewording rather than fixed, similar to the avoidance pattern documented in the parent Russian-L1 diagnostic methodology."
+  ],
+  "responses": [
+    {"id": "n_art_01", "given": "b"},
+    {"id": "n_irr_01", "given": "a"},
+    {"id": "n_prep_01", "given": "c"},
+    {"id": "n_q_03", "given": "c"},
+    {"id": "n_ca_01", "given": "c"},
+    {"id": "n_tense_01", "given": "b"},
+    {"id": "n_cond_01", "given": "a"},
+    {"id": "n_cmp_02", "given": "b"},
+    {"id": "n_irr_02", "given": "a"},
+    {"id": "n_q_01", "given": "where do you live now?"},
+    {"id": "n_art_02", "given": "most students in my class like k-pop", "note": "dropped 'of the' entirely rather than fixing to 'most of the students' — avoidance/reword"},
+    {"id": "n_ca_02", "given": "my brother hate k-pop", "note": "substituted 'hate' for 'doesn't like' — sidesteps the do-support target rather than fixing it (avoidance)"},
+    {"id": "n_cmp_01", "given": "my phone is better than yours"},
+    {"id": "n_tense_02", "given": "look! it raining outside", "note": "dropped auxiliary 'is' — partial fix of present continuous"},
+    {"id": "n_refl_01", "given": "i feel etter when i dance", "note": "likely typo for 'better'; reworded away from 'happy' — sidesteps the reflexive-calque target rather than fixing 'feel myself happy' directly (avoidance)"},
+    {"id": "n_irr_03", "given": "i have never drive a car", "note": "used base form 'drive' instead of past participle 'driven' — still incorrect, different sub-error than the stem's 'drove'"},
+    {"id": "n_q_02", "given": "what music do you like"},
+    {"id": "n_art_03", "given": "the teacher gave us homework for the weekend"},
+    {"id": "n_ca_03", "given": "There are three children in the garden"},
+    {"id": "n_cond_02", "given": "if you come we will watch movie", "note": "correct conditional structure; dropped article 'a' before 'movie'"},
+    {"id": "n_write_01", "given": "I hate k-pop i like russian music more. At weekend on saturdays I had English and on sundays I had a Badminton. After my club normally I go outside to play with my friends or do my homework. But if I am not in my country I will call my frieds and we will play online."}
+  ]
+}
