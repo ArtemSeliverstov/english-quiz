@@ -90,6 +90,12 @@ Writes to `players/{name}/exercises/{Date.now()}`. Validates exercise type
 (must use canonical names — `article_drill` not `error_correction`). JSON
 shape per `references/firestore-schema.md` (exercises subcollection).
 
+Also folds each **wrong** item's `matched_pattern_id` into
+`coach_notes.recent_session_signals` (via `_signals.js`), plus the daily streak and
+cross-surface stats aggregation. This closes the leak where CC sessions wrote the exercise row
+but not the signals buffer, so a 2nd occurrence never reached the promotion gate — a CC
+`exercise-session` no longer needs a manual `update_coach_notes.js` bump. Idempotent on re-run.
+
 ### `backup_players.js` — daily Firestore snapshot
 
 ```bash
@@ -201,10 +207,29 @@ CC-driven from PWA-driven Free Writes.
 Schema mirrors the PWA's `coachWriteSessionLogStandalone` — see the script
 header for the full session JSON shape.
 
+### `promote_signals.js` — surface / apply recent_session_signals promotions
+
+```bash
+node tools/promote_signals.js artem --list          # count>=2 promotable (with likely_covered flag)
+node tools/promote_signals.js all --list            # same, every player
+node tools/promote_signals.js artem --apply patch.json   # {promotions:[{pattern_id,label}]}
+```
+
+Makes the promotion gate (`count >= 2` → `weak_patterns`) cheap to run daily. `--list`
+(read-only) is wired into `mistakes-review` step 7 so ready signals can't rot between manual
+`stats-review` runs. `--apply` appends each composed label to `weak_patterns` (deduped) **and**
+drops the promoted `pattern_id` from the buffer in one write. Label composition stays with the
+skill (Claude) — the tool never invents a machine-generated label. See `coach-notes-schema.md`.
+
 ## Shared library
 
 `_firestore.js` — typed-value JSON converters and HTTP wrappers. Imported by all
 other scripts. Not a CLI itself.
+
+`_signals.js` — `recent_session_signals` buffer + promotion lifecycle, shared by
+`update_coach_notes.js`, `log_exercise.js` (auto-fold on CC exercise write), and
+`promote_signals.js`. Exposes `applyRecentSessionSignalsPatch` (add/promote/remove, combinable
+in one patch) and `deriveSignalsFromExercise`. Not a CLI itself.
 
 ## Patterns & conventions
 

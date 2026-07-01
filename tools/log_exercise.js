@@ -23,6 +23,7 @@ const {
   fsSet, fsGet, fsPatch, docToPlain, PLAYERS, bumpDailyStreakRemote,
   aggregateExerciseDelta, applyDeltaToStats,
 } = require('./_firestore');
+const { applyRecentSessionSignalsPatch, deriveSignalsFromExercise } = require('./_signals');
 
 const VALID_EXERCISES = [
   'translation', 'free_write', 'error_correction', 'transform',
@@ -214,6 +215,31 @@ async function main() {
     console.warn(`[log_exercise] WARNING: stats aggregation failed: ${e.message}`);
   }
 
+  // Auto-fold wrong items into coach_notes.recent_session_signals — mirrors the
+  // PWA drill end-handlers so a CC exercise's 2nd occurrence of a pattern
+  // reaches the promotion gate without a manual update_coach_notes bump. This
+  // closes the leak where the CC path wrote the exercise row + prose but never
+  // the signals buffer. Idempotent on re-run: merge dedupes by session_id.
+  let signalsFolded = 0;
+  try {
+    const sessionId = (exercise.meta && exercise.meta.session_id) || exercise.session_id || ts;
+    const adds = deriveSignalsFromExercise(exercise, sessionId);
+    if (adds.length) {
+      const cnDoc = await fsGet(`players/${args.player}`);
+      const cnRoot = cnDoc ? docToPlain(cnDoc) : {};
+      const cn = cnRoot.coach_notes || {};
+      cn.recent_session_signals = applyRecentSessionSignalsPatch(
+        cn.recent_session_signals, { recent_session_signals_add: adds }
+      );
+      cn.last_updated = new Date().toISOString();
+      cn.last_updated_by = 'claude_code';
+      await fsPatch(`players/${args.player}`, ['coach_notes'], { coach_notes: cn });
+      signalsFolded = adds.length;
+    }
+  } catch (e) {
+    console.warn(`[log_exercise] WARNING: signals fold failed: ${e.message}`);
+  }
+
   console.log(JSON.stringify({
     written: path,
     timestamp: ts,
@@ -223,6 +249,7 @@ async function main() {
     auto_suspected: exercise.auto_suspected ?? null,
     streak_bumped: streakBumped,
     items_aggregated: aggregated.items_folded,
+    signals_folded: signalsFolded,
   }, null, 2));
 }
 

@@ -5,15 +5,15 @@ description: Daily review of every quiz mistake from the past 31h. Classify each
 
 # Mistakes Review
 
-Triage every quiz mistake logged in the past 31h. Output: per-mistake verdict + a fix-proposal table. No auto-apply — user runs `quiz-development` to land any fixes.
+Triage every quiz mistake from the past 31h. Output: per-mistake verdict + fix-proposal table. No auto-apply — run `quiz-development` to land fixes.
 
 ## Reads
 
 - `node tools/get_recent_mistakes.js --pretty` — primary input. One block per (player, qid) mistake with question metadata + `lastWrong` text.
-- `index.html` — for sibling questions and category context.
+- `index.html` — siblings + category context.
 - `references/family-profiles.md` — level + per-player theme tags for the relevance check.
 - `references/question-authoring-standards.md` — stem-sufficiency test, anti-patterns.
-- `references/bug-log.md` — grep the prefix or category before proposing a fix.
+- `references/bug-log.md` — grep prefix/category before proposing a fix.
 
 ## Workflow
 
@@ -24,17 +24,17 @@ Triage every quiz mistake logged in the past 31h. Output: per-mistake verdict + 
 | Verdict | Trigger |
 |---|---|
 | `genuine` | `lastWrong` shows a real L1-interference or knowledge error matching the question's target pattern. Most land here. |
-| `bug:alt-answer` | `lastWrong` is grammatically correct and pragmatically equivalent to the keyed answer — `ans` should be widened. |
-| `bug:stem` | Stem permits more than one reading; `lastWrong` matches a non-target reading. Stem-sufficiency test fails. |
+| `bug:alt-answer` | `lastWrong` is correct and equivalent to the keyed answer — widen `ans`. |
+| `bug:stem` | Stem permits >1 reading; `lastWrong` matches a non-target one. Stem-sufficiency fails. |
 | `bug:keyword` | Transform with `keyword` not enforced or missing from stem context. Confirm with `node tools/check_transform_keywords.js`. |
 
-MCQ/gap `lastWrong` resolves to the chosen option text (`q._lastPlayerAnswer = q.opts[i]` in the play loop) — treat as `[data]`. Only legacy `index=N` with no resolved text → `[speculation]`.
+MCQ/gap `lastWrong` = chosen option text (`q.opts[i]`) → `[data]`. Legacy `index=N` with no resolved text → `[speculation]`.
 
 **3. Profile-relevance check** (every mistake):
 
-- Question lvl > player's profile defaults → `routing` (surface, but `routing-audit` territory — no fix here).
+- Question lvl > player's profile defaults → `routing` (`routing-audit` territory — no fix here).
 - Generic stem or wrong register for the served player → `bug:theme`.
-- No served player matches the question's profile → `bug:orphan` (retire or rewrite).
+- No served player matches the question's profile → `bug:orphan`.
 
 **4. Fix-proposal table** (one row per bug verdict; skip empty groups):
 
@@ -44,9 +44,11 @@ MCQ/gap `lastWrong` resolves to the chosen option text (`q._lastPlayerAnswer = q
 
 Evidence quotes `lastWrong` verbatim. No verbatim → row is informational, no fix.
 
-**5. Sibling sweep** (only when ≥1 fix proposed). Per fixed qid: grep prefix and `cat`, read 5–10 siblings, list any with the same defect under `## Sibling sweep — prefix {prefix}` using verdict `bug:sibling`.
+**5. Sibling sweep** (only when ≥1 fix proposed). Per fixed qid: grep prefix, read 5–10 siblings, list same-defect ones under `## Sibling sweep — {prefix}` as `bug:sibling`.
 
 **6. Output the report.** Markdown only — no file writes, no Firestore writes.
+
+**7. Signals promotion check** (read-only). `promote_signals.js all --list` → surface not-covered `count≥2` as `## Signals ready to promote`; recommend promotion (`--apply` with a composed label, or `stats-review`). Details in `coach-notes-schema.md`.
 
 ## Output structure
 
@@ -63,16 +65,18 @@ Pulled {N} mistakes across {players} for the past 31h.
 
 ## Routing flags       [N — if any]
 
+## Signals ready to promote  [if any]
+
 ## Sibling sweep       [if any fix proposed]
 
 ## Summary
-- Genuine: N · Bugs: N (alt-answer M / stem K / keyword L / theme P / orphan Q) · Routing: N · Siblings: N
-- Next action: {`quiz-development` to land K fixes | none}
+- Genuine: N · Bugs: N (alt M / stem K / keyword L / theme P / orphan Q) · Routing: N · Siblings: N
+- Next: {`quiz-development` to land K fixes | none}
 ```
 
 ## Speculation marking
 
-Same tags as `stats-review`: **[data]** = direct from `lastWrong` (incl. resolved MCQ text); **[inferred]** = pattern across mistakes; **[speculation]** = beyond data. Untagged = [data].
+Tags as `stats-review`: **[data]** = from `lastWrong` (incl. resolved MCQ text); **[inferred]** = cross-mistake pattern; **[speculation]** = beyond data. Untagged = [data].
 
 ## Sparse data
 

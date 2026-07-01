@@ -39,6 +39,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fsGet, fsPatch, docToPlain, PLAYERS } = require('./_firestore');
+const { applyRecentSessionSignalsPatch } = require('./_signals');
 
 const RECENT_OBS_CAP = 10;
 const VALID_KEYS = new Set([
@@ -52,8 +53,6 @@ const VALID_KEYS = new Set([
   // 2026-05-12 stats-sprawl cleanup: single-session capture buffer with promotion lifecycle
   'recent_session_signals_add', 'recent_session_signals_promote', 'recent_session_signals_remove',
 ]);
-
-const RECENT_SESSION_SIGNALS_CAP = 20;
 
 // Per-player context tag lists. Used by --regen-tracker-md to render the coverage
 // table. Mirrors references/family-profiles.md theme tags.
@@ -118,78 +117,8 @@ function applyObservationsPatch(current, addList) {
     : updated;
 }
 
-// ─── recent_session_signals helpers (2026-05-12 stats-sprawl cleanup) ───────
-//
-// Buffer of single-session pattern captures, cap 20. Promotion lifecycle:
-//   add: merge new captures by pattern_id (bump count + session_ids if exists)
-//   promote: remove an entry (caller appends a durable label to weak_patterns)
-//   remove: drop by pattern_id (e.g. obsolete pattern that no longer fires)
-//
-// Priority-weighted eviction when at cap: lowest count + oldest last_seen first.
-// Singletons go before multi-evidence entries — protects accumulating signals
-// from being churned out before they hit the promotion threshold.
-
-function applyRecentSessionSignalsPatch(current, patch) {
-  const signals = (current || []).map(s => Object.assign({}, s,
-    s.session_ids ? { session_ids: [...s.session_ids] } : {},
-    s.source_modes ? { source_modes: [...s.source_modes] } : {}));
-
-  // remove: drop entries by pattern_id
-  if (Array.isArray(patch.recent_session_signals_remove)) {
-    const removeSet = new Set(patch.recent_session_signals_remove);
-    return signals.filter(s => !removeSet.has(s.pattern_id));
-  }
-
-  // promote: drop entries that have been promoted to weak_patterns
-  if (Array.isArray(patch.recent_session_signals_promote)) {
-    const promoteSet = new Set(patch.recent_session_signals_promote);
-    return signals.filter(s => !promoteSet.has(s.pattern_id));
-  }
-
-  // add: merge captures by pattern_id
-  if (Array.isArray(patch.recent_session_signals_add)) {
-    for (const capture of patch.recent_session_signals_add) {
-      if (!capture || typeof capture.pattern_id !== 'string' || !capture.pattern_id.trim()) continue;
-      const key = capture.pattern_id.trim();
-      const existing = signals.find(s => s.pattern_id === key);
-      if (existing) {
-        const sids = capture.session_ids || (capture.session_id ? [capture.session_id] : []);
-        for (const sid of sids) {
-          if (sid && !existing.session_ids.includes(sid)) existing.session_ids.push(sid);
-        }
-        existing.count = existing.session_ids.length;
-        if (capture.last_seen) existing.last_seen = capture.last_seen;
-        if (capture.source_modes) {
-          for (const m of capture.source_modes) {
-            if (m && !existing.source_modes.includes(m)) existing.source_modes.push(m);
-          }
-        }
-        if (capture.category && !existing.category) existing.category = capture.category;
-      } else {
-        const sids = capture.session_ids || (capture.session_id ? [capture.session_id] : []);
-        signals.push({
-          pattern_id: key,
-          session_ids: [...sids],
-          count: sids.length,
-          first_seen: capture.first_seen || todayISO(),
-          last_seen: capture.last_seen || todayISO(),
-          category: capture.category || null,
-          source_modes: capture.source_modes || [],
-        });
-      }
-    }
-  }
-
-  // Priority-weighted eviction if over cap
-  while (signals.length > RECENT_SESSION_SIGNALS_CAP) {
-    signals.sort((a, b) => {
-      if (a.count !== b.count) return a.count - b.count;  // singletons first
-      return String(a.last_seen || '').localeCompare(String(b.last_seen || ''));  // oldest first
-    });
-    signals.shift();
-  }
-  return signals;
-}
+// recent_session_signals buffer + promotion lifecycle now live in ./_signals.js
+// (shared with log_exercise.js auto-fold and promote_signals.js). Imported above.
 
 // ─── phrase_tracker helpers ────────────────────────────────────────────────
 

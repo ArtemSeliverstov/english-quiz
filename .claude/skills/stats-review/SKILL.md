@@ -46,7 +46,9 @@ Identify patterns, weak spots, adjustments. Output: structured review + ≤2 new
 
 **6. Phrase tracker** (auto, after 4). Per player: apply lifecycle from `coach_sessions`, surface retest-due, regen md if tracker date > md `Last refresh`. `update_coach_notes.js {name} <patch.json> --regen-tracker-md`.
 
-**7. Signals promotion + audit.** Signals with `count >= 2`: prose label + `weak_patterns_add` + `recent_session_signals_promote`. Audit `weak_patterns`: remove legacy `(coach_session DATE)` entries + lexical `X → Y [tag]` rows (migrate to `phrase_tracker_add`).
+**7. Signals promotion + audit.** `promote_signals.js <player> --list` → for `count >= 2` not-covered: compose label, `--apply` (or `weak_patterns_add` + `_promote`). Audit `weak_patterns`: drop legacy `(coach_session DATE)` + lexical `X → Y [tag]` rows (migrate to `phrase_tracker_add`).
+
+**8. Weak-spots tracker** (Artem builder-only). Regenerate `progress/weak-spots-tracker-artem.md` per `references/weak-spots-rubric.md` (domain rollup + ranked tiers).
 
 ## Speculation marking
 
