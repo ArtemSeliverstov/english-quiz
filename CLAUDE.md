@@ -17,7 +17,7 @@ Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `art
 
 ## Reference docs — read before any task
 
-The KB is the authoritative source. CLAUDE.md is only a routing layer.
+KB is authoritative; CLAUDE.md only routes.
 
 | File | Use when |
 |---|---|
@@ -50,13 +50,14 @@ When standards in references conflict with this CLAUDE.md, **references win**.
 
 ## Progress trackers — user-facing reports
 
-Living documents the user reads. Refreshed by skills, not authoritative doctrine.
+Living documents, refreshed by skills. Not authoritative doctrine.
 
 | File | Owner | Refreshed by |
 |---|---|---|
 | `progress/phrasal-verbs-tracker.md` | Artem (B1–C1, business + cycling) | `stats-review` (per-PV status + Freq) |
 | `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
 | `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
+| `progress/weak-spots-tracker-artem.md` | Artem | `stats-review` — two-tier; builder-only |
 
 ---
 
@@ -73,5 +74,3 @@ Living documents the user reads. Refreshed by skills, not authoritative doctrine
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
 | `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage + sibling sweep |
 | `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |
-
-Skills orchestrate; they don't repeat reference content.
