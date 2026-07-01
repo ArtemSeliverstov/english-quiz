@@ -91,10 +91,28 @@ Error Correction, Article Drill, Particle Sort, Spelling Drill):
    - If grammar (snake_case): look up by `pattern_id`. Found → append `session_id` if new,
      bump `count`, update `last_seen`. Not found → append. Evict per rule if at cap.
 
-**Promotion** (stats-review skill, daily): for each entry with `count >= 2`, compose a durable
-prose label, append to `weak_patterns`, remove from this buffer.
+**CC exercise write path** (added 2026-06-19 — closes the leak where CC sessions wrote the
+exercise row but not this buffer, so 2nd occurrences never reached the promotion gate):
+`tools/log_exercise.js` auto-folds each **wrong** item's `matched_pattern_id` into this buffer
+via the shared `tools/_signals.js` (`deriveSignalsFromExercise` → `applyRecentSessionSignalsPatch`).
+Same lexical-skip + dedupe-by-session_id rules as the PWA path; idempotent on re-run. The
+`session_id` comes from `exercise.meta.session_id` (falls back to the write timestamp). This
+means a CC `exercise-session` no longer needs a manual `update_coach_notes.js` signal bump.
 
-**Demotion**: none beyond eviction. Singletons that don't recur naturally roll off.
+**Promotion** — composing the durable prose label is a judgement call (keeps `weak_patterns`
+rich), so it stays with a skill, not a cron:
+- **Surface (daily, read-only):** `mistakes-review` runs `tools/promote_signals.js all --list`,
+  which returns `count >= 2` entries not already covered by a `weak_patterns` entry
+  (`likely_covered` heuristic — advisory; review it). This stops ready signals rotting between
+  manual `stats-review` runs (e.g. `temporal_anchor` sat promotable 27 days).
+- **Apply:** compose the label, then `tools/promote_signals.js <player> --apply <patch.json>`
+  (`{ "promotions": [ { "pattern_id, label } ] }`) — appends each label to `weak_patterns`
+  (deduped) **and** drops the promoted `pattern_id` from this buffer in one write. `stats-review`
+  may also do it via an `update_coach_notes.js` patch (`weak_patterns_add` +
+  `recent_session_signals_promote`, now combinable in one patch).
+
+**Demotion**: none beyond eviction. Singletons that don't recur naturally roll off. Already-promoted
+entries left in the buffer can be dropped with `recent_session_signals_remove` (hygiene).
 
 ### Recognised tags for lexical swaps
 
