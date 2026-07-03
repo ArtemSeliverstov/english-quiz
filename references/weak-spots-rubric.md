@@ -87,7 +87,9 @@ Rank by, in order of weight:
    behind placement — surface tiers + lights, not numeric scores (false precision is worse
    than honest buckets).
 
-**Data limitation (future work):** `weak_patterns` are prose strings with no structured
-`domain` / `tier` / `lane` fields, so step 2 is judgement, not a lookup. If those become
-structured fields on each pattern, the rollup counts (steps 2 + 5) could be generated
-mechanically and only the score would need review.
+**Structured labels (since 2026-07-03):** `weak_patterns` entries carry a canonical
+`[Domain · TIER]` prefix (`coach-notes-schema.md`), so domain/tier assignment in steps 2
+and 5 is a parse, not a judgement; lane assignment and the priority score remain
+judgement. PARKED/cooling and CLOSED patterns are tracker-only — regeneration carries
+them (tables + dossier appendix) forward from the previous tracker revision, not from
+`weak_patterns`.

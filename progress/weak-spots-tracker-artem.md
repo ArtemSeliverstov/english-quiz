@@ -12,7 +12,7 @@
 
 **Source**: `coach_notes.weak_patterns`, `coach_notes.recent_session_signals`, `players/artem/exercises/*`
 **Rubric**: `references/weak-spots-rubric.md`
-**Last refresh**: 2026-07-03 (post-restore review; 07-01 four-front + 07-02 PV-production outcomes folded; ditransitive promoted)
+**Last refresh**: 2026-07-03-r2 (weak_patterns restructured 23→8 `[Domain · TIER]` labels; parked patterns now live here only; dossier appendix added)
 **Refresh trigger**: any `stats-review` run.
 
 ---
@@ -94,15 +94,15 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 |---|---|---|---|
 | Temporal-anchor "last time … present-for-past" (narrative calque) | Tense/aspect | 🔴 | promoted 6/19; cheap; distinct from when+future (which is cooling) — natural follow-on after its re-check |
 | Ditransitive order with pronoun IO ("sent to me the report") | Tense/aspect (word order) | 🔴 | promoted 7/03; ×2 but **same-day ridge — re-confirm on an independent surface before a dedicated drill** |
-| "in case of X" calque + "opposite of" missing-determiner residual | L1 lexical | 🔴 | both explicitly untouched by recent sessions (7/02 note); bundle as one meaning-grid drill |
-| Possessor-environment definite drop (signal ×2, likely covered by post-modified-NP entry) | Articles | 🟡 | pending fold into the existing entry (confirm-first proposal) — not a separate drill |
+| "in case of X" calque (use for/when/if per meaning) | L1 lexical | 🔴 | untouched by recent sessions; partly drilled 5/20 |
+| "opposite of X" missing determiner ("the opposite of") | Articles | 🔴 | residual after the preposition half closed 5/20; cheap add-on to any article drill |
 
 ### AMBIENT — exposure, not scheduled drills
 | Pattern | Domain | 🚦 | Lane |
 |---|---|---|---|
 | **Past tense when speaking** (form solid; deployment gap) | Tense/aspect | 🔴 | **speaking** — interview-prep / free-write, monitor deployment |
 | PV substitution — loses collocation force (bidirectional per 7/02: brought_about ↔ bring_up priming) | Phrasal verbs | 🔴 | PV tracker + pre-submission self-check |
-| PV cold-production: **get_around_to = confirmed fossil** (failed ×2 on 7/02 incl. post-correction) | Phrasal verbs | 🔴 | `pv_cold_streak.js`; next PV touch leads with it |
+| PV cold-production: **get_around_to = confirmed fossil** (failed ×2 on 7/02 incl. post-correction); watch: cut_down_on particle drop ×1 (7/02, below gate) | Phrasal verbs | 🔴 | `pv_cold_streak.js`; next PV touch leads with it. PV items live in this lane only — no `weak_patterns` slot |
 | Chat-tempo function-word compression | Register/fluency | 🔴 | self-edit production reps |
 | Execution-layer slips after register direction lands (**execution half**) | Register/fluency | 🔴 | register-ladder R2+ |
 | `register_mismatch` — direction half (restored 6/16) | Register/fluency | 🟡 | register-ladder R1 (direction largely lands) |
@@ -117,7 +117,7 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 | Gerund after suggest/start/help/recommend/avoid (closed-set drill run 7/01) | Non-finite | 🟡 | drilled 7/01 — re-check ~7/08 |
 | Temporal subordinate "when + future" | Tense/aspect | 🟡 | drilled 7/01 — re-check ~7/08 |
 | Mass-noun + indefinite hypercorrection ("an advice") | Articles | 🟡 | drilled 7/01 — re-check ~7/08 |
-| Definite-article drop on post-modified NPs | Articles | 🟡 | held clean cold 6/14 — monitor |
+| Definite-article drop on post-modified NPs — incl. possessor-environment variant (signal ×2 folded 7/03) | Articles | 🟡 | held clean cold 6/14 — monitor; possessor trigger untested cold |
 | Dummy-`it` SVO carryover | Register/fluency | 🟡 | drilled 5/18; **re-check overdue** — fold one probe into next free-write |
 
 ### CLOSED — resolved cold
@@ -138,3 +138,81 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 - **Lexical / register swaps** → `progress/natural-phrases-tracker-artem.md` (phrase_tracker lifecycle) — **13 retests overdue since 6/01**.
 - **Speaking-lane items** (past tense in speech) → `plans/speaking-lane.md`; surface in interview-prep / free-write.
 - **Promotion / demotion mechanics** → `references/coach-notes-schema.md`; ranking → `references/weak-spots-rubric.md`.
+
+---
+
+## Pattern dossiers (appendix)
+
+Full investigation narratives, preserved verbatim when `coach_notes.weak_patterns` was
+restructured to 8 compact `[Domain · TIER]` labels on 2026-07-03. Append-only; carried
+forward on regeneration. New evidence goes to the pattern's table row + a dated addendum
+here, not back into `weak_patterns`.
+
+### the_overuse_abstract_nouns
+article 'the' overuse with abstract / zero-article nouns (at the stage, take the action)
+
+### opposite_of_preposition (CLOSED 5/20)
+opposite/contrast preposition: 'opposite of' (not 'opposite to') for nouns; 'unlike / in contrast to / as opposed to' for clauses. Recurred 2x in 2026-05-03 free_write session. Candidate for focused 5-6 item error_correction drill (per the PV preposition drill model from 2026-05-02).
+
+### than_vs_that (CLOSED 5/20)
+comparison 'than' vs 'that': Russian-L1 trap (no English homophone for чем). Recurred 2x in 2026-05-04 free_write session ('way faster that state companies'; 'more restrictive that I thought'). Candidate for focused 5-6 item error_correction drill per opposite/of drill model 2026-05-04.
+
+### hedge_variety (AMBIENT)
+Hedge variety — Russian 'может быть / наверное / пожалуй' all map to 'maybe'; defaults to 'maybe' as the only sentence-opener hedge. Vary with 'perhaps', 'I wonder if', 'what if we', 'could we', 'possibly', 'I think'. Candidate for focused 5-6 item error_correction drill (per the opposite/of model 2026-05-04).
+
+### dummy_it_svo_carryover (PARKED)
+Russian SVO carryover with dummy 'it' — defaults to 'It was a [group of X]' where English prefers concrete subject + verb ('They were a [group of X]' / subject-first). Surfaced in 2026-05-11 external review ('it was a bunch of technical persons'). Candidate for focused 5-6 item error_correction drill on dummy-it restructuring.
+
+### intensifier_overreliance (AMBIENT)
+Intensifier overreliance — defaults to 'definitely' across consecutive sentences. Vary with 'clearly / absolutely / certainly', or omit ('it's not a managerial position' is already strong). Candidate for register-marked rewriting drill.
+
+### gerund_after_closed_set (PARKED, drilled 7/01)
+gerund after suggest/start/help/recommend/avoid — defaults to 'to V' form. 4-month evidence across claude.ai chats: 'I started to have my doubts' (2026-02 + 2026-05), 'I suggest to draw out' (2026-04), 'I suggest to keep' (2026-05), 'Helped to avert' (2026-04). Cross-context [biz_oil] + [claude_collab]. Candidate for focused 8-10 item error_correction drill on the closed verb set (suggest/start/help/recommend/avoid/finish/keep/consider + V-ing).
+
+### in_case_of_calque (NEXT)
+'in case of X' calque (в случае X) — defaults to 'in case of' where native uses 'for X' / 'when X' / 'if X'. Recurred 2026-02 ('in case of large modeling exercises' [biz_oil]) and 2026-04 ('in case of shorter periods' [leisure_sport]). Cross-context, easy drill: 4-6 item error_correction on the conditional substitutes.
+
+### emphasis_residuals (AMBIENT)
+Emphasis production (added 2026-05-13 at Artem's request) - residual gaps after the fronting+inversion reflex itself stabilised: (a) focusing-adverb placement in cleft pivots - defaults to "what I just want is X" where the adverb belongs on the spotlighted constituent ("what I really want is X" / "all I want is X"); (b) wh-/pseudo-cleft for-infinitive - drops "for" in "what I want is FOR X to..." when the wh-clause subject differs from the embedded subject; (c) the fixed correlative frame "No sooner had ... than" - substitutes "that" for "than" and leaks subject-aux inversion into the than-clause ("than did the regulator open"). NB the broad negative/restrictive fronting+inversion reflex (Only when / Not until / Hardly ... + did/had) is now landing cold; these three are what remains. Candidate for a short focused drill on the correlatives (no sooner...than / hardly...when / scarcely...when / barely...when) + the for-infinitive.
+
+### register_execution_layer_slips (AMBIENT)
+Register-direction lands but execution-layer slips persist on repair (added 2026-05-14 via R1 register-control + R2 follow-up). Across hallway/executive/client-facing/operational repairs the register DIRECTION is correct, but each repair carries specific execution slips: reporting-verb misfit (e.g. 'acknowledge' for flag/report/update), dangling transitive ('unwilling to support [object]'), over-claim hedges ('I'm certain'), L1 last/latest trap ('last deck'), stray half-edited particles ('read it on for tomorrow'). 2 sessions confirmed: artem_ws_1778675854789_60ek (R1, 2026-05-13) + artem_ws_1778729260403_r2sh (2026-05-14). Distinct from the existing register_mismatch (bleed direction) — this is what surfaces AFTER direction is correctly chosen. Targeted by register-ladder R2 onward.
+
+### definite_drop_post_modified_np (PARKED; incl. possessor variant folded 7/03)
+Definite-article omission on post-modified noun phrases — "the N + relative-clause / of-PP" systematically defaults to zero or indefinite when the post-modifier is the referent-identifier. 3 session_ids across formats: article_drill jwxo 2026-05-12 (drill-confirmed); conversation 2026-05-14 exercise 1778777996013 ('all docs she asked a week ago' — missing THE on rel-clause-identified docs); error_correction 2026-05-14 exercise 1778779901736 ('sitting on [the] permit Bessy flagged yesterday'). Independently re-confirmed 2026-05-17 article_drill c7nt — 2 misses on 'the N that/which' before sibling lock. Distinct from existing 'the overuse with abstract nouns' (opposite direction) and from definite_via_possessor_drop (possessor-environment trigger). [data] — Addendum 2026-07-03: definite_via_possessor_drop signal (×2, 5/14–5/17, article_drill_live) folded into this row as the possessor-environment variant; untested cold since.
+
+### chat_tempo_function_word_compression (AMBIENT)
+Chat-tempo function-word compression — under chat-speed pressure drops modal/aux/preposition/article/object-pronoun that English requires. Examples from 2026-05-14 conversation exercise 1778777996013: T1 'all docs she asked a week ago' (missing FOR + THE), T2 'I tackle Joe' (missing 'll modal), T4 'let's aim to resolve at the meeting' (missing object IT), T5 'we may stuck' (missing BE aux) + 'over permit' / 'get permit' (article drop x2 on admin deverbal noun). Fossilised: own-register normalises the drops, so recognition is blind to the ones he himself produces — in 2026-05-14 error_correction exercise 1778779901736, recognition rung landed modal contraction and post-modal BE (drops he doesn't make) but missed stranded FOR-drop and post-modifier THE-drop (drops he does make); rung-3 cold production fired the pattern 3+ times in one short reply. Distinct from register_execution_layer_slip (reporting-verb misfit, L1 lexical traps after register direction lands) — this is grammatical elision under chat tempo. Caveat: 2 sessions same day; second targeted at the pattern — needs one more independent emergence to fully ridge. Next intervention: self-edit drill (write reply, find own drops before sending) — production-side. [data]
+
+### mass_noun_indefinite_hypercorrection (PARKED, drilled 7/01)
+Mass-noun + indefinite article hypercorrection — over-applies a/an to uncountable/process nouns. Russian L1 lacks article system, so explicit B2 article instruction over-generalises a/an onto deverbal/process mass nouns. 4 surfaces across 2 independent sessions / 2 days: 2026-05-16 article_drill o6tr 'an advice' (deverbal); 2026-05-18 diagnostic items 20 'a maintenance', 37 'a training load', 73 'a joint work' (process/abstract mass). Ridge: independent emergence across 2 days, 4 surfaces — strong. Distinct from weak_pattern #0 (the-overuse with abstract zero-article nouns) — opposite quantifier (a/an vs the). Cluster: advice/feedback/approval/maintenance/training/work — business-register deverbal/process mass nouns. Drill candidate: 5-6 item error_correction on the cluster. [data]
+
+### temporal_subordinate_will_for_present (PARKED, drilled 7/01)
+Temporal subordinate clause: bare present for L1-future calque. Russian 'когда X-future' (когда пришлёт) calques to 'when X will' in English temporal subordinates (when / as-soon-as / until / before / after). Drill surface 2026-05-17 error_correction 5th 'when Bessie will send us' for 'when Bessy sends us', then SELF-CONFIRMED same day by Artem end-of-day ('when+future is my common mistake') — self-awareness without prompting. Diagnostic 2026-05-18 confirmed via cluster items intersecting temporal subordinates. Ridge: self-report + drill data across different evidence types, 2 days — independent-emergence equivalent (self-confirmed promotion is strong evidence per coach-notes-schema). Drill candidate: short error_correction or weak_spots on temporal subordinates with conditional/reported-speech overlap. [data]
+
+### b2_perfect_aspect_compound_zones (NOW)
+B2 perfect-aspect compound-interaction gap (NOT a perfect-family form gap — refined 2026-05-18 after v2 B1 probe scored 87.5%, confirming PS form, PS-vs-PP basics, past perfect form, used-to, stative, time markers all solid at B1 substrate). Three specific B2 compound failures surfaced in v1 diagnostic 2026-05-18: (a) past perfect + 'already' insertion + passive/intransitive verb selection — items 19, 34 v1 'had been already left' / 'have been already covered' (blends passive form with active intransitive, with 'already' creating word-order interference); (b) present perfect continuous with duration adverb — substitutes present continuous + 'for N months' (Russian aspect pattern), item 22 v1 'we are already working on the contract for 8 months' instead of PPC; (c) reported-speech backshift drop — item 28 v1 'Claude said that this approach works' (recog item 18 passed; prod item 28 failed — classic avoidance fingerprint). NOT the gap: simple past perfect with time anchor (v2 item 12 'By Friday we had agreed all final terms with the regulator' — produced cleanly cold). Also NOT the gap: temporal-subordinate calque (item 34 v1 'to the moment, when I start') — that surfaces via the separately-tracked temporal_subordinate_will_for_present_l1 / temporal-anchor calque pattern. Ridge: independent emergence across v1 + v2 same day, multi-instrument cross-confirmation — strong. Drill model: weak-spots-session production-only, target the three narrow compound zones individually — NOT the perfect family as a whole (which is solid). Likely 2-3 cycles. [data]
+
+### register_mismatch_direction (AMBIENT)
+register_mismatch (register-direction selection / 'bleed') — choosing the wrong register for the channel BEFORE any execution: peer/hallway notes drifting formal, or client-facing drifting casual. This is the direction-choosing half of the 'Business English register' Learning Goal, distinct from the existing 'execution-layer slips after register direction lands' (which is the residue AFTER direction is correct). Addressed by register-control R1 (2026-05-13); R1 evidence suggests direction now largely lands, execution slips are the residue. Restored as its own tracked row 2026-06-16 (Artem's call) after being referenced-only inside the execution-layer note — the direction half had no trackable home. Lane: register-ladder via register-check skill (R1 = direction; R2+ = execution), not a grammar drill. [restored]
+
+### temporal_anchor_last_time_present_for_past (NEXT)
+temporal_anchor_last_time_present_for_past — under casual narrative load a PAST temporal anchor ('last weekend', 'last time') is followed by present-tense verbs ('We have one weird ride last weekend... it starts good'). Distinct from temporal_subordinate_will_for_present_l1 (when+future) — same L1 temporal-calque family, different trigger (narrative anchor vs subordinate clause). Two independent same-day emergences 2026-05-18 (dummy-it + hedge-variety sessions); sat promotable 27 days until the daily sweep landed. [promoted from signals 2026-06-19]
+
+### double_genitive_surface_form_and_scope (PARKED, re-test ~7/16)
+double_genitive_surface_form_and_scope — refined 2026-07-01 from double_genitive_collapse_in_production after a dedicated 5-item rule-before-test session. Middle-noun collapse (the original fossil: «мнение одного из коллег Бесси» → 'Bessie's opinion', losing the colleague entirely) did NOT recur across 5 cold-production items — real progress after surviving 2 prior passive re-tests (2026-05-17, 2026-06-14). Two different residuals surfaced instead: (a) double genitive OVER-APPLIED to a definite/specific referent where a direct 's-chain fits better ('the report of a colleague of Bessie' for one specific known colleague, should be 'Bessie's colleague's report') — self-corrected within-session on the next chain item; (b) malformed surface form stacking the indefinite article directly onto the possessive name ('a Bessie's engineer' instead of 'an engineer of Bessie's') — also self-corrected same session on retry. Both misses closed same-session, unlike the original fossil which survived correction across a 4-week gap. Needs one more re-test at 2-3 week distance (not same-day, which risks priming) before declaring resolved.
+
+### pv_production_status (AMBIENT lane)
+phrasal verb production (refined 2026-07-02 after first dedicated production-format particle_sort drill, 13 items — prior evidence was recognition-only since 2026-05-10). get_across: CLOSED at production level, 4/4 clean across 3 distinct contexts including under combined-production load in a free paragraph — the 2026-05-03 miss ('get about') did not recur; candidate for de-emphasis after one more confirming touch. get_around_to: confirmed as the real surviving fossil — FAILED both production attempts (items 3, 9), including after being corrected mid-session; the old recognition-only note ('produces cleanly after one exposure') does not hold at production level — deeper fossil than previously scored. bring_about / give_rise_to separability with long NPs: adjacency held clean 2/2 (no incorrect splitting) — but new lateral surfaced: spurious 'to' insertion ('bring about TO') when primed by a 'lead to' paraphrase immediately prior (calque bleed, not a separability issue).
+
+### pv_adjacent_substitution (AMBIENT lane)
+PV-adjacent substitution at C1-business register: produces a real PV in the right semantic direction but loses the specific collocation force the source carries. Surfaced 5x in single 2026-05-10 session: bring_up for get_across (mention vs convey-with-landing); end_up for turn_out (final-state vs revealed-after-the-fact); get_to for bring_about (reach vs cause); brought_down for cut_down_on (lower-an-abstract vs habit-cutback); get_into for go_about (enter-state vs methodical-approach). Distinct from the existing 'cold-production gap' note — this is the *mechanism* of the gap. Recommendation: pre-submission self-check 'does this PV carry the SPECIFIC collocation, or just the direction?' NEW 2026-07-02: mechanism runs in reverse too — brought_about for bring_up ('mentioned' slot) directly after two clean bring_about reps in the same session; reads as same-session priming/interference rather than an independent gap, but confirms the substitution mechanism isn't unidirectional.
+
+### bring_up_with_not_to (NOW)
+bring_up + preposition 'to' for 'with' (promoted from recent_session_signals 2026-07-02 — 3rd independent occurrence: 2026-05-18 first surface, recurred 2026-05-20 ('raise the concern TO an executive'), recurred again 2026-07-02 free-production item ('brought up a new issue TO the GMC') in today's particle_sort session. Ridge-strength: 3 occurrences across 3 separate sessions/dates, different exercise formats each time. Native form: 'bring up X with Y'. Drill candidate: short error_correction/translation on reporting-verb + preposition collocations (bring up with / raise with / flag with).
+
+### it_worth_x_ing (CLOSED-pending 7/02)
+'It worth to X' (refined 2026-07-02, de-emphasis candidate) — gerund-after-worth now landing clean 6/6 in a dedicated error_correction drill, including cold free-production (no error-spotting scaffold). The dropped-apostrophe half ('It worth' -> "It's worth") slipped once when attention was split across two stacked errors in one sentence, but isolated production got the full construction right unprompted — reads as competing-error attention split, not a standing gap. Two other residuals from the same 2026-05-20 bundle (in-case-vs-if semantics, opposite-of missing determiner) were NOT touched this session and remain open.
+
+### ditransitive_to_me_with_pronoun_io (NEXT, promoted 7/03)
+Ditransitive order with pronoun IO — 'sent to me the report' for 'sent me the report' (V + IO + DO when IO is a pronoun). 2x 2026-05-17 article_drill_live. Ridge: same-day — re-confirm on next independent surface before drilling. [data]

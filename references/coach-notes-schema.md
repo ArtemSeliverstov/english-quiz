@@ -40,14 +40,22 @@ players/{name}.coach_notes = {
 ### Field semantics
 
 **`weak_patterns`** — DURABLE GRAMMAR signal ONLY (since 2026-05-12 stats-sprawl cleanup).
-Short prose labels with sample sizes where available. Added by `stats-review` only,
-after a pattern accumulates ≥2 `session_ids` in `recent_session_signals` (promotion gate).
-Removed when 3+ recent clean sessions confirm the pattern is resolved.
+Compact labels. Added by `stats-review` only, after a pattern accumulates ≥2 `session_ids`
+in `recent_session_signals` (promotion gate). Removed when 3+ recent clean sessions confirm
+the pattern is resolved.
 
-Shape — grammar pattern only:
-- `"a→the for shared knowledge"`
-- `"preposition swap (arrive to → at)"`
-- `"L1 calque cluster (verb+prep + time prepositions + verb+noun): wait_for, listen_to..."`
+Label shape (since 2026-07-03) — `[Domain · TIER] label — evidence anchor`:
+- `"[Articles · NOW] \"the\"-overuse on abstract/zero-article nouns (\"take into the account\") — recurred 6/14"`
+- `"[Tense/aspect · NEXT] ditransitive with pronoun IO (\"sent to me the report\" for \"sent me the report\") — 2x 5/17, re-confirm"`
+
+Domain uses the weak-spots tracker's domain vocabulary; TIER = NOW / NEXT / AMBIENT.
+The field holds **ready fronts + ambient bundles only**: PARKED/cooling patterns live in
+the weak-spots tracker with dated re-checks (keeping them out of drill prompts during
+cooldown) and re-enter only on a failed re-check; CLOSED entries are deleted — their full
+narratives persist in the tracker's dossier appendix. `promote_signals.js --apply` labels
+follow the same format. Grammar labels must NOT contain the spaced arrow ` → ` (write
+"for"/"vs" instead) — arrow + bracket is how the worker's phrase-swap pool heuristic
+recognises lexical entries, and every structured label now starts with a bracket.
 
 **Lexical / register swaps live elsewhere** — they go into `phrase_tracker.entries[]` (canonical
 lifecycle) and `recent_session_signals` is bypassed for them. Format `"<awkward> → <natural> [<context_tag>]"`
