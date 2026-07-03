@@ -9,6 +9,52 @@ Format: `[topic]` — decision and rationale. Newest substantive decisions first
 
 ## Coaching loop
 
+### Conversational register prioritized as an absent variety (2026-07-03)
+Artem's call, over the planned `collocation_precision` topic. Diagnosis: his English was
+acquired almost entirely through written business/non-fiction — spoken-casual register
+was never acquired, so production defaults to literate register in hallway/pub contexts.
+That's an **acquisition gap, not an error class**: the existing correction machinery
+(`register_mismatch`, register-check, execution-slips) can only fix misuse of registers
+he possesses. Evidence: Register = worst quiz category (40%, n=15); zero Artem
+`register_rubric` data (fires only on Free Write, which he doesn't use); capture channels
+polarity-blind to correct-but-formal output. Lane CR1–CR4 in `plans/open-items.md` —
+key move is CR1: casual-mode Free Write flips correction polarity (too-formal flagged)
+and has the coach *model* informal register, supplying the missing input stream.
+Collocations deferred with a trigger — the informal half of collocations is the pub
+register anyway, so the CR lane partially subsumes it.
+
+### `weak_patterns` = ready fronts + ambient bundles, structured labels (2026-07-03)
+23 narrative entries (50–150 words each) restructured to ≤8 compact
+`[Domain · TIER] label — evidence anchor` lines. Three reasons: (a) the worker injects
+the list whole into every drill request — 2,300 words of investigation notes diluted
+every prompt the family's requests carried; (b) PARKED/cooling patterns visible to
+drill prompts invite cooldown violations — they now live tracker-only with dated
+re-checks and re-enter `weak_patterns` only on a failed re-check; (c) the prefix makes
+the tracker's domain rollup a parse instead of a judgement call. Full narratives are
+preserved verbatim in the weak-spots tracker's dossier appendix. Grammar labels must
+not contain the spaced arrow — every structured label starts with a bracket, and
+arrow + bracket is how the worker's phrase-swap pool heuristic recognises lexical entries.
+
+### Mechanical consolidation split from judgment review (2026-07-03)
+The May–July loop stall (7 weeks, 13 expired retests, unpromoted signals) happened
+because every consolidation step ran through manual stats-review. Rule-based steps now
+run without the operator: `promote_signals.js` (the mechanical count≥2 gate),
+`loop_maintenance.js` daily tripwire via mistakes-review step 0 (recommends the action
+matching what tripped — stats-review for consolidation stalls, retest/probe sessions
+for due practice), and the `mistake_verdicts.json` ledger so triage classifications
+persist across skills and open `bug:*` qids stop counting as learner signal.
+Judgment stays confirm-first: pattern prose, window composition, unlocks, profile edits.
+
+### Closure is not terminal — retention lane (2026-07-03)
+CLOSED patterns and owned phrases previously exited all testing forever; regression was
+invisible unless it resurfaced organically. Retention lane R1–R5
+(`plans/retention-lane.md`): expanding production probes (+2w/+6w/+4m), a monthly mixed
+`retention_probe` (~15 items, unlabeled, interleaved), the untrained-sibling rule for
+retirement (pass-exemplar + fail-sibling = shallow closure), lifetime sampling of owned
+material, and **recognition re-tests never count as retention evidence** — the 07-01
+double-genitive lesson: it survived two passive re-tests, then production still
+surfaced residuals.
+
 ### Auto-write coach_notes for session skills (2026-05-06)
 Flipped `free-write` and `exercise-session` from "preview → wait for explicit confirmation → persist" to "auto-write → table read-out → non-blocking feedback ask". Trigger: too many sessions where the player closed the tab during the feedback prompt and the data was lost. The 2+ sessions rule for `weak_patterns` is mechanical, so auto-write can't promote a hallucinated pattern — single-session evidence routes to `recent_observations` only, where FIFO prunes it if not corroborated. `stats-review` (operator-mode batch review, no learner present) and `family-profiles.md` edits (git commits, harder to revert) stay confirm-first.
 
@@ -19,10 +65,12 @@ Considered adding a dedicated `phrase_swaps` field to `coach_notes` for natural-
 
 Crowding risk (`weak_patterns` may grow past 8–12 entries when lexical accumulates) is mitigated by routing demoted lexical swaps into the new `phrase_tracker` field (separate inventory), keeping `weak_patterns` itself bounded to active-rotation entries.
 
+Superseded in two steps: the 2026-05-12 stats-sprawl cleanup moved lexical swaps wholly into `phrase_tracker` (no more dual-write), and the 2026-07-03 restructure (entry above) made grammar labels structured `[Domain · TIER]` — the arrow notation is now reserved exclusively for the lexical-swap parser.
+
 ### Phrase tracker is Firestore canonical, markdown is generated (2026-05-06)
 `players/{name}.phrase_tracker` map field is canonical: worker reads it directly when assembling `phrase_swap_drill` items (mixes ~4 active + ~2 retest-due). Markdown view at `progress/natural-phrases-tracker-{name}.md` × 5 is **generated** by `stats-review` on each refresh — never hand-edited. Two reasons over hand-authored markdown: (a) worker can't read repo files (Cloudflare runtime), so Firestore was already required; (b) avoiding drift between two writeable copies of the same data. Reasons over Firestore-only (no markdown): the user reads the PV trackers casually for coverage view; same instinct for natural phrases.
 
-Spaced retest cadence: demote → 21d → first retest → if pass, 42d → second retest → if pass, 🏆 owned (no further retests). Failed retest at any point: back to active rotation, no cooldown. The cadence is mechanical; transitions happen in `stats-review`.
+Spaced retest cadence: demote → 21d → first retest → if pass, 42d → second retest → if pass, 🏆 owned. Failed retest at any point: back to active rotation, no cooldown. The cadence is mechanical; transitions happen in `stats-review`. (Amended 2026-07-03: owned = no *scheduled* retests, but owned entries are sampled by the monthly retention probe — R4, `plans/retention-lane.md` — and a missed sample demotes via the same failed-retest mechanic.)
 
 ### Egor full family parity for supplementary surfaces (2026-05-06)
 Egor was previously quiz-only ("does NOT do supplementary exercises", "no Coach tab use"). Reversed: he now has the same surfaces as Anna/Nicole/Ernest (PWA Free Write, PWA `phrase_swap_drill`, exercise sessions). Driver: the original "quiz-only" call was based on no observed engagement, but he hadn't been offered the surfaces. Themes are different from the rest of the family (`[academic_ielts] | [kpmg_consulting] | [almaty_daily]` — no `[brit_expat]` since he's in Almaty, not Bahrain). KPMG context clarified as English-speaking consulting work (Russian-L1 colleagues, English-language deliverables/clients) so the worker doesn't default to RU-translation framing. Coach language stays `en` (set previously alongside Ernest's call 2026-05-01).
@@ -38,7 +86,7 @@ allowlist permits `*.googleapis.com` (covers Firestore) but not `*.firebasedatab
 direct writes from Claude Code without local laptop dependency.
 
 ### Append-only-leaning Firestore rules (post-t5)
-Migrated from `allow read, write: if true` to per-collection rules forbidding `delete` on player docs and most subcollections, with the `exercises` subcollection write-once. Reads and create/update remain unauthenticated. Closes the "anyone with the project ID can wipe stats" hole at the rules layer. Recovery path: weekly Firestore backup branch via GitHub Actions.
+Migrated from `allow read, write: if true` to per-collection rules forbidding `delete` on player docs and most subcollections, with the `exercises` subcollection write-once. Reads and create/update remain unauthenticated. Closes the "anyone with the project ID can wipe stats" hole at the rules layer. Recovery path: daily Firestore backup branch via GitHub Actions (proven by the 2026-05-20 restore).
 
 App Check was the original plan but was deferred: the PWA uses raw `fetch()` (no Firebase SDK), and `tools/*.js` + the GitHub Actions backup also can't produce App Check tokens — token injection would be a multi-hour rewrite of every write path. Reconsider once a worker-as-gatekeeper centralises writes.
 
@@ -202,6 +250,28 @@ Force SW refresh after deploy. Uses `location.replace(location.pathname)` (not
 
 ## Operational
 
+### Doc caps sized to protect substance (2026-07-03)
+SKILL cap 600→800, CLAUDE.md 500→550, with the last 30 words below each cap a hard-fail
+buffer in CI. The old caps were binding on all 10 skills (515–599 words each); at least
+six commits existed purely to fight them, and the trims cut real substance — a CLAUDE.md
+routing row, worked examples and rationale from stats-review, an operational-rules
+pointer, and (hours before the 2026-05-20 wipe) the weak-spots write-field list. Token
+cost of the headroom is ~+270/invocation — negligible. Escape valve: skill-local aux
+files (`stats-review/PROTOCOL.md`) are uncapped and load on demand. Companion rules in
+`doc-style.md`: trims never remove Forbidden items, operational-rules pointers, or
+write-field lists; history logs (version-log, bug-log, this file) manage size via
+archive splits, not word ceilings.
+
+### Repo map + house rules (2026-07-03)
+`README.md` carries the folder contract; the two load-bearing rules: **one-off scripts
+run from the session scratchpad and never enter the repo** (replaced a 27-line
+.gitignore blocklist; 55 never-tracked local one-offs purged — their outcomes live in
+git history and the version log), and **personal data never lives inside the repo
+folder, even untracked** (a 125MB claude.ai export was found sitting in `archive/`).
+`archive/` and `audits/` became deliberately tracked; `tests/` → `diagnostics/`;
+the dead-pointer lint (`check_doc_pointers.js --strict`, CI) keeps referrers honest
+across renames — it caught its own first forward-reference the same day it shipped.
+
 ### Direct git push (post-s87)
 The deploy.html flow is gone. Claude Code pushes `index.html` and `sw.js` directly.
 Reason: Claude Code now active, GitHub OAuth available, mobile workflow primary.
@@ -240,6 +310,9 @@ are register-inappropriate, not ungrammatical.
 - **Track per-question aggregate stats globally** — designed (s77 Session B), deferred. Each player has their own qStats; cross-player aggregates remain manual.
 - **A/B test prompts on family members** — too small a sample, would distort the experience
 - **Persistent leaderboard** — counter to the engagement-first policy for Nicole and Anna
+- **Delete the frozen RTDB** — dropped by Artem 2026-07-03; frozen is harmless, deletion is manual console work with no payoff
+- **Worker per-IP rate limit** — family scale doesn't justify the state machinery; prepaid balance + workspace spend cap bound the blast radius (worker/README threat model)
+- **A fourth tracker file (collocations)** — 2026-07-03 tracker analysis: weak-spots tracker is the hub, phrase_tracker captures collocation slips reactively; tracker sprawl is the same disease the 23-entry weak_patterns was
 
 ---
 

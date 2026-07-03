@@ -52,3 +52,4 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 - **One-off scripts run from the session scratchpad, never from the repo.** Only outcomes are committed; keepable data artifacts → `archive/`. → README house rule 1
 - **Personal data never lives inside the repo folder**, tracked or not (exports, transcripts, recordings). `Interview/` is the one sanctioned local-only exception. → README house rule 5
 - **Worktree sessions clean up after themselves** — `git worktree remove` when done; stale worktrees pollute local searches.
+- **Fundamental decisions ship with their why** — a `design-decisions.md` entry (or a plan's Why section) lands in the same commit as the change; incident-driven rules go to `bug-log.md`; session-by-session detail to `version-log.md`. A mechanism whose rationale isn't findable gets re-litigated or silently broken.

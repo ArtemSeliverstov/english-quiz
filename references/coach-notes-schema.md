@@ -402,8 +402,8 @@ demoted from weak_patterns → tracker 🟡 retest-due (date = demote + 21 days)
   ↓ passes
 tracker 🟢 mastered (next retest = pass + 42 days)
   ↓ passes 2nd retest
-tracker 🏆 owned (no further retests)
-  ↓ fails any retest
+tracker 🏆 owned (no scheduled retests; sampled by the monthly retention probe — R4)
+  ↓ fails any retest or probe sample
 back to weak_patterns 🔵 active; tracker logs ✗ failed-retest event
 ```
 
@@ -443,7 +443,7 @@ players/{name}.phrase_tracker = {
 - Demote → first retest: **+21 days**
 - First retest pass → second retest: **+42 days**
 - Failed retest: back to active rotation immediately, no cooldown
-- Owned status: no further retests (B2+ register lexis is durable)
+- Owned status: no *scheduled* retests — but owned entries are sampled by the monthly retention probe (R4, `plans/retention-lane.md`); a missed sample demotes via the failed-retest mechanic below
 
 ### Worker selection rule
 

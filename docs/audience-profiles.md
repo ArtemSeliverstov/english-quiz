@@ -9,9 +9,9 @@ The slim philosophy doc names two profiles (builder vs. learner). This doc captu
 
 ---
 
-## 1. Builder profile — Artem, Egor
+## 1. Builder profile — Artem
 
-Self-directed adults. The system is a tool, not a product.
+Self-directed adult. The system is a tool, not a product. (Egor was builder-classified until his 2026-05-12 learner-shell migration — note below.)
 
 **Defaults**:
 - Full surface area: every tab, every mode, every drill type visible.
@@ -23,11 +23,13 @@ Self-directed adults. The system is a tool, not a product.
 
 **Recent observation pertinent to Artem specifically**: PV-adjacent substitution at C1-business register surfaced 5× in a single 2026-05-10 session — produces a real PV in the right semantic direction but loses the specific collocation force. Distinct from the older "PV cold-production gap" note. Implies a pre-submission self-check is the right scaffold, not more drilling.
 
+**Register acquisition profile — Artem (self-diagnosed 2026-07-03)**: English acquired almost entirely through written business/non-fiction — never worked in an English-speaking company, never studied in an English-speaking environment. Literate register is therefore native-strength while spoken-casual (office-hallway / pub) register is an **absent variety**, not an error class: correction machinery can't fix a register that was never acquired. Design implication: this profile needs *modeled informal input* plus low-stakes casual production (conversational-register lane, `plans/open-items.md` T2) — the same profile-beats-level lesson as Anna's §3, in the register dimension. The PV production gap and the Latinate lexical defaults are partly surface symptoms of this one cause.
+
 **Egor migration (2026-05-12)**: moved into learner shell with populated `active_categories: [Articles, Conditionals, Tenses, Linking Words, Vocabulary]` for IELTS B2-prep focus. He's the edge case — the system treats him as learner for visibility but his cognitive profile is closer to builder. Revisit when his catStats stabilise.
 
 ---
 
-## 2. Learner profile — Anna, Nicole, Ernest
+## 2. Learner profile — Anna, Nicole, Ernest, Egor
 
 Engagement is fragile. Each session has to earn the next one.
 

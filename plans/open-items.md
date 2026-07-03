@@ -35,7 +35,7 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
   `status==='active'`, so dormant drops out automatically). Optional phase B later:
   worker picks actives by priority (needs deploy).
 - **T2 · Conversational-register lane (CR1–CR4)** — *replaced `collocation_precision`
-  per Artem 2026-07-05: priority is the register acquired-through-text problem.*
+  per Artem 2026-07-03: priority is the register acquired-through-text problem.*
   Diagnosis: spoken-casual English is an **absent variety**, not an error class —
   input diet was written business/non-fiction, so production defaults to literate
   register everywhere ("normal people don't talk like this in pubs and offices").
@@ -67,9 +67,9 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
   ⚠ A2-production-weak items (come/go back, go on, look for — unre-tested since 05-03)
   join the monthly probe. Touches: PV tracker header, `stats-review` PROTOCOL,
   **retention-lane R2 + exercise-types §12** (probe composition gains the ⚠ bucket).
-- **T4 · Schema owned/R4 contradiction** (2 min): `coach-notes-schema.md` "Owned: no
-  further retests" → "no scheduled retests; sampled by the monthly retention probe
-  (R4), miss demotes".
+- **T4 · Schema owned/R4 contradiction** — ✅ done 2026-07-03 (schema + the
+  design-decisions phrase-tracker entry both amended: owned = no *scheduled* retests,
+  sampled monthly per R4, miss demotes).
 - **T5 · `interview_rubric` aggregation** (~10 min): stats-review PROTOCOL step 3
   aggregates `interview_rubric` alongside `register_rubric` — interview-prep sessions
   currently accumulate unanalyzed. Ordering: do before `shadow_feedback` ships.
@@ -98,10 +98,10 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
     by the folder audit: `archive/` is now deliberately tracked and its HTML KB
     snapshots include learner data; house rule 5 (personal data) argues for a Pages
     exclusion or content check. Verify nothing references them publicly, then scope out.
-  - **doc-style reference ceilings** — `design-decisions.md` now ~2.6k words (2026-07-03
-    entries pushed it further past the ~2.5k courtesy ceiling). Aligns with the caps
-    policy decision: either add warn-only ceilings to `check_doc_caps.js` or accept
-    ceilings as prose guidance. Low priority.
+  - **doc-style reference ceilings** — ✅ resolved 2026-07-03: history logs
+    (version-log, bug-log, design-decisions) manage size via **archive splits**, not
+    word ceilings (rule now in doc-style; precedent: both prior log splits).
+    design-decisions splits when it crosses ~3.5k words.
 
 ## Larger builds (tracked elsewhere — pointers, no duplication)
 
@@ -112,7 +112,7 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
 
 | Item | Trigger to revisit |
 |---|---|
-| `collocation_precision` catalog topic (business half — demoted from T2 per Artem 2026-07-05) | CR3 shipped **and** the next full stats-review still shows Collocations/Word Choice as top scaled gaps (informal collocations are partly covered by the CR lane itself) |
+| `collocation_precision` catalog topic (business half — demoted from T2 per Artem 2026-07-03) | CR3 shipped **and** the next full stats-review still shows Collocations/Word Choice as top scaled gaps (informal collocations are partly covered by the CR lane itself) |
 | `retention_log` trend store | 2–3 monthly probes of data exist |
 | PWA slot tile for the probe (`EX_WEEKLY_TARGETS` #12) | probe habit sticks ≥2 months |
 | Learner-shell retention probes | a learner sustains high volume |
