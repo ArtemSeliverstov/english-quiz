@@ -86,5 +86,8 @@ Regenerate `progress/weak-spots-tracker-artem.md` from `weak_patterns` +
 `recent_session_signals` + `exercises` per `references/weak-spots-rubric.md`.
 Two tiers: domains (budget) / patterns (action: NOW · NEXT · AMBIENT · PARKED ·
 CLOSED). Respect lanes — lexical-inventory and production/fluency patterns route to
-their lanes, never the drill queue. This file is the status table `weak-spots-session`
+their lanes, never the drill queue. Compute/refresh `probe due YYYY-MM-DD` dates on
+CLOSED/maintenance rows (+2w → +6w → +4m from close; retire after two clean
+production probes incl. one untrained sibling; probe miss → NEXT tagged `regressed`
+— `plans/retention-lane.md`). This file is the status table `weak-spots-session`
 consumes.

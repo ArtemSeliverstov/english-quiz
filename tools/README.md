@@ -148,6 +148,19 @@ Node-based Unicode-aware counter (matches CI; local `wc -w` undercounts
 Cyrillic/em-dash content). Caps per `references/doc-style.md`. Run before
 pushing any CLAUDE.md or SKILL.md edit.
 
+### `check_doc_pointers.js` — dead-pointer lint for repo markdown
+
+```bash
+node tools/check_doc_pointers.js            # report; exit 0
+node tools/check_doc_pointers.js --strict   # exit 1 on any missing target (CI)
+```
+
+Scans live markdown (docs, references, plans, progress, skills, READMEs) for
+repo-relative file references and flags any whose target doesn't exist. Archive
+dirs excluded (historical names are legitimate there); templates/globs and
+gitignored generated dirs skipped. Run in CI on every push; run locally after
+renaming or archiving any file.
+
 ### `loop_maintenance.js` — loop staleness tripwire (report-only)
 
 ```bash

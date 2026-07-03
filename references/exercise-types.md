@@ -1,6 +1,6 @@
 # Exercise Types
 
-The supplementary exercise framework defines 11 canonical types (§1–§11). Each is a
+The supplementary exercise framework defines 12 canonical types (§1–§12). Each is a
 structured practice format Claude runs in dialogue with the player.
 
 When generating exercise content for any of these, use the player's real-life context
@@ -208,7 +208,7 @@ Depth-focused live AI session on one topic, ladder-walked simple → hard. ~30 m
 **Item count**: 15-20 production items across 3-4 tiers
 **Player input**: typed English production per tier-appropriate cue (translation, transformation, free-form depending on tier)
 **Scoring**: per-item structural pass/fail; tier escalation gated on ≥1 clean production
-**Source**: live-AI worker (`mode: 'weak_spots_drill'`); CC counterpart via `weak-spots-session` skill — both read the canonical 5-topic catalog from `worker/index.js → weakSpotsDrillSystemPrompt`.
+**Source**: live-AI worker (`mode: 'weak_spots_drill'`); CC counterpart via `weak-spots-session` skill — both read the canonical 6-topic catalog from `worker/index.js → weakSpotsDrillSystemPrompt`.
 **Logging**: `coach_sessions/{ws_*}` with `mode: 'weak_spots_drill'`. Session metadata feeds `error_patterns_observed` into `coach_notes.weak_patterns` and the `assessment` block into the silent CEFR fold (`aggregated_coach_sessions.estimated_level`).
 
 Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety`. Off-catalog free-typed topics improvise a 3-tier ladder under a snake_case slug.
@@ -216,6 +216,19 @@ Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_pa
 **Critical authoring rule**: do not re-derive tier ladders. The catalog in `worker/index.js` is the single source of truth — both the worker preamble and the `weak-spots-session` skill reference it. Changes to a ladder happen there.
 
 **Critical scoring rule**: tier escalation requires structural success on the target mechanic. Stylistic preferences (word choice, register variation) do not gate tier moves.
+
+---
+
+## 12. `retention_probe`
+
+Monthly ~15-item mixed retrieval block testing what the loop has *closed*, not what it's drilling. Composition is mechanical (`plans/retention-lane.md` R2): 5 closed/maintenance patterns due per the expanding schedule (+2w → +6w → +4m) + 4 near-transfer siblings (same rule, untrained frames) + 3 cold recalls from owned phrases / 🏆 PVs + 3 due PARKED re-checks.
+
+**Use for**: Artem (builder-shell only — learner-shell retention rides the mastered-category review).
+**Item count**: ~15, interleaved across all sources — never blocked by topic.
+**Player input**: production only — translation, cold error-correction, free construction. Recognition formats never count as retention evidence.
+**Scoring**: per-item pass/fail. Pattern probe results feed the tracker (clean ×2 incl. a sibling → retired; miss → NEXT tagged `regressed`); owned-phrase misses demote via the failed-retest mechanic.
+**Critical rule**: items carry **no skill labels or pattern names** — naming the target contaminates cold-production validity. Categorise only in the post-session log.
+**Logging**: `exercises/{ts}` with `exercise: 'retention_probe'`; one summary line to `recent_observations`.
 
 ---
 

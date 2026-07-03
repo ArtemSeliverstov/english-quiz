@@ -3,7 +3,7 @@
 Canonical PV inventory A1→C1 with quiz coverage, current accuracy, and frequency in your context. Refreshed at each stats-review.
 
 **Baseline source**: `archive/phrasal_verbs_mastery_plan.html` (stats export 2026-04-04)
-**Last refresh**: 2026-05-10 (Stage 0 stats-review; status values reflect Artem's `qStats` as of 2026-04-30 last-played)
+**Last refresh**: 2026-07-03 — production-tier data folded (`pv_cold_streak.js` now ingests production-format particle_sort; 07-02 session: get_around_to 0/2 🟡 regressing, cut_down_on 0/1, get_across 4/4 production-side). Quiz-derived Status values still reflect `qStats` as of 2026-05-20 (no quiz-tab play since; full Status re-derivation waits for fresh quiz data).
 **Next refresh trigger**: any `stats-review` skill run that uploads fresh `family_stats_ai` JSON.
 
 **Methodology note (2026-05-10)**: the v20260508-r2 commit only added 3 truly new PV IDs (`cc_01–cc_03`); the other ~277 PV-question diff lines were existing bank items getting the new `themes` field. PVs flagged below as "added v20260508-r2" are baseline items that Artem already has months of attempts on — re-attribute to their original commit at next stats-review. Status values now derived from real `qStats`, not bank-presence inference.
@@ -56,8 +56,9 @@ Frequency uses CEFR level as the base proxy, then adjusts for business-exec cont
 | 1 | Spontaneous use in free-write (your own sentence, no prompt naming the PV) | ✓ strongest |
 | 2 | `russian_trap` drill correct | ✓ |
 | 3 | `translation` drill correct (no `prompt_en_hint` populated) | ✓ |
+| 2.5 | **Production-mode** `particle_sort` — player types the particle (CC-authored, `submitted_answer`, no `exercise_id`) | ✓ (since 2026-07-03; wins undercounted when the item carries no `matched_pattern_id`) |
 | 4 | Quiz `input` type correct (hint must not name the PV) | ✓ |
-| — | `gap` / `mcq` / `particle_sort` / any item showing the PV in hint | ✗ recognition, not production |
+| — | `gap` / `mcq` / choice-mode `particle_sort` / any item showing the PV in hint | ✗ recognition, not production |
 
 ### Streak rule
 
@@ -101,7 +102,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | PV | Meaning | Lvl | Freq | Quiz | Status | Notes |
 |---|---|---|---|---|---|---|
 | break down ² | negotiations fail | B1 | ★★★★★ | ✗ | 📅 | Phase 3 — "talks broke down" |
-| bring up ² | mention a topic | B2 | ★★★★★ | ✓ | 🟡 | meeting-essential |
+| bring up ² | mention a topic | B2 | ★★★★★ | ✓ | 🟡 | meeting-essential. Collocation half promoted to weak_patterns 7/03: **bring up X WITH Y** (not "to") — 3 sessions. |
 | catch up | meet socially / restore progress | B1 | ★★★★★ | ✓ | ⚪ | added pv_g18 (v20260508-r2); "catch up over a brew"; "catching up on emails" |
 | come back | return | A2 | ★★★★★ | ✗ | ⚠ | **A2 production-weak (2026-05-03 test)** — direction trap with *go back*. Drill: tr_artem_b03. Use as distractor only after re-test passes. |
 | come from | originate | A2 | ★★★★★ | ✗ | — | A2 distractor |
@@ -116,10 +117,10 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | fill in ² | inform someone | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "fill me in" |
 | find out | discover | B1 | ★★★★★ | ✓ | ⚪ | added pv_g01 (v20260508-r2) |
 | follow up (on) | revisit / pursue | B2 | ★★★★★ | ✓ | 🟠 | obligatory *on* — keeps dropping it |
-| get across | communicate an idea | B2 | ★★★★★ | ✓ | 🔴 | 3/7 (43%) — slight improvement; still chronic. Board comms essential. |
+| get across | communicate an idea | B2 | ★★★★★ | ✓ | 🔴 | 3/7 (43%) quiz — but **production-side closed 7/02**: 4/4 cold across 3 contexts (CC particle_sort production). Quiz status pending fresh quiz data; de-emphasise after one more confirming touch. |
 | get back | return | A2 | ★★★★★ | ✓ | 🟡 | |
 | get out of | avoid / escape obligation | B2 | ★★★★★ | ✓ | 🟠 | 4/8 (50%) — promoted off chronic. Meeting-essential. |
-| get round to | finally do | B2 | ★★★★★ | ✗ | — | candidate — you use the calque "never got around to" |
+| get round to | finally do | B2 | ★★★★★ | ✗ | 🔴 | **confirmed fossil 7/02**: failed both cold-production attempts (incl. post-correction) in CC particle_sort production; `pv_cold_streak` 0/2 🟡 regressing. Not in quiz (✗) — author cold-production items; next PV touch leads with it. |
 | get through ³ | finish a task | B2 | ★★★★★ | ✗ | 📅 | Phase 3 — "get through these emails" |
 | get up | rise from bed | A1 | ★★★★★ | ✓ | 🟢 | foundational |
 | give up | stop trying | B1 | ★★★★★ | ✓ | ⚪ | only MCQ — no production test (Batch 1) |
@@ -156,7 +157,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | back out of | withdraw from a deal/commitment | C1 | ★★★★ | ✓ | ⚪ | cc_03 — 0 attempts; claude_collab register; negotiation lexicon |
 | break out | start suddenly / escape | B2 | ★★★★ | ✗ | 📅 | Batch 2 |
 | break up | end relationship / disintegrate | B2 | ★★★★ | ✓ | ⚪ | added pv_g20 (v20260508-r2) — relationship sense only |
-| bring about | cause | B2 | ★★★★ | ✓ | 🔴 | 1/6 (17%) — Phase 1 gap-scaffold; no improvement, still chronic |
+| bring about | cause | B2 | ★★★★ | ✓ | 🔴 | 1/6 (17%) quiz — 7/02 production: separability with long NPs held 2/2, but spurious "to" insertion when primed by a "lead to" paraphrase (calque bleed). |
 | bring forward | move earlier | B2 | ★★★★ | ✓ | 🟠 | meeting register |
 | bring in | introduce / earn | B2 | ★★★★ | ✓ | 🔴 | 0/4 (0%) on pv_c07 — NEW chronic surfaced 2026-05-10. "bring in revenue" |
 | build up | increase gradually | B2 | ★★★★ | ✗ | 📅 | Batch 1 |
@@ -168,7 +169,7 @@ Sort: Freq DESC, then alphabetical by PV. Multi-meaning PVs appear once per mean
 | come down to | depend on / boil down to | B2 | ★★★★ | ✓ | ⚪ | added pv_f16 (v20260508-r2) — analytical close ("it comes down to cost") |
 | come in | enter | A2 | ★★★★ | ✓ | ⚪ | added pv_g25 (v20260508-r2) |
 | come on | encouragement / progress | A2 | ★★★★ | ✗ | — | A2 distractor |
-| cut down on | reduce | B2 | ★★★★ | ✓ | 🔴 | 1/3 (33%) — Phase 1 gap-scaffold; tf_21 0/2 still failing |
+| cut down on | reduce | B2 | ★★★★ | ✓ | 🔴 | 1/3 (33%) — Phase 1 gap-scaffold; tf_21 0/2 still failing. 7/02 production: dropped "on" (0/1, `cut_down_on_particle_drop` ×1 — signal below gate, watch). |
 | drill down into | analyse in depth | B2 | ★★★★ | ✓ | 🟠 | 4/7 (57%) — promoted off chronic. Phase 1 gap-scaffold — analysis lexicon |
 | drop off | set down / fall asleep / decline | B1 | ★★★★ | ✓ | ⚪ | added pv_g05 (v20260508-r2) — set-down sense only; fall-asleep + decline still 📅 |
 | drum up | generate (interest, support) | C1 | ★★★★ | ✓ | — | "drum up support" |

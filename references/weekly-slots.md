@@ -4,6 +4,10 @@ Artem's weekly supplementary exercise plan. 11 slots per week. The other players
 lighter `EX_WEEKLY_TARGETS` entries (Anna 4, Nicole 6, Ernest 4; Egor none) but work
 player-initiated — only Artem's slots are actively scheduled and reviewed here.
 
+Plus one **monthly** CC-side slot (first week of the month): `retention_probe` — the
+~15-item mixed retention block per `plans/retention-lane.md`. Not in `EX_WEEKLY_TARGETS`
+yet (CC-side only); `tools/loop_maintenance.js` reports when probes are due.
+
 ## Slots
 
 The slot definitions live in `index.html` as `EX_WEEKLY_TARGETS` array. Each slot has:

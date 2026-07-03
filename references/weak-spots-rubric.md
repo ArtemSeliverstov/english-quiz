@@ -67,7 +67,15 @@ Rank by, in order of weight:
 - **AMBIENT** — `ceiling`/`production` types; folded into free-write / register-check / the
   PV & phrase trackers, *not* scheduled as drills. Tag each with its lane.
 - **PARKED** — cooling (recently drilled); re-check, don't drill.
-- **CLOSED** — resolved cold; de-emphasise.
+- **CLOSED → maintenance → retired** — closure is NOT terminal (`plans/retention-lane.md`):
+  expanding production probes at **+2w → +6w → +4m** from close. Two clean probes at
+  distance, at least one on an *untrained sibling* (same rule, new lexical frame) →
+  **retired** (lifetime sample pool). Any probe miss → back to NEXT tagged `regressed`.
+  Probe dates render as machine-readable `probe due YYYY-MM-DD` cells.
+
+**Retention evidence rule**: passive/recognition re-tests never count as retention
+evidence — probes are production-format. (The 2026-07-01 double-genitive lesson: it
+survived two passive re-tests, then production still surfaced residuals.)
 
 🚦 🔴 live · 🟡 improving / cooling · 🟢 closed.
 
@@ -83,7 +91,10 @@ Rank by, in order of weight:
 4. Sort into NOW / NEXT / AMBIENT / PARKED / CLOSED; route AMBIENT lexical/production items to
    their trackers rather than the drill queue.
 5. Build the **domain rollup** (per-domain 🔴/🟡/🟢 counts + last-touched + next move).
-6. Write `progress/weak-spots-tracker-artem.md`. The five scoring factors are the *rationale*
+6. Compute/refresh `probe due YYYY-MM-DD` dates on CLOSED/maintenance rows (+2w → +6w →
+   +4m from close date); apply retirements (two clean production probes incl. one
+   untrained sibling) and `regressed` returns to NEXT.
+7. Write `progress/weak-spots-tracker-artem.md`. The five scoring factors are the *rationale*
    behind placement — surface tiers + lights, not numeric scores (false precision is worse
    than honest buckets).
 

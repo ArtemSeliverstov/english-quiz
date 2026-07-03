@@ -36,6 +36,11 @@ jobs:
         # that bit commits 1d5ab13 and 6cf61ad.
         run: node tools/check_doc_caps.js
 
+      - name: Doc pointer check
+        # Dead cross-references between docs (the 2026-07-03 review found 6).
+        # Archive dirs excluded — they legitimately reference historical names.
+        run: node tools/check_doc_pointers.js --strict
+
       - name: Version string consistency
         run: |
           # Three canonical locations must hold the same version string.

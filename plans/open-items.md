@@ -3,14 +3,14 @@
 **Status**: backlog
 **Scope**: operational/infrastructure work not tied to active build plans (`plans/learning-system-build.md` for engineering, `plans/question-bank-plan.md` for content). Not loaded by any SKILL — picked up explicitly on Artem's prompt.
 
-Most items were extracted from `plans/repo-improvements.md` after the bulk of that plan shipped; full archive at `plans/archive/repo-improvements-completed.md`.
+Most items were extracted from the since-archived repo-improvements plan after the bulk of that plan shipped; full archive at `plans/archive/repo-improvements-completed.md`.
 
 ---
 
 ## Cap append-only logs
 
 - **`references/version-log.md`** — ✅ done (now ~240 lines; older sessions archived to `references/archive/version-log-pre-s87.md` and `version-log-pre-2026-05-09.md`).
-- **`references/bug-log.md`**: keep unresolved + last year; archive older to `references/archive/bug-log-pre-2026.md`.
+- **`references/bug-log.md`**: keep unresolved + last year; archive older to a new `bug-log-pre-2026.md` under `references/archive/`.
 
 **Why**: append-only logs grow without bound and dilute current signal when grep-discovered. Anthropic skill guidance ("Avoid time-sensitive information; if needed, move to an 'old patterns' section") applies — except here the old-pattern section becomes a separate archive file.
 

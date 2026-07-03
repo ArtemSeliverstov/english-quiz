@@ -1,6 +1,6 @@
 ---
 name: deploy-build
-description: Validate, version-stamp, and deploy changes to the english-quiz live site. Use when user says "deploy", "ship it", "push the changes", "release as sN", or asks for any pre-deploy validation. Direct git push to main; GitHub Pages publishes in ~60s.
+description: Validate, version-stamp, and deploy changes to the english-quiz live site. Use when user says "deploy", "ship it", "push the changes", or asks for any pre-deploy validation. Direct git push to main; GitHub Pages publishes in ~60s.
 ---
 
 # Deploy Build
@@ -49,6 +49,8 @@ Q count: X (Δ) · Version: vYYYYMMDD
 ```
 
 Same push or follow-up commit.
+
+**5b. Docs sweep.** For every surface or behaviour this deploy changes, touch its doc in the same push: the matching roadmap row, `docs/system-mechanisms.md` / `docs/data-flow.md` section, worker or tools README. Run `node tools/check_doc_pointers.js --strict` — CI blocks on dead pointers. The May→July 2026 doc rot happened because ships skipped exactly this step.
 
 **6. Smoke test (live).** Tell Artem to open `artemseliverstov.github.io/english-quiz?reset=1` (busts SW cache), confirm version badge, log in as one player, answer one item, verify Firestore write, refresh, verify reload, tap any new deeplinks.
 

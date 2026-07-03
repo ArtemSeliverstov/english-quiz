@@ -14,6 +14,8 @@
  *   - per-player recent_session_signals ready to promote (count >= 2)
  *   - per-player weak_patterns length vs cap (8)
  *   - open bug:* verdicts in tools/mistake_verdicts.json
+ *   - overdue retention probes ("probe due YYYY-MM-DD" in the weak-spots tracker
+ *     CLOSED/maintenance tables — plans/retention-lane.md)
  *
  * Usage:
  *   node tools/loop_maintenance.js           # summary line + detail
@@ -71,27 +73,37 @@ function openVerdicts() {
   } catch (e) { return null; }
 }
 
+function overdueProbes() {
+  try {
+    const text = fs.readFileSync(path.join(REPO, 'progress', 'weak-spots-tracker-artem.md'), 'utf8');
+    const today = new Date().toISOString().slice(0, 10);
+    return [...text.matchAll(/probe due (\d{4}-\d{2}-\d{2})/g)]
+      .map(m => m[1]).filter(d => d <= today).length;
+  } catch (e) { return null; }
+}
+
 async function main() {
   const json = process.argv.includes('--json');
   const trackers = trackerStaleness();
   const players = await playerSignals();
   const openBugs = openVerdicts();
+  const probesDue = overdueProbes();
 
   const staleTrackers = trackers.filter(t => t.daysAgo == null || t.daysAgo > STALE_DAYS);
   const retestTotal = players.reduce((a, p) => a + (p.retestDue || 0), 0);
   const promotableTotal = players.reduce((a, p) => a + (p.promotable || 0), 0);
   const overCap = players.filter(p => p.weakPatternsOver).map(p => p.player);
 
-  const needsReview = staleTrackers.length > 0 || retestTotal > 0 || promotableTotal > 0 || overCap.length > 0;
+  const needsReview = staleTrackers.length > 0 || retestTotal > 0 || promotableTotal > 0 || overCap.length > 0 || (probesDue || 0) > 0;
   const summary =
     `loop-maintenance: ${staleTrackers.length}/${trackers.length} trackers stale (>${STALE_DAYS}d), ` +
     `${retestTotal} phrase retests due, ${promotableTotal} signals promotion-ready, ` +
     `weak_patterns over cap: ${overCap.length ? overCap.join('/') : 'none'}, ` +
-    `open bug verdicts: ${openBugs ?? 'n/a'}` +
+    `open bug verdicts: ${openBugs ?? 'n/a'}, retention probes due: ${probesDue ?? 'n/a'}` +
     (needsReview ? ' → run stats-review' : ' → loop healthy');
 
   if (json) {
-    console.log(JSON.stringify({ summary, needsReview, trackers, players, openBugs }, null, 2));
+    console.log(JSON.stringify({ summary, needsReview, trackers, players, openBugs, probesDue }, null, 2));
     return;
   }
   console.log(summary);

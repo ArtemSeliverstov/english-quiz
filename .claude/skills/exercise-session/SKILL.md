@@ -34,6 +34,10 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **6. Render the player-facing table** using the `exercise-session` template in `coach-notes-schema.md`, then ask "How did it feel? — or skip." Non-blocking.
 
+## Retention probe (Artem, monthly)
+
+When Artem asks for "retention probe" / "monthly probe", or `loop_maintenance` reports probes due: assemble ~15 items per `plans/retention-lane.md` R2 — 5 `probe due` patterns from the weak-spots tracker CLOSED table + 4 untrained same-rule siblings + 3 owned-phrase/🏆-PV cold recalls + 3 due PARKED re-checks. Production formats only, interleaved, **no pattern names shown** (`exercise-types.md` §12). Log as `exercise: "retention_probe"`; at close, report per-pattern probe outcomes so stats-review can retire / regress rows.
+
 ## When not to run
 
 - Player seems stressed or just finished a session (<24h)

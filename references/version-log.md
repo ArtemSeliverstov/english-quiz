@@ -20,6 +20,7 @@ Big maintenance session driven by the 2026-07-03 holistic review. Four repo comm
 - Loop wiring: `stats-review` PROTOCOL step 8 regenerates the weak-spots tracker; `weak-spots-session` consumes it (lane checks, unified NOW/NEXT/AMBIENT/PARKED/CLOSED vocabulary); `tools/loop_maintenance.js` staleness tripwire runs daily via `mistakes-review`; `tools/mistake_verdicts.json` verdict ledger (mistakes-review → stats-review → quiz-development); `update_coach_notes.js` warns on weak_patterns >8. Rebase-merged with PR #16 (signals-pipeline hardening: `promote_signals.js`, `_signals.js` CC exercise auto-fold, `weak-spots-rubric.md`, tracker refresh 2026-06-19) — the two efforts compose: #16's promotion tooling slots into PROTOCOL step 7, its rubric into step 8.
 - Docs sweep: 7 contradictions ruled against live data (Anna window 3; Egor learner-shell; free_write = Anna keystone; date-only versioning; 6-topic catalog; unlock 1+3; category counting rule), data-flow.md rebuilt for the live-AI era, roadmap/coverage-matrix de-duplicated + shipped rows closed, plans archived/reindexed, worker/README `/v1/audio` documented.
 - **Nikolay teardown** (this deploy): FAMILY_MEMBERS entry removed; worker `ALLOWED_PLAYERS` redeployed (`e97f713d`, gate verified rejecting `nikolay`); Firestore `players/nikolay` + 5 subdocs deleted after local snapshot.
+- **Follow-up (same day, repo-only)**: stats-review proposals applied — artem `weak_patterns` 23→8 structured `[Domain · TIER]` labels (dossiers → tracker appendix), Anna/Egor engagement notes, Ernest window 6→4; `deploy-build` gains a mandatory docs-sweep step; new `tools/check_doc_pointers.js` dead-pointer lint in CI (--strict; found + fixed 7 on first run); `pv_cold_streak.js` now ingests production-format particle_sort (get_around_to ×2 fail now visible) + both PV trackers refreshed; fractional `totalCorrect` traced to CC half-credit exercises (documented, not a bug); **retention lane shipped** (`plans/retention-lane.md` R1–R5): post-CLOSED expanding probes (+2w/+6w/+4m), monthly ~15-item `retention_probe` type, untrained-sibling retirement rule, owned-material lifetime sampling; `loop_maintenance` counts overdue probes (4 due at ship).
 
 Q count: 2246 (Δ0) · Version: v20260703
 
@@ -140,7 +141,7 @@ Test the `learning-system-design.md` §3 conversation-keystone hypothesis (child
 - `index.html` FAMILY_MEMBERS: Nicole + Ernest `avoidTypes: []` (was `['free_write']`)
 - `docs/audience-profiles.md` §2/§5/§6: record override + watch-list (frustration signals to reinstate the gate)
 - `references/exercise-types.md`: free_write moved Avoid → Secondary (open hypothesis) for Nicole + Ernest
-- `plans/coach-live-ai-and-weak-spots.md` §7b: closed-with-experiment
+- `plans/archive/coach-live-ai-and-weak-spots.md` §7b: closed-with-experiment
 
 Q count: 2246 (no change) · Version: v20260512
 
@@ -148,7 +149,7 @@ Q count: 2246 (no change) · Version: v20260512
 
 ## 2026-05-11 · Session r4 — Phase D-3/4/5 live AI + per-type badges (v20260511-r3 → r7)
 
-Five sub-deploys in one build session, closing the T1 rollout from `plans/coach-live-ai-and-weak-spots.md`. After r4 every Coach picker type is live-AI primary; library survives as offline-only fallback across the board.
+Five sub-deploys in one build session, closing the T1 rollout from `plans/archive/coach-live-ai-and-weak-spots.md`. After r4 every Coach picker type is live-AI primary; library survives as offline-only fallback across the board.
 
 - **r3 (transient)** — quick label fix for Artem's reported "11 available" badge on Translation. The router was correctly going to live AI but `coachLoadMeta` left the library count in the badge text. Added `coachUpdateConvertedTypeAvailability` (superseded by r4 below). Visible to a small window of users between deploys.
 - **r4 — Per-type badge signal (Option 2)**. Replaces "live AI" / "library only" with actionable per-type info: Translation + Error Correction show "N weak" (weak_patterns count), Article Drill + Particle Sort show `N%` accuracy from `qStats` for their category, Spelling Drill shows "N queued" from `spelling_log` since last drill, Weak Spots shows "N weak spots". Free Write empty when healthy (anytime activity). Offline / API-down degrades to "offline" / "paused" / "library only". New `coachUpdateLiveDrillBadges` + `coachCategoryAccuracyPct` helpers; `coachLoadMeta` skips dynamically-badged types via a `DYNAMIC_BADGE_TYPES` list. Live-converted types re-enable on `liveAvail`.
@@ -158,7 +159,7 @@ Five sub-deploys in one build session, closing the T1 rollout from `plans/coach-
 
 Worker session-end branch now handles all 5 Phase D drills via one consolidated return path with mode-specific `items_drilled` shapes. Each deploy: PWA + worker, `node --check` + version consistency + doc caps green, preview probe (3 routing cases per type). All 5 modes covered by curl tests in `worker/README.md`.
 
-Plan in `plans/coach-live-ai-and-weak-spots.md` status log has per-phase detail. T1 + T2 tracks fully shipped per the plan; only Phase E (this docs sweep) remains.
+Plan in `plans/archive/coach-live-ai-and-weak-spots.md` status log has per-phase detail. T1 + T2 tracks fully shipped per the plan; only Phase E (this docs sweep) remains.
 
 Q count: 2246 → 2246 (no change) · Version: v20260511-r7 (final of five)
 
@@ -173,7 +174,7 @@ Three new Worker modes shipped — all conversational live-AI bound by `coach_no
 - **`translation_drill` (Phase D-1)**: live RU→EN themed to player profile, rotates target structures from `weak_patterns`. Default 8 items, capped 12. `coachStartType('translation')` now routes live-first; library survives as offline fallback via `opts.forceLibrary` + offline/apiUnavailable check. Per-player `COACH_PLANNED_TOTAL_OVERRIDES.translation` honored.
 - **`error_correction_drill` (Phase D-2)**: one English sentence per turn with exactly one embedded error in a target structure. No hints in the prompt. Accepts full sentence or just the fix. Same router pattern as translation.
 
-Plan in `plans/coach-live-ai-and-weak-spots.md` lays out T1 (all coach types → live AI, library → offline fallback) + T2 (Weak Spots). Phases A (Worker), B (PWA Weak Spots), C (CC skill), D-1 (translation), D-2 (error_correction) shipped here. Remaining T1: `article_drill`, `particle_sort`, `spelling_drill`.
+Plan in `plans/archive/coach-live-ai-and-weak-spots.md` lays out T1 (all coach types → live AI, library → offline fallback) + T2 (Weak Spots). Phases A (Worker), B (PWA Weak Spots), C (CC skill), D-1 (translation), D-2 (error_correction) shipped here. Remaining T1: `article_drill`, `particle_sort`, `spelling_drill`.
 
 CLAUDE.md trimmed 523 → 486 words (skills table extended + reference-table descriptions tightened). exercise-types.md adds type 10 + extends per-player table. coach-notes-schema.md adds `weak_spots_drill` read-out template. worker/README.md adds three mode sections + curl tests.
 

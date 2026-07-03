@@ -7,8 +7,13 @@
  *   tier 1: coach_sessions[].pvs_used_correctly (free-write, unprompted)
  *   tier 2: exercises items[] of type russian_trap (correct/incorrect)
  *   tier 3: exercises items[] of type translation (correct/incorrect)
+ *   tier 2.5 (added 2026-07-03): production-mode particle_sort — items where the
+ *     player TYPED the particle (`submitted_answer` string, no exercise_id).
+ *     PV attributed via `matched_pattern_id` suffix-stripping; correct items
+ *     without a pattern id can't be attributed and are skipped (undercounts
+ *     wins, never misses failures).
  *
- * NOT counted: gap, mcq, particle_sort (recognition, not production).
+ * NOT counted: gap, mcq, choice-mode particle_sort (recognition, not production).
  * Quiz `input` qStats deferred to v2 — qStats has aggregate counts only,
  * not per-attempt timestamps needed for streak computation.
  *
@@ -90,6 +95,24 @@ function extractPvFromTags(tags) {
   return null;
 }
 
+// matched_pattern_id → PV. Pattern ids append a failure-mode suffix to the PV's
+// snake_case form (e.g. "get_around_to_production_gap"). Longest-suffix strip;
+// null when nothing strips AND the id carries no known PV shape (≥2 tokens left).
+const PATTERN_ID_SUFFIXES = [
+  '_production_gap', '_particle_drop', '_preposition_with', '_preposition_to',
+  '_separability', '_production', '_calque_bleed', '_gap', '_drop', '_miss',
+];
+function extractPvFromPatternId(id) {
+  if (typeof id !== 'string' || !id) return null;
+  for (const suf of PATTERN_ID_SUFFIXES.sort((a, b) => b.length - a.length)) {
+    if (id.endsWith(suf)) {
+      const stem = id.slice(0, -suf.length);
+      if (stem.split('_').length >= 2) return tagToPv(stem);
+    }
+  }
+  return null;
+}
+
 // ─── data ingestion ────────────────────────────────────────────────────────
 
 async function ingestCoachSessions(player) {
@@ -118,7 +141,24 @@ async function ingestExercises(player) {
   for (const sess of sessions) {
     if (sess.auto_suspected === true) continue; // skip flagged sessions
     const items = Array.isArray(sess.items) ? sess.items : [];
+    const sessType = sess.exercise || sess.exercise_type || '';
     for (const item of items) {
+      // tier 2.5: production-mode particle_sort — typed particle, CC-authored
+      // (no exercise_id). PV from matched_pattern_id; unattributable → skip.
+      if (String(sessType).includes('particle_sort') &&
+          typeof item.submitted_answer === 'string' && !item.exercise_id) {
+        const pvp = extractPvFromPatternId(item.matched_pattern_id) || extractPvFromTags(item.tags);
+        if (pvp) {
+          events.push({
+            pv: pvToKey(pvp),
+            timestamp: item.timestamp || sess.date || sess._id || null,
+            format: 'particle_sort_production',
+            correct: item.correct === true,
+            source_id: sess._id || sess.session_id || '(unknown)',
+          });
+        }
+        continue;
+      }
       const exType = item.type || sess.exercise_type;
       if (exType !== 'translation' && exType !== 'russian_trap') continue;
       const pv = extractPvFromTags(item.tags);

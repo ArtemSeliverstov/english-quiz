@@ -120,15 +120,18 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 | Definite-article drop on post-modified NPs — incl. possessor-environment variant (signal ×2 folded 7/03) | Articles | 🟡 | held clean cold 6/14 — monitor; possessor trigger untested cold |
 | Dummy-`it` SVO carryover | Register/fluency | 🟡 | drilled 5/18; **re-check overdue** — fold one probe into next free-write |
 
-### CLOSED — resolved cold
-| Pattern | Domain | 🚦 | Closed |
-|---|---|---|---|
-| "it's worth X-ing" complement (6/6 clean 7/02 incl. cold production) | Non-finite | 🟢 | 7/02 — one more cold confirming touch, then drop from weak_patterns |
-| get_across production (4/4 across 3 contexts 7/02) | Phrasal verbs | 🟢 | 7/02 — de-emphasise after one more touch |
-| last/latest terminal-in-window | Articles | 🟢 | held cold 6/14 |
-| of-PP identifying on existing events | Articles | 🟢 | held cold 6/14 (was a 5/17 miss) |
-| "opposite **of**" not "opposite to" (preposition half; determiner residual → NEXT) | L1 lexical | 🟢 | 5/20 |
-| "than" vs "that" (чем trap) | L1 lexical | 🟢 | 5/20 |
+### CLOSED / maintenance — resolved cold, on expanding retention probes
+Per `plans/retention-lane.md`: production probes at +2w → +6w → +4m from close; two
+clean probes (≥1 untrained sibling) → retired; a miss → NEXT tagged `regressed`.
+
+| Pattern | Domain | 🚦 | Closed | Next probe |
+|---|---|---|---|---|
+| "it's worth X-ing" complement (6/6 clean 7/02 incl. cold production) | Non-finite | 🟢 | 7/02 | probe due 2026-07-16 |
+| get_across production (4/4 across 3 contexts 7/02) | Phrasal verbs | 🟢 | 7/02 | probe due 2026-07-16 |
+| last/latest terminal-in-window | Articles | 🟢 | held cold 6/14 | probe due 2026-07-03 (first probe overdue — lane shipped today) |
+| of-PP identifying on existing events | Articles | 🟢 | held cold 6/14 (was a 5/17 miss) | probe due 2026-07-03 (overdue) |
+| "opposite **of**" not "opposite to" (preposition half; determiner residual → NEXT) | L1 lexical | 🟢 | 5/20 | probe due 2026-07-03 (overdue) |
+| "than" vs "that" (чем trap) | L1 lexical | 🟢 | 5/20 | probe due 2026-07-03 (overdue) |
 
 ---
 

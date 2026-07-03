@@ -27,7 +27,8 @@ const { applyRecentSessionSignalsPatch, deriveSignalsFromExercise } = require('.
 
 const VALID_EXERCISES = [
   'translation', 'free_write', 'error_correction', 'transform',
-  'dictation', 'conversation', 'article_drill', 'particle_sort'
+  'dictation', 'conversation', 'article_drill', 'particle_sort',
+  'retention_probe', // monthly mixed retention block — references/exercise-types.md §12
 ];
 const VALID_SOURCES = ['coach_tab', 'cc_session'];
 const AUTO_SUSPECTED_MEAN_MS = 500;
