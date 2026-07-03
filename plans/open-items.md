@@ -10,7 +10,7 @@ Most items were extracted from the since-archived repo-improvements plan after t
 ## Cap append-only logs
 
 - **`references/version-log.md`** — ✅ done (now ~240 lines; older sessions archived to `references/archive/version-log-pre-s87.md` and `version-log-pre-2026-05-09.md`).
-- **`references/bug-log.md`**: keep unresolved + last year; archive older to a new `bug-log-pre-2026.md` under `references/archive/`.
+- **`references/bug-log.md`** — ✅ done 2026-07-03 (253→203 lines; RTDB-sync + deploy.html-pipeline + s17 cosmetic bugs → `references/archive/bug-log-pre-2026-05.md`; live rules preserved in the summary).
 
 **Why**: append-only logs grow without bound and dilute current signal when grep-discovered. Anthropic skill guidance ("Avoid time-sensitive information; if needed, move to an 'old patterns' section") applies — except here the old-pattern section becomes a separate archive file.
 
