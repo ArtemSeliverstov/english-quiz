@@ -107,11 +107,55 @@ node backup_players.js --dry-run             # summary only, no write
 
 Writes one self-contained JSON per player to `backups/YYYY-MM-DD/{player}.json`,
 each containing the player doc + the full `exercises` and `coach_sessions`
-subcollections. Recovery source after the RTDB sunset (~2026-05-28). See
-`plans/data-integrity-plan.md` for the full rationale.
+subcollections. The only recovery source now that RTDB is frozen. See
+`plans/archive/data-integrity-postmortem.md` for the full rationale. Proven in
+anger: the 2026-05-20 Artem root-doc replace was recovered from
+`backups/2026-05-20/artem.json` (see `references/bug-log.md`).
 
 `backups/` is `.gitignore`d on `main` — production snapshots go to the
 `backups` orphan branch via `.github/workflows/backup.yml`.
+
+### `check_player_integrity.js` — contamination probe + baseline
+
+```bash
+node tools/check_player_integrity.js                   # check; auto-update baseline if clean and no shrink
+node tools/check_player_integrity.js --dry-run         # check only, never write baseline
+node tools/check_player_integrity.js --accept-shrink   # allow baseline update despite a count decrease
+node tools/check_player_integrity.js --reset-baseline  # force-rewrite baseline (e.g. after a restore)
+node tools/check_player_integrity.js --json
+```
+
+Five invariants against `tools/data-integrity-baseline.json`: cross-player
+qStats overlap, createdAt drift, createdAt removal, unexplained totalAnswered
+jump, totalAnswered decrease, qStats key-count collapse. Run as step 0 of
+`stats-review`; exit 1 = stop and investigate against the `backups` branch.
+
+The baseline file is auto-rewritten after every clean, non-shrinking run —
+it showing as git-modified is **expected**; commit it opportunistically.
+A count shrink blocks the rewrite (`--accept-shrink` to override) so a
+degraded state can't ratchet itself in — the 2026-05-20 incident did exactly
+that under the old always-ratchet behaviour.
+
+### `check_doc_caps.js` — word-cap lint for CLAUDE.md / SKILL.md
+
+```bash
+node tools/check_doc_caps.js            # all capped files; exit 1 on any failure
+node tools/check_doc_caps.js --quiet
+node tools/check_doc_caps.js path/to/SKILL.md
+```
+
+Node-based Unicode-aware counter (matches CI; local `wc -w` undercounts
+Cyrillic/em-dash content). Caps per `references/doc-style.md`. Run before
+pushing any CLAUDE.md or SKILL.md edit.
+
+### `get_question_mistakes.js` — per-qid mistake audit
+
+```bash
+node tools/get_question_mistakes.js <qid>
+```
+
+Pulls `qStats[qid]` (incl. `lastWrong`) across all players plus question
+metadata. Used by `stats-review` step 2.5 and `quiz-development` fix passes.
 
 ### `capture_swaps.js` — capture awkward→natural swaps to phrase_tracker
 
@@ -216,10 +260,22 @@ node tools/promote_signals.js artem --apply patch.json   # {promotions:[{pattern
 ```
 
 Makes the promotion gate (`count >= 2` → `weak_patterns`) cheap to run daily. `--list`
-(read-only) is wired into `mistakes-review` step 7 so ready signals can't rot between manual
+(read-only) is wired into `mistakes-review` so ready signals can't rot between manual
 `stats-review` runs. `--apply` appends each composed label to `weak_patterns` (deduped) **and**
 drops the promoted `pattern_id` from the buffer in one write. Label composition stays with the
 skill (Claude) — the tool never invents a machine-generated label. See `coach-notes-schema.md`.
+
+## One-off / completed migration scripts
+
+The directory also holds completed one-shot migration and batch-authoring
+artifacts kept for auditability: `wave1_*`–`wave4_*` (question-bank waves +
+input JSON + rubrics), `tag_*` (taxonomy tagging pipeline), `bizflag_*`,
+`grammar_migration_*`, `wordform_base_*`, `quantifiers_append.js`,
+`errcorr_recase.js`, `strip_linked_qids.js`, plus `batches/` and `uploads/`.
+These are **not** part of any live skill workflow, are not individually
+documented here, and should not be reused without reading their headers —
+they encode point-in-time schema assumptions. New one-offs: name them after
+their batch, leave them here when done, and add them to this list.
 
 ## Shared library
 

@@ -8,10 +8,15 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Architecture / sync
 
+### Root-doc replace wiped Artem's stats fields (2026-05-20, found 2026-07-03)
+**Bug**: A CC `weak-spots-session` end-of-session write at 2026-05-20T09:23Z replaced `players/artem` instead of patching it — only the write-set survived (`aggregated_coach_sessions`, `coach_notes`, `lvlStats`, `totalAnswered`, `totalCorrect`); deleted: `qStats` (1,883 keys), `catStats` (31), `createdAt`, `recentSessions`, `phrase_tracker` (83 entries), `learning_path`, `coach_drill_stats`, identity fields, `totalSessions`. Undetected for 6 weeks: all three `check_player_integrity.js` invariants were blind to field *disappearance* (null `createdAt` skipped; empty `qStats` can't overlap; shift check only looked upward), and the clean verdict auto-ratcheted the degraded state into the baseline.
+**Fix**: Restored 2026-07-03 from `backups/2026-05-20/artem.json` via masked PATCH (kept live `coach_notes`/`lvlStats`/`aggregated_*`/totals; `catStats` summed backup + post-wipe). Checker gained `createdAt_removed`, `total_answered_decrease`, `qstats_collapse` invariants, and the baseline no longer auto-updates on any count shrink without `--accept-shrink`.
+**Rule**: Skill end-writes to a player root doc must send *only* the changed fields through a field-masked update — never a re-composed document (the `weak-spots-session` SKILL now names the exact field list). Any integrity "clean" that follows a count decrease is suspect — diff against the `backups` branch before accepting the new state.
+
 ### Cross-player contamination — Nicole/Artem (2026-05-02)
 **Bug**: Nicole's `players/nicole` Firestore doc was overwritten with a copy of Artem's data (identical `qStats` keys + `lastSeen`, `totalAnswered`, `recentSessions[1..9]`); only one genuine 2026-05-02 quiz session and `coach_notes` survived.
 **Fix**: Restored from frozen RTDB baseline + the one genuine session. Daily Firestore backups now run via `.github/workflows/backup.yml` to a separate `backups` branch. `tools/_firestore.js` `fsSet` refuses player-root replaces without explicit opt-in.
-**Rule**: see `plans/data-integrity-plan.md` for the full prevention/recovery plan (P0 done, P1 + P2 + PWA root-cause audit queued).
+**Rule**: see `plans/archive/data-integrity-postmortem.md` for the full prevention/recovery plan (P0 done, P1 + P2 + PWA root-cause audit queued).
 
 ### PUT vs PATCH — Firestore equivalent (s87)
 **Bug**: Firestore PATCH without `updateMask` replaces the entire document, wiping any field not in the request body — same family as RTDB's PUT-vs-PATCH issue from s72.

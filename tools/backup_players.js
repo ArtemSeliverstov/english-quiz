@@ -12,9 +12,10 @@
  *   - _meta:          snapshot timestamp, player key
  *
  * Use case: recovery after contamination or accidental wipe. The 2026-05-02
- * Nicole incident was only recoverable because RTDB was still live; once RTDB
- * sunsets (~2026-05-28), this is the only recovery source. See
- * plans/data-integrity-plan.md for the full prevention/recovery rationale.
+ * Nicole incident was only recoverable because RTDB was still live; with RTDB
+ * frozen, this is the only recovery source — proven by the 2026-05-20 Artem
+ * root-doc-replace recovery (references/bug-log.md). See
+ * plans/archive/data-integrity-postmortem.md for the prevention/recovery rationale.
  *
  * Usage:
  *   node tools/backup_players.js                # write today's snapshot

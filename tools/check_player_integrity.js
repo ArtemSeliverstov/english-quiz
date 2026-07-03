@@ -6,17 +6,28 @@
  * 2026-05-02 (her doc replaced with a copy of Artem's data; only caught the
  * next day during stats review). See plans/data-integrity-plan.md.
  *
- * Three invariants:
+ * Five invariants:
  *   1. cross-player overlap — any two players sharing > overlapThreshold of
  *      qStats keys with byte-identical lastSeen values flag. The 05-02 case
  *      would have hit 100%.
- *   2. createdAt drift — current createdAt vs last-known baseline. The 05-02
- *      case had createdAt jumping from 2026-03-01 to 2026-05-02.
+ *   2. createdAt drift OR removal — current createdAt vs last-known baseline.
+ *      The 05-02 case had createdAt jumping from 2026-03-01 to 2026-05-02; the
+ *      05-20 Artem root-doc replace deleted createdAt outright (null-transition).
  *   3. catastrophic shift — totalAnswered delta > shiftThreshold without
  *      recentSessions accounting for it. The 05-02 case jumped 780 → 2795.
+ *   4. totalAnswered decrease — totals are monotonic; any drop flags.
+ *   5. qStats collapse — qStats key count fell below 50% of baseline (with
+ *      baseline ≥ 20 keys). The 05-20 replace went 1,883 → 0 and all of the
+ *      original three invariants stayed silent (empty qStats can't overlap,
+ *      null createdAt was skipped, totals only checked upward).
  *
  * Baseline lives at tools/data-integrity-baseline.json. First run creates it.
- * Subsequent runs compare against it, then update it on success (no flags).
+ * Subsequent runs compare against it, then update it on success (no flags) —
+ * UNLESS any monitored count shrank (qStatsCount or totalAnswered below
+ * baseline for any player). Shrink never auto-ratchets: pass --accept-shrink
+ * after verifying the decrease is intentional (e.g. a deliberate cleanup).
+ * The 05-20 incident was cemented into the baseline by the old always-ratchet
+ * behaviour; git history of this file was the only surviving reference.
  *
  * Exit codes:
  *   0  — all invariants clean
@@ -24,8 +35,9 @@
  *   2  — operational error (network, parse, etc.)
  *
  * Usage:
- *   node tools/check_player_integrity.js                   # check + auto-update baseline if clean
+ *   node tools/check_player_integrity.js                   # check + auto-update baseline if clean and no shrink
  *   node tools/check_player_integrity.js --dry-run         # check, never update baseline
+ *   node tools/check_player_integrity.js --accept-shrink   # allow baseline update despite a count decrease
  *   node tools/check_player_integrity.js --reset-baseline  # force-rewrite baseline from current state
  *   node tools/check_player_integrity.js --json            # machine-readable output
  */
@@ -42,11 +54,12 @@ const SHIFT_THRESHOLD = 100;       // totalAnswered delta > 100 without session 
 const MIN_OVERLAP_KEYS = 5;        // ignore overlap if < 5 shared keys (sparse data)
 
 function parseArgs(argv) {
-  const out = { dryRun: false, reset: false, json: false };
+  const out = { dryRun: false, reset: false, json: false, acceptShrink: false };
   for (const a of argv) {
     if (a === '--dry-run') out.dryRun = true;
     else if (a === '--reset-baseline') out.reset = true;
     else if (a === '--json') out.json = true;
+    else if (a === '--accept-shrink') out.acceptShrink = true;
     else if (a === '-h' || a === '--help') out.help = true;
   }
   return out;
@@ -114,14 +127,27 @@ function checkOverlap(docs) {
   return flags;
 }
 
-// Invariant 2: createdAt drift vs baseline.
+// Invariant 2: createdAt drift vs baseline — including removal (null-transition).
+// A deleted createdAt is the root-doc-replace signature (2026-05-20 Artem incident);
+// the old `cur == null → skip` made the checker blind to it.
 function checkCreatedAtDrift(docs, baseline) {
   if (!baseline) return [];
   const flags = [];
   for (const name of Object.keys(docs)) {
     const cur = docs[name].createdAt;
     const prev = baseline.players?.[name]?.createdAt;
-    if (cur == null || prev == null) continue;
+    if (prev == null) continue;
+    if (cur == null) {
+      flags.push({
+        invariant: 'createdAt_removed',
+        severity: 'critical',
+        player: name,
+        baseline: prev,
+        current: null,
+        message: `${name} createdAt was DELETED (baseline=${prev} → current=null). Signature of a root-doc replace — compare against the backups branch.`,
+      });
+      continue;
+    }
     if (cur !== prev) {
       flags.push({
         invariant: 'createdAt_drift',
@@ -170,6 +196,61 @@ function checkCatastrophicShift(docs, baseline) {
   return flags;
 }
 
+// Invariants 4 + 5: monotonic-count violations vs baseline.
+// 4. totalAnswered decrease — nothing legitimate lowers it.
+// 5. qStats collapse — key count below 50% of a non-sparse baseline.
+function checkShrink(docs, baseline) {
+  if (!baseline) return [];
+  const flags = [];
+  for (const name of Object.keys(docs)) {
+    const prev = baseline.players?.[name];
+    if (!prev) continue;
+    const curTA = docs[name].totalAnswered ?? 0;
+    const prevTA = prev.totalAnswered ?? 0;
+    if (curTA < prevTA) {
+      flags.push({
+        invariant: 'total_answered_decrease',
+        severity: 'critical',
+        player: name,
+        baseline: prevTA,
+        current: curTA,
+        message: `${name} totalAnswered decreased (${prevTA} → ${curTA}). Totals are monotonic — possible partial overwrite or wrong-player write.`,
+      });
+    }
+    const curQ = Object.keys(docs[name].qStats || {}).length;
+    const prevQ = prev.qStatsCount ?? 0;
+    if (prevQ >= 20 && curQ < prevQ * 0.5) {
+      flags.push({
+        invariant: 'qstats_collapse',
+        severity: 'critical',
+        player: name,
+        baseline: prevQ,
+        current: curQ,
+        message: `${name} qStats key count collapsed (${prevQ} → ${curQ}). Signature of a root-doc replace — compare against the backups branch before trusting any stats.`,
+      });
+    }
+  }
+  return flags;
+}
+
+// True when any monitored count is below baseline (even without a flag —
+// e.g. a small deliberate qStats cleanup). Shrink blocks the baseline
+// auto-ratchet unless --accept-shrink is passed.
+function detectShrink(docs, baseline) {
+  if (!baseline) return [];
+  const shrunk = [];
+  for (const name of Object.keys(docs)) {
+    const prev = baseline.players?.[name];
+    if (!prev) continue;
+    const curQ = Object.keys(docs[name].qStats || {}).length;
+    const curTA = docs[name].totalAnswered ?? 0;
+    if (curQ < (prev.qStatsCount ?? 0) || curTA < (prev.totalAnswered ?? 0)) {
+      shrunk.push(name);
+    }
+  }
+  return shrunk;
+}
+
 function snapshotForBaseline(docs) {
   const out = { savedAt: new Date().toISOString(), players: {} };
   for (const [name, d] of Object.entries(docs)) {
@@ -205,13 +286,16 @@ async function main() {
     ...checkOverlap(docs),
     ...checkCreatedAtDrift(docs, baseline),
     ...checkCatastrophicShift(docs, baseline),
+    ...checkShrink(docs, baseline),
   ];
+  const shrunk = detectShrink(docs, baseline);
 
   const result = {
     ok: flags.length === 0,
     flagCount: flags.length,
     baselinePresent: baseline != null,
     baselineSavedAt: baseline?.savedAt ?? null,
+    shrunkPlayers: shrunk,
     flags,
   };
 
@@ -229,11 +313,19 @@ async function main() {
     }
   }
 
-  // Auto-update baseline on clean run, OR on --reset-baseline, never on failure or --dry-run.
-  const shouldUpdateBaseline = !args.dryRun && (args.reset || (flags.length === 0));
+  // Auto-update baseline on clean run, OR on --reset-baseline, never on failure
+  // or --dry-run. A count shrink (qStatsCount / totalAnswered below baseline)
+  // additionally blocks the ratchet unless --accept-shrink: a degraded state
+  // must never silently become the new reference.
+  const shrinkBlocked = shrunk.length > 0 && !args.acceptShrink && !args.reset;
+  const shouldUpdateBaseline = !args.dryRun && (args.reset || (flags.length === 0 && !shrinkBlocked));
   if (shouldUpdateBaseline) {
     writeBaseline(snapshotForBaseline(docs));
     if (!args.json) console.error(`Baseline ${baseline ? 'updated' : 'seeded'} at ${BASELINE_PATH}`);
+  } else if (!args.dryRun && flags.length === 0 && shrinkBlocked) {
+    if (!args.json) console.error(
+      `Baseline NOT updated — count shrink detected for ${shrunk.join(', ')}. ` +
+      `Verify against the backups branch; re-run with --accept-shrink if the decrease is intentional.`);
   }
 
   process.exit(flags.length === 0 ? 0 : 1);
