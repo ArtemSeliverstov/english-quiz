@@ -148,6 +148,20 @@ Node-based Unicode-aware counter (matches CI; local `wc -w` undercounts
 Cyrillic/em-dash content). Caps per `references/doc-style.md`. Run before
 pushing any CLAUDE.md or SKILL.md edit.
 
+### `loop_maintenance.js` — loop staleness tripwire (report-only)
+
+```bash
+node tools/loop_maintenance.js           # summary line + detail
+node tools/loop_maintenance.js --json
+```
+
+Tracker staleness (progress/*.md "Last refresh" vs today), per-player phrase
+retest backlog, promotion-ready signals (count ≥2), `weak_patterns` cap check,
+open `bug:*` rows in `tools/mistake_verdicts.json` (the verdict ledger shared
+by `mistakes-review` → `stats-review` → `quiz-development`). Run daily by
+`mistakes-review` step 0 — "→ run stats-review" in the summary means the
+consolidation half of the loop is stalled. Writes nothing.
+
 ### `get_question_mistakes.js` — per-qid mistake audit
 
 ```bash
@@ -155,7 +169,7 @@ node tools/get_question_mistakes.js <qid>
 ```
 
 Pulls `qStats[qid]` (incl. `lastWrong`) across all players plus question
-metadata. Used by `stats-review` step 2.5 and `quiz-development` fix passes.
+metadata. Used by `stats-review` PROTOCOL step 2b and `quiz-development` fix passes.
 
 ### `capture_swaps.js` — capture awkward→natural swaps to phrase_tracker
 

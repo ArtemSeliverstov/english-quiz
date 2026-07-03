@@ -10,6 +10,7 @@ Triage every quiz mistake from the past 31h. Output: per-mistake verdict + fix-p
 ## Reads
 
 - `node tools/get_recent_mistakes.js --pretty` — primary input. One block per (player, qid) mistake with question metadata + `lastWrong` text.
+- `tools/mistake_verdicts.json` — verdict ledger; open entries are already triaged.
 - `index.html` — siblings + category context.
 - `references/family-profiles.md` — level + per-player theme tags for the relevance check.
 - `references/question-authoring-standards.md` — stem-sufficiency test, anti-patterns.
@@ -17,7 +18,9 @@ Triage every quiz mistake from the past 31h. Output: per-mistake verdict + fix-p
 
 ## Workflow
 
-**1. Pull data.** `node tools/get_recent_mistakes.js --pretty`. Empty → one-liner "No mistakes in past 31h" and stop.
+**0. Loop tripwire.** `node tools/loop_maintenance.js`. Quote its summary line at the top of the report; when it says "run stats-review", surface that explicitly — a stalled consolidation loop is a finding, not noise.
+
+**1. Pull data.** `node tools/get_recent_mistakes.js --pretty`. Empty → one-liner "No mistakes in past 31h" and stop. Drop qids with an **open** ledger entry — list them in one line ("previously triaged: qid × verdict") instead of re-classifying.
 
 **2. Classify each mistake.** First match wins:
 
@@ -46,16 +49,19 @@ Evidence quotes `lastWrong` verbatim. No verbatim → row is informational, no f
 
 **5. Sibling sweep** (only when ≥1 fix proposed). Per fixed qid: grep prefix, read 5–10 siblings, list same-defect ones under `## Sibling sweep — {prefix}` as `bug:sibling`.
 
-**6. Output the report.** Markdown only — no file writes, no Firestore writes.
+**6. Signals promotion check** (read-only). `promote_signals.js all --list` → surface not-covered `count≥2` as `## Signals ready to promote`; recommend promotion (`--apply` with a composed label, or `stats-review`). Details in `coach-notes-schema.md`.
 
-**7. Signals promotion check** (read-only). `promote_signals.js all --list` → surface not-covered `count≥2` as `## Signals ready to promote`; recommend promotion (`--apply` with a composed label, or `stats-review`). Details in `coach-notes-schema.md`.
+**7. Persist verdicts.** Append every NEW classification to `tools/mistake_verdicts.json` (`{qid, verdict, players, evidence, date, fixed: false}`; `genuine` rows too — they stop tomorrow's re-triage). Mechanical ledger append is the only allowed write.
+
+**8. Output the report.** Markdown otherwise — no other file writes, no Firestore writes.
 
 ## Output structure
 
 ```
 # Mistakes Review — {YYYY-MM-DD}
 
-Pulled {N} mistakes across {players} for the past 31h.
+{loop_maintenance summary line}
+Pulled {N} mistakes across {players} for the past 31h. Previously triaged (open): {M}.
 
 ## Genuine gaps        [N]
 - `qid (player) — one-line note`
@@ -85,5 +91,6 @@ Zero mistakes: one-liner, stop. Under 3: skip the sibling sweep.
 ## Forbidden
 
 - Auto-applying any `index.html` edit.
+- Writing anything beyond the `tools/mistake_verdicts.json` append.
 - Promoting `[speculation]` to a proposed fix.
 - Reviewing supplementary `exercises[]` items here — that's `stats-review`. The tool already filters them out.

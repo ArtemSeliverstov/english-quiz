@@ -35,12 +35,13 @@ The bank lives inline in `index.html` as `const ALL_QUESTIONS = [...]`. Don't ex
 
 ## Fixing single questions
 
-1. **Pull mistake data first**: `node tools/get_question_mistakes.js <qid>`. Reports `qStats[qid].lastWrong` per player. MCQ/gap entries resolve to the chosen option text — treat as `[data]`. Only legacy `index=N` with no resolved text → `[speculation]`.
+1. **Pull mistake data first**: `node tools/get_question_mistakes.js <qid>`. Reports `qStats[qid].lastWrong` per player. MCQ/gap entries resolve to the chosen option text — treat as `[data]`. Only legacy `index=N` with no resolved text → `[speculation]`. Check `tools/mistake_verdicts.json` for the qid's ledger row — `mistakes-review` may have already classified it.
 2. Read the question, surrounding context, bug-log entries.
 3. Diagnose using the **stem sufficiency test** (`question-authoring-standards.md` § that section).
 4. **Stem rewrites** must use a theme tag of at least one player who saw the question (per `family-profiles.md`). Generic rewrites rejected.
 5. Show proposed fix as a table with **evidence** (direct quote or `[speculation]`) and **confirmation** (strong / weak / none) columns.
 6. Apply only at confirmation = strong by default. Weak/none requires explicit opt-in or defer pending data.
+7. **Close the ledger row**: when a fix lands for a qid with an open `bug:*` entry in `tools/mistake_verdicts.json`, set `fixed: true` + `fixed_date` — `stats-review` stops excluding the qid from gap evidence once fixed.
 
 ## Category audit
 

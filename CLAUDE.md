@@ -1,7 +1,5 @@
 # CLAUDE.md — english-quiz repo
 
-Repo-level instructions. Read before any task.
-
 ---
 
 ## Project at a glance
@@ -24,6 +22,7 @@ KB is authoritative; CLAUDE.md only routes.
 | `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill rules, don't-build. Surface conflicts. |
 | `docs/audience-profiles.md` | Per-player design + orthographic-fluency case study. |
 | `docs/system-mechanisms.md` | Active window, surfaces, AI roles, stats stores. |
+| `docs/data-flow.md` | Before changing write paths. Surface→Firestore flows. |
 | `references/operational-rules.md` | Before any change. Do/don'ts + P1-P3 + read-philosophy triggers. |
 | `references/doc-style.md` | Writing/editing any doc. |
 | `references/family-profiles.md` | Any player session. Stable level/focus. |
@@ -41,16 +40,18 @@ KB is authoritative; CLAUDE.md only routes.
 | `references/design-decisions.md` | Why-we-did-X notes. |
 | `references/roadmap.md` | Next, deferred. |
 | `references/version-log.md` | Session history. |
+| `plans/README.md` | Active build-plans index. |
+| `tests/` | Diagnostic instruments + scored results. |
 | `tools/README.md` | Firestore CRUD. MCP preferred for new paths. |
 | `worker/README.md` | Cloudflare worker. |
 
-When standards in references conflict with this CLAUDE.md, **references win**.
+On conflict with this file, references win.
 
 ---
 
 ## Progress trackers — user-facing reports
 
-Living documents, refreshed by skills. Not authoritative doctrine.
+Refreshed by skills; not doctrine.
 
 | File | Owner | Refreshed by |
 |---|---|---|
@@ -72,5 +73,6 @@ Living documents, refreshed by skills. Not authoritative doctrine.
 | `quiz-development` | "add questions", "fix question", "audit" — authoring |
 | `stats-review` | Stats JSON upload, "review stats", "analyse progress" |
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
+| `register-check` | "register check", "check my phrasing" — B2/C1 message pass |
 | `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage + sibling sweep |
 | `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |

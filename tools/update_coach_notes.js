@@ -466,6 +466,16 @@ async function main() {
     ? applyPhraseTrackerPatch(currentTracker, patch)
     : currentTracker;
 
+  // weak_patterns cap (coach-notes-schema.md: 8, priority-aware). Warn — don't block:
+  // stats-review owns the audit that trims it back down, but the overflow must be loud.
+  const WEAK_PATTERNS_CAP = 8;
+  if (updated.weak_patterns.length > WEAK_PATTERNS_CAP) {
+    console.error(
+      `WARN: weak_patterns for ${args.player} now at ${updated.weak_patterns.length} ` +
+      `(cap ${WEAK_PATTERNS_CAP}). Drills read this list whole — overflow dilutes every prompt. ` +
+      `Run stats-review step 7 to audit/demote.`);
+  }
+
   // Show diff
   const diff = {
     weak_patterns: { before: current.weak_patterns?.length || 0, after: updated.weak_patterns.length },

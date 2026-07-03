@@ -1,0 +1,4 @@
+{
+  "_readme": "Verdict ledger for mistakes-review. One entry per (qid) with an open or resolved classification. mistakes-review appends (skips re-triaging open entries); stats-review excludes open bug:* qids from learner-gap evidence; quiz-development sets fixed+fixed_date when a fix lands. Shape: {qid, verdict: genuine|bug:alt-answer|bug:stem|bug:keyword|bug:theme|bug:orphan|bug:sibling, players: [..], evidence, date, fixed: bool, fixed_date}",
+  "verdicts": []
+}
