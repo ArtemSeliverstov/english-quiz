@@ -57,7 +57,7 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
     recognize-register → re-register for the hallway → produce casual in scenario
     (small talk, reacting, banter). PWA catalog row maps `cat: Register` → P1 routing
     finally works for the worst category. CC parity per P2; system-mechanisms §2.5
-    count 6→7. Full spec → a `plans/conversational-register-lane.md` at build time.
+    count 6→7. Full spec → a new `conversational-register-lane` plan under `plans/` at build time.
   - **CR4 · Casual-FW weekly slot** (doc-level now; `EX_WEEKLY_TARGETS` tile rides the
     CR3 deploy — both current free_write slots are formal-flavoured).
   - Pointers: `shadow_feedback` clips should be **casual speech** (listening half of
