@@ -98,15 +98,23 @@ async function main() {
   // exercises_library snapshot (full-run only) — the one live dataset not covered
   // by player docs. Mostly rebuildable from library_drafts/, but live edits since
   // publishing aren't; one extra listing per night closes the gap.
+  //
+  // The type docs (translation, article_drill, …) are PHANTOM PARENTS — they exist
+  // only as parents of an `items` subcollection, so a plain fsList('exercises_library')
+  // returns only `_meta` and misses every item. Enumerate types from
+  // `_meta.total_exercises_per_type` instead, then list each type's items.
   let librarySnapshot = null;
   if (!args.player) {
     try {
-      const types = await fsList('exercises_library', { pageSize: 50 });
-      const library = { _meta: { snapshotTs: new Date().toISOString() }, types: {} };
-      for (const t of types) {
-        const items = await fsList(`exercises_library/${t._id}/items`, { pageSize: 300 }).catch(() => []);
-        library.types[t._id] = { doc: t, items };
+      const meta = await fsGet('exercises_library/_meta').then(d => d ? docToPlain(d) : null);
+      const library = { _meta: { snapshotTs: new Date().toISOString(), doc: meta }, types: {} };
+      const typeNames = Object.keys((meta && meta.total_exercises_per_type) || {});
+      for (const type of typeNames) {
+        const items = await fsList(`exercises_library/${type}/items`, { pageSize: 400 }).catch(() => []);
+        library.types[type] = { items };
       }
+      const total = Object.values(library.types).reduce((a, t) => a + t.items.length, 0);
+      console.error(`  exercises_library: ${typeNames.length} types, ${total} items`);
       librarySnapshot = library;
     } catch (e) {
       console.error(`  exercises_library: ERROR — ${e.message}`);
