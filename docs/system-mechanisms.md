@@ -73,6 +73,9 @@ Historical view of sessions. Reads `players/{name}/exercises/{ts}` — populated
 ### 2.8 Family tab
 Cross-player visibility (streaks, recent activity). Light social context on learner shell landing; full detail for builder profile.
 
+### 2.9 Grammar reference (`ref/`)
+Static grammar-reference page linked from the app header (📖). Read-only companion surface — no stats, no writes; content ships with normal deploys.
+
 ---
 
 ## 3. AI surface roles

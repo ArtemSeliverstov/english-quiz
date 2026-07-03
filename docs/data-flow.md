@@ -15,6 +15,7 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 | **CC `free-write` skill** | `tools/log_coach_session.js` + `tools/update_coach_notes.js` | `players/{name}` | `players/{name}/coach_sessions/{sid}`, `players/{name}.coach_notes` |
 | **CC `weak-spots-session` / `interview-prep` skills** | Firebase MCP (remote-CC safe) | `players/{name}`, `worker/index.js` catalogs | `coach_sessions/{sid}`; masked updates to `coach_notes` + fold fields **only** (see bug-log 2026-05-20) |
 | **CC `stats-review` skill** | `tools/get_all_players.js`, `tools/update_coach_notes.js` | all of `players/*` + subcollections | `players/{name}.coach_notes`, generated tracker markdown |
+| **Library authoring** | `library_drafts/*.json` → `tools/push_library.js` | local drafts | `exercises_library/{type}/items/*` + `_meta` |
 | **RTDB legacy** | `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app` | read-only | frozen; console deletion pending (overdue since 2026-05-28) |
 
 Two writers touch the player root document: the PWA play loop (everything except `coach_notes`) and `tools/update_coach_notes.js` (only `coach_notes`). One writer touches `exercises` and `coach_sessions` per surface (Coach tab from PWA, `tools/*.js` from CC). No surface owns more than one collection's write path.

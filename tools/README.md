@@ -292,17 +292,18 @@ Makes the promotion gate (`count >= 2` → `weak_patterns`) cheap to run daily. 
 drops the promoted `pattern_id` from the buffer in one write. Label composition stays with the
 skill (Claude) — the tool never invents a machine-generated label. See `coach-notes-schema.md`.
 
-## One-off / completed migration scripts
+## One-off scripts — house rule
 
-The directory also holds completed one-shot migration and batch-authoring
-artifacts kept for auditability: `wave1_*`–`wave4_*` (question-bank waves +
-input JSON + rubrics), `tag_*` (taxonomy tagging pipeline), `bizflag_*`,
-`grammar_migration_*`, `wordform_base_*`, `quantifiers_append.js`,
-`errcorr_recase.js`, `strip_linked_qids.js`, plus `batches/` and `uploads/`.
-These are **not** part of any live skill workflow, are not individually
-documented here, and should not be reused without reading their headers —
-they encode point-in-time schema assumptions. New one-offs: name them after
-their batch, leave them here when done, and add them to this list.
+One-off migration/authoring scripts **never enter this directory or the repo**
+(README house rule 1). They run from the Claude session scratchpad and die there;
+only their outcome is committed (index.html change, Firestore write, version-log
+entry). Data artifacts worth keeping go to `archive/` (e.g.
+`archive/phrase-harvests-2026-05/`). The 2026-H1 batch of local one-offs
+(wave1–4, tag pipeline, bizflag, grammar migration, wordform) was purged
+2026-07-03; their outcomes live in git history and the version log.
+
+This directory holds live tools plus exactly two state files:
+`data-integrity-baseline.json` and `mistake_verdicts.json`.
 
 ## Shared library
 

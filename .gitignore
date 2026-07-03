@@ -1,4 +1,4 @@
-﻿# Credentials and secrets — never commit
+# Credentials and secrets — never commit
 .env
 .env.local
 .env.*.local
@@ -28,9 +28,9 @@ Thumbs.db
 .claude/tmp/
 .claude/worktrees/
 
-# Personal materials kept in repo dir but not committed
+# Personal materials kept in repo dir but not committed (README house rule 5 —
+# Interview/ is the one sanctioned local-only exception)
 Interview/
-archive/
 
 # Local artefacts
 *.log
@@ -41,44 +41,15 @@ archive/
 # manual run (e.g. tools/backup_players.js without --remote) and stays local.
 backups/
 
-# index.html backup snapshots from migration scripts (rollback points, not history)
+# index.html backup snapshots from migration scripts (rollback points, not history —
+# delete after the migration ships; git history is the real rollback)
 index.html.pre_*.bak
 index.html.*.bak
 
-# Wave-authoring scratch (one-shot scripts + intermediate JSON kept local)
-tools/batches/
-tools/wave*_*.json
-tools/wave*_rubric.md
-tools/wave*_*.js
-tools/wordform_*.json
-tools/wordform_export.js
-tools/wordform_base_apply.js
-tools/quantifiers_append.js
-tools/errcorr_append.js
-tools/errcorr_recase.js
-tools/strip_linked_qids.js
-tools/grammar_extract.js
-tools/grammar_migration_*.js
-tools/grammar_migration_*.json
-tools/bizflag_*.js
-tools/find_samples.js
-tools/tag_export.js
-tools/tag_export.json
-tools/tag_aggregate.js
-tools/tag_aggregate.json
-tools/tag_apply.js
-tools/tag_extract_missing.js
-tools/tag_finalise.js
-tools/tag_final.json
-tools/tag_split_batches.js
-tools/tag_heuristic*.*
-tools/tag_rubric.md
-
-# Misc scratch
+# One-off script guard: per README house rule 1, one-offs run from the session
+# scratchpad and never enter the repo — no per-file ignore list needed anymore.
+# Misc scratch guards for legacy tool outputs:
 parsed_questions.json
 temp_questions.js
 all_players_tmp.json
 stratified_sample*.md
-
-# Generated audit reports (tools/bank_audit.js)
-audits/

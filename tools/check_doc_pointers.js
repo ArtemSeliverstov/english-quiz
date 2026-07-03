@@ -29,14 +29,14 @@ const REPO = path.join(__dirname, '..');
 // Archive dirs are deliberately NOT scanned — they are historical records and
 // legitimately reference files as they were named at the time.
 const SCAN_GLOBS = [
-  'CLAUDE.md', 'README.md', 'README_FIRST.md',
+  'CLAUDE.md', 'README.md',
   ['docs'], ['references'], ['plans'], ['progress'],
-  ['tools'], ['worker'], ['tests'], ['migration'],
+  ['tools'], ['worker'], ['diagnostics'],
 ];
 const SKILLS_DIR = path.join(REPO, '.claude', 'skills');
 
 // Extension alternation is longest-first so `.json` never half-matches as `.js`.
-const ROOT_REF_RE = /(?:docs|references|plans|progress|tools|worker|migration|archive|tests|\.claude|\.github)\/[A-Za-z0-9_\-./]*[A-Za-z0-9_)]\.(?:json|jsonl|md|js|html|yml|toml|rules)/g;
+const ROOT_REF_RE = /(?:docs|references|plans|progress|tools|worker|archive|diagnostics|library_drafts|\.claude|\.github)\/[A-Za-z0-9_\-./]*[A-Za-z0-9_)]\.(?:json|jsonl|md|js|html|yml|toml|rules)/g;
 const LINK_RE = /\]\(([^)#\s]+\.(?:json|jsonl|md|js|html|yml|toml))(?:#[^)]*)?\)/g;
 
 function isTemplate(p) {

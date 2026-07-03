@@ -1,6 +1,6 @@
 # Russian L1 Foundation Diagnostic — B2
 
-**Status**: administered + scored (v1 2026-05-18, v2 tense probes — see `tests/`); spec retained for future rounds
+**Status**: administered + scored (v1 2026-05-18, v2 tense probes — see `diagnostics/`); spec retained for future rounds
 **Owner**: Artem (test-taker); Claude Code (authoring + scoring)
 **Scope**: discovery diagnostic for hidden Russian-L1 B2 foundation gaps
 **Motivated by**: 2026-05-17 article-family CC arc (5 rounds, 27/30) — exposed C1 sub-patterns plus the observation that targeted drilling on visible `coach_notes.weak_patterns` cannot find what avoidance hides. Discussion captured in coach_notes recent_observations end-of-day note.
@@ -96,7 +96,7 @@ Biz / cycling / expat real-life context per Artem's profile tags: `[biz_oil] | [
 
 1. **Spec sign-off** ← here
 2. **Source pass**: cite specific catalogue entries per cluster (Swan/Smith page refs, EFCAMDAT error IDs, Ionin/Slabakova specific phenomena)
-3. **Item authoring**: 60–80 items in JSON, file location `tests/russian_l1_b2_diagnostic_v1.json` (new directory; this is a one-shot instrument, not a library reusable item)
+3. **Item authoring**: 60–80 items in JSON, file location `diagnostics/russian_l1_b2_diagnostic_v1.json` (new directory; this is a one-shot instrument, not a library reusable item)
 4. **Item review**: Artem linguistic review before run (catches authoring artefacts; same review pattern he applies to quiz content)
 5. **Run session**: single 60–90 min sitting
 6. **Score + interpret**: offline analysis, joint discussion with Artem

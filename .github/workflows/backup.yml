@@ -68,4 +68,20 @@ jobs:
             exit 0
           fi
           git commit -m "backup: $DATE"
+
+          # Retention: keep 90 dailies, then first-of-month only. Prunes the
+          # checked-out tree (clone/browse size); branch history still holds
+          # old blobs, which is fine — they compress well as deltas.
+          CUTOFF=$(date -u -d '90 days ago' +%Y-%m-%d)
+          PRUNED=0
+          for d in backups/*/; do
+            D=$(basename "$d")
+            if [[ "$D" < "$CUTOFF" && "${D:8:2}" != "01" ]]; then
+              git rm -rq "$d" && PRUNED=$((PRUNED+1))
+            fi
+          done
+          if [ "$PRUNED" -gt 0 ]; then
+            git commit -m "backup: prune $PRUNED dailies older than $CUTOFF (keep first-of-month)"
+          fi
+
           git push origin backups

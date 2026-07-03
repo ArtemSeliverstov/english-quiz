@@ -49,3 +49,6 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 - **Question bank stays inline** in `index.html` as `const ALL_QUESTIONS = [...]`. → `design-decisions.md` (Questions stay inline)
 - **Auto-memory is for CC-behavior facts only** (how Claude Code should work with the user). Player observations, profile updates, and session learning notes go to Firestore `coach_notes` via `tools/update_coach_notes.js` — never auto-memory (laptop-only, won't reach the PWA Coach tab or mobile sessions). → `design-decisions.md` (Two-layer memory model)
 - **Canonical exercise type names** are enforced by `tools/log_exercise.js`. → `exercise-types.md`
+- **One-off scripts run from the session scratchpad, never from the repo.** Only outcomes are committed; keepable data artifacts → `archive/`. → README house rule 1
+- **Personal data never lives inside the repo folder**, tracked or not (exports, transcripts, recordings). `Interview/` is the one sanctioned local-only exception. → README house rule 5
+- **Worktree sessions clean up after themselves** — `git worktree remove` when done; stale worktrees pollute local searches.

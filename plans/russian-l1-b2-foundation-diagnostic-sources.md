@@ -1,6 +1,6 @@
 # Russian L1 B2 Diagnostic — Source Pass
 
-**Status**: input to authoring pass for `tests/russian_l1_b2_diagnostic_v1.json`
+**Status**: input to authoring pass for `diagnostics/russian_l1_b2_diagnostic_v1.json`
 **Companion**: `russian-l1-b2-foundation-diagnostic.md` (spec)
 **Purpose**: cite specific catalogue entries per cluster so item authoring is defensible against a known L1-ru contrastive inventory, not freelance intuition.
 
@@ -209,6 +209,6 @@
 
 ## Open authoring decisions
 
-- **Test file location**: `tests/russian_l1_b2_diagnostic_v1.json` (new directory, one-shot instrument — confirmed in spec §Authoring workflow).
+- **Test file location**: `diagnostics/russian_l1_b2_diagnostic_v1.json` (new directory, one-shot instrument — confirmed in spec §Authoring workflow).
 - **Question schema**: extend `references/question-schema.md` shape (id, type, q, answer, distractors, explain, l1_trap_id, cluster_id, theme). New required field `l1_trap_id` ties each item to a catalogue entry above for scoring traceability.
 - **No `hint` field**: diagnostic, not drill — hints would contaminate the cold-production signal (spec §Run protocol).

@@ -95,6 +95,24 @@ async function main() {
   const players = args.player ? [args.player] : PLAYERS;
   const snapshots = await Promise.all(players.map(p => snapshotPlayer(p).catch(e => ({ _error: e.message, _meta: { player: p } }))));
 
+  // exercises_library snapshot (full-run only) — the one live dataset not covered
+  // by player docs. Mostly rebuildable from library_drafts/, but live edits since
+  // publishing aren't; one extra listing per night closes the gap.
+  let librarySnapshot = null;
+  if (!args.player) {
+    try {
+      const types = await fsList('exercises_library', { pageSize: 50 });
+      const library = { _meta: { snapshotTs: new Date().toISOString() }, types: {} };
+      for (const t of types) {
+        const items = await fsList(`exercises_library/${t._id}/items`, { pageSize: 300 }).catch(() => []);
+        library.types[t._id] = { doc: t, items };
+      }
+      librarySnapshot = library;
+    } catch (e) {
+      console.error(`  exercises_library: ERROR — ${e.message}`);
+    }
+  }
+
   const summary = snapshots.map(s => s._error ? { player: s._meta.player, error: s._error } : summarise(s));
   console.error('Snapshot summary (' + dateStr + '):');
   for (const row of summary) {
@@ -114,7 +132,10 @@ async function main() {
     const file = path.join(outDir, `${s._meta.player}.json`);
     fs.writeFileSync(file, JSON.stringify(s, null, 2));
   }
-  console.error('\nWrote ' + snapshots.filter(s => !s._error).length + ' files to ' + outDir + '/');
+  if (librarySnapshot) {
+    fs.writeFileSync(path.join(outDir, 'exercises_library.json'), JSON.stringify(librarySnapshot, null, 2));
+  }
+  console.error('\nWrote ' + (snapshots.filter(s => !s._error).length + (librarySnapshot ? 1 : 0)) + ' files to ' + outDir + '/');
 
   console.log(JSON.stringify({ ok: true, dir: outDir, summary }, null, 2));
 }

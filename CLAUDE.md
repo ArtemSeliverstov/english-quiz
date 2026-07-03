@@ -4,9 +4,9 @@
 
 ## Project at a glance
 
-Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `artemseliverstov.github.io/english-quiz` via GitHub Pages.
+Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `artemseliverstov.github.io/english-quiz` (GitHub Pages).
 
-- **Stack**: HTML/CSS/JS in one file (`index.html`, ~1.3 MB). Service worker (`sw.js`).
+- **Stack**: HTML/CSS/JS in one file (`index.html`, ~1.65 MB). Service worker (`sw.js`).
 - **Sync**: Cloud Firestore. Players: artem, anna, nicole, ernest, egor.
 - **Local**: IndexedDB primary, localStorage backup.
 - **Surfaces**: Claude Code + PWA Coach tab.
@@ -15,16 +15,17 @@ Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `art
 
 ## Reference docs — read before any task
 
-KB is authoritative; CLAUDE.md only routes.
+CLAUDE.md only routes.
 
 | File | Use when |
 |---|---|
+| `README.md` | Repo map — folder contract + house rules. |
 | `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill rules, don't-build. Surface conflicts. |
 | `docs/audience-profiles.md` | Per-player design + orthographic-fluency case study. |
 | `docs/system-mechanisms.md` | Active window, surfaces, AI roles, stats stores. |
 | `docs/data-flow.md` | Before changing write paths. Surface→Firestore flows. |
 | `references/operational-rules.md` | Before any change. Do/don'ts + P1-P3 + read-philosophy triggers. |
-| `references/doc-style.md` | Writing/editing any doc. |
+| `references/doc-style.md` | Writing any doc. |
 | `references/family-profiles.md` | Any player session. Stable level/focus. |
 | `references/exercise-types.md` | Running exercises. Type definitions. |
 | `references/weekly-slots.md` | Artem's weekly schedule. |
@@ -41,17 +42,16 @@ KB is authoritative; CLAUDE.md only routes.
 | `references/roadmap.md` | Next, deferred. |
 | `references/version-log.md` | Session history. |
 | `plans/README.md` | Active build-plans index. |
-| `tests/` | Diagnostic instruments + scored results. |
+| `diagnostics/` | Assessment instruments + scored results. |
+| `library_drafts/` | Coach-library authoring source. |
 | `tools/README.md` | Firestore CRUD. MCP preferred for new paths. |
 | `worker/README.md` | Cloudflare worker. |
 
-On conflict with this file, references win.
+References win on conflict.
 
 ---
 
 ## Progress trackers — user-facing reports
-
-Refreshed by skills; not doctrine.
 
 | File | Owner | Refreshed by |
 |---|---|---|
