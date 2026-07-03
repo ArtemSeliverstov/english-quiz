@@ -32,11 +32,11 @@
 
 | Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
 |---|---|---|---|---|---|---|---|
-| `[biz_oil]` | 0 | 11 | 4 | 0 | 0 | 0 | 15 |
-| `[leisure_sport]` | 0 | 18 | 1 | 0 | 0 | 0 | 19 |
+| `[biz_oil]` | 0 | 12 | 0 | 3 | 0 | 0 | 15 |
+| `[leisure_sport]` | 0 | 18 | 0 | 1 | 0 | 0 | 19 |
 | `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 40 | 8 | 0 | 0 | 0 | 48 |
-| **Total** | 0 | 70 | 13 | 0 | 0 | 0 | 83 |
+| `[claude_collab]` | 0 | 40 | 0 | 8 | 0 | 0 | 48 |
+| **Total** | 0 | 71 | 0 | 12 | 0 | 0 | 83 |
 
 ---
 
@@ -44,34 +44,34 @@
 
 | Awkward | Natural | Tag | First seen | Last drill | Status | Next retest | Reps | Sources |
 |---|---|---|---|---|---|---|---|---|
-| invent something | make something up / come up with something | `[biz_oil]` | 2026-05-06 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 2 | psd |
-| race in Zwift | race on Zwift | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 2 | psd |
+| invent something | make something up / come up with something | `[biz_oil]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 2 | psd, psd |
+| race in Zwift | race on Zwift | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 2 | psd, psd |
 | go out of my villa | leave the villa / step outside | `[brit_expat]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 2 | psd |
 | in the future | going forward | `[biz_oil]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | my achievement of 4 years ago | my best from 4 years ago / what I hit 4 years ago | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | psd |
-| we agreed | CC and I agreed | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 2 | wrap, psd |
-| is not relevant for my context | isn't relevant to me | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap, psd |
-| audit my mistake | review my mistake | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
+| we agreed | CC and I agreed | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 2 | wrap, psd, psd |
+| is not relevant for my context | isn't relevant to me | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd, psd |
+| audit my mistake | review my mistake | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | propose whether X is relevant | tell me whether X is relevant | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | follow steps in the learning process | follow the learning ladder | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | required topics and required distribution | subtopics and type distribution | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | said to my notes | wrote in my notes / added to my notes | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | what is needed | what we need | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | clean these branches | clean up these branches | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| delete what is safe | delete whatever's safe | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
+| delete what is safe | delete whatever's safe | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | that's not I meant | that's not what I meant | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | not sure what is 'wk cats' | not sure what 'wk cats' means | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| you're restricted to a number of words | you have a word limit | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
+| you're restricted to a number of words | you have a word limit | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | can only test with 6 phrases | is capped at 6 phrases | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| a larger figure | a higher count | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
-| at par with best practices | on par with best practices | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
+| a larger figure | a higher count | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
+| at par with best practices | on par with best practices | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | per topic vs per category, is it the same? | is per-topic the same as per-category? | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| forget these ideas | drop these ideas | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | wrap |
+| forget these ideas | drop these ideas | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | if new info appears | if anything new comes up | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
 | I prefer to have | I'd rather just have | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| sit the issue unattended | let this slide / sit on this | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | fw |
-| impact us mainly by delayed revenue | hit us mainly through delayed revenue | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | fw |
-| always overbudget and time delay | always over budget and behind schedule | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟡 retest_due | 2026-06-01 | 1 | fw |
+| sit the issue unattended | let this slide / sit on this | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | fw, psd |
+| impact us mainly by delayed revenue | hit us mainly through delayed revenue | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | fw, psd |
+| always overbudget and time delay | always over budget and behind schedule | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | fw, psd |
 | bringing the issue up to the execs | getting this in front of the execs | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | fw |
 | takes 3 lines anyway | takes up 3 lines anyway | `[claude_collab]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 0 | psd |
 | something of mentoring | something about mentoring / a mention of mentoring | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
