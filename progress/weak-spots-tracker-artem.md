@@ -12,7 +12,7 @@
 
 **Source**: `coach_notes.weak_patterns`, `coach_notes.recent_session_signals`, `players/artem/exercises/*`
 **Rubric**: `references/weak-spots-rubric.md`
-**Last refresh**: 2026-06-19 (signals-pipeline hardening; double_genitive + temporal_anchor promoted)
+**Last refresh**: 2026-07-03 (post-restore review; 07-01 four-front + 07-02 PV-production outcomes folded; ditransitive promoted)
 **Refresh trigger**: any `stats-review` run.
 
 ---
@@ -67,14 +67,14 @@ Edge-of-competence (§1 engagement) breaks ties.
 
 | Domain | Type · lane | 🔴 | 🟡 | 🟢 | Last touched | Next move |
 |---|---|---|---|---|---|---|
-| **Articles** | rule · open-ended | 3 | 1 | 2 | 2026-06-14 | drill double-genitive (NOW); rest → maintenance |
-| **Non-finite (gerund/infinitive)** | rule · **finite → near-closable** | 2 | 0 | 0 | never drilled | closed-set drill (NOW) — highest leverage |
-| **Tense & aspect** | mixed · compound=rule / past-in-speech=**production** | 3 (+1 spk) | 0 | 0 | 2026-05-18 | temporal-sub drill (NOW); route past-tense to speaking lane |
-| **Phrasal verbs** | **lexical inventory** | → tracker | | | 2026-05-10 | `pv_cold_streak.js`, *not* the drill queue |
-| **L1 lexical / preposition** | rule · finite | 1 | 0 | 2 | 2026-05-20 | in-case-of meaning-grid (NEXT) |
-| **Emphasis** | rule · finite | 0 | 1 | 1 | 2026-05-13 | correlatives — ambient |
-| **Register & fluency** | **production / C1-polish** | 2 | 4 | 0 | 2026-05-18 | free-write / register-check — ambient, not drills |
-| **Business English register** (domain · Learning Goal) | rule+production · **register-ladder** | 1 | 1 | 0 | 2026-05-14 | register-check: R1 direction (`register_mismatch`) + R2+ execution slips |
+| **Articles** | rule · open-ended | 2 | 3 | 2 | 2026-07-01 | the-overuse cleanup (NOW); double-genitive + mass-noun cooling — re-checks due ~07-08/07-16 |
+| **Non-finite (gerund/infinitive)** | rule · **finite → near-closable** | 0 | 2 | 1 | 2026-07-02 | cooling after 07-01 closed-set drill; worth-X one confirming touch from CLOSED |
+| **Tense & aspect** | mixed · compound=rule / past-in-speech=**production** | 2 (+1 spk) | 1 | 0 | 2026-07-01 | **B2 perfect-aspect compound zones (NOW)** — the big untouched front; temporal-anchor next |
+| **Phrasal verbs** | **lexical inventory** | → tracker | | | 2026-07-02 | `pv_cold_streak.js`; get_around_to confirmed fossil (production ×2 fail); get_across production-closed |
+| **L1 lexical / preposition** | rule · finite | 2 | 0 | 2 | 2026-07-02 | bring-up-**with** collocation set (NOW); in-case-of + opposite-of determiner bundle (NEXT) |
+| **Emphasis** | rule · finite | 0 | 1 | 1 | 2026-05-13 | correlatives — ambient; **stalest domain** (50+ days) |
+| **Register & fluency** | **production / C1-polish** | 2 | 4 | 0 | 2026-06-16 | free-write / register-check — ambient, not drills |
+| **Business English register** (domain · Learning Goal) | rule+production · **register-ladder** | 1 | 1 | 0 | 2026-06-16 | register-check: R1 direction (`register_mismatch`) + R2+ execution slips |
 
 PV and Register/fluency counts are pointers, not drill targets — see their lanes.
 
@@ -85,45 +85,49 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 ### NOW — drill next
 | Pattern | Domain | 🚦 | Why here |
 |---|---|---|---|
-| Double-genitive collapse in production («коллег Бесси») | Articles | 🔴 | **intervention-resistant** — survived 4-wk re-test 6/14; production; biz |
-| Gerund after suggest/start/help/recommend/avoid | Non-finite | 🔴 | finite set + 4-mo evidence + **never drilled** = cheap high-leverage |
-| Temporal subordinate "when + future" ("when Bessie will send") | Tense/aspect | 🔴 | **self-confirmed**; production; cheap; never closed |
+| B2 perfect-aspect compound zones (PP+already+passive / PPC+duration / backshift drop) | Tense/aspect | 🔴 | strong multi-instrument evidence (v1+v2 diagnostic); production; the only big front NOT touched by the 07-01 session; expensive (2–3 cycles) but everything cheaper is now cooling |
+| bring up **with** (not "to") — reporting-verb + preposition set (bring up / raise / flag with) | L1 lexical | 🔴 | 3 independent sessions (5/18, 5/20, 7/02), 3 formats; cheap closed-set drill; biz register |
+| `the`-overuse with abstract / zero-article nouns | Articles | 🔴 | recurred 6/14 ("take into the account"); cheap; keeps Articles rotating while its two hot patterns cool |
 
 ### NEXT — queued
 | Pattern | Domain | 🚦 | Why here |
 |---|---|---|---|
-| B2 perfect-aspect compound zones (PP+already+passive / PPC+duration / backshift) | Tense/aspect | 🔴 | strong evidence + production, but **expensive** (2–3 cycles) |
-| Temporal-anchor "last time … present-for-past" (narrative calque) | Tense/aspect | 🔴 | ridge (2 same-day emergences); cheap; distinct from when+future |
-| Mass-noun + indefinite hypercorrection ("an advice") | Articles | 🔴 | strong ridge; cheap cluster drill |
-| "it's worth X-ing" (drops *is* + wrong complement) | Non-finite | 🔴 | gerund-adjacent; bundle with the gerund drill |
-| "in case of X" calque → for / when / if | L1 lexical | 🔴 | recurring biz tic; meaning-grid drill (partly drilled 5/20) |
-| `the`-overuse with abstract / zero-article nouns | Articles | 🔴 | recurred 6/14 ("take into the account"); fold into article cleanup |
+| Temporal-anchor "last time … present-for-past" (narrative calque) | Tense/aspect | 🔴 | promoted 6/19; cheap; distinct from when+future (which is cooling) — natural follow-on after its re-check |
+| Ditransitive order with pronoun IO ("sent to me the report") | Tense/aspect (word order) | 🔴 | promoted 7/03; ×2 but **same-day ridge — re-confirm on an independent surface before a dedicated drill** |
+| "in case of X" calque + "opposite of" missing-determiner residual | L1 lexical | 🔴 | both explicitly untouched by recent sessions (7/02 note); bundle as one meaning-grid drill |
+| Possessor-environment definite drop (signal ×2, likely covered by post-modified-NP entry) | Articles | 🟡 | pending fold into the existing entry (confirm-first proposal) — not a separate drill |
 
 ### AMBIENT — exposure, not scheduled drills
 | Pattern | Domain | 🚦 | Lane |
 |---|---|---|---|
 | **Past tense when speaking** (form solid; deployment gap) | Tense/aspect | 🔴 | **speaking** — interview-prep / free-write, monitor deployment |
-| PV substitution — loses collocation force | Phrasal verbs | 🔴 | PV tracker + pre-submission self-check |
-| PV cold-production gap ("get across", "get around to") | Phrasal verbs | 🔴 | `pv_cold_streak.js` |
+| PV substitution — loses collocation force (bidirectional per 7/02: brought_about ↔ bring_up priming) | Phrasal verbs | 🔴 | PV tracker + pre-submission self-check |
+| PV cold-production: **get_around_to = confirmed fossil** (failed ×2 on 7/02 incl. post-correction) | Phrasal verbs | 🔴 | `pv_cold_streak.js`; next PV touch leads with it |
 | Chat-tempo function-word compression | Register/fluency | 🔴 | self-edit production reps |
-| Execution-layer slips after register direction lands (**execution half** of Business English register) | Register/fluency | 🔴 | register-ladder R2+ |
-| `register_mismatch` — register-direction selection / "bleed" (**direction half**; restored 6/16) | Register/fluency | 🟡 | register-ladder R1 (direction largely lands; execution is the residue) |
-| Emphasis residual clefts (adverb placement, *for*-infinitive, "No sooner…**than**") | Emphasis | 🟡 | short correlatives drill when convenient |
+| Execution-layer slips after register direction lands (**execution half**) | Register/fluency | 🔴 | register-ladder R2+ |
+| `register_mismatch` — direction half (restored 6/16) | Register/fluency | 🟡 | register-ladder R1 (direction largely lands) |
+| Emphasis residual clefts (adverb placement, *for*-infinitive, "No sooner…**than**") | Emphasis | 🟡 | short correlatives drill when convenient — stalest item on the board |
 | Hedge variety (everything → "maybe") | Register/fluency | 🟡 | free-write; drilled 5/18 |
 | Intensifier overreliance ("definitely") | Register/fluency | 🟡 | register-marked rewriting |
 
 ### PARKED — in cooldown, re-check don't drill
-| Pattern | Domain | 🚦 | Cooling since |
+| Pattern | Domain | 🚦 | Cooling since / re-check |
 |---|---|---|---|
+| Double-genitive (middle-noun collapse did NOT recur 7/01; two surface-form residuals self-corrected in-session) | Articles | 🟡 | drilled 7/01 — **spaced re-test ~7/16–7/22** (not sooner; priming risk) |
+| Gerund after suggest/start/help/recommend/avoid (closed-set drill run 7/01) | Non-finite | 🟡 | drilled 7/01 — re-check ~7/08 |
+| Temporal subordinate "when + future" | Tense/aspect | 🟡 | drilled 7/01 — re-check ~7/08 |
+| Mass-noun + indefinite hypercorrection ("an advice") | Articles | 🟡 | drilled 7/01 — re-check ~7/08 |
 | Definite-article drop on post-modified NPs | Articles | 🟡 | held clean cold 6/14 — monitor |
-| Dummy-`it` SVO carryover ("It was a bunch of…") | Register/fluency | 🟡 | drilled 5/18 |
+| Dummy-`it` SVO carryover | Register/fluency | 🟡 | drilled 5/18; **re-check overdue** — fold one probe into next free-write |
 
 ### CLOSED — resolved cold
 | Pattern | Domain | 🚦 | Closed |
 |---|---|---|---|
+| "it's worth X-ing" complement (6/6 clean 7/02 incl. cold production) | Non-finite | 🟢 | 7/02 — one more cold confirming touch, then drop from weak_patterns |
+| get_across production (4/4 across 3 contexts 7/02) | Phrasal verbs | 🟢 | 7/02 — de-emphasise after one more touch |
 | last/latest terminal-in-window | Articles | 🟢 | held cold 6/14 |
 | of-PP identifying on existing events | Articles | 🟢 | held cold 6/14 (was a 5/17 miss) |
-| "opposite **of**" not "opposite to" | L1 lexical | 🟢 | 5/20 |
+| "opposite **of**" not "opposite to" (preposition half; determiner residual → NEXT) | L1 lexical | 🟢 | 5/20 |
 | "than" vs "that" (чем trap) | L1 lexical | 🟢 | 5/20 |
 
 ---
@@ -131,6 +135,6 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 ## Cross-references
 
 - **Phrasal verbs** → `progress/phrasal-verbs-tracker.md` (inventory + 🏆 cold-streak rule); refresh via `pv_cold_streak.js`.
-- **Lexical / register swaps** → `progress/natural-phrases-tracker-artem.md` (phrase_tracker lifecycle).
+- **Lexical / register swaps** → `progress/natural-phrases-tracker-artem.md` (phrase_tracker lifecycle) — **13 retests overdue since 6/01**.
 - **Speaking-lane items** (past tense in speech) → `plans/speaking-lane.md`; surface in interview-prep / free-write.
-- **Promotion / demotion mechanics** → `references/coach-notes-schema.md`.
+- **Promotion / demotion mechanics** → `references/coach-notes-schema.md`; ranking → `references/weak-spots-rubric.md`.
