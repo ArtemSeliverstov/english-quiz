@@ -94,13 +94,20 @@ async function main() {
   const promotableTotal = players.reduce((a, p) => a + (p.promotable || 0), 0);
   const overCap = players.filter(p => p.weakPatternsOver).map(p => p.player);
 
-  const needsReview = staleTrackers.length > 0 || retestTotal > 0 || promotableTotal > 0 || overCap.length > 0 || (probesDue || 0) > 0;
+  // Recommend the action that matches what actually tripped: consolidation
+  // conditions want stats-review; due retests/probes want their own sessions
+  // first (stats-review only folds the results afterwards).
+  const actions = [];
+  if (staleTrackers.length > 0 || promotableTotal > 0 || overCap.length > 0) actions.push('run stats-review');
+  if (retestTotal > 0) actions.push('phrase retest session');
+  if ((probesDue || 0) > 0) actions.push('retention_probe session');
+  const needsReview = actions.length > 0;
   const summary =
     `loop-maintenance: ${staleTrackers.length}/${trackers.length} trackers stale (>${STALE_DAYS}d), ` +
     `${retestTotal} phrase retests due, ${promotableTotal} signals promotion-ready, ` +
     `weak_patterns over cap: ${overCap.length ? overCap.join('/') : 'none'}, ` +
     `open bug verdicts: ${openBugs ?? 'n/a'}, retention probes due: ${probesDue ?? 'n/a'}` +
-    (needsReview ? ' → run stats-review' : ' → loop healthy');
+    (needsReview ? ` → ${actions.join(' + ')}` : ' → loop healthy');
 
   if (json) {
     console.log(JSON.stringify({ summary, needsReview, trackers, players, openBugs, probesDue }, null, 2));

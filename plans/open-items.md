@@ -1,64 +1,126 @@
-# Open operational items
+# Open items — consolidated backlog
 
-**Status**: backlog
-**Scope**: operational/infrastructure work not tied to active build plans (`plans/learning-system-build.md` for engineering, `plans/question-bank-plan.md` for content). Not loaded by any SKILL — picked up explicitly on Artem's prompt.
-
-Most items were extracted from the since-archived repo-improvements plan after the bulk of that plan shipped; full archive at `plans/archive/repo-improvements-completed.md`.
-
----
-
-## Cap append-only logs
-
-- **`references/version-log.md`** — ✅ done (now ~240 lines; older sessions archived to `references/archive/version-log-pre-s87.md` and `version-log-pre-2026-05-09.md`).
-- **`references/bug-log.md`** — ✅ done 2026-07-03 (253→203 lines; RTDB-sync + deploy.html-pipeline + s17 cosmetic bugs → `references/archive/bug-log-pre-2026-05.md`; live rules preserved in the summary).
-
-**Why**: append-only logs grow without bound and dilute current signal when grep-discovered. Anthropic skill guidance ("Avoid time-sensitive information; if needed, move to an 'old patterns' section") applies — except here the old-pattern section becomes a separate archive file.
-
-**Source**: `archive/repo-improvements-completed.md` §2.4.
+**Status**: backlog — the single remaining-items file. Combined 2026-07-03 from the
+holistic review, retention analysis, tracker-system analysis, folder audit, and the
+prior operational backlog; every item validity-checked against the others (see
+Cross-checks). Not loaded by any SKILL — picked up on Artem's prompt.
+**Scope**: excludes content-authoring backlogs (those stay in `references/roadmap.md`
++ `plans/question-bank-plan.md` — no duplication per the redundancy rule).
 
 ---
 
-## App Check on Firestore (Phase 3 follow-on)
+## Practice queue (Artem — dated, do in order)
 
-Highest-priority Phase 3 item per `learning-system-build.md` §11.7. Gated on Phase 2D acceptance.
+| When | What | ~Time |
+|---|---|---|
+| now | **Retention probe #1** — 4 patterns overdue (than/that, opposite-of-prep, last/latest, of-PP) + siblings + due re-checks | 15 min |
+| ~07-08 | Weak-spots session: re-checks (gerund set, when+future, mass-noun) + open the **B2 perfect-aspect** front | 30 min |
+| ~07-16 | **Double-genitive** spaced re-test (not earlier — priming risk) | 10 min |
+| next psd | "over budget and **behind** schedule" re-enters automatically (failed 07-03 retest) | — |
+| on your word | Session-wrap **prompt round-up** (2–3 rephrasings collected from today, starting with "wholistic review of the projecting") | 5 min |
+| human | **Anna re-engagement nudge** — low-pressure invite to one Free Write (her keystone); no drills until she's back | — |
 
-Three layers:
-- **Firebase App Check (~1.5h)** — verifies requests come from the deployed PWA via reCAPTCHA Enterprise. Rule becomes `allow read, write: if request.app != null`. Closes the "anyone with the endpoint URL can write" hole at the network layer. No migration of existing docs, no per-user UIDs.
-- **Append-only-ish rules (~1h)** — forbid `delete`, forbid shrinking arrays, cap document size. **Partially done**: `firestore.rules` already forbid delete on player docs (per `references/operational-rules.md` invariant); `tools/_firestore.js` refuses player-doc full-replace.
-- **Weekly backup job** — ✅ done (GitHub Action runs daily, commits to orphan `backups` branch).
+Validity note: probe #1's owned-material bucket is **empty this month** (0 owned
+phrases — the 12 mastered on 07-03 reach owned only after their +42d retest ≈ mid-Aug;
+0 🏆 PVs), so the probe runs ~12 items, not 15. Expected, not a defect.
 
-**Source**: `archive/repo-improvements-completed.md` §3.3, `learning-system-build.md` §11.7.
+## Tracker package (from the 2026-07-03 tracker analysis — approved shape, not yet built)
+
+- **T1 · Phrase pool hygiene** (~1h): priority score per entry (register-impact by tag:
+  biz_oil > brit_expat/home > leisure > claude_collab, × recurrence) + aging rule
+  (active, ≤1 rep, no rep in 60d → new `dormant` status; auto-revives on
+  re-occurrence) + tracker md surfaces top-20 only. Parks ~40 of 71 actives on day one.
+  Touches: `update_coach_notes.js` (STATUS_EMOJI + renderer + lifecycle),
+  `coach-notes-schema.md`. Worker needs **no** change (its pool filter is
+  `status==='active'`, so dormant drops out automatically). Optional phase B later:
+  worker picks actives by priority (needs deploy).
+- **T2 · `collocation_precision` catalog topic** (~1 session + deploy): closes the P1
+  routing hole — Collocations (67%, n=63) and Word Choice (68%, n=73) are the two worst
+  scaled categories and currently map to no Weak Spots topic. Implementation: worker
+  ladder (recognize miscollocation → repair → produce under a business frame), **two**
+  PWA `COACH_WEAK_SPOTS_CATALOG` rows sharing the one topic id (cat: Collocations; cat:
+  Word Choice), CC parity per P2, system-mechanisms §2.5 count 6→7. Doctrine check:
+  passes §6 (new topic inside an existing surface, not a new surface).
+- **T3 · PV queue + ⚠ orphans** (~30 min): stats-review generates a top-5 PV drill
+  queue in the PV tracker header (focus-order + production evidence); the three
+  ⚠ A2-production-weak items (come/go back, go on, look for — unre-tested since 05-03)
+  join the monthly probe. Touches: PV tracker header, `stats-review` PROTOCOL,
+  **retention-lane R2 + exercise-types §12** (probe composition gains the ⚠ bucket).
+- **T4 · Schema owned/R4 contradiction** (2 min): `coach-notes-schema.md` "Owned: no
+  further retests" → "no scheduled retests; sampled by the monthly retention probe
+  (R4), miss demotes".
+- **T5 · `interview_rubric` aggregation** (~10 min): stats-review PROTOCOL step 3
+  aggregates `interview_rubric` alongside `register_rubric` — interview-prep sessions
+  currently accumulate unanalyzed. Ordering: do before `shadow_feedback` ships.
+
+## Confirm-first pending (proposals ready, awaiting Artem)
+
+- **Family-profiles snapshot lines** — Anna "re-engaging (Apr 2026)" → idle-since-05-18;
+  Ernest "inactive mid-Mar" → IGCSE-prep active, window 4; Egor → dormant note.
+  ([data]-backed; profile edits are git commits, confirm-first by protocol.)
+- **exercise-session lexical-capture policy** (roadmap Quality #6): wire
+  `capture_swaps.js --source ex` for direct 🔵 capture, or keep the deliberate
+  rec_obs-only strictness. Validity note: decide **after T1 lands** — direct capture
+  raises inflow into a pool whose WIP problem T1 is meant to fix.
+
+## Infrastructure (carried forward, still valid)
+
+- **App Check on Firestore** (~2.5h remaining of 3 layers; backup layer ✅ done).
+  reCAPTCHA-based `request.app != null` rule + append-only-ish hardening. Gated on
+  Phase 2D acceptance per `learning-system-build.md` §11.7.
+- **Live-log UI** (0.5 session): "Active session" card on the Exercises tab off the
+  existing `exercise_active` doc. Infrastructure exists, UI doesn't.
+- **Smaller fixes**:
+  - `.mcp.json` hardcodes `D:/Claude/...` — make relative/env-driven if anyone else clones.
+  - Worker `RUSSIAN_FALLBACK_PLAYERS` should log a warning when hit (stale-bundle signal).
+  - **`archive/` + `ref/index.html` are publicly served via Pages** — weight *raised*
+    by the folder audit: `archive/` is now deliberately tracked and its HTML KB
+    snapshots include learner data; house rule 5 (personal data) argues for a Pages
+    exclusion or content check. Verify nothing references them publicly, then scope out.
+  - **doc-style reference ceilings** — `design-decisions.md` now ~2.6k words (2026-07-03
+    entries pushed it further past the ~2.5k courtesy ceiling). Aligns with the caps
+    policy decision: either add warn-only ceilings to `check_doc_caps.js` or accept
+    ceilings as prose guidance. Low priority.
+
+## Larger builds (tracked elsewhere — pointers, no duplication)
+
+- **`shadow_feedback`** (~3 days on existing audio infra) → `plans/audio-coach-pipeline.md`. Do T5 first.
+- Speaking-lane family tiers, PV Phase 2 authoring, C2 batch, article phase 3 → `references/roadmap.md`.
+
+## Deferred with explicit triggers
+
+| Item | Trigger to revisit |
+|---|---|
+| `retention_log` trend store | 2–3 monthly probes of data exist |
+| PWA slot tile for the probe (`EX_WEEKLY_TARGETS` #12) | probe habit sticks ≥2 months |
+| Learner-shell retention probes | a learner sustains high volume |
+| PV tracker full Status re-derivation | fresh quiz-tab data exists (none since 05-20) |
+| Worker priority-pick for phrase pool (T1 phase B) | next worker deploy after T1 |
+
+## Dropped / won't-do (decisions of record)
+
+- **RTDB deletion** — dropped by Artem 2026-07-03; stays frozen indefinitely (roadmap row updated to match).
+- **Worker rate limit** — won't-do per `worker/README.md` threat model; revisit only on observed abuse.
+
+## Done and moved out (see version-log 2026-07-03 for the full record)
+
+Log caps (version-log ✅, bug-log ✅) · backups retention + `exercises_library`
+snapshot ✅ · tripwire action-matching messaging ✅ · everything from the holistic
+review, retention lane R1–R5, folder audit cleanup, Nikolay teardown.
 
 ---
 
-## Worker rate limit
+## Cross-checks (validity of the set as a whole, 2026-07-03)
 
-**Won't-do** — per `worker/README.md` threat model ("family scale doesn't justify per-IP rate limiting"; prepaid balance + spend cap bound the blast radius); revisit only if abuse observed.
-
-Cloudflare KV or Durable Object counter: N req/min/player, N/hour/IP. Closes the "anyone with the worker URL drains the prepaid balance" hole. Independent of App Check work — worker fronts AI calls, not Firestore.
-
-**Estimated**: ~2h.
-
-**Source**: `archive/repo-improvements-completed.md` §3.4.
-
----
-
-## Smaller fixes
-
-- **`.mcp.json` hardcodes `D:/Claude/...`** — make relative or env-driven. Confirm whether anyone other than Artem clones this repo before acting.
-- **Worker `RUSSIAN_FALLBACK_PLAYERS`** should log a warning when hit — signal old PWA bundles still pinging the worker after migration.
-- **`archive/` and `ref/index.html` deployed publicly via Pages** — verify nothing references them before moving out of scope or adding to `.gitignore` for Pages.
-
-**Source**: `archive/repo-improvements-completed.md` §3.7.
-
----
-
-## Plan housekeeping
-
-- **Doc-style.md "design 2500" cap** — `references/design-decisions.md` is at ~2,560 words after recent edits. `tools/check_doc_caps.js` only enforces CLAUDE.md and SKILL.md caps; the design-doc cap is aspirational. Either tighten the checker to enforce it, or drop the line from `doc-style.md`. Low priority either way.
-
----
-
-## Items NOT carried forward from repo-improvements.md
-
-Everything else from the original plan is shipped. See `plans/archive/repo-improvements-completed.md` for the full record.
+1. Probe #1 runs before T3 → ⚠ PV items join from the *next* monthly probe; no conflict.
+2. T1's `dormant` status is worker-safe without a deploy (pool filter excludes it); the
+   md renderer + schema are the only touches.
+3. T2 needs two catalog rows sharing one topic id — the P1 helper handles duplicate ids
+   fine (both categories surface as candidates).
+4. T3 amends the retention-lane R2 composition — retention-lane.md and exercise-types
+   §12 must change in the same commit as the PROTOCOL line.
+5. Capture-policy decision deliberately sequenced after T1 (don't widen the intake
+   while fixing the backlog).
+6. T5 precedes shadow_feedback (aggregation shape informs the sibling mode's metadata).
+7. The archive/-on-Pages item interacts with house rule 5 and the now-tracked archive/
+   — scope-out is the likely resolution, not un-tracking.

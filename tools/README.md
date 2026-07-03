@@ -171,9 +171,11 @@ node tools/loop_maintenance.js --json
 Tracker staleness (progress/*.md "Last refresh" vs today), per-player phrase
 retest backlog, promotion-ready signals (count ≥2), `weak_patterns` cap check,
 open `bug:*` rows in `tools/mistake_verdicts.json` (the verdict ledger shared
-by `mistakes-review` → `stats-review` → `quiz-development`). Run daily by
-`mistakes-review` step 0 — "→ run stats-review" in the summary means the
-consolidation half of the loop is stalled. Writes nothing.
+by `mistakes-review` → `stats-review` → `quiz-development`), and overdue
+retention probes from the weak-spots tracker. Run daily by `mistakes-review`
+step 0. The summary recommends the action matching what tripped: "run
+stats-review" = consolidation stalled; "phrase retest session" /
+"retention_probe session" = practice due. Writes nothing.
 
 ### `get_question_mistakes.js` — per-qid mistake audit
 
