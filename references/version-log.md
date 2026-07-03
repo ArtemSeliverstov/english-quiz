@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-03 · v20260703 — holistic-review remediation + Nikolay teardown
+
+Big maintenance session driven by the 2026-07-03 holistic review. Four repo commits + this deploy.
+
+- **Incident**: `players/artem` root doc had been replaced (not patched) by a CC weak-spots end-write on 2026-05-20 — qStats (1,883), catStats, createdAt, recentSessions, phrase_tracker, learning_path lost; silent for 6 weeks. **Restored** from `backups/2026-05-20` via masked PATCH (coach_notes/lvlStats/totals kept live). See `references/bug-log.md`.
+- `check_player_integrity.js`: three new shrink/removal invariants; baseline no longer auto-ratchets on count shrink (`--accept-shrink`).
+- Word caps raised: CLAUDE.md 550, SKILL.md 800, 30-word enforced buffer; `stats-review` procedure moved to skill-local `PROTOCOL.md`; trimmed substance restored; trim-safety rule in `doc-style.md`.
+- Loop wiring: `stats-review` PROTOCOL step 8 regenerates the weak-spots tracker; `weak-spots-session` consumes it (lane checks, unified NOW/NEXT/AMBIENT/PARKED/CLOSED vocabulary); `tools/loop_maintenance.js` staleness tripwire runs daily via `mistakes-review`; `tools/mistake_verdicts.json` verdict ledger (mistakes-review → stats-review → quiz-development); `update_coach_notes.js` warns on weak_patterns >8. Rebase-merged with PR #16 (signals-pipeline hardening: `promote_signals.js`, `_signals.js` CC exercise auto-fold, `weak-spots-rubric.md`, tracker refresh 2026-06-19) — the two efforts compose: #16's promotion tooling slots into PROTOCOL step 7, its rubric into step 8.
+- Docs sweep: 7 contradictions ruled against live data (Anna window 3; Egor learner-shell; free_write = Anna keystone; date-only versioning; 6-topic catalog; unlock 1+3; category counting rule), data-flow.md rebuilt for the live-AI era, roadmap/coverage-matrix de-duplicated + shipped rows closed, plans archived/reindexed, worker/README `/v1/audio` documented.
+- **Nikolay teardown** (this deploy): FAMILY_MEMBERS entry removed; worker `ALLOWED_PLAYERS` redeployed (`e97f713d`, gate verified rejecting `nikolay`); Firestore `players/nikolay` + 5 subdocs deleted after local snapshot.
+
+Q count: 2246 (Δ0) · Version: v20260703
+
+---
+
 ## 2026-07-01 — IGCSE/IB diagnostics + two-tier weak-spots tracker (no deploy)
 
 Repo-only session; no index.html change, no version bump.

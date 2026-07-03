@@ -13,7 +13,7 @@ What's next, what's deferred. Ordered by category, not strict priority.
 | 3 | RTDB sunset: data frozen; **deletion still pending** (manual Firebase Console action — overdue since 2026-05-28). Keep `rtdb_backup_<ts>.json` indefinitely. | 10 min | Cleanup. Frozen RTDB is harmless but noisy. |
 | 4 | ✅ Done — Phase 2 Coach tab + Cloudflare Worker shipped; all five drill types live-AI primary since 2026-05-11 (Phase D). | — | See `plans/archive/coach-live-ai-and-weak-spots.md`. |
 | 5 | ✅ Done — coach_notes field live on all players; bootstrap superseded by the 2026-05-12 stats-sprawl schema. | — | See `coach-notes-schema.md`. |
-| 6 | ✅ Done 2026-07-03 — weak-spots tracker generation encoded in `stats-review` 6b; consumed by `weak-spots-session`; loop tripwire (`tools/loop_maintenance.js`) runs daily via `mistakes-review`. | — | Closes the tracker's former "hand-seeded draft" state. |
+| 6 | ✅ Done 2026-07-03 — weak-spots tracker generation encoded in `stats-review` PROTOCOL step 8 (rubric: `weak-spots-rubric.md`, per #16); consumed by `weak-spots-session`; loop tripwire (`tools/loop_maintenance.js`) runs daily via `mistakes-review`. | — | Closes the tracker's former "hand-seeded draft" state. |
 
 ---
 
