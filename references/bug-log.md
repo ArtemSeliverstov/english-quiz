@@ -13,6 +13,11 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 **Fix**: Restored 2026-07-03 from `backups/2026-05-20/artem.json` via masked PATCH (kept live `coach_notes`/`lvlStats`/`aggregated_*`/totals; `catStats` summed backup + post-wipe). Checker gained `createdAt_removed`, `total_answered_decrease`, `qstats_collapse` invariants, and the baseline no longer auto-updates on any count shrink without `--accept-shrink`.
 **Rule**: Skill end-writes to a player root doc must send *only* the changed fields through a field-masked update — never a re-composed document (the `weak-spots-session` SKILL now names the exact field list). Any integrity "clean" that follows a count decrease is suspect — diff against the `backups` branch before accepting the new state.
 
+### Backup workflow nests snapshots on same-day re-run (2026-07-03)
+**Bug**: `.github/workflows/backup.yml` stashes the day's snapshot to `/tmp/snapshot-$DATE`, switches to the `backups` branch, then `mv "/tmp/snapshot-$DATE" "backups/$DATE"`. When `backups/$DATE` already exists on the branch (a second scheduled run, or a manual `workflow_dispatch` re-run), `mv` moves the source *inside* the existing dir → `backups/$DATE/snapshot-$DATE/`. Caught manually dispatching the backup to test the new `exercises_library` snapshot — the morning scheduled run had already created the dir.
+**Fix**: `rm -rf "backups/$DATE"` before the `mv` (last run of the day wins); `git add -A` so removals stage too. The nested `backups/2026-07-03/snapshot-2026-07-03/` self-corrects at the next day's clean run.
+**Rule**: `mv src dst` is not idempotent — if `dst` exists as a dir, `src` lands inside it. Remove or check the target before moving into a possibly-existing path.
+
 ### Cross-player contamination — Nicole/Artem (2026-05-02)
 **Bug**: Nicole's `players/nicole` Firestore doc was overwritten with a copy of Artem's data (identical `qStats` keys + `lastSeen`, `totalAnswered`, `recentSessions[1..9]`); only one genuine 2026-05-02 quiz session and `coach_notes` survived.
 **Fix**: Restored from frozen RTDB baseline + the one genuine session. Daily Firestore backups now run via `.github/workflows/backup.yml` to a separate `backups` branch. `tools/_firestore.js` `fsSet` refuses player-root replaces without explicit opt-in.

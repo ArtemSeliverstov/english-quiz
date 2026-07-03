@@ -60,9 +60,14 @@ jobs:
           fi
 
           mkdir -p backups
+          # Same-day re-run guard: a manual re-dispatch (or a second scheduled
+          # run) finds today's dir already on the branch. Without this rm, the
+          # mv nests the fresh snapshot as backups/$DATE/snapshot-$DATE/ instead
+          # of replacing it (observed 2026-07-03). Last run of the day wins.
+          rm -rf "backups/$DATE"
           mv "/tmp/snapshot-$DATE" "backups/$DATE"
 
-          git add "backups/$DATE"
+          git add -A "backups/$DATE"
           if git diff --cached --quiet; then
             echo "No changes to commit (already backed up today?)"
             exit 0
