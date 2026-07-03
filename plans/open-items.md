@@ -34,13 +34,34 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
   `coach-notes-schema.md`. Worker needs **no** change (its pool filter is
   `status==='active'`, so dormant drops out automatically). Optional phase B later:
   worker picks actives by priority (needs deploy).
-- **T2 · `collocation_precision` catalog topic** (~1 session + deploy): closes the P1
-  routing hole — Collocations (67%, n=63) and Word Choice (68%, n=73) are the two worst
-  scaled categories and currently map to no Weak Spots topic. Implementation: worker
-  ladder (recognize miscollocation → repair → produce under a business frame), **two**
-  PWA `COACH_WEAK_SPOTS_CATALOG` rows sharing the one topic id (cat: Collocations; cat:
-  Word Choice), CC parity per P2, system-mechanisms §2.5 count 6→7. Doctrine check:
-  passes §6 (new topic inside an existing surface, not a new surface).
+- **T2 · Conversational-register lane (CR1–CR4)** — *replaced `collocation_precision`
+  per Artem 2026-07-05: priority is the register acquired-through-text problem.*
+  Diagnosis: spoken-casual English is an **absent variety**, not an error class —
+  input diet was written business/non-fiction, so production defaults to literate
+  register everywhere ("normal people don't talk like this in pubs and offices").
+  Evidence: Register = worst quiz category (40%, n=15); `register_rubric` has zero
+  Artem data (fires only on FW, which he doesn't use); capture channels are
+  polarity-blind (correct-but-formal triggers nothing); the PV production gap is
+  partly the same phenomenon (PVs = casual register, Latinate = written).
+  Doctrine: passes §6 (no new surface); extends §3 conversation-keystone to the
+  builder profile.
+  - **CR1 · Casual-mode Free Write** (~30 min, CC `free-write` skill edit, no deploy):
+    "hallway/pub mode" — coach models informal register (the missing input stream),
+    correction polarity flips (too-formal flagged, not just errors). Also ends the
+    register_rubric data drought automatically.
+  - **CR2 · Register-down capture polarity** (~20 min, **after T1**): wrap/FW/exercise
+    captures also catch correct-but-register-heavy productions as swaps
+    ("I intend to depart shortly" → "I'm heading off in a bit" [brit_expat]).
+    Tags + lifecycle already exist; only capture instructions change.
+  - **CR3 · `conversational_register` catalog topic** (~1 session + deploy): ladder
+    recognize-register → re-register for the hallway → produce casual in scenario
+    (small talk, reacting, banter). PWA catalog row maps `cat: Register` → P1 routing
+    finally works for the worst category. CC parity per P2; system-mechanisms §2.5
+    count 6→7. Full spec → a `plans/conversational-register-lane.md` at build time.
+  - **CR4 · Casual-FW weekly slot** (doc-level now; `EX_WEEKLY_TARGETS` tile rides the
+    CR3 deploy — both current free_write slots are formal-flavoured).
+  - Pointers: `shadow_feedback` clips should be **casual speech** (listening half of
+    this lane); C1 Register/Natural-English quiz authoring → roadmap backlog.
 - **T3 · PV queue + ⚠ orphans** (~30 min): stats-review generates a top-5 PV drill
   queue in the PV tracker header (focus-order + production evidence); the three
   ⚠ A2-production-weak items (come/go back, go on, look for — unre-tested since 05-03)
@@ -91,6 +112,7 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
 
 | Item | Trigger to revisit |
 |---|---|
+| `collocation_precision` catalog topic (business half — demoted from T2 per Artem 2026-07-05) | CR3 shipped **and** the next full stats-review still shows Collocations/Word Choice as top scaled gaps (informal collocations are partly covered by the CR lane itself) |
 | `retention_log` trend store | 2–3 monthly probes of data exist |
 | PWA slot tile for the probe (`EX_WEEKLY_TARGETS` #12) | probe habit sticks ≥2 months |
 | Learner-shell retention probes | a learner sustains high volume |
@@ -113,6 +135,14 @@ review, retention lane R1–R5, folder audit cleanup, Nikolay teardown.
 ## Cross-checks (validity of the set as a whole, 2026-07-03)
 
 1. Probe #1 runs before T3 → ⚠ PV items join from the *next* monthly probe; no conflict.
+1b. **CR2 sequenced after T1** (same logic as the capture-policy item: don't widen
+   phrase-pool intake — register-down captures will add volume — before the aging +
+   priority machinery exists). CR1 has no such dependency and can go first.
+1c. **CR3 takes T2's catalog slot** — still one new topic, same §6 pass; collocation
+   topic deferred with an explicit trigger, and its informal half is covered by CR
+   drills anyway.
+1d. **CR1 revives register_rubric** → by the time CR3 ships there will be baseline
+   register data to measure the lane against (measurement precedes intervention).
 2. T1's `dormant` status is worker-safe without a deploy (pool filter excludes it); the
    md renderer + schema are the only touches.
 3. T2 needs two catalog rows sharing one topic id — the P1 helper handles duplicate ids
