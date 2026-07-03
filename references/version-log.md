@@ -10,6 +10,18 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-01 — IGCSE/IB diagnostics + two-tier weak-spots tracker (no deploy)
+
+Repo-only session; no index.html change, no version bump.
+
+- `tests/` — IGCSE/IB entrance diagnostics + prep packs for Ernest and Nicole (14 files, commit b082b67).
+- `progress/weak-spots-tracker-artem.md` — two-tier tracker landed (#15, c945287): domains = budget layer, patterns = action layer (NOW/NEXT/AMBIENT/PARKED/CLOSED), lane routing (PV → inventory, production → speaking lane).
+- Catch-up note: mid-June CC sessions (2026-06-14 article re-test cycle `artem_ad_…_rtst`; 2026-06-16 register work) ran without version-log entries — evidence lives in the tracker and coach_notes.
+
+Q count: 2246 (Δ0) · no deploy
+
+---
+
 ## 2026-06-08 · v20260608 — temporary demo guest player (Nikolay)
 
 Added a short-lived guest identity so a friend can try both surfaces (HTML quiz + Coach/API exercises) without touching family data. Isolated Firestore identity; no contamination of the five real learners.

@@ -1,6 +1,6 @@
 # Data integrity — prevention and recovery plan
 
-**Status**: proposed (not yet implemented)
+**Status**: shipped (P0–P2 2026-05-10/11; superseded by daily backups + integrity checker — see references/bug-log.md 2026-05-20 entry)
 **Drafted**: 2026-05-03
 **Trigger**: 2026-05-02 contamination incident — Nicole's Firestore player doc was overwritten with a copy of Artem's data. Recovered the next day from frozen RTDB.
 

@@ -9,7 +9,7 @@ Read this when proposing a new surface, a new schema field, or a stats-store cha
 
 ## 1. The active window model
 
-The quiz has ~2250 questions across 27 categories. For builder profiles (Artem, Egor) this is an asset. For learner profiles (Anna, Nicole, Ernest), it's a liability — too many fronts at once means no consolidation.
+The quiz has ~2,246 questions across 27 categories. For the builder profile (Artem) this is an asset. For learner profiles (Anna, Nicole, Ernest, Egor — Egor migrated to learner shell 2026-05-12), it's a liability — too many fronts at once means no consolidation.
 
 The active window model classifies each category per player as one of:
 
@@ -17,9 +17,9 @@ The active window model classifies each category per player as one of:
 - **Mastered** — accuracy ≥ threshold (default 80% across ≥20 attempts) sustained ≥2 weeks. Available for spaced review (~30-day interval); not actively pushed.
 - **Locked** — not yet opened. Player never encounters these. From the player's perspective the category doesn't exist.
 
-Target window size: 4 for Anna and Nicole, 5 for Egor, 6 for Ernest, unbounded for Artem (builder shell, empty `active_categories`). Window size is a setting, not a hard constraint.
+Live window sizes (Firestore `learning_path.active_window_size`, 2026-07-03): 3 for Anna (shrunk 5→3 at the 2026-05-17 review — focused-CF) and Nicole, 5 for Egor, 6 for Ernest, unbounded for Artem (empty `active_categories`; learner-shell behaviours gate on a *populated* window, so he gets builder rendering). Window size is a setting, not a hard constraint.
 
-**Promotion** from locked to active is an *explicit unlock event* when an active category reaches mastered. The player chooses from a curated list (3 options) prepared by stats-review. No auto-promotion.
+**Promotion** from locked to active is an *explicit unlock event* when an active category reaches mastered. The player chooses from a curated list prepared by stats-review — 1 deepen option + up to 3 broaden candidates (`stats-interpretation-guide.md` §3.5). No auto-promotion.
 
 **Composition rule**: of categories in the window, ≥1 should be in the player's current strong area (~70%+), ≥2 in the productive struggle zone (40-65%), ≤1 new narrow focus. Composition is a CC responsibility, revisited during stats reviews.
 
@@ -30,7 +30,7 @@ Target window size: 4 for Anna and Nicole, 5 for Egor, 6 for Ernest, unbounded f
 - *Allows intentional sequencing.* CC + Artem pick what unlocks come next based on pedagogical fit.
 - *Interacts with the learner shell.* Because windows are small, the learner shell can simplify display dramatically.
 
-For builder profiles, active windows are unused. The model is purely a learner-shell mechanism.
+For the builder profile, active windows are unused. The model is purely a learner-shell mechanism.
 
 **Risk to manage**: a window of only difficult categories produces no quick wins and risks disengagement. The composition rule addresses this; stats-review enforces.
 
@@ -62,7 +62,7 @@ Library content survives as offline-only fallback (the `exercises_library/*` Fir
 `phrase_swap_drill`. Lexical/register swap practice (stiff/calqued → natural). Gated on `Natural English` being in `active_categories` for learner shell. Pool sourced from `phrase_tracker.entries[status==='active']` + retest-due entries; canonical lifecycle ⚪→🔵→🟡→🟢→🏆. Writes `coach_sessions/{psd_*}` + applies tracker transitions.
 
 ### 2.5 Coach tab — Weak Spots
-`weak_spots_drill`. ~30-minute tier-walked depth session on one topic. Inline 5-topic catalog (emphasis_clefts, article_system, present_perfect_vs_past_simple, preposition_clusters, phrasal_verb_production). Tutorial vs. drill emerges from `recent_observations`. **P1 — weakest quiz category is always a proposal candidate** via `coachWeakestQuizCategoriesForTopics` → `weakest_categories` in context.
+`weak_spots_drill`. ~30-minute tier-walked depth session on one topic. Inline 6-topic catalog (emphasis_clefts, article_system, present_perfect_vs_past_simple, preposition_clusters, phrasal_verb_production, hedge_variety). Tutorial vs. drill emerges from `recent_observations`. **P1 — weakest quiz category is always a proposal candidate** via `coachWeakestQuizCategoriesForTopics` → `weakest_categories` in context.
 
 ### 2.6 Stats tab
 Detailed per-category and per-question performance. Primary surface for builder profile. Simplified or hidden behind "show details" for learner profile. The learner-shell home stats panel (`renderLearnerStats`) shows active-category cards with quiz + drill split (`getCategoryProgress`).
@@ -83,7 +83,7 @@ Three AI surfaces, distinct functions:
 
 **claude.ai chat** — strategic design conversations (this conversation, for example), one-shot grammar/pedagogy questions, document drafting that benefits from iteration. Not used for routine project state writes. Cross-project personal context lives here.
 
-**Cloudflare Worker (live AI for family)** — handles 9 modes today: `free_write`, `escalate`, `phrase_swap_drill`, `weak_spots_drill`, `translation_drill`, `error_correction_drill`, `article_drill_live`, `particle_sort_live`, `spelling_drill_live`. Constrained, validated, cost-capped. Russian-explanation aware. Stateless across sessions — reads `coach_notes.weak_patterns` + `recent_observations` from context each call (PWA includes them in the request payload).
+**Cloudflare Worker (live AI for family)** — 9 chat modes: `free_write`, `escalate`, `phrase_swap_drill`, `weak_spots_drill`, `translation_drill`, `error_correction_drill`, `article_drill_live`, `particle_sort_live`, `spelling_drill_live`; plus the `/v1/audio` pipeline (`interview_prep`, Artem-only — Whisper transcription for the interview-prep CC skill). Constrained, validated, cost-capped. Russian-explanation aware. Stateless across sessions — reads `coach_notes.weak_patterns` + `recent_observations` from context each call (PWA includes them in the request payload).
 
 These are not interchangeable. Routine authoring → CC. Family-side live interactions → Worker. claude.ai chat handles conceptual work needing human-in-the-loop iteration.
 

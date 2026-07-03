@@ -9,7 +9,7 @@ Most items were extracted from `plans/repo-improvements.md` after the bulk of th
 
 ## Cap append-only logs
 
-- **`references/version-log.md`** (~755 lines): keep last 5–10 sessions; archive older to `references/archive/version-log-pre-{date}.md`.
+- **`references/version-log.md`** — ✅ done (now ~240 lines; older sessions archived to `references/archive/version-log-pre-s87.md` and `version-log-pre-2026-05-09.md`).
 - **`references/bug-log.md`**: keep unresolved + last year; archive older to `references/archive/bug-log-pre-2026.md`.
 
 **Why**: append-only logs grow without bound and dilute current signal when grep-discovered. Anthropic skill guidance ("Avoid time-sensitive information; if needed, move to an 'old patterns' section") applies — except here the old-pattern section becomes a separate archive file.
@@ -32,6 +32,8 @@ Three layers:
 ---
 
 ## Worker rate limit
+
+**Won't-do** — per `worker/README.md` threat model ("family scale doesn't justify per-IP rate limiting"; prepaid balance + spend cap bound the blast radius); revisit only if abuse observed.
 
 Cloudflare KV or Durable Object counter: N req/min/player, N/hour/IP. Closes the "anyone with the worker URL drains the prepaid balance" hole. Independent of App Check work — worker fronts AI calls, not Firestore.
 

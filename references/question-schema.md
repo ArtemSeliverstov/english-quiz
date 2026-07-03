@@ -247,8 +247,9 @@ a retired ID.**
 
 **Permanently retired IDs (do not reuse)**: qt01, qt02, wt01.
 
-For the full prefix → category mapping, see the version of the KB you're working
-from. The mapping is stable but the active range increments per session.
+For the full prefix → category mapping, see `references/question-bank-taxonomy.md` §7
+(current authority; the archived HTML KB `archive/quiz_knowledge_base_v20260428-s87.html`
+is historical only). The mapping is stable but the active range increments per session.
 
 Common active prefixes (selected examples):
 
@@ -275,12 +276,13 @@ Common active prefixes (selected examples):
 | `qt_i` | Quantifiers | Input series (s89, B1) |
 | `refl`, `reflop`, `reflby` | Pronouns | Reflexive series (migrated s89) |
 
-Full prefix list with current ranges lives in the source KB. When adding to a prefix,
-verify the highest existing number first.
+The prefix index lives in `references/question-bank-taxonomy.md` §7; for current
+ranges grep `index.html`. When adding to a prefix, verify the highest existing
+number first.
 
 ---
 
-## Categories (28 total, post Grammar migration s89)
+## Categories (27 live + `Grammar` reserved fallback = 28 valid `cat` values)
 
 Active categories (must match `cat` field exactly, case-sensitive):
 
@@ -291,8 +293,9 @@ Articles · Tenses · Gerunds & Infinitives · Vocabulary · Word Choice · Prep
 · Comparisons · Quantifiers · Word Formation · Pronouns · Irregular Verbs
 · Natural English · Grammar (≈0 after migration; reserved as fallback only)
 
-Authoritative count and per-category numbers live in the **Coverage Matrix** section
-of the source KB and are dynamically generated.
+Authoritative count and per-category numbers live in `references/question-bank-taxonomy.md`
+(§2 inventory + Appendix A registry); the dynamically generated coverage matrix in the
+archived HTML KB (`archive/quiz_knowledge_base_v20260428-s87.html`) is historical only.
 
 ---
 

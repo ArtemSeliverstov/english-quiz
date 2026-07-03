@@ -27,8 +27,9 @@ lowest input share are often the highest-value for Russian speakers (articles,
 conditionals, tenses).
 
 Audit per-category input share before any content sprint. The current per-category
-table lives in the source KB → "Per-category input target" section. Update that table
-whenever input questions are added.
+table lives in `references/question-bank-taxonomy.md` → Appendix A (per-category `input`
+counts; the archived HTML KB `archive/quiz_knowledge_base_v20260428-s87.html` is
+historical only). Update that table whenever input questions are added.
 
 ---
 
@@ -279,7 +280,7 @@ external store — that experiment failed in s78–s82.
 
 ## When adding questions
 
-1. Read `coverage-matrix.md` (or the source KB's coverage matrix section) — identify highest-priority gaps
+1. Read `coverage-matrix.md` (or `references/question-bank-taxonomy.md` Appendix A) — identify highest-priority gaps
 2. Show proposed-changes table for review BEFORE applying edits
 3. Check ID prefix → continue from highest existing number
 4. Run per-question checklist on each new entry

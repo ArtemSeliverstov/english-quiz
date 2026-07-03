@@ -1,5 +1,7 @@
 # Speaking lane
 
+**Status**: active (parallel track; interview-prep + /v1/audio shipped 2026-05-13)
+
 Parallel track to the register-fluency lane. The text path (Free Write + Phrase Swaps + register rubric) handles **production-side conversational register**. This track handles **spoken** sub-skills the text path cannot reach — fluency under time pressure, prosody, self-monitoring through self-recording.
 
 Created 2026-05-12. **Not yet started.** Pick up in a new session when register-fluency work has a few weeks of accumulating signal and you have appetite to open a second front.

@@ -12,7 +12,7 @@ When something here conflicts with a proposal, **surface the conflict** — name
 
 ## 1. Purpose
 
-A family of five Russian speakers in Bahrain practises English. Profiles vary: builder-mode adults (Artem C1, Egor B2) want self-directed practice and dense instrumentation; learner-mode players (Anna B1, Nicole B1, Ernest B2) need gentle structure and re-engagement after gaps.
+A family of five Russian speakers in Bahrain practises English. Profiles vary: the builder-mode adult (Artem C1) wants self-directed practice and dense instrumentation; learner-mode players (Anna B1, Nicole B1, Ernest B2, Egor B2 — moved to learner shell 2026-05-12) need gentle structure and re-engagement after gaps.
 
 **The deliverable is sustained engagement that produces measurable learning gains.** Engagement is the upstream variable; gains follow when engagement is regular and the practice is calibrated. A system the family doesn't open is worth nothing.
 
@@ -29,9 +29,9 @@ Question 1 sometimes overrides what would be pedagogically optimal in isolation.
 
 The five players resolve to **two design profiles**, not five.
 
-**Builder profile** — Artem, Egor. Self-directed. Tolerate (and prefer) configurability. Read stats and act on them. Self-regulate. Engage as tool-shapers, not product-consumers. → Expose full surface area. Configurability is a feature.
+**Builder profile** — Artem. Self-directed. Tolerates (and prefers) configurability. Reads stats and acts on them. Self-regulates. Engages as tool-shaper, not product-consumer. → Expose full surface area. Configurability is a feature.
 
-**Learner profile** — Anna, Nicole, Ernest. Engagement is fragile. Decision burden is a tax. Stats and percentages can demotivate. Respond to conversation, narrative progress framing, social context, rare meaningful achievements. → Expose minimum surface area. Decisions the system can make on the player's behalf should be. Each screen has one obvious primary action.
+**Learner profile** — Anna, Nicole, Ernest, Egor (migrated 2026-05-12 — see `docs/audience-profiles.md`). Engagement is fragile. Decision burden is a tax. Stats and percentages can demotivate. Respond to conversation, narrative progress framing, social context, rare meaningful achievements. → Expose minimum surface area. Decisions the system can make on the player's behalf should be. Each screen has one obvious primary action.
 
 The split is **self-directed builder vs. socially-and-narratively motivated learner** — not adult-vs-child. Anna's adult learner profile converges with Nicole's more than with Artem's. Two profiles, two presentation shells, same engine.
 
@@ -117,9 +117,7 @@ This document is a snapshot. Revise when:
 - Conversation-as-keystone is challenged by data (Free Write fails to engage Nicole; Anna's curve flattens)
 - A new surface is genuinely warranted and §6 needs revisiting
 
-Revisions happen in claude.ai chat, land here first, then the build plan and stats guide update to match. **The doc is authoritative on philosophy, not operational detail.**
-
-History: §6 originally included "Live AI for every interaction" as a don't-build (cost-conservation rule). Reversed 2026-05-11 when Phase D shipped all Coach drills as live-AI primary. The cost ceiling is now a workspace spend cap on the Anthropic console, not a presence prohibition on live AI.
+Revisions happen in claude.ai chat, land here first, then the build plan and stats guide update to match. **The doc is authoritative on philosophy, not operational detail.** (History of reversals — e.g. the 2026-05-11 live-AI don't-build reversal — lives in `references/design-decisions.md`.)
 
 ---
 

@@ -1,6 +1,6 @@
 # Russian L1 Foundation Diagnostic — B2
 
-**Status**: active (spec phase; items not yet authored)
+**Status**: administered + scored (v1 2026-05-18, v2 tense probes — see `tests/`); spec retained for future rounds
 **Owner**: Artem (test-taker); Claude Code (authoring + scoring)
 **Scope**: discovery diagnostic for hidden Russian-L1 B2 foundation gaps
 **Motivated by**: 2026-05-17 article-family CC arc (5 rounds, 27/30) — exposed C1 sub-patterns plus the observation that targeted drilling on visible `coach_notes.weak_patterns` cannot find what avoidance hides. Discussion captured in coach_notes recent_observations end-of-day note.

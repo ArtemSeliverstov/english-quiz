@@ -11,8 +11,10 @@ for level/type ratio targets see `coverage-matrix.md`. This file fills the gap
 those three leave: what each category, type, and theme actually means, and
 which combinations matter for which player.
 
-Counts in this doc are snapshots from the s89 audit (bank size 2,022). The
-numbers drift; the structure does not.
+Counts in this doc are snapshots from the s89 audit (bank size 2,022; live bank
+2,246 as of the 2026-07-03 `tools/bank_audit.js` run — B1 759 · B2 1,128 · C1 348
+· C2 11). The numbers drift; the structure does not. For current numbers, run
+`node tools/bank_audit.js`.
 
 ---
 
@@ -41,7 +43,7 @@ themes") demands.
 
 ## 2. Bank inventory snapshot
 
-Total: **2,025 questions** across 28 categories (Pronouns added 2026-05-08 via Grammar B1 migration).
+Total (s89 snapshot): **2,025 questions**; 27 live categories + `Grammar` reserved fallback = 28 valid `cat` values (Pronouns added 2026-05-08 via Grammar B1 migration). Live total 2026-07-03: **2,246**.
 
 | Level | Count | Share |
 |---|---|---|
@@ -56,8 +58,8 @@ Total: **2,025 questions** across 28 categories (Pronouns added 2026-05-08 via G
 | mcq | 488 | 24.1% | Above ~8% target — reduce when adding |
 | input | 446 | 22.1% | Below ≥20% per-category in 14 categories |
 | multi | 44 | 2.2% | At target; **all-player <55% accuracy** (anomaly, 2026-04-30) |
-| transform | 54 | 2.7% | **Not documented in `question-schema.md`** |
-| wordform | 40 | 2.0% | **Not documented in `question-schema.md`** |
+| transform | 54 | 2.7% | Documented in `question-schema.md` since s89 follow-up |
+| wordform | 40 | 2.0% | Documented in `question-schema.md` since s89 follow-up |
 
 C2 cluster: **all 11 C2 questions are Conditionals**. No C2 content
 elsewhere. Coverage-matrix labels C2 long-term low priority — flagged for

@@ -10,27 +10,26 @@ What's next, what's deferred. Ordered by category, not strict priority.
 |---|---|---|---|
 | 1 | App Check (or worker-as-gatekeeper) for Firestore writes. Current rules are append-only-leaning (delete forbidden everywhere except `exercise_active`); reads + create/update still unauthenticated. | 3-5h | Closes the remaining "anyone can spam writes" hole. Anonymous Auth was deferred (browser-scoped UID = lockout on localStorage clear). App Check needs the Firebase SDK or manual token injection — pair with worker rewrite. |
 | 2 | Live log UI: "Active session" card on Exercises tab, shown when `exercise_active` doc exists for current player. Progress bar, cancel button. | 0.5 session | Stage 1.5 — infrastructure exists, UI doesn't. |
-| 3 | 30-day RTDB sunset: after 2026-05-28, delete RTDB data via Firebase Console. Keep `rtdb_backup_<ts>.json` indefinitely. | — | Cleanup. Frozen RTDB is harmless but noisy. |
-| 4 | Phase 2: Coach tab in PWA + Cloudflare Worker for API key proxy. Family-facing exercise interface. | 3-4 sessions | Self-service exercises for family on their own phones. |
-| 5 | coach_notes Firestore field + bootstrap script | included in Phase 1 | Two-layer memory model. See `coach-notes-schema.md`. |
+| 3 | RTDB sunset: data frozen; **deletion still pending** (manual Firebase Console action — overdue since 2026-05-28). Keep `rtdb_backup_<ts>.json` indefinitely. | 10 min | Cleanup. Frozen RTDB is harmless but noisy. |
+| 4 | ✅ Done — Phase 2 Coach tab + Cloudflare Worker shipped; all five drill types live-AI primary since 2026-05-11 (Phase D). | — | See `plans/archive/coach-live-ai-and-weak-spots.md`. |
+| 5 | ✅ Done — coach_notes field live on all players; bootstrap superseded by the 2026-05-12 stats-sprawl schema. | — | See `coach-notes-schema.md`. |
+| 6 | ✅ Done 2026-07-03 — weak-spots tracker generation encoded in `stats-review` 6b; consumed by `weak-spots-session`; loop tripwire (`tools/loop_maintenance.js`) runs daily via `mistakes-review`. | — | Closes the tracker's former "hand-seeded draft" state. |
 
 ---
 
 ## Phase 1 — Content priorities
 
-| # | What | Estimate | Source | Why |
-|---|---|---|---|---|
-| 1 | B2 Idioms | ~15 q | New questions needed | Idioms category entirely C1; B2 absent |
-| 2 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations C1) | ~60 q | Scraped exercises partially done | C1 at 250/330 target. Egor IELTS focus. |
-| 3 | C2 — initial batch | ~40 q | New questions needed | C2 at 16; needed for Artem ceiling push |
-| 4 | Natural English — new category | ~30 q | New questions needed | Pragmatics & natural register. Anna engagement driver. |
+Canonical table lives in `references/coverage-matrix.md` (single home — this section
+used to duplicate it and both copies drifted). Current bank: 2,246 q / 27 categories
+(B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03). Highlights: Natural
+English shipped (30 q, in Anna's window); C1 target met; C2 remains the open gap.
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.
 
 ---
 
-## Emphasis rebuild (per `plans/EMPHASIS_REBUILD_SPEC.md`)
+## Emphasis rebuild (per `plans/archive/emphasis-rebuild-spec.md`)
 
 | Phase | What | Status |
 |---|---|---|
@@ -90,8 +89,8 @@ Separate track from the in-flight register-fluency work (v20260512-r2, r3). Two 
 
 | # | Track | Estimate | Status |
 |---|---|---|---|
-| 1 | Artem fast-track: `interview_prep` + audio infra | ~5 days | **Not started.** Plan in `audio-coach-pipeline.md`. |
-| 2 | Artem fast-track: `shadow_feedback` (sibling mode) | +3 days | Follows immediately on shared infra. |
+| 1 | Artem fast-track: `interview_prep` + audio infra | ~5 days | ✅ **Shipped 2026-05-13** — worker `/v1/audio` (Whisper) + `/interview-prep` CC skill live. |
+| 2 | Artem fast-track: `shadow_feedback` (sibling mode) | +3 days | Next on shared infra — not started. |
 | 3 | Family rollout — Tier 1 (listen + self-rate) | 1–2 days + clip curation | Gated on Artem fast-track shipping + engagement signal. |
 | 4 | Family rollout — Tier 2 (record + replay, no AI) | 3–5 days | Gated on Tier 1 engagement. |
 | 5 | Family rollout — Tier 3 (Whisper + Claude feedback) | +1–2 days (infra exists from Artem fast-track) | Gated on Tier 2 recordings happening. |

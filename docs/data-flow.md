@@ -9,11 +9,13 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 | Surface | Code | Reads | Writes |
 |---|---|---|---|
 | **PWA quiz tab** | `index.html` (play loop) | `players/{name}` | `players/{name}` (qStats, catStats, lvlStats, recentSessions, totals, streaks) |
-| **PWA Coach tab** | `index.html` (Coach UI) | `players/{name}`, `exercises_library/*` | `players/{name}/exercises/{ts}`, `players/{name}/coach_sessions/{sid}` |
+| **PWA Coach tab (live AI)** | `index.html` (Coach UI) → Cloudflare Worker | `players/{name}` (context incl. `coach_notes.weak_patterns`); `exercises_library/*` offline fallback only | `players/{name}/coach_sessions/{sid}` + `exercises/{ts}` mirror + `coach_drill_stats` fold + `recent_session_signals` merge |
+| **Cloudflare Worker** | `worker/index.js` (`/v1/messages`, `/v1/audio`) | request context only (stateless) | nothing — PWA writes on its behalf |
 | **CC `exercise-session` skill** | `tools/log_exercise.js` + `tools/update_coach_notes.js` | `players/{name}` (via `get_player.js`) | `players/{name}/exercises/{ts}`, `players/{name}.coach_notes` |
 | **CC `free-write` skill** | `tools/log_coach_session.js` + `tools/update_coach_notes.js` | `players/{name}` | `players/{name}/coach_sessions/{sid}`, `players/{name}.coach_notes` |
-| **CC `stats-review` skill** | `tools/get_all_players.js`, `tools/get_recent_activity.js`, `tools/update_coach_notes.js` | all of `players/*` + subcollections | `players/{name}.coach_notes` |
-| **RTDB legacy** | `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app` | read-only | frozen, sunset ~2026-05-28 |
+| **CC `weak-spots-session` / `interview-prep` skills** | Firebase MCP (remote-CC safe) | `players/{name}`, `worker/index.js` catalogs | `coach_sessions/{sid}`; masked updates to `coach_notes` + fold fields **only** (see bug-log 2026-05-20) |
+| **CC `stats-review` skill** | `tools/get_all_players.js`, `tools/update_coach_notes.js` | all of `players/*` + subcollections | `players/{name}.coach_notes`, generated tracker markdown |
+| **RTDB legacy** | `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app` | read-only | frozen; console deletion pending (overdue since 2026-05-28) |
 
 Two writers touch the player root document: the PWA play loop (everything except `coach_notes`) and `tools/update_coach_notes.js` (only `coach_notes`). One writer touches `exercises` and `coach_sessions` per surface (Coach tab from PWA, `tools/*.js` from CC). No surface owns more than one collection's write path.
 
@@ -37,28 +39,28 @@ sequenceDiagram
     Q->>FS: PATCH player doc (qStats deltas, catStats deltas, recentSessions append, totals)
 ```
 
-**Critical**: the PWA writes the **full player doc shape it has in memory**, scoped by `updateMask`. If the in-memory copy was last loaded for a different player and the player switcher didn't fully reload, the wrong player's stats can be patched into the active player's doc. (This is the failure mode behind the 2026-05-02 Nicole contamination — see `plans/data-integrity-plan.md`.)
+**Critical**: the PWA writes the **full player doc shape it has in memory**, scoped by `updateMask`. If the in-memory copy was last loaded for a different player and the player switcher didn't fully reload, the wrong player's stats can be patched into the active player's doc. (Failure mode behind the 2026-05-02 Nicole contamination — see `plans/archive/data-integrity-postmortem.md`.) The sibling failure mode is a **root-doc replace** from a session end-write (2026-05-20 Artem incident — `references/bug-log.md`): any write to `players/{name}` must be a field-masked update naming only its own fields.
 
-### Flow 2 — Family member runs a Coach-tab exercise
+### Flow 2 — Family member runs a Coach-tab drill (live AI, since 2026-05-11)
 
 ```mermaid
 sequenceDiagram
     participant U as Player
     participant C as PWA Coach tab
-    participant L as exercises_library
-    participant FS as Firestore subcollections
-    U->>C: Tap a Coach exercise
-    C->>L: Load exercise pool
-    L-->>C: Items[]
-    loop per item
-        C->>U: Render
-        U->>C: Submit
-        C->>C: Local match (matched_pattern_id, time_to_answer_ms)
-    end
-    C->>FS: SET players/{name}/exercises/{ts} (rich shape: items[], source=coach_tab, partial, planned_total)
+    participant W as Cloudflare Worker
+    participant A as Anthropic API
+    participant FS as Firestore
+    U->>C: Tap a drill (translation/error-corr/article/particle/spelling)
+    C->>W: POST /v1/messages (mode + context: weak_patterns, recent_observations, feedback_depth)
+    W->>A: Forward with drill system prompt
+    A-->>C: Items + feedback, turn by turn
+    Note over C: session end — parse <session_meta>
+    C->>FS: SET coach_sessions/{sid} (messages[] + session_metadata)
+    C->>FS: SET exercises/{ts} mirror (coachWriteExerciseSummary)
+    C->>FS: PATCH coach_drill_stats fold + recent_session_signals merge
 ```
 
-`coach_sessions` is written in parallel for free-write/escalate modes; `exercises` is written for scored drills. Same player doc not touched directly — `qStats` is **not** updated by the Coach tab.
+Library content (`exercises_library/*`) survives as offline-only fallback (`liveAvail === false` → `forceLibrary`). `qStats` is **not** updated by the Coach tab directly; the coach→quiz backfill (`tools/backfill_coach_to_quiz_stats.js`) folds drill items with `exercise_id` in batch.
 
 ### Flow 3 — CC runs an exercise session for a player
 

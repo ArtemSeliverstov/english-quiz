@@ -1,7 +1,7 @@
 # Exercise Types
 
-The supplementary exercise framework defines 8 canonical types. Each is a structured
-practice format Claude runs in dialogue with the player.
+The supplementary exercise framework defines 11 canonical types (§1–§11). Each is a
+structured practice format Claude runs in dialogue with the player.
 
 When generating exercise content for any of these, use the player's real-life context
 themes from `family-profiles.md`. Generic stems are forbidden.
@@ -224,7 +224,7 @@ Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_pa
 | Player | Primary types | Secondary | Avoid |
 |---|---|---|---|
 | Artem | free_write, transform, article_drill, particle_sort, weak_spots_drill | error_correction, dictation, phrase_swap_drill | translation (too easy at C1) |
-| Anna | translation, error_correction, conversation, phrase_swap_drill, weak_spots_drill | dictation | free_write (too unstructured) |
+| Anna | free_write (keystone — §2), translation, error_correction, conversation, phrase_swap_drill | weak_spots_drill, dictation | — |
 | Nicole | translation, article_drill (light), weak_spots_drill (light) | error_correction, phrase_swap_drill (light), free_write (open hypothesis since 2026-05-12) | transform (too hard) |
 | Ernest | error_correction, translation, phrase_swap_drill | article_drill, weak_spots_drill, free_write (open hypothesis since 2026-05-12) | transform |
 | Egor | translation, free_write, phrase_swap_drill, weak_spots_drill | article_drill | transform (later, after B2 article gap closes) |

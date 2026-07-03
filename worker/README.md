@@ -6,13 +6,13 @@ hold the Anthropic API key in client-side code, so this Worker holds it
 on Cloudflare's encrypted secret store and forwards on origin/mode/model
 validation.
 
-Full design: `references/phase2-coach-tab.md` §7.
+Full design: `references/archive/phase2-coach-tab.md` §7.
 
 ## Files
 
 | File | Role |
 |---|---|
-| `index.js` | Worker source (~280 lines). Validation, system-prompt construction, Anthropic forward, `<session_meta>` parse. |
+| `index.js` | Worker source (~1,500 lines). Validation, system-prompt construction, Anthropic forward, `<session_meta>` parse, `/v1/audio` pipeline. |
 | `wrangler.toml` | Deploy config: name, plain-text vars (`ALLOWED_ORIGIN`, `ALLOWED_MODELS`). No secrets. |
 | `.dev.vars.example` | Local-dev env-var template. Copy to `.dev.vars` for `wrangler dev`. |
 | `.dev.vars` | (gitignored) Real local-dev values. Never committed. |
@@ -75,9 +75,18 @@ wrangler dev
 `wrangler dev` runs the Worker on `localhost:8787` against real
 `api.anthropic.com` (consuming real prepaid credit).
 
+## /v1/audio — audio pipeline (interview-prep)
+
+Second endpoint alongside `/v1/messages`. Multipart upload → store clip to R2 →
+transcribe via Workers AI Whisper-large-v3-turbo → return
+`{ ok, transcript, audio_r2_key, mode, turn }`. Modes: `AUDIO_VALID_MODES =
+{interview_prep}` (`shadow_feedback` planned); players: `AUDIO_ALLOWED_PLAYERS =
+{artem}`. Hard caps on size/duration at `worker/index.js` §"audio pipeline".
+Consumed by the `interview-prep` CC skill; see `plans/audio-coach-pipeline.md`.
+
 ## Testing
 
-Curl test per `references/phase2-coach-tab.md` §7.8:
+Curl test per `references/archive/phase2-coach-tab.md` §7.8:
 
 ```bash
 WORKER_URL="https://english-quiz-coach.<your-subdomain>.workers.dev/v1/messages"
@@ -485,7 +494,7 @@ Player-facing tier-by-tier recap + a `<session_meta>` block with `topic_id`, `ti
 
 ## Threat model
 
-Per `references/phase2-coach-tab.md` §12: open Worker URL, no rate limit,
+Per `references/archive/phase2-coach-tab.md` §12: open Worker URL, no rate limit,
 prepaid Anthropic balance + workspace spend cap as the hard ceiling.
 CORS protects browser-based abuse; curl can bypass CORS but the prepaid
 balance bounds the blast radius. Family scale (~5 users) doesn't justify

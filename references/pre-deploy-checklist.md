@@ -82,7 +82,7 @@ Past failures: `tf_32` (s86 fix), `emph_i02` and `tf_16` (s89r3 fix).
 
 ---
 
-## 2b. LEVEL_TOTALS and CAT_TOTALS
+## 2d. LEVEL_TOTALS and CAT_TOTALS
 
 After any question additions, the coverage constants in two functions must be patched:
 
@@ -199,7 +199,7 @@ Once everything above passes:
 ```bash
 git add -A
 git status  # final visual check
-git commit -m "vYYYYMMDD-tN: <one-line summary>
+git commit -m "vYYYYMMDD: <one-line summary>
 
 - bullet 1
 - bullet 2

@@ -1,7 +1,8 @@
 # Weekly Slots — Artem
 
-Artem's weekly supplementary exercise plan. 11 slots per week. Other family members
-do not have a structured slot plan — they work player-initiated.
+Artem's weekly supplementary exercise plan. 11 slots per week. The other players have
+lighter `EX_WEEKLY_TARGETS` entries (Anna 4, Nicole 6, Ernest 4; Egor none) but work
+player-initiated — only Artem's slots are actively scheduled and reviewed here.
 
 ## Slots
 
@@ -35,5 +36,5 @@ Update version number on commit.
 ## Why only Artem
 
 Artem is the most active user and benefits from structured planning. Anna, Nicole,
-Ernest, and Egor work better with player-initiated sessions or no exercise sessions
-at all (Egor) — see `family-profiles.md`.
+Ernest, and Egor work better with player-initiated sessions (Egor has exercise parity
+since 2026-05-06 but no weekly targets) — see `family-profiles.md`.

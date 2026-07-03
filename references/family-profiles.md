@@ -66,7 +66,7 @@ accuracy alongside being a player.
 
 Conversational English, daily interaction. Less need for formal register.
 Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
-**Active categories** (`learning_path.active_categories`, window 5): Tenses, Prepositions, Spelling, Phrasal Verbs, Natural English (added 2026-05-12 — phrase_swap_drill is gated on this category).
+**Active categories** (`learning_path.active_categories`, window 3 — shrunk 5→3 at the 2026-05-17 review, focused-CF): Phrasal Verbs, Spelling, Natural English (phrase_swap_drill is gated on this category). Tenses + Prepositions paused to `next_unlock_options`.
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Preposition errors (Russian L1 interference: arrive to → at, waiting us → for, at the next week → zero article)

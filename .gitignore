@@ -79,3 +79,6 @@ parsed_questions.json
 temp_questions.js
 all_players_tmp.json
 stratified_sample*.md
+
+# Generated audit reports (tools/bank_audit.js)
+audits/

@@ -45,7 +45,7 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 
 ## Invariants
 
-- **Version string format `vYYYYMMDD-tN`.** s series ended at s100; new sessions use the `t` prefix. Same-session rebuilds append `r2`, `r3`. → `pre-deploy-checklist.md` §7
+- **Version string format: date-only `vYYYYMMDD`** (since 2026-05-07). Same-day rebuilds append `-r2`, `-r3`. Legacy `-sN`/`-tN` valid in history only. → `pre-deploy-checklist.md` §7
 - **Question bank stays inline** in `index.html` as `const ALL_QUESTIONS = [...]`. → `design-decisions.md` (Questions stay inline)
 - **Auto-memory is for CC-behavior facts only** (how Claude Code should work with the user). Player observations, profile updates, and session learning notes go to Firestore `coach_notes` via `tools/update_coach_notes.js` — never auto-memory (laptop-only, won't reach the PWA Coach tab or mobile sessions). → `design-decisions.md` (Two-layer memory model)
 - **Canonical exercise type names** are enforced by `tools/log_exercise.js`. → `exercise-types.md`

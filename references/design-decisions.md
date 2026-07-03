@@ -207,10 +207,17 @@ The deploy.html flow is gone. Claude Code pushes `index.html` and `sw.js` direct
 Reason: Claude Code now active, GitHub OAuth available, mobile workflow primary.
 Saves ~5 min per deploy. Standard git multi-file commits handle atomicity.
 
-### Version stamping format `vYYYYMMDD-tN`
+### Version stamping format (date-only `vYYYYMMDD` since 2026-05-07)
 Identical across HTML badge, SW cache key, version constant, git commit message.
 Inconsistency causes silent bugs (cache doesn't refresh, deploys point at wrong version).
-Counter: `s1`–`s100` ran historically; `t1` onward is current. Same-session rebuilds append `r2`, `r3`.
+Counter history: `s1`–`s100`, then a brief `t` series; date-only since 2026-05-07.
+Same-day rebuilds append `-r2`, `-r3`. CI accepts legacy forms in history only.
+
+### Live-AI-first Coach drills (Phase D reversal, 2026-05-11)
+`learning-system-design.md` §6 originally listed "Live AI for every interaction" as a
+don't-build (cost conservation). Reversed when Phase D shipped all five Coach drill
+types live-AI primary, library content demoted to offline fallback. The cost ceiling
+is a workspace spend cap on the Anthropic console, not a presence prohibition.
 
 ### Knowledge base in markdown (post-Phase 1)
 HTML KB deprecated as the source of truth. Markdown files in `references/` are now

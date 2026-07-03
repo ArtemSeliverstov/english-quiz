@@ -100,9 +100,10 @@ patterns, gap-since-last-session.
 
 ### 3.1 Persistent weak patterns confirmed across multiple sessions
 
-If `coach_notes.weak_patterns` shows the same error tag (e.g.,
-`preposition_omission`) appearing in `error_patterns_observed` across 3+
-sessions, it's a real pattern. Actions:
+If the same error tag (e.g., `preposition_omission`) accumulates in
+`coach_notes.recent_session_signals` with `count >= 2` it crosses the promotion
+gate (`coach-notes-schema.md`) and becomes a `weak_patterns` candidate; 3+
+sessions = strong confirmation. Actions:
 
 - Propose targeted content authoring (Translation Drill items, quiz items)
   for Artem's confirmation

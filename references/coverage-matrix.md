@@ -36,10 +36,12 @@ at current levels. Don't sprint on C2 unless Artem specifically requests.
 The ≥20% input share applies at category level, not just overall. Categories falling
 below this are priorities for input authoring.
 
-The full per-category table lives in the source KB → "Per-category input target" section.
-Update it whenever input questions are added.
+The full per-category table lives in `references/question-bank-taxonomy.md` Appendix A;
+for live numbers run `node tools/bank_audit.js` (writes `audits/audit-{date}.md`).
+Update this table whenever input questions are added.
 
-**Current priority gaps** (as of s86):
+**Current priority gaps** (as of s86 — refresh against the next bank audit; Word
+Formation has since gained 9 input items per taxonomy s89 figures):
 
 | Category | Total | Input | Input % | Status |
 |---|---|---|---|---|
@@ -78,14 +80,15 @@ share reaches ≥20%.
 
 ## Content backlog priorities (Phase 1 — post-s87)
 
-From source KB Roadmap → "Phase 1 Content priorities":
+Canonical home of this table (roadmap.md links here). Live bank 2026-07-03: 2,246 q —
+B1 759 · B2 1,128 · C1 348 · C2 11.
 
 | # | What | Estimate | Status | Why |
 |---|---|---|---|---|
 | 1 | B2 Idioms | ~15 q | New questions | Idioms entirely C1; B2 absent |
-| 2 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations) | ~60 q | Scraped exercises partial | C1 at 250/330. Egor IELTS focus. |
-| 3 | C2 — initial batch | ~40 q | New questions | C2 at 16; needed for Artem ceiling |
-| 4 | Natural English — new category | ~30 q | New questions | Pragmatics, register. Anna engagement driver. |
+| 2 | C1 expansion (Reported Speech, Relative Clauses, G&I, Collocations) | ~60 q | ✅ target met — C1 at 348 (target 330) | Egor IELTS focus. |
+| 3 | C2 — initial batch | ~40 q | Open — C2 at 11, all Conditionals | Needed for Artem ceiling |
+| 4 | Natural English — new category | ~30 q | ✅ shipped — 30 q live, in Anna's active window | Pragmatics, register. Anna engagement driver. |
 
 Done items (from S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.

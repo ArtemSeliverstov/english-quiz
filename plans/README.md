@@ -9,7 +9,8 @@ Active plans, what they cover, which SKILL (if any) loads them.
 | `learning-system-build.md` | Engineering / system build (Phase 2D): active windows, learner shell, spelling layer engine, medal display, schemas, restart-readiness, Phase 3 cleanup. Decisions D1–D14 locked here. | none — Artem's working execution doc |
 | `question-bank-plan.md` | Content authoring + bank quality: waves 0–5 per player, workstreams (PV ladder, articles, orthography), Coach library per player, MCQ distractor audit, Idioms re-engineering, tier priorities. | `quiz-development` |
 | `open-items.md` | Operational backlog: log caps, App Check, worker rate limit, smaller fixes. | none — picked up on Artem's prompt |
-| `coach-live-ai-and-weak-spots.md` | T1: convert all Coach types to live AI via Worker (library → offline fallback). T2: add `weak_spots_drill` — Free-Write-shaped session with inline 5-topic ladder catalog. PWA + CC mirror. | none — Artem's execution doc |
+| `speaking-lane.md` | Speaking lane doctrine: spoken sub-skills the text path can't reach (fluency, listening comprehension, prosody via self-recording). Family-wide tiered rollout, engagement gates, kid privacy. Lane itself not started; sibling `audio-coach-pipeline.md` ships the audio infra its Tier 2/3 would use. | none — doctrine for family-wide rollout post-Artem |
+| `audio-coach-pipeline.md` | Artem-only audio fast-track on shared infra: `/v1/audio` Worker endpoint (Whisper-large-v3-turbo + R2) + CC interview-prep flow shipped 2026-05-13; `shadow_feedback` mode (Days 6–8) unstarted. | none — Artem execution doc; shipped surface is the `interview-prep` skill |
 | `russian-l1-b2-foundation-diagnostic.md` | Discovery diagnostic for hidden Russian-L1 B2 foundation gaps. Outside-in design from contrastive linguistics catalogues (not from `coach_notes.weak_patterns`). ~60-80 items across 10-12 clusters, 50/50 recognition/cold-production, one-shot ~60-90 min sitting. B1 fallback deferred to v2. Companion: `russian-l1-b2-foundation-diagnostic-sources.md` (per-cluster catalogue citations + item budget). | none — Artem instrument |
 
 `learning-system-build.md` and `question-bank-plan.md` cross-reference each other; the split is by concern (engineering vs content authoring), not chronology. Read the one matching your task.
@@ -25,6 +26,8 @@ Active plans, what they cover, which SKILL (if any) loads them.
 | `schema-alignment-plan.md` | All three tracks shipped 2026-05-10 |
 | `data-integrity-postmortem.md` | 2026-05-02 Nicole-contamination incident record + remediation (P0–P2 shipped t7/2026-05-10/2026-05-11) |
 | `repo-improvements-completed.md` | Doc discipline + file reallocation + architecture hardening tracks (Tracks 1, 2, 3.1, 3.2, 3.5, 3.6 shipped; open items extracted to `plans/open-items.md`) |
+| `stats-sprawl-cleanup.md` | Shipped through r12 — `coach_notes.weak_patterns` split into three stores (durable grammar / `recent_session_signals` / `phrase_tracker`); per-player migration done 2026-05-12 |
+| `coach-live-ai-and-weak-spots.md` | Shipped through r15 — T1 (all Coach types live AI via Worker, library → offline fallback) + T2 (`weak_spots_drill`) complete 2026-05-11; r11–r15 enhancement waves codified back into doctrine |
 
 When researching past decisions, grep `plans/archive/`. Don't apply archived plans as current truth — they describe what was done, not what to do next.
 
