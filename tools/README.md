@@ -112,8 +112,11 @@ subcollections. The only recovery source now that RTDB is frozen. See
 anger: the 2026-05-20 Artem root-doc replace was recovered from
 `backups/2026-05-20/artem.json` (see `references/bug-log.md`).
 
-`backups/` is `.gitignore`d on `main` — production snapshots go to the
-`backups` orphan branch via `.github/workflows/backup.yml`.
+`backups/` is `.gitignore`d here — production snapshots go to the **private**
+`english-quiz-backups` repo via `.github/workflows/backup.yml` (they contain
+full coach_sessions transcripts; privacy layer 2, 2026-07-04). Recovery:
+`git fetch backups && git show backups/main:backups/YYYY-MM-DD/{player}.json`
+(the `backups` remote is configured in the local clone).
 
 ### `check_player_integrity.js` — contamination probe + baseline
 
@@ -128,7 +131,7 @@ node tools/check_player_integrity.js --json
 Five invariants against `tools/data-integrity-baseline.json`: cross-player
 qStats overlap, createdAt drift, createdAt removal, unexplained totalAnswered
 jump, totalAnswered decrease, qStats key-count collapse. Run as step 0 of
-`stats-review`; exit 1 = stop and investigate against the `backups` branch.
+`stats-review`; exit 1 = stop and investigate against the private backups repo (`git fetch backups`).
 
 The baseline file is auto-rewritten after every clean, non-shrinking run —
 it showing as git-modified is **expected**; commit it opportunistically.

@@ -71,18 +71,17 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
 - **Smaller fixes**:
   - `.mcp.json` hardcodes `D:/Claude/...` — make relative/env-driven if anyone else clones.
   - Worker `RUSSIAN_FALLBACK_PLAYERS` should log a warning when hit (stale-bundle signal).
-  - **Public exposure — DECISION NEEDED (verified 2026-07-04)**: probe confirmed the
-    entire repo is publicly reachable via Pages with predictable URLs — not just
-    `archive/` (HTTP 200 on the KB snapshot and the PV mastery plan with Artem's
-    stats) but also `diagnostics/` (**the kids' scored IGCSE results and study
-    schedules**) and `progress/` trackers. Nothing links to them from the app
-    (0 references in index.html) — obscurity only. Inherent to public-repo Pages
-    since day one, but the kids' assessment data (added 07-01) raises the stakes.
-    Options: (a) accept — first names only, unguessable-ish URLs, low sensitivity;
-    (b) publish only app files (index.html, sw.js, manifest, icons, ref/) via an
-    Actions-driven Pages deploy — ~1h, changes the deploy flow, repo stays public
-    but docs/learner data stop being *served*; (c) private repo + external static
-    host for the app. Artem's call; (b) recommended.
+  - **Public exposure** — layers 1+2 ✅ done 2026-07-04 (Artem: "do 1-2"):
+    **(1)** Pages switched to artifact deploy (`.github/workflows/pages.yml`) —
+    only app files served; verified live: app/ref 200, diagnostics/progress/
+    archive/references all 404. **(2)** Nightly backups (full transcripts) moved
+    to the **private `english-quiz-backups` repo** (write-scoped deploy key;
+    history since May migrated; public `backups` branch deleted; `backups` remote
+    configured locally for recovery). **Layer 3 still open — Artem's call**:
+    repo source remains publicly browsable on github.com (diagnostics/, progress/,
+    family-profiles — first names only). Complete fix = private repo + GitHub Pro
+    (~$4/mo; Pages artifact flow already compatible; URL unchanged; cloud CC
+    sessions unaffected). Residual after 1+2 is judged low but nonzero.
   - **doc-style reference ceilings** — ✅ resolved 2026-07-03: history logs
     (version-log, bug-log, design-decisions) manage size via **archive splits**, not
     word ceilings (rule now in doc-style; precedent: both prior log splits).

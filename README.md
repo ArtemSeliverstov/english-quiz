@@ -20,7 +20,7 @@ members. Live at `artemseliverstov.github.io/english-quiz`. Operating instructio
 | `archive/` | Superseded artifacts (HTML KB snapshots, ingested data). Tracked. | archive |
 | `audits/` | Dated bank-audit reports from `tools/bank_audit.js`. Tracked, one per run. | generated |
 | `.claude/` | Skills, settings, hooks. | code |
-| `.github/` | CI + nightly Firestore backup (to the `backups` branch). | code |
+| `.github/` | CI + Pages artifact deploy (app files only) + nightly Firestore backup (to the private `english-quiz-backups` repo). | code |
 | local-only | `backups/` (manual snapshots), `Interview/` (audio — personal). | gitignored |
 
 Root files: `index.html` (the whole app, questions inline — by design), `sw.js`,

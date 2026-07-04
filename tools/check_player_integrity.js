@@ -144,7 +144,7 @@ function checkCreatedAtDrift(docs, baseline) {
         player: name,
         baseline: prev,
         current: null,
-        message: `${name} createdAt was DELETED (baseline=${prev} → current=null). Signature of a root-doc replace — compare against the backups branch.`,
+        message: `${name} createdAt was DELETED (baseline=${prev} → current=null). Signature of a root-doc replace — compare against the private backups repo (git fetch backups).`,
       });
       continue;
     }
@@ -226,7 +226,7 @@ function checkShrink(docs, baseline) {
         player: name,
         baseline: prevQ,
         current: curQ,
-        message: `${name} qStats key count collapsed (${prevQ} → ${curQ}). Signature of a root-doc replace — compare against the backups branch before trusting any stats.`,
+        message: `${name} qStats key count collapsed (${prevQ} → ${curQ}). Signature of a root-doc replace — compare against the private backups repo (git fetch backups) before trusting any stats.`,
       });
     }
   }
@@ -325,7 +325,7 @@ async function main() {
   } else if (!args.dryRun && flags.length === 0 && shrinkBlocked) {
     if (!args.json) console.error(
       `Baseline NOT updated — count shrink detected for ${shrunk.join(', ')}. ` +
-      `Verify against the backups branch; re-run with --accept-shrink if the decrease is intentional.`);
+      `Verify against the private backups repo (git fetch backups); re-run with --accept-shrink if the decrease is intentional.`);
   }
 
   process.exit(flags.length === 0 ? 0 : 1);

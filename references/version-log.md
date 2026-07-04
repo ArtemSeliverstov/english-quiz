@@ -23,6 +23,8 @@ Ships Artem's 2026-07-03 priority call: spoken-casual English as an **absent var
 
 - **Follow-up (same day, repo-only — T3 + T5 + capture policy)**: PV tracker gains a stats-review-regenerated **Top-5 drill queue** (get around to → get through ¹ → come up with → read up on → cut down on; PROTOCOL 6c); ⚠ A2 direction traps route to the retention probe (R2 bucket 4 + exercise-types §12); `interview_rubric` aggregation live (PROTOCOL step 3 + rubric § Stats-review aggregation + firestore-schema rows) — unblocks shadow_feedback; **capture policy decided (Artem)**: exercise-session swaps go direct 🔵 via `capture_swaps --source ex` (roadmap Quality #6 closed; safe post-T1).
 
+- **Privacy layers 1+2 (same day)**: Pages → artifact deploy serving app files only (index.html, sw.js, manifest, icons, ref/) — learner data URLs (diagnostics/, progress/, archive/) now 404, verified live; nightly backups (full coach_sessions transcripts) moved to the **private `english-quiz-backups` repo** via write-scoped deploy key — history migrated, public `backups` branch deleted, local `backups` remote added for recovery. Layer 3 (private repo + Pro) = open decision in `plans/open-items.md`.
+
 Q count: 2246 (Δ0) · Version: v20260704 · Worker: 593bd005
 
 ---
