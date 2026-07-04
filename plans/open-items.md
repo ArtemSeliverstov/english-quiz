@@ -54,9 +54,9 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
 
 ## Confirm-first pending (proposals ready, awaiting Artem)
 
-- **Family-profiles snapshot lines** — Anna "re-engaging (Apr 2026)" → idle-since-05-18;
-  Ernest "inactive mid-Mar" → IGCSE-prep active, window 4; Egor → dormant note.
-  ([data]-backed; profile edits are git commits, confirm-first by protocol.)
+- **Family-profiles snapshot lines** — ✅ applied 2026-07-04 (Artem confirmed): Anna
+  idle-since-05-18 + re-entry play; Ernest IGCSE-prep track + window 4; Egor dormant
+  note. Profiles now agree with Firestore + the 2026-07-03 review.
 - **exercise-session lexical-capture policy** — ✅ decided 2026-07-04 (Artem: wire it):
   captures route via `capture_swaps.js --source ex` (direct 🔵). Sequenced correctly —
   T1 pool hygiene landed first, so the widened intake stays bounded.

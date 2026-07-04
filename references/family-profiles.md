@@ -65,7 +65,7 @@ accuracy alongside being a player.
 **Player key**: `anna` · **Level**: B1 → B2 · **Coach language**: `ru` · **Defaults**: B1+B2, `biz: false`
 
 Conversational English, daily interaction. Less need for formal register.
-Engages in bursts then disappears for weeks. Currently re-engaging (Apr 2026).
+Engages in bursts then disappears for weeks. Longest gap on record as of the 2026-07-03 review: idle since 2026-05-18 (before that: strong 2026-05-13 burst — five drills stacked after an FW warm-up). Re-entry play: low-pressure Free Write first; drills only if she extends.
 **Active categories** (`learning_path.active_categories`, window 3 — shrunk 5→3 at the 2026-05-17 review, focused-CF): Phrasal Verbs, Spelling, Natural English (phrase_swap_drill is gated on this category). Tenses + Prepositions paused to `next_unlock_options`.
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
@@ -136,7 +136,7 @@ flow from there to `quiz-development` sessions; this profile no longer enumerate
 
 **Player key**: `ernest` · **Level**: B1/B2 · **Coach language**: `en` · **Defaults**: B1+B2
 
-Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
+Early stage on supplementary surfaces (micro-sessions through 2026-05-07). Since 2026-07-01: IGCSE entrance prep is the active track — diagnostic administered + scored, study pack + schedule live (see `diagnostics/`). Active window shrunk 6→4 (2026-07-03, focused-CF): Tenses, Articles, Conditionals, Vocabulary.
 
 **Learning goals** (design intent — current measured state in `coach_notes.weak_patterns`):
 - Articles (recognition vs production gap — historically 100% MCQ vs 50% error correction)
@@ -164,7 +164,7 @@ Early stage. Inactive recently (3 sessions, last in mid-Mar 2026).
 Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
 English-speaking consulting work (Russian-speaking colleagues, English-language deliverables and clients). Applying to UK/Western master's.
 
-As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA Free Write, PWA Phrase Swaps drill, exercise sessions. Quiz remains primary. Coach tab access via the family PWA login — no CC channel.
+As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA Free Write, PWA Phrase Swaps drill, exercise sessions. Quiz remains primary. Coach tab access via the family PWA login — no CC channel. Dormant since onboarding (74 lifetime answers, none since 2026-04-30, per the 2026-07-03 review); window held but flagged stale — re-compose on return rather than resume.
 
 **Active categories** (`learning_path.active_categories`, window 5): Articles, Conditionals, Tenses, Linking Words, Vocabulary (populated 2026-05-12 — IELTS B2-prep focus; phrase_swap_drill not active for him since Natural English isn't in his window).
 
