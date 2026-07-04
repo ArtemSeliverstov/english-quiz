@@ -13,6 +13,7 @@ Structured supplementary exercise session for one named player. Family path (Ann
 - `node tools/get_player.js {name} --field coach_notes` — coach_notes only; raw qStats (~150 KB for Artem) is not needed — `weak_patterns` is already the distilled signal
 - `references/exercise-types.md` — type definitions and selection criteria
 - `references/weekly-slots.md` — Artem only
+- `progress/phrasal-verbs-tracker.md` **Top-5 drill queue** — PV-focused sessions (Artem) drill from that queue, top-down
 
 If Artem mentions travel at session start, adopt location-appropriate themes for this session only.
 
@@ -36,7 +37,7 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 ## Retention probe (Artem, monthly)
 
-When Artem asks for "retention probe" / "monthly probe", or `loop_maintenance` reports probes due: assemble ~15 items per `plans/retention-lane.md` R2 — 5 `probe due` patterns from the weak-spots tracker CLOSED table + 4 untrained same-rule siblings + 3 owned-phrase/🏆-PV cold recalls + 3 due PARKED re-checks. Production formats only, interleaved, **no pattern names shown** (`exercise-types.md` §12). Log as `exercise: "retention_probe"`; at close, report per-pattern probe outcomes so stats-review can retire / regress rows.
+When Artem asks for "retention probe" / "monthly probe", or `loop_maintenance` reports probes due: assemble ~15 items per `plans/retention-lane.md` R2 — 5 `probe due` patterns from the weak-spots tracker CLOSED table + 4 untrained same-rule siblings + 3 owned-phrase/🏆-PV cold recalls + 3 due PARKED re-checks and/or PV-lane ⚠ production-weak re-tests. Production formats only, interleaved, **no pattern names shown** (`exercise-types.md` §12). Log as `exercise: "retention_probe"`; at close, report per-pattern probe outcomes so stats-review can retire / regress rows.
 
 ## When not to run
 
