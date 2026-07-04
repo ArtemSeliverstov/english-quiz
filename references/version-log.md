@@ -10,6 +10,21 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-04 · v20260704 — conversational-register lane (T1 + CR1–CR4)
+
+Ships Artem's 2026-07-03 priority call: spoken-casual English as an **absent variety** (acquired-through-text profile — `docs/audience-profiles.md` §1, `references/design-decisions.md`). Full lane record: `plans/conversational-register-lane.md`.
+
+- **T1 phrase-pool hygiene** (prerequisite): 💤 `dormant` status + 60d aging (weight-4 tags exempt) + auto-revive on re-capture + priority score (tag weight × recurrence) + top-20 drill queue in the tracker md. Backfill sweep at `--aging-days 50`: 71 actives → 18 (all 12 biz_oil kept), 53 dormant-revivable. `update_coach_notes.js --apply-aging`; stats-review PROTOCOL step 6 runs it.
+- **CR1** — `free-write` skill: casual "hallway/pub" mode (coach models informal register; correction polarity flips — correct-but-formal is the primary catch); `register_rubric` now REQUIRED on every CC free-write log (ends the rubric data drought).
+- **CR2** — register-down capture polarity in free-write, exercise-session capture card, and register-check (correct-but-over-formal → `formal → casual [tag]` swaps).
+- **CR3** — `conversational_register` catalog topic #7: worker 3-tier ladder (recognize triples → re-register down → sustain casual in scenario; wrong register fails the tier even with clean grammar) — worker redeployed `593bd005`; PWA `COACH_WEAK_SPOTS_CATALOG` row maps `cat: Register` → **P1 finally routes Artem's worst quiz category** (40%, n=15). CC parity automatic via the shared catalog.
+- **CR4** — `EX_WEEKLY_TARGETS.artem` slot #12 "Hallway talk — casual register" (total 11→12); `weekly-slots.md` updated.
+- Docs: exercise-types §11 IDs + system-mechanisms §2.5 → 7 topics; plans README + open-items updated (T1 ✅, T2 ✅).
+
+Q count: 2246 (Δ0) · Version: v20260704 · Worker: 593bd005
+
+---
+
 ## 2026-07-03 · v20260703 — holistic-review remediation + Nikolay teardown
 
 Big maintenance session driven by the 2026-07-03 holistic review. Four repo commits + this deploy.

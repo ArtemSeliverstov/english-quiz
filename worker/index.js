@@ -1102,6 +1102,11 @@ For each topic: matching regex against weak_patterns, then the tier ladder. Each
   - T2 match-to-register. Mechanic: alternatives carry different weights. *Perhaps* leans formal/written; *I wonder if* signals genuine speculation; *could we / what if we* turns a hedge into a suggestion; *possibly* is a light hedge; *I think* is mid-strength commitment. For intensifiers: *clearly* (assertion-strengthening), *absolutely* (agreement), *certainly* (formal), zero-marking (strongest). Cue: pick the right alternative for a sentence with a stated register target — pub chat vs business email vs CC instruction.
   - T3 variety across consecutive sentences. Mechanic: in a longer turn, avoid back-to-back same-hedge. The natural rhythm is hedge → assertion → soft-hedge, not maybe → maybe → maybe. Alternate based on subtle differences: speculation, commitment, suggestion. Cue: produce a 4-5 sentence opinion paragraph on a player-themed topic (Artem: a business call, a ride-strategy debate, a CC plan; Anna: a padel match, a parenting choice; Nicole: a school decision; Ernest: a sports debate; Egor: an IELTS opinion prompt) using **at least 3 different** hedge/intensifier patterns.
 
+**7. conversational_register** — Matches: /register|casual|informal|hallway|pub|small talk|too.?formal|spoken/i
+  - T1 register recognition. Mechanic: the same message in three registers — boardroom ("I intend to depart shortly"), neutral ("I'm leaving soon"), hallway ("I'm heading off in a bit"). Register is a *choice*, and each variant has a home. Cue: present 2-3 register triples on player-themed contexts; the player labels each variant's register and names one marker that gives it away.
+  - T2 re-register down. Mechanic: a grammatically correct but written-formal utterance → its hallway/pub form. Levers: contractions; PVs over Latinate (*depart* → head off, *purchase* → pick up, *assist* → give a hand); discourse markers (*well, right, to be fair*); vague language (*stuff, bits*); ellipsis ("Coffee?" not "Would you like a coffee?"). Cue: give a formal sentence set in a casual scene (coffee machine, padel club, school run); the player re-registers it. Correct grammar in the wrong register does NOT pass the tier.
+  - T3 casual production in scenario. Mechanic: sustain casual register across 3-4 turns of small talk — react naturally (*no way / nice one / fair enough*), soften disagreement casually ("not sure about that, mind"), keep turns short and spoken-shaped. Production breaks the structural target when register drifts formal, even with perfect grammar. Cue: run a mini-scene from the player's themes (Artem: office hallway or cycling club; Anna: padel or the school gate) and hold them in register for the full exchange.
+
 ### Session protocol
 
 ${openingDirective}
@@ -1110,7 +1115,7 @@ Once the topic is set:
 1. State the tier ladder in 2-3 lines so the player sees the arc ("Four tiers — we'll start at it-clefts and build to fronting + inversion").
 2. Walk the ladder tier by tier. For each tier, decide mechanics-first vs drill-first based on recent_observations.
 3. Production items: 1-3 per tier. Move up when the player lands at least one clean. Drop a rung only if production breaks the structural target — never for stylistic preference.
-4. Catalog-miss: if the player free-typed a topic outside the 5 above, improvise a 3-tier ladder (mechanics-first → guided production → free production). Pace identically.
+4. Catalog-miss: if the player free-typed a topic outside the catalog above, improvise a 3-tier ladder (mechanics-first → guided production → free production). Pace identically.
 
 ### Pacing and length
 
@@ -1265,7 +1270,7 @@ PART 2 — Metadata block at the very end, wrapped in <session_meta>...</session
   }
 }
 
-For "topic_id": use the canonical catalog id (emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety) for in-catalog topics. For an improvised off-catalog topic, use a snake_case slug derived from the player's named topic ("passive_voice", "reported_speech").
+For "topic_id": use the canonical catalog id (emphasis_clefts | article_system | present_perfect_vs_past_simple | preposition_clusters | phrasal_verb_production | hedge_variety | conversational_register) for in-catalog topics. For an improvised off-catalog topic, use a snake_case slug derived from the player's named topic ("passive_voice", "reported_speech").
 
 For "tiers_touched" / "tier_results": one entry per tier actually drilled. \`attempted\` = total production items at that tier; \`clean\` = items where the player produced the target structure without an L1 calque or structural slip on first attempt. These feed the daily review — informs whether the topic should reappear next session or graduate.
 

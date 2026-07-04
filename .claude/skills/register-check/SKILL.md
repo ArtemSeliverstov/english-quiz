@@ -43,7 +43,7 @@ Don't repeat the whole message. Nothing worth fixing → omit that message.
 
 1. **Patterns this batch** — 2–4 bullets on recurring tells; tie to existing `weak_patterns` where they match.
 2. **Persist (show, then write):**
-   - Genuine `awkward → natural` swaps → list as bullets, then `node tools/capture_swaps.js artem <input.json>` with `source: "wrap"`. Tag with the register/context it applies to.
+   - Genuine `awkward → natural` swaps → list as bullets, then `node tools/capture_swaps.js artem <input.json>` with `source: "wrap"`. Tag with the register/context it applies to. **Register-down swaps count** (CR2): a grammatically correct but over-formal span in a casual context is a genuine swap (`formal → casual [brit_expat]`), not merely a verdict.
    - One brief `recent_observations` entry via `node tools/update_coach_notes.js artem <patch.json>` — date, note `"Register check — …"`, `author: "claude_code"`. Cap stays at 10.
    - **Don't** auto-promote to `weak_patterns` — single-batch observations are candidates only (2+ rule, `coach-notes-schema.md`).
 3. **No proficiency fold** — not a scored session; no `lvlStats` touch.

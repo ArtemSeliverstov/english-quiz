@@ -62,7 +62,7 @@ Library content survives as offline-only fallback (the `exercises_library/*` Fir
 `phrase_swap_drill`. Lexical/register swap practice (stiff/calqued → natural). Gated on `Natural English` being in `active_categories` for learner shell. Pool sourced from `phrase_tracker.entries[status==='active']` + retest-due entries; canonical lifecycle ⚪→🔵→🟡→🟢→🏆. Writes `coach_sessions/{psd_*}` + applies tracker transitions.
 
 ### 2.5 Coach tab — Weak Spots
-`weak_spots_drill`. ~30-minute tier-walked depth session on one topic. Inline 6-topic catalog (emphasis_clefts, article_system, present_perfect_vs_past_simple, preposition_clusters, phrasal_verb_production, hedge_variety). Tutorial vs. drill emerges from `recent_observations`. **P1 — weakest quiz category is always a proposal candidate** via `coachWeakestQuizCategoriesForTopics` → `weakest_categories` in context.
+`weak_spots_drill`. ~30-minute tier-walked depth session on one topic. Inline 7-topic catalog (emphasis_clefts, article_system, present_perfect_vs_past_simple, preposition_clusters, phrasal_verb_production, hedge_variety, conversational_register). Tutorial vs. drill emerges from `recent_observations`. **P1 — weakest quiz category is always a proposal candidate** via `coachWeakestQuizCategoriesForTopics` → `weakest_categories` in context.
 
 ### 2.6 Stats tab
 Detailed per-category and per-question performance. Primary surface for builder profile. Simplified or hidden behind "show details" for learner profile. The learner-shell home stats panel (`renderLearnerStats`) shows active-category cards with quiz + drill split (`getCategoryProgress`).

@@ -24,44 +24,21 @@ Validity note: probe #1's owned-material bucket is **empty this month** (0 owned
 phrases — the 12 mastered on 07-03 reach owned only after their +42d retest ≈ mid-Aug;
 0 🏆 PVs), so the probe runs ~12 items, not 15. Expected, not a defect.
 
-## Tracker package (from the 2026-07-03 tracker analysis — approved shape, not yet built)
+## Tracker package (from the 2026-07-03 tracker analysis)
 
-- **T1 · Phrase pool hygiene** (~1h): priority score per entry (register-impact by tag:
-  biz_oil > brit_expat/home > leisure > claude_collab, × recurrence) + aging rule
-  (active, ≤1 rep, no rep in 60d → new `dormant` status; auto-revives on
-  re-occurrence) + tracker md surfaces top-20 only. Parks ~40 of 71 actives on day one.
-  Touches: `update_coach_notes.js` (STATUS_EMOJI + renderer + lifecycle),
-  `coach-notes-schema.md`. Worker needs **no** change (its pool filter is
-  `status==='active'`, so dormant drops out automatically). Optional phase B later:
-  worker picks actives by priority (needs deploy).
-- **T2 · Conversational-register lane (CR1–CR4)** — *replaced `collocation_precision`
-  per Artem 2026-07-03: priority is the register acquired-through-text problem.*
-  Diagnosis: spoken-casual English is an **absent variety**, not an error class —
-  input diet was written business/non-fiction, so production defaults to literate
-  register everywhere ("normal people don't talk like this in pubs and offices").
-  Evidence: Register = worst quiz category (40%, n=15); `register_rubric` has zero
-  Artem data (fires only on FW, which he doesn't use); capture channels are
-  polarity-blind (correct-but-formal triggers nothing); the PV production gap is
-  partly the same phenomenon (PVs = casual register, Latinate = written).
-  Doctrine: passes §6 (no new surface); extends §3 conversation-keystone to the
-  builder profile.
-  - **CR1 · Casual-mode Free Write** (~30 min, CC `free-write` skill edit, no deploy):
-    "hallway/pub mode" — coach models informal register (the missing input stream),
-    correction polarity flips (too-formal flagged, not just errors). Also ends the
-    register_rubric data drought automatically.
-  - **CR2 · Register-down capture polarity** (~20 min, **after T1**): wrap/FW/exercise
-    captures also catch correct-but-register-heavy productions as swaps
-    ("I intend to depart shortly" → "I'm heading off in a bit" [brit_expat]).
-    Tags + lifecycle already exist; only capture instructions change.
-  - **CR3 · `conversational_register` catalog topic** (~1 session + deploy): ladder
-    recognize-register → re-register for the hallway → produce casual in scenario
-    (small talk, reacting, banter). PWA catalog row maps `cat: Register` → P1 routing
-    finally works for the worst category. CC parity per P2; system-mechanisms §2.5
-    count 6→7. Full spec → a new `conversational-register-lane` plan under `plans/` at build time.
-  - **CR4 · Casual-FW weekly slot** (doc-level now; `EX_WEEKLY_TARGETS` tile rides the
-    CR3 deploy — both current free_write slots are formal-flavoured).
-  - Pointers: `shadow_feedback` clips should be **casual speech** (listening half of
-    this lane); C1 Register/Natural-English quiz authoring → roadmap backlog.
+- **T1 · Phrase pool hygiene** — ✅ done 2026-07-03: priority score (tag weight ×
+  recurrence, weight-4 tags exempt from aging), 💤 `dormant` status + 60d aging rule +
+  auto-revive on re-capture, top-20 drill queue in the tracker md. One-time backfill
+  sweep at `--aging-days 50` parked 53 of 71 actives (kept: all 12 biz_oil + 5
+  multi-evidence + 1 brit_expat). Standing rule runs in stats-review step 6
+  (`--apply-aging`). Phase B (worker picks by priority) stays deferred.
+- **T2 · Conversational-register lane (CR1–CR4)** — ✅ shipped 2026-07-04 (decision
+  2026-07-03). Full record: `plans/conversational-register-lane.md`. CR1 casual-mode
+  Free Write + mandatory `register_rubric` on CC logs; CR2 register-down captures in
+  all three channels (after T1); CR3 `conversational_register` catalog topic #7
+  mapping `cat: Register` (P1 now routes the worst category; worker + PWA deployed);
+  CR4 weekly slot #12 "Hallway talk". Pointers live on: `shadow_feedback` clips in
+  casual register; C1 Register/Natural-English authoring → roadmap backlog.
 - **T3 · PV queue + ⚠ orphans** (~30 min): stats-review generates a top-5 PV drill
   queue in the PV tracker header (focus-order + production evidence); the three
   ⚠ A2-production-weak items (come/go back, go on, look for — unre-tested since 05-03)

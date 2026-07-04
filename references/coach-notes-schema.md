@@ -445,6 +445,14 @@ players/{name}.phrase_tracker = {
 - Failed retest: back to active rotation immediately, no cooldown
 - Owned status: no *scheduled* retests — but owned entries are sampled by the monthly retention probe (R4, `plans/retention-lane.md`); a missed sample demotes via the failed-retest mechanic below
 
+### Pool hygiene — priority, aging, dormancy (T1, 2026-07-03)
+
+The capture side outruns consolidation (~10×), so the active pool needs WIP limits:
+
+- **Priority** = tag weight × recurrence (weights: biz_oil/kpmg 4 · brit_expat/home/academic 3 · leisure/almaty 2 · claude_collab 1 · untagged 2). Computed at render time; the tracker md surfaces a **top-20 drill queue**; CC drills pull from the top. The worker still samples plain actives (phase B — priority-aware worker picks — waits for the next worker deploy).
+- **Aging** (💤 `dormant`): active + ≤1 rep + no drill in **60 days** (never-drilled age from `first_seen`) → dormant via `update_coach_notes.js {player} - --apply-aging` (run in stats-review step 6). Weight-4 tags are **exempt** — high-impact singles hold the queue top rather than aging out. Dormant entries are outside every drill pool (worker + CC filter `status === 'active'`).
+- **Auto-revive**: a re-capture of a dormant phrase (same awkward|natural key) flips it back to active and logs a `dormant_to_active` event — dormancy is a parking lot, not deletion. One-time backfill sweep ran 2026-07-03 at `--aging-days 50` (53 entries parked); the standing rule is 60.
+
 ### Worker selection rule
 
 When the worker assembles a `phrase_swap_drill` (default 6 items):

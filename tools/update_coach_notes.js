@@ -71,10 +71,35 @@ const STATUS_EMOJI = {
   mastered:      '🟢',
   owned:         '🏆',
   failed_retest: '✗',
+  dormant:       '💤',
 };
 
 const RETEST_DAYS_FIRST  = 21;
 const RETEST_DAYS_SECOND = 42;
+
+// ─── T1 phrase-pool hygiene (2026-07-03, plans/open-items.md) ───────────────
+// Aging: an active entry with ≤1 rep and no drill inside AGING_DAYS goes
+// dormant (never-drilled entries age from first_seen). Dormant = out of every
+// drill pool (worker + CC filter on status==='active') but auto-revives to
+// active if the same phrase is captured again.
+const AGING_DAYS_DEFAULT = 60;
+
+// Priority: register-impact by tag × recurrence. Weight dominates; recurrence
+// (reps + capture count) tiebreaks. Drives the tracker's Top-actives section
+// and CC drill picks; the worker still samples plain actives until phase B.
+const TAG_PRIORITY_WEIGHT = {
+  biz_oil: 4, kpmg_consulting: 4,
+  brit_expat: 3, home_daily: 3, academic_ielts: 3,
+  leisure_sport: 2, almaty_daily: 2,
+  claude_collab: 1,
+};
+function phrasePriority(e) {
+  const w = e.tag == null ? 2 : (TAG_PRIORITY_WEIGHT[e.tag] ?? 2);
+  return w * 10 + (Number(e.reps) || 0) + ((e.sources || []).length);
+}
+function agingCutoffISO(days) {
+  return new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
+}
 
 function parseArgs(argv) {
   if (argv[0] === '--help' || argv[0] === '-h') return { help: true };
@@ -82,11 +107,14 @@ function parseArgs(argv) {
   // --regen-tracker-md is passed without a patch file (would otherwise be
   // mistaken for the patch path).
   const positionals = argv.filter(a => !a.startsWith('--'));
+  const agingIdx = argv.indexOf('--aging-days');
   return {
     player: positionals[0],
     jsonPath: positionals[1],
     dryRun: argv.includes('--dry-run'),
     regenTrackerMd: argv.includes('--regen-tracker-md'),
+    applyAging: argv.includes('--apply-aging'),
+    agingDays: agingIdx >= 0 ? Number(argv[agingIdx + 1]) || AGING_DAYS_DEFAULT : AGING_DAYS_DEFAULT,
   };
 }
 
@@ -180,7 +208,19 @@ function applyPhraseTrackerPatch(current, patch) {
   for (const add of (patch.phrase_tracker_add || [])) {
     if (!add.awkward || !add.natural) continue;
     const k = entryKey(add);
-    if (idx.has(k)) continue; // dedupe — transition path handles updates
+    if (idx.has(k)) {
+      // Re-capture of an existing entry. If it went dormant under the aging
+      // rule, the re-occurrence is exactly the revive signal (T1).
+      const existing = idx.get(k);
+      if (existing.status === 'dormant') {
+        existing.status = 'active';
+        existing.next_retest = null;
+        if (add.sources && add.sources.length) existing.sources = [...(existing.sources || []), ...add.sources];
+        existing.events = existing.events || [];
+        existing.events.push({ date: todayISO(), event: 'dormant_to_active', note: 're-captured — auto-revive' });
+      }
+      continue; // dedupe — transition path handles other updates
+    }
     const entry = {
       awkward: add.awkward,
       natural: add.natural,
@@ -212,6 +252,7 @@ function applyPhraseTrackerPatch(current, patch) {
     else if (tr.to_status === 'mastered')     e.next_retest = addDaysISO(RETEST_DAYS_SECOND);
     else if (tr.to_status === 'owned')        e.next_retest = null;
     else if (tr.to_status === 'active')       e.next_retest = null;
+    else if (tr.to_status === 'dormant')      e.next_retest = null;
     if (typeof tr.reps_delta === 'number') e.reps = (e.reps || 0) + tr.reps_delta;
     if (tr.last_drilled) e.last_drilled = tr.last_drilled;
     if (tr.source && Array.isArray(e.sources)) e.sources.push(tr.source);
@@ -242,7 +283,7 @@ function renderTrackerMarkdown(player, tracker) {
   //   - Other (tag set but outside player's profile) — likely a tag-validation slip
   // Totals row counts every entry (regardless of tag) so the rightmost cell
   // reconciles with entries.length — no silently invisible rows.
-  const statusOrder = ['first_pass', 'active', 'retest_due', 'mastered', 'owned', 'failed_retest'];
+  const statusOrder = ['first_pass', 'active', 'retest_due', 'mastered', 'owned', 'failed_retest', 'dormant'];
   const counts = {};
   for (const t of tags) counts[t] = Object.fromEntries(statusOrder.map(s => [s, 0]));
   const untagged = Object.fromEntries(statusOrder.map(s => [s, 0]));
@@ -262,20 +303,28 @@ function renderTrackerMarkdown(player, tracker) {
     }
   }
 
+  const statusCells = c => statusOrder.map(s => c[s]).join(' | ');
   const profileRows = tags.map(t => {
     const c = counts[t];
     const total = statusOrder.reduce((a, s) => a + c[s], 0);
-    return `| \`[${t}]\` | ${c.first_pass} | ${c.active} | ${c.retest_due} | ${c.mastered} | ${c.owned} | ${c.failed_retest} | ${total} |`;
+    return `| \`[${t}]\` | ${statusCells(c)} | ${total} |`;
   }).join('\n');
   const extraRows = [];
-  if (untaggedTotal > 0) {
-    extraRows.push(`| _Untagged_ | ${untagged.first_pass} | ${untagged.active} | ${untagged.retest_due} | ${untagged.mastered} | ${untagged.owned} | ${untagged.failed_retest} | ${untaggedTotal} |`);
-  }
-  if (otherTotal > 0) {
-    extraRows.push(`| _Other_ | ${other.first_pass} | ${other.active} | ${other.retest_due} | ${other.mastered} | ${other.owned} | ${other.failed_retest} | ${otherTotal} |`);
-  }
+  if (untaggedTotal > 0) extraRows.push(`| _Untagged_ | ${statusCells(untagged)} | ${untaggedTotal} |`);
+  if (otherTotal > 0) extraRows.push(`| _Other_ | ${statusCells(other)} | ${otherTotal} |`);
   const coverageRows = [profileRows, ...extraRows].filter(Boolean).join('\n');
-  const totalRow = `| **Total** | ${totals.first_pass} | ${totals.active} | ${totals.retest_due} | ${totals.mastered} | ${totals.owned} | ${totals.failed_retest} | ${entries.length} |`;
+  const totalRow = `| **Total** | ${statusCells(totals)} | ${entries.length} |`;
+
+  // T1: top actives by priority — the drill queue. Full inventory stays below.
+  const TOP_ACTIVES = 20;
+  const actives = entries.filter(e => e.status === 'active')
+    .sort((a, b) => phrasePriority(b) - phrasePriority(a));
+  const topActiveRows = actives.slice(0, TOP_ACTIVES).map((e, i) =>
+    `| ${i + 1} | ${e.awkward} | ${e.natural} | \`[${e.tag || '—'}]\` | ${phrasePriority(e)} | ${e.reps || 0} |`
+  ).join('\n') || `| _(no active entries)_ | | | | | |`;
+  const activesNote = actives.length > TOP_ACTIVES
+    ? `\n${actives.length - TOP_ACTIVES} more actives below the line — drills pull from this top block first.`
+    : '';
 
   // Inventory rows
   const inventoryRows = entries.length
@@ -314,8 +363,9 @@ function renderTrackerMarkdown(player, tracker) {
 - 🔵 **active** — in \`weak_patterns\`, drilling now
 - 🟡 **retest-due** — demoted; retest window open (≥21 days since demotion)
 - 🟢 **mastered** — passed first retest, no failures since
-- 🏆 **owned** — passed 2nd retest 6+ weeks after first; out of rotation
+- 🏆 **owned** — passed 2nd retest 6+ weeks after first; out of scheduled rotation (sampled by the monthly retention probe)
 - ✗ **failed-retest** — last retest failed; back in active rotation
+- 💤 **dormant** — single capture, no rep in ${AGING_DAYS_DEFAULT}d; out of drill pools, auto-revives on re-capture
 
 ---
 
@@ -327,10 +377,18 @@ ${tagLines}
 
 ## Coverage
 
-| Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
-|---|---|---|---|---|---|---|---|
+| Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | 💤 | Total |
+|---|---|---|---|---|---|---|---|---|
 ${coverageRows}
 ${totalRow}
+
+---
+
+## Top actives — the drill queue (priority = tag weight × recurrence)
+
+| # | Awkward | Natural | Tag | Prio | Reps |
+|---|---|---|---|---|---|
+${topActiveRows}${activesNote}
 
 ---
 
@@ -448,6 +506,29 @@ async function main() {
     last_updated: new Date().toISOString(),
     last_updated_by: 'claude_code',
   };
+
+  // T1 aging sweep (--apply-aging): mechanical dormancy for stale singles.
+  // active + ≤1 rep + no drill inside agingDays (never-drilled age from first_seen).
+  if (args.applyAging) {
+    const cutoff = agingCutoffISO(args.agingDays);
+    // Weight-4 tags (biz_oil, kpmg_consulting) are exempt — high-impact singles
+    // are victims of the queue clog, not noise; they hold the top of the queue.
+    const stale = (currentTracker.entries || []).filter(e =>
+      e.status === 'active' &&
+      (Number(e.reps) || 0) <= 1 &&
+      (e.tag == null ? 2 : (TAG_PRIORITY_WEIGHT[e.tag] ?? 2)) < 4 &&
+      ((e.last_drilled || e.first_seen || '9999') < cutoff));
+    if (stale.length) {
+      patch.phrase_tracker_transition = [
+        ...(patch.phrase_tracker_transition || []),
+        ...stale.map(e => ({
+          awkward: e.awkward, natural: e.natural, to_status: 'dormant',
+          event_note: `aging sweep: ≤1 rep, no drill since ${e.last_drilled || e.first_seen || '?'} (cutoff ${cutoff})`,
+        })),
+      ];
+    }
+    console.error(`[aging] ${stale.length} active singles past ${args.agingDays}d → dormant (cutoff ${cutoff})`);
+  }
 
   // Apply phrase_tracker patch (separate field on player root)
   const trackerTouched =

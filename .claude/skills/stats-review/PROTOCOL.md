@@ -68,10 +68,12 @@ the first hit* (weak). The human sees the caveat, not just the count.
 time, not parallel (focused-CF; Anna 5→3).
 
 **6. Phrase tracker maintenance** (auto, after 4). Every player, even zero-session:
-apply lifecycle transitions from `coach_sessions`, surface retest-due entries, regen
-the md when `phrase_tracker.last_updated` > md "Last refresh".
-`update_coach_notes.js {name} <patch.json> --regen-tracker-md` (empty patch if only
-stale).
+apply lifecycle transitions from `coach_sessions`, surface retest-due entries, run the
+aging sweep (`--apply-aging`: stale singles → 💤 dormant; weight-4 tags exempt — see
+`coach-notes-schema.md` § Pool hygiene), regen the md when
+`phrase_tracker.last_updated` > md "Last refresh".
+`update_coach_notes.js {name} <patch.json> --apply-aging --regen-tracker-md`
+(empty patch if only stale).
 
 **7. Signals promotion + audit.** Per player: `node tools/promote_signals.js
 {player} --list` → for each `count >= 2` entry not already covered: compose a durable

@@ -14,8 +14,9 @@
 - 🔵 **active** — in `weak_patterns`, drilling now
 - 🟡 **retest-due** — demoted; retest window open (≥21 days since demotion)
 - 🟢 **mastered** — passed first retest, no failures since
-- 🏆 **owned** — passed 2nd retest 6+ weeks after first; out of rotation
+- 🏆 **owned** — passed 2nd retest 6+ weeks after first; out of scheduled rotation (sampled by the monthly retention probe)
 - ✗ **failed-retest** — last retest failed; back in active rotation
+- 💤 **dormant** — single capture, no rep in 60d; out of drill pools, auto-revives on re-capture
 
 ---
 
@@ -30,13 +31,38 @@
 
 ## Coverage
 
-| Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | Total |
-|---|---|---|---|---|---|---|---|
-| `[biz_oil]` | 0 | 12 | 0 | 3 | 0 | 0 | 15 |
-| `[leisure_sport]` | 0 | 18 | 0 | 1 | 0 | 0 | 19 |
-| `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
-| `[claude_collab]` | 0 | 40 | 0 | 8 | 0 | 0 | 48 |
-| **Total** | 0 | 71 | 0 | 12 | 0 | 0 | 83 |
+| Tag | ⚪ | 🔵 | 🟡 | 🟢 | 🏆 | ✗ | 💤 | Total |
+|---|---|---|---|---|---|---|---|---|
+| `[biz_oil]` | 0 | 12 | 0 | 3 | 0 | 0 | 0 | 15 |
+| `[leisure_sport]` | 0 | 0 | 0 | 1 | 0 | 0 | 18 | 19 |
+| `[brit_expat]` | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 |
+| `[claude_collab]` | 0 | 5 | 0 | 8 | 0 | 0 | 35 | 48 |
+| **Total** | 0 | 18 | 0 | 12 | 0 | 0 | 53 | 83 |
+
+---
+
+## Top actives — the drill queue (priority = tag weight × recurrence)
+
+| # | Awkward | Natural | Tag | Prio | Reps |
+|---|---|---|---|---|---|
+| 1 | always overbudget and time delay | always over budget and behind schedule | `[biz_oil]` | 43 | 1 |
+| 2 | in the future | going forward | `[biz_oil]` | 42 | 1 |
+| 3 | bringing the issue up to the execs | getting this in front of the execs | `[biz_oil]` | 42 | 1 |
+| 4 | it was a bunch of technical persons | they were a group of technical specialists | `[biz_oil]` | 42 | 1 |
+| 5 | memorize that | note that | `[biz_oil]` | 41 | 0 |
+| 6 | elaborate on next steps | lay out next steps | `[biz_oil]` | 41 | 0 |
+| 7 | put on paper X | put X on paper | `[biz_oil]` | 41 | 0 |
+| 8 | at the end | in the end | `[biz_oil]` | 41 | 0 |
+| 9 | exactly opposite | exactly reversed / the other way around | `[biz_oil]` | 41 | 0 |
+| 10 | jointly with X | combined with X | `[biz_oil]` | 41 | 0 |
+| 11 | something of mentoring | something about mentoring / a mention of mentoring | `[biz_oil]` | 40 | 0 |
+| 12 | it was a difficult discussion | the discussion was difficult | `[biz_oil]` | 40 | 0 |
+| 13 | go out of my villa | leave the villa / step outside | `[brit_expat]` | 33 | 2 |
+| 14 | what should I say to you to send the changes | how do I tell you to push the changes | `[claude_collab]` | 13 | 1 |
+| 15 | I definitely think X | I think X (or omit definitely) | `[claude_collab]` | 12 | 1 |
+| 16 | I thought to V | I was thinking of V-ing | `[claude_collab]` | 12 | 0 |
+| 17 | takes 3 lines anyway | takes up 3 lines anyway | `[claude_collab]` | 11 | 0 |
+| 18 | I need the explanation to read and select options | I need it readable enough that I can scan and pick | `[claude_collab]` | 11 | 0 |
 
 ---
 
@@ -48,27 +74,27 @@
 | race in Zwift | race on Zwift | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 2 | psd, psd |
 | go out of my villa | leave the villa / step outside | `[brit_expat]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 2 | psd |
 | in the future | going forward | `[biz_oil]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| my achievement of 4 years ago | my best from 4 years ago / what I hit 4 years ago | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | psd |
+| my achievement of 4 years ago | my best from 4 years ago / what I hit 4 years ago | `[leisure_sport]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | psd |
 | we agreed | CC and I agreed | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 2 | wrap, psd, psd |
 | is not relevant for my context | isn't relevant to me | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd, psd |
 | audit my mistake | review my mistake | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
-| propose whether X is relevant | tell me whether X is relevant | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| follow steps in the learning process | follow the learning ladder | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| required topics and required distribution | subtopics and type distribution | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| said to my notes | wrote in my notes / added to my notes | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| what is needed | what we need | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| clean these branches | clean up these branches | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
+| propose whether X is relevant | tell me whether X is relevant | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| follow steps in the learning process | follow the learning ladder | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| required topics and required distribution | subtopics and type distribution | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| said to my notes | wrote in my notes / added to my notes | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| what is needed | what we need | `[claude_collab]` | 2026-05-06 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| clean these branches | clean up these branches | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
 | delete what is safe | delete whatever's safe | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
-| that's not I meant | that's not what I meant | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| not sure what is 'wk cats' | not sure what 'wk cats' means | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
+| that's not I meant | that's not what I meant | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| not sure what is 'wk cats' | not sure what 'wk cats' means | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
 | you're restricted to a number of words | you have a word limit | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
-| can only test with 6 phrases | is capped at 6 phrases | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🔵 active | — | 1 | wrap |
+| can only test with 6 phrases | is capped at 6 phrases | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
 | a larger figure | a higher count | `[claude_collab]` | 2026-05-07 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
 | at par with best practices | on par with best practices | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
-| per topic vs per category, is it the same? | is per-topic the same as per-category? | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
+| per topic vs per category, is it the same? | is per-topic the same as per-category? | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
 | forget these ideas | drop these ideas | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | wrap, psd |
-| if new info appears | if anything new comes up | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
-| I prefer to have | I'd rather just have | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | wrap |
+| if new info appears | if anything new comes up | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
+| I prefer to have | I'd rather just have | `[claude_collab]` | 2026-05-09 | 2026-05-11 | 💤 dormant | — | 1 | wrap |
 | sit the issue unattended | let this slide / sit on this | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | fw, psd |
 | impact us mainly by delayed revenue | hit us mainly through delayed revenue | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🟢 mastered | 2026-08-14 | 1 | fw, psd |
 | always overbudget and time delay | always over budget and behind schedule | `[biz_oil]` | 2026-05-09 | 2026-05-11 | 🔵 active | — | 1 | fw, psd |
@@ -77,56 +103,56 @@
 | something of mentoring | something about mentoring / a mention of mentoring | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
 | it was a bunch of technical persons | they were a group of technical specialists | `[biz_oil]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 1 | psd |
 | it was a difficult discussion | the discussion was difficult | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| maybe it's worthwhile to show | I wonder if it's worth showing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| maybe it's better to merge | what if we merged | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| maybe it worth to say | could we say | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| it worth to discuss | it's worth discussing | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| it's definitely not X | it's clearly not X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
+| maybe it's worthwhile to show | I wonder if it's worth showing | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| maybe it's better to merge | what if we merged | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| maybe it worth to say | could we say | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| it worth to discuss | it's worth discussing | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| it's definitely not X | it's clearly not X | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
 | I definitely think X | I think X (or omit definitely) | `[claude_collab]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 1 | psd |
 | I need the explanation to read and select options | I need it readable enough that I can scan and pick | `[claude_collab]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 0 | psd |
-| after reading, I decide that I prefer X | after reading, I've decided I prefer X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| drop the idea with HTML | drop the HTML idea | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | — |
-| two last outdoor rides | the last two outdoor rides | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| actual load previous week | last week's actual load | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| Unlikely that the load will be substantially different | the load probably won't change much | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| it's not acceptable | that won't work | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| is it appropriate for this stage? | is it the right call at this stage? | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| as the coach already drew | as the coach already has it laid out | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| where you want to spend an effort | where the effort should go | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| What is the value of the AeT test in Bahrain | What's the point of the AeT test in Bahrain | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| with sufficient details | with enough detail | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| Prepare to make the changes as discussed to the plan | Get ready to apply the changes we discussed | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
-| Propose what to do best | Suggest the best approach | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_2026-05-11 |
+| after reading, I decide that I prefer X | after reading, I've decided I prefer X | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| drop the idea with HTML | drop the HTML idea | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | — |
+| two last outdoor rides | the last two outdoor rides | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| actual load previous week | last week's actual load | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| Unlikely that the load will be substantially different | the load probably won't change much | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| it's not acceptable | that won't work | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| is it appropriate for this stage? | is it the right call at this stage? | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| as the coach already drew | as the coach already has it laid out | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| where you want to spend an effort | where the effort should go | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| What is the value of the AeT test in Bahrain | What's the point of the AeT test in Bahrain | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| with sufficient details | with enough detail | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| Prepare to make the changes as discussed to the plan | Get ready to apply the changes we discussed | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
+| Propose what to do best | Suggest the best approach | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_2026-05-11 |
 | what should I say to you to send the changes | how do I tell you to push the changes | `[claude_collab]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 1 | harvest_cycling_2026-05-11, psd |
-| elaborate on analysis technic | explain the analysis approach | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| in case of shorter periods | for shorter periods | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| exclude a warm-up period | skip the warm-up period | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| to avoid API attempt | to skip the API call | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| Probably you've decided not to extract them | Looks like you decided to leave them out | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| find weaknesses in my proposal | poke holes in my proposal | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| on top try to compare | also try to compare / on top of that, try to compare | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| a document explaining the instrument | a document explaining the tool | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| did you include all problems you have encountered | did you include all the issues you've run into | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
-| I'll initiate a separate branch | I'll spin up a separate branch | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| elaborate on analysis technic | explain the analysis approach | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| in case of shorter periods | for shorter periods | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| exclude a warm-up period | skip the warm-up period | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| to avoid API attempt | to skip the API call | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| Probably you've decided not to extract them | Looks like you decided to leave them out | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| find weaknesses in my proposal | poke holes in my proposal | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| on top try to compare | also try to compare / on top of that, try to compare | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| a document explaining the instrument | a document explaining the tool | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| did you include all problems you have encountered | did you include all the issues you've run into | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
+| I'll initiate a separate branch | I'll spin up a separate branch | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_cycling_worktrees_2026-05-11 |
 | memorize that | note that | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | elaborate on next steps | lay out next steps | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | put on paper X | put X on paper | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | at the end | in the end | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | exactly opposite | exactly reversed / the other way around | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
 | jointly with X | combined with X | `[biz_oil]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| restart to V | start V-ing again | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| make swift movement | move quickly | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| cycling volume activity | volume rides | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| muscle section | muscle session | `[leisure_sport]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| propose how to add modifications | suggest changes | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| with problem to V | couldn't V | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
-| hand to hand with | hand in hand with | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11 |
+| restart to V | start V-ing again | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| make swift movement | move quickly | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| cycling volume activity | volume rides | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| muscle section | muscle session | `[leisure_sport]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| propose how to add modifications | suggest changes | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| with problem to V | couldn't V | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
+| hand to hand with | hand in hand with | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | harvest_claude_ai_2026-05-11 |
 | I thought to V | I was thinking of V-ing | `[claude_collab]` | 2026-05-11 | 2026-05-18 | 🔵 active | — | 0 | harvest_claude_ai_2026-05-11, psd |
-| forget to say that | I forgot to mention | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | wrap |
-| as Artem, I see X | logged in as Artem, I see X | `[claude_collab]` | 2026-05-11 | — | 🔵 active | — | 0 | wrap |
-| nicole and ernest gates for free write | the free_write gate for Nicole and Ernest | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
-| no problem with the word limit? | any issue with the word limit? / word limit OK? | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
-| update your plan that we executed before side-stepping | update the plan we were running before we side-stepped | `[claude_collab]` | 2026-05-12 | — | 🔵 active | — | 0 | wrap |
+| forget to say that | I forgot to mention | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | wrap |
+| as Artem, I see X | logged in as Artem, I see X | `[claude_collab]` | 2026-05-11 | — | 💤 dormant | — | 0 | wrap |
+| nicole and ernest gates for free write | the free_write gate for Nicole and Ernest | `[claude_collab]` | 2026-05-12 | — | 💤 dormant | — | 0 | wrap |
+| no problem with the word limit? | any issue with the word limit? / word limit OK? | `[claude_collab]` | 2026-05-12 | — | 💤 dormant | — | 0 | wrap |
+| update your plan that we executed before side-stepping | update the plan we were running before we side-stepped | `[claude_collab]` | 2026-05-12 | — | 💤 dormant | — | 0 | wrap |
 
 ---
 

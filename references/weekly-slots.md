@@ -1,7 +1,8 @@
 # Weekly Slots — Artem
 
-Artem's weekly supplementary exercise plan. 11 slots per week. The other players have
-lighter `EX_WEEKLY_TARGETS` entries (Anna 4, Nicole 6, Ernest 4; Egor none) but work
+Artem's weekly supplementary exercise plan. 12 slots per week (slot #12 "Hallway talk —
+casual register" added 2026-07-04, conversational-register lane CR4). The other players
+have lighter `EX_WEEKLY_TARGETS` entries (Anna 4, Nicole 6, Ernest 4; Egor none) but work
 player-initiated — only Artem's slots are actively scheduled and reviewed here.
 
 Plus one **monthly** CC-side slot (first week of the month): `retention_probe` — the

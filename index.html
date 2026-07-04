@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260703">
+  <meta name="app-version" content="v20260704">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1111,7 +1111,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260703</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260704</span></p>
 </header>
 
 <!-- TABS -->
@@ -8517,7 +8517,7 @@ let exState = { allExercises:null };
 // Weekly exercise targets per player: topic slots to fill each week
 // Each slot = one exercise session logged. Order and day don't matter.
 const EX_WEEKLY_TARGETS = {
-  artem: {total:11, slots:[
+  artem: {total:12, slots:[
     {topic:'PV Family Drill',type:'transform',pri:'high'},
     {topic:'Articles Decision Drill',type:'article_drill',pri:'high'},
     {topic:'Articles + Collocations',type:'translation',pri:'high'},
@@ -8528,7 +8528,8 @@ const EX_WEEKLY_TARGETS = {
     {topic:'Mixed errors',type:'error_correction',pri:'med'},
     {topic:'PV in email',type:'free_write',pri:'med'},
     {topic:'PV Particle Sort',type:'particle_sort',pri:'high'},
-    {topic:'Russian Trap — anti-calque',type:'translation',pri:'high'}
+    {topic:'Russian Trap — anti-calque',type:'translation',pri:'high'},
+    {topic:'Hallway talk — casual register',type:'free_write',pri:'med'}
   ]},
   anna: {total:4, slots:[
     {topic:'Collocations',type:'conversation',pri:'high'},
@@ -9099,6 +9100,7 @@ const COACH_WEAK_SPOTS_CATALOG = [
   { id: 'present_perfect_vs_past_simple', cat: 'Tenses',         match: /present perfect|past simple|tense|since|for|ago|past simple irregular/i },
   { id: 'preposition_clusters',           cat: 'Prepositions',   match: /preposition|arrive|in.*time|verb\+prep|prep$|prep[s ]/i },
   { id: 'phrasal_verb_production',        cat: 'Phrasal Verbs',  match: /phrasal|particle|PV|verb.*particle/i },
+  { id: 'conversational_register',        cat: 'Register',       match: /register|casual|informal|hallway|too.?formal|spoken/i },
 ];
 
 // P1 (operational-rules.md): bottom-N catStats categories that map to a Weak
