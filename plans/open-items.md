@@ -71,10 +71,18 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
 - **Smaller fixes**:
   - `.mcp.json` hardcodes `D:/Claude/...` — make relative/env-driven if anyone else clones.
   - Worker `RUSSIAN_FALLBACK_PLAYERS` should log a warning when hit (stale-bundle signal).
-  - **`archive/` + `ref/index.html` are publicly served via Pages** — weight *raised*
-    by the folder audit: `archive/` is now deliberately tracked and its HTML KB
-    snapshots include learner data; house rule 5 (personal data) argues for a Pages
-    exclusion or content check. Verify nothing references them publicly, then scope out.
+  - **Public exposure — DECISION NEEDED (verified 2026-07-04)**: probe confirmed the
+    entire repo is publicly reachable via Pages with predictable URLs — not just
+    `archive/` (HTTP 200 on the KB snapshot and the PV mastery plan with Artem's
+    stats) but also `diagnostics/` (**the kids' scored IGCSE results and study
+    schedules**) and `progress/` trackers. Nothing links to them from the app
+    (0 references in index.html) — obscurity only. Inherent to public-repo Pages
+    since day one, but the kids' assessment data (added 07-01) raises the stakes.
+    Options: (a) accept — first names only, unguessable-ish URLs, low sensitivity;
+    (b) publish only app files (index.html, sw.js, manifest, icons, ref/) via an
+    Actions-driven Pages deploy — ~1h, changes the deploy flow, repo stays public
+    but docs/learner data stop being *served*; (c) private repo + external static
+    host for the app. Artem's call; (b) recommended.
   - **doc-style reference ceilings** — ✅ resolved 2026-07-03: history logs
     (version-log, bug-log, design-decisions) manage size via **archive splits**, not
     word ceilings (rule now in doc-style; precedent: both prior log splits).
