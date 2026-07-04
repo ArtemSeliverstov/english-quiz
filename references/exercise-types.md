@@ -221,7 +221,7 @@ Canonical catalog IDs: `emphasis_clefts | article_system | present_perfect_vs_pa
 
 ## 12. `retention_probe`
 
-Monthly ~15-item mixed retrieval block testing what the loop has *closed*, not what it's drilling. Composition is mechanical (`plans/retention-lane.md` R2): 5 closed/maintenance patterns due per the expanding schedule (+2w → +6w → +4m) + 4 near-transfer siblings (same rule, untrained frames) + 3 cold recalls from owned phrases / 🏆 PVs + 3 due PARKED re-checks.
+Monthly ~15-item mixed retrieval block testing what the loop has *closed*, not what it's drilling. Composition is mechanical (`plans/retention-lane.md` R2): 5 closed/maintenance patterns due per the expanding schedule (+2w → +6w → +4m) + 4 near-transfer siblings (same rule, untrained frames) + 3 cold recalls from owned phrases / 🏆 PVs + 3 due PARKED re-checks and/or PV-lane ⚠ production-weak re-tests.
 
 **Use for**: Artem (builder-shell only — learner-shell retention rides the mastered-category review).
 **Item count**: ~15, interleaved across all sources — never blocked by topic.

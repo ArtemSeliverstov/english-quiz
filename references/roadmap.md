@@ -52,7 +52,7 @@ Phase 2 outcomes: Emphasis 44→55, input share 25%→29%. Business inversion 2�
 | 3 | Article intervention: ~95 new questions across three phases | Multi-session | Per article diagnostic. Article Decision Drill now in Artem's weekly slot plan. |
 | 4 | Phrasal Verbs Phase 2 — ~80 questions, `pv_p2` prefix | 2-3 sessions | Backlog. Three pending decisions: ID prefix scheme, question-type mix, Stage 1 start. |
 | 5 | Per-question authoring checklist hardening | Ongoing | Captured in `question-authoring-standards.md`. |
-| 6 | `exercise-session` skill: reconcile capture policy with CC asymmetry | <0.5h | Skill currently writes swaps to `recent_observations` only (gate-2-sessions PWA-worker rule). `tools/capture_swaps.js` supports `source: 'ex'` for direct phrase_tracker capture (skip ⚪) — wire up when policy is revisited, or document why exercise-session deliberately stays strict. |
+| 6 | ✅ Decided + wired 2026-07-04 — `exercise-session` captures route via `capture_swaps.js --source ex` (direct 🔵). Safe now that T1 pool hygiene (priority + aging + dormant) bounds intake. | — | Closed per Artem's call; sequencing rationale in `plans/open-items.md` cross-check 5. |
 
 ---
 

@@ -21,6 +21,8 @@ Ships Artem's 2026-07-03 priority call: spoken-casual English as an **absent var
 - **CR4** — `EX_WEEKLY_TARGETS.artem` slot #12 "Hallway talk — casual register" (total 11→12); `weekly-slots.md` updated.
 - Docs: exercise-types §11 IDs + system-mechanisms §2.5 → 7 topics; plans README + open-items updated (T1 ✅, T2 ✅).
 
+- **Follow-up (same day, repo-only — T3 + T5 + capture policy)**: PV tracker gains a stats-review-regenerated **Top-5 drill queue** (get around to → get through ¹ → come up with → read up on → cut down on; PROTOCOL 6c); ⚠ A2 direction traps route to the retention probe (R2 bucket 4 + exercise-types §12); `interview_rubric` aggregation live (PROTOCOL step 3 + rubric § Stats-review aggregation + firestore-schema rows) — unblocks shadow_feedback; **capture policy decided (Artem)**: exercise-session swaps go direct 🔵 via `capture_swaps --source ex` (roadmap Quality #6 closed; safe post-T1).
+
 Q count: 2246 (Δ0) · Version: v20260704 · Worker: 593bd005
 
 ---

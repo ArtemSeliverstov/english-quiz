@@ -165,7 +165,19 @@ When a session surfaces a recurring weakness, route it through `recent_session_s
 | `stats-review` (future) | Aggregates per-dimension rolling means; flags drift on `specificity_score` (the highest-leverage axis for real-world interview outcomes) |
 | `mistakes-review` (future) | Pulls high-filler-density transcripts for inline review |
 
-Until `stats-review` reads the field, the rubric is **dark instrumentation** — accumulating on every interview-prep session, available for inspection but not auto-actioned.
+Consumer went live 2026-07-04 (T5): `stats-review` PROTOCOL step 3 aggregates the field — see next section.
+
+---
+
+## Stats-review aggregation (active since 2026-07-04)
+
+Same convention as `register-rubric.md`:
+
+1. **Filter** `coach_sessions[]` (ip_* sessions) to `interview_rubric.confidence == "high"`; low-confidence rubrics silently dropped.
+2. **Rolling mean** over the last 5 qualifying sessions per 1–5 dimension (`structure_score`, `specificity_score`, `confidence_balance`) and per delivery metric (`avg_wpm`, `avg_filler_density_per_min`, `avg_pause_ratio`); Δ vs the prior 5 where history allows.
+3. **Sparse data**: n<3 → report means with an explicit small-sample caveat, no trend flags.
+4. **Flags**: `specificity_score` is the highest-leverage axis — a rolling mean <3 or a Δ ≤ −1 gets a flag + one concrete recommendation (usually: numbers-and-names drills). Filler density rising ≥50% across windows → flag for a pacing-focused session.
+5. **Output**: one "Interview delivery" block in the per-player review, only when ≥1 new ip_* session exists since the last review.
 
 ---
 

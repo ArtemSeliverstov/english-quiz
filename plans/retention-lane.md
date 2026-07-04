@@ -31,7 +31,7 @@ Run as `exercise-session` type `retention_probe` (`exercise-types.md` §12). Com
 | 5 | closed/maintenance patterns due per R1 — production format only, ≥2 formats across cycles |
 | 4 | **near-transfer siblings** — same rule family, untrained frames (R3) |
 | 3 | cold recall from owned phrases (`phrase_tracker` 🏆/owned) + 🏆 PVs, random sample |
-| 3 | PARKED re-checks that happen to be due |
+| 3 | PARKED re-checks due **and/or PV-lane ⚠ production-weak re-tests** (e.g. the A2 direction traps — T3, 2026-07-04) |
 
 Interleaved order, **no skill labels** (cold-production validity), one score line to
 `recent_observations` + normal `exercises/{ts}` log. Composition is mechanical from

@@ -41,7 +41,9 @@ use the stored ID in any new prose.
 **3. Synthesise.** New patterns across ≥2 sessions, resolutions, engagement shifts,
 L1 interference, recognition-vs-production gaps. Aggregate
 `coach_sessions[].register_rubric` per `references/register-rubric.md`
-§ Stats-review aggregation.
+§ Stats-review aggregation, and `coach_sessions[].interview_rubric` (ip_* sessions)
+per `references/interview-rubric.md` § Stats-review aggregation — same last-5
+high-confidence rolling-mean convention.
 
 **3a. Pattern-id reuse.** Before minting a new `recent_session_signals[].pattern_id`,
 fuzzy-match existing pattern_ids + `weak_patterns` prose. Mechanism match (e.g.
@@ -74,6 +76,12 @@ aging sweep (`--apply-aging`: stale singles → 💤 dormant; weight-4 tags exem
 `phrase_tracker.last_updated` > md "Last refresh".
 `update_coach_notes.js {name} <patch.json> --apply-aging --regen-tracker-md`
 (empty patch if only stale).
+
+**6c. PV tracker (Artem/Anna, auto).** Run `node tools/pv_cold_streak.js {name}`;
+fold new production evidence into Status annotations, and regenerate the **Top-5
+drill queue** block in `progress/phrasal-verbs-tracker.md` per its Focus order +
+production evidence (⚠ A2 items route to the retention probe, never this queue).
+Bump the tracker's Last refresh.
 
 **7. Signals promotion + audit.** Per player: `node tools/promote_signals.js
 {player} --list` → for each `count >= 2` entry not already covered: compose a durable

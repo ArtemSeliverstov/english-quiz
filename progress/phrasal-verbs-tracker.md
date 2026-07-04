@@ -3,10 +3,29 @@
 Canonical PV inventory A1→C1 with quiz coverage, current accuracy, and frequency in your context. Refreshed at each stats-review.
 
 **Baseline source**: `archive/phrasal_verbs_mastery_plan.html` (stats export 2026-04-04)
-**Last refresh**: 2026-07-03 — production-tier data folded (`pv_cold_streak.js` now ingests production-format particle_sort; 07-02 session: get_around_to 0/2 🟡 regressing, cut_down_on 0/1, get_across 4/4 production-side). Quiz-derived Status values still reflect `qStats` as of 2026-05-20 (no quiz-tab play since; full Status re-derivation waits for fresh quiz data).
+**Last refresh**: 2026-07-04 — Top-5 drill queue block added (T3; regenerated at each stats-review alongside Status annotations). 2026-07-03: production-tier data folded (`pv_cold_streak.js` now ingests production-format particle_sort; 07-02 session: get_around_to 0/2 🟡 regressing, cut_down_on 0/1, get_across 4/4 production-side). Quiz-derived Status values still reflect `qStats` as of 2026-05-20 (no quiz-tab play since; full Status re-derivation waits for fresh quiz data).
 **Next refresh trigger**: any `stats-review` skill run that uploads fresh `family_stats_ai` JSON.
 
 **Methodology note (2026-05-10)**: the v20260508-r2 commit only added 3 truly new PV IDs (`cc_01–cc_03`); the other ~277 PV-question diff lines were existing bank items getting the new `themes` field. PVs flagged below as "added v20260508-r2" are baseline items that Artem already has months of attempts on — re-attribute to their original commit at next stats-review. Status values now derived from real `qStats`, not bank-presence inference.
+
+---
+
+## Top-5 drill queue (generated at each stats-review — T3, 2026-07-04)
+
+Focus-order + production evidence, so limited time goes to the right five. The 199-row
+table below is *reference*; this block is the queue.
+
+| # | PV | Why now |
+|---|---|---|
+| 1 | **get around to** | confirmed fossil — failed production ×2 on 7/02 incl. post-correction; ✗ not in quiz (author cold-production items); weak-spots tracker says "next PV touch leads with it" |
+| 2 | **get through ¹** (survive difficulty) | 0/9 — worst chronic, got worse since baseline; `pv_l02_*` scaffolds not converting |
+| 3 | **come up with** | 🔴 ★★★★★ — daily meeting lexicon, chronic since baseline |
+| 4 | **read up on** | 🔴 ★★★★★ 2/5 (pv_ti17 0/3) — pre-meeting prep register; cold-production set exists (`pv_l03_*`) |
+| 5 | **cut down on** | 🔴 ★★★★ 1/3 + fresh production particle-drop 7/02 (`cut_down_on` ×1, below gate — watch) |
+
+Next up: turn out ¹ (4/9), bring in (0/4), go about (1/4). The ⚠ A2 direction-trap trio
+(come/go back, go on, look for) is **not** drill-queue material — it re-tests via the
+monthly retention probe (R2 ⚠ bucket, `plans/retention-lane.md`).
 
 ---
 

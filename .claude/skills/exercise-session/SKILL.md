@@ -30,7 +30,7 @@ If Artem mentions travel at session start, adopt location-appropriate themes for
 
 **5. Persist (auto-write)** — `tools/log_exercise.js` (exercise log) + `tools/update_coach_notes.js` (rec_obs, weak_patterns adjustments, phrase_tracker transitions). No preview. Auto-write rationale + capture card + read-out template in `coach-notes-schema.md`. Rich shape per `firestore-schema.md`: `source: "cc_session"`, one `items[]` per scored item, snake_case `matched_pattern_id` aligned with `error_types[]`, `time_to_answer_ms` via Bash (rough OK), `exercise_id`/`exercise_version` null for CC-authored.
 
-**5a. Capture card** — if any stiff/calqued lexical moment surfaced — or a **correct-but-formal** production where the item's context was casual (register-down, CR2) — pair with the natural/casual form + context tag, fold into the same patch (single-session captures land in `recent_observations` only).
+**5a. Capture card** — if any stiff/calqued lexical moment surfaced — or a **correct-but-formal** production where the item's context was casual (register-down, CR2) — pair with the natural/casual form + context tag and route via `node tools/capture_swaps.js {player} <swaps.json>` with `source: 'ex'` (direct 🔵 capture, CC asymmetry per `coach-notes-schema.md`; policy decided 2026-07-04 — pool hygiene bounds intake).
 
 **6. Render the player-facing table** using the `exercise-session` template in `coach-notes-schema.md`, then ask "How did it feel? — or skip." Non-blocking.
 

@@ -39,27 +39,27 @@ phrases — the 12 mastered on 07-03 reach owned only after their +42d retest �
   mapping `cat: Register` (P1 now routes the worst category; worker + PWA deployed);
   CR4 weekly slot #12 "Hallway talk". Pointers live on: `shadow_feedback` clips in
   casual register; C1 Register/Natural-English authoring → roadmap backlog.
-- **T3 · PV queue + ⚠ orphans** (~30 min): stats-review generates a top-5 PV drill
-  queue in the PV tracker header (focus-order + production evidence); the three
-  ⚠ A2-production-weak items (come/go back, go on, look for — unre-tested since 05-03)
-  join the monthly probe. Touches: PV tracker header, `stats-review` PROTOCOL,
-  **retention-lane R2 + exercise-types §12** (probe composition gains the ⚠ bucket).
+- **T3 · PV queue + ⚠ orphans** — ✅ done 2026-07-04: Top-5 drill queue seeded in the
+  PV tracker (get around to → get through ¹ → come up with → read up on → cut down on;
+  regenerated at each stats-review per PROTOCOL 6c); ⚠ A2 direction traps route to the
+  retention probe (R2 bucket 4 widened; exercise-types §12 + exercise-session updated).
 - **T4 · Schema owned/R4 contradiction** — ✅ done 2026-07-03 (schema + the
   design-decisions phrase-tracker entry both amended: owned = no *scheduled* retests,
   sampled monthly per R4, miss demotes).
-- **T5 · `interview_rubric` aggregation** (~10 min): stats-review PROTOCOL step 3
-  aggregates `interview_rubric` alongside `register_rubric` — interview-prep sessions
-  currently accumulate unanalyzed. Ordering: do before `shadow_feedback` ships.
+- **T5 · `interview_rubric` aggregation** — ✅ done 2026-07-04: PROTOCOL step 3
+  aggregates it (last-5 high-confidence convention); `interview-rubric.md` gained its
+  § Stats-review aggregation (specificity_score is the flag axis); firestore-schema
+  rows added (interview_rubric; register_rubric writers updated for CR1). Unblocks
+  `shadow_feedback`.
 
 ## Confirm-first pending (proposals ready, awaiting Artem)
 
 - **Family-profiles snapshot lines** — Anna "re-engaging (Apr 2026)" → idle-since-05-18;
   Ernest "inactive mid-Mar" → IGCSE-prep active, window 4; Egor → dormant note.
   ([data]-backed; profile edits are git commits, confirm-first by protocol.)
-- **exercise-session lexical-capture policy** (roadmap Quality #6): wire
-  `capture_swaps.js --source ex` for direct 🔵 capture, or keep the deliberate
-  rec_obs-only strictness. Validity note: decide **after T1 lands** — direct capture
-  raises inflow into a pool whose WIP problem T1 is meant to fix.
+- **exercise-session lexical-capture policy** — ✅ decided 2026-07-04 (Artem: wire it):
+  captures route via `capture_swaps.js --source ex` (direct 🔵). Sequenced correctly —
+  T1 pool hygiene landed first, so the widened intake stays bounded.
 
 ## Infrastructure (carried forward, still valid)
 
