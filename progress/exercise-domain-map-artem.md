@@ -61,6 +61,10 @@ Program-level view of every active learning front, **sorted by leverage** (not b
 | | embedded/indirect-question & wh-word structure | Syntax | ●●●○○ | 🟡 | → | drill wh-word order (interview) | |
 | | come up with · read up on · cut down on | Phrasal verbs | ●●●○○ | 🟡 | → | rotate into PV batches | |
 | | temporal-anchor calque (past + present verb) | Tense/aspect | ●●○○○ | 🟡 | → | short set when fresh | |
+| | gerund after suggest/start/help/recommend | Non-finite | ●●○○○ | 🟡 | ⏸ | spaced re-check | 2026-07-08 |
+| | "when + future" temporal subordinate | Tense/aspect | ●○○○○ | 🟡 | ⏸ | spaced re-check | 2026-07-08 |
+| | mass-noun hypercorrection ("an advice") | Articles | ●●○○○ | 🟡 | ⏸ | spaced re-check | 2026-07-08 |
+| | double-genitive (middle-noun collapse) | Articles | ●●○○○ | 🟡 | ⏸ | spaced re-test | 2026-07-19 |
 | | raise / bring up WITH (not "to") | PV / verb+prep | ●●○○○ | 🔴 | ↑ | re-check | 2026-07-15 |
 | | prevent / stop from + -ing | Verb+prep | ●●○○○ | 🔴 | ↑ | re-check, b05 | 2026-07-15 |
 | | "in case of X" calque | L1 lexical | ●○○○○ | 🟡 | ↑ | re-check | 2026-07-15 |
@@ -91,4 +95,6 @@ The delivery lanes that work the fronts above. Cadence + next due; Due rendered 
 
 Five ▲ fronts are 🔴 NOW and not moving — but **Size** splits them: the genuinely big-and-active problems are only two — **the-overuse (●●●●●)** and **get through¹ (●●●●○)**. The other three (get around to, agree to, stem from) are smaller and quick to close. **Due** surfaces a convergence: five items (agree to, stem from, raise-with, prevent-from, in-case-of) all fall due ~Jul 15 — run them as **one re-check session next week**, not piecemeal. Perfect-aspect is a big (●●●●○) problem sitting *parked* until Jul 26 — deliberate, not neglected.
 
-*Refreshed 2026-07-08 via `stats-review` (regeneration + audit half): added the new **Syntax** front (embedded/indirect-question structure, from the grammar harvest) and merged the two Articles·NEXT determiner rows into one. `weak_patterns` audited, clean at cap 8.*
+**Re-check pipeline (what Due surfaces):** ⏰ **3 due today** — gerund-after-closed-set, "when+future", mass-noun hypercorrection (all 7/01 drills on a 7-day re-check). ⏳ **5 due ~Jul 15** — the verb+prep/converting batch (agree to, stem from, raise-with, prevent-from, in-case-of). 🗓 **Jul 19** double-genitive spaced re-test · **Jul 26** perfect-aspect. So the next two weeks are re-check-heavy: clear today's 3 first (quick, cooling patterns), then the Jul-15 batch as one session.
+
+*Refreshed 2026-07-08 via `stats-review` (regeneration + audit half): added the new **Syntax** front (embedded-question structure) + merged the two Articles·NEXT determiner rows; **pulled in the 4 parked grammar fronts** (double-genitive, gerund, when+future, mass-noun) with their re-check dates — they were missing from the earlier partial edit. `weak_patterns` audited, clean at cap 8.*
