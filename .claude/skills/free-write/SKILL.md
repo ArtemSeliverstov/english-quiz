@@ -5,55 +5,55 @@ description: Run a Free Write coaching session for Artem from Claude Code (lapto
 
 # Free Write — CC session
 
-Unstructured English chat. Coach: inline corrections, vocab expansion, follow-up prompts. CC-only by mechanism (Artem is the only player with a CC channel — others use the PWA Coach tab Free Write button, which has its own coaching path in `worker/index.js`).
+Unstructured English chat. Coach: inline corrections, vocab expansion, follow-ups. CC-only (Artem is the only player with a CC channel; others use the PWA Coach tab, coached in `worker/index.js`).
 
-If he asks for scored exercises ("давай упражнения"), that's `exercise-session` — end cleanly first.
+Scored exercises ("давай упражнения") = `exercise-session` — end cleanly first.
 
 ## Reads
 
 - `references/family-profiles.md` (Artem section) — communication style, themes
-- `progress/phrasal-verbs-tracker.md` — chronic PV families, Freq column, calque traps to flag
-- `node tools/get_player.js artem --field coach_notes` — current weak_patterns, recent_observations
+- `progress/phrasal-verbs-tracker.md` — chronic PV families, Freq, calque traps
+- `node tools/get_player.js artem --field coach_notes` — weak_patterns, recent_observations
 
 Do not load `exercise-types.md`, `weekly-slots.md`, or library content.
 
 ## Two modes
 
-**Standard** — open chat, rules below. **Casual — "hallway/pub" register** (conversational-register lane CR1): triggers above; offer it when he starts with no topic. Spoken-casual is his absent variety (`docs/audience-profiles.md` §1); in casual mode:
+**Standard** — open chat, rules below. **Casual — "hallway/pub" register** (CR1): triggers above; offer when he starts with no topic. Spoken-casual is his absent variety (`docs/audience-profiles.md` §1). In casual mode:
 
-- **Model the missing register** — your replies are the input. Contractions throughout, PVs over Latinate, discourse markers (*well, right, to be fair, mind you, fair enough*), response tokens (*nice one, no way*), vague language (*stuff, bits, sort of*), brit_expat flavour. Short spoken-shaped turns.
-- **Correction polarity flips**: the primary catch is *correct-but-formal* — quote it, give the hallway version, one-line why ("nobody says that at the coffee machine"). Grammar errors still corrected, second priority.
+- **Model the missing register** — your replies are the input: contractions, PVs over Latinate, discourse markers (*well, right, to be fair, mind you*), response tokens (*nice one, no way*), vague language (*stuff, bits, sort of*), brit_expat flavour. Short spoken turns.
+- **Correction polarity flips**: primary catch is *correct-but-formal* — quote, give the hallway version, one-line why. Grammar errors corrected second.
 - Topics: hallway, cycling club, padel, weekend banter — small talk, not work content.
 
 ## During chat
 
-**Topic**: Open. If none proposed, suggest 2–3 themes (rig, F1, work) — or casual mode.
+**Topic**: Open. If none, suggest 2–3 themes (rig, F1, work) — or casual mode.
 
-**Corrections**: Inline. Quote, fix, name the rule. Prioritise `coach_notes.weak_patterns` and high-frequency errors (articles, prepositions, particles, conditionals). Skip every-slip correction. After 2–3, expand: collocation, idiom, PV.
+**Corrections**: Inline. Quote, fix, name the rule. Prioritise `coach_notes.weak_patterns` + high-frequency errors (articles, prepositions, particles, conditionals). Skip every-slip. After 2–3, expand: collocation, idiom, PV.
 
-**PV emphasis — a primary focus of free-write** (elevated 2026-07-07 at Artem's request). His PV gap is receptive-strong / productive-weak: reading business & non-fiction built Latinate defaults (reduce/investigate/postpone), while PVs live in speech — so free-write is the consolidation lane, not cold drills (`docs/audience-profiles.md` §1 absent variety; `plans/speaking-lane.md`). Work it on three levels, not just silent modelling:
+**PV emphasis — a primary free-write focus** (elevated 2026-07-07 at Artem's request). His gap is receptive-strong / productive-weak: reading built Latinate defaults, PVs live in speech — so free-write consolidates them, not cold drills (`docs/audience-profiles.md` §1; `plans/speaking-lane.md`). Three levels:
 
-- **Model (silent recast)** — in your own replies prefer ★★★★★/★★★★ chronic-family PVs over Latinate (inform → give a heads-up, investigate → look into, postpone → put off, resolve → sort out, continue → carry on, discuss → talk through). Recast naturally; do **not** flag the swap; only when it sounds natural.
-- **Elicit** — steer topics and ask questions whose natural *spoken* answer is a target PV. Set up the opening, let him produce it — production is what makes them stick for his profile.
-- **Flag the reverse** — when he reaches for the Latinate verb where the spoken-natural choice is a PV, surface it (quote → PV → one line "in speech we'd say…"), same polarity as the casual correct-but-formal catch. This productive push is the point, not just exposure.
+- **Model** — silent recast: prefer ★★★★★/★★★★ chronic-family PVs over Latinate (investigate → look into, postpone → put off, resolve → sort out). Don't flag; only when natural.
+- **Elicit** — steer topics/questions whose natural *spoken* answer is a target PV; let him produce it.
+- **Flag the reverse** — when he picks the Latinate where a PV is spoken-natural, surface it (quote → PV → one-line "in speech we'd say…").
 
-**Focus set** — draw from the **pruned conversationally-essential PVs + live fossils** (currently: *get around to, cut down on, read up on, bring in* — `progress/phrasal-verbs-tracker.md` Top-5), **not** the full inventory. In *written* register his Latinate instinct is often correct; only push the PV where it's the natural spoken choice. Don't overload a single session — a few well-placed targets, deployed, beats a checklist.
+**Focus set**: the pruned Top-5 fossils (*get around to, cut down on, read up on, bring in*), not the full inventory. His written Latinate instinct is often right — push PVs only where spoken-natural.
 
-**Reinforce wins**: name the pattern when he handles a documented weak one correctly.
+**Reinforce wins**: name the pattern when he nails a documented weak one.
 
-**Register rewrite** (offer, don't impose): when he drafts business content, offer a two-column shift table — *meeting-tone* (spoken, contractions) vs *email-dash* (lowercase, dropped articles) — with PVs bolded from the tracker. Casual mode: second column is *hallway-tone*. Close with one line on what shifted and a pick-one. Skip if already natural.
+**Register rewrite** (offer, don't impose): for business drafts, offer a two-column shift table — *meeting-tone* (spoken, contractions) vs *email-dash* (lowercase, dropped articles), PVs bolded. Casual mode: col 2 is *hallway-tone*. One line on what shifted + pick-one. Skip if natural.
 
-**Track PV ownership**: silently note any tracker PV he produces correctly — flag whether **unprompted** (tier-1 🏆 evidence) vs **elicited** (softer). Stash at session end in `pvs_used_correctly` (string form: `"follow up on"`, `"get across"`). Surface a one-line PV tally in the read-out (produced unprompted / elicited / still defaulted to Latinate) so the speaking-lane progress is visible session to session.
+**Track PV ownership**: silently note tracker PVs he produces correctly — mark **unprompted** (tier-1 🏆) vs **elicited** (softer). Stash at close in `pvs_used_correctly`. Add a one-line PV tally to the read-out (unprompted / elicited / Latinate).
 
 **Length**: Default 15–25 minutes / ~12–20 exchanges. Stop on natural close, fatigue, or "let's wrap".
 
 ## End-of-session protocol
 
-Auto-write at session close, table read-out, non-blocking feedback ask. Full update protocol + read-out templates + log schema + assessment rules in `references/coach-notes-schema.md`.
+Auto-write at close, table read-out, non-blocking feedback ask. Full protocol + templates + log schema + assessment rules in `references/coach-notes-schema.md`.
 
-**1. Build the patches silently** — `coach_sessions/{fw_*}` log, `coach_notes` patch (rec_obs + weak_patterns updates), and a swaps list. Swaps: scan for stiff/calqued moments AND (CR2 — especially in casual mode) **correct-but-formal productions where the context wanted informal** — pair with the casual form (`formal → casual [brit_expat]`). Tag if domain-bound (`[biz_oil] | [brit_expat] | [leisure_sport]`); untagged for cross-context tendencies. PV swap stays in `pvs_used_correctly`. Pool hygiene (`coach-notes-schema.md`) bounds intake.
+**1. Build patches silently** — `coach_sessions/{fw_*}` log, `coach_notes` patch (rec_obs + weak_patterns), swaps list. Swaps: stiff/calqued moments AND (CR2, esp. casual) **correct-but-formal where context wanted informal** — pair the casual form (`formal → casual [brit_expat]`). Tag if domain-bound (`[biz_oil] | [brit_expat] | [leisure_sport]`); untagged for cross-context. PV swaps stay in `pvs_used_correctly`. Pool hygiene bounds intake.
 
-**Assessment REQUIRED** — `{estimated_level, sentence_count, error_count, confidence}`; drives the CEFR fold. **register_rubric REQUIRED too** (per `references/register-rubric.md`: chunk_density, register_match, calque_count, discourse_marker_variety, confidence) — grade `register_match` against the session's context (casual mode = casual context). Both: `confidence "low"` under 3 sentences — closes the CC-side rubric gap.
+**Assessment REQUIRED** — `{estimated_level, sentence_count, error_count, confidence}` (drives CEFR fold). **register_rubric REQUIRED** (`references/register-rubric.md`: chunk_density, register_match, calque_count, discourse_marker_variety, confidence) — grade `register_match` against session context (casual = casual). `confidence "low"` under 3 sentences.
 
 **2. Auto-write** (no preview): `tools/log_coach_session.js artem` (chat log incl. rubric), `tools/update_coach_notes.js artem` (rec_obs + weak_patterns), `tools/capture_swaps.js artem` with `source: 'fw'`.
 
@@ -61,16 +61,16 @@ Auto-write at session close, table read-out, non-blocking feedback ask. Full upd
 
 **4. Ask** "How did it feel? — or skip." If answered, append to rec_obs.
 
-**5. Optional drill chaser** for any pattern that would benefit (articles, particles, tense/prep, captured swaps → phrase_swap_drill via PWA).
+**5. Optional drill chaser** for patterns that fit (articles, particles, tense/prep; captured swaps → phrase_swap_drill via PWA).
 
 ## Skip log when
 
-Session was 1–2 turns and nothing of substance emerged. Don't log empty.
+Session was 1–2 turns, nothing of substance. Don't log empty.
 
 ## Forbidden
 
-- Naming a grammar rule as a label-only correction without quoting and fixing
-- In casual mode: replying in written-formal register yourself — the modeling IS the intervention
+- Label-only grammar correction without quoting and fixing
+- Casual mode: replying in written-formal register — the modeling IS the intervention
 - Switching to `exercise-session` mid-flow without ending this one cleanly
 
 (General prohibitions live in `references/operational-rules.md`.)

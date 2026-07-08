@@ -19,8 +19,8 @@ CLAUDE.md only routes.
 
 | File | Use when |
 |---|---|
-| `README.md` | Repo map — folder contract + house rules. |
-| `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill rules, don't-build. Surface conflicts. |
+| `README.md` | Folder contract + house rules. |
+| `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill/don't-build rules. |
 | `docs/audience-profiles.md` | Per-player design + orthographic-fluency case study. |
 | `docs/system-mechanisms.md` | Active window, surfaces, AI roles, stats stores. |
 | `docs/data-flow.md` | Before changing write paths. Surface→Firestore flows. |
@@ -55,11 +55,11 @@ References win on conflict.
 
 | File | Owner | Refreshed by |
 |---|---|---|
-| `progress/phrasal-verbs-tracker.md` | Artem (B1–C1, business + cycling) | `stats-review` (per-PV status + Freq) |
-| `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
+| `progress/phrasal-verbs-tracker.md` | Artem | `stats-review` (status + Freq) |
+| `progress/phrasal-verbs-tracker-anna.md` | Anna | `stats-review` (status + Freq) |
 | `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
 | `progress/weak-spots-tracker-artem.md` | Artem | `stats-review` — two-tier; builder-only |
-| `progress/exercise-domain-map-artem.md` | Artem | `stats-review` + on demand — leverage-sorted program view. Render on "program view"/"domain map"; surface ▲ zone at `exercise-session` start. Table only, never a widget. |
+| `progress/exercise-domain-map-artem.md` | Artem | `stats-review`/on-demand — leverage-sorted program view; ▲ zone at session start. |
 
 ---
 
