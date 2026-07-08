@@ -59,6 +59,7 @@ References win on conflict.
 | `progress/phrasal-verbs-tracker-anna.md` | Anna (A1–B1, family + daily life) | `stats-review` (per-PV status + Freq) |
 | `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
 | `progress/weak-spots-tracker-artem.md` | Artem | `stats-review` — two-tier; builder-only |
+| `progress/exercise-domain-map-artem.md` | Artem | `stats-review` + on demand — leverage-sorted program view. Render on "program view"/"domain map"; surface ▲ zone at `exercise-session` start. Table only, never a widget. |
 
 ---
 

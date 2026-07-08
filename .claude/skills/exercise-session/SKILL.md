@@ -14,6 +14,7 @@ Structured supplementary exercise session for one named player. Family path (Ann
 - `references/exercise-types.md` — type definitions and selection criteria
 - `references/weekly-slots.md` — Artem only
 - `progress/phrasal-verbs-tracker.md` **Top-5 drill queue** — PV-focused sessions (Artem) drill from that queue, top-down
+- `progress/exercise-domain-map-artem.md` — Artem only. At session start, surface just the **▲ leverage-zone rows** as the orienting read, then go to step 2. Full table only on explicit "program view"/"domain map". Table format, never a widget.
 
 If Artem mentions travel at session start, adopt location-appropriate themes for this session only.
 
