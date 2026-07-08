@@ -115,7 +115,7 @@ fragile.
 - Do not increase item count until irregular verb accuracy consistently > 70% across 2+ sessions
 
 **Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
-- `[home_daily]` — K-pop, school, friends, topics she actually cares about
+- `[home_daily]` — Russian music (prefers it; **dislikes K-pop** — her own words, 2026-07-01 diagnostic writing: "I hate k-pop, I like russian music more"), gaming/zombie-survival roleplay, school, friends, topics she actually cares about
 - `[leisure_sport]` — sports she does or watches
 - `[brit_expat]` — expat-school friends, weekend hangouts, things her classmates would say
 - If Artem mentions family travel at session start, shift to location-appropriate scenarios

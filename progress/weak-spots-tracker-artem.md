@@ -12,7 +12,7 @@
 
 **Source**: `coach_notes.weak_patterns`, `coach_notes.recent_session_signals`, `players/artem/exercises/*`
 **Rubric**: `references/weak-spots-rubric.md`
-**Last refresh**: 2026-07-03-r2 (weak_patterns restructured 23→8 `[Domain · TIER]` labels; parked patterns now live here only; dossier appendix added)
+**Last refresh**: 2026-07-06 (of-PP identifying re-opened CLOSED→NEXT `regressed(generalisation)` per 7/05 retention probe; ditransitive-IO evicted from `weak_patterns` to tracker-only; b2-perfect cycle-1 + bring-up-with first-clean-production addenda; than/that + last/latest probe dates advanced +6w)
 **Refresh trigger**: any `stats-review` run.
 
 ---
@@ -67,9 +67,9 @@ Edge-of-competence (§1 engagement) breaks ties.
 
 | Domain | Type · lane | 🔴 | 🟡 | 🟢 | Last touched | Next move |
 |---|---|---|---|---|---|---|
-| **Articles** | rule · open-ended | 2 | 3 | 2 | 2026-07-01 | the-overuse cleanup (NOW); double-genitive + mass-noun cooling — re-checks due ~07-08/07-16 |
+| **Articles** | rule · open-ended | 3 | 3 | 1 | 2026-07-05 | the-overuse cleanup (NOW); of-PP identifying **regressed** → NEXT; opposite-of determiner confirmed live; double-genitive + mass-noun cooling — re-checks ~07-16 |
 | **Non-finite (gerund/infinitive)** | rule · **finite → near-closable** | 0 | 2 | 1 | 2026-07-02 | cooling after 07-01 closed-set drill; worth-X one confirming touch from CLOSED |
-| **Tense & aspect** | mixed · compound=rule / past-in-speech=**production** | 2 (+1 spk) | 1 | 0 | 2026-07-01 | **B2 perfect-aspect compound zones (NOW)** — the big untouched front; temporal-anchor next |
+| **Tense & aspect** | mixed · compound=rule / past-in-speech=**production** | 2 (+1 spk) | 1 | 0 | 2026-07-05 | **B2 perfect-aspect (NOW)** — cycle 1 drilled 7/05 (5/8 cold, self-corrects+generalises); re-test ~7/26. temporal-anchor next; ditransitive-IO now tracker-only |
 | **Phrasal verbs** | **lexical inventory** | → tracker | | | 2026-07-02 | `pv_cold_streak.js`; get_around_to confirmed fossil (production ×2 fail); get_across production-closed |
 | **L1 lexical / preposition** | rule · finite | 2 | 0 | 2 | 2026-07-02 | bring-up-**with** collocation set (NOW); in-case-of + opposite-of determiner bundle (NEXT) |
 | **Emphasis** | rule · finite | 0 | 1 | 1 | 2026-05-13 | correlatives — ambient; **stalest domain** (50+ days) |
@@ -85,16 +85,16 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 ### NOW — drill next
 | Pattern | Domain | 🚦 | Why here |
 |---|---|---|---|
-| B2 perfect-aspect compound zones (PP+already+passive / PPC+duration / backshift drop) | Tense/aspect | 🔴 | strong multi-instrument evidence (v1+v2 diagnostic); production; the only big front NOT touched by the 07-01 session; expensive (2–3 cycles) but everything cheaper is now cooling |
-| bring up **with** (not "to") — reporting-verb + preposition set (bring up / raise / flag with) | L1 lexical | 🔴 | 3 independent sessions (5/18, 5/20, 7/02), 3 formats; cheap closed-set drill; biz register |
+| B2 perfect-aspect compound zones (PP+already+passive / PPC+duration / backshift drop) | Tense/aspect | 🔴 | **cycle 1 drilled 7/05** — 5/8 cold; each zone fires once then self-corrects + generalises same-session (deployment gap, not knowledge). Strong cycle 1; **re-test ~7/26** (priming risk sooner). Dossier est. 2–3 cycles. Stay NOW |
+| bring up **with** (not "to") — reporting-verb + preposition set (bring up / raise / flag with) | L1 lexical | 🔴 | 3 sessions (5/18, 5/20, 7/02); **7/05 first clean cold "with" (1 rep)** — progress, not close. One more confirm then de-emphasise |
 | `the`-overuse with abstract / zero-article nouns | Articles | 🔴 | recurred 6/14 ("take into the account"); cheap; keeps Articles rotating while its two hot patterns cool |
 
 ### NEXT — queued
 | Pattern | Domain | 🚦 | Why here |
 |---|---|---|---|
 | Temporal-anchor "last time … present-for-past" (narrative calque) | Tense/aspect | 🔴 | promoted 6/19; cheap; distinct from when+future (which is cooling) — natural follow-on after its re-check |
-| Ditransitive order with pronoun IO ("sent to me the report") | Tense/aspect (word order) | 🔴 | promoted 7/03; ×2 but **same-day ridge — re-confirm on an independent surface before a dedicated drill** |
-| "in case of X" calque (use for/when/if per meaning) | L1 lexical | 🔴 | untouched by recent sessions; partly drilled 5/20 |
+| of-PP identifying on existing events — **regressed(generalisation)** | Articles | 🔴 | was CLOSED; 7/05 retention probe: exemplar pass ("the result of the negotiations") but **sibling fail** ("the delay reason" for "the cause of the delay"). Re-opened; cheap add-on to any article drill |
+| "in case of X" calque (use for/when/if per meaning) | L1 lexical | 🔴 | **production-confirmed 7/05** ("in case of the contractor breaches..." for conditional if); partly drilled 5/20 |
 | "opposite of X" missing determiner ("the opposite of") | Articles | 🔴 | residual after the preposition half closed 5/20; cheap add-on to any article drill |
 
 ### AMBIENT — exposure, not scheduled drills
@@ -118,7 +118,8 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 | Temporal subordinate "when + future" | Tense/aspect | 🟡 | drilled 7/01 — re-check ~7/08 |
 | Mass-noun + indefinite hypercorrection ("an advice") | Articles | 🟡 | drilled 7/01 — re-check ~7/08 |
 | Definite-article drop on post-modified NPs — incl. possessor-environment variant (signal ×2 folded 7/03) | Articles | 🟡 | held clean cold 6/14 — monitor; possessor trigger untested cold |
-| Dummy-`it` SVO carryover | Register/fluency | 🟡 | drilled 5/18; **re-check overdue** — fold one probe into next free-write |
+| Dummy-`it` SVO carryover | Register/fluency | 🟡 | **passed 7/05 retention probe** (dropped the it-cleft, item 2); residual = article+possessive stacking ("a few contractor's analysts" → "a few of the contractor's") |
+| Ditransitive order with pronoun IO ("sent to me the report") | Tense/aspect (word order) | 🟡 | **tracker-only** (evicted from `weak_patterns` 7/06 — same-day-5/17 ×2 never re-confirmed, un-drilled 7wk); re-enters NEXT on next independent surface |
 
 ### CLOSED / maintenance — resolved cold, on expanding retention probes
 Per `plans/retention-lane.md`: production probes at +2w → +6w → +4m from close; two
@@ -126,12 +127,24 @@ clean probes (≥1 untrained sibling) → retired; a miss → NEXT tagged `regre
 
 | Pattern | Domain | 🚦 | Closed | Next probe |
 |---|---|---|---|---|
-| "it's worth X-ing" complement (6/6 clean 7/02 incl. cold production) | Non-finite | 🟢 | 7/02 | probe due 2026-07-16 |
-| get_across production (4/4 across 3 contexts 7/02) | Phrasal verbs | 🟢 | 7/02 | probe due 2026-07-16 |
-| last/latest terminal-in-window | Articles | 🟢 | held cold 6/14 | probe due 2026-07-03 (first probe overdue — lane shipped today) |
-| of-PP identifying on existing events | Articles | 🟢 | held cold 6/14 (was a 5/17 miss) | probe due 2026-07-03 (overdue) |
-| "opposite **of**" not "opposite to" (preposition half; determiner residual → NEXT) | L1 lexical | 🟢 | 5/20 | probe due 2026-07-03 (overdue) |
-| "than" vs "that" (чем trap) | L1 lexical | 🟢 | 5/20 | probe due 2026-07-03 (overdue) |
+| "it's worth X-ing" complement (6/6 clean 7/02 incl. cold production) | Non-finite | 🟢 | 7/02 | probe due 2026-07-16 (7/05 probe: pass after 1 nudge — softer evidence, holds) |
+| get_across production (4/4 across 3 contexts 7/02) | Phrasal verbs | 🟢 | 7/02 | probe due 2026-07-16 (7/05 clean cold recall — confirming touch, safe to de-emphasise) |
+| last/latest terminal-in-window | Articles | 🟢 | held cold 6/14 | **1st clean probe 7/05** (discrimination held both directions) → next probe ~2026-08-16 (+6w) |
+| "opposite **of**" not "opposite to" (preposition half; determiner residual is live on NEXT) | L1 lexical | 🟢 | 5/20 | **preposition half clean 7/05** ("different from" sibling clean) → next probe ~2026-08-16 (+6w); determiner half regressed → NEXT |
+| "than" vs "that" (чем trap) | L1 lexical | 🟢 | 5/20 | **1st clean probe 7/05** (+ clean untrained sibling) → next probe ~2026-08-16 (+6w) |
+
+### WATCHLIST — single-session signals (×1, not ranked; promote on a 2nd cold surface)
+Not drill fronts yet — each needs one independent recurrence to clear the 2-session gate.
+
+| Signal | Source | Note |
+|---|---|---|
+| `prevent/stop + from + gerund` → "to"-infinitive calque | 7/05 WS prepositions (cold) | clean recognition/production split — produced correctly one item later in a fill frame |
+| time-preposition on months/years ("at September"/"on 2027" → "in") | 7/05 WS prepositions | haste at C1; prepositions not a drill front |
+| `the number of` vs `a number of` (article-tracking, not "number→plural") | 7/06 WS subject-verb agreement | locked in-session with a 4-item drill; off-catalog |
+| embedded "how they look **like**" / "the way **how**" conflation | 7/06 tutor | classic RU-L1 C1 residual |
+| relative "**what**" for which/that ("exposure what's the problem") | 7/06 tutor | — |
+| irregular over-regularization ("tooks" / "was **splitted**") | 7/06 tutor | invariant verbs put/quit/split |
+| adjective+prep "good **in**" → "good **at**" · season "snow **at**" → "**in** winter" | 7/04–06 tutor | preposition lane (non-drill front) |
 
 ---
 
@@ -217,5 +230,8 @@ bring_up + preposition 'to' for 'with' (promoted from recent_session_signals 202
 ### it_worth_x_ing (CLOSED-pending 7/02)
 'It worth to X' (refined 2026-07-02, de-emphasis candidate) — gerund-after-worth now landing clean 6/6 in a dedicated error_correction drill, including cold free-production (no error-spotting scaffold). The dropped-apostrophe half ('It worth' -> "It's worth") slipped once when attention was split across two stacked errors in one sentence, but isolated production got the full construction right unprompted — reads as competing-error attention split, not a standing gap. Two other residuals from the same 2026-05-20 bundle (in-case-vs-if semantics, opposite-of missing determiner) were NOT touched this session and remain open.
 
-### ditransitive_to_me_with_pronoun_io (NEXT, promoted 7/03)
-Ditransitive order with pronoun IO — 'sent to me the report' for 'sent me the report' (V + IO + DO when IO is a pronoun). 2x 2026-05-17 article_drill_live. Ridge: same-day — re-confirm on next independent surface before drilling. [data]
+### ditransitive_to_me_with_pronoun_io (tracker-only, evicted 7/06)
+Ditransitive order with pronoun IO — 'sent to me the report' for 'sent me the report' (V + IO + DO when IO is a pronoun). 2x 2026-05-17 article_drill_live. Ridge: same-day only, never re-confirmed. Addendum 2026-07-06: evicted from `weak_patterns` (cap 8) to make room for the of-PP re-open — weakest NEXT evidence, un-drilled for 7 weeks. Held tracker-only; re-enters NEXT on the next independent surface. [data]
+
+### of_pp_identifying_regressed_generalisation (NEXT, re-opened 7/06)
+of-PP identifying on existing events — was CLOSED (held cold 6/14 after a 5/17 miss). 2026-07-05 retention probe (R3 stage) exposed a **generalisation gap**: the trained exemplar produced clean ('the result of the negotiations', item 9) but an untrained sibling failed — compound-noun default 'the delay reason' instead of the of-PP identifier 'the cause of / reason for the delay' (item 15). Per `plans/retention-lane.md`, an exemplar-pass/sibling-fail probe = generalisation regression → CLOSED→NEXT tagged `regressed(generalisation)`, not a full re-open to active fossil. Cheap add-on to any article drill; target the of-PP identifier on *untrained* head nouns specifically, not the drilled exemplars. [data]

@@ -1,9 +1,9 @@
 {
-  "savedAt": "2026-07-03T08:27:39.348Z",
+  "savedAt": "2026-07-06T09:42:40.398Z",
   "players": {
     "artem": {
       "createdAt": "2026-02-01T00:00:00.000Z",
-      "totalAnswered": 3672,
+      "totalAnswered": 3701,
       "qStatsCount": 1883
     },
     "anna": {
@@ -13,7 +13,7 @@
     },
     "nicole": {
       "createdAt": "2026-03-01T00:00:00.000Z",
-      "totalAnswered": 894,
+      "totalAnswered": 901,
       "qStatsCount": 514
     },
     "ernest": {
