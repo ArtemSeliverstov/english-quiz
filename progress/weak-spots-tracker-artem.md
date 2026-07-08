@@ -12,7 +12,7 @@
 
 **Source**: `coach_notes.weak_patterns`, `coach_notes.recent_session_signals`, `players/artem/exercises/*`
 **Rubric**: `references/weak-spots-rubric.md`
-**Last refresh**: 2026-07-06 (of-PP identifying re-opened CLOSED→NEXT `regressed(generalisation)` per 7/05 retention probe; ditransitive-IO evicted from `weak_patterns` to tracker-only; b2-perfect cycle-1 + bring-up-with first-clean-production addenda; than/that + last/latest probe dates advanced +6w)
+**Last refresh**: 2026-07-08 (stats-review regeneration+audit half, no fresh quiz data). Grammar-harvest of last-20 CC chats: **embedded/indirect-question & wh-word structure promoted watchlist→NEXT** (2nd surface via interview + CC prompts cleared the gate); of-PP identifying + opposite-of determiner **merged** into one Articles·NEXT "determiner on of-pinned nouns" row (mirrors the `weak_patterns` cap-8 consolidation); prevent-from routed to the verb+prep lane (converted 3/8); 5 new one-offs added to WATCHLIST; `weak_patterns` audited clean at 8 (no promotions — cut_down_on/agree_to/stem_from stay in their lanes). Prior (2026-07-06): of-PP re-opened; ditransitive-IO evicted to tracker-only; b2-perfect cycle-1 + bring-up-with addenda.
 **Refresh trigger**: any `stats-review` run.
 
 ---
@@ -67,7 +67,8 @@ Edge-of-competence (§1 engagement) breaks ties.
 
 | Domain | Type · lane | 🔴 | 🟡 | 🟢 | Last touched | Next move |
 |---|---|---|---|---|---|---|
-| **Articles** | rule · open-ended | 3 | 3 | 1 | 2026-07-05 | the-overuse cleanup (NOW); of-PP identifying **regressed** → NEXT; opposite-of determiner confirmed live; double-genitive + mass-noun cooling — re-checks ~07-16 |
+| **Articles** | rule · open-ended | 2 | 3 | 1 | 2026-07-05 | the-overuse cleanup (NOW); of-PP + opposite-of **merged** → one "determiner on of-pinned nouns" (NEXT); double-genitive + mass-noun cooling — re-checks ~07-16 |
+| **Syntax (question/wh-structure)** | rule · finite | 1 | 0 | 0 | 2026-07-08 | **new domain 7/08** — embedded/indirect-question & wh-word structure (NEXT), promoted from watchlist via grammar harvest; finite trigger set, near-closable with one focused drill |
 | **Non-finite (gerund/infinitive)** | rule · **finite → near-closable** | 0 | 2 | 1 | 2026-07-02 | cooling after 07-01 closed-set drill; worth-X one confirming touch from CLOSED |
 | **Tense & aspect** | mixed · compound=rule / past-in-speech=**production** | 2 (+1 spk) | 1 | 0 | 2026-07-05 | **B2 perfect-aspect (NOW)** — cycle 1 drilled 7/05 (5/8 cold, self-corrects+generalises); re-test ~7/26. temporal-anchor next; ditransitive-IO now tracker-only |
 | **Phrasal verbs** | **lexical inventory** | → tracker | | | 2026-07-02 | `pv_cold_streak.js`; get_around_to confirmed fossil (production ×2 fail); get_across production-closed |
@@ -93,9 +94,9 @@ PV and Register/fluency counts are pointers, not drill targets — see their lan
 | Pattern | Domain | 🚦 | Why here |
 |---|---|---|---|
 | Temporal-anchor "last time … present-for-past" (narrative calque) | Tense/aspect | 🔴 | promoted 6/19; cheap; distinct from when+future (which is cooling) — natural follow-on after its re-check |
-| of-PP identifying on existing events — **regressed(generalisation)** | Articles | 🔴 | was CLOSED; 7/05 retention probe: exemplar pass ("the result of the negotiations") but **sibling fail** ("the delay reason" for "the cause of the delay"). Re-opened; cheap add-on to any article drill |
+| embedded/indirect-question & wh-word structure | Syntax | 🔴 | **promoted from watchlist 7/08** (grammar harvest) — do-inversion in embedded Qs ("show what **do you** want"→"what you want"), "look like" wh-choice ("how they look like"→"what they look like") + "the way **how**", what-for-which relative. Cross-session: CC prompts + 7/06 interview (seen-twice) — cleared the 2-session gate. L1: Russian embeds without do-support/word-order shift |
+| determiner on of-pinned nouns (of-PP identifying **regressed** + opposite-of residual) | Articles | 🔴 | **merged 7/08** (both are "noun pinned by a following of-phrase needs *the*"): of-PP sibling-fail 7/05 ("the delay reason" for "the cause of the delay") + "opposite of X"→"the opposite of" residual since 5/20. Cheap add-on to any article drill; target *untrained* head nouns |
 | "in case of X" calque (use for/when/if per meaning) | L1 lexical | 🔴 | **production-confirmed 7/05** ("in case of the contractor breaches..." for conditional if); partly drilled 5/20 |
-| "opposite of X" missing determiner ("the opposite of") | Articles | 🔴 | residual after the preposition half closed 5/20; cheap add-on to any article drill |
 
 ### AMBIENT — exposure, not scheduled drills
 | Pattern | Domain | 🚦 | Lane |
@@ -138,13 +139,16 @@ Not drill fronts yet — each needs one independent recurrence to clear the 2-se
 
 | Signal | Source | Note |
 |---|---|---|
-| `prevent/stop + from + gerund` → "to"-infinitive calque | 7/05 WS prepositions (cold) | clean recognition/production split — produced correctly one item later in a fill frame |
+| `prevent/stop + from + gerund` → "to"-infinitive calque | 7/05 WS prepositions (cold) | **→ verb+prep lane** (b05) — converted 3/3 on 7/08 vprep round 2; re-check ~7/15, not a watchlist item any more |
 | time-preposition on months/years ("at September"/"on 2027" → "in") | 7/05 WS prepositions | haste at C1; prepositions not a drill front |
 | `the number of` vs `a number of` (article-tracking, not "number→plural") | 7/06 WS subject-verb agreement | locked in-session with a 4-item drill; off-catalog |
-| embedded "how they look **like**" / "the way **how**" conflation | 7/06 tutor | classic RU-L1 C1 residual |
-| relative "**what**" for which/that ("exposure what's the problem") | 7/06 tutor | — |
-| irregular over-regularization ("tooks" / "was **splitted**") | 7/06 tutor | invariant verbs put/quit/split |
+| irregular over-regularization ("tooks" / "was **splitted**") | 7/06 tutor + interview (seen-twice) | invariant verbs put/quit/split; **closest to promotable** — one more independent surface (next interview) clears the gate |
 | adjective+prep "good **in**" → "good **at**" · season "snow **at**" → "**in** winter" | 7/04–06 tutor | preposition lane (non-drill front) |
+| adverb+article order "a quite dangerous" → "quite a dangerous" | 7/07–08 CC prompts (grammar harvest) | one-off |
+| pronoun reference "but not limited to **it**" → "…to the following" | 7/08 CC prompt | one-off |
+| "one is better than **another**" → "than the other" (two specific referents) | 7/06 WS T3 free production | one-off |
+| subject-pronoun drop "should continue" → "**we** should continue" (RU pro-drop) | 7/08 CC message | one-off; kin to dummy-it (subject slot) |
+| present-simple for progressive "why **do I see**" → "why am I seeing" | 7/08 CC message | one-off |
 
 ---
 
@@ -234,4 +238,7 @@ bring_up + preposition 'to' for 'with' (promoted from recent_session_signals 202
 Ditransitive order with pronoun IO — 'sent to me the report' for 'sent me the report' (V + IO + DO when IO is a pronoun). 2x 2026-05-17 article_drill_live. Ridge: same-day only, never re-confirmed. Addendum 2026-07-06: evicted from `weak_patterns` (cap 8) to make room for the of-PP re-open — weakest NEXT evidence, un-drilled for 7 weeks. Held tracker-only; re-enters NEXT on the next independent surface. [data]
 
 ### of_pp_identifying_regressed_generalisation (NEXT, re-opened 7/06)
-of-PP identifying on existing events — was CLOSED (held cold 6/14 after a 5/17 miss). 2026-07-05 retention probe (R3 stage) exposed a **generalisation gap**: the trained exemplar produced clean ('the result of the negotiations', item 9) but an untrained sibling failed — compound-noun default 'the delay reason' instead of the of-PP identifier 'the cause of / reason for the delay' (item 15). Per `plans/retention-lane.md`, an exemplar-pass/sibling-fail probe = generalisation regression → CLOSED→NEXT tagged `regressed(generalisation)`, not a full re-open to active fossil. Cheap add-on to any article drill; target the of-PP identifier on *untrained* head nouns specifically, not the drilled exemplars. [data]
+of-PP identifying on existing events — was CLOSED (held cold 6/14 after a 5/17 miss). 2026-07-05 retention probe (R3 stage) exposed a **generalisation gap**: the trained exemplar produced clean ('the result of the negotiations', item 9) but an untrained sibling failed — compound-noun default 'the delay reason' instead of the of-PP identifier 'the cause of / reason for the delay' (item 15). Per `plans/retention-lane.md`, an exemplar-pass/sibling-fail probe = generalisation regression → CLOSED→NEXT tagged `regressed(generalisation)`, not a full re-open to active fossil. Cheap add-on to any article drill; target the of-PP identifier on *untrained* head nouns specifically, not the drilled exemplars. [data] — Addendum 2026-07-08: merged with `opposite_of` determiner residual into one Articles·NEXT row "determiner on of-pinned nouns" during the cap-8 audit (same underlying rule: a noun made identifiable by a following of-phrase takes *the*). Both exemplars preserved; drill either.
+
+### embedded_indirect_question_wh_structure (NEXT, promoted 7/08)
+Embedded/indirect-question & wh-word structure — surfaced via the 2026-07-08 grammar harvest of the last-20 CC chats. Three related sub-forms: (a) **do-inversion inside embedded questions** — 'show what **do you** want to change' for 'show what you want to change' (keeps main-clause interrogative word order in the embedded clause); (b) **'look like' wh-choice + 'the way how'** — 'how they look like' for 'what they look like', and redundant 'the way **how**' (interview, seen-twice); (c) **relative 'what' for which/that** — 'exposure **what's** the problem' for 'which is the problem'. Ridge: promoted from two separate WATCHLIST ×1 entries (7/06 tutor: look-like + relative-what) after a **2nd independent surface** — the interview-prep spoken answers (b52128d3, seen-twice) plus a do-inversion instance in the 2026-07-08 system-build session prompts (bfaccf55, 'show what do you want'). Cross-session, cross-format → cleared the 2-session gate. L1 mechanism: Russian embeds questions without do-support and without the main→embedded word-order shift, and lacks the what/how look-like distinction. Type: rule · finite (enumerable trigger set) → near-closable with one focused error_correction/production drill on embedded-Q word order + look-like wh-choice. [data]

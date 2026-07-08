@@ -17,17 +17,18 @@ Identify patterns, weak spots, adjustments. Output: structured review + ≤2 new
 - `references/stats-interpretation-guide.md` — act-on/ignore rules, engagement, compromised categories
 - `progress/phrasal-verbs-tracker.md` (Artem), `progress/phrasal-verbs-tracker-anna.md` (Anna) — per-PV status; methodology in Artem's file
 - `progress/natural-phrases-tracker-{name}.md` × 5 — **generated** views of `phrase_tracker`; regen via `update_coach_notes.js --regen-tracker-md`
+- `progress/exercise-domain-map-artem.md` (Artem) — **generated** program view; regen per its self-contained recipe (PROTOCOL step 8a)
 - `tools/mistake_verdicts.json` — open `bug:*` qids to exclude from gap evidence
 
 ## Workflow (mandatory)
 
-Execute PROTOCOL.md steps **0–8 in order** — integrity gate → pull → signal selection →
+Execute PROTOCOL.md steps **0–8a in order** — integrity gate → pull → signal selection →
 profile context → coverage (window-partitioned, bug-qids excluded) → per-qid audit →
 session-id reconciliation → synthesis → pattern-id reuse → proposals (≤2/player,
 ridge-characterised, confirm-first) → action recs → phrase-tracker maintenance (auto) →
 signals promotion via `promote_signals.js` + weak_patterns audit (cap 8) → weak-spots
-tracker regen for Artem (auto, per `weak-spots-rubric.md`). Do not run from memory;
-do not skip 0, 6, 7, or 8.
+tracker regen for Artem (auto, per `weak-spots-rubric.md`) → exercise domain-map regen
+for Artem (auto, 8a). Do not run from memory; do not skip 0, 6, 7, 8, or 8a.
 
 ## Speculation marking
 

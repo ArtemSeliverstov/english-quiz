@@ -57,10 +57,10 @@ Program-level view of every active learning front, **sorted by leverage** (not b
 | ▲ | agree to (accept a proposal) | Verb+prep | ●●○○○ | 🔴 | → | drill b01/b02 | 2026-07-15 |
 | ▲ | stem from | Verb+prep | ●●○○○ | 🔴 | → | force production, b03/b04 | 2026-07-15 |
 | | perfect-aspect compounds | Tense/aspect | ●●●●○ | 🔴 | ⏸ | re-test | 2026-07-26 |
-| | of-PP identifying ("cause of the delay") | Articles | ●●●○○ | 🟡 | ↓ | pair with the-overuse | |
+| | determiner on of-pinned nouns ("cause of the delay" · "the opposite of") | Articles | ●●●○○ | 🟡 | ↓ | pair with the-overuse | |
+| | embedded/indirect-question & wh-word structure | Syntax | ●●●○○ | 🟡 | → | drill wh-word order (interview) | |
 | | come up with · read up on · cut down on | Phrasal verbs | ●●●○○ | 🟡 | → | rotate into PV batches | |
 | | temporal-anchor calque (past + present verb) | Tense/aspect | ●●○○○ | 🟡 | → | short set when fresh | |
-| | "opposite of X" determiner | Articles | ●○○○○ | 🟡 | → | fold into article drill | |
 | | raise / bring up WITH (not "to") | PV / verb+prep | ●●○○○ | 🔴 | ↑ | re-check | 2026-07-15 |
 | | prevent / stop from + -ing | Verb+prep | ●●○○○ | 🔴 | ↑ | re-check, b05 | 2026-07-15 |
 | | "in case of X" calque | L1 lexical | ●○○○○ | 🟡 | ↑ | re-check | 2026-07-15 |
@@ -90,3 +90,5 @@ The delivery lanes that work the fronts above. Cadence + next due; Due rendered 
 ## Leverage-zone read (2026-07-08)
 
 Five ▲ fronts are 🔴 NOW and not moving — but **Size** splits them: the genuinely big-and-active problems are only two — **the-overuse (●●●●●)** and **get through¹ (●●●●○)**. The other three (get around to, agree to, stem from) are smaller and quick to close. **Due** surfaces a convergence: five items (agree to, stem from, raise-with, prevent-from, in-case-of) all fall due ~Jul 15 — run them as **one re-check session next week**, not piecemeal. Perfect-aspect is a big (●●●●○) problem sitting *parked* until Jul 26 — deliberate, not neglected.
+
+*Refreshed 2026-07-08 via `stats-review` (regeneration + audit half): added the new **Syntax** front (embedded/indirect-question structure, from the grammar harvest) and merged the two Articles·NEXT determiner rows into one. `weak_patterns` audited, clean at cap 8.*

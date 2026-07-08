@@ -101,3 +101,11 @@ CLOSED/maintenance rows (+2w → +6w → +4m from close; retire after two clean
 production probes incl. one untrained sibling; probe miss → NEXT tagged `regressed`
 — `plans/retention-lane.md`). This file is the status table `weak-spots-session`
 consumes.
+
+**8a. Exercise domain map (Artem, auto — after 8 so fronts + tiers are settled).**
+Regenerate `progress/exercise-domain-map-artem.md` per its own "How to build it"
+recipe (self-contained in that file): Fronts table from `weak_patterns` (Tier from
+the `[Domain · TIER]` prefix) + PV Top-5 + `recent_observations` (Size/Move/Due) +
+weak-spots CLOSED/PARKED status; Lanes table from `weekly-slots.md` +
+`retention-lane.md`. Leverage-sorted, symbol-forward (Size ●-dial + Due relative to
+today), **table only — never a widget** (`feedback_prefers_tables_over_visuals`).
