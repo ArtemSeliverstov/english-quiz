@@ -1,0 +1,533 @@
+{
+  "_note": "Artem verb+preposition collocation lane (RU→EN production). Standing, EXPANDING bank — append new batches (b02, b03…) at each touch, don't rewrite. Origin: 2026-07-05 prep test (~80% but 'very unsure' — confidence deficit on verb-choice/collocation) + 2026-07-08 two-round live session (15/22 on target). Front-loaded with the two isolated residuals from 07-08: agree_to (defaults to 'agree on') and stem_from (avoided both rounds, not in active output). Converting, keep for spaced re-check: prevent/stop-from-gerund, raise/bring-up-with. Run as `translation` in library mode (present prompt_ru, score vs correct_answers, fire common_errors[].regex, else fallback_feedback). Articles stripped by normalize() in scoring — the_overuse is Artem's parallel NOW front, tracked separately, not scored here. See memory project_artem_verb_prep_collocation_lane + coach_notes 07-08.",
+  "_coverage": {
+    "_legend": "status per collocation: residual=drill-priority gap | recheck=converting, spaced re-check | solid=confirmed 2026-07-08 (log only, no item yet) | seeded=authored in b01 | candidate=b02+ pipeline, not yet authored",
+    "_domains_authored": ["FROM", "TO", "WITH", "ON", "FOR"],
+    "_domains_untouched": ["OF", "IN", "INTO", "AGAINST"],
+    "FROM (origin · separation · prevention)": [
+      {"v": "stem from", "sense": "originate in", "status": "residual", "item": "vp_artem_b03"},
+      {"v": "result from", "sense": "be caused by (vs result in)", "status": "seeded", "item": "vp_artem_b07"},
+      {"v": "prevent/stop (sb) from -ing", "sense": "block", "status": "recheck", "item": "vp_artem_b05"},
+      {"v": "refrain from -ing", "sense": "hold back", "status": "seeded", "item": "vp_artem_b13"},
+      {"v": "benefit from", "sense": "gain by (verb; noun = benefit of)", "status": "seeded", "item": "vp_artem_b15"},
+      {"v": "arise from / derive from", "sense": "come out of", "status": "candidate", "item": null},
+      {"v": "suffer from / recover from", "sense": "undergo / bounce back", "status": "candidate", "item": null},
+      {"v": "deviate from / bar (sb) from", "sense": "depart / exclude", "status": "candidate", "item": null}
+    ],
+    "TO (accept · direction · attachment)": [
+      {"v": "agree to", "sense": "accept a proposal (vs agree on/with)", "status": "residual", "item": "vp_artem_b01,vp_artem_b02"},
+      {"v": "object to (+noun/-ing)", "sense": "oppose (not 'against')", "status": "seeded", "item": "vp_artem_b11"},
+      {"v": "resort to", "sense": "fall back on", "status": "seeded", "item": "vp_artem_b09"},
+      {"v": "contribute to", "sense": "help cause / add to", "status": "seeded", "item": "vp_artem_b14"},
+      {"v": "adhere to", "sense": "stick to rules (sibling of comply with)", "status": "candidate", "item": null},
+      {"v": "commit to / amount to", "sense": "pledge / total", "status": "candidate", "item": null},
+      {"v": "respond to / refer to / revert to", "sense": "reply / mention / go back", "status": "candidate", "item": null},
+      {"v": "cater to / subscribe to", "sense": "serve / endorse", "status": "candidate", "item": null}
+    ],
+    "WITH (association · handling)": [
+      {"v": "agree with", "sense": "share a view", "status": "solid", "item": null},
+      {"v": "discuss X with", "sense": "talk over", "status": "solid", "item": null},
+      {"v": "raise / bring up X with", "sense": "take a matter to sb (the fossil)", "status": "recheck", "item": "vp_artem_b06"},
+      {"v": "comply with", "sense": "follow rules", "status": "seeded", "item": "vp_artem_b10"},
+      {"v": "deal with / cope with", "sense": "handle / manage", "status": "candidate", "item": null},
+      {"v": "cooperate with / interfere with", "sense": "work together / disrupt", "status": "candidate", "item": null},
+      {"v": "dispense with / part with", "sense": "do away with / give up", "status": "candidate", "item": null}
+    ],
+    "ON (reliance · topic)": [
+      {"v": "depend on / rely on / count on", "sense": "be contingent / trust", "status": "solid", "item": null},
+      {"v": "agree on", "sense": "jointly settle a point", "status": "solid", "item": null},
+      {"v": "insist on (+noun/-ing)", "sense": "demand", "status": "seeded", "item": "vp_artem_b12"},
+      {"v": "focus on / act on / bank on", "sense": "concentrate / act / rely", "status": "candidate", "item": null},
+      {"v": "embark on / capitalise on", "sense": "begin / exploit", "status": "candidate", "item": null},
+      {"v": "elaborate on / dwell on", "sense": "expand / linger", "status": "candidate", "item": null}
+    ],
+    "FOR (purpose · cause · provision)": [
+      {"v": "account for", "sense": "make up a share / explain", "status": "seeded", "item": "vp_artem_b08"},
+      {"v": "allow for / provide for / budget for", "sense": "factor in / arrange", "status": "candidate", "item": null},
+      {"v": "call for / press for / opt for", "sense": "demand / push / choose", "status": "candidate", "item": null},
+      {"v": "compensate for / brace for", "sense": "offset / prepare", "status": "candidate", "item": null}
+    ],
+    "OF (composition · awareness) — UNTOUCHED": [
+      {"v": "consist of / be composed of", "sense": "be made up of", "status": "candidate", "item": null},
+      {"v": "approve of / conceive of", "sense": "endorse / imagine", "status": "candidate", "item": null},
+      {"v": "dispose of / deprive (sb) of", "sense": "get rid of / withhold", "status": "candidate", "item": null},
+      {"v": "remind / accuse / inform (sb) of", "sense": "—", "status": "candidate", "item": null}
+    ],
+    "IN / INTO (participation · penetration) — UNTOUCHED": [
+      {"v": "result in", "sense": "lead to (trap vs result from)", "status": "candidate", "item": null},
+      {"v": "invest in / engage in / specialise in", "sense": "—", "status": "candidate", "item": null},
+      {"v": "intervene in / factor in", "sense": "step into / include", "status": "candidate", "item": null},
+      {"v": "look into / tap into / delve into", "sense": "investigate / exploit", "status": "candidate", "item": null},
+      {"v": "enter into / translate into", "sense": "begin a deal / convert", "status": "candidate", "item": null}
+    ],
+    "AGAINST (opposition · protection) — UNTOUCHED": [
+      {"v": "advise against / caution against", "sense": "warn off", "status": "candidate", "item": null},
+      {"v": "guard against / hedge against", "sense": "protect / offset risk", "status": "candidate", "item": null},
+      {"v": "discriminate against", "sense": "treat unfairly", "status": "candidate", "item": null}
+    ]
+  },
+  "exercises": [
+    {
+      "id": "vp_artem_b01",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "agree_to", "residual_2026_07_08"],
+      "source_observation": "2026-07-08 vprep session items 2+6: 'agree TO (accept)' missed twice, defaulted to 'agree on'. with/on legs solid; TO is the gap.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Регулятор в итоге согласился на продление сроков.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "In the end the regulator agreed to an extension",
+        "The regulator eventually agreed to an extension",
+        "The regulator finally agreed to extend the deadline",
+        "In the end the regulator agreed to extend the deadline"
+      ],
+      "common_errors": [
+        {
+          "id": "agree_on_for_to",
+          "pattern_label": "agree on (negotiate) for agree to (accept)",
+          "regex": "\\bagreed?\\s+on\\b",
+          "feedback": "✗ 'agree ON' = two sides settle a point together (a price, a date). Here the regulator is GRANTING/accepting a request → 'agree TO an extension'. Rule: say-yes-to → TO."
+        },
+        {
+          "id": "agree_with_for_to",
+          "pattern_label": "agree with for agree to",
+          "regex": "\\bagreed?\\s+with\\b",
+          "feedback": "✗ 'agree WITH' = share someone's view. Accepting a proposal is 'agree TO'. → 'agreed to an extension'."
+        }
+      ],
+      "fallback_feedback": "Target: 'agreed TO an extension' (or 'to extend the deadline'). agree to + a proposal/request you accept. Contrast: agree with (a person), agree on (a jointly-decided point)."
+    },
+    {
+      "id": "vp_artem_b02",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "agree_to", "residual_2026_07_08"],
+      "source_observation": "2026-07-08 session: agree_to residual, second exemplar (union refusing to consent).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Профсоюз никогда не согласится на сокращение зарплат.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The union will never agree to a pay cut",
+        "The trade union will never agree to pay cuts",
+        "The union will never agree to a reduction in salaries",
+        "The union will never agree to wage cuts"
+      ],
+      "common_errors": [
+        {
+          "id": "agree_on_for_to",
+          "pattern_label": "agree on for agree to",
+          "regex": "\\bagree\\s+on\\b",
+          "feedback": "✗ 'agree ON' implies mutual negotiation of the figure. The union is refusing to CONSENT → 'agree TO a pay cut'. say-yes-to → TO."
+        }
+      ],
+      "fallback_feedback": "Target: 'agree TO a pay cut'. Accept/consent = agree to. (Bonus: 'a reduction IN salaries', not 'of the salaries'.)"
+    },
+    {
+      "id": "vp_artem_b03",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "stem_from", "residual_2026_07_08", "avoidance"],
+      "source_observation": "2026-07-08 items 3+4: 'stem from' avoided both rounds ('is caused by', 'comes up due to'). Not in active output — force production.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Задержка проистекает из нехватки квалифицированного персонала.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The delay stems from a shortage of qualified staff",
+        "The delay stems from a lack of qualified personnel",
+        "The delay stems from a shortage of skilled staff"
+      ],
+      "common_errors": [
+        {
+          "id": "caused_by_escape",
+          "pattern_label": "passive escape hatch (is caused by)",
+          "regex": "\\bis\\s+caused\\s+by\\b",
+          "feedback": "✓ grammatical, but you dodged the target. Force the active collocation: 'stems FROM a shortage of staff'. Tighter exec register than the passive."
+        },
+        {
+          "id": "comes_up_due_to",
+          "pattern_label": "comes up due to (avoidance)",
+          "regex": "\\bcomes?\\s+up\\s+due\\s+to\\b",
+          "feedback": "✗ 'comes up due to' is loose. Target: 'stems FROM'. Family: result from, arise from — all take FROM."
+        },
+        {
+          "id": "stem_wrong_prep",
+          "pattern_label": "stem + wrong preposition",
+          "regex": "\\bstems?\\s+(of|by|out|in)\\b",
+          "feedback": "✗ 'stem' takes FROM only: 'stems FROM a shortage'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The delay stems FROM a shortage of qualified staff.' stem from = originate in. Block the escapes ('caused by', 'comes up due to')."
+    },
+    {
+      "id": "vp_artem_b04",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "stem_from", "residual_2026_07_08", "avoidance"],
+      "source_observation": "2026-07-08 stem_from residual, second exemplar.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Проблема возникает из-за плохого планирования на ранней стадии.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The problem stems from poor planning at an early stage",
+        "The problem stems from poor early-stage planning",
+        "The issue stems from poor planning in the early stages"
+      ],
+      "common_errors": [
+        {
+          "id": "comes_up_due_to",
+          "pattern_label": "avoidance (comes up due to)",
+          "regex": "\\bcomes?\\s+up\\b",
+          "feedback": "✗ target is 'stems FROM'. 'comes up' = arises/is mentioned, not the causal-origin sense you want here."
+        },
+        {
+          "id": "stage_wrong_prep",
+          "pattern_label": "on the stage (prep slip)",
+          "regex": "\\bon\\s+the\\s+early\\s+stage\\b",
+          "feedback": "Secondary: 'AT an early stage' / 'IN the early stages', not 'on'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The problem stems FROM poor planning at an early stage.' stem/result/arise + FROM."
+    },
+    {
+      "id": "vp_artem_b05",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "prevent_from", "converting_2026_07_08"],
+      "source_observation": "2026-07-08: prevent/stop-from-gerund converted 3/3 in round 2 after cold miss round 1. Spaced re-check item.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Плохая погода помешала им начать бурение вовремя.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Bad weather prevented them from starting drilling on time",
+        "The bad weather stopped them from starting drilling on time",
+        "Bad weather prevented them from beginning drilling on time"
+      ],
+      "common_errors": [
+        {
+          "id": "prevent_to_infinitive",
+          "pattern_label": "prevent + to (not from -ing)",
+          "regex": "\\b(prevent|stop)(ed|ped|s)?\\s+\\w+\\s+to\\s+\\w+",
+          "feedback": "✗ prevent/stop + sb + FROM + -ing, never 'to'. → 'prevented them FROM starting'."
+        }
+      ],
+      "fallback_feedback": "Target: 'prevented them FROM starting drilling'. prevent/stop sb from doing."
+    },
+    {
+      "id": "vp_artem_b06",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "raise_with", "bring_up_with", "converting_2026_07_08", "fossil"],
+      "source_observation": "2026-07-08 item 7: 'raise X with Y' produced clean cold — 4-session fossil, first clean rep. Spaced re-check.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Я подниму вопрос бюджета с финансовым комитетом на следующей неделе.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "I will raise the budget issue with the finance committee next week",
+        "I'll raise the budget with the finance committee next week",
+        "I will bring the budget up with the finance committee next week",
+        "I'll bring up the budget with the finance committee next week"
+      ],
+      "common_errors": [
+        {
+          "id": "raise_to",
+          "pattern_label": "raise/bring up + to (the fossil)",
+          "regex": "\\b(raise|bring)\\b[^.]*\\bto\\s+the\\b",
+          "feedback": "✗ THE fossil: you take a matter WITH a person, not TO them. → 'raise the budget issue WITH the committee'. (Note: 'flag' tolerates both to/with; raise/bring up want WITH.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'raise the budget issue WITH the finance committee'. raise / bring up X with Y."
+    },
+    {
+      "id": "vp_artem_b07",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "result_from"],
+      "source_observation": "2026-07-08 extension list: result from (FROM family, reinforces stem from).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Убытки стали результатом слабого спроса в этом квартале.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The losses resulted from weak demand this quarter",
+        "The losses resulted from soft demand this quarter",
+        "The losses stemmed from weak demand this quarter"
+      ],
+      "common_errors": [
+        {
+          "id": "result_in_confusion",
+          "pattern_label": "result in (opposite direction)",
+          "regex": "\\bresult(ed|s)?\\s+in\\b",
+          "feedback": "✗ 'result IN' = leads to (cause→effect). Here demand is the CAUSE, so effect→cause = 'resulted FROM weak demand'. Watch the direction: X results from Y (Y causes X); X results in Y (X causes Y)."
+        }
+      ],
+      "fallback_feedback": "Target: 'The losses resulted FROM weak demand.' result from = be caused by. (result in = lead to — opposite.)"
+    },
+    {
+      "id": "vp_artem_b08",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "account_for"],
+      "source_observation": "2026-07-08 extension list: account for (share-of / explain).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "На Азию приходится сорок процентов нашей выручки.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Asia accounts for forty percent of our revenue",
+        "Asia accounts for 40% of our revenue",
+        "Asia makes up forty percent of our revenue"
+      ],
+      "common_errors": [
+        {
+          "id": "account_wrong_prep",
+          "pattern_label": "account + on/of/to",
+          "regex": "\\baccounts?\\s+(on|of|to)\\b",
+          "feedback": "✗ 'account FOR' = make up (a share) / explain. → 'accounts FOR 40% of revenue'."
+        }
+      ],
+      "fallback_feedback": "Target: 'Asia accounts FOR 40% of our revenue.' account for = constitute a proportion (also: explain)."
+    },
+    {
+      "id": "vp_artem_b09",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "resort_to"],
+      "source_observation": "2026-07-08 extension list: resort to.",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "В итоге нам пришлось прибегнуть к сокращениям.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "In the end we had to resort to layoffs",
+        "We eventually had to resort to redundancies",
+        "In the end we were forced to resort to layoffs"
+      ],
+      "common_errors": [
+        {
+          "id": "resort_wrong_prep",
+          "pattern_label": "resort + into/on/for",
+          "regex": "\\bresort(ed|s)?\\s+(into|on|for|with)\\b",
+          "feedback": "✗ 'resort TO' (fall back on a measure). → 'resort TO layoffs'."
+        }
+      ],
+      "fallback_feedback": "Target: 'we had to resort TO layoffs.' resort to = turn to as a last option."
+    },
+    {
+      "id": "vp_artem_b10",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "comply_with"],
+      "source_observation": "2026-07-08 extension list: comply with (compliance register, high-value for Artem).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Мы обязаны соблюдать местные нормативные требования.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "We must comply with local regulatory requirements",
+        "We are required to comply with local regulations",
+        "We have to comply with local regulatory requirements"
+      ],
+      "common_errors": [
+        {
+          "id": "comply_wrong_prep",
+          "pattern_label": "comply + to/on",
+          "regex": "\\bcompl(y|ies|ied)\\s+(to|on|for)\\b",
+          "feedback": "✗ 'comply WITH' (regulations, standards). → 'comply WITH local regulations'. (Note: 'adhere TO' is the sibling that takes TO.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'comply WITH local regulations.' comply with = follow (rules). Sibling: adhere TO."
+    },
+    {
+      "id": "vp_artem_b11",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "object_to"],
+      "source_observation": "2026-07-08 extension list: object to (+ gerund/noun).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Профсоюз возражает против нового графика смен.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The union objects to the new shift schedule",
+        "The trade union objects to the new shift pattern",
+        "The union objects to the new roster"
+      ],
+      "common_errors": [
+        {
+          "id": "object_against",
+          "pattern_label": "object against (calque of против)",
+          "regex": "\\bobjects?\\s+(against|on)\\b",
+          "feedback": "✗ Russian 'против' calques to 'against' — but it's 'object TO'. → 'objects TO the new schedule'. (object to + -ing too: 'objects to working weekends'.)"
+        }
+      ],
+      "fallback_feedback": "Target: 'The union objects TO the new schedule.' object to + noun/-ing. Not 'against'."
+    },
+    {
+      "id": "vp_artem_b12",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "insist_on"],
+      "source_observation": "2026-07-08 extension list: insist on (+ gerund/noun).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Совет директоров настаивает на проведении полного аудита.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The board insists on a full audit",
+        "The board of directors insists on conducting a full audit",
+        "The board insists on carrying out a full audit"
+      ],
+      "common_errors": [
+        {
+          "id": "insist_wrong_prep",
+          "pattern_label": "insist + to/in",
+          "regex": "\\binsists?\\s+(to|in|for)\\b",
+          "feedback": "✗ 'insist ON' (+ noun or -ing). → 'insists ON a full audit' / 'insists ON conducting an audit'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The board insists ON a full audit.' insist on + noun/-ing."
+    },
+    {
+      "id": "vp_artem_b13",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "C1",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "refrain_from"],
+      "source_observation": "2026-07-08 extension list: refrain from (+ gerund; formal register, reinforces FROM family).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Просим воздержаться от комментариев для прессы до объявления.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "Please refrain from commenting to the press until the announcement",
+        "We ask you to refrain from commenting to the press before the announcement",
+        "Please refrain from making comments to the press until the announcement"
+      ],
+      "common_errors": [
+        {
+          "id": "refrain_wrong_prep",
+          "pattern_label": "refrain + of/to",
+          "regex": "\\brefrain(ed|s)?\\s+(of|to|on)\\b",
+          "feedback": "✗ 'refrain FROM' + -ing. → 'refrain FROM commenting'. Same FROM family as prevent/stop/stem/result."
+        }
+      ],
+      "fallback_feedback": "Target: 'refrain FROM commenting to the press.' refrain from + -ing."
+    },
+    {
+      "id": "vp_artem_b14",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 3,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "contribute_to"],
+      "source_observation": "2026-07-08 extension list: contribute to (TO family, direction contrast with result from).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Слабый рубль способствовал росту наших затрат.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The weak rouble contributed to rising costs",
+        "A weak rouble contributed to our rising costs",
+        "The weak rouble contributed to the increase in our costs"
+      ],
+      "common_errors": [
+        {
+          "id": "contribute_wrong_prep",
+          "pattern_label": "contribute + in/for",
+          "regex": "\\bcontribut(e|ed|es)\\s+(in|for|into)\\b",
+          "feedback": "✗ 'contribute TO' (help cause / add to). → 'contributed TO rising costs'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The weak rouble contributed TO rising costs.' contribute to = help bring about."
+    },
+    {
+      "id": "vp_artem_b15",
+      "type": "translation",
+      "target_player": "artem",
+      "level": "B2",
+      "focus_categories": ["Prepositions"],
+      "expected_difficulty": 2,
+      "linked_question_ids": [],
+      "tags": ["verb_prep", "benefit_from"],
+      "source_observation": "2026-07-08 extension list: benefit from (FROM family, positive-polarity).",
+      "created": "2026-07-08T00:00:00Z",
+      "version": 1,
+      "prompt_ru": "Проект выиграет от новых инвестиций в инфраструктуру.",
+      "prompt_en_hint": null,
+      "correct_answers": [
+        "The project will benefit from new investment in infrastructure",
+        "The project would benefit from new infrastructure investment",
+        "The project stands to benefit from new investment in infrastructure"
+      ],
+      "common_errors": [
+        {
+          "id": "benefit_wrong_prep",
+          "pattern_label": "benefit + of/by",
+          "regex": "\\bbenefits?\\s+(of|by|in)\\b",
+          "feedback": "✗ verb 'benefit FROM' (the noun is 'the benefit OF' — don't cross them). → 'benefit FROM new investment'."
+        }
+      ],
+      "fallback_feedback": "Target: 'The project will benefit FROM new investment.' benefit from (verb). Noun form: 'the benefit OF'."
+    }
+  ]
+}
