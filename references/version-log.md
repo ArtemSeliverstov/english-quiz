@@ -10,6 +10,18 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-09 · v20260709-r4 — RU terminology foundation layer
+
+Day-1 data response (first-pass 67% with term-guessing; weak-replay 100%): teach the metalanguage before testing it.
+
+- +16 items `ru_mor21–36` (Морфемика 20→36, bank 2315): part-of-speech recognition on word families, find-in-sentence, morpheme identification, 3 input productions. intro micro-lesson on 21/36 морфемика items (was 2) — card teaches first, then asks; intro examples never coincide with the answer.
+- `kickoff`/`mock` canonical types in `log_exercise.js` + `exercise-types.md` §13 — program events for dashboards' plan-vs-fact marks.
+- Kickoff #1 script re-aimed at «слова о словах» — section in `plans/ru-track-nicole.md`.
+
+Q count: 2315 (Δ+16) · Version: v20260709-r4
+
+---
+
 ## 2026-07-09 · v20260709-r3 — serializer fix: map keys with '/' no longer dropped
 
 One-line data-loss fix found while reviewing Nicole's first RU session. `_fsValue` silently skipped map keys containing '/' (RTDB-era guard carried into the s87 Firestore migration) — `catStats['RU: Н/НН']` + session `catBreakdown` never reached the cloud (17 answers invisible to dashboards/topic status). Guard narrowed to the Firestore-reserved `__` prefix; unit-verified. nicole_ru `catStats` backfilled from `qStats` (Н/НН 14/17) after deploy. Full entry: `references/bug-log.md`.

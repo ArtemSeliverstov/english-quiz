@@ -232,6 +232,16 @@ Monthly ~15-item mixed retrieval block testing what the loop has *closed*, not w
 
 ---
 
+## 13. `kickoff` / `mock` — RU-track program events
+
+Non-drill rows for the Nicole RU program (`plans/ru-track-nicole.md`); both feed the program dashboards' plan-vs-fact marks.
+
+**`kickoff`**: topic-unlock tutorial run by Artem at week start (~15–25 min, script in the plan doc). Log after the session: `exercise: 'kickoff'`, `topic` = week topics, `total: 1, correct: 1`.
+**`mock`**: 20-item entrance-format test, weekly from W3. `total: 20`, `correct` = score; per-cluster misses in `meta`. Paper for the final two (format transfer).
+**Use for**: `nicole_ru` only. Neither type folds into `qStats`/`coach_drill_stats` — program events, not drills.
+
+---
+
 ## Type selection by player
 
 | Player | Primary types | Secondary | Avoid |
