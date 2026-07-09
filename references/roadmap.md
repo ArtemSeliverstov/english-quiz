@@ -31,9 +31,10 @@ C1 target met; C2 remains the open gap.
 
 Plan of record: `plans/ru-track-nicole.md`. Shipped v20260709: `nicole_ru` profile,
 RU category gate, intro-for-all-types, `daily_activity` store, sibling one-tap switch,
-W1 bank (Морфемика 20 + Н/НН 33), `ref/ru.html`. Next: W2 content (НЕ, слитно/раздельно/дефис),
-program dashboards (Nicole card + Artem plan-vs-fact), kickoff #1 script, CC logging
-types (kickoff/mock) + `mistakes-review` adherence line.
+W1 bank (Морфемика 20 + Н/НН 33), `ref/ru.html`. Shipped v20260709-r2: program dashboards
+(Nicole learner card + Artem plan-vs-fact in Stats), `nicole_ru` in tools `PLAYERS`
+(integrity baseline, backups, stats-review). Next: W2 content (НЕ, слитно/раздельно/дефис),
+kickoff #1 script, CC logging types (kickoff/mock) + `mistakes-review` adherence line.
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.

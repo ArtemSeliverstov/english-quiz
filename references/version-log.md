@@ -10,6 +10,19 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-09 · v20260709-r2 — RU-track program dashboards
+
+Two views over one data source (`study_plan` + `daily_activity` + exercises rows), deviations computed at render, never stored.
+
+- **Nicole learner card «Подготовка к школе»** (home, gate: `study_plan` on current player): progress bar to 1.09, week chips ✓/current, three-state «Сегодня» line, mock trajectory with positive-deltas-only rule. No miss counters — a gap renders as «продолжим сегодня?» (doctrine §5/§6).
+- **Artem admin «Программа Nicole-RU»** (builder Stats tab, gate `currentPlayer === 'artem'`, NOT Family tab): plan-vs-fact calendar 8 weeks × days (✓/partial/miss/today), weekly kickoff/диктант/mock marks, ⚠ banner at ≥2 consecutive below-target days, per-topic status table (⚪/🔵/🟢 at ≥80% & ≥20 items), mock line from the 7/20 baseline. Read-only remote fetches.
+- `nicole_ru` added to tools `PLAYERS` (`_firestore.js`): integrity checker baseline (seeded), nightly backups, stats-review sweep. Checker's hardcoded "5 players" summary now uses `PLAYERS.length`.
+- data-flow: PWA cross-player read-only reads documented (family boards + program admin).
+
+Q count: 2299 (Δ0) · Version: v20260709-r2
+
+---
+
 ## 2026-07-09 · v20260709 — RU track W1: Nicole grade-7 prep goes live
 
 Russian grade-7 entrance-prep track for Nicole (7/20 on the TAMOS entrance test; program deadline 2026-09-01). Plan of record: `plans/ru-track-nicole.md`. Program started same day — `study_plan.start_date` 2026-07-09.

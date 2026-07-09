@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260709">
+  <meta name="app-version" content="v20260709-r2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1078,6 +1078,36 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 @media(max-width:520px){
   .coach-picker-grid{grid-template-columns:1fr;}
 }
+/* ── RU-track program dashboards (plans/ru-track-nicole.md) ── */
+.rup-bar{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin:.35rem 0;}
+.rup-fill{height:100%;background:linear-gradient(90deg,#e0564e,#fbbf24);border-radius:99px;}
+.rup-meta{font-size:.72rem;opacity:.6;margin:.15rem 0;}
+.rup-chips{display:flex;gap:.3rem;margin:.4rem 0;flex-wrap:wrap;}
+.rup-chip{width:2rem;height:2rem;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);opacity:.55;}
+.rup-chip.past{opacity:.9;border-color:rgba(52,211,153,.6);color:#34d399;}
+.rup-chip.cur{opacity:1;border-color:#e0564e;background:rgba(224,86,78,.15);font-weight:700;}
+.rup-today{font-size:.85rem;margin-top:.4rem;line-height:1.45;}
+.rup-mock{font-size:.8rem;margin-top:.35rem;}
+.rup-up{color:#34d399;font-weight:700;}
+.rup-mock-hist{opacity:.55;font-size:.72rem;}
+.rup-admin-title{font-weight:700;font-size:1rem;margin:1.2rem 0 .4rem;}
+.rup-warn{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:#fbbf24;border-radius:8px;padding:.5rem .7rem;font-size:.8rem;margin:.4rem 0;}
+.rup-cal{border-collapse:collapse;margin:.5rem 0;font-size:.72rem;width:100%;}
+.rup-cal td{padding:.15rem .3rem;vertical-align:middle;}
+.rup-wk{opacity:.6;font-weight:700;white-space:nowrap;}
+.rup-wk.cur{color:#e0564e;opacity:1;}
+.rup-days{white-space:nowrap;}
+.rup-d{display:inline-flex;width:1.35rem;height:1.35rem;border-radius:5px;align-items:center;justify-content:center;margin-right:2px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);opacity:.5;font-size:.62rem;}
+.rup-d.ok{color:#34d399;border-color:rgba(52,211,153,.5);opacity:1;}
+.rup-d.part{color:#fbbf24;border-color:rgba(251,191,36,.5);opacity:1;}
+.rup-d.miss{color:#f87171;opacity:.8;}
+.rup-d.fut{opacity:.25;}
+.rup-d.today{outline:2px solid #60a5fa;opacity:1;}
+.rup-marks{white-space:nowrap;font-size:.72rem;}
+.rup-topics{opacity:.6;font-size:.68rem;}
+.rup-topics-tbl{border-collapse:collapse;width:100%;font-size:.75rem;margin:.5rem 0;}
+.rup-topics-tbl th,.rup-topics-tbl td{border:1px solid rgba(255,255,255,.12);padding:.3rem .5rem;text-align:left;}
+.rup-topics-tbl th{opacity:.55;font-size:.65rem;text-transform:uppercase;}
 </style>
 </head>
 <body>
@@ -1111,7 +1141,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709-r2</span></p>
 </header>
 
 <!-- TABS -->
@@ -1141,6 +1171,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <span id="lh-quiz-hint" class="lh-secondary-hint"></span>
     </button>
     <button class="lh-other" onclick="homePracticeOther()">Practice something else →</button>
+
+    <!-- RU-track program card — rendered by renderRuProgramCard() when study_plan exists -->
+    <div class="lh-zone" id="lh-ru-program" style="display:none;"></div>
 
     <div class="lh-zone lh-medals" id="lh-medals-zone" style="display:none;">
       <div>
@@ -1288,6 +1321,9 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     </div>
     <div class="hero-stats" id="hero-stats"></div>
   </div>
+
+  <!-- RU-track program admin (Artem only) — rendered by renderRuProgramAdmin() -->
+  <div id="stats-ru-program" style="display:none;"></div>
 
   <!-- [D] Articles intervention nudge — shows when Articles < 70% and ≥5 seen -->
   <div id="articles-nudge" class="articles-nudge" style="display:none;">
@@ -4510,6 +4546,181 @@ function showLearnerHome() {
   showTab('home');
 }
 
+// ══ RU-track program dashboards (plans/ru-track-nicole.md § Dashboard) ══
+// Date helpers follow the same UTC yyyy-mm-dd convention as bumpDailyStreak
+// and daily_activity keys — keep aligned.
+function rupToday() { return new Date().toISOString().slice(0,10); }
+function rupAddDays(iso, n) {
+  const d = new Date(iso + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0,10);
+}
+function rupDaysBetween(a, b) {
+  return Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 86400000);
+}
+
+// Pure computation over a player-doc-shaped object {study_plan, daily_activity,
+// catStats}. Used by both the learner card (local DB) and the Artem admin view
+// (fetched doc). Deviations are computed here at render time, never stored.
+function rupComputeState(doc) {
+  const sp = doc && doc.study_plan;
+  if (!sp || !Array.isArray(sp.weeks) || !sp.weeks.length || !sp.start_date) return null;
+  const today = rupToday();
+  const da = doc.daily_activity || {};
+  const target = Number(sp.daily_target_items) || 10;
+  const weeks = sp.weeks.map(w => ({ ...w, topics: Array.isArray(w.topics) ? w.topics : [] }));
+  const cur = weeks.find(w => today >= w.start && today <= w.end) || null;
+  const catStats = doc.catStats || {};
+  const topicStatus = {};
+  const allTopics = [...new Set(weeks.flatMap(w => w.topics))];
+  allTopics.forEach(t => {
+    const s = catStats[t] || { seen: 0, correct: 0 };
+    const seen = Number(s.seen) || 0, corr = Number(s.correct) || 0;
+    const acc = seen > 0 ? corr / seen : 0;
+    topicStatus[t] = { seen, acc, state: seen === 0 ? 'new' : (seen >= 20 && acc >= 0.8 ? 'done' : 'work') };
+  });
+  const daysElapsed = Math.max(0, rupDaysBetween(sp.start_date, today));
+  const daysTotal = Math.max(1, rupDaysBetween(sp.start_date, sp.end_date));
+  const todayItems = (da[today] && Number(da[today].items)) || 0;
+  // Consecutive below-target days BEFORE today (today still pending ≠ miss).
+  let missedBefore = 0;
+  for (let i = 1; i <= daysElapsed; i++) {
+    const d = rupAddDays(today, -i);
+    if (d < sp.start_date) break;
+    if (((da[d] && Number(da[d].items)) || 0) >= target) break;
+    missedBefore++;
+  }
+  const lastActive = Object.keys(da).filter(d => (Number(da[d].items) || 0) > 0).sort().pop() || null;
+  return { sp, weeks, cur, today, target, topicStatus, daysElapsed, daysTotal,
+    todayItems, todayDone: todayItems >= target, missedBefore, lastActive,
+    topicsDone: allTopics.filter(t => topicStatus[t].state === 'done').length,
+    topicsTotal: allTopics.length };
+}
+
+// Learner card «Подготовка к школе». Positive framing only (doctrine §5/§6):
+// no miss counters, no red flags — a gap renders as «продолжим сегодня?».
+// Gate: study_plan on the CURRENT player's doc (nicole_ru only in practice).
+function renderRuProgramCard() {
+  const zone = document.getElementById('lh-ru-program');
+  if (!zone) return;
+  const st = rupComputeState(DB);
+  if (!st) { zone.style.display = 'none'; return; }
+  const pctDays = Math.min(100, Math.round(st.daysElapsed / st.daysTotal * 100));
+  const chips = st.weeks.map(w => {
+    const cls = w === st.cur ? 'rup-chip cur' : (w.end < st.today ? 'rup-chip past' : 'rup-chip');
+    const mark = w.end < st.today ? '✓' : String(w.n);
+    const tip = 'Неделя ' + w.n + (w.topics.length
+      ? ': ' + w.topics.map(t => t.replace(/^RU: /, '')).join(' + ')
+      : ': повторение и мок-тест');
+    return '<span class="' + cls + '" title="' + tip.replace(/"/g, '&quot;') + '">' + mark + '</span>';
+  }).join('');
+  let todayLine;
+  if (st.todayDone) {
+    todayLine = '✅ Сегодня сделано — ' + st.todayItems + ' ответов. Молодец!';
+  } else if (st.todayItems > 0) {
+    todayLine = '🔵 Сегодня: ' + st.todayItems + ' из ' + st.target + ' — продолжим?';
+  } else {
+    const topics = st.cur && st.cur.topics.length
+      ? ' · ' + st.cur.topics.map(t => t.replace(/^RU: /, '')).join(' + ') : '';
+    todayLine = '☀️ Продолжим сегодня? План: ' + st.target + '+ вопросов' + topics;
+  }
+  zone.innerHTML =
+    '<div class="lh-zone-label">Подготовка к школе · до 1 сентября</div>' +
+    '<div class="rup-bar"><div class="rup-fill" style="width:' + pctDays + '%"></div></div>' +
+    '<div class="rup-meta">День ' + (st.daysElapsed + 1) + ' из ' + (st.daysTotal + 1) +
+    ' · темы закреплены: ' + st.topicsDone + '/' + st.topicsTotal + '</div>' +
+    '<div class="rup-chips">' + chips + '</div>' +
+    '<div class="rup-today">' + todayLine + '</div>';
+  zone.style.display = '';
+  // Mock trajectory — async append. Medal rule: positive deltas get ▲, a drop
+  // renders the absolute score with no arrow. Baseline 7/20 = entrance test.
+  fsList('players/' + currentPlayer + '/exercises').then(rows => {
+    const mocks = (rows || []).filter(r => r && r.exercise === 'mock' && r.total)
+      .sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+    if (!mocks.length || st.sp !== (DB.study_plan || null)) return;
+    const last = mocks[mocks.length - 1];
+    const prevScore = mocks.length > 1 ? mocks[mocks.length - 2].correct : 7;
+    const delta = last.correct - prevScore;
+    const deltaTxt = delta > 0 ? ' <span class="rup-up">▲ +' + delta + '</span>' : '';
+    const el = document.createElement('div');
+    el.className = 'rup-mock';
+    el.innerHTML = '🎯 Мок-тест: <strong>' + last.correct + '/' + last.total + '</strong>' + deltaTxt +
+      ' <span class="rup-mock-hist">(7 → ' + mocks.map(m => m.correct).join(' → ') + ')</span>';
+    zone.appendChild(el);
+  }).catch(() => {});
+}
+
+// Artem-only plan-vs-fact admin for nicole_ru. Read-only remote fetches
+// (fsGet/fsList) — never writes. Lives in the builder Stats tab, NOT the
+// Family tab: family sees each other only as light social context.
+async function renderRuProgramAdmin() {
+  const box = document.getElementById('stats-ru-program');
+  if (!box) return;
+  if (currentPlayer !== 'artem') { box.style.display = 'none'; return; }
+  box.style.display = '';
+  box.innerHTML = '<div class="rup-admin-title">🪆 Программа Nicole-RU</div><div class="rup-meta">Загрузка…</div>';
+  let doc, rows;
+  try {
+    doc = await fsGet('players/nicole_ru');
+    rows = await fsList('players/nicole_ru/exercises').catch(() => []);
+  } catch (e) {
+    box.innerHTML = '<div class="rup-admin-title">🪆 Программа Nicole-RU</div><div class="rup-meta">Не удалось загрузить (offline?)</div>';
+    return;
+  }
+  const st = rupComputeState(doc || {});
+  if (!st) { box.innerHTML = ''; box.style.display = 'none'; return; }
+  const da = (doc && doc.daily_activity) || {};
+  const byType = t => (rows || []).filter(r => r && r.exercise === t);
+  const inWeek = (r, w) => (r.date || '') >= w.start && (r.date || '') <= w.end;
+  let banner = '';
+  if (st.missedBefore >= 2) {
+    banner = '<div class="rup-warn">⚠ ' + st.missedBefore + ' дн. подряд без выполненного плана · последняя активность: ' +
+      (st.lastActive || 'не было') + '</div>';
+  } else if (!st.lastActive) {
+    banner = '<div class="rup-meta">Активности ещё не было · старт ' + st.sp.start_date + '</div>';
+  }
+  const cal = st.weeks.map(w => {
+    const nDays = rupDaysBetween(w.start, w.end) + 1;
+    let cells = '';
+    for (let i = 0; i < nDays; i++) {
+      const d = rupAddDays(w.start, i);
+      const items = (da[d] && Number(da[d].items)) || 0;
+      let cls = 'rup-d', txt = '—';
+      if (d > st.today) { cls += ' fut'; txt = ''; }
+      else if (items >= st.target) { cls += ' ok'; txt = '✓'; }
+      else if (items > 0) { cls += ' part'; txt = String(items); }
+      else if (d === st.today) { txt = '·'; }
+      else { cls += ' miss'; }
+      if (d === st.today) cls += ' today';
+      cells += '<span class="' + cls + '" title="' + d + (items ? ' · ' + items + ' items' : '') + '">' + txt + '</span>';
+    }
+    const marks = [];
+    if (w.kickoff) marks.push(byType('kickoff').some(r => inWeek(r, w)) ? '👨✓' : '👨·');
+    if (w.dictation) marks.push(byType('dictation').some(r => inWeek(r, w)) ? '✍️✓' : '✍️·');
+    if (w.mock) { const m = byType('mock').find(r => inWeek(r, w)); marks.push(m ? '🎯' + m.correct + '/' + m.total : '🎯·'); }
+    const topics = w.topics.map(t => t.replace(/^RU: /, '')).join(' + ') || 'повтор + буфер';
+    return '<tr><td class="rup-wk' + (w === st.cur ? ' cur' : '') + '">W' + w.n + '</td>' +
+      '<td class="rup-days">' + cells + '</td>' +
+      '<td class="rup-marks">' + marks.join(' ') + '</td>' +
+      '<td class="rup-topics">' + topics + '</td></tr>';
+  }).join('');
+  const topicRows = Object.entries(st.topicStatus).map(([t, s]) => {
+    const label = s.state === 'done' ? '🟢 закреплена' : s.state === 'work' ? '🔵 в работе' : '⚪ не начата';
+    const acc = s.seen ? Math.round(s.acc * 100) + '%' : '—';
+    return '<tr><td>' + t.replace(/^RU: /, '') + '</td><td>' + s.seen + '</td><td>' + acc + '</td><td>' + label + '</td></tr>';
+  }).join('');
+  const mocks = byType('mock').sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+  const mockLine = mocks.length
+    ? '<div class="rup-meta">Мок-тесты: 7/20 (вступительный) → ' + mocks.map(m => m.correct + '/' + m.total).join(' → ') + '</div>'
+    : '<div class="rup-meta">Мок-тесты: базовая точка 7/20 (вступительный) · первый мок — W3 (' + (st.weeks[2] ? st.weeks[2].start : '—') + ')</div>';
+  box.innerHTML =
+    '<div class="rup-admin-title">🪆 Программа Nicole-RU <span class="rup-meta" style="display:inline;font-weight:400">· старт ' +
+    st.sp.start_date + ' · цель 1.09 · план ' + st.target + '+ в день</span></div>' +
+    banner +
+    '<table class="rup-cal">' + cal + '</table>' +
+    '<table class="rup-topics-tbl"><tr><th>Тема</th><th>Items</th><th>Точность</th><th>Статус</th></tr>' + topicRows + '</table>' +
+    mockLine;
+}
+
 function renderLearnerHome() {
   const name = capFirst(DB.displayName || currentPlayer || '');
 
@@ -4583,6 +4794,9 @@ function renderLearnerHome() {
 
   // Zone 4: medal count
   renderLearnerMedals();
+
+  // Zone 5: RU-track program card (visible only when study_plan exists)
+  renderRuProgramCard();
 }
 
 async function renderLearnerFamilyBoards() {
@@ -7115,6 +7329,7 @@ function renderStats() {
     if (builderWrap) builderWrap.style.display = '';
   }
   renderStatsHero();
+  renderRuProgramAdmin();  // Artem-only Nicole-RU plan-vs-fact (async, self-gating)
   renderLevelInference();
   renderCoverage();
   renderCatProgress();

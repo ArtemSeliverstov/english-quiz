@@ -9,7 +9,7 @@
 
 const PROJECT_ID = 'artem-grammar-hub';
 const FS_BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
-const PLAYERS = ['artem', 'anna', 'nicole', 'ernest', 'egor'];
+const PLAYERS = ['artem', 'anna', 'nicole', 'nicole_ru', 'ernest', 'egor'];
 
 // ---------- Typed-value conversion ----------
 

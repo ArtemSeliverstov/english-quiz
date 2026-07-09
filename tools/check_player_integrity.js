@@ -303,7 +303,7 @@ async function main() {
     console.log(JSON.stringify(result, null, 2));
   } else {
     if (flags.length === 0) {
-      console.log(`Integrity check OK — 5 players, ${baseline ? 'baseline-compared' : 'no-baseline (first run; baseline being seeded)'}.`);
+      console.log(`Integrity check OK — ${PLAYERS.length} players, ${baseline ? 'baseline-compared' : 'no-baseline (first run; baseline being seeded)'}.`);
     } else {
       console.log(`Integrity check FAILED — ${flags.length} flag${flags.length > 1 ? 's' : ''}:`);
       for (const f of flags) {

@@ -8,7 +8,7 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 
 | Surface | Code | Reads | Writes |
 |---|---|---|---|
-| **PWA quiz tab** | `index.html` (play loop) | `players/{name}` | `players/{name}` (qStats, catStats, lvlStats, recentSessions, totals, streaks, daily_activity) |
+| **PWA quiz tab** | `index.html` (play loop) | `players/{name}`; read-only cross-player: family boards (all players), Artem's Nicole-RU program admin (`players/nicole_ru` + exercises) | `players/{name}` (qStats, catStats, lvlStats, recentSessions, totals, streaks, daily_activity) |
 | **PWA Coach tab (live AI)** | `index.html` (Coach UI) → Cloudflare Worker | `players/{name}` (context incl. `coach_notes.weak_patterns`); `exercises_library/*` offline fallback only | `players/{name}/coach_sessions/{sid}` + `exercises/{ts}` mirror + `coach_drill_stats` fold + `recent_session_signals` merge |
 | **Cloudflare Worker** | `worker/index.js` (`/v1/messages`, `/v1/audio`) | request context only (stateless) | nothing — PWA writes on its behalf |
 | **CC `exercise-session` skill** | `tools/log_exercise.js` + `tools/update_coach_notes.js` | `players/{name}` (via `get_player.js`) | `players/{name}/exercises/{ts}`, `players/{name}.coach_notes` |
