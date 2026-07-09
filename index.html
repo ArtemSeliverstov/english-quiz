@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260704">
+  <meta name="app-version" content="v20260709">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1111,7 +1111,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260704</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709</span></p>
 </header>
 
 <!-- TABS -->
@@ -3821,7 +3821,61 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',themes:['meta'],lvl:'B
 {id:'art_e02',type:'input',cat:'Articles',themes:['home_daily'],lvl:'B1',biz:false,q:'Can you pass ___ salt please? It\'s right next to your plate.',ans:['the','The'],hint:'article: a, an, the, or – (1 word; – means no article)',exp:'<strong>The salt</strong> — the one on the table, both of us know which one (shared situation). Russian has no article marker, so it\'s easy to drop. Heuristic: "Do we both know which one?" → yes → THE. ✗ <em>pass a salt</em>.'},
 {id:'art_e03',type:'input',cat:'Articles',themes:['leisure_sport'],lvl:'B1',biz:false,q:'We made ___ good progress at padel training today.',ans:['-','–','—',''],hint:'article: a, an, the, or – (1 word; – means no article)',exp:'<strong>Progress</strong> is uncountable and abstract — no article in fixed phrase <em>make progress</em>. Russian <em>сделать прогресс</em> tempts <em>a progress</em>. ✗ <em>made a progress</em>. Same chunks: <em>give advice, take action</em>.'},
 {id:'art_e04',type:'input',cat:'Articles',themes:['home_daily','brit_expat'],lvl:'B1',biz:false,q:'I drink ___ coffee every morning before school.',ans:['-','–','—',''],hint:'article: a, an, the, or – (1 word; – means no article)',exp:'<strong>No article</strong> for substances in general statements: <em>I drink coffee, I like music.</em> Compare: <em>I bought a coffee</em> = one cup (countable use). Russian has no article — the trap is adding <em>the</em> by overcorrection. ✗ <em>drink the coffee every morning</em>.'},
-{id:'art_e05',type:'input',cat:'Articles',themes:['home_daily'],lvl:'B1',biz:false,q:'My dad bought ___ new fridge for the kitchen yesterday.',ans:['a','A'],hint:'article: a, an, the, or – (1 word; – means no article)',exp:'<strong>A</strong> for first mention of a countable singular noun — any new fridge, not one we already know. Russian has no article, so the temptation is to drop it. Heuristic: "Do we both know which one?" → no → A. ✗ <em>bought new fridge</em>.'}];
+{id:'art_e05',type:'input',cat:'Articles',themes:['home_daily'],lvl:'B1',biz:false,q:'My dad bought ___ new fridge for the kitchen yesterday.',ans:['a','A'],hint:'article: a, an, the, or – (1 word; – means no article)',exp:'<strong>A</strong> for first mention of a countable singular noun — any new fridge, not one we already know. Russian has no article, so the temptation is to drop it. Heuristic: "Do we both know which one?" → no → A. ✗ <em>bought new fridge</em>.'},
+// ══ RU track — Nicole grade-7 prep (plans/ru-track-nicole.md). Categories prefixed 'RU: ' are gated to ruTrack profiles in selectQuestions. W1: Морфемика + Н/НН. ══
+{id:'ru_mor01',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Состав слова</strong>: приставка → корень → суффикс → окончание. Пример: по-езд-к-а.',q:'Укажи приставку в слове «прибежать».',ans:0,opts:['при-','бе-','-жа-','-ть'],exp:'<strong>При-</strong> — приставка, часть слова перед корнем: при-беж-а-ть. ✗ «бе-» — это кусок корня -беж-, а не приставка.'},
+{id:'ru_mor02',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи корень в слове «перелесок».',ans:1,opts:['пере-','-лес-','-ок','-о-'],exp:'Корень <strong>-лес-</strong>: пере-лес-ок, однокоренные — лес, лесной. ✗ «пере-» — приставка, «-ок» — суффикс.'},
+{id:'ru_mor03',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи суффикс в слове «домик».',ans:1,opts:['дом-','-ик','-к-','-и-'],exp:'<strong>-ик</strong> — суффикс после корня: дом-ик. Суффикс стоит после корня и образует новое слово. ✗ «дом-» — корень.'},
+{id:'ru_mor04',type:'input',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Выпиши окончание слова «книга»: ___',ans:'а|-а',hint:'изменяемая часть слова (1 буква)',exp:'Окончание <strong>-а</strong> меняется при склонении: книг-а, книг-и, книг-у. Изменяемая часть и есть окончание. ✗ «-га» захватывает часть корня книг-.'},
+{id:'ru_mor05',type:'input',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Выпиши приставку из слова «заигрался»: ___',ans:'за|за-',hint:'часть слова перед корнем (1 морфема)',exp:'<strong>За-</strong> — приставка: за-игр-а-л-ся, корень -игр-. Приставка всегда стоит перед корнем. ✗ «заигр-» — это уже приставка вместе с корнем.'},
+{id:'ru_mor06',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'В каком слове есть и приставка, и суффикс?',ans:0,opts:['подводный','вода','водный','водичка'],exp:'<strong>Под-вод-н-ый</strong>: приставка под- + корень -вод- + суффикс -н-. ✗ «водный» и «водичка» — только суффикс, без приставки.'},
+{id:'ru_mor07',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Части речи</strong>: существительное (кто? что?), прилагательное (какой?), глагол (что делать?), наречие (как? где? когда?).',q:'Николь быстро прошла новый уровень в игре. Слово «быстро» — это…',ans:2,opts:['прилагательное','глагол','наречие','существительное'],exp:'<strong>Быстро</strong> отвечает на вопрос «как?» и не изменяется — это наречие. ✗ Прилагательное отвечает на «какой?» и изменяется: быстрый, быстрая.'},
+{id:'ru_mor08',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Море у нашего дома синее и тёплое. Слово «синее» — это…',ans:1,opts:['существительное','прилагательное','наречие','глагол'],exp:'<strong>Синее</strong> — прилагательное: отвечает на «какое?», называет признак и изменяется по родам: синий, синяя. ✗ Наречие не изменяется вовсе.'},
+{id:'ru_mor09',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи имя числительное.',ans:0,opts:['пять','пятёрка','пятак','впятером'],exp:'<strong>Пять</strong> называет число — числительное. ✗ «пятёрка» и «пятак» — существительные (что?), «впятером» — наречие (как?).'},
+{id:'ru_mor10',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи местоимение.',ans:0,opts:['она','Анна','девочка','имя'],exp:'<strong>Она</strong> указывает на человека, не называя его — местоимение. ✗ «Анна» и «девочка» называют — это существительные.'},
+{id:'ru_mor11',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи предлог.',ans:0,opts:['из-за','чтобы','тоже','даже'],exp:'<strong>Из-за</strong> связывает слова в словосочетании: из-за дождя. ✗ «чтобы» — союз (связывает части предложения), «даже» — частица.'},
+{id:'ru_mor12',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи глагол.',ans:0,opts:['бежать','бег','беговой','бегун'],exp:'<strong>Бежать</strong> отвечает на «что делать?» — глагол. ✗ «бег» — существительное (что?), хотя тоже называет действие.'},
+{id:'ru_mor13',type:'input',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Выпиши из предложения наречие: «Николь громко слушала музыку в комнате». ___',ans:'громко',hint:'отвечает на вопрос «как?» (1 слово)',exp:'<strong>Громко</strong> — наречие: слушала (как?) громко, не изменяется. ✗ «музыку» — существительное в винительном падеже.'},
+{id:'ru_mor14',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи основу слова «игра».',ans:0,opts:['игр-','игра','-ра','и-'],exp:'<strong>Основа</strong> — слово без окончания: игр-а → основа игр-. В основу входят корень, приставка, суффикс. ✗ «игра» целиком включает окончание -а.'},
+{id:'ru_mor15',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'Какое слово образовано приставочным способом?',ans:0,opts:['прибежать','домик','подводный','лесок'],exp:'<strong>Прибежать</strong> = при- + бежать: добавилась только приставка. ✗ «подводный» — приставка и суффикс сразу, «домик», «лесок» — только суффикс.'},
+{id:'ru_mor16',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи форму слова «лес», а не однокоренное слово.',ans:0,opts:['леса','лесной','лесник','лесок'],exp:'<strong>Леса</strong> — то же слово в другом числе, меняется только окончание. ✗ «лесной», «лесник» — новые слова с суффиксами, это однокоренные.'},
+{id:'ru_mor17',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Укажи суффикс в слове «водитель».',ans:0,opts:['-тель','-итель','вод-','-ель'],exp:'<strong>-тель</strong> — суффикс лица: вод-и-тель, как учи-тель, строи-тель. ✗ «-итель» захватывает глагольный суффикс -и-.'},
+{id:'ru_mor18',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B2',biz:false,q:'В каком слове нулевое окончание?',ans:0,opts:['дом','окно','стена','поле'],exp:'<strong>Дом</strong> — окончание не выражено звуком, но появляется при склонении: дом-а, дом-у. ✗ У «окно», «стена», «поле» окончания -о, -а, -е видны сразу.'},
+{id:'ru_mor19',type:'mcq',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Мы живём в Бахрейне уже три года. Слово «три» — это…',ans:0,opts:['числительное','существительное','местоимение','наречие'],exp:'<strong>Три</strong> называет количество — количественное числительное. Проверка: числительное можно записать цифрой. ✗ «тройка» была бы существительным.'},
+{id:'ru_mor20',type:'input',cat:'RU: Морфемика и части речи',themes:['home_daily'],lvl:'B1',biz:false,q:'Запиши начальную форму глагола «слушает»: ___',ans:'слушать',hint:'отвечает на вопрос «что делать?» (1 слово)',exp:'Начальная форма глагола (инфинитив) отвечает на «что делать?»: <strong>слушать</strong>. ✗ «слушал» — прошедшее время, а не начальная форма.'},
+{id:'ru_nn01',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Алгоритм Н/НН</strong> (прилагательное от существительного): найди суффикс. -АН-/-ЯН-/-ИН- → одна Н (кожаный, глиняный, гусиный). -ОНН-/-ЕНН- → НН. Основа на Н + суффикс -Н- → НН.',q:'песча___ый пляж у нашего дома',ans:0,opts:['н','нн'],exp:'Песок → песч<strong>ан</strong>ый: суффикс -АН- → одна Н. ✗ песчанный. Сравни: кожаный, ржаной.'},
+{id:'ru_nn02',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'кожа___ая куртка',ans:0,opts:['н','нн'],exp:'Кожа → кож<strong>ан</strong>ая: -АН- → одна Н. ✗ кожанная — суффикса «-анн-» у прилагательных от существительных не бывает.'},
+{id:'ru_nn03',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'серебря___ое кольцо мамы',ans:0,opts:['н','нн'],exp:'Серебро → серебр<strong>ян</strong>ое: -ЯН- → одна Н. ✗ серебрянное. Сравни: глиняный, шерстяной.'},
+{id:'ru_nn04',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'гуси___ое перо',ans:0,opts:['н','нн'],exp:'Гусь → гус<strong>ин</strong>ое: -ИН- («чей?») → всегда одна Н: лебединый, мышиный. ✗ гусинное.'},
+{id:'ru_nn05',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'комари___ый писк за окном',ans:0,opts:['н','нн'],exp:'Комар → комар<strong>ин</strong>ый: суффикс -ИН- → одна Н, как орлиный, соловьиный. ✗ комаринный.'},
+{id:'ru_nn06',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'стекля___ая дверь на балкон',ans:1,opts:['н','нн'],exp:'<strong>Стеклянный</strong> — исключение! Тройка на -ЯН- с НН: стеклянный, оловянный, деревянный. ✗ стекляный. Остальные -ЯН- — с одной Н: глиняный.'},
+{id:'ru_nn07',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'деревя___ый стол на кухне',ans:1,opts:['н','нн'],exp:'<strong>Деревянный</strong> — из тройки исключений (стеклянный, оловянный, деревянный) → НН. ✗ деревяный. Подсказка для памяти: все три — про окно.'},
+{id:'ru_nn08',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'оловя___ый солдатик',ans:1,opts:['н','нн'],exp:'<strong>Оловянный</strong> — третье слово тройки исключений → НН. ✗ оловяный. Прочие -ЯН- пишутся с одной Н: серебряный, кожаный.'},
+{id:'ru_nn09',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>-ОНН-/-ЕНН- → НН</strong>: экскурсия → экскурсионный, солома → соломенный. Эти суффиксы всегда удваивают Н.',q:'экскурсио___ый автобус',ans:1,opts:['н','нн'],exp:'Экскурсия → экскурси<strong>онн</strong>ый: -ОНН- → НН. ✗ экскурсионый. Все слова на -ционный: станционный, информационный.'},
+{id:'ru_nn10',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'соломе___ая шляпа для пляжа',ans:1,opts:['н','нн'],exp:'Солома → солом<strong>енн</strong>ая: -ЕНН- → НН. ✗ соломеная. Сравни: клюквенный, тыквенный.'},
+{id:'ru_nn11',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'торжестве___ая линейка в школе',ans:1,opts:['н','нн'],exp:'Торжество → торжеств<strong>енн</strong>ая: -ЕНН- → НН. ✗ торжественая. У -ЕНН- одно-единственное исключение, и это не оно.'},
+{id:'ru_nn12',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Основа на Н + суффикс -Н- → НН</strong>: туман + н = туманный. Одна Н из основы, вторая — из суффикса.',q:'тума___ое утро',ans:1,opts:['н','нн'],exp:'Туман + -н- = тума<strong>нн</strong>ое: Н основы + Н суффикса. ✗ туманое. Так же: осенний, лимонный.'},
+{id:'ru_nn13',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'дли___ое голосовое сообщение',ans:1,opts:['н','нн'],exp:'Длин-а + -н- = дли<strong>нн</strong>ое: стык основы на Н и суффикса -Н-. ✗ длиное. Сравни: старинный, картинный.'},
+{id:'ru_nn14',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'каме___ая стена крепости',ans:1,opts:['н','нн'],exp:'Камень + -н- = каме<strong>нн</strong>ая: две Н на стыке. ✗ каменая. Проверка: основа-существительное кончается на Н? → пиши НН.'},
+{id:'ru_nn15',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'ветре___ый день',ans:0,opts:['н','нн'],exp:'<strong>Ветреный</strong> — исключение из правила -ЕНН-: одна Н. ✗ ветренный. Но приставка возвращает НН: безветренный.'},
+{id:'ru_nn16',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,hard:true,q:'ветря___ая мельница',ans:0,opts:['н','нн'],exp:'<strong>Ветряная</strong> (мельница, двигатель — работает от ветра): суффикс -ЯН- → одна Н. ✗ Не путай пару: ветреный день, но ветряная мельница.'},
+{id:'ru_nn17',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,hard:true,q:'безветре___ый вечер',ans:1,opts:['н','нн'],exp:'<strong>Безветренный</strong>: приставка отменяет исключение — без- + -енн- → НН. ✗ безветреный. Исключение «ветреный» живёт только без приставки.'},
+{id:'ru_nn18',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'ю___ый музыкант',ans:0,opts:['н','нн'],exp:'<strong>Юный</strong> — непроизводное прилагательное (ни от чего не образовано): одна Н в корне. ✗ юнный. Так же: зелёный, румяный, свиной.'},
+{id:'ru_nn19',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'румя___ые щёки после прогулки',ans:0,opts:['н','нн'],exp:'<strong>Румяный</strong> — непроизводное: одна Н. ✗ румянный. Здесь нет суффикса -Н-: румян- — это корень целиком.'},
+{id:'ru_nn20',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'зелё___ая кнопка «плей»',ans:0,opts:['н','нн'],exp:'<strong>Зелёный</strong> — непроизводное прилагательное: одна Н. ✗ зелённый. Проверка алгоритмом: суффикса нет — удваиваться нечему.'},
+{id:'ru_nn21',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'сви___ая котлета',ans:0,opts:['н','нн'],exp:'<strong>Свиной</strong> — непроизводное: одна Н. ✗ свинная. Запомни список: юный, румяный, свиной, единый, пряный.'},
+{id:'ru_nn22',type:'mcq',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'В каком слове на месте пропуска пишется НН?',ans:2,opts:['песча…ый','кожа…ый','соломе…ый','серебря…ый'],exp:'Солома → солом<strong>енн</strong>ый: -ЕНН- → НН. ✗ Остальные — суффиксы -АН-/-ЯН-: одна Н (песчаный, кожаный, серебряный).'},
+{id:'ru_nn23',type:'mcq',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'В каком слове на месте пропуска пишется одна Н?',ans:2,opts:['тума…ый','каме…ый','ветре…ый','дли…ый'],exp:'<strong>Ветреный</strong> — исключение: одна Н. ✗ Остальные — стык основы на Н и суффикса -Н-: туманный, каменный, длинный.'},
+{id:'ru_nn24',type:'mcq',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'В каком ряду оба слова пишутся с НН?',ans:0,opts:['стекля…ый, оловя…ый','кожа…ый, гуси…ый','ю…ый, зелё…ый','серебря…ый, песча…ый'],exp:'<strong>Стеклянный, оловянный</strong> — исключения → НН. ✗ Остальные ряды — одна Н: -АН-/-ЯН-/-ИН- и непроизводные.'},
+{id:'ru_nn25',type:'input',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'Стол сделан из дерева. Запиши прилагательное целиком: деревя(н/нн)ый ___',ans:'деревянный',hint:'прилагательное от «дерево» (1 слово)',exp:'<strong>Деревянный</strong> — исключение → НН. ✗ деревяный. Тройка исключений: стеклянный, оловянный, деревянный.'},
+{id:'ru_nn26',type:'input',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'Запиши слово целиком: кури(н/нн)ый суп ___',ans:'куриный',hint:'прилагательное от «курица» (1 слово)',exp:'Курица → кур<strong>ин</strong>ый: -ИН- → одна Н. ✗ куринный. «Птичьи» прилагательные на -ИН-: куриный, гусиный, утиный.'},
+{id:'ru_nn27',type:'input',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'Запиши слово целиком: стари(н/нн)ая монета ___',ans:'старинная',hint:'прилагательное от «старина» (1 слово)',exp:'Старин-а + -н- = стари<strong>нн</strong>ая: основа на Н + суффикс -Н- → НН. ✗ стариная.'},
+{id:'ru_nn28',type:'input',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'Запиши слово целиком: информацио(н/нн)ое сообщение ___',ans:'информационное',hint:'прилагательное от «информация» (1 слово)',exp:'Информация → информаци<strong>онн</strong>ое: -ОНН- → НН. ✗ информационое. Все слова на -ционный — с НН.'},
+{id:'ru_nn29',type:'error_correction',error_type:'other',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'На кухне стоит деревяный стол.',ans:'на кухне стоит деревянный стол',hint:'ошибка в прилагательном',exp:'<strong>Деревянный</strong> — исключение (стеклянный, оловянный, деревянный) → НН. ✗ деревяный: правило «-ЯН- → одна Н» на тройку исключений не действует.'},
+{id:'ru_nn30',type:'error_correction',error_type:'other',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B1',biz:false,q:'Мама купила кожанную сумку.',ans:'мама купила кожаную сумку',hint:'ошибка в прилагательном',exp:'Кожа → кож<strong>ан</strong>ая: -АН- → одна Н. ✗ кожанная. НН бывает у исключений на -ЯН-, а «кожаный» к ним не относится.'},
+{id:'ru_nn31',type:'error_correction',error_type:'other',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'Сегодня очень ветренная погода.',ans:'сегодня очень ветреная погода',hint:'ошибка в прилагательном',exp:'<strong>Ветреная</strong> — исключение: одна Н. ✗ ветренная. НН вернётся только с приставкой: безветренная погода.'},
+{id:'ru_nn32',type:'error_correction',error_type:'other',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,q:'В комнате длинный диван и стекляная полка.',ans:'в комнате длинный диван и стеклянная полка',hint:'одно из прилагательных написано с ошибкой',exp:'<strong>Стеклянная</strong> — исключение → НН. «Длинный» уже написано верно (длин- + -н-). ✗ стекляная.'},
+{id:'ru_nn33',type:'gap',cat:'RU: Н/НН',themes:['home_daily'],lvl:'B2',biz:false,hard:true,q:'Дорога дли___а и пуста.',ans:0,opts:['нн','н'],exp:'Краткое прилагательное сохраняет НН полной формы: длинный → дорога дли<strong>нн</strong>а. ✗ Одна Н дала бы существительное «длина».'}];
 
 let TOTAL = 0;
 let LEVEL_TOTALS = {};
@@ -3841,7 +3895,11 @@ function computeCoverageConstants() {
 function buildCategoryChips() {
   const container = document.getElementById('cat-chips');
   if (!container) return;
-  const cats = [...new Set(ALL_QUESTIONS.map(q => q.cat))].sort();
+  // Mirror the selectQuestions RU-track gate: RU: chips only for ruTrack profiles.
+  const ruGate = typeof isRuTrack === 'function' && isRuTrack(currentPlayer);
+  const cats = [...new Set(ALL_QUESTIONS.map(q => q.cat))]
+    .filter(cat => ruGate === String(cat).startsWith('RU: '))
+    .sort();
   container.innerHTML = '<button class="cat-btn active" data-cat="All" onclick="setCat(this)">All</button>';
   cats.forEach(cat => {
     const btn = document.createElement('button');
@@ -3922,6 +3980,7 @@ function defaultData() {
     catStats: {},
     lvlStats: {},
     coach_drill_stats: {},  // per-target_structure {seen, correct, last_seen, last_correct, category} — written by coachFoldDrillStats
+    daily_activity: {},     // {"YYYY-MM-DD": {items, correct}} — play-loop adherence record for program dashboards (plans/ru-track-nicole.md)
     totalSessions: 0,
     totalCorrect: 0,
     totalAnswered: 0,
@@ -4474,13 +4533,42 @@ function renderLearnerHome() {
 
   // Zone 1b: button hints. Primary = Coach exercises ("we'll pick"); secondary = Quiz.
   // Cheap synchronous hints based on session history; full routing decides at click.
+  // RU track: Coach-routed buttons hidden — quiz is the sole surface, in Russian.
+  const ruHome = isRuTrack(currentPlayer);
+  const primaryBtn = document.getElementById('lh-primary');
+  if (primaryBtn) primaryBtn.style.display = ruHome ? 'none' : '';
+  const otherBtn = document.querySelector('.lh-other[onclick^="homePracticeOther"]');
+  if (otherBtn) otherBtn.style.display = ruHome ? 'none' : '';
+  // Track bridge (nicole ↔ nicole_ru): one-tap same-PIN profile switch.
+  const meMember = FAMILY_MEMBERS.find(m => m.key === currentPlayer);
+  const sibMember = meMember && meMember.siblingProfile
+    ? FAMILY_MEMBERS.find(m => m.key === meMember.siblingProfile) : null;
+  let bridgeBtn = document.getElementById('lh-track-bridge');
+  if (sibMember) {
+    if (!bridgeBtn) {
+      bridgeBtn = document.createElement('button');
+      bridgeBtn.id = 'lh-track-bridge';
+      bridgeBtn.className = 'lh-other';
+      bridgeBtn.setAttribute('onclick', 'switchToSiblingProfile()');
+      const anchor = document.getElementById('lh-quiz');
+      if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(bridgeBtn, anchor.nextSibling);
+    }
+    bridgeBtn.textContent = sibMember.ruTrack
+      ? '🪆 Русский — подготовка к школе →'
+      : '👧 English quiz →';
+    bridgeBtn.style.display = '';
+  } else if (bridgeBtn) {
+    bridgeBtn.style.display = 'none';
+  }
   const hintEl = document.getElementById('lh-primary-hint');
   if (hintEl) {
     hintEl.textContent = 'free write, drills — we’ll pick';
   }
   const quizHintEl = document.getElementById('lh-quiz-hint');
   if (quizHintEl) {
-    quizHintEl.textContent = quizCountFor(currentPlayer) + ' grammar questions';
+    quizHintEl.textContent = ruHome
+      ? quizCountFor(currentPlayer) + ' вопросов по русскому'
+      : quizCountFor(currentPlayer) + ' grammar questions';
   }
 
   // Zone 2: family pull — reuse the family-poll fetch path
@@ -4755,7 +4843,7 @@ const PARTIAL_RESUME_MIN_TOTAL = 3;
 // Quiz length per player. Median completed `total` from recentSessions:
 // nicole=20 (n=10), ernest=20 (n=8), anna=10 (n=10). Default 10 covers
 // builder-shell + new players.
-const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20, artem: 20 };
+const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20, artem: 20, nicole_ru: 15 };
 const QUIZ_COUNT_DEFAULT = 10;
 function quizCountFor(player) {
   return QUIZ_COUNT_BY_PLAYER[player] || QUIZ_COUNT_DEFAULT;
@@ -4855,6 +4943,9 @@ async function coachListRecentCorrectIds(player, type, ageMs) {
 }
 
 async function homeStartPractice() {
+  // RU-track: quiz is the only surface (no RU worker mode yet) — route straight
+  // there, never into English Coach drills. plans/ru-track-nicole.md.
+  if (isRuTrack(currentPlayer)) { await homeStartQuizFromHome(); return; }
   // §3.1 A7 (t6): primary "Start practice" routes to Coach exercises by default;
   // Quiz lives on its own button now. Engagement-first front door — Free Write
   // and the chip-UX drills (Translation, Articles, Particles) are what family
@@ -4965,6 +5056,13 @@ async function homeStartQuizFromHome() {
     document.getElementById('tab-home').classList.add('hidden');
     const ok = await homeStartQuiz();
     if (ok) return;
+    // Empty pool, RU track — no Coach fallback (it's an English surface).
+    // Return to home; the RU bank not being deployed yet is the only way in here.
+    if (isRuTrack(currentPlayer)) {
+      document.getElementById('tab-home').classList.remove('hidden');
+      if (typeof showLearnerHome === 'function') showLearnerHome();
+      return;
+    }
     // Empty pool — reveal Coach + fall back to Free Write.
     const coachTab = document.getElementById('tab-coach');
     if (coachTab) coachTab.classList.remove('hidden');
@@ -5281,6 +5379,10 @@ function selectQuestions(count) {
   const LEVEL_ORDER = {B1:1,B2:2,C1:3,C2:4};
   const maxLvlNum = LEVEL_ORDER[maxLevel] || 4;
   let pool = ALL_QUESTIONS.filter(q => {
+    // RU-track gate (plans/ru-track-nicole.md): 'RU: ' categories are visible
+    // only to ruTrack profiles; ruTrack profiles see nothing else. One choke
+    // point — every mode (smart/weak/random/new/consolidate) flows through here.
+    if (isRuTrack(currentPlayer) !== String(q.cat).startsWith('RU: ')) return false;
     if (catFilter !== 'All' && q.cat !== catFilter) return false;
     if (!includeBiz && q.biz) return false;
     if ((LEVEL_ORDER[q.lvl] || 2) > maxLvlNum) return false;
@@ -5477,6 +5579,17 @@ function renderQ() {
 
   const optsEl = document.getElementById('q-options');
   optsEl.innerHTML = '';
+
+  // Rule-card intro for any type (RU-track scaffold fade: first items of a topic
+  // carry the algorithm, later ones don't). multi renders its own inside
+  // renderMulti — skip here to avoid doubling. Authoring rule: intro must never
+  // name the answer (bug-log: rs05-07 intro spoilers).
+  if (q.intro && q.type !== 'multi') {
+    const intro = document.createElement('div');
+    intro.className = 'multi-intro';
+    intro.innerHTML = q.intro;
+    optsEl.appendChild(intro);
+  }
 
   if (isGap) {
     // render the sentence with a blank, then word chips below
@@ -5845,6 +5958,17 @@ function bumpDailyStreak(d) {
   if (d.currentStreak > (d.longestStreak||0)) d.longestStreak = d.currentStreak;
 }
 
+// Per-day answered/correct counters for program dashboards + adherence tracking
+// (plans/ru-track-nicole.md). Durable beyond recentSessions' FIFO-10. Date key
+// uses the same UTC convention as bumpDailyStreak/lastPlayedDate — keep aligned.
+function bumpDailyActivity(d, correct) {
+  const today = new Date().toISOString().slice(0,10);
+  if (!d.daily_activity) d.daily_activity = {};
+  if (!d.daily_activity[today]) d.daily_activity[today] = { items: 0, correct: 0 };
+  d.daily_activity[today].items++;
+  if (correct) d.daily_activity[today].correct++;
+}
+
 // A streak is "alive" only when the last activity was today or yesterday.
 // The stored `currentStreak` doesn't decay — it sits at whatever the last
 // bump set it, even months later — so every display site should run the
@@ -5944,6 +6068,7 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
   const allCorrect = blanksCorrect === blanksTotal;
   if (allCorrect) { sessionScore++; streak++; } else streak = 0;
   bumpDailyStreak(DB);
+  bumpDailyActivity(DB, allCorrect);
   if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
   DB.qStats[q.id].seen++;
   DB.qStats[q.id].correct += fraction;
@@ -5976,6 +6101,7 @@ async function recordMultiAnswer(fraction, blanksCorrect, blanksTotal, q) {
 async function recordAnswer(correct, q) {
   if (correct) { sessionScore++; streak++; } else streak = 0;
   bumpDailyStreak(DB);
+  bumpDailyActivity(DB, correct);
 
   // per-question
   if (!DB.qStats[q.id]) DB.qStats[q.id] = {seen:0,correct:0,wrong:0,lastSeen:0,consec:0};
@@ -7331,11 +7457,24 @@ const FAMILY_MEMBERS = [
     pinHash: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155' },
   { key: 'nicole',  name: 'Nicole',  emoji: '👧', color: '#d4a94e', coachLanguage: 'ru',
     level: 'B1', feedbackDepth: 'medium-kid', avoidTypes: [],
+    siblingProfile: 'nicole_ru',  // one-tap track switch on learner home; PIN skipped only because pinHash matches
+    pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
+  { key: 'nicole_ru', name: 'Николь', emoji: '🪆', color: '#e0564e', coachLanguage: 'ru',
+    level: 'B1', feedbackDepth: 'medium-kid', avoidTypes: [],
+    ruTrack: true,  // Russian grade-7 prep (plans/ru-track-nicole.md): sees only 'RU: ' categories, Coach tab hidden, quiz is the sole surface. Same PIN as nicole — same kid, separate stats doc.
+    siblingProfile: 'nicole',
     pinHash: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f' },
   { key: 'egor',    name: 'Egor',    emoji: '🧒', color: '#9c6eff', coachLanguage: 'en',
     level: 'B2', feedbackDepth: 'medium-light', avoidTypes: [],
     pinHash: 'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730' },
 ];
+
+// RU-track membership check (plans/ru-track-nicole.md). Gates question-pool
+// assembly, category chips, Coach surfaces, and learner-home routing.
+function isRuTrack(key) {
+  const m = FAMILY_MEMBERS.find(m => m.key === key);
+  return !!(m && m.ruTrack);
+}
 
 // ══════════════════════════════════════════════════════════════
 //  PLAYER IDENTITY + PIN AUTH
@@ -7361,7 +7500,7 @@ async function confirmPlayer(key) {
   currentPlayer = key;
   localStorage.setItem('quizPlayerKey', key);
   // Grammar Reference language bridge — auto-switch for Russian-speaking players
-  localStorage.setItem('ref-lang', (key === 'anna' || key === 'nicole') ? 'ru' : 'en');
+  localStorage.setItem('ref-lang', (key === 'anna' || key === 'nicole' || isRuTrack(key)) ? 'ru' : 'en');
   document.getElementById('name-picker').style.display = 'none';
   const member = FAMILY_MEMBERS.find(m => m.key === key);
   if (member) {
@@ -7369,6 +7508,11 @@ async function confirmPlayer(key) {
       el.textContent = member.emoji + ' ' + member.name;
       el.style.display = '';
   }
+  // RU-track: no Coach surface (no RU worker mode yet) — hide the tab button.
+  const coachTabBtn = document.querySelector('.tabs .tab[onclick*="coach"]');
+  if (coachTabBtn) coachTabBtn.style.display = isRuTrack(key) ? 'none' : '';
+  // Category chips are player-dependent (RU: cats only for the RU track) — rebuild.
+  if (typeof buildCategoryChips === 'function') buildCategoryChips();
   if (isSwitch) {
     // Wipe in-memory + IndexedDB so the previous player's stats can't leak into the new player's doc.
     const fresh = defaultData();
@@ -7393,6 +7537,19 @@ async function confirmPlayer(key) {
   // [K] Show simple or full setup depending on player preference
   checkSimpleUI();
 }
+
+// One-tap track switch between linked profiles (nicole ↔ nicole_ru). PIN
+// re-entry is skipped ONLY when both profiles share the same pinHash — the
+// pair is access-equivalent, so nothing weakens. The switch goes through
+// confirmPlayer, which carries the contamination guards (wipe + reload
+// before any sync). plans/ru-track-nicole.md.
+window.switchToSiblingProfile = async function() {
+  const me = FAMILY_MEMBERS.find(m => m.key === currentPlayer);
+  const sib = me && me.siblingProfile ? FAMILY_MEMBERS.find(m => m.key === me.siblingProfile) : null;
+  if (!sib) return;
+  if (sib.pinHash !== me.pinHash) { window._selectName(sib.key); return; }
+  await confirmPlayer(sib.key);
+};
 
 // Called when a name button is clicked
 window._selectName = function(key) {
@@ -7515,6 +7672,10 @@ function buildPayload(db) {
     }),
     aggregated_exercises: db.aggregated_exercises || {},
     aggregated_coach_sessions: db.aggregated_coach_sessions || {},
+    daily_activity: db.daily_activity || {},
+    // study_plan is intentionally NOT in the payload — CC-owned field (plans/
+    // ru-track-nicole.md); PWA reads it but must never echo it back (a stale
+    // local copy would clobber CC edits — same family as the 2026-05-20 wipe).
   };
 }
 
@@ -7565,7 +7726,12 @@ async function loadFromFirebase() {
     const remote = await fsGet('players/' + currentPlayer);
     if (!remote) return false;
     const local = typeof DB !== 'undefined' ? DB : await loadData();
-    if ((remote.totalAnswered || 0) > 0 && (remote.totalAnswered || 0) >= (local.totalAnswered || 0)) {
+    // Fresh-profile bootstrap (plans/ru-track-nicole.md): a just-seeded player doc
+    // has totalAnswered 0 but carries learning_path / study_plan config that must
+    // reach the client. Merge only when local is also empty — nothing to clobber.
+    const freshBootstrap = (local.totalAnswered || 0) === 0 && (remote.totalAnswered || 0) === 0
+      && !!(remote.learning_path || remote.study_plan);
+    if (freshBootstrap || ((remote.totalAnswered || 0) > 0 && (remote.totalAnswered || 0) >= (local.totalAnswered || 0))) {
       // Normalise session dates: stored dates may be dd/MM/yyyy (from old exports/restores)
       // or full ISO strings. Convert all to ISO yyyy-MM-dd so new Date() parses correctly.
       const normaliseSessions = (sessions) => (sessions || []).map(s => {
@@ -7596,6 +7762,8 @@ async function loadFromFirebase() {
         _simpleUI:      remote.simpleUI         === true,
         ui_shell:       remote.ui_shell        || 'learner',
         learning_path:  remote.learning_path   || null,
+        study_plan:     remote.study_plan      || null,  // CC-owned, read-only on PWA
+        daily_activity: remote.daily_activity  || {},
         badges:         remote.badges          || {},
         _owner:         currentPlayer,   // client-side marker; stripped from sync payload
       };

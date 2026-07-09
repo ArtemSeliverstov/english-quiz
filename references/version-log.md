@@ -10,6 +10,20 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-09 · v20260709 — RU track W1: Nicole grade-7 prep goes live
+
+Russian grade-7 entrance-prep track for Nicole (7/20 on the TAMOS entrance test; program deadline 2026-09-01). Plan of record: `plans/ru-track-nicole.md`. Program started same day — `study_plan.start_date` 2026-07-09.
+
+- **Profile `nicole_ru`** («🪆 Николь», same PIN as nicole, separate Firestore doc — zero contamination surface). Seeded with `learning_path` (window: Морфемика + Н/НН, cap B1) + `study_plan` (8 weeks, daily target 10 items, диктант weekly, mock from W3).
+- **Engine**: RU category gate in `selectQuestions` + category chips (single choke point — `RU: ` categories visible only to ruTrack profiles, both directions verified); `intro` rule-card now renders for every question type (scaffold-fade); `daily_activity` per-day {items, correct} store bumped in both record paths (adherence data for program dashboards); `study_plan` read-only on PWA (excluded from `buildPayload`); fresh-profile bootstrap in `loadFromFirebase`; learner-home RU routing (quiz-only, Coach hidden, no English fallback); **sibling one-tap profile switch** nicole ↔ nicole_ru (PIN skipped only on matching pinHash; goes through `confirmPlayer` guards).
+- **Content W1**: 53 questions — `RU: Морфемика и части речи` (20) + `RU: Н/НН` (33); gap н/нн chips, mcq classification, input whole-word production, error_correction; 5 intro algorithm cards; exceptions flagged `hard`. Prefixes `ru_mor`/`ru_nn` registered.
+- **Reference**: `ref/ru.html` — состав слова, части речи, Н/НН decision tree + исключения; hub card «🇷🇺 Русский · 7 класс».
+- Docs: firestore-schema (`study_plan`, `daily_activity`, nicole_ru), data-flow, system-mechanisms §4 (13 stores), question-schema (intro all-types + RU cats), taxonomy §7, roadmap RU section, plans README.
+
+Q count: 2299 (Δ+53) · Version: v20260709
+
+---
+
 ## 2026-07-04 · v20260704 — conversational-register lane (T1 + CR1–CR4)
 
 Ships Artem's 2026-07-03 priority call: spoken-casual English as an **absent variety** (acquired-through-text profile — `docs/audience-profiles.md` §1, `references/design-decisions.md`). Full lane record: `plans/conversational-register-lane.md`.

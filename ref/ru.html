@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Русский язык · Справочник правил</title>
+<style>
+:root {
+  --bg: #0f1117; --surface: #181b23; --surface2: #22252f; --border: #2a2e3a;
+  --text: #e2e4ea; --text2: #a1a5b3; --text3: #6b7084;
+  --green: #34d399; --green-bg: rgba(52,211,153,.08);
+  --red: #f87171; --red-bg: rgba(248,113,113,.08);
+  --blue: #60a5fa; --blue-bg: rgba(96,165,250,.08);
+  --purple: #a78bfa; --purple-bg: rgba(167,139,250,.08);
+  --yellow: #fbbf24; --yellow-bg: rgba(251,191,36,.08);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --r: 10px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+.shell { max-width:680px; margin:0 auto; padding:1.2rem 1rem 4rem; }
+.header { text-align:center; padding:1.5rem 0 1rem; }
+.header h1 { font-size:1.4rem; font-weight:700; letter-spacing:-.02em; }
+.header h1 span { color:var(--purple); }
+.header .sub { font-size:12px; color:var(--text3); margin-top:.2rem; }
+.back { display:inline-block; margin:0 0 1rem; font-size:13px; color:var(--text3); text-decoration:none; }
+.back:hover { color:var(--purple); }
+h2 { font-size:1.15rem; margin:2.2rem 0 .8rem; padding-top:1rem; border-top:1px solid var(--border); }
+h2:first-of-type { border-top:none; padding-top:0; }
+h3 { font-size:.95rem; margin:1.4rem 0 .5rem; color:var(--purple); }
+p { margin:.5rem 0; color:var(--text2); }
+strong { color:var(--text); }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:.9rem 1rem; margin:.8rem 0; }
+.algo { background:var(--blue-bg); border-color:rgba(96,165,250,.25); }
+.algo .step { display:flex; gap:.6rem; margin:.45rem 0; }
+.algo .n { flex:none; width:1.5rem; height:1.5rem; border-radius:50%; background:var(--blue); color:#0f1117; font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center; margin-top:.15rem; }
+.ex { background:var(--red-bg); border-color:rgba(248,113,113,.25); }
+table { width:100%; border-collapse:collapse; margin:.6rem 0; font-size:13.5px; }
+th, td { border:1px solid var(--border); padding:.45rem .6rem; text-align:left; vertical-align:top; }
+th { background:var(--surface2); font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text3); }
+.ok { color:var(--green); font-weight:600; }
+.no { color:var(--red); font-weight:600; }
+.hl { color:var(--yellow); font-weight:700; }
+.pill { display:inline-block; padding:.05rem .5rem; border-radius:99px; background:var(--surface2); border:1px solid var(--border); font-size:12px; margin:.1rem .15rem .1rem 0; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <a class="back" href="index.html">← Grammar Reference</a>
+  <div class="header">
+    <h1>Русский язык · <span>правила</span></h1>
+    <div class="sub">Подготовка к 7 классу · алгоритмы недели 1</div>
+  </div>
+
+  <h2>1. Состав слова</h2>
+  <p>Каждое слово собирается из деталей — <strong>морфем</strong>. Порядок всегда один:</p>
+  <div class="card">
+    <p style="text-align:center; font-size:1.05rem;"><span class="pill">приставка</span> + <span class="pill hl">корень</span> + <span class="pill">суффикс</span> + <span class="pill">окончание</span></p>
+    <p style="text-align:center;">по-<span class="hl">езд</span>-к-а &nbsp;·&nbsp; при-<span class="hl">беж</span>-а-ть &nbsp;·&nbsp; под-<span class="hl">вод</span>-н-ый</p>
+  </div>
+  <div class="card algo">
+    <strong>Как разобрать слово:</strong>
+    <div class="step"><div class="n">1</div><div><strong>Окончание</strong> — измени слово: книг<u>а</u> → книг<u>и</u>, книг<u>у</u>. Что меняется — то окончание. Не меняется ничего? Окончание нулевое: дом, стол.</div></div>
+    <div class="step"><div class="n">2</div><div><strong>Корень</strong> — подбери родственные слова: <em>лес</em>, лес-ной, пере-лес-ок. Общая часть — корень.</div></div>
+    <div class="step"><div class="n">3</div><div><strong>Приставка</strong> — всё, что перед корнем: <em>при</em>-бежать, <em>за</em>-играться.</div></div>
+    <div class="step"><div class="n">4</div><div><strong>Суффикс</strong> — между корнем и окончанием: дом-<em>ик</em>, вод-и-<em>тель</em>, кож-<em>ан</em>-ый.</div></div>
+  </div>
+
+  <h2>2. Части речи — быстрая проверка вопросом</h2>
+  <table>
+    <tr><th>Часть речи</th><th>Вопрос</th><th>Примеры</th></tr>
+    <tr><td><strong>Существительное</strong></td><td>кто? что?</td><td>музыка, Бахрейн, бег, пятёрка</td></tr>
+    <tr><td><strong>Прилагательное</strong></td><td>какой? чей?</td><td>синий, кожаный, мамин</td></tr>
+    <tr><td><strong>Глагол</strong></td><td>что делать? что сделать?</td><td>слушать, прибежать</td></tr>
+    <tr><td><strong>Наречие</strong></td><td>как? где? когда?</td><td>громко, вчера, рядом — <em>не изменяется</em></td></tr>
+    <tr><td><strong>Числительное</strong></td><td>сколько? который?</td><td>пять, третий — <em>можно записать цифрой</em></td></tr>
+    <tr><td><strong>Местоимение</strong></td><td>указывает, не называя</td><td>она, мне, свой, который</td></tr>
+    <tr><td><strong>Служебные</strong></td><td>—</td><td>предлог (из-за), союз (чтобы), частица (даже)</td></tr>
+  </table>
+  <div class="card">
+    <p><strong>Ловушки:</strong> «бег» называет действие, но отвечает на «что?» — существительное. «Пятёрка» — существительное, «пять» — числительное. «Быстро» не изменяется — наречие, «быстрый» изменяется — прилагательное.</p>
+  </div>
+
+  <h2>3. Н или НН в прилагательных</h2>
+  <p>Работает для прилагательных, образованных <strong>от существительных</strong>: кожа → кожаный, туман → туманный.</p>
+  <div class="card algo">
+    <strong>Алгоритм:</strong>
+    <div class="step"><div class="n">1</div><div>От какого слова образовано? Найди основу: кож-аный ← <em>кожа</em>; тума-нный ← <em>туман</em>.</div></div>
+    <div class="step"><div class="n">2</div><div>Суффикс <strong>-АН- / -ЯН- / -ИН-</strong> → <span class="ok">одна Н</span>: кож<u>ан</u>ый, серебр<u>ян</u>ый, гус<u>ин</u>ый.</div></div>
+    <div class="step"><div class="n">3</div><div>Суффикс <strong>-ОНН- / -ЕНН-</strong> → <span class="no">НН</span>: экскурси<u>онн</u>ый, солом<u>енн</u>ый.</div></div>
+    <div class="step"><div class="n">4</div><div><strong>Основа на Н + суффикс -Н-</strong> → <span class="no">НН</span>: тума<u>н</u> + <u>н</u>ый, каме<u>нн</u>ый, дли<u>нн</u>ый, стари<u>нн</u>ый.</div></div>
+    <div class="step"><div class="n">5</div><div>Ни от чего не образовано (<strong>непроизводное</strong>) → <span class="ok">одна Н</span>: юный, зелёный, румяный, свиной, единый, пряный.</div></div>
+  </div>
+
+  <h3>Исключения — выучить наизусть</h3>
+  <div class="card ex">
+    <p><strong>Тройка «окно» (НН, хотя -ЯН-):</strong> <span class="pill">стекля<span class="no">нн</span>ый</span> <span class="pill">оловя<span class="no">нн</span>ый</span> <span class="pill">деревя<span class="no">нн</span>ый</span></p>
+    <p><strong>Одна Н, хотя -ЕНН-:</strong> <span class="pill">ветре<span class="ok">н</span>ый</span> — но с приставкой снова НН: <span class="pill">безветре<span class="no">нн</span>ый</span></p>
+    <p><strong>Различай пару:</strong> ветре<span class="ok">н</span>ый <em>день, человек</em> (характер) · ветря<span class="ok">н</span>ая <em>мельница</em> (работает от ветра — обычный суффикс -ЯН-).</p>
+  </div>
+
+  <h3>Краткая форма</h3>
+  <div class="card">
+    <p>Краткое прилагательное сохраняет столько Н, сколько в полной форме: дли<span class="no">нн</span>ый → дорога дли<span class="no">нн</span>а · це<span class="no">нн</span>ый → вещь це<span class="no">нн</span>а. Не путай с существительным «длина́».</p>
+  </div>
+
+  <h3>Тренировка глазами</h3>
+  <table>
+    <tr><th>Слово</th><th>Почему</th></tr>
+    <tr><td>песча<span class="ok">н</span>ый</td><td>-АН- → Н</td></tr>
+    <tr><td>комари<span class="ok">н</span>ый</td><td>-ИН- → Н</td></tr>
+    <tr><td>стекля<span class="no">нн</span>ый</td><td>исключение (тройка «окно»)</td></tr>
+    <tr><td>экскурсио<span class="no">нн</span>ый</td><td>-ОНН- → НН</td></tr>
+    <tr><td>тума<span class="no">нн</span>ый</td><td>туман + н → НН на стыке</td></tr>
+    <tr><td>ветре<span class="ok">н</span>ый</td><td>исключение из -ЕНН-</td></tr>
+    <tr><td>ю<span class="ok">н</span>ый</td><td>непроизводное → Н</td></tr>
+  </table>
+</div>
+</body>
+</html>

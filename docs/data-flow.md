@@ -8,7 +8,7 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 
 | Surface | Code | Reads | Writes |
 |---|---|---|---|
-| **PWA quiz tab** | `index.html` (play loop) | `players/{name}` | `players/{name}` (qStats, catStats, lvlStats, recentSessions, totals, streaks) |
+| **PWA quiz tab** | `index.html` (play loop) | `players/{name}` | `players/{name}` (qStats, catStats, lvlStats, recentSessions, totals, streaks, daily_activity) |
 | **PWA Coach tab (live AI)** | `index.html` (Coach UI) → Cloudflare Worker | `players/{name}` (context incl. `coach_notes.weak_patterns`); `exercises_library/*` offline fallback only | `players/{name}/coach_sessions/{sid}` + `exercises/{ts}` mirror + `coach_drill_stats` fold + `recent_session_signals` merge |
 | **Cloudflare Worker** | `worker/index.js` (`/v1/messages`, `/v1/audio`) | request context only (stateless) | nothing — PWA writes on its behalf |
 | **CC `exercise-session` skill** | `tools/log_exercise.js` + `tools/update_coach_notes.js` | `players/{name}` (via `get_player.js`) | `players/{name}/exercises/{ts}`, `players/{name}.coach_notes` |
@@ -37,7 +37,7 @@ sequenceDiagram
         U->>Q: Answer
         Q->>Q: Update local IndexedDB (qStats[qid], catStats, lvlStats)
     end
-    Q->>FS: PATCH player doc (qStats deltas, catStats deltas, recentSessions append, totals)
+    Q->>FS: PATCH player doc (qStats deltas, catStats deltas, recentSessions append, totals, daily_activity)
 ```
 
 **Critical**: the PWA writes the **full player doc shape it has in memory**, scoped by `updateMask`. If the in-memory copy was last loaded for a different player and the player switcher didn't fully reload, the wrong player's stats can be patched into the active player's doc. (Failure mode behind the 2026-05-02 Nicole contamination — see `plans/archive/data-integrity-postmortem.md`.) The sibling failure mode is a **root-doc replace** from a session end-write (2026-05-20 Artem incident — `references/bug-log.md`): any write to `players/{name}` must be a field-masked update naming only its own fields.

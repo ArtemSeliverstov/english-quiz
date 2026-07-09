@@ -96,7 +96,7 @@ Player-facing implication: the **family never sees CC**; Artem rarely sees the W
 
 ## 4. Stats stores — inventory
 
-Eleven Firestore stores on `players/{name}`. Each has a clear purpose post-2026-05-12 stats-sprawl cleanup.
+Thirteen Firestore stores on `players/{name}`. Each has a clear purpose post-2026-05-12 stats-sprawl cleanup.
 
 | Store | Purpose | Writers | Readers |
 |---|---|---|---|
@@ -111,6 +111,8 @@ Eleven Firestore stores on `players/{name}`. Each has a clear purpose post-2026-
 | `coach_notes.stuck_questions` | 100% error rate qids | stats-review | quiz-development (audits) — no PWA consumer |
 | `phrase_tracker.entries[]` | Lexical swap lifecycle (status: active / retest_due / mastered) | `tools/capture_swaps.js`, phrase_swap_drill end | `coachBuildPhrasePool`, stats-review |
 | `aggregated_coach_sessions[sid]` | Idempotency for CEFR fold | `coachFoldFreeWriteAssessment` | same (dedup check) |
+| `study_plan` | RU-track program plan (weeks, topics, daily target) | CC only (Firebase MCP) | learner home card, Artem program dashboard, stats-review |
+| `daily_activity[date]` | Per-day answered/correct adherence record | PWA play loop (`bumpDailyActivity`) | program dashboards, stats-review |
 
 Plus `learning_path` (active_categories, level_cap, mastered_categories, next_unlock_options) as the active window state machine.
 

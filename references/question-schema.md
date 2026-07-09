@@ -204,7 +204,7 @@ whole — all blanks must be correct.
 |---|---|---|---|---|---|---|---|
 | `opts` | ✓ | ✓ | — | — (inside `blanks[]`) | — | — | — |
 | `hint` | ✗ never | ✗ never | ✓ required* | ✗ never | optional | ✗ never | optional |
-| `intro` | ✗ never | ✗ never | ✗ never | optional | ✗ never | ✗ never | ✗ never |
+| `intro` | optional* | optional* | optional* | optional | optional* | optional* | optional* |
 | `blanks` | — | — | — | ✓ required | — | — | — |
 | `source` | — | — | — | — | ✓ required | — | — |
 | `keyword` | — | — | — | — | ✓ required | — | — |
@@ -214,6 +214,10 @@ whole — all blanks must be correct.
 
 *`hint` is required for `input` except G&I questions using the standard bracket format
 (see `question-authoring-standards.md` § hint format).
+
+*`intro` renders for every type since the RU-track build (scaffold-fade rule cards on
+early items of a topic). English-bank convention stays multi-only. Intro must never
+name the answer — spoiler check per bug-log rs05–07.
 
 Gap/mcq/multi never have hints. Hint is shown immediately before the first attempt.
 The `exp` teaches the rule; the `hint` guides production. Never overlap.
@@ -275,6 +279,7 @@ Common active prefixes (selected examples):
 | `wf_` | Word Formation | Wordform |
 | `qt_i` | Quantifiers | Input series (s89, B1) |
 | `refl`, `reflop`, `reflby` | Pronouns | Reflexive series (migrated s89) |
+| `ru_mor`, `ru_nn` | RU: Морфемика и части речи / RU: Н/НН | RU track W1 — gated to ruTrack profiles |
 
 The prefix index lives in `references/question-bank-taxonomy.md` §7; for current
 ranges grep `index.html`. When adding to a prefix, verify the highest existing
@@ -296,6 +301,10 @@ Articles · Tenses · Gerunds & Infinitives · Vocabulary · Word Choice · Prep
 Authoritative count and per-category numbers live in `references/question-bank-taxonomy.md`
 (§2 inventory + Appendix A registry); the dynamically generated coverage matrix in the
 archived HTML KB (`archive/quiz_knowledge_base_v20260428-s87.html`) is historical only.
+
+RU-track categories are prefixed `RU: ` and sit outside the 28-value English list —
+gated to ruTrack profiles in `selectQuestions` (`plans/ru-track-nicole.md`). Live:
+RU: Морфемика и части речи · RU: Н/НН.
 
 ---
 

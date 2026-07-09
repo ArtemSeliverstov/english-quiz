@@ -20,9 +20,20 @@ What's next, what's deferred. Ordered by category, not strict priority.
 ## Phase 1 — Content priorities
 
 Canonical table lives in `references/coverage-matrix.md` (single home — this section
-used to duplicate it and both copies drifted). Current bank: 2,246 q / 27 categories
-(B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03). Highlights: Natural
-English shipped (30 q, in Anna's window); C1 target met; C2 remains the open gap.
+used to duplicate it and both copies drifted). Current bank: 2,299 q — 2,246 EN across
+27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 53 RU-track
+(outside the EN matrix). Highlights: Natural English shipped (30 q, in Anna's window);
+C1 target met; C2 remains the open gap.
+
+---
+
+## RU track — Nicole grade-7 prep (deadline 2026-09-01)
+
+Plan of record: `plans/ru-track-nicole.md`. Shipped v20260709: `nicole_ru` profile,
+RU category gate, intro-for-all-types, `daily_activity` store, sibling one-tap switch,
+W1 bank (Морфемика 20 + Н/НН 33), `ref/ru.html`. Next: W2 content (НЕ, слитно/раздельно/дефис),
+program dashboards (Nicole card + Artem plan-vs-fact), kickoff #1 script, CC logging
+types (kickoff/mock) + `mistakes-review` adherence line.
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.
