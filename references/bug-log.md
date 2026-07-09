@@ -8,6 +8,11 @@ Format: `[bug] [fix] [preventive rule]`. Newest first.
 
 ## Architecture / sync
 
+### Firestore serializer dropped map keys containing '/' (2026-07-09)
+**Bug**: `_fsValue` in `index.html` skipped any map key containing '/' when building sync payloads — an RTDB-era guard (RTDB forbids `/` in keys) carried into the s87 Firestore migration, where mapValue keys legally contain '/'. First real trigger: the RU track. `catStats['RU: Н/НН']` and session `catBreakdown` entries were silently stripped from every sync — 17 answers aggregated locally, never reached the cloud; program dashboards (topic status reads `catStats`) stayed blind to the topic. `qStats`/`lvlStats` unaffected (their keys never contain '/').
+**Fix**: guard narrowed to the Firestore-reserved `__` prefix (v20260709-r3). `catStats` for nicole_ru backfilled from `qStats` after the fix deployed.
+**Rule**: when porting storage-layer guards across backends, re-derive each restriction from the new backend's actual rules — RTDB key bans (`/ . # $ [ ]`) do not apply to Firestore map keys. Any new key namespace (e.g. RU categories) gets a day-one smoke test of the full local → cloud → local round trip.
+
 ### Root-doc replace wiped Artem's stats fields (2026-05-20, found 2026-07-03)
 **Bug**: A CC `weak-spots-session` end-of-session write at 2026-05-20T09:23Z replaced `players/artem` instead of patching it — only the write-set survived (`aggregated_coach_sessions`, `coach_notes`, `lvlStats`, `totalAnswered`, `totalCorrect`); deleted: `qStats` (1,883 keys), `catStats` (31), `createdAt`, `recentSessions`, `phrase_tracker` (83 entries), `learning_path`, `coach_drill_stats`, identity fields, `totalSessions`. Undetected for 6 weeks: all three `check_player_integrity.js` invariants were blind to field *disappearance* (null `createdAt` skipped; empty `qStats` can't overlap; shift check only looked upward), and the clean verdict auto-ratcheted the degraded state into the baseline.
 **Fix**: Restored 2026-07-03 from `backups/2026-05-20/artem.json` via masked PATCH (kept live `coach_notes`/`lvlStats`/`aggregated_*`/totals; `catStats` summed backup + post-wipe). Checker gained `createdAt_removed`, `total_answered_decrease`, `qstats_collapse` invariants, and the baseline no longer auto-updates on any count shrink without `--accept-shrink`.

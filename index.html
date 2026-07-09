@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260709-r2">
+  <meta name="app-version" content="v20260709-r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1141,7 +1141,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709-r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709-r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -7538,7 +7538,11 @@ function _fsValue(v) {
     const fields = {};
     for (const [k, val] of Object.entries(v)) {
       if (val === undefined) continue;
-      if (k.includes('/') || k.startsWith('__')) continue;
+      // '__' prefix is Firestore-reserved. The old `k.includes('/')` guard was an
+      // RTDB-era leftover (s87 migration): RTDB forbids '/' in keys, Firestore map
+      // keys allow it. It silently dropped catStats['RU: Н/НН'] from every sync —
+      // 2026-07-09 bug, see bug-log.
+      if (k.startsWith('__')) continue;
       fields[k] = _fsValue(val);
     }
     return { mapValue: { fields } };

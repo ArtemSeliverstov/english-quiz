@@ -10,6 +10,14 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-09 · v20260709-r3 — serializer fix: map keys with '/' no longer dropped
+
+One-line data-loss fix found while reviewing Nicole's first RU session. `_fsValue` silently skipped map keys containing '/' (RTDB-era guard carried into the s87 Firestore migration) — `catStats['RU: Н/НН']` + session `catBreakdown` never reached the cloud (17 answers invisible to dashboards/topic status). Guard narrowed to the Firestore-reserved `__` prefix; unit-verified. nicole_ru `catStats` backfilled from `qStats` (Н/НН 14/17) after deploy. Full entry: `references/bug-log.md`.
+
+Q count: 2299 (Δ0) · Version: v20260709-r3
+
+---
+
 ## 2026-07-09 · v20260709-r2 — RU-track program dashboards
 
 Two views over one data source (`study_plan` + `daily_activity` + exercises rows), deviations computed at render, never stored.
