@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260709-r4">
+  <meta name="app-version" content="v20260710">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1141,7 +1141,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260709-r4</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260710</span></p>
 </header>
 
 <!-- TABS -->
@@ -4781,8 +4781,8 @@ function renderLearnerHome() {
       if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(bridgeBtn, anchor.nextSibling);
     }
     bridgeBtn.textContent = sibMember.ruTrack
-      ? '🪆 Русский — подготовка к школе →'
-      : '👧 English quiz →';
+      ? sibMember.emoji + ' Русский язык →'
+      : sibMember.emoji + ' English quiz →';
     bridgeBtn.style.display = '';
   } else if (bridgeBtn) {
     bridgeBtn.style.display = 'none';
@@ -5073,7 +5073,7 @@ const PARTIAL_RESUME_MIN_TOTAL = 3;
 // Quiz length per player. Median completed `total` from recentSessions:
 // nicole=20 (n=10), ernest=20 (n=8), anna=10 (n=10). Default 10 covers
 // builder-shell + new players.
-const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20, artem: 20, nicole_ru: 15 };
+const QUIZ_COUNT_BY_PLAYER = { anna: 10, nicole: 20, ernest: 20, artem: 20, nicole_ru: 15, ernest_ru: 15 };
 const QUIZ_COUNT_DEFAULT = 10;
 function quizCountFor(player) {
   return QUIZ_COUNT_BY_PLAYER[player] || QUIZ_COUNT_DEFAULT;
@@ -7689,6 +7689,12 @@ const FAMILY_MEMBERS = [
     pinHash: '0e70a832cb7a415716c3ba42776f795a905691b043e81a23895c8588a6268653' },
   { key: 'ernest',  name: 'Ernest',  emoji: '👦', color: '#4caf50', coachLanguage: 'en',
     level: 'B2', feedbackDepth: 'medium', avoidTypes: [],
+    siblingProfile: 'ernest_ru',  // one-tap track switch on learner home; PIN skipped only because pinHash matches
+    pinHash: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155' },
+  { key: 'ernest_ru', name: 'Эрнест', emoji: '🐻', color: '#b8524a', coachLanguage: 'ru',
+    level: 'B2', feedbackDepth: 'medium', avoidTypes: [],
+    ruTrack: true,  // Russian OGE-year prep (grade 9 ahead): same RU bank as nicole_ru, own stats doc. Program lands after diagnostics/ru-ernest-diagnostic-1.md is scored.
+    siblingProfile: 'ernest',
     pinHash: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155' },
   { key: 'nicole',  name: 'Nicole',  emoji: '👧', color: '#d4a94e', coachLanguage: 'ru',
     level: 'B1', feedbackDepth: 'medium-kid', avoidTypes: [],

@@ -10,6 +10,17 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-10 · v20260710 — Ernest joins the RU track
+
+- **`ernest_ru` profile** («🐻 Эрнест», same PIN as ernest, separate stats doc): full 69-item RU bank, `level_cap: B2` (older kid — закрепление tier available from day one), no `study_plan` yet — his OGE-year program lands after the placement diagnostic is scored.
+- Sibling switch on both his homes; bridge labels now derived from the sibling profile (emoji + generic «Русский язык») — was hardcoded to Nicole's pair.
+- `ernest_ru` in tools `PLAYERS`: integrity baseline (7 players), backups, stats-review.
+- **Placement instrument** `diagnostics/ru-ernest-diagnostic-1.md`: 38 single-choice items, 40 min, grades 5–8 span (13 орфография / 10 пунктуация / 8 морфология / 4 синтаксис / 3 речь), no topic labels on items, key + cluster map + scoring thresholds for Artem.
+
+Q count: 2315 (Δ0) · Version: v20260710
+
+---
+
 ## 2026-07-09 · v20260709-r4 — RU terminology foundation layer
 
 Day-1 data response (first-pass 67% with term-guessing; weak-replay 100%): teach the metalanguage before testing it.

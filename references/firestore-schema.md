@@ -13,7 +13,7 @@ The data model in Cloud Firestore. Active as of v20260428-s87.
 
 ### `players/{playerName}`
 
-One document per family member. Player keys are lowercase: `artem`, `anna`, `nicole`, `ernest`, `egor`, plus `nicole_ru` — Nicole's Russian grade-7 track (same child, separate stats doc; `plans/ru-track-nicole.md`).
+One document per family member. Player keys are lowercase: `artem`, `anna`, `nicole`, `ernest`, `egor`, plus RU-track twins `nicole_ru` (grade-7 prep; `plans/ru-track-nicole.md`) and `ernest_ru` (OGE-year prep; program pending `diagnostics/ru-ernest-diagnostic-1.md`) — same children, separate stats docs.
 
 | Field | Type | Writer | Reader | Purpose |
 |---|---|---|---|---|

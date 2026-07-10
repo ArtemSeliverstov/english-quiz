@@ -1,5 +1,5 @@
 {
-  "savedAt": "2026-07-09T07:25:51.312Z",
+  "savedAt": "2026-07-10T04:12:33.542Z",
   "players": {
     "artem": {
       "createdAt": "2026-02-01T00:00:00.000Z",
@@ -18,13 +18,18 @@
     },
     "nicole_ru": {
       "createdAt": "2026-07-09T09:00:00.000Z",
-      "totalAnswered": 0,
-      "qStatsCount": 0
+      "totalAnswered": 25,
+      "qStatsCount": 20
     },
     "ernest": {
       "createdAt": "2026-02-28T07:48:57.619Z",
       "totalAnswered": 285,
       "qStatsCount": 207
+    },
+    "ernest_ru": {
+      "createdAt": "2026-07-10T06:00:00.000Z",
+      "totalAnswered": 0,
+      "qStatsCount": 0
     },
     "egor": {
       "createdAt": "2026-02-27T16:50:31.654Z",

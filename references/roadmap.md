@@ -33,8 +33,13 @@ Plan of record: `plans/ru-track-nicole.md`. Shipped v20260709: `nicole_ru` profi
 RU category gate, intro-for-all-types, `daily_activity` store, sibling one-tap switch,
 W1 bank (Морфемика 20 + Н/НН 33), `ref/ru.html`. Shipped v20260709-r2: program dashboards
 (Nicole learner card + Artem plan-vs-fact in Stats), `nicole_ru` in tools `PLAYERS`
-(integrity baseline, backups, stats-review). Next: W2 content (НЕ, слитно/раздельно/дефис),
-kickoff #1 script, CC logging types (kickoff/mock) + `mistakes-review` adherence line.
+(integrity baseline, backups, stats-review). Shipped v20260709-r4: terminology foundation
+(+16 items, intro 21/36), kickoff #1 script, kickoff/mock CC types. Ernest joined the track
+(v20260710): `ernest_ru` profile (cap B2, same bank + sibling switch) + 38-item 40-min
+placement instrument `diagnostics/ru-ernest-diagnostic-1.md` — his OGE-year program lands
+after scoring (likely new categories: Причастия/Деепричастия, Пунктуация-8кл). Next: W2
+content (НЕ, слитно/раздельно/дефис), `mistakes-review` adherence line, Ernest diagnostic
+administration + results.
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.
