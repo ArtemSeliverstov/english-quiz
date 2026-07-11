@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0c0e16">
-<link rel="icon" href="data:,">
+<link rel="icon" type="image/svg+xml" href="mathsprint.svg">
+<link rel="apple-touch-icon" href="icon-math-180.png">
+<link rel="manifest" href="mathsprint.webmanifest">
 <title>Устный счёт — семейный спринт</title>
 <style>
   :root{
@@ -59,6 +61,7 @@
   .lb-name{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .lb-name .st{color:var(--accent); font-size:.8em; margin-left:3px;}
   .lb-date{color:var(--dim); font-size:.8rem; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .lb-date b{color:#d98a8a; font-weight:600;}
   .lb-time{font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:1rem;}
   .lb-del{background:none; border:0; color:#5d6690; font-size:1.05rem; cursor:pointer; padding:8px 6px; margin:-8px 0; text-align:center;}
   .lb-del.hidden{visibility:hidden;}
@@ -556,7 +559,8 @@ function lenLocked(p, m, n){
 let sel = {p:null, m:'base', n:10};
 let game = null;
 function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(id).classList.add('active'); }
-const fmt = ms => { const s=ms/1000; return s<60 ? s.toFixed(1).replace('.',',')+' с' : Math.floor(s/60)+':'+(s%60).toFixed(1).padStart(4,'0').replace('.',','); };
+// всегда секунды одним форматом — «97,7 с» сравнивается глазами проще, чем «1:37,7»
+const fmt = ms => (ms/1000).toFixed(1).replace('.',',') + ' с';
 const fmtDate = ts => { const d=new Date(ts); return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0'); };
 
 /* ---------- leaderboard rows + rendering ---------- */
@@ -588,7 +592,7 @@ function renderList(el, mode, n, opts){
     return `<div class="lb-row${hl?' hl':''}">
       <span class="lb-rank">${i+1}.</span>
       <span class="lb-name">${r.name}${star}</span>
-      <span class="lb-date">${fmtDate(r.ts)}</span>
+      <span class="lb-date">${r.err>0?`<b>${r.err} ош</b> · `:''}${fmtDate(r.ts)}</span>
       <span class="lb-time">${fmt(r.ms)}</span>
       ${del}
     </div>`;

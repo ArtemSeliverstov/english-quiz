@@ -32,7 +32,7 @@ jobs:
       - name: Stage app files (allowlist)
         run: |
           mkdir -p _site
-          cp index.html mathsprint.html sw.js manifest.json icon-192.png icon-512.png _site/
+          cp index.html mathsprint.html mathsprint.svg mathsprint.webmanifest icon-math-180.png sw.js manifest.json icon-192.png icon-512.png _site/
           cp -r ref _site/ref
           echo "Staged:" && find _site -type f | sort
 

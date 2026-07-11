@@ -10,6 +10,16 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-11 · v20260711-r2 — Math Sprint: app icon + leaderboard readability
+
+- **Icon set**: `mathsprint.svg` (favicon + Android/maskable, safe-zone bolt on navy), `icon-math-180.png` (apple-touch-icon), `mathsprint.webmanifest` (standalone install, «Устный счёт» on the home screen). Pages allowlist extended; head links wired.
+- **Board readability** (Artem's live feedback «сложно понять результат»): each row now shows the error count («9 ош · 11.07»), and time is always plain seconds — «97,7 с» instead of «1:37,7» (single unit, glance-comparable).
+- SW CACHE bump so phones refetch the updated mathsprint.html.
+
+Q count: 2315 (Δ0) · Version: v20260711-r2
+
+---
+
 ## 2026-07-11 · v20260711 — Math Sprint: family mental-math game ships (math track)
 
 - **New surface `mathsprint.html`** (root, outside the quiz engine — scoped §6 exception, `references/design-decisions.md`): timed sprint, 7 modes (Лайт/База/Дроби/Целые/Проценты/Порядок/Профи) × 10/25, auto-advance input, retry-until-correct + **+5 с penalty per error** (accuracy over speed), «Самые медленные» post-run review, PIN identical to the main app (honors `pinHash_*` overrides).

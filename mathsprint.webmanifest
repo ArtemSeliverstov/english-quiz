@@ -1,0 +1,12 @@
+{
+  "name": "Устный счёт — семейный спринт",
+  "short_name": "Устный счёт",
+  "start_url": "mathsprint.html",
+  "display": "standalone",
+  "background_color": "#0d1020",
+  "theme_color": "#0d1020",
+  "icons": [
+    { "src": "mathsprint.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "icon-math-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
