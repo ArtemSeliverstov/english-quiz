@@ -5,13 +5,24 @@
 **Format**: 38 single-choice items · **40 minutes** · paper answers
 **Companion**: track access shipped v20260709-r5; program lands after scoring (window re-composition per cluster results)
 
-## Administration (Artem)
+## Administration
 
-- Timer 40 minutes, alone, no reference materials, phone away.
-- Give from screen or print the test section only — **do not show the key section**.
-- Answers on paper: `номер → буква`. Skipping and returning is allowed.
-- Items carry no topic labels by design — labels prime the rule and contaminate the measurement. Clusters live only in the key.
-- After: photo of the answer sheet to CC («оцени диагностику Эрнеста») → I score, write the results doc, and propose the program + `ernest_ru` window.
+**Mode B — self-serve CC session (default).** Ernest sits at the laptop; Artem opens a fresh CC session and starts it with: «Это Эрнест, проведи диагностику по русскому из diagnostics/ru-ernest-diagnostic-1.md». Ernest types his own answers; Artem is out of the loop.
+
+Protocol for the administering session — follow exactly:
+
+1. Read this file fully BEFORE greeting. Never show, quote, or hint at the KEY section, cluster names, or correctness during the test — items carry no topic labels by design (labels prime the rule and contaminate the measurement).
+2. Greet Ernest briefly in Russian. Rules up front: ~40 минут, без справочников и поиска, отвечай буквами («1-Б 2-В …»), можно пропустить и вернуться в конце. Record start time (Bash `date`).
+3. Present the test in **6 batches: №1–7, №8–14, №15–21, №22–28, №29–33, №34–38** — verbatim from the Тест section, all options included, no commentary.
+4. On each reply: acknowledge receipt only («принял, 7/7») — no correctness signals, no per-item praise, no hesitation cues. If an answer is ambiguous/missing, ask once to restate that number.
+5. If he asks what a term means or whether an answer is right: «Это часть замера — отвечай, как понимаешь. Разберём после.» No hints, no rephrasing of stems.
+6. After batch 6: one pass over skipped numbers, then record end time. If elapsed > 40:00 — note it in the log, don't cut him off.
+7. Silently score against KEY; compute per-cluster accuracy (Орфография /13, Пунктуация /10, Морфология /8, Синтаксис /4, Речь /3).
+8. **Log to Firestore** (stats must not be lost): `node tools/log_exercise.js ernest_ru <file>` with `exercise: 'mock'`, `topic: 'RU diagnostic #1 — placement'`, `total: 38`, `correct: N`, `source: 'cc_session'`, `meta: {kind: 'diagnostic', elapsed_min: X, clusters: {...}}`, `items[]` per answer: `{exercise_id: null, submitted_answer: '<letter>', correct: <bool>, matched_pattern_id: '<cluster slug>' on wrong items}`.
+9. Replace the stub in `diagnostics/ru-ernest-diagnostic-1-results.md` with the full scored results: answer table, per-cluster accuracy, miss analysis vs thresholds below.
+10. To Ernest — soft wrap only: общий счёт + 1–2 сильных кластера + «папа получит программу». Do NOT walk his errors item-by-item and do NOT reveal the key (items may be reused in later mock forms). The full analysis goes to the results doc for Artem; the program proposal happens in the main track session.
+
+**Mode A — paper/form (fallback).** Print the Тест section (key stays hidden) or use the published artifact form; Ernest writes `номер → буква`, Artem relays to CC for scoring.
 
 ---
 

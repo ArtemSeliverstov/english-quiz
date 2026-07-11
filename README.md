@@ -24,7 +24,9 @@ members. Live at `artemseliverstov.github.io/english-quiz`. Operating instructio
 | local-only | `backups/` (manual snapshots), `Interview/` (audio — personal). | gitignored |
 
 Root files: `index.html` (the whole app, questions inline — by design), `sw.js`,
-`manifest.json` + icons, `firestore.rules` + firebase config.
+`manifest.json` + icons, `firestore.rules` + firebase config, `mathsprint.html`
+(standalone mental-arithmetic sprint game — math track, outside the quiz engine;
+leaderboard is device-local by design).
 
 ## House rules
 

@@ -10,6 +10,20 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-11 · v20260711 — Math Sprint: family mental-math game ships (math track)
+
+- **New surface `mathsprint.html`** (root, outside the quiz engine — scoped §6 exception, `references/design-decisions.md`): timed sprint, 7 modes (Лайт/База/Дроби/Целые/Проценты/Порядок/Профи) × 10/25, auto-advance input, retry-until-correct + **+5 с penalty per error** (accuracy over speed), «Самые медленные» post-run review, PIN identical to the main app (honors `pinHash_*` overrides).
+- **Online family leaderboard** — long ranked per-run list (minesweeper «Times» style): Firestore `math_sprint_scores` (rules deployed same day: create-only, runs immutable, delete open for prune/curation), per-combo `runQuery` + 60 s cache + no polling (Spark quota), offline outbox (≤20 pending runs auto-pushed on reconnect), client prune to top-50 per mode×length, row delete + board clear PIN-gated to artem.
+- **Phase-0 content** (`plans/math-track-nicole.md`): Дроби incl. смешанные ↔ неправильные (␣-key mixed-number input, enforced несократимый вид) + 0,4→дробь; Проценты — три школьных типа + пропорции; Порядок — порядок действий (формат пробника A1).
+- **Data-driven gates**: 25-сет открывается «10-сет ≤ 100 с, ≤1 ош» (все игроки); Профи у Николь — до «База 10 ≤ 60 с, ≤1 ош». Greyed tiles show unlock conditions; unlock is automatic from results (local + online union).
+- Mode mixes **frozen from launch** (leaderboard comparability); new skills = new modes («Делимость» — Sep 2026, roadmap).
+- Infra: Pages allowlist + README root-files row; `sw.js` now precaches mathsprint (offline play; updates ride CACHE bumps); `docs/data-flow.md` surface row; weekly duel protocol (База 10, воскресенье) in the plan.
+- Plans: `math-track-nicole.md` (Artem's rewrite: пути к РФМШ для гражданки РФ, фазы 0–4, календарь 2026/27) + new `math-track-ernest.md` (broad numeracy) + `kk-track-ernest.md` (parked) + Nicole baseline probe v1 instrument.
+
+Q count: 2315 (Δ0) · Version: v20260711
+
+---
+
 ## 2026-07-10 · v20260710 — Ernest joins the RU track
 
 - **`ernest_ru` profile** («🐻 Эрнест», same PIN as ernest, separate stats doc): full 69-item RU bank, `level_cap: B2` (older kid — закрепление tier available from day one), no `study_plan` yet — his OGE-year program lands after the placement diagnostic is scored.

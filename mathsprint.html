@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0c0e16">
+<link rel="icon" href="data:,">
+<title>Устный счёт — семейный спринт</title>
+<style>
+  :root{
+    --bg1:#0f1220; --bg2:#181d33; --card:#1d2340; --card2:#252c4e; --flat:#0c0e16;
+    --text:#eef1fa; --dim:#9aa3c7; --accent:#ffb454; --good:#4cc9a4; --bad:#ff6b6b;
+    --lite:#4cc9a4; --base:#5aa2ff; --frac:#5ad0e6; --int:#b48cff; --pct:#ffd166; --ord:#f0819e; --pro:#ff8a5c;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; min-height:100%;}
+  body{
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    overscroll-behavior:none; touch-action:manipulation;
+    user-select:none; -webkit-user-select:none;
+  }
+  #app{max-width:480px; margin:0 auto; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;}
+  .screen{display:none; flex:1; flex-direction:column; padding:16px;}
+  .screen.active{display:flex;}
+
+  /* ---------- menu ---------- */
+  h1{font-size:1.7rem; margin:8px 0 0; letter-spacing:.3px;}
+  .sub{color:var(--dim); margin:2px 0 16px; font-size:.95rem;}
+  .label{font-size:.8rem; text-transform:uppercase; letter-spacing:.12em; color:var(--dim); margin:14px 0 8px;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{border:1px solid #3a4270; background:var(--card); color:var(--text); border-radius:999px; padding:10px 16px; font-size:1rem; cursor:pointer;}
+  .chip.sel{background:var(--accent); border-color:var(--accent); color:#20180a; font-weight:700;}
+  .chip .lock{font-size:.8em; opacity:.7;}
+  .modes{display:flex; flex-direction:column; gap:8px;}
+  .mode{display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid #3a4270; background:var(--card); border-radius:14px; padding:11px 14px; cursor:pointer;}
+  .mode .m-name{font-weight:700; font-size:1.05rem;}
+  .mode .m-ex{color:var(--dim); font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mode.sel{border-color:var(--mc); box-shadow:inset 0 0 0 1px var(--mc);}
+  .mode.sel .m-name{color:var(--mc);}
+  .mode.gated{opacity:.5; cursor:default;}
+  .mode.gated .m-ex{color:var(--accent); white-space:normal; text-align:right;}
+  .seg button.locked{opacity:.4; cursor:default;}
+  .seg{display:flex; border:1px solid #3a4270; border-radius:12px; overflow:hidden; width:max-content;}
+  .seg button{background:var(--card); color:var(--dim); border:0; padding:10px 22px; font-size:1rem; cursor:pointer;}
+  .seg button.sel{background:var(--accent); color:#20180a; font-weight:700;}
+  #btn-start{margin-top:20px; width:100%; padding:16px; border:0; border-radius:14px; background:var(--accent); color:#20180a; font-size:1.25rem; font-weight:800; cursor:pointer; letter-spacing:.03em;}
+  #btn-start:disabled{opacity:.4; cursor:default;}
+  .note{color:var(--dim); font-size:.78rem; text-align:center; margin-top:14px; line-height:1.5;}
+
+  /* ---------- clean leaderboard list (minesweeper style) ---------- */
+  .lb-head{display:flex; justify-content:space-between; align-items:baseline; margin:18px 0 2px;}
+  .lb-head .lb-title{font-size:1rem; font-weight:700;}
+  .lb-head .lb-src{color:var(--dim); font-size:.75rem;}
+  .lb{display:flex; flex-direction:column;}
+  .lb-row{display:grid; grid-template-columns:2.2em 1fr auto auto 1.7em; align-items:center; gap:9px; padding:12px 2px;}
+  .lb-rank{color:var(--dim); font-variant-numeric:tabular-nums; text-align:right; font-size:.95rem;}
+  .lb-name{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .lb-name .st{color:var(--accent); font-size:.8em; margin-left:3px;}
+  .lb-date{color:var(--dim); font-size:.8rem; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .lb-time{font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:1rem;}
+  .lb-del{background:none; border:0; color:#5d6690; font-size:1.05rem; cursor:pointer; padding:8px 6px; margin:-8px 0; text-align:center;}
+  .lb-del.hidden{visibility:hidden;}
+  .lb-row.hl{background:rgba(255,180,84,.13); border-radius:9px;}
+  .lb-row.hl .lb-name{color:var(--accent);}
+  .lb-empty{color:var(--dim); padding:16px 2px; text-align:center; font-size:.92rem;}
+  .lb-more{background:none; border:0; color:var(--accent); font-size:.9rem; cursor:pointer; padding:12px 2px 4px; text-align:left; width:max-content;}
+
+  /* ---------- dedicated leaderboard screen ---------- */
+  #scr-board{background:var(--flat); padding:14px 16px calc(8px + env(safe-area-inset-bottom));
+    position:fixed; top:0; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:480px; height:100vh; height:100dvh; z-index:5;}
+  .bd-top{display:flex; align-items:center; justify-content:space-between; padding-bottom:8px;}
+  .bd-top .bd-title{font-size:1.25rem; font-weight:700;}
+  .bd-top button{background:none; border:0; color:var(--text); font-size:1.4rem; cursor:pointer; padding:4px 8px;}
+  #bd-clear{color:#5d6690; font-size:1.1rem;}
+  .bd-sel{display:flex; align-items:center; justify-content:center; gap:16px; margin:2px 0 8px;}
+  .bd-sel button{background:none; border:0; color:var(--dim); font-size:1.7rem; cursor:pointer; padding:0 6px; line-height:1;}
+  #bd-mode{font-size:1.1rem; font-weight:700; min-width:7em; text-align:center;}
+  .bd-lens{display:flex; justify-content:center; margin-bottom:2px;}
+  .bd-src{text-align:center; color:var(--dim); font-size:.75rem; margin-bottom:4px;}
+  #board-full{overflow-y:auto; flex:1; min-height:0; -webkit-overflow-scrolling:touch;}
+
+  /* ---------- game ---------- */
+  #scr-game{padding:12px 16px; height:100vh; height:100dvh;}
+  .hud{display:flex; justify-content:space-between; align-items:center; color:var(--dim); font-size:1rem;}
+  .hud #timer{font-variant-numeric:tabular-nums; font-size:1.15rem; color:var(--text);}
+  .hud #btn-quit{background:none; border:0; color:var(--dim); font-size:1.4rem; cursor:pointer; padding:4px 10px;}
+  #q-wrap{flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; min-height:0;}
+  #question{font-size:clamp(2rem,10vw,3.4rem); font-weight:800; letter-spacing:.02em; font-variant-numeric:tabular-nums; text-align:center; line-height:1.15;}
+  #answer{min-height:3.2rem; font-size:clamp(1.9rem,9vw,2.8rem); font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums; border-bottom:3px solid #3a4270; min-width:5ch; text-align:center; padding:0 8px;}
+  #q-wrap.wrong #answer{animation:shake .3s; border-color:var(--bad); color:var(--bad);}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  #pad{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding-bottom:calc(8px + env(safe-area-inset-bottom));}
+  .key{background:var(--card2); color:var(--text); border:0; border-radius:14px; font-size:1.6rem; font-weight:700; padding:0; height:54px; cursor:pointer;}
+  .key:active{background:#333b66;}
+  .key.fn{background:var(--card); color:var(--dim); font-size:1.35rem;}
+  .key.fn:disabled{opacity:.25; cursor:default;}
+  .key.ok{background:var(--good); color:#0b2018; grid-column:1/-1; height:48px; font-size:1.35rem;}
+  .key.ok.ok2{grid-column:2/4;}
+  #hint{color:var(--dim); font-size:.82rem; min-height:1.1rem; text-align:center;}
+  #countdown{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(15,18,32,.92); font-size:6rem; font-weight:800; z-index:10;}
+  #countdown.on{display:flex;}
+
+  /* ---------- pin overlay ---------- */
+  #pin-ov{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(12,14,22,.97); z-index:20; padding:16px;}
+  #pin-ov.on{display:flex;}
+  .pin-box{width:100%; max-width:300px; text-align:center;}
+  .pin-box h2{margin:0 0 4px; font-size:1.2rem;}
+  .pin-box .who{color:var(--accent); font-weight:700;}
+  .pin-box .hint{color:var(--dim); font-size:.85rem; margin-bottom:14px;}
+  #pin-dots{display:flex; gap:12px; justify-content:center; margin-bottom:8px; height:18px;}
+  #pin-dots span{width:14px; height:14px; border-radius:50%; border:2px solid #3a4270;}
+  #pin-dots span.f{background:var(--accent); border-color:var(--accent);}
+  #pin-dots.err span{border-color:var(--bad); animation:shake .3s;}
+  #pin-msg{color:var(--bad); font-size:.85rem; min-height:1.2rem; margin-bottom:6px;}
+  #pin-pad{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+
+  /* ---------- short viewports (phone landscape) ---------- */
+  @media (max-height:520px){
+    #scr-game{padding:6px 16px;}
+    .key{height:38px; font-size:1.15rem;}
+    .key.fn{font-size:1rem;}
+    .key.ok{height:34px; font-size:1.1rem;}
+    #pad{gap:6px; max-width:420px; width:100%; margin:0 auto;}
+    #question{font-size:clamp(1.4rem,6vh,2.1rem);}
+    #answer{min-height:2rem; font-size:clamp(1.2rem,5vh,1.7rem); border-bottom-width:2px;}
+    #hint{display:none;}
+    #q-wrap{gap:4px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+  }
+
+  /* ---------- results ---------- */
+  .slow{margin-top:12px; background:var(--card); border-radius:14px; padding:12px 14px;}
+  .slow h3{margin:0 0 6px; font-size:.95rem;}
+  .slow div{display:flex; justify-content:space-between; padding:4px 0; font-variant-numeric:tabular-nums; color:var(--dim);}
+  .slow div b{color:var(--text); font-weight:600;}
+  .res-time{font-size:3rem; font-weight:800; text-align:center; margin:10px 0 0; font-variant-numeric:tabular-nums;}
+  .res-sub{text-align:center; color:var(--dim); margin-bottom:6px;}
+  .pb{text-align:center; margin:10px auto; padding:8px 16px; border-radius:12px; background:var(--card); width:max-content; max-width:100%; font-size:1rem;}
+  .pb.record{background:var(--good); color:#0b2018; font-weight:700;}
+  .btn-row{display:flex; gap:10px; margin-top:16px;}
+  .btn-row button{flex:1; padding:14px; border:0; border-radius:14px; font-size:1.1rem; font-weight:700; cursor:pointer;}
+  #btn-again{background:var(--accent); color:#20180a;}
+  #btn-menu{background:var(--card2); color:var(--text);}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <section id="scr-menu" class="screen active">
+    <h1>Устный счёт <span style="color:var(--accent)">⚡</span></h1>
+    <div class="sub">семейный спринт</div>
+    <div class="label">Кто играет</div>
+    <div class="chips" id="players"></div>
+    <div class="label">Режим</div>
+    <div class="modes" id="modes"></div>
+    <div class="label">Примеров в сете</div>
+    <div class="seg" id="lens"></div>
+    <button id="btn-start">Старт</button>
+    <div class="lb-head"><span class="lb-title" id="menu-lb-title"></span><span class="lb-src" id="menu-lb-src"></span></div>
+    <div class="lb" id="board-menu"></div>
+    <button class="lb-more" id="btn-showall">Показать все результаты →</button>
+    <div class="note">Ошибка: +5 с к времени, пример добиваешь до верного.<br>🌐 общая таблица на всю семью · 📵 оффлайн — только это устройство.</div>
+  </section>
+
+  <section id="scr-board" class="screen">
+    <div class="bd-top">
+      <button id="bd-back" title="Назад">←</button>
+      <span class="bd-title">Рекорды</span>
+      <button id="bd-clear" title="Очистить эту таблицу">🗑</button>
+    </div>
+    <div class="bd-sel">
+      <button id="bd-prev" title="Другой режим">‹</button>
+      <span id="bd-mode"></span>
+      <button id="bd-next" title="Другой режим">›</button>
+    </div>
+    <div class="bd-lens seg" id="bd-lens"></div>
+    <div class="bd-src" id="bd-src"></div>
+    <div class="lb" id="board-full"></div>
+  </section>
+
+  <section id="scr-game" class="screen">
+    <div class="hud">
+      <button id="btn-quit" title="Прервать">✕</button>
+      <span id="progress">1/10</span>
+      <span id="timer">0.0</span>
+    </div>
+    <div id="q-wrap">
+      <div id="question"></div>
+      <div id="answer">&nbsp;</div>
+      <div id="hint"></div>
+    </div>
+    <div id="pad"></div>
+  </section>
+
+  <section id="scr-done" class="screen">
+    <h1 style="text-align:center">Финиш!</h1>
+    <div class="res-time" id="res-time"></div>
+    <div class="res-sub" id="res-sub"></div>
+    <div class="pb" id="res-pb"></div>
+    <div class="slow" id="res-slow"></div>
+    <div class="lb-head"><span class="lb-title" id="done-lb-title"></span><span class="lb-src" id="done-lb-src"></span></div>
+    <div class="lb" id="board-done"></div>
+    <button class="lb-more" id="btn-showall2">Показать все результаты →</button>
+    <div class="btn-row">
+      <button id="btn-menu">Меню</button>
+      <button id="btn-again">Ещё раз</button>
+    </div>
+  </section>
+
+</div>
+<div id="countdown"></div>
+
+<div id="pin-ov">
+  <div class="pin-box">
+    <h2>PIN — <span class="who" id="pin-who"></span></h2>
+    <div class="hint">тот же, что в english-quiz</div>
+    <div id="pin-dots"><span></span><span></span><span></span><span></span></div>
+    <div id="pin-msg"></div>
+    <div id="pin-pad"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const ri = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const PENALTY_MS = 5000;   // штраф за ошибку — точность важнее чистой скорости
+const LOCK_MS    = 350;    // пауза ввода после ошибки (анти-перебор)
+const SCORE_CAP  = 50;     // сколько результатов держим онлайн на связку {режим, длина}
+const MENU_TOP   = 5;      // сколько строк в компактной таблице на меню/результатах
+
+const PLAYERS = [
+  {id:'artem', name:'Артём'},
+  {id:'anna',  name:'Анна'},
+  {id:'nicole',name:'Николь'},
+  {id:'ernest',name:'Эрнест'},
+  {id:'egor',  name:'Егор'},
+];
+const nameOf = id => (PLAYERS.find(p=>p.id===id)||{}).name || id;
+
+/* ---------- Firestore REST (тот же проект и кодировка, что в index.html) ---------- */
+const FS_PROJECT = 'artem-grammar-hub';
+const FS_BASE = `https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents`;
+const SCORES_COLL = 'math_sprint_scores';
+let ONLINE = !/^(localhost|127\.0\.0\.1|)$/.test(location.hostname);  // выкл на localhost/preview
+function _fsValue(v){
+  if(v===null||v===undefined) return {nullValue:null};
+  if(typeof v==='boolean') return {booleanValue:v};
+  if(typeof v==='number') return Number.isInteger(v) ? {integerValue:String(v)} : {doubleValue:v};
+  if(typeof v==='string') return {stringValue:v};
+  if(Array.isArray(v)) return {arrayValue:{values:v.map(_fsValue)}};
+  if(typeof v==='object'){ const f={}; for(const [k,val] of Object.entries(v)){ if(val===undefined) continue; f[k]=_fsValue(val);} return {mapValue:{fields:f}}; }
+  throw new Error('bad '+typeof v);
+}
+function _fsFromValue(v){
+  if(v==null) return null;
+  if('nullValue' in v) return null;
+  if('booleanValue' in v) return v.booleanValue;
+  if('integerValue' in v) return Number(v.integerValue);
+  if('doubleValue' in v) return v.doubleValue;
+  if('stringValue' in v) return v.stringValue;
+  if('arrayValue' in v) return (v.arrayValue.values||[]).map(_fsFromValue);
+  if('mapValue' in v){ const o={}; for(const [k,val] of Object.entries(v.mapValue.fields||{})) o[k]=_fsFromValue(val); return o; }
+  return null;
+}
+function _fsToDoc(o){ const f={}; for(const [k,v] of Object.entries(o)){ if(v===undefined) continue; f[k]=_fsValue(v);} return {fields:f}; }
+function _fsFromDoc(d){ if(!d||!d.fields) return null; const o={}; for(const [k,v] of Object.entries(d.fields)) o[k]=_fsFromValue(v); return o; }
+async function fsSet(path,obj){ const r=await fetch(`${FS_BASE}/${path}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(_fsToDoc(obj))}); if(!r.ok) throw new Error('set '+r.status); return await r.json(); }
+async function fsDelete(path){ const r=await fetch(`${FS_BASE}/${path}`,{method:'DELETE'}); if(!r.ok && r.status!==404) throw new Error('del '+r.status); return true; }
+// Запрос только текущей связки {режим, длина} — проект на бесплатном Spark-тарифе,
+// полный скан коллекции на каждый показ таблицы съедал бы дневную квоту чтений.
+// Только equality-фильтры → композитный индекс не нужен; сортировка на клиенте.
+async function fsQuery(mode,n){
+  const body = {structuredQuery:{
+    from:[{collectionId:SCORES_COLL}],
+    where:{compositeFilter:{op:'AND', filters:[
+      {fieldFilter:{field:{fieldPath:'mode'}, op:'EQUAL', value:{stringValue:mode}}},
+      {fieldFilter:{field:{fieldPath:'n'},    op:'EQUAL', value:{integerValue:String(n)}}}
+    ]}},
+    limit:300
+  }};
+  const r = await fetch(`${FS_BASE}:runQuery`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error('query '+r.status);
+  const data = await r.json();
+  return (Array.isArray(data)?data:[]).filter(x=>x.document)
+    .map(x=>({id:x.document.name.split('/').pop(), ..._fsFromDoc(x.document)}))
+    .sort((a,b)=>a.ms-b.ms);
+}
+
+// Онлайн-таблица: один документ на КАЖДЫЙ прогон (длинный список, как в референсе).
+// Кэш по связке + TTL; фонового опроса нет — обновляем при открытии экранов.
+let onlineCache = {};                       // "mode__n" -> {rows, at, ok}
+const FRESH_MS = 60000;
+const comboKey  = (m,n) => `${m}__${n}`;
+const comboState = (m,n) => onlineCache[comboKey(m,n)];
+async function fetchCombo(mode,n){
+  if(!ONLINE) return false;
+  try {
+    const rows = await fsQuery(mode,n);
+    onlineCache[comboKey(mode,n)] = {rows, at:Date.now(), ok:true};
+    flushPending();                          // сеть жива — дошлём неотправленные прогоны
+    return true;
+  } catch(e){
+    const c = comboState(mode,n);
+    onlineCache[comboKey(mode,n)] = {rows:c&&c.rows||null, at:c&&c.at||0, ok:false};
+    return false;
+  }
+}
+async function ensureFresh(mode,n,rerender){
+  if(!ONLINE) return;
+  const c = comboState(mode,n);
+  if(c && c.ok && Date.now()-c.at < FRESH_MS) return;
+  await fetchCombo(mode,n);
+  if(rerender) rerender();
+}
+async function pushOnline(run){
+  if(!ONLINE) return;
+  try {
+    const id = `${run.p}__${run.m}__${run.n}__${run.ts}`;
+    await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, n:run.n, ms:run.ms, err:run.err, ts:run.ts});
+    await fetchCombo(run.m, run.n);
+    await pruneOnline(run.m, run.n);
+  } catch(e){
+    // не дошло (нет сети и т.п.) — в очередь, отправим при следующем удачном контакте
+    store.pending = store.pending || [];
+    if(!store.pending.some(x => x.ts===run.ts && x.p===run.p)) store.pending.push(run);
+    if(store.pending.length > 20) store.pending = store.pending.slice(-20);
+    save();
+    const c = comboState(run.m, run.n); if(c) c.ok = false;
+  }
+}
+let flushing = false;
+async function flushPending(){
+  if(flushing || !ONLINE || !store.pending || !store.pending.length) return;
+  flushing = true;
+  try {
+    for(const run of [...store.pending]){
+      try {
+        const id = `${run.p}__${run.m}__${run.n}__${run.ts}`;
+        await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, n:run.n, ms:run.ms, err:run.err, ts:run.ts});
+        store.pending = store.pending.filter(x => !(x.ts===run.ts && x.p===run.p));
+        save();
+      } catch(e){ break; }                   // сеть снова упала — попробуем позже
+    }
+  } finally { flushing = false; }
+}
+async function pruneOnline(mode,n){          // держим только SCORE_CAP лучших на связку
+  if(!ONLINE) return;
+  const c = comboState(mode,n); if(!c || !c.rows) return;
+  const extra = c.rows.slice(SCORE_CAP);
+  if(!extra.length) return;
+  let removed = false;
+  for(const e of extra){ try { await fsDelete(`${SCORES_COLL}/${e.id}`); removed = true; } catch(_){ break; } }
+  if(removed) await fetchCombo(mode,n);
+}
+
+/* ---------- PIN (те же хэши и механизм, что в index.html) ---------- */
+const PIN_HASHES = {
+  artem:  'aeb5d182368bc8faff9d186b46adca1c5b308dc80926ca96f8cf3dabe611df5c',
+  anna:   '0e70a832cb7a415716c3ba42776f795a905691b043e81a23895c8588a6268653',
+  ernest: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155',
+  nicole: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f',
+  egor:   'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730',
+};
+function pinHashFor(p){
+  try { return localStorage.getItem('pinHash_'+p) || localStorage.getItem('pinHash_'+p+'_ru') || PIN_HASHES[p]; }
+  catch(e){ return PIN_HASHES[p]; }
+}
+async function hashPin(pin){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ---------- fraction helpers ---------- */
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function reduce(n,d){ const g=gcd(n,d); return {n:n/g, d:d/g}; }
+function parseFrac(s){
+  let m = s.match(/^(\d+)$/);
+  if(m) return {kind:'int', n:+m[1], d:1};
+  m = s.match(/^(\d+)\/(\d+)$/);
+  if(m) return {kind:'frac', n:+m[1], d:+m[2]};
+  m = s.match(/^(\d+) (\d+)\/(\d+)$/);                    // смешанное: W N/D
+  if(m) return {kind:'mixed', W:+m[1], N:+m[2], D:+m[3], n:+m[1] * +m[3] + +m[2], d:+m[3]};
+  return null;
+}
+// form: undefined (свободная) | 'mixed' (требуется W N/D) | 'improper' (требуется N/D)
+function fracVerdict(s, t, form){   // 'ok' | 'notreduced' | 'form' | 'wrong'
+  const f = parseFrac(s); if(!f || f.d<=0) return 'wrong';
+  if(f.n*t.d !== t.n*f.d) return 'wrong';                 // не равно по значению
+  if(form==='mixed'){
+    if(f.kind!=='mixed' || f.W<1) return 'form';
+    if(f.N>=f.D) return 'form';                           // дробная часть — правильная
+    return gcd(f.N,f.D)===1 ? 'ok' : 'notreduced';
+  }
+  if(form==='improper'){
+    if(f.kind!=='frac') return 'form';
+    return gcd(f.n,f.d)===1 ? 'ok' : 'notreduced';
+  }
+  // свободная форма: целое — без дроби; дробь — несократимая;
+  // смешанное принимается, если дробная часть правильная и несократимая
+  if(t.d===1) return f.kind==='int' ? 'ok' : 'form';
+  if(f.kind==='mixed') return (f.N<f.D && gcd(f.N,f.D)===1) ? 'ok' : 'notreduced';
+  return gcd(f.n,f.d)===1 ? 'ok' : 'notreduced';
+}
+function formHint(it){
+  if(it.form==='mixed') return 'запиши смешанным: 2 1/3';
+  if(it.form==='improper') return 'запиши неправильной дробью: 7/3';
+  return 'целое — без дроби';
+}
+
+/* ---------- generators ---------- */
+function gLiteAdd(){ const a=ri(3,9), b=ri(3,9); return {q:`${a} + ${b}`, a:a+b}; }
+function gLiteSub(){ for(;;){ const a=ri(11,18), b=ri(3,9); if(a-b>=2 && a-b<=9) return {q:`${a} − ${b}`, a:a-b}; } }
+function gLiteMul(){ const a=ri(3,9), b=ri(3,9); return {q:`${a} × ${b}`, a:a*b}; }
+function gBaseAdd(){ const a=ri(13,78), b=ri(13,78); return {q:`${a} + ${b}`, a:a+b}; }
+function gBaseSub(){ for(;;){ const a=ri(25,99), b=ri(13,89); if(a-b>=3) return {q:`${a} − ${b}`, a:a-b}; } }
+function gBaseMul(){ const a=ri(3,9), b=ri(6,12); return Math.random()<.5 ? {q:`${a} × ${b}`, a:a*b} : {q:`${b} × ${a}`, a:a*b}; }
+function gBaseDiv(){ const d=ri(3,9), q=ri(4,12); return {q:`${d*q} ÷ ${d}`, a:q}; }
+function gProMul22(){ const a=ri(11,19), b=ri(11,19); return {q:`${a} × ${b}`, a:a*b}; }
+function gProMul21(){ for(;;){ const a=ri(23,79); if(a%10===0) continue; const b=ri(3,9); return {q:`${a} × ${b}`, a:a*b}; } }
+function gProAdd3(){ const a=ri(123,876), b=ri(123,876); return {q:`${a} + ${b}`, a:a+b}; }
+function gProSub3(){ for(;;){ const a=ri(300,999), b=ri(120,954); if(a-b>=45) return {q:`${a} − ${b}`, a:a-b}; } }
+const f0 = n => n<0 ? `−${-n}` : `${n}`;
+const f1 = n => n<0 ? `(−${-n})` : `${n}`;
+function gIntAdd(){ for(;;){ const a=ri(3,20)*(Math.random()<.5?-1:1), b=ri(3,20)*(Math.random()<.5?-1:1); if(a+b!==0 && (a<0||b<0)) return {q:`${f0(a)} + ${f1(b)}`, a:a+b}; } }
+function gIntSub(){ for(;;){ const a=ri(3,30)*(Math.random()<.5?-1:1), b=ri(3,30)*(Math.random()<.5?-1:1); if(a-b!==0 && (a<0||b<0||a-b<0)) return {q:`${f0(a)} − ${f1(b)}`, a:a-b}; } }
+function gIntMul(){ const a=ri(3,9), b=ri(3,9), s=Math.random(); const fa=s>=.8?-a:(s<.4?-a:a), sb=(s>=.4&&s<.8)||s>=.8?-b:b; return {q:`${f0(fa)} × ${f1(sb)}`, a:fa*sb}; }
+function gIntDiv(){ const d=ri(3,9), q=ri(3,9), s=Math.random();
+  if(s<.34) return {q:`${f0(-q*d)} ÷ ${d}`, a:-q};
+  if(s<.67) return {q:`${q*d} ÷ ${f1(-d)}`, a:-q};
+  return {q:`${f0(-q*d)} ÷ ${f1(-d)}`, a:q}; }
+const PCT_SETS=[[5,20],[10,10],[15,20],[20,5],[25,4],[30,10],[40,5],[50,2],[60,5],[75,4],[80,5]];   // [p, кратность базы]
+function pctPair(){ const [p,k]=PCT_SETS[ri(0,PCT_SETS.length-1)]; const N=ri(Math.max(2,Math.ceil(16/k)), Math.floor(400/k))*k; return [p,N]; }
+function gPct(){ const [p,N]=pctPair(); return {q:`${p}% от ${N}`, a:N*p/100}; }              // тип 1: найти часть
+function gPctShare(){ const [p,N]=pctPair(); return {q:`${N*p/100} от ${N} → %`, a:p}; }      // тип 2: найти процент
+function gPctReverse(){ const [p,N]=pctPair(); return {q:`${p}% от ? = ${N*p/100}`, a:N}; }   // тип 3: найти целое
+function gProportion(){ const x=ri(2,9), y=ri(2,9), k=ri(2,8);
+  return Math.random()<.5 ? {q:`${x} : ${y} = ? : ${y*k}`, a:x*k} : {q:`${x} : ${y} = ${x*k} : ?`, a:y*k}; }
+// порядок действий — целые ответы, без отрицательных
+function gOrdMulAdd(){ const b=ri(2,9), c=ri(2,9);
+  if(Math.random()<.5){ const a=ri(2,30); return {q:`${a} + ${b} × ${c}`, a:a+b*c}; }
+  const a=ri(2,b*c-2); return {q:`${b} × ${c} − ${a}`, a:b*c-a}; }
+function gOrdDivAdd(){ const c=ri(2,9), qt=ri(2,9), b=c*qt;
+  if(Math.random()<.5){ const a=ri(2,30); return {q:`${a} + ${b} ÷ ${c}`, a:a+qt}; }
+  const a=ri(qt+2,qt+40); return {q:`${a} − ${b} ÷ ${c}`, a:a-qt}; }
+function gOrdParen(){ const c=ri(2,9);
+  if(Math.random()<.5){ const x=ri(2,9), y=ri(2,9);
+    return Math.random()<.5 ? {q:`(${x} + ${y}) × ${c}`, a:(x+y)*c} : {q:`${c} × (${x} + ${y})`, a:c*(x+y)}; }
+  const x=ri(3,12), y=ri(2,x-1); return {q:`(${x} − ${y}) × ${c}`, a:(x-y)*c}; }
+function gOrdTwoMul(){ for(;;){ const a=ri(2,9), b=ri(2,9), c=ri(2,9), d=ri(2,9);
+  if(Math.random()<.5) return {q:`${a} × ${b} + ${c} × ${d}`, a:a*b+c*d};
+  if(a*b-c*d>=2) return {q:`${a} × ${b} − ${c} × ${d}`, a:a*b-c*d}; } }
+function rf(){ for(;;){ const d=ri(2,9), n=ri(1,d-1); if(gcd(n,d)===1) return {n,d}; } }
+function gFracReduce(){ const b=rf(), k=ri(2,4); return {q:`Сократи ${b.n*k}/${b.d*k}`, f:{n:b.n,d:b.d}}; }
+function gFracAddSame(){ const d=[5,6,8,9,10,12][ri(0,5)], a=ri(1,d-1), b=ri(1,d-1); return {q:`${a}/${d} + ${b}/${d}`, f:reduce(a+b,d)}; }
+function gFracSubSame(){ const d=[5,6,8,9,10,12][ri(0,5)], a=ri(2,d-1), b=ri(1,a-1); return {q:`${a}/${d} − ${b}/${d}`, f:reduce(a-b,d)}; }
+function gFracAddDiff(){ const d1=ri(2,6), d2=ri(2,6), n1=ri(1,d1-1), n2=ri(1,d2-1); return {q:`${n1}/${d1} + ${n2}/${d2}`, f:reduce(n1*d2+n2*d1, d1*d2)}; }
+function gFracMul(){ const x=rf(), y=rf(); return {q:`${x.n}/${x.d} × ${y.n}/${y.d}`, f:reduce(x.n*y.n, x.d*y.d)}; }
+function gFracDiv(){ const x=rf(), y=rf(); return {q:`${x.n}/${x.d} ÷ ${y.n}/${y.d}`, f:reduce(x.n*y.d, x.d*y.n)}; }
+function gFracToMixed(){ const b=rf(), W=ri(1,4);
+  return {q:`${W*b.d+b.n}/${b.d} → смешанное`, f:{n:W*b.d+b.n, d:b.d}, form:'mixed'}; }
+function gFracToImproper(){ const b=rf(), W=ri(1,4);
+  return {q:`${W} ${b.n}/${b.d} → неправильная`, f:{n:W*b.d+b.n, d:b.d}, form:'improper'}; }
+function gFracFromDec(){
+  const P=[['0,1',1,10],['0,2',1,5],['0,3',3,10],['0,4',2,5],['0,5',1,2],['0,6',3,5],['0,7',7,10],
+           ['0,8',4,5],['0,9',9,10],['0,25',1,4],['0,75',3,4],['0,05',1,20],['0,15',3,20]];
+  const [s,n,d]=P[ri(0,P.length-1)];
+  return {q:`${s} → дробь`, f:{n,d}};
+}
+
+const MODES = {
+  lite: {name:'Лайт',     ex:'7+6 · 13−5 · 3×5',        color:'var(--lite)', fn:null,
+         mix:[[gLiteAdd,4],[gLiteSub,3],[gLiteMul,3]]},
+  base: {name:'База',     ex:'34+29 · 7×8 · 56÷7',      color:'var(--base)', fn:null,
+         mix:[[gBaseAdd,3],[gBaseSub,3],[gBaseMul,2],[gBaseDiv,2]]},
+  frac: {name:'Дроби',    ex:'6/8→3/4 · 17/5→смеш. · 0,4→дробь', color:'var(--frac)', fn:'/', frac:true,
+         mix:[[gFracReduce,2],[gFracAddSame,1],[gFracSubSame,1],[gFracAddDiff,1],[gFracMul,1],[gFracDiv,1],[gFracToMixed,1],[gFracToImproper,1],[gFracFromDec,1]]},
+  int:  {name:'Целые',    ex:'−7+12 · 15−40 · −6×8',    color:'var(--int)',  fn:'±', neg:true,
+         mix:[[gIntAdd,3],[gIntSub,3],[gIntMul,2],[gIntDiv,2]]},
+  pct:  {name:'Проценты', ex:'25% от 84 · 3:5 = ?:20',  color:'var(--pct)',  fn:null,
+         mix:[[gPct,4],[gPctShare,2],[gPctReverse,2],[gProportion,2]]},
+  ord:  {name:'Порядок',  ex:'3+4×5 · (8−3)×6',         color:'var(--ord)',  fn:null,
+         mix:[[gOrdMulAdd,3],[gOrdDivAdd,2],[gOrdParen,3],[gOrdTwoMul,2]]},
+  pro:  {name:'Профи',    ex:'12×14 · 47×6 · 380+257',  color:'var(--pro)',  fn:null,
+         mix:[[gProMul22,4],[gProMul21,2],[gProAdd3,2],[gProSub3,2]]},
+};
+const MODE_KEYS = Object.keys(MODES);
+const LENS = [10, 25];
+
+function buildSet(modeId, n){
+  const mix = MODES[modeId].mix, per = mix.reduce((s,[,c])=>s+c,0);
+  const items=[], seen=new Set();
+  const counts = mix.map(([g,c]) => [g, Math.round(c*n/per)]);
+  let total = counts.reduce((s,[,c])=>s+c,0), ci = 0;   // выравнивание по кругу, не за счёт первого типа
+  while(total>n){ if(counts[ci%counts.length][1]>0){ counts[ci%counts.length][1]--; total--; } ci++; }
+  while(total<n){ counts[ci%counts.length][1]++; total++; ci++; }
+  for(const [gen,c] of counts) for(let i=0;i<c;i++){
+    let it, tries=0; do { it=gen(); tries++; } while(seen.has(it.q) && tries<25);
+    seen.add(it.q); items.push(it);
+  }
+  for(let i=items.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [items[i],items[j]]=[items[j],items[i]]; }
+  return items;
+}
+function ansText(it){
+  if(!it.f) return String(it.a).replace('-','−');
+  if(it.form==='mixed'){ const W=Math.floor(it.f.n/it.f.d), N=it.f.n%it.f.d; return `${W} ${N}/${it.f.d}`; }
+  return it.f.d===1 ? String(it.f.n) : `${it.f.n}/${it.f.d}`;
+}
+
+/* ---------- storage (local) ---------- */
+const KEY = 'mathsprint_v1';
+let store;
+function load(){
+  try { store = JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ store=null; }
+  if(!store || store.v!==1) store = {v:1, auth:null, lastMode:'base', lastN:10, runs:[]};
+  if(!('auth' in store)) store.auth = null;
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+/* ---------- gates: тяжёлое открывается результатами, не настройками ---------- */
+// 25-сет любого режима: открыт после «10-сет ≤ 100 с, ≤1 ош» в том же режиме (у всех).
+const LEN_GATE = {ms:100000, err:1};
+// Персональные гейты тайлов: у Николь Профи до «База 10 ≤ 60 с, ≤1 ош»
+// (перед этим — приём 2d×2d в CC-сессии, см. план).
+const GATES = {
+  nicole: [{mode:'pro', req:{mode:'base', n:10, ms:60000, err:1}, hint:'откроется: База 10 ≤ 60 с, ≤1 ош'}],
+};
+function bestQualMs(p, m, n, maxErr){          // лучший результат игрока с err ≤ maxErr, локально + онлайн
+  let best = null;
+  const consider = (ms,err) => { if(err<=maxErr && (best===null || ms<best)) best = ms; };
+  for(const r of store.runs) if(r.p===p && r.m===m && r.n===n) consider(r.ms, r.err);
+  const c = comboState(m,n);
+  if(c && c.rows) for(const r of c.rows) if(r.player===p) consider(r.ms, r.err);
+  return best;
+}
+function modeGate(p, m){                        // null | подсказка-условие
+  const gs = GATES[p]; if(!gs) return null;
+  for(const g of gs) if(g.mode===m){
+    const b = bestQualMs(p, g.req.mode, g.req.n, g.req.err);
+    return (b!==null && b<=g.req.ms) ? null : g.hint;
+  }
+  return null;
+}
+function lenLocked(p, m, n){
+  if(n===10 || !p) return false;
+  const b = bestQualMs(p, m, 10, LEN_GATE.err);
+  return !(b!==null && b<=LEN_GATE.ms);
+}
+
+/* ---------- ui state ---------- */
+let sel = {p:null, m:'base', n:10};
+let game = null;
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(id).classList.add('active'); }
+const fmt = ms => { const s=ms/1000; return s<60 ? s.toFixed(1).replace('.',',')+' с' : Math.floor(s/60)+':'+(s%60).toFixed(1).padStart(4,'0').replace('.',','); };
+const fmtDate = ts => { const d=new Date(ts); return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0'); };
+
+/* ---------- leaderboard rows + rendering ---------- */
+function comboOnline(mode,n){ const c=comboState(mode,n); return !!(c && c.rows && c.ok); }
+function srcLabel(mode,n,long){
+  return comboOnline(mode,n) ? (long?'🌐 общая таблица на всю семью':'🌐 общая')
+                             : (long?'📵 оффлайн — только это устройство':'📵 оффлайн');
+}
+function computeRows(mode, n){
+  const c = comboState(mode,n);
+  if(c && c.rows && c.ok){
+    return c.rows.map(r=>({id:r.id, player:r.player, name:r.name||nameOf(r.player), ms:r.ms, err:r.err, ts:r.ts, mode, n, online:true}));
+  }
+  return store.runs.filter(r=>r.m===mode && r.n===n)
+    .map(r=>({player:r.p, name:nameOf(r.p), ms:r.ms, err:r.err, ts:r.ts, mode, n, online:false}))
+    .sort((a,b)=>a.ms-b.ms);
+}
+// el: container; opts: {full, limit, del, highlightTs, highlightPlayer}
+function renderList(el, mode, n, opts){
+  opts = opts || {};
+  const all = computeRows(mode, n);
+  const shown = opts.full ? all : all.slice(0, opts.limit||MENU_TOP);
+  el._rows = shown;
+  if(!shown.length){ el.innerHTML = `<div class="lb-empty">Пока пусто — сыграй первым!</div>`; return; }
+  el.innerHTML = shown.map((r,i) => {
+    const hl = (opts.highlightTs && r.ts===opts.highlightTs && r.player===opts.highlightPlayer);
+    const star = r.err===0 ? '<span class="st">★</span>' : '';
+    const del = opts.del ? `<button class="lb-del" data-del="${i}" title="Удалить">🗑</button>` : `<span class="lb-del hidden"></span>`;
+    return `<div class="lb-row${hl?' hl':''}">
+      <span class="lb-rank">${i+1}.</span>
+      <span class="lb-name">${r.name}${star}</span>
+      <span class="lb-date">${fmtDate(r.ts)}</span>
+      <span class="lb-time">${fmt(r.ms)}</span>
+      ${del}
+    </div>`;
+  }).join('');
+}
+function deleteEntry(row){
+  const go = async () => {
+    if(!confirm(`Удалить результат: ${row.name} — ${fmt(row.ms)}?`)) return;
+    if(row.online && ONLINE){ try { await fsDelete(`${SCORES_COLL}/${row.id}`); } catch(_){} await fetchCombo(row.mode, row.n); }
+    store.runs = store.runs.filter(r => !(r.p===row.player && r.m===row.mode && r.n===row.n && r.ts===row.ts && r.ms===row.ms));
+    save(); refreshVisibleBoards();
+  };
+  if(store.auth==='artem') go(); else openPin('artem', go);   // удаление — только Артём
+}
+// делегированное удаление внутри полной таблицы
+$('#board-full').addEventListener('click', e => {
+  const b=e.target.closest('[data-del]'); if(!b) return;
+  const row = $('#board-full')._rows[+b.dataset.del]; if(row) deleteEntry(row);
+});
+function refreshVisibleBoards(){
+  if($('#scr-menu').classList.contains('active')) renderMenu();
+  if($('#scr-board').classList.contains('active')) renderBoardScreen();
+  if($('#scr-done').classList.contains('active')) renderDoneBoard();
+}
+
+/* ---------- pin overlay ---------- */
+let pinState = null;
+const PINPAD = ['1','2','3','4','5','6','7','8','9','✕','0','⌫'];
+function openPin(playerId, onOk){
+  pinState = {playerId, cur:'', onOk};
+  $('#pin-who').textContent = nameOf(playerId);
+  $('#pin-msg').textContent = '';
+  renderPinDots(); $('#pin-ov').classList.add('on');
+}
+function closePin(){ pinState=null; $('#pin-ov').classList.remove('on'); }
+function renderPinDots(){ const d=$('#pin-dots'); d.classList.remove('err'); [...d.children].forEach((x,i)=>x.classList.toggle('f', i<pinState.cur.length)); }
+async function pinDigit(d){
+  if(!pinState) return;
+  pinState.cur += d; renderPinDots();
+  if(pinState.cur.length<4) return;
+  const entered = pinState.cur; let ok=true;
+  if(window.crypto && crypto.subtle){ try { ok = (await hashPin(entered))===pinHashFor(pinState.playerId); } catch(e){ ok=true; } }
+  if(!pinState || pinState.cur!==entered) return;
+  if(ok){ const cb=pinState.onOk; closePin(); cb(); }
+  else { pinState.cur=''; $('#pin-msg').textContent='Неверный PIN'; const d2=$('#pin-dots'); [...d2.children].forEach(x=>x.classList.remove('f')); d2.classList.remove('err'); void d2.offsetWidth; d2.classList.add('err'); }
+}
+$('#pin-pad').innerHTML = PINPAD.map(k => `<button class="key${k==='✕'||k==='⌫'?' fn':''}" data-pk="${k}">${k}</button>`).join('');
+$('#pin-pad').addEventListener('click', e => {
+  const b=e.target.closest('[data-pk]'); if(!b||!pinState) return;
+  const k=b.dataset.pk;
+  if(k==='✕') closePin();
+  else if(k==='⌫'){ pinState.cur=pinState.cur.slice(0,-1); $('#pin-msg').textContent=''; renderPinDots(); }
+  else if(pinState.cur.length<4) pinDigit(k);
+});
+
+/* ---------- menu ---------- */
+function renderMenu(){
+  // выбранное не должно оставаться запертым (например, после смены игрока)
+  if(sel.p && modeGate(sel.p, sel.m)) sel.m = 'base';
+  if(sel.p && lenLocked(sel.p, sel.m, sel.n)) sel.n = 10;
+  $('#players').innerHTML = PLAYERS.map(p => {
+    const locked = store.auth !== p.id;
+    return `<button class="chip${sel.p===p.id?' sel':''}" data-p="${p.id}">${locked?'<span class="lock">🔒 </span>':''}${p.name}</button>`;
+  }).join('');
+  $('#modes').innerHTML = Object.entries(MODES).map(([id,m]) => {
+    const gate = sel.p ? modeGate(sel.p, id) : null;
+    return `<div class="mode${sel.m===id?' sel':''}${gate?' gated':''}" style="--mc:${m.color}" data-m="${id}"${gate?' data-gate="1"':''}>
+       <span class="m-name">${gate?'🔒 ':''}${m.name}</span><span class="m-ex">${gate||m.ex}</span></div>`;
+  }).join('');
+  $('#lens').innerHTML = LENS.map(n => {
+    const lock = sel.p ? lenLocked(sel.p, sel.m, n) : false;
+    return `<button class="${sel.n===n?'sel':''}${lock?' locked':''}" data-n="${n}"${lock?' data-lock="1" title="откроется: 10-сет этого режима ≤ 100 с, ≤1 ош"':''}>${lock?'🔒 ':''}${n}</button>`;
+  }).join('');
+  $('#btn-start').disabled = !sel.p;
+  $('#menu-lb-title').textContent = `${MODES[sel.m].name}, ${sel.n}`;
+  $('#menu-lb-src').textContent = srcLabel(sel.m, sel.n);
+  renderList($('#board-menu'), sel.m, sel.n, {limit:MENU_TOP});
+}
+$('#scr-menu').addEventListener('click', e => {
+  const chip=e.target.closest('[data-p]'), mode=e.target.closest('[data-m]'), len=e.target.closest('[data-n]');
+  if(chip){
+    const id=chip.dataset.p;
+    if(store.auth===id){ sel.p=id; renderMenu(); }
+    else openPin(id, () => { store.auth=id; sel.p=id; save(); renderMenu(); });
+  }
+  if(mode && !mode.dataset.gate){ sel.m=mode.dataset.m; store.lastMode=sel.m; save(); renderMenu(); ensureFresh(sel.m, sel.n, renderMenu); }
+  if(len && !len.dataset.lock){ sel.n=+len.dataset.n; store.lastN=sel.n; save(); renderMenu(); ensureFresh(sel.m, sel.n, renderMenu); }
+});
+$('#btn-start').onclick = startRun;
+$('#btn-showall').onclick = openBoard;
+$('#btn-showall2').onclick = openBoard;
+
+/* ---------- dedicated leaderboard screen ---------- */
+function renderBoardScreen(){
+  $('#bd-mode').textContent = MODES[sel.m].name;
+  $('#bd-mode').style.color = MODES[sel.m].color;
+  $('#bd-lens').innerHTML = LENS.map(n => `<button class="${sel.n===n?'sel':''}" data-bn="${n}">${n}</button>`).join('');
+  $('#bd-src').textContent = srcLabel(sel.m, sel.n, true);
+  renderList($('#board-full'), sel.m, sel.n, {full:true, del:true});
+}
+async function openBoard(){ show('#scr-board'); renderBoardScreen(); await ensureFresh(sel.m, sel.n, renderBoardScreen); }
+function closeBoard(){ show('#scr-menu'); renderMenu(); }
+$('#bd-back').onclick = closeBoard;
+$('#bd-clear').onclick = () => {
+  const go = async () => {
+    if(!confirm(`Стереть ВСЕ результаты «${MODES[sel.m].name}, ${sel.n}»?`)) return;
+    const c = comboState(sel.m, sel.n);
+    if(ONLINE && c && c.rows){ for(const e of c.rows){ try { await fsDelete(`${SCORES_COLL}/${e.id}`); } catch(_){} } await fetchCombo(sel.m, sel.n); }
+    store.runs = store.runs.filter(r=>!(r.m===sel.m && r.n===sel.n)); save(); renderBoardScreen();
+  };
+  if(store.auth==='artem') go(); else openPin('artem', go);
+};
+$('#bd-prev').onclick = () => { const i=MODE_KEYS.indexOf(sel.m); sel.m=MODE_KEYS[(i-1+MODE_KEYS.length)%MODE_KEYS.length]; store.lastMode=sel.m; save(); renderBoardScreen(); ensureFresh(sel.m, sel.n, renderBoardScreen); };
+$('#bd-next').onclick = () => { const i=MODE_KEYS.indexOf(sel.m); sel.m=MODE_KEYS[(i+1)%MODE_KEYS.length]; store.lastMode=sel.m; save(); renderBoardScreen(); ensureFresh(sel.m, sel.n, renderBoardScreen); };
+$('#bd-lens').addEventListener('click', e => { const b=e.target.closest('[data-bn]'); if(!b) return; sel.n=+b.dataset.bn; store.lastN=sel.n; save(); renderBoardScreen(); ensureFresh(sel.m, sel.n, renderBoardScreen); });
+
+/* ---------- game ---------- */
+function renderPad(){
+  const m = MODES[sel.m], fnKey = m.fn;
+  const rows = ['1','2','3','4','5','6','7','8','9', fnKey||'±', '0', '⌫'];
+  $('#pad').innerHTML = rows.map(k => {
+    const isFn = (k==='±'||k==='/'||k==='⌫');
+    const dis = (k===(fnKey||'±') && !fnKey) ? 'disabled' : '';
+    return `<button class="key${isFn?' fn':''}" data-k="${k}" ${dis}>${k}</button>`;
+  }).join('') + (m.frac
+    ? `<button class="key fn" data-k="␣" title="Пробел — для смешанного числа">␣</button><button class="key ok ok2" data-k="✓">✓</button>`
+    : `<button class="key ok" data-k="✓">✓</button>`);
+}
+$('#pad').addEventListener('click', e => {
+  const b=e.target.closest('[data-k]'); if(!b) return;
+  const k=b.dataset.k;
+  if(k==='⌫') onBack(); else if(k==='✓') onSubmit(); else if(k==='±') onSign();
+  else if(k==='/') onSlash(); else if(k==='␣') onSpace(); else onDigit(k);
+});
+function startRun(){
+  if(!sel.p || sel.p!==store.auth) return;
+  if(modeGate(sel.p, sel.m) || lenLocked(sel.p, sel.m, sel.n)) return;
+  game = {items:buildSet(sel.m, sel.n), idx:0, err:0, cur:'', itemMs:[], playing:false, lockUntil:0, raf:0, frac:!!MODES[sel.m].frac};
+  renderPad(); show('#scr-game'); renderQ();
+  $('#hint').textContent = game.frac ? 'несократимая дробь · смешанное — через ␣ · ✓' : '';
+  let c=3; const cd=$('#countdown'); cd.textContent=c; cd.classList.add('on');
+  const tick=setInterval(()=>{ c--; if(c>0){ cd.textContent=c; return; } clearInterval(tick); cd.classList.remove('on'); game.playing=true; game.t0=game.qStart=performance.now(); tickTimer(); }, 800);
+}
+const digitsOf = s => (s.match(/\d/g)||[]).length;
+const showCur = () => { $('#answer').innerHTML = game.cur ? game.cur.replace('-','−') : '&nbsp;'; };
+function renderQ(){ $('#progress').textContent=`${game.idx+1}/${game.items.length}`; $('#question').textContent=game.items[game.idx].q; showCur(); }
+function tickTimer(){ if(!game||!game.playing) return; $('#timer').textContent=((performance.now()-game.t0)/1000).toFixed(1); game.raf=requestAnimationFrame(tickTimer); }
+const locked = () => performance.now() < game.lockUntil;
+function onDigit(d){
+  if(!game||!game.playing||locked()) return;
+  if(game.frac){ if(game.cur.length>=9) return; game.cur+=d; showCur(); return; }
+  if(digitsOf(game.cur)===0 && d==='0' && String(game.items[game.idx].a)!==game.cur+'0') return;
+  if(game.cur.length>=6) return;
+  game.cur+=d;
+  const ans=String(game.items[game.idx].a);
+  if(game.cur===ans) return advance();
+  if(digitsOf(game.cur)>=digitsOf(ans)){
+    const twin = game.cur.startsWith('-')?game.cur.slice(1):'-'+game.cur;
+    if(MODES[sel.m].neg && twin===ans){ showCur(); return; }
+    return wrong();
+  }
+  showCur();
+}
+function onSlash(){
+  if(!game||!game.playing||locked()||!game.frac) return;
+  if(game.cur.includes('/') || !/\d$/.test(game.cur)) return;   // одна черта, только после цифры
+  game.cur+='/'; showCur();
+}
+function onSpace(){
+  if(!game||!game.playing||locked()||!game.frac) return;
+  if(!/^\d+$/.test(game.cur) || game.cur==='0') return;         // пробел — только после целой части
+  game.cur+=' '; showCur();
+}
+function onSign(){
+  if(!game||!game.playing||locked()||!MODES[sel.m].neg) return;
+  game.cur = game.cur.startsWith('-')?game.cur.slice(1):'-'+game.cur;
+  const ans=String(game.items[game.idx].a);
+  if(game.cur===ans) return advance();
+  if(digitsOf(game.cur)>=digitsOf(ans) && digitsOf(game.cur)>0) return wrong();
+  showCur();
+}
+function onBack(){ if(!game||!game.playing) return; game.cur=game.cur.slice(0,-1); showCur(); }
+function onSubmit(){
+  if(!game||!game.playing||locked()) return;
+  if(game.frac){
+    if(game.cur==='') return;
+    const it = game.items[game.idx];
+    const v = fracVerdict(game.cur, it.f, it.form);
+    if(v==='ok') return advance();
+    wrong(v==='notreduced' ? 'сократи до конца' : (v==='form' ? formHint(it) : '')); return;
+  }
+  if(digitsOf(game.cur)===0) return;
+  wrong();
+}
+function wrong(msg){
+  game.err++; game.cur=''; game.lockUntil=performance.now()+LOCK_MS;
+  if(navigator.vibrate) navigator.vibrate(60);
+  const w=$('#q-wrap'); w.classList.remove('wrong'); void w.offsetWidth; w.classList.add('wrong');
+  $('#answer').innerHTML='&nbsp;';
+  if(game.frac) $('#hint').textContent = msg || 'не то — попробуй ещё';
+}
+function advance(){
+  const now=performance.now(); game.itemMs.push(now-game.qStart); game.cur=''; game.idx++;
+  $('#q-wrap').classList.remove('wrong');
+  if(game.frac) $('#hint').textContent='несократимая дробь · смешанное — через ␣ · ✓';
+  if(game.idx>=game.items.length) return finish(now);
+  game.qStart=now; renderQ();
+}
+function abort(){ if(!game) return; if(confirm('Прервать? Результат не сохранится.')){ game.playing=false; cancelAnimationFrame(game.raf); game=null; renderMenu(); show('#scr-menu'); } }
+$('#btn-quit').onclick = abort;
+document.addEventListener('keydown', e => {
+  if(pinState){
+    if(/^[0-9]$/.test(e.key) && pinState.cur.length<4) pinDigit(e.key);
+    else if(e.key==='Backspace'){ e.preventDefault(); pinState.cur=pinState.cur.slice(0,-1); renderPinDots(); }
+    else if(e.key==='Escape') closePin();
+    return;
+  }
+  if($('#scr-board').classList.contains('active') && e.key==='Escape'){ closeBoard(); return; }
+  if(!$('#scr-game').classList.contains('active')||!game||!game.playing) return;
+  if(/^[0-9]$/.test(e.key)) onDigit(e.key);
+  else if(e.key==='/' && game.frac){ e.preventDefault(); onSlash(); }
+  else if(e.key===' ' && game.frac){ e.preventDefault(); onSpace(); }
+  else if(e.key==='-' && !game.frac) onSign();
+  else if(e.key==='Backspace'){ e.preventDefault(); onBack(); }
+  else if(e.key==='Enter') onSubmit();
+  else if(e.key==='Escape') abort();
+});
+
+/* ---------- finish ---------- */
+let lastRun = null;
+function renderDoneBoard(){
+  $('#done-lb-title').textContent = `${MODES[sel.m].name}, ${sel.n}`;
+  $('#done-lb-src').textContent = srcLabel(sel.m, sel.n);
+  renderList($('#board-done'), sel.m, sel.n, {limit:MENU_TOP, highlightTs:lastRun&&lastRun.ts, highlightPlayer:lastRun&&lastRun.p});
+}
+async function finish(now){
+  game.playing=false; cancelAnimationFrame(game.raf);
+  const rawMs=Math.round(now-game.t0);
+  const totalMs=rawMs + game.err*PENALTY_MS;
+  const run={p:sel.p, m:sel.m, n:sel.n, ms:totalMs, err:game.err, ts:Date.now()};
+  lastRun = run;
+  const prevBest = Math.min(Infinity, ...store.runs.filter(r=>r.p===sel.p&&r.m===sel.m&&r.n===sel.n).map(r=>r.ms));
+  store.runs.push(run); if(store.runs.length>500) store.runs=store.runs.slice(-500); save();
+
+  $('#res-time').textContent=fmt(totalMs);
+  const avg=rawMs/game.items.length/1000;
+  $('#res-sub').textContent=`${MODES[sel.m].name} · ${sel.n} примеров · ` +
+    (game.err===0?'без ошибок ★':`ошибок: ${game.err} (штраф +${game.err*PENALTY_MS/1000|0} с)`) +
+    ` · ${avg.toFixed(1).replace('.',',')} с/пример`;
+  const pbEl=$('#res-pb');
+  if(prevBest===Infinity){ pbEl.className='pb record'; pbEl.textContent='Первый результат — теперь это твой рекорд 🏆'; }
+  else if(totalMs<prevBest){ pbEl.className='pb record'; pbEl.textContent=`Личный рекорд! Было ${fmt(prevBest)} 🏆`; }
+  else { pbEl.className='pb'; pbEl.textContent=`До твоего рекорда (${fmt(prevBest)}) не хватило ${fmt(totalMs-prevBest)}`; }
+
+  const slow = game.items.map((it,i)=>({q:it.q, ans:ansText(it), ms:game.itemMs[i]}))
+    .sort((a,b)=>b.ms-a.ms).slice(0,3);
+  $('#res-slow').innerHTML = '<h3>Самые медленные</h3>' +
+    slow.map(s=>`<div><b>${s.q} = ${s.ans}</b><span>${fmt(s.ms)}</span></div>`).join('');
+
+  renderDoneBoard(); show('#scr-done');   // мгновенно из локального/старого кэша
+  await pushOnline(run);                   // затем синхронизируем и перерисовываем
+  renderDoneBoard();
+}
+$('#btn-again').onclick = () => { show('#scr-menu'); startRun(); };
+$('#btn-menu').onclick = () => { renderMenu(); show('#scr-menu'); ensureFresh(sel.m, sel.n, renderMenu); };
+
+/* ---------- init ---------- */
+async function init(){
+  load();
+  sel.p=store.auth; sel.m=MODES[store.lastMode]?store.lastMode:'base'; sel.n=LENS.includes(store.lastN)?store.lastN:10;
+  renderMenu();
+  await fetchCombo(sel.m, sel.n);          // подтянет таблицу и дошлёт очередь pending
+  renderMenu();
+}
+init();
+</script>
+</body>
+</html>

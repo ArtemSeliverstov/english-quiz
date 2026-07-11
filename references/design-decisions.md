@@ -7,6 +7,36 @@ Format: `[topic]` — decision and rationale. Newest substantive decisions first
 
 ---
 
+## Surfaces
+
+### Math Sprint game with a family leaderboard — a scoped §6 exception (2026-07-11)
+`mathsprint.html`: a standalone timed mental-arithmetic drill for the math track (Nicole's
+РФМШ prep + Ernest's broad numeracy), with a **shared family leaderboard** — a long ranked
+list of every run (minesweeper "Times" style, one row per run with the player's name), cross-player.
+This deliberately overrides `docs/learning-system-design.md` §6 ("no competitive ranking between
+family members"). Why the override is legitimate and narrow:
+- **Different product.** §6 protects the *English learning system*, where ranking is a hard
+  social lever that manufactures winners/losers. This is a separate arcade-style game on the
+  math track, where **speed-competition is the explicitly requested training mechanism** (Artem,
+  and the family's own Windows-Phone reference game). The doctrine governs the English surfaces;
+  it is not a blanket ban on the family ever competing at anything.
+- **Bounded blast radius.** Scores live in their own `math_sprint_scores` collection, never in
+  `players/{name}` — no learning data is exposed. Boards are **per-mode × per-length**, so a
+  younger/weaker player can own a tier rather than sit permanently last on one global list;
+  personal-best framing ("Личный рекорд!") is kept prominent alongside the ranking.
+- **Accuracy over raw speed.** An error adds +5 s to the official time and the item must still be
+  solved correctly to advance, so a fast-but-careless run can't beat a slower clean one — this
+  directly counters Nicole's diagnosed pathology (careless slips / not finishing), not reinforces
+  it. The `Дроби` mode requires the reduced form (unreduced = wrong), drilling "доведи до конца".
+
+Not a reversal of §6 — a documented carve-out for a non-English surface. If a leaderboard is ever
+proposed *inside* the English quiz/Coach, §6 still binds. Access mirrors the app (same PIN hashes);
+per-run docs are immutable; the client prunes each combo to the top 50; per-row and whole-board
+deletion are Artem-PIN-gated in the UI (see `firestore.rules`). If a long combined list ever
+demotivates a kid in practice (one strong player filling the top), the lever to pull first is
+switching the board to best-per-player or hiding cross-player ranking — not deleting the mode.
+Plans: `math-track-nicole.md`, `math-track-ernest.md`.
+
 ## Coaching loop
 
 ### Conversational register prioritized as an absent variety (2026-07-03)

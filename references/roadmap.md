@@ -17,6 +17,15 @@ What's next, what's deferred. Ordered by category, not strict priority.
 
 ---
 
+## Math sprint (family game — outside the EN quiz)
+
+| # | What | When | Why |
+|---|---|---|---|
+| 1 | ✅ Shipped v20260711 — `mathsprint.html`: 7 modes × 10/25, PIN, online per-run leaderboard (`math_sprint_scores`), +5с error penalty, data-driven gates (25-сет / Профи for Nicole). | — | Phase-0 «арифметическая гигиена» layer — `plans/math-track-nicole.md`, `plans/math-track-ernest.md`. |
+| 2 | «Делимость» mode (НОД/НОК/остатки) — new 8th tile; live mode mixes stay frozen, new skills arrive as new modes. | Sep 2026 (phase 1) | Feeds olympiad cluster B1 + fraction common denominators. |
+
+---
+
 ## Phase 1 — Content priorities
 
 Canonical table lives in `references/coverage-matrix.md` (single home — this section

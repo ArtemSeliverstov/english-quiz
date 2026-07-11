@@ -16,9 +16,10 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 | **CC `weak-spots-session` / `interview-prep` skills** | Firebase MCP (remote-CC safe) | `players/{name}`, `worker/index.js` catalogs | `coach_sessions/{sid}`; masked updates to `coach_notes` + fold fields **only** (see bug-log 2026-05-20) |
 | **CC `stats-review` skill** | `tools/get_all_players.js`, `tools/update_coach_notes.js` | all of `players/*` + subcollections | `players/{name}.coach_notes`, generated tracker markdown |
 | **Library authoring** | `library_drafts/*.json` → `tools/push_library.js` | local drafts | `exercises_library/{type}/items/*` + `_meta` |
+| **Math Sprint game** | `mathsprint.html` (standalone, math track) | `math_sprint_scores/*` (all family runs) | `math_sprint_scores/{player}__{mode}__{n}__{ts}` — one immutable doc per run; client prunes each combo to top-50 |
 | **RTDB legacy** | `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app` | read-only | frozen; console deletion pending (overdue since 2026-05-28) |
 
-Two writers touch the player root document: the PWA play loop (everything except `coach_notes`) and `tools/update_coach_notes.js` (only `coach_notes`). One writer touches `exercises` and `coach_sessions` per surface (Coach tab from PWA, `tools/*.js` from CC). No surface owns more than one collection's write path.
+Two writers touch the player root document: the PWA play loop (everything except `coach_notes`) and `tools/update_coach_notes.js` (only `coach_notes`). One writer touches `exercises` and `coach_sessions` per surface (Coach tab from PWA, `tools/*.js` from CC). No surface owns more than one collection's write path. `math_sprint_scores` sits outside `players/{name}` (game times only, no learning data) — the one within-family-public board, a scoped §6 exception (`references/design-decisions.md`).
 
 ## Canonical flows
 

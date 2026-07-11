@@ -61,6 +61,23 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    // Math Sprint family leaderboard (mathsprint.html, 2026-07-11). One doc per
+    // RUN — `{player}__{mode}__{length}__{ts}` — so the board is a long ranked
+    // list (minesweeper "Times" style), not one row per player. NOT learning data:
+    // only game time/errors/date, isolated from players/{name}. Deliberate §6
+    // exception — competition is the requested motivator for the math track
+    // (references/design-decisions.md). Runs are immutable (no update). Delete is
+    // open because the client prunes each combo to the top-50 and the game offers
+    // per-row / whole-board delete (both PIN-gated to Artem in the UI). Same
+    // risk posture as `exercises_library`: worst case is lost game times (no
+    // learning data), and the nightly backup workflow snapshots Firestore.
+    match /math_sprint_scores/{id} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if false;
+      allow delete: if true;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
