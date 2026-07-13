@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260711-r2">
+  <meta name="app-version" content="v20260711-r3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1135,13 +1135,15 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <button onclick="cancelPin()" style="background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;margin-top:.5rem;">← Back</button>
     </div>
     <div style="font-size:.75rem;color:var(--muted);margin-top:.5rem;" id="pin-hint-text">Family members only</div>
+    <!-- Shown only when opened from the header switch (someone is already logged in) -->
+    <button id="np-cancel" onclick="closeNamePicker()" style="display:none;background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;margin-top:.6rem;">✕ Cancel — stay as current player</button>
   </div>
 </div>
 
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260711-r2</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260711-r3</span></p>
 </header>
 
 <!-- TABS -->
@@ -7878,8 +7880,17 @@ function showNamePicker() {
   ).join('');
   grid.style.display = 'grid';
   document.getElementById('pin-entry').style.display = 'none';
+  document.getElementById('pin-hint-text').style.display = 'block';
+  // Opened from the header switch while logged in → allow dismissing.
+  // First-run (no player yet) → choosing is mandatory, no cancel.
+  document.getElementById('np-cancel').style.display = currentPlayer ? 'block' : 'none';
   document.getElementById('name-picker').style.display = 'flex';
 }
+window.showNamePicker = showNamePicker;
+window.closeNamePicker = function() {
+  pendingPlayerKey = null;
+  document.getElementById('name-picker').style.display = 'none';
+};
 
 // ══════════════════════════════════════════════════════════════
 //  BUILD PAYLOAD

@@ -10,6 +10,16 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-11 · v20260711-r3 — Switch-player button in the main app
+
+- **Gap found via live family use** (shared device, Anna → Nicole): the name picker only ever appeared on first run — no way to switch players afterwards. Now the **player name in the header is tappable** → opens the existing PIN-gated name picker (same contamination-guarded `confirmPlayer` path as first login; wipe-before-sync preserved).
+- Picker gets a **Cancel** button, shown only when someone is already logged in (first-run choice stays mandatory).
+- DOM-only verification in preview (no login → no Firestore writes, per probe-safety rule).
+
+Q count: 2315 (Δ0) · Version: v20260711-r3
+
+---
+
 ## 2026-07-11 · v20260711-r2 — Math Sprint: app icon + leaderboard readability
 
 - **Icon set**: `mathsprint.svg` (favicon + Android/maskable, safe-zone bolt on navy), `icon-math-180.png` (apple-touch-icon), `mathsprint.webmanifest` (standalone install, «Устный счёт» on the home screen). Pages allowlist extended; head links wired.
