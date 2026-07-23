@@ -10,6 +10,16 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-23 · v20260723 — Kill iOS inline writing suggestions in answer fields
+
+- Artem reported a "pre-filled answer" ghost text appearing in answer inputs ("autoprompt"). The app never pre-fills any field — the culprit is the OS keyboard layer: iOS/Safari 18+ **inline predictive text (writing suggestions)** injects grey completion text directly into the field. Turning it off in device settings doesn't stick — iOS updates re-enable it — so the fix belongs in the app.
+- Added the standard `writingsuggestions="false"` attribute to every free-text answer surface: quiz `input-field`, `transform-field`, `wordform-field`, `errcorr-field`, coach textarea (`coachInputField`), and both spell-help inputs. `autocomplete/autocorrect/spellcheck` settings untouched (coach textarea keeps `autocorrect="on"` deliberately; `coachNormalize` already compensates for the l'm/I'm swap).
+- No behaviour change beyond suppressing the suggestion overlay; harmless no-op on browsers that don't support the attribute.
+
+Q count: 2315 (Δ0) · Version: v20260723
+
+---
+
 ## 2026-07-11 · v20260711-r3 — Switch-player button in the main app
 
 - **Gap found via live family use** (shared device, Anna → Nicole): the name picker only ever appeared on first run — no way to switch players afterwards. Now the **player name in the header is tappable** → opens the existing PIN-gated name picker (same contamination-guarded `confirmPlayer` path as first login; wipe-before-sync preserved).
