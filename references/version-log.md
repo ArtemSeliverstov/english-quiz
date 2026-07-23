@@ -10,13 +10,14 @@ specifics live in their dedicated reference files.
 
 ---
 
-## 2026-07-23 · v20260723 — Kill iOS inline writing suggestions in answer fields
+## 2026-07-23 · v20260723-r2 — Kill keyboard writing suggestions in answer fields (Android)
 
-- Artem reported a "pre-filled answer" ghost text appearing in answer inputs ("autoprompt"). The app never pre-fills any field — the culprit is the OS keyboard layer: iOS/Safari 18+ **inline predictive text (writing suggestions)** injects grey completion text directly into the field. Turning it off in device settings doesn't stick — iOS updates re-enable it — so the fix belongs in the app.
-- Added the standard `writingsuggestions="false"` attribute to every free-text answer surface: quiz `input-field`, `transform-field`, `wordform-field`, `errcorr-field`, coach textarea (`coachInputField`), and both spell-help inputs. `autocomplete/autocorrect/spellcheck` settings untouched (coach textarea keeps `autocorrect="on"` deliberately; `coachNormalize` already compensates for the l'm/I'm swap).
-- No behaviour change beyond suppressing the suggestion overlay; harmless no-op on browsers that don't support the attribute.
+- Artem reported a "pre-filled answer" ghost text appearing in answer inputs ("autoprompt"), on the Android PWA. The app never pre-fills any field — the injection is the keyboard/browser layer (Gboard predictive text via Chrome).
+- **Root cause of why the existing `autocorrect = 'off'` didn't help**: Chrome 134+ standardised `autocorrect` as a *boolean* IDL property, so the JS assignment `field.autocorrect = 'off'` assigns a truthy string — reflecting as autocorrect **enabled**. On Android, `autocorrect=off` + `spellcheck=false` is what Chromium maps to the IME `textNoSuggestions` flag that tells Gboard to stop suggesting. Fixed by using `setAttribute('autocorrect','off')` on all four dynamic quiz fields (`input-field`, `transform-field`, `wordform-field`, `errcorr-field`).
+- Also added the standard `writingsuggestions="false"` attribute (Chrome 136+/Safari 18.4+) to every free-text answer surface, incl. coach textarea (`coachInputField`) and both spell-help inputs — suppresses browser-provided inline writing suggestions on both platforms. Coach textarea keeps `autocorrect="on"` deliberately (`coachNormalize` already compensates for the iOS l'm/I'm swap).
+- No behaviour change beyond suppressing suggestion overlays; attributes are no-ops on browsers that don't support them.
 
-Q count: 2315 (Δ0) · Version: v20260723
+Q count: 2315 (Δ0) · Version: v20260723-r2
 
 ---
 
