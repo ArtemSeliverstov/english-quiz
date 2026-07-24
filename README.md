@@ -26,7 +26,9 @@ members. Live at `artemseliverstov.github.io/english-quiz`. Operating instructio
 Root files: `index.html` (the whole app, questions inline — by design), `sw.js`,
 `manifest.json` + icons, `firestore.rules` + firebase config, `mathsprint.html`
 (standalone mental-arithmetic sprint game — math track, outside the quiz engine;
-leaderboard is device-local by design).
+shared family leaderboard in `math_sprint_scores`), `memory.html` (standalone
+working-memory/attention trainer — cognitive track, outside the quiz engine;
+family board in `memory_trainer_scores`).
 
 ## House rules
 

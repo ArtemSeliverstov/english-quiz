@@ -78,6 +78,17 @@ service cloud.firestore {
       allow delete: if true;
     }
 
+    // Memory trainer family board (memory.html, 2026-07-24). Same posture as
+    // math_sprint_scores: one immutable doc per run — `{player}__{mode}__{ts}`,
+    // game scores only (level/err/date), isolated from players/{name}. Client
+    // prunes each mode to top-50; deletes are Artem-PIN-gated in the UI.
+    match /memory_trainer_scores/{id} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if false;
+      allow delete: if true;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

@@ -9,6 +9,32 @@ Format: `[topic]` — decision and rationale. Newest substantive decisions first
 
 ## Surfaces
 
+### Memory trainer as a standalone surface, evidence-honest framing (2026-07-24)
+`memory.html`: a standalone working-memory/attention trainer, requested by Artem for his
+"forget what I was talking/reading about when distracted" complaint (45, normal aging —
+interference control, not storage, is what slips first). Follows the mathsprint template:
+same look, PIN, Firestore REST helpers, family board in its own `memory_trainer_scores`
+collection (same §6 carve-out rationale — non-English surface, no learning data exposed,
+per-mode boards, personal-best framing prominent). Key decisions:
+- **Modes are lab paradigms, not invented games**: «Помехи» (Brown–Peterson delayed
+  recall with a forced 15 s parity-task distractor — the face-valid centerpiece for the
+  complaint), «N-назад» (spatial single n-back, Jaeggi 2008 protocol: 500 ms/3 s,
+  20+n trials, 6 targets, ≤2 errors → level up, >5 → down), «Кубики»/«Кубики ⇄»
+  (Corsi block span, forward/backward, 2 trials per length).
+- **Score = level reached** (adaptive staircase), not time — memory capacity isn't a
+  speed metric. Board sorts score desc, then fewer errors, then earlier date.
+- **Evidence-honest framing baked into the UI.** Meta-analyses (Melby-Lervåg 2016,
+  Soveri 2017; ACTIVE trial; FTC v. Lumosity) show near transfer only — so the menu
+  says exactly that, and every run ends with a rotating *strategy/lifestyle* tip
+  (resumption cues, chunking, single-tasking, sleep, aerobic exercise) — the part that
+  actually moves everyday memory. No "get smarter" claims anywhere.
+- **Distractor validity gate**: the «Помехи» parity phase requires ≥6 answers at ≥60%
+  accuracy, else the level repeats — otherwise the player can defeat the paradigm by
+  ignoring the distractor (which is the whole point of the exercise).
+Task-switching mode (Karbach & Kray 2009 — best transfer evidence of the lot) deferred:
+its score is RT-based (switch cost), which doesn't fit the level-board model; revisit
+if the family actually uses the trainer.
+
 ### Math Sprint game with a family leaderboard — a scoped §6 exception (2026-07-11)
 `mathsprint.html`: a standalone timed mental-arithmetic drill for the math track (Nicole's
 РФМШ prep + Ernest's broad numeracy), with a **shared family leaderboard** — a long ranked

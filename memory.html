@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0c0e16">
+<link rel="icon" type="image/svg+xml" href="memory.svg">
+<link rel="apple-touch-icon" href="icon-memory-180.png">
+<link rel="manifest" href="memory.webmanifest">
+<title>Память — семейный тренажёр</title>
+<style>
+  :root{
+    --bg1:#0f1220; --bg2:#181d33; --card:#1d2340; --card2:#252c4e; --flat:#0c0e16;
+    --text:#eef1fa; --dim:#9aa3c7; --accent:#ffb454; --good:#4cc9a4; --bad:#ff6b6b;
+    --dst:#ffb454; --nbk:#5aa2ff; --cor:#4cc9a4; --rev:#5ad0e6;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; min-height:100%;}
+  body{
+    background:linear-gradient(160deg,var(--bg1),var(--bg2));
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    overscroll-behavior:none; touch-action:manipulation;
+    user-select:none; -webkit-user-select:none;
+  }
+  #app{max-width:480px; margin:0 auto; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column;}
+  .screen{display:none; flex:1; flex-direction:column; padding:16px;}
+  .screen.active{display:flex;}
+
+  /* ---------- menu ---------- */
+  h1{font-size:1.7rem; margin:8px 0 0; letter-spacing:.3px;}
+  .sub{color:var(--dim); margin:2px 0 16px; font-size:.95rem;}
+  .label{font-size:.8rem; text-transform:uppercase; letter-spacing:.12em; color:var(--dim); margin:14px 0 8px;}
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{border:1px solid #3a4270; background:var(--card); color:var(--text); border-radius:999px; padding:10px 16px; font-size:1rem; cursor:pointer;}
+  .chip.sel{background:var(--accent); border-color:var(--accent); color:#20180a; font-weight:700;}
+  .chip .lock{font-size:.8em; opacity:.7;}
+  .modes{display:flex; flex-direction:column; gap:8px;}
+  .mode{display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid #3a4270; background:var(--card); border-radius:14px; padding:11px 14px; cursor:pointer;}
+  .mode .m-name{font-weight:700; font-size:1.05rem; white-space:nowrap;}
+  .mode .m-ex{color:var(--dim); font-size:.85rem; text-align:right;}
+  .mode.sel{border-color:var(--mc); box-shadow:inset 0 0 0 1px var(--mc);}
+  .mode.sel .m-name{color:var(--mc);}
+  #btn-start{margin-top:20px; width:100%; padding:16px; border:0; border-radius:14px; background:var(--accent); color:#20180a; font-size:1.25rem; font-weight:800; cursor:pointer; letter-spacing:.03em;}
+  #btn-start:disabled{opacity:.4; cursor:default;}
+  .note{color:var(--dim); font-size:.78rem; text-align:center; margin-top:14px; line-height:1.5;}
+  .honest{margin-top:16px; background:var(--card); border-radius:14px; padding:2px 14px 4px; color:var(--dim); font-size:.82rem; line-height:1.5;}
+  .honest summary{color:var(--text); font-size:.9rem; font-weight:600; padding:10px 0; cursor:pointer; list-style-position:inside;}
+  .honest p{margin:0 0 10px;}
+
+  /* ---------- leaderboard list ---------- */
+  .lb-head{display:flex; justify-content:space-between; align-items:baseline; margin:18px 0 2px;}
+  .lb-head .lb-title{font-size:1rem; font-weight:700;}
+  .lb-head .lb-src{color:var(--dim); font-size:.75rem;}
+  .lb{display:flex; flex-direction:column;}
+  .lb-row{display:grid; grid-template-columns:2.2em 1fr auto auto 1.7em; align-items:center; gap:9px; padding:12px 2px;}
+  .lb-rank{color:var(--dim); font-variant-numeric:tabular-nums; text-align:right; font-size:.95rem;}
+  .lb-name{font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .lb-name .st{color:var(--accent); font-size:.8em; margin-left:3px;}
+  .lb-date{color:var(--dim); font-size:.8rem; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .lb-time{font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:1rem;}
+  .lb-del{background:none; border:0; color:#5d6690; font-size:1.05rem; cursor:pointer; padding:8px 6px; margin:-8px 0; text-align:center;}
+  .lb-del.hidden{visibility:hidden;}
+  .lb-row.hl{background:rgba(255,180,84,.13); border-radius:9px;}
+  .lb-row.hl .lb-name{color:var(--accent);}
+  .lb-empty{color:var(--dim); padding:16px 2px; text-align:center; font-size:.92rem;}
+  .lb-more{background:none; border:0; color:var(--accent); font-size:.9rem; cursor:pointer; padding:12px 2px 4px; text-align:left; width:max-content;}
+
+  /* ---------- dedicated leaderboard screen ---------- */
+  #scr-board{background:var(--flat); padding:14px 16px calc(8px + env(safe-area-inset-bottom));
+    position:fixed; top:0; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:480px; height:100vh; height:100dvh; z-index:5;}
+  .bd-top{display:flex; align-items:center; justify-content:space-between; padding-bottom:8px;}
+  .bd-top .bd-title{font-size:1.25rem; font-weight:700;}
+  .bd-top button{background:none; border:0; color:var(--text); font-size:1.4rem; cursor:pointer; padding:4px 8px;}
+  #bd-clear{color:#5d6690; font-size:1.1rem;}
+  .bd-sel{display:flex; align-items:center; justify-content:center; gap:16px; margin:2px 0 8px;}
+  .bd-sel button{background:none; border:0; color:var(--dim); font-size:1.7rem; cursor:pointer; padding:0 6px; line-height:1;}
+  #bd-mode{font-size:1.1rem; font-weight:700; min-width:7em; text-align:center;}
+  .bd-src{text-align:center; color:var(--dim); font-size:.75rem; margin-bottom:4px;}
+  #board-full{overflow-y:auto; flex:1; min-height:0; -webkit-overflow-scrolling:touch;}
+
+  /* ---------- game shell ---------- */
+  #scr-game{padding:12px 16px; height:100vh; height:100dvh;}
+  .hud{display:flex; justify-content:space-between; align-items:center; color:var(--dim); font-size:1rem;}
+  .hud #hud-level{font-variant-numeric:tabular-nums; font-size:1.05rem; color:var(--text); font-weight:700;}
+  .hud #btn-quit{background:none; border:0; color:var(--dim); font-size:1.4rem; cursor:pointer; padding:4px 10px;}
+  #stage{flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:14px; min-height:0; padding-bottom:calc(8px + env(safe-area-inset-bottom));}
+  .phase{color:var(--dim); font-size:.95rem; text-align:center; min-height:1.3rem;}
+  .tbar{width:100%; max-width:340px; height:5px; border-radius:3px; background:var(--card2); overflow:hidden;}
+  .tbar i{display:block; height:100%; background:var(--accent); border-radius:3px; transition:width .2s linear;}
+
+  /* n-back grid */
+  .grid9{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; width:min(78vw,300px); aspect-ratio:1;}
+  .grid9 i{background:var(--card); border-radius:12px; border:1px solid #3a4270;}
+  .grid9 i.on{background:var(--nbk); border-color:var(--nbk);}
+  .grid9.missed i{border-color:var(--bad);}
+  .btn-big{width:min(78vw,300px); padding:18px; border:0; border-radius:14px; background:var(--card2); color:var(--text); font-size:1.2rem; font-weight:800; cursor:pointer; letter-spacing:.03em;}
+  .btn-big:active{background:#333b66;}
+  .btn-big.hit{background:var(--good); color:#0b2018;}
+  .btn-big.fa{background:var(--bad); color:#2b0d0d;}
+  .btn-go{padding:14px 30px; border:0; border-radius:14px; background:var(--accent); color:#20180a; font-size:1.1rem; font-weight:800; cursor:pointer;}
+  .interT{font-size:1.35rem; font-weight:800; text-align:center;}
+  .interS{color:var(--dim); text-align:center; line-height:1.55; max-width:320px;}
+  .interS b{color:var(--text);}
+  .lvlup{color:var(--good);} .lvldn{color:var(--bad);}
+
+  /* corsi board */
+  .corsi{position:relative; width:min(84vw,330px); aspect-ratio:1;}
+  .corsi i{position:absolute; width:19%; aspect-ratio:1; background:var(--card); border:1px solid #3a4270; border-radius:12px; cursor:pointer;}
+  .corsi i.lit{background:var(--cor); border-color:var(--cor);}
+  .corsi i.tap{background:var(--rev); border-color:var(--rev);}
+  .corsi i.err{background:var(--bad); border-color:var(--bad);}
+  .corsi.wait i{cursor:default;}
+
+  /* distraction mode */
+  .glyphs{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:340px;}
+  .glyphs b{font-size:2.4rem; font-weight:400; line-height:1;}
+  .digit{font-size:4rem; font-weight:800; font-variant-numeric:tabular-nums; min-height:4.5rem;}
+  .par-row{display:flex; gap:12px; width:min(78vw,300px);}
+  .par-row button{flex:1; padding:16px; border:0; border-radius:14px; background:var(--card2); color:var(--text); font-size:1.15rem; font-weight:800; cursor:pointer;}
+  .par-row button:active{background:#333b66;}
+  .pick{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; width:min(84vw,330px);}
+  .pick button{aspect-ratio:1; font-size:1.9rem; background:var(--card); color:var(--text); border:1px solid #3a4270; border-radius:12px; cursor:pointer;}
+  .pick button.sel{background:var(--card2); border-color:var(--accent); box-shadow:inset 0 0 0 2px var(--accent);}
+  .pick button.ok{background:var(--good); border-color:var(--good); color:#0b2018;}
+  .pick button.no{background:var(--bad); border-color:var(--bad); color:#2b0d0d;}
+  .pick button:disabled{cursor:default;}
+
+  /* pin overlay */
+  #pin-ov{position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(12,14,22,.97); z-index:20; padding:16px;}
+  #pin-ov.on{display:flex;}
+  .pin-box{width:100%; max-width:300px; text-align:center;}
+  .pin-box h2{margin:0 0 4px; font-size:1.2rem;}
+  .pin-box .who{color:var(--accent); font-weight:700;}
+  .pin-box .hint{color:var(--dim); font-size:.85rem; margin-bottom:14px;}
+  #pin-dots{display:flex; gap:12px; justify-content:center; margin-bottom:8px; height:18px;}
+  #pin-dots span{width:14px; height:14px; border-radius:50%; border:2px solid #3a4270;}
+  #pin-dots span.f{background:var(--accent); border-color:var(--accent);}
+  #pin-dots.err span{border-color:var(--bad); animation:shake .3s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  #pin-msg{color:var(--bad); font-size:.85rem; min-height:1.2rem; margin-bottom:6px;}
+  #pin-pad{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  #pin-pad .key{background:var(--card2); color:var(--text); border:0; border-radius:14px; font-size:1.6rem; font-weight:700; height:54px; cursor:pointer;}
+  #pin-pad .key.fn{background:var(--card); color:var(--dim); font-size:1.35rem;}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+  }
+
+  /* ---------- results ---------- */
+  .res-score{font-size:3rem; font-weight:800; text-align:center; margin:10px 0 0; font-variant-numeric:tabular-nums;}
+  .res-sub{text-align:center; color:var(--dim); margin-bottom:6px;}
+  .pb{text-align:center; margin:10px auto; padding:8px 16px; border-radius:12px; background:var(--card); width:max-content; max-width:100%; font-size:1rem;}
+  .pb.record{background:var(--good); color:#0b2018; font-weight:700;}
+  .tip{margin-top:12px; background:var(--card); border-radius:14px; padding:12px 14px; font-size:.9rem; line-height:1.5; color:var(--dim);}
+  .tip b{color:var(--accent); display:block; margin-bottom:4px; font-size:.8rem; text-transform:uppercase; letter-spacing:.1em;}
+  .btn-row{display:flex; gap:10px; margin-top:16px;}
+  .btn-row button{flex:1; padding:14px; border:0; border-radius:14px; font-size:1.1rem; font-weight:700; cursor:pointer;}
+  #btn-again{background:var(--accent); color:#20180a;}
+  #btn-menu{background:var(--card2); color:var(--text);}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <section id="scr-menu" class="screen active">
+    <h1>Память <span style="color:var(--accent)">◈</span></h1>
+    <div class="sub">семейный тренажёр внимания и рабочей памяти</div>
+    <div class="label">Кто тренируется</div>
+    <div class="chips" id="players"></div>
+    <div class="label">Упражнение</div>
+    <div class="modes" id="modes"></div>
+    <button id="btn-start">Старт</button>
+    <div class="lb-head"><span class="lb-title" id="menu-lb-title"></span><span class="lb-src" id="menu-lb-src"></span></div>
+    <div class="lb" id="board-menu"></div>
+    <button class="lb-more" id="btn-showall">Показать все результаты →</button>
+    <details class="honest">
+      <summary>Что это тренирует — честно</summary>
+      <p>«Помехи» повторяют главный бытовой сбой после 40: удержать мысль, пока тебя перебили, и вернуться к ней. «N-назад» и «Кубики» — классические лабораторные задачи на рабочую память с адаптивной сложностью.</p>
+      <p>Наука говорит прямо: такие тренажёры надёжно улучшают <b>сами эти задачи</b> и дают честный замер динамики, но не делают умнее «вообще». На бытовую память сильнее всего влияют сон, аэробная нагрузка и привычка не прерывать себя — приёмы показываем после каждого захода.</p>
+      <p>Режим полезной дозы: 10–15 минут, 3–5 раз в неделю. Лучше коротко и регулярно, чем час раз в месяц.</p>
+    </details>
+    <div class="note">🌐 общая таблица на всю семью · 📵 оффлайн — только это устройство.</div>
+  </section>
+
+  <section id="scr-board" class="screen">
+    <div class="bd-top">
+      <button id="bd-back" title="Назад">←</button>
+      <span class="bd-title">Рекорды</span>
+      <button id="bd-clear" title="Очистить эту таблицу">🗑</button>
+    </div>
+    <div class="bd-sel">
+      <button id="bd-prev" title="Другой режим">‹</button>
+      <span id="bd-mode"></span>
+      <button id="bd-next" title="Другой режим">›</button>
+    </div>
+    <div class="bd-src" id="bd-src"></div>
+    <div class="lb" id="board-full"></div>
+  </section>
+
+  <section id="scr-game" class="screen">
+    <div class="hud">
+      <button id="btn-quit" title="Прервать">✕</button>
+      <span id="hud-info"></span>
+      <span id="hud-level"></span>
+    </div>
+    <div id="stage"></div>
+  </section>
+
+  <section id="scr-done" class="screen">
+    <h1 style="text-align:center">Готово!</h1>
+    <div class="res-score" id="res-score"></div>
+    <div class="res-sub" id="res-sub"></div>
+    <div class="pb" id="res-pb"></div>
+    <div class="tip" id="res-tip"></div>
+    <div class="lb-head"><span class="lb-title" id="done-lb-title"></span><span class="lb-src" id="done-lb-src"></span></div>
+    <div class="lb" id="board-done"></div>
+    <button class="lb-more" id="btn-showall2">Показать все результаты →</button>
+    <div class="btn-row">
+      <button id="btn-menu">Меню</button>
+      <button id="btn-again">Ещё раз</button>
+    </div>
+  </section>
+
+</div>
+
+<div id="pin-ov">
+  <div class="pin-box">
+    <h2>PIN — <span class="who" id="pin-who"></span></h2>
+    <div class="hint">тот же, что в english-quiz</div>
+    <div id="pin-dots"><span></span><span></span><span></span><span></span></div>
+    <div id="pin-msg"></div>
+    <div id="pin-pad"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const ri = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const SCORE_CAP = 50;      // сколько результатов держим онлайн на режим
+const MENU_TOP  = 5;
+
+const PLAYERS = [
+  {id:'artem', name:'Артём'},
+  {id:'anna',  name:'Анна'},
+  {id:'nicole',name:'Николь'},
+  {id:'ernest',name:'Эрнест'},
+  {id:'egor',  name:'Егор'},
+];
+const nameOf = id => (PLAYERS.find(p=>p.id===id)||{}).name || id;
+
+/* ---------- Firestore REST (тот же проект и кодировка, что в mathsprint.html) ---------- */
+const FS_PROJECT = 'artem-grammar-hub';
+const FS_BASE = `https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents`;
+const SCORES_COLL = 'memory_trainer_scores';
+let ONLINE = !/^(localhost|127\.0\.0\.1|)$/.test(location.hostname);
+function _fsValue(v){
+  if(v===null||v===undefined) return {nullValue:null};
+  if(typeof v==='boolean') return {booleanValue:v};
+  if(typeof v==='number') return Number.isInteger(v) ? {integerValue:String(v)} : {doubleValue:v};
+  if(typeof v==='string') return {stringValue:v};
+  if(Array.isArray(v)) return {arrayValue:{values:v.map(_fsValue)}};
+  if(typeof v==='object'){ const f={}; for(const [k,val] of Object.entries(v)){ if(val===undefined) continue; f[k]=_fsValue(val);} return {mapValue:{fields:f}}; }
+  throw new Error('bad '+typeof v);
+}
+function _fsFromValue(v){
+  if(v==null) return null;
+  if('nullValue' in v) return null;
+  if('booleanValue' in v) return v.booleanValue;
+  if('integerValue' in v) return Number(v.integerValue);
+  if('doubleValue' in v) return v.doubleValue;
+  if('stringValue' in v) return v.stringValue;
+  if('arrayValue' in v) return (v.arrayValue.values||[]).map(_fsFromValue);
+  if('mapValue' in v){ const o={}; for(const [k,val] of Object.entries(v.mapValue.fields||{})) o[k]=_fsFromValue(val); return o; }
+  return null;
+}
+function _fsToDoc(o){ const f={}; for(const [k,v] of Object.entries(o)){ if(v===undefined) continue; f[k]=_fsValue(v);} return {fields:f}; }
+function _fsFromDoc(d){ if(!d||!d.fields) return null; const o={}; for(const [k,v] of Object.entries(d.fields)) o[k]=_fsFromValue(v); return o; }
+async function fsSet(path,obj){ const r=await fetch(`${FS_BASE}/${path}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(_fsToDoc(obj))}); if(!r.ok) throw new Error('set '+r.status); return await r.json(); }
+async function fsDelete(path){ const r=await fetch(`${FS_BASE}/${path}`,{method:'DELETE'}); if(!r.ok && r.status!==404) throw new Error('del '+r.status); return true; }
+// Только equality-фильтр по режиму (Spark-тариф, композитный индекс не нужен); сортировка на клиенте.
+async function fsQuery(mode){
+  const body = {structuredQuery:{
+    from:[{collectionId:SCORES_COLL}],
+    where:{fieldFilter:{field:{fieldPath:'mode'}, op:'EQUAL', value:{stringValue:mode}}},
+    limit:300
+  }};
+  const r = await fetch(`${FS_BASE}:runQuery`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error('query '+r.status);
+  const data = await r.json();
+  return (Array.isArray(data)?data:[]).filter(x=>x.document)
+    .map(x=>({id:x.document.name.split('/').pop(), ..._fsFromDoc(x.document)}))
+    .sort(cmpRows);
+}
+// уровень выше — лучше; при равенстве меньше ошибок, затем кто раньше достиг
+function cmpRows(a,b){ return (b.score-a.score) || ((a.err||0)-(b.err||0)) || (a.ts-b.ts); }
+
+let onlineCache = {};                       // mode -> {rows, at, ok}
+const FRESH_MS = 60000;
+const comboState = m => onlineCache[m];
+async function fetchCombo(mode){
+  if(!ONLINE) return false;
+  try {
+    const rows = await fsQuery(mode);
+    onlineCache[mode] = {rows, at:Date.now(), ok:true};
+    flushPending();
+    return true;
+  } catch(e){
+    const c = comboState(mode);
+    onlineCache[mode] = {rows:c&&c.rows||null, at:c&&c.at||0, ok:false};
+    return false;
+  }
+}
+async function ensureFresh(mode,rerender){
+  if(!ONLINE) return;
+  const c = comboState(mode);
+  if(c && c.ok && Date.now()-c.at < FRESH_MS) return;
+  await fetchCombo(mode);
+  if(rerender) rerender();
+}
+async function pushOnline(run){
+  if(!ONLINE) return;
+  try {
+    const id = `${run.p}__${run.m}__${run.ts}`;
+    await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, score:run.score, err:run.err, ts:run.ts});
+    await fetchCombo(run.m);
+    await pruneOnline(run.m);
+  } catch(e){
+    store.pending = store.pending || [];
+    if(!store.pending.some(x => x.ts===run.ts && x.p===run.p)) store.pending.push(run);
+    if(store.pending.length > 20) store.pending = store.pending.slice(-20);
+    save();
+    const c = comboState(run.m); if(c) c.ok = false;
+  }
+}
+let flushing = false;
+async function flushPending(){
+  if(flushing || !ONLINE || !store.pending || !store.pending.length) return;
+  flushing = true;
+  try {
+    for(const run of [...store.pending]){
+      try {
+        const id = `${run.p}__${run.m}__${run.ts}`;
+        await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, score:run.score, err:run.err, ts:run.ts});
+        store.pending = store.pending.filter(x => !(x.ts===run.ts && x.p===run.p));
+        save();
+      } catch(e){ break; }
+    }
+  } finally { flushing = false; }
+}
+async function pruneOnline(mode){
+  if(!ONLINE) return;
+  const c = comboState(mode); if(!c || !c.rows) return;
+  const extra = c.rows.slice(SCORE_CAP);
+  if(!extra.length) return;
+  let removed = false;
+  for(const e of extra){ try { await fsDelete(`${SCORES_COLL}/${e.id}`); removed = true; } catch(_){ break; } }
+  if(removed) await fetchCombo(mode);
+}
+
+/* ---------- PIN (те же хэши и механизм, что в index.html / mathsprint.html) ---------- */
+const PIN_HASHES = {
+  artem:  'aeb5d182368bc8faff9d186b46adca1c5b308dc80926ca96f8cf3dabe611df5c',
+  anna:   '0e70a832cb7a415716c3ba42776f795a905691b043e81a23895c8588a6268653',
+  ernest: '7d12ba56e9f8b3dc64f77c87318c4f37bc12cfbf1a37573cdf3e4fa683f20155',
+  nicole: '7931aa2a1bed855457d1ddf6bc06ab4406a9fba0579045a4d6ff78f9c07c440f',
+  egor:   'a20a2b7bb0842d5cf8a0c06c626421fd51ec103925c1819a51271f2779afa730',
+};
+function pinHashFor(p){
+  try { return localStorage.getItem('pinHash_'+p) || localStorage.getItem('pinHash_'+p+'_ru') || PIN_HASHES[p]; }
+  catch(e){ return PIN_HASHES[p]; }
+}
+async function hashPin(pin){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ---------- режимы ----------
+   Каждый заход — адаптивная лестница, результат = достигнутый уровень.
+   Параметры — стандартные лабораторные протоколы:
+   n-back: 500 мс стимул / 3000 мс на ответ, 20+n проб, 6 целей (Jaeggi 2008);
+   Corsi: 9 блоков, 500 мс подсветка, 2 попытки на длину;
+   Помехи: парадигма Брауна–Петерсона (запомнил → 15 с задачек → вспомнил). */
+const MODES = {
+  distract: {name:'Помехи',   ex:'запомни · отвлекись · вспомни', color:'var(--dst)', unit:s=>`${s} симв.`},
+  nback:    {name:'N-назад',  ex:'совпадает ли клетка с той, что была N шагов назад', color:'var(--nbk)', unit:s=>`N=${s}`},
+  corsi:    {name:'Кубики',   ex:'повтори последовательность',    color:'var(--cor)', unit:s=>`${s} куб.`},
+  corsiRev: {name:'Кубики ⇄', ex:'повтори в обратном порядке',    color:'var(--rev)', unit:s=>`${s} куб.`},
+};
+const MODE_KEYS = Object.keys(MODES);
+
+/* ---------- storage (local) ---------- */
+const KEY = 'memtrainer_v1';
+let store;
+function load(){
+  try { store = JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ store=null; }
+  if(!store || store.v!==1) store = {v:1, auth:null, lastMode:'distract', runs:[], lvl:{}};
+  if(!('auth' in store)) store.auth = null;
+  if(!store.lvl) store.lvl = {};
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} }
+
+/* ---------- ui state ---------- */
+let sel = {p:null, m:'distract'};
+let game = null;      // {token, m, ...} — token инвалидируется при выходе
+let lastRun = null;
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(id).classList.add('active'); }
+const fmtDate = ts => { const d=new Date(ts); return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0'); };
+
+/* ---------- leaderboard ---------- */
+function comboOnline(mode){ const c=comboState(mode); return !!(c && c.rows && c.ok); }
+function srcLabel(mode,long){
+  return comboOnline(mode) ? (long?'🌐 общая таблица на всю семью':'🌐 общая')
+                           : (long?'📵 оффлайн — только это устройство':'📵 оффлайн');
+}
+function computeRows(mode){
+  const c = comboState(mode);
+  if(c && c.rows && c.ok){
+    return c.rows.map(r=>({id:r.id, player:r.player, name:r.name||nameOf(r.player), score:r.score, err:r.err, ts:r.ts, mode, online:true}));
+  }
+  return store.runs.filter(r=>r.m===mode)
+    .map(r=>({player:r.p, name:nameOf(r.p), score:r.score, err:r.err, ts:r.ts, mode, online:false}))
+    .sort(cmpRows);
+}
+function renderList(el, mode, opts){
+  opts = opts || {};
+  const all = computeRows(mode);
+  const shown = opts.full ? all : all.slice(0, opts.limit||MENU_TOP);
+  el._rows = shown;
+  if(!shown.length){ el.innerHTML = `<div class="lb-empty">Пока пусто — сыграй первым!</div>`; return; }
+  el.innerHTML = shown.map((r,i) => {
+    const hl = (opts.highlightTs && r.ts===opts.highlightTs && r.player===opts.highlightPlayer);
+    const star = r.err===0 ? '<span class="st">★</span>' : '';
+    const del = opts.del ? `<button class="lb-del" data-del="${i}" title="Удалить">🗑</button>` : `<span class="lb-del hidden"></span>`;
+    return `<div class="lb-row${hl?' hl':''}">
+      <span class="lb-rank">${i+1}.</span>
+      <span class="lb-name">${r.name}${star}</span>
+      <span class="lb-date">${fmtDate(r.ts)}</span>
+      <span class="lb-time">${MODES[mode].unit(r.score)}</span>
+      ${del}
+    </div>`;
+  }).join('');
+}
+function deleteEntry(row){
+  const go = async () => {
+    if(!confirm(`Удалить результат: ${row.name} — ${MODES[row.mode].unit(row.score)}?`)) return;
+    if(row.online && ONLINE){ try { await fsDelete(`${SCORES_COLL}/${row.id}`); } catch(_){} await fetchCombo(row.mode); }
+    store.runs = store.runs.filter(r => !(r.p===row.player && r.m===row.mode && r.ts===row.ts));
+    save(); refreshVisibleBoards();
+  };
+  if(store.auth==='artem') go(); else openPin('artem', go);   // удаление — только Артём
+}
+$('#board-full').addEventListener('click', e => {
+  const b=e.target.closest('[data-del]'); if(!b) return;
+  const row = $('#board-full')._rows[+b.dataset.del]; if(row) deleteEntry(row);
+});
+function refreshVisibleBoards(){
+  if($('#scr-menu').classList.contains('active')) renderMenu();
+  if($('#scr-board').classList.contains('active')) renderBoardScreen();
+  if($('#scr-done').classList.contains('active')) renderDoneBoard();
+}
+
+/* ---------- pin overlay ---------- */
+let pinState = null;
+const PINPAD = ['1','2','3','4','5','6','7','8','9','✕','0','⌫'];
+function openPin(playerId, onOk){
+  pinState = {playerId, cur:'', onOk};
+  $('#pin-who').textContent = nameOf(playerId);
+  $('#pin-msg').textContent = '';
+  renderPinDots(); $('#pin-ov').classList.add('on');
+}
+function closePin(){ pinState=null; $('#pin-ov').classList.remove('on'); }
+function renderPinDots(){ const d=$('#pin-dots'); d.classList.remove('err'); [...d.children].forEach((x,i)=>x.classList.toggle('f', i<pinState.cur.length)); }
+async function pinDigit(d){
+  if(!pinState) return;
+  pinState.cur += d; renderPinDots();
+  if(pinState.cur.length<4) return;
+  const entered = pinState.cur; let ok=true;
+  if(window.crypto && crypto.subtle){ try { ok = (await hashPin(entered))===pinHashFor(pinState.playerId); } catch(e){ ok=true; } }
+  if(!pinState || pinState.cur!==entered) return;
+  if(ok){ const cb=pinState.onOk; closePin(); cb(); }
+  else { pinState.cur=''; $('#pin-msg').textContent='Неверный PIN'; const d2=$('#pin-dots'); [...d2.children].forEach(x=>x.classList.remove('f')); d2.classList.remove('err'); void d2.offsetWidth; d2.classList.add('err'); }
+}
+$('#pin-pad').innerHTML = PINPAD.map(k => `<button class="key${k==='✕'||k==='⌫'?' fn':''}" data-pk="${k}">${k}</button>`).join('');
+$('#pin-pad').addEventListener('click', e => {
+  const b=e.target.closest('[data-pk]'); if(!b||!pinState) return;
+  const k=b.dataset.pk;
+  if(k==='✕') closePin();
+  else if(k==='⌫'){ pinState.cur=pinState.cur.slice(0,-1); $('#pin-msg').textContent=''; renderPinDots(); }
+  else if(pinState.cur.length<4) pinDigit(k);
+});
+
+/* ---------- menu ---------- */
+function renderMenu(){
+  $('#players').innerHTML = PLAYERS.map(p => {
+    const locked = store.auth !== p.id;
+    return `<button class="chip${sel.p===p.id?' sel':''}" data-p="${p.id}">${locked?'<span class="lock">🔒 </span>':''}${p.name}</button>`;
+  }).join('');
+  $('#modes').innerHTML = Object.entries(MODES).map(([id,m]) =>
+    `<div class="mode${sel.m===id?' sel':''}" style="--mc:${m.color}" data-m="${id}">
+       <span class="m-name">${m.name}</span><span class="m-ex">${m.ex}</span></div>`
+  ).join('');
+  $('#btn-start').disabled = !sel.p;
+  $('#menu-lb-title').textContent = MODES[sel.m].name;
+  $('#menu-lb-src').textContent = srcLabel(sel.m);
+  renderList($('#board-menu'), sel.m, {limit:MENU_TOP});
+}
+$('#scr-menu').addEventListener('click', e => {
+  const chip=e.target.closest('[data-p]'), mode=e.target.closest('[data-m]');
+  if(chip){
+    const id=chip.dataset.p;
+    if(store.auth===id){ sel.p=id; renderMenu(); }
+    else openPin(id, () => { store.auth=id; sel.p=id; save(); renderMenu(); });
+  }
+  if(mode){ sel.m=mode.dataset.m; store.lastMode=sel.m; save(); renderMenu(); ensureFresh(sel.m, renderMenu); }
+});
+$('#btn-start').onclick = startRun;
+$('#btn-showall').onclick = openBoard;
+$('#btn-showall2').onclick = openBoard;
+
+/* ---------- board screen ---------- */
+function renderBoardScreen(){
+  $('#bd-mode').textContent = MODES[sel.m].name;
+  $('#bd-mode').style.color = MODES[sel.m].color;
+  $('#bd-src').textContent = srcLabel(sel.m, true);
+  renderList($('#board-full'), sel.m, {full:true, del:true});
+}
+async function openBoard(){ show('#scr-board'); renderBoardScreen(); await ensureFresh(sel.m, renderBoardScreen); }
+function closeBoard(){ show('#scr-menu'); renderMenu(); }
+$('#bd-back').onclick = closeBoard;
+$('#bd-clear').onclick = () => {
+  const go = async () => {
+    if(!confirm(`Стереть ВСЕ результаты «${MODES[sel.m].name}»?`)) return;
+    const c = comboState(sel.m);
+    if(ONLINE && c && c.rows){ for(const e of c.rows){ try { await fsDelete(`${SCORES_COLL}/${e.id}`); } catch(_){} } await fetchCombo(sel.m); }
+    store.runs = store.runs.filter(r=>r.m!==sel.m); save(); renderBoardScreen();
+  };
+  if(store.auth==='artem') go(); else openPin('artem', go);
+};
+$('#bd-prev').onclick = () => { const i=MODE_KEYS.indexOf(sel.m); sel.m=MODE_KEYS[(i-1+MODE_KEYS.length)%MODE_KEYS.length]; store.lastMode=sel.m; save(); renderBoardScreen(); ensureFresh(sel.m, renderBoardScreen); };
+$('#bd-next').onclick = () => { const i=MODE_KEYS.indexOf(sel.m); sel.m=MODE_KEYS[(i+1)%MODE_KEYS.length]; store.lastMode=sel.m; save(); renderBoardScreen(); ensureFresh(sel.m, renderBoardScreen); };
+
+/* ---------- игровой каркас ---------- */
+const stage = $('#stage');
+function hud(info, level){ $('#hud-info').textContent = info||''; $('#hud-level').textContent = level||''; }
+function alive(t){ return game && game.token===t; }
+function startRun(){
+  if(!sel.p || sel.p!==store.auth) return;
+  game = {token:Symbol(), m:sel.m, err:0};
+  hud('', '');
+  show('#scr-game');
+  ({distract:runDistract, nback:runNback, corsi:t=>runCorsi(t,false), corsiRev:t=>runCorsi(t,true)})[sel.m](game.token);
+}
+function abort(){
+  if(!game) return;
+  if(confirm('Прервать? Результат не сохранится.')){ game=null; renderMenu(); show('#scr-menu'); }
+}
+$('#btn-quit').onclick = abort;
+
+// экран-прослойка между уровнями/раундами: заголовок, детали, кнопка
+function interstitial(t, title, sub, btn){
+  return new Promise(res => {
+    if(!alive(t)) return;
+    stage.innerHTML = `<div class="interT">${title}</div><div class="interS">${sub}</div><button class="btn-go" id="go">${btn||'Дальше'}</button>`;
+    $('#go').onclick = () => { if(alive(t)) res(); };
+  });
+}
+function finishRun(t, score, sub){
+  if(!alive(t)) return;
+  const run = {p:sel.p, m:game.m, score, err:game.err, ts:Date.now()};
+  game = null; lastRun = run;
+  const mine = store.runs.filter(r=>r.p===run.p && r.m===run.m).map(r=>r.score);
+  const prevBest = mine.length ? Math.max(...mine) : null;
+  store.runs.push(run); if(store.runs.length>500) store.runs=store.runs.slice(-500); save();
+
+  $('#res-score').textContent = MODES[run.m].unit(score);
+  $('#res-sub').textContent = `${MODES[run.m].name} · ${sub}`;
+  const pbEl=$('#res-pb');
+  if(prevBest===null){ pbEl.className='pb record'; pbEl.textContent='Первый результат — теперь это твой рекорд 🏆'; }
+  else if(score>prevBest){ pbEl.className='pb record'; pbEl.textContent=`Личный рекорд! Было ${MODES[run.m].unit(prevBest)} 🏆`; }
+  else { pbEl.className='pb'; pbEl.textContent=`Твой рекорд: ${MODES[run.m].unit(prevBest)}`; }
+  $('#res-tip').innerHTML = `<b>Приём на сегодня</b>${TIPS[run.ts % TIPS.length]}`;
+  renderDoneBoard(); show('#scr-done');
+  pushOnline(run).then(renderDoneBoard);
+}
+function renderDoneBoard(){
+  $('#done-lb-title').textContent = MODES[sel.m].name;
+  $('#done-lb-src').textContent = srcLabel(sel.m);
+  renderList($('#board-done'), sel.m, {limit:MENU_TOP, highlightTs:lastRun&&lastRun.ts, highlightPlayer:lastRun&&lastRun.p});
+}
+$('#btn-again').onclick = () => { show('#scr-menu'); startRun(); };
+$('#btn-menu').onclick = () => { renderMenu(); show('#scr-menu'); ensureFresh(sel.m, renderMenu); };
+
+/* ---------- советы (стратегии переносятся в быт лучше, чем сами игры) ---------- */
+const TIPS = [
+  'Прежде чем отвлечься — доскажи мысль до конца или запиши «точку возврата»: одно слово-крючок, к чему вернуться.',
+  'Правило одного дела: во время разговора — телефон экраном вниз. Восстановление после прерывания — самое уязвимое место внимания после 40.',
+  'Читая, останавливайся в конце страницы и пересказывай суть одним предложением. Активное вспоминание закрепляет сильнее перечитывания.',
+  'Новое имя или число сразу повтори вслух и свяжи с образом — глубокое кодирование живёт дольше механического.',
+  'Группируй: 8 элементов — это 3 куска по 2–3. Чанкинг — главный приём рабочей памяти.',
+  'Аэробная нагрузка 3×30 минут в неделю даёт для памяти больше, чем любой тренажёр. Это не метафора, а данные метаанализов.',
+  'Недосып бьёт по рабочей памяти сильнее возраста. 7–8 часов сна — тоже тренировка.',
+  'Проговаривай абстрактное словами: «ромб, звезда, нота» — вербализация разгружает зрительную память.',
+  'Перед тем как ответить на звонок посреди дела, скажи вслух, на чём остановился, — вернёшься вдвое быстрее.',
+  'Стресс сжимает рабочую память. Два медленных выдоха перед задачей — физиология, не эзотерика.',
+];
+
+/* ================= ПОМЕХИ (Браун–Петерсон) =================
+   Уровень L: запомни L символов → 15 с задачек «чёт/нечёт» → найди свои L среди ловушек.
+   2 неудачи на уровне — конец. Результат = максимальный пройденный L. */
+const GLYPHS = ['◆','●','▲','■','★','✚','☾','✦','◐','⬟','⬢','♠','♣','♪','Ω','∞','§','Ψ'];
+const DIST_MS = 15000, DIST_MIN_ANS = 6, DIST_MIN_ACC = .6;
+async function runDistract(t){
+  let L = 3, fails = 0, passed = 0, best = 0;
+  await interstitial(t, 'Помехи', 'Запомни символы, продержись 15 секунд на задачках — и вспомни, что запоминал. Это тот самый бытовой сценарий «отвлёкся и забыл».', 'Понял, начали');
+  while(alive(t)){
+    hud(MODES.distract.name, `уровень ${L}`);
+    const set = shuffle([...GLYPHS]).slice(0, L+4);
+    const target = set.slice(0, L);
+    // 1. запоминание
+    const memMs = Math.min(Math.max(4000, L*1300), 10000);
+    let skip;
+    const skipP = new Promise(r=>skip=r);
+    stage.innerHTML = `<div class="phase">Запомни:</div>
+      <div class="glyphs">${target.map(g=>`<b>${g}</b>`).join('')}</div>
+      <div class="tbar"><i id="tb" style="width:100%"></i></div>
+      <button class="btn-big" id="memok">Запомнил →</button>`;
+    $('#memok').onclick = ()=>skip();
+    await Promise.race([timebar(t, memMs), skipP]);
+    if(!alive(t)) return;
+    // 2. помеха — чёт/нечёт, отвечать обязательно
+    let answered=0, right=0, stop=false;
+    stage.innerHTML = `<div class="phase">Не выпадай из задачек!</div>
+      <div class="digit" id="dg"></div>
+      <div class="tbar"><i id="tb" style="width:100%"></i></div>
+      <div class="par-row"><button id="even">Чёт</button><button id="odd">Нечёт</button></div>`;
+    let cur = ri(11,98); $('#dg').textContent = cur;
+    const clickPar = isEven => {
+      if(stop||!alive(t)) return;
+      answered++; if((cur%2===0)===isEven) right++; else { navigator.vibrate&&navigator.vibrate(40); }
+      cur = ri(11,98); $('#dg').textContent = cur;
+    };
+    $('#even').onclick = ()=>clickPar(true);
+    $('#odd').onclick  = ()=>clickPar(false);
+    await timebar(t, DIST_MS);
+    stop = true;
+    if(!alive(t)) return;
+    if(answered < DIST_MIN_ANS || right/Math.max(1,answered) < DIST_MIN_ACC){
+      await interstitial(t, 'Так не считается 🙂', 'Смысл упражнения — честно отвлечься на задачки и всё равно вспомнить. Отвечай на «чёт/нечёт» — уровень повторим.', 'Ещё раз');
+      continue;   // не штраф — повтор уровня с новыми символами
+    }
+    // 3. вспоминание
+    const grid = shuffle([...set]);
+    const chosen = new Set();
+    const done = await new Promise(res => {
+      stage.innerHTML = `<div class="phase">Что ты запоминал? Выбери ${L}:</div>
+        <div class="pick" id="pick">${grid.map((g,i)=>`<button data-i="${i}">${g}</button>`).join('')}</div>
+        <button class="btn-go" id="chk" disabled>Проверить</button>`;
+      $('#pick').onclick = e => {
+        const b=e.target.closest('[data-i]'); if(!b||b.disabled) return;
+        const i=+b.dataset.i;
+        if(chosen.has(i)){ chosen.delete(i); b.classList.remove('sel'); }
+        else if(chosen.size<L){ chosen.add(i); b.classList.add('sel'); }
+        $('#chk').disabled = chosen.size!==L;
+      };
+      $('#chk').onclick = ()=>res(true);
+    });
+    if(!alive(t)||!done) return;
+    const pickedOk = [...chosen].every(i=>target.includes(grid[i]));
+    [...$('#pick').children].forEach((b,i)=>{
+      b.disabled = true;
+      if(target.includes(grid[i])) b.classList.add(chosen.has(i)?'ok':'sel');
+      else if(chosen.has(i)) b.classList.add('no');
+    });
+    await sleep(1400);
+    if(!alive(t)) return;
+    if(pickedOk){
+      passed++; best = L; fails = 0; L++;
+      if(L > GLYPHS.length-4){ finishRun(t, best, `дошёл до потолка · ошибок: ${game.err}`); return; }
+      await interstitial(t, `Уровень ${best} взят ✓`, `Дальше — <b>${L} символов</b>. Совет: называй их словами, пока запоминаешь.`, 'Дальше');
+    } else {
+      game.err++; fails++;
+      if(fails>=2){ finishRun(t, best, `ошибок: ${game.err}`); return; }
+      await interstitial(t, 'Не вышло', `Вторая попытка на <b>${L} символах</b> — набор будет новый.`, 'Ещё раз');
+    }
+  }
+}
+// полоска времени; резолвится по истечении. Держим ссылку на СВОЙ элемент:
+// если фазу переключили раньше (скип), элемент отвалится от DOM и цикл умрёт,
+// не трогая одноимённый #tb следующей фазы.
+async function timebar(t, ms){
+  const el = $('#tb');
+  const t0 = performance.now();
+  while(alive(t) && el && el.isConnected){
+    const left = Math.max(0, 1 - (performance.now()-t0)/ms);
+    el.style.width = (left*100)+'%';
+    if(left<=0) return;
+    await sleep(100);
+  }
+}
+
+/* ================= N-НАЗАД (пространственный n-back) =================
+   Раунд: 20+n проб по 3 с (500 мс стимул), 6 целей. «Совпадает», если клетка
+   та же, что n шагов назад. ≤2 ошибок → уровень вверх, ≥5 → вниз (Jaeggi 2008).
+   4 раунда, результат = максимальный пройденный N. */
+const NB_ROUNDS = 4, NB_SHOW = 500, NB_TRIAL = 3000, NB_TARGETS = 6;
+function nbSeq(n){
+  const trials = 20 + n;
+  const pos = [];
+  const targets = new Set(shuffle([...Array(trials-n).keys()].map(i=>i+n)).slice(0, NB_TARGETS));
+  for(let i=0;i<trials;i++){
+    if(i<n){ pos.push(ri(0,8)); continue; }
+    if(targets.has(i)) pos.push(pos[i-n]);
+    else { let p; do { p = ri(0,8); } while(p===pos[i-n]); pos.push(p); }
+  }
+  return {pos, targets};
+}
+async function runNback(t){
+  let n = Math.max(1, Math.min(4, store.lvl['nback_'+sel.p] || 1));
+  let best = 0;
+  await interstitial(t, 'N-назад',
+    'Клетки загораются по одной. Жми «Совпадает», когда горит <b>та же клетка, что N шагов назад</b>. Начнём с N='+n+'. Можно клавишей «пробел».', 'Понял, начали');
+  for(let round=1; round<=NB_ROUNDS && alive(t); round++){
+    hud(`раунд ${round}/${NB_ROUNDS}`, `N=${n}`);
+    const {pos, targets} = nbSeq(n);
+    stage.innerHTML = `<div class="phase" id="ph">приготовься…</div>
+      <div class="grid9" id="g9">${'<i></i>'.repeat(9)}</div>
+      <button class="btn-big" id="match">Совпадает</button>`;
+    const cells = [...$('#g9').children];
+    let hits=0, fa=0, missFlash=$('#g9');
+    let curIdx=-1, answered=false;
+    const press = () => {
+      if(!alive(t)||curIdx<0||answered) return;
+      answered = true;
+      const btn = $('#match'); if(!btn) return;
+      if(targets.has(curIdx)){ hits++; btn.classList.add('hit'); }
+      else { fa++; btn.classList.add('fa'); navigator.vibrate&&navigator.vibrate(40); }
+      setTimeout(()=>{ btn.classList.remove('hit','fa'); }, 350);
+    };
+    $('#match').onclick = press;
+    game.nbPress = press;                     // для клавиатуры
+    await sleep(1200);
+    for(let i=0;i<pos.length && alive(t);i++){
+      curIdx = i; answered = false;
+      $('#ph').textContent = `${i+1}/${pos.length}`;
+      cells[pos[i]].classList.add('on');
+      await sleep(NB_SHOW);
+      if(!alive(t)) return;
+      cells[pos[i]].classList.remove('on');
+      await sleep(NB_TRIAL - NB_SHOW);
+      if(!alive(t)) return;
+      if(targets.has(i) && !answered){        // пропуск цели — мигнём рамкой
+        missFlash.classList.add('missed'); setTimeout(()=>missFlash.classList.remove('missed'), 300);
+      }
+    }
+    if(!alive(t)) return;
+    game.nbPress = null;
+    const miss = NB_TARGETS - hits, errs = miss + fa;
+    game.err += errs;
+    const passLine = errs<=2, up = errs<3, down = errs>5;
+    if(passLine && n>best) best = n;
+    let verdict, next = n;
+    if(up){ next = n+1; verdict = `<span class="lvlup">Уровень вверх → N=${next}</span>`; }
+    else if(down && n>1){ next = n-1; verdict = `<span class="lvldn">Спустимся → N=${next}</span>`; }
+    else verdict = `Остаёмся на N=${n}`;
+    n = next;
+    if(round<NB_ROUNDS)
+      await interstitial(t, `Раунд ${round}: ${passLine?'зачёт ✓':'без зачёта'}`,
+        `Поймал ${hits}/${NB_TARGETS}, ложных: ${fa}.<br>${verdict}`, 'Дальше');
+  }
+  if(!alive(t)) return;
+  store.lvl['nback_'+sel.p] = Math.max(1, best || n); save();
+  finishRun(t, best, `4 раунда · ошибок: ${game.err}`);
+}
+document.addEventListener('keydown', e => {
+  if(pinState){
+    if(/^[0-9]$/.test(e.key) && pinState.cur.length<4) pinDigit(e.key);
+    else if(e.key==='Backspace'){ e.preventDefault(); pinState.cur=pinState.cur.slice(0,-1); renderPinDots(); }
+    else if(e.key==='Escape') closePin();
+    return;
+  }
+  if($('#scr-board').classList.contains('active') && e.key==='Escape'){ closeBoard(); return; }
+  if(!$('#scr-game').classList.contains('active')||!game) return;
+  if(e.key===' ' && game.nbPress){ e.preventDefault(); game.nbPress(); }
+  else if(e.key==='Escape') abort();
+});
+
+/* ================= КУБИКИ (Corsi) =================
+   9 блоков, последовательность подсвечивается (500 мс), повтори касаниями —
+   в прямом или обратном порядке. 2 попытки на длину, обе мимо — конец.
+   Результат = самая длинная воспроизведённая последовательность. */
+const CORSI_POS = [[4,6],[40,2],[74,10],[16,32],[52,28],[80,40],[6,62],[38,70],[70,66]];
+const CORSI_ON = 500, CORSI_GAP = 350;
+function corsiSeq(len){
+  const s=[];
+  while(s.length<len){ const p=ri(0,8); if(p!==s[s.length-1]) s.push(p); }
+  return s;
+}
+async function runCorsi(t, rev){
+  const mkey = rev?'corsiRev':'corsi';
+  let len = rev?2:3, attempt = 1, span = 0;
+  await interstitial(t, MODES[mkey].name,
+    rev ? 'Кубики загорятся по очереди — повтори их <b>в обратном порядке</b>: последний первым.'
+        : 'Кубики загорятся по очереди — повтори последовательность касаниями в том же порядке.', 'Понял, начали');
+  while(alive(t)){
+    hud(MODES[mkey].name, `длина ${len} · попытка ${attempt}/2`);
+    const seq = corsiSeq(len);
+    const expect = rev ? [...seq].reverse() : seq;
+    stage.innerHTML = `<div class="phase" id="ph">смотри…</div>
+      <div class="corsi wait" id="cb">${CORSI_POS.map(([x,y])=>`<i style="left:${x}%;top:${y}%"></i>`).join('')}</div>`;
+    const board = $('#cb'), blocks = [...board.children];
+    await sleep(900);
+    for(const p of seq){
+      if(!alive(t)) return;
+      blocks[p].classList.add('lit'); await sleep(CORSI_ON);
+      if(!alive(t)) return;
+      blocks[p].classList.remove('lit'); await sleep(CORSI_GAP);
+    }
+    if(!alive(t)) return;
+    board.classList.remove('wait');
+    $('#ph').textContent = rev ? 'твой ход — наоборот!' : 'твой ход!';
+    const ok = await new Promise(res => {
+      let i = 0;
+      board.onclick = e => {
+        const b = e.target.closest('i'); if(!b || board.classList.contains('wait')) return;
+        const idx = blocks.indexOf(b);
+        b.classList.add('tap'); setTimeout(()=>b.classList.remove('tap'), 250);
+        if(idx === expect[i]){ i++; if(i===expect.length){ board.classList.add('wait'); res(true); } }
+        else { board.classList.add('wait'); b.classList.remove('tap'); b.classList.add('err'); navigator.vibrate&&navigator.vibrate(60); setTimeout(()=>res(false), 500); }
+      };
+    });
+    if(!alive(t)) return;
+    if(ok){
+      span = len; len++; attempt = 1;
+      $('#ph').textContent = '✓';
+      await sleep(600);
+    } else {
+      game.err++;
+      if(attempt===1){ attempt=2; await interstitial(t, 'Мимо', `Вторая попытка на длине <b>${len}</b> — последовательность будет новая.`, 'Ещё раз'); }
+      else { finishRun(t, span, `ошибок: ${game.err}`); return; }
+    }
+  }
+}
+
+/* ---------- init ---------- */
+async function init(){
+  load();
+  sel.p = store.auth; sel.m = MODES[store.lastMode] ? store.lastMode : 'distract';
+  renderMenu();
+  await fetchCombo(sel.m);
+  renderMenu();
+}
+init();
+</script>
+</body>
+</html>
