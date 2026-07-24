@@ -1,4 +1,4 @@
-﻿# Default: normalize text files to LF in repo, native on checkout
+# Default: normalize text files to LF in repo, native on checkout
 * text=auto eol=lf
 
 # Explicit text files
