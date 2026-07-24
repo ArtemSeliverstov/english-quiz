@@ -173,6 +173,15 @@ Older RTDB-era sync bugs (question migration, pull-before-push race, bulk-fetch 
 
 ---
 
+## Input fields / keyboard
+
+### `el.autocorrect = 'off'` silently enables autocorrect in Chrome (2026-07-23)
+**Bug**: Quiz answer fields set `field.autocorrect = 'off'` as a JS property. Chrome 134+ standardised `autocorrect` as a **boolean** IDL reflection, so assigning the string `'off'` (truthy) reflects as autocorrect *enabled*. On Android, `autocorrect=off` + `spellcheck=false` is what Chromium maps to the IME `textNoSuggestions` flag — with the flag lost, Gboard kept injecting predictive "pre-filled answer" ghost text into answer fields (Artem's "autoprompt" report). Safari's legacy string reflection (`'on'`/`'off'`) masked the bug on iOS.
+**Fix**: v20260723-r2 — `setAttribute('autocorrect','off')` on all four dynamic quiz fields, plus `writingsuggestions="false"` (Chrome 136+/Safari 18.4+) on every free-text answer surface.
+**Rule**: For HTML attributes with divergent or recently-standardised IDL reflection (`autocorrect`, `writingsuggestions`), always use `setAttribute` with the string value — never property assignment.
+
+---
+
 ## Deploy / SW
 
 ### SW cache key not bumped → stale JS (s66r1–r4 root cause)
