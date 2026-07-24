@@ -10,6 +10,18 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-24 · v20260724 — Memory trainer (`memory.html`): new standalone surface
+
+- **New surface `memory.html`** — working-memory/attention trainer, requested by Artem («забываю, о чём говорил, если отвлёкся»). Mathsprint template: same look, PIN hashes, Firestore REST helpers; family board in new `memory_trainer_scores` collection (one immutable doc per run, top-50 prune, Artem-PIN-gated deletes). Rationale + evidence review: `references/design-decisions.md` (2026-07-24 entry).
+- **4 modes, all standard lab paradigms, adaptive-level scoring** (score = level reached, not time): «Помехи» (Brown–Peterson: запомни символы → 15 с обязательных «чёт/нечёт» → вспомни среди ловушек; validity gate ≥6 ответов при ≥60%), «N-назад» (spatial n-back, Jaeggi 2008: 500 мс/3 с, 20+n проб, 6 целей, ≤2 ош → уровень вверх; resume-level per player), «Кубики» / «Кубики ⇄» (Corsi span forward/backward, 2 попытки на длину).
+- **Evidence-honest UI**: menu carries a «Что это тренирует — честно» disclosure (near transfer only, дозировка 10–15 мин 3–5×/нед); every run ends with a rotating strategy/lifestyle tip (resumption cues, chunking, сон, аэробика) — the part that transfers.
+- Icons: `memory.svg` + generated `icon-memory-180.png` + `memory.webmanifest` (standalone install, «Память»). Infra: Pages allowlist, `sw.js` precache + CACHE bump, `firestore.rules` block, README root-files row, `docs/data-flow.md` surface row.
+- Playwright smoke test (localhost, offline mode): full «Помехи» run (pass L3 → double fail L4 → score 3, PB framing), full «Кубики» run (score 4), n-back round render, abort path — no console errors.
+
+Q count: 2315 (Δ0) · Version: v20260724
+
+---
+
 ## 2026-07-23 · v20260723-r2 — Kill keyboard writing suggestions in answer fields (Android)
 
 - Artem reported a "pre-filled answer" ghost text appearing in answer inputs ("autoprompt"), on the Android PWA. The app never pre-fills any field — the injection is the keyboard/browser layer (Gboard predictive text via Chrome).
