@@ -29,6 +29,7 @@ Inviolable do/don'ts. One line each, with a pointer to the rationale. If you're 
 
 - **Don't bypass `tools/update_coach_notes.js`** for `coach_notes` writes. The script handles the FIFO cap and `last_updated` automatically. → `coach-notes-schema.md`
 - **Don't generate generic exercise sentences** ("the man went to the shop"). Use the named player's tagged themes from `family-profiles.md`. → `family-profiles.md`
+- **Don't batch session questions in CC.** Any live CC session — English, math, anything — presents items strictly one at a time: ask, wait for the answer, react, then the next. Never bundle 3–5 questions into one message. (User rule, 2026-07-24.)
 - **Don't push without running the pre-deploy checklist.** → `pre-deploy-checklist.md`
 - **Don't bump the version in only some of the four places.** It must be identical across HTML badge, `sw.js` cache key, version constant, git commit prefix. → `pre-deploy-checklist.md` §7
 - **Don't write to Firestore via direct REST from session code.** Use `tools/log_exercise.js` / `tools/update_coach_notes.js`. → `firestore-schema.md`, `tools/README.md`
