@@ -4,7 +4,7 @@
 
 ## Project at a glance
 
-Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `artemseliverstov.github.io/english-quiz` (GitHub Pages).
+Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `artemseliverstov.github.io/english-quiz`.
 
 - **Stack**: HTML/CSS/JS in one file (`index.html`, ~1.65 MB). Service worker (`sw.js`).
 - **Sync**: Cloud Firestore. Players: artem, anna, nicole, ernest, egor.
@@ -13,7 +13,7 @@ Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `art
 
 ---
 
-## Reference docs — read before any task
+## Reference docs
 
 CLAUDE.md only routes.
 
@@ -51,15 +51,15 @@ References win on conflict.
 
 ---
 
-## Progress trackers — user-facing reports
+## Progress trackers
 
 | File | Owner | Refreshed by |
 |---|---|---|
 | `progress/phrasal-verbs-tracker.md` | Artem | `stats-review` (status + Freq) |
 | `progress/phrasal-verbs-tracker-anna.md` | Anna | `stats-review` (status + Freq) |
-| `progress/natural-phrases-tracker-{name}.md` × 5 | one per player | `stats-review` — **generated** view of `players/{name}.phrase_tracker`, never hand-edit |
+| `progress/natural-phrases-tracker-{name}.md` × 5 | per player | `stats-review` — **generated** view of `phrase_tracker`, never hand-edit |
 | `progress/weak-spots-tracker-artem.md` | Artem | `stats-review` — two-tier; builder-only |
-| `progress/exercise-domain-map-artem.md` | Artem | `stats-review`/on-demand — leverage-sorted program view; ▲ zone at session start. |
+| `progress/exercise-domain-map-artem.md` | Artem | `stats-review`/on-demand — leverage-sorted program view; ▲ zone opens sessions. |
 
 ---
 
@@ -67,6 +67,7 @@ References win on conflict.
 
 | Skill | Triggers |
 |---|---|
+| `business-lesson` | "урок", "lesson", "business english" — Artem daily hour |
 | `exercise-session` | "exercises", "упражнения" — 5 players |
 | `free-write` | "free write", "поговорим", "пообщаемся" — CC-side; PWA for others |
 | `interview-prep` | "interview prep", "mock interview" — Artem audio-first CC session |
