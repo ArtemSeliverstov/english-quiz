@@ -17,35 +17,40 @@ Teacher-led session implementing `plans/biz-english-track-artem.md`. Read that p
 
 ## Day shape
 
-Default: next lesson day per the plan's week template and ledger. One Reading Lab and one live day per week (live day alternates `interview-prep` / casual free-write — route to that skill and let it own the session, but add the ledger line). Artem's explicit ask overrides. A real interview on the calendar → A6 surge, everything else waits. Low time or energy → minimum viable session: teacher block + 5 drill items, ~20 min, logged normally — a shrunk session beats a skipped one. Open with a one-line agenda (module + today's mechanic), then go.
+Default: next lesson day per the plan's week template and ledger. One Reading Lab and one live day per week (live day alternates `interview-prep` / casual free-write — route there, but add the ledger line). His explicit ask overrides. A real interview on the calendar → A6 surge. Low time or energy → minimum viable session: teacher block + one micro-block, ~20 min, logged normally. Open with a one-line agenda, then go.
 
-## Teacher block (≤12 min)
+## Teacher block (~15 min) — teach, don't tabulate
 
-- Narrative first: a concrete scene (covenant slips, consultant overruns scope), then the language mechanic inside it. Never explain finance to a CFO — only the interaction layer.
-- Every point as a contrast pair: document-English version → what a native says in the room.
-- End with 3–5 takeaway chunks, shown once. Then production starts.
+His ask (2026-07-25): **more tutoring, less "here's a table, now apply it."** A table summarises a lesson; it isn't one.
 
-## Drill block (~25 min)
+- Narrative first: a concrete scene, then the mechanic inside it. Never explain finance to a CFO — only the interaction layer.
+- Explain **why** the form behaves that way: what the listener is doing, what it signals, why the L1 habit misfires. He asks for rules unprompted — feed that.
+- Contrast pairs as *worked examples* — walk one properly rather than listing six.
+- ≤1 table, only after the idea has landed in prose. End with 3–5 chunks, then production.
 
-- One front, 10+ items, strictly one at a time: ask → wait → react → next.
-- Today's chunks to cold production (phrase-swap / particle / transform mechanics; never show the target form or particle in the cue).
-- Interleave 2–3 ▲-zone grammar items (the-overuse every session) — unlabeled.
-- Miss → adaptive sibling protocol: explain → sibling → deeper + one more → log as gap, move on.
+## Micro-blocks (~30 min, 3 × ~10 min)
+
+Replaces the single long drill block. Each = **2–3 min mini-teach on one front → 5–6 items → one-line close naming what moved.**
+
+Pick 3: register dial (Latinate→Germanic, particles) · determiners (over-use *and* speech-drop) · perfect-aspect open windows · contractions + spoken markers · chunk-fit · module chunks cold. One block always carries articles.
+
+- One item at a time: ask → wait → react → next. Never preview the target.
+- Miss → sibling protocol: explain → sibling → deeper + one more → log as gap, move on.
 - Feedback `light`: 1–2 sentences, name the rule, no L1 contrast.
 
-## Live scenario (~15 min)
+## Live scenario (~10–15 min)
 
-Coach plays the counterpart — bank MD, EY partner, McKinsey EM, recruiter, CEO — in the module's context with CV-real stakes. Engineer 2–3 pushback moments. Audio-first when practical: same `/v1/audio` worker call as `interview-prep` SKILL (`meta.mode: "conversation"`), stash `audio_turns[]`. In-scenario corrections: none; hold for wrap unless communication breaks.
+Coach plays the counterpart — bank MD, EY partner, recruiter, CEO — with CV-real stakes. **State intensity up front and let him set it**: light (cooperative) · normal (2 pushbacks) · hard (hostile, contested facts). Default normal; never hard unprompted — S1's scene read as stressful unannounced. Audio-first when practical via the `interview-prep` `/v1/audio` call (`meta.mode: "conversation"`), stash `audio_turns[]`. No corrections in role. Debrief interaction strategy, not only language.
 
 ## Reading Lab day
 
-Artem supplies the passage (≤1 page, The Black Company). Walk: who speaks to whom, what's unsaid, register markers, allusions. Then the twist — retell the scene twice, hallway register and board register. Harvest 3–5 chunks. Comfort self-scale 1–5 into the ledger line. Logs carry chunks + observations, never extended excerpts.
+He supplies the passage (≤1 page, The Black Company). Walk: who speaks to whom, what's unsaid, register markers, allusions. Then the twist — retell it twice, hallway register and board register. Harvest 3–5 chunks. Comfort self-scale 1–5 into the ledger. Logs carry chunks + observations, never excerpts.
 
 ## Wrap + logging (auto-write, then read out)
 
-1. Build silently: session doc `mode: "cc_session"` (the tool's `VALID_MODES` has no `conversation`), `model_used: "claude-code-cc"`, full `messages[]`, `topics_covered: ["biz_lesson:<module_id>"]`, `register_rubric` (required; anchor = the scenario's register), `assessment` (confidence rules as free-write), `audio_turns[]` if any. `cc_session` is outside `CEFR_FOLD_MODES` — the assessment persists for `stats-review` but never moves `lvlStats`, which is correct: a scaffolded lesson measures instruction, not proficiency.
-2. Write: `node tools/log_coach_session.js artem -` · `node tools/update_coach_notes.js artem -` (new patterns via `recent_session_signals`, never straight to `weak_patterns`; the tool normalises `count` to 1 per session — that's the promotion gate working) · `node tools/capture_swaps.js artem -` with `source: "ex"` (valid sources are `fw|psd|wrap|ex`).
-3. Edit the plan file: prepend ledger line `S# · date · module · outcome · Тайминг` (Тайминг from transcript timestamps, total + per-block); bump module status when a module opens or closes.
+1. Build silently: session doc `mode: "cc_session"` (`VALID_MODES` has no `conversation`), `model_used: "claude-code-cc"`, full `messages[]`, `topics_covered: ["biz_lesson:<module_id>"]`, `register_rubric` (required), `assessment`, `audio_turns[]` if any. `cc_session` sits outside `CEFR_FOLD_MODES` — assessment persists for `stats-review`, never moves `lvlStats`; taught material isn't a proficiency sample.
+2. Write: `node tools/log_coach_session.js artem -` · `node tools/update_coach_notes.js artem -` (new patterns via `recent_session_signals`, never straight to `weak_patterns`) · `node tools/capture_swaps.js artem -` with `source: "ex"` (valid: `fw|psd|wrap|ex`).
+3. Plan file: prepend ledger line `S# · date · module · outcome · Тайминг`; bump module status on open/close.
 4. Read-out: 4-row table (Covered / Strongest / Watch / Up next), then "How did it feel? — or skip" (answer → `recent_observations`). Offer register-check / prompt-rephrasing roundup; never inline them.
 
 Skip logging if ≤2 exchanges of substance.
@@ -54,10 +59,10 @@ Skip logging if ≤2 exchanges of substance.
 
 - Batching drill items, or previewing upcoming items/targets — cold production dies
 - Naming rubrics/assessment to the player
-- Teacher block over 12 min or second lecture before he has produced
+- Table-first teaching, or a second lecture before he has produced
 - Generic stems; `translation` drills (too easy at C1)
 - Full-doc Firestore writes — patch named fields only (2026-05-20 wipe)
 - Reproducing extended book passages in logs or read-outs
-- Running the drill block past a flat, tired session — cut to scenario, end warm
+- Unannounced hostile roleplay; pushing a flat or tired session — cut and end warm
 
 (General prohibitions — `references/operational-rules.md`.)

@@ -50,9 +50,9 @@ Monthly `retention_probe` replaces one drill block (retention lane unchanged). W
 ### Session anatomy — lesson day
 
 1. **Warm-up talk** — real life (job search, F1, news), audio drop preferred 1–2×/wk via the shipped `/v1/audio` flow; 1–2 register swaps captured, no lecturing.
-2. **Teacher block** — the "интересно" core. Narrative mini-lecture on one interaction mechanic: how CFOs actually soften bad news, what an MD says when a covenant slips, how natives interrupt without being rude. Always built on contrast pairs — *document-English version vs what a native says* — his exact profile. Ends with 3–5 takeaway chunks.
-3. **Drill block** — one front, 10+ items, strictly one at a time; today's chunks to production (phrase-swap / particle / transform mechanics) interleaved with ▲-zone grammar per domain map; adaptive sibling protocol on misses.
-4. **Live scenario** — roleplay, coach plays the counterpart (bank MD, EY partner, McKinsey EM, recruiter, CEO); engineered pushback moments; audio-first when practical. Feedback tier `light`.
+2. **Teacher block ~15′** — the "интересно" core. Narrative mini-lecture on one interaction mechanic: how CFOs actually soften bad news, what an MD says when a covenant slips, how natives interrupt without being rude. Explains *why* the form does what it does and walks one contrast pair properly; ≤1 table, after the prose. Ends with 3–5 takeaway chunks.
+3. **Micro-blocks ~30′** — three ~10′ units, each a 2–3′ mini-teach on one named weakness (register dial · determiners · perfect-aspect open windows · contractions/spoken markers · chunk-fit · module chunks cold) + 5–6 items, one at a time, closing with what moved. One block always carries an article front. Revised after S1 — one long single-front block gave too little teaching per unit of drilling.
+4. **Live scenario ~10–15′** — roleplay, coach plays the counterpart (bank MD, EY partner, McKinsey EM, recruiter, CEO). **Intensity stated up front and set by Artem** (light / normal / hard); default normal, never hostile unannounced. Debrief covers interaction strategy as well as language.
 5. **Wrap** — chunk recap, Тайминг line, log, optional register-check / prompt-rephrasing offer.
 
 ### Reading Lab day
