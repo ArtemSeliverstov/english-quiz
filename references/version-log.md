@@ -10,6 +10,15 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-25 · v20260725 — Trainer cross-links + English-only family boards
+
+- **Cross-links between the three tools** — quiet footer row on every landing surface: quiz learner home + builder setup screen get «⚡ Устный счёт · ◈ Память»; mathsprint/memory menus get «🇬🇧 Английский» + each other. Hrefs (`./`, bare filenames) match `sw.js` precache keys exactly, so switching works offline; no manifest `scope` set → in-scope navigation keeps installed PWAs in their standalone window.
+- **Family boards show English profiles only** — `ruTrack` docs (`nicole_ru`, `ernest_ru`) had crept into learner-home Family streaks/levels (7 rows), the who-played-today pills, and the builder Family tab (leaderboard, co-op weekly totals vs the 25-session target, CEFR strip). All three renderers now filter `FAMILY_MEMBERS` on `!m.ruTrack` → 5 rows. Deliberately unfiltered: login name picker (kids enter RU profiles there) and `exportForAI` (stats-review must keep seeing RU docs).
+
+Q count: 2315 (Δ0) · Version: v20260725
+
+---
+
 ## 2026-07-24 · v20260724 — Memory trainer (`memory.html`): new standalone surface
 
 - **New surface `memory.html`** — working-memory/attention trainer, requested by Artem («забываю, о чём говорил, если отвлёкся»). Mathsprint template: same look, PIN hashes, Firestore REST helpers; family board in new `memory_trainer_scores` collection (one immutable doc per run, top-50 prune, Artem-PIN-gated deletes). Rationale + evidence review: `references/design-decisions.md` (2026-07-24 entry).

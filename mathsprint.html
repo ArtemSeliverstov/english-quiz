@@ -50,6 +50,10 @@
   #btn-start{margin-top:20px; width:100%; padding:16px; border:0; border-radius:14px; background:var(--accent); color:#20180a; font-size:1.25rem; font-weight:800; cursor:pointer; letter-spacing:.03em;}
   #btn-start:disabled{opacity:.4; cursor:default;}
   .note{color:var(--dim); font-size:.78rem; text-align:center; margin-top:14px; line-height:1.5;}
+  .xlinks{display:flex; justify-content:center; align-items:center; gap:2px; margin-top:8px; font-size:.85rem;}
+  .xlinks a{color:var(--dim); text-decoration:none; padding:8px 10px;}
+  .xlinks a:active{color:var(--text);}
+  .xlinks span{color:var(--dim); opacity:.55;}
 
   /* ---------- clean leaderboard list (minesweeper style) ---------- */
   .lb-head{display:flex; justify-content:space-between; align-items:baseline; margin:18px 0 2px;}
@@ -168,6 +172,7 @@
     <div class="lb" id="board-menu"></div>
     <button class="lb-more" id="btn-showall">Показать все результаты →</button>
     <div class="note">Ошибка: +5 с к времени, пример добиваешь до верного.<br>🌐 общая таблица на всю семью · 📵 оффлайн — только это устройство.</div>
+    <div class="xlinks"><a href="./">🇬🇧 Английский</a><span>·</span><a href="memory.html">◈ Память</a></div>
   </section>
 
   <section id="scr-board" class="screen">

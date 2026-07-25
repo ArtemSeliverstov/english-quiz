@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260724">
+  <meta name="app-version" content="v20260725">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -866,6 +866,10 @@ body{padding-bottom:env(safe-area-inset-bottom, 0);}
 .lh-other:hover{color:var(--text);}
 .lh-zone{margin-top:1.6rem;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:.95rem 1.05rem;}
 .lh-zone-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.55rem;font-weight:600;}
+.trainer-links{display:flex;justify-content:center;align-items:center;gap:.15rem;margin:1.5rem 0 .75rem;font-size:.82rem;}
+.trainer-links a{color:var(--muted);text-decoration:none;padding:.4rem .55rem;}
+.trainer-links a:hover{color:var(--text);}
+.trainer-links .tl-sep{color:var(--muted);opacity:.55;}
 .lh-family-row{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center;}
 .lh-family-pill{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .65rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:.82rem;color:var(--text);}
 .lh-family-pill .lh-fp-emoji{font-size:.95rem;}
@@ -1143,7 +1147,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260724</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260725</span></p>
 </header>
 
 <!-- TABS -->
@@ -1195,6 +1199,8 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <div class="lh-zone-label">Family levels</div>
       <table id="lh-levels-table" class="lh-board"><tbody></tbody></table>
     </div>
+
+    <div class="trainer-links"><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
   </div>
 </div>
 
@@ -1279,6 +1285,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
   </div>
+  <div class="trainer-links"><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
 </div>
 </div>
 
@@ -4803,8 +4810,8 @@ function renderLearnerHome() {
   // Zone 2: family pull — reuse the family-poll fetch path
   renderLearnerFamilyPull();
 
-  // Zone 2b/2c: family streaks board (everyone, sorted by streak DESC) +
-  // family levels board (everyone, sorted by dominant-band volume DESC then phase).
+  // Zone 2b/2c: family streaks board (English profiles, sorted by streak DESC) +
+  // family levels board (English profiles, sorted by dominant-band volume DESC then phase).
   renderLearnerFamilyBoards();
 
   // Zone 3: last-time line
@@ -4822,7 +4829,8 @@ async function renderLearnerFamilyBoards() {
   const levelsBody = document.querySelector('#lh-levels-table tbody');
   if (!streaksBody) return;
   try {
-    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).map(m => m.key);
+    // English boards only — ruTrack stat docs (nicole_ru, ernest_ru) would double kids' rows with Russian-quiz numbers.
+    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).filter(m => !m.ruTrack).map(m => m.key);
     const docs = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
     const rows = playerKeys.map((k, i) => {
       const p = docs[i] || {};
@@ -4838,7 +4846,7 @@ async function renderLearnerFamilyBoards() {
       };
     });
 
-    // Streak board: ALL players, sort streak DESC, tie-break by recency.
+    // Streak board: all English profiles, sort streak DESC, tie-break by recency.
     const streakSorted = rows.slice().sort((a, b) => {
       if (b.streak !== a.streak) return b.streak - a.streak;
       return (b.lastPlayedDate || '').localeCompare(a.lastPlayedDate || '');
@@ -4858,7 +4866,7 @@ async function renderLearnerFamilyBoards() {
         + '</tr>';
     }).join('');
 
-    // Levels board: ALL players, sort dominant CEFR band DESC, then phase rank
+    // Levels board: all English profiles, sort dominant CEFR band DESC, then phase rank
     // DESC (Reaching > Comfortable > Settling), then accuracy DESC as tie-break.
     if (!levelsBody) return;
     const bandRank = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
@@ -4899,7 +4907,8 @@ async function renderLearnerFamilyPull() {
   const row = document.getElementById('lh-family-row');
   if (!row) return;
   try {
-    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).map(m => m.key);
+    // English boards only — ruTrack stat docs (nicole_ru, ernest_ru) would double kids' rows with Russian-quiz numbers.
+    const playerKeys = (typeof FAMILY_MEMBERS !== 'undefined' ? FAMILY_MEMBERS : []).filter(m => !m.ruTrack).map(m => m.key);
     const today = new Date().toISOString().slice(0, 10);
     const results = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
     const todayList = [];
@@ -8047,7 +8056,8 @@ function setFbStatus(type, msg) {
 async function fetchAndRenderFamily() {
   try {
     // Fetch each player individually — bulk /players.json truncates large qStats nodes
-    const playerKeys = FAMILY_MEMBERS.map(m => m.key);
+    // English profiles only — ruTrack docs stay out of the Family tab (boards, co-op totals, levels strip).
+    const playerKeys = FAMILY_MEMBERS.filter(m => !m.ruTrack).map(m => m.key);
     const playerResults = await Promise.all(playerKeys.map(k => fsGet('players/' + k).catch(() => null)));
     const data = {};
     playerKeys.forEach((k, i) => { if (playerResults[i]) data[k] = playerResults[i]; });
