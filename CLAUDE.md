@@ -4,7 +4,7 @@
 
 ## Project at a glance
 
-Single-file PWA for 5 Russian-speaking family members in Bahrain. Hosted at `artemseliverstov.github.io/english-quiz`.
+Single-file PWA for 5 Russian-speaking family members in Almaty. Hosted at `artemseliverstov.github.io/english-quiz`.
 
 - **Stack**: HTML/CSS/JS in one file (`index.html`, ~1.65 MB). Service worker (`sw.js`).
 - **Sync**: Cloud Firestore. Players: artem, anna, nicole, ernest, egor.
@@ -21,7 +21,7 @@ CLAUDE.md only routes.
 |---|---|
 | `README.md` | Folder contract + house rules. |
 | `docs/learning-system-design.md` | **Before design-shaping work.** Doctrine: engagement-first, conversation keystone, drill/don't-build rules. |
-| `docs/audience-profiles.md` | Per-player design + orthographic-fluency case study. |
+| `docs/audience-profiles.md` | Per-player design + case studies. |
 | `docs/system-mechanisms.md` | Active window, surfaces, AI roles, stats stores. |
 | `docs/data-flow.md` | Before changing write paths. Surface→Firestore flows. |
 | `references/operational-rules.md` | Before any change. Do/don'ts + P1-P3 + read-philosophy triggers. |
@@ -69,12 +69,13 @@ References win on conflict.
 |---|---|
 | `business-lesson` | "урок", "lesson", "business english" — Artem daily hour |
 | `exercise-session` | "exercises", "упражнения" — 5 players |
-| `free-write` | "free write", "поговорим", "пообщаемся" — CC-side; PWA for others |
+| `free-write` | "free write", "поговорим", "пообщаемся" — CC-side |
 | `interview-prep` | "interview prep", "mock interview" — Artem audio-first CC session |
-| `weak-spots-session` | "30 min on X", "weak spots", "deep dive" — depth on one topic |
+| `weak-spots-session` | "30 min on X", "weak spots", "deep dive" |
 | `quiz-development` | "add questions", "fix question", "audit" — authoring |
-| `stats-review` | Stats JSON upload, "review stats", "analyse progress" |
+| `stats-review` | Stats JSON upload, "review stats" |
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
 | `register-check` | "register check", "check my phrasing" — B2/C1 message pass |
-| `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage + sibling sweep |
+| `morning-coach` | daily 07:00 task + "morning brief" — track status, recap, suggestion |
+| `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage |
 | `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |

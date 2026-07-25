@@ -17,7 +17,7 @@ Teacher-led session implementing `plans/biz-english-track-artem.md`. Read that p
 
 ## Day shape
 
-Default: next lesson day per the plan's week template and ledger. One Reading Lab and one live day per week (live day alternates `interview-prep` / casual free-write — route to that skill and let it own the session, but add the ledger line). Artem's explicit ask overrides. A real interview on the calendar → A6 surge, everything else waits. Open with a one-line agenda (module + today's mechanic), then go.
+Default: next lesson day per the plan's week template and ledger. One Reading Lab and one live day per week (live day alternates `interview-prep` / casual free-write — route to that skill and let it own the session, but add the ledger line). Artem's explicit ask overrides. A real interview on the calendar → A6 surge, everything else waits. Low time or energy → minimum viable session: teacher block + 5 drill items, ~20 min, logged normally — a shrunk session beats a skipped one. Open with a one-line agenda (module + today's mechanic), then go.
 
 ## Teacher block (≤12 min)
 

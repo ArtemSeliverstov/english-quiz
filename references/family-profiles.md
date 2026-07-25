@@ -1,6 +1,6 @@
 # Family Profiles
 
-All five family members are Russian L1 speakers based in Bahrain. Profiles inform
+All five family members are Russian L1 speakers based in Almaty, Kazakhstan — relocated from Bahrain 2026-07; Egor was already local. Profiles inform
 question targeting, exercise level selection, and stats interpretation.
 
 This file holds **design intent**: level, prescriptive Learning Goals (what we want each
@@ -33,7 +33,8 @@ field via `feedbackDepthInstructions(depth, ru)` in `worker/index.js`.
 
 **Player key**: `artem` · **Level**: B2 → C1 · **Coach language**: `en` · **Defaults**: all levels, `biz: true`
 
-Finance & strategy executive at Bapco Energies (Bahrain). Targeting VP/Director roles
+Finance & strategy executive, ex-Bapco Energies (Bahrain), between roles since 2026 —
+active O&G / GCC job search, now based in Almaty. Targeting VP/Director/CFO roles
 in O&G / mining / consulting. Most active user. Reviews questions linguistically for
 accuracy alongside being a player.
 
@@ -49,10 +50,10 @@ accuracy alongside being a player.
 - Skip excessive caveats and apologies.
 - Real-world context: business / O&G / cycling / sports / Bahrain settings.
 
-**Exercise context themes** (tags: `[biz_oil] | [leisure_sport] | [brit_expat] | [claude_collab]`):
-- `[biz_oil]` — business meetings, O&G operations, finance, strategy, Bahrain settings. Operational/hallway register — "never got around to it last quarter," "contractor's pushing back," "let's crack on." Avoid pitch-deck register.
+**Exercise context themes** (tags: `[biz_oil] | [leisure_sport] | [almaty_daily] | [claude_collab]`):
+- `[biz_oil]` — business meetings, O&G operations, finance, strategy, GCC + Kazakhstan settings. Operational/hallway register — "never got around to it last quarter," "contractor's pushing back," "let's crack on." Avoid pitch-deck register.
 - `[leisure_sport]` — cycling, F1, gym, sports talk
-- `[brit_expat]` — pubs, padel club, rugby/F1 banter, dinner parties, dropped-by-the-club casual register
+- `[almaty_daily]` — Almaty life: cycling, gym, dinners with friends, city errands — carries the same casual register `[brit_expat]` did (historical swaps keep their old tag)
 - `[claude_collab]` — prompts to Claude Code / claude.ai, project shared vocab ("learning ladder", "weak_patterns", "phrase_swap_drill"), system-behaviour talk (UI counters, drill caps, tracker entries), git/CLI collab. Real daily register — Artem spends hours/day in this context driving the project.
 - If Artem mentions travel at session start ("we're in Turkey this week"), shift to location-appropriate scenarios for that session
 
@@ -81,10 +82,10 @@ Engages in bursts then disappears for weeks. Longest gap on record as of the 202
 - Claude communicates explanations to Anna in Russian when explaining grammar
 - Encouraging tone — engagement matters more than maximum challenge
 
-**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [almaty_daily]`):
 - `[home_daily]` — home life, interior, neighbours, daily-life situations she actually encounters
 - `[leisure_sport]` — padel, gym, weekend plans
-- `[brit_expat]` — British Club padel, school-gate parents, expat dinner parties, weekend brunch chat
+- `[almaty_daily]` — school-parent chat, neighbours, weekend plans, Almaty daily life
 - If Artem mentions family travel at session start, shift to location-appropriate scenarios
 
 **Adjustment rules**:
@@ -114,10 +115,10 @@ fragile.
 - Up to 2 bonus exercises per week max
 - Do not increase item count until irregular verb accuracy consistently > 70% across 2+ sessions
 
-**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [almaty_daily]`):
 - `[home_daily]` — Russian music (prefers it; **dislikes K-pop** — her own words, 2026-07-01 diagnostic writing: "I hate k-pop, I like russian music more"), gaming/zombie-survival roleplay, school, friends, topics she actually cares about
 - `[leisure_sport]` — sports she does or watches
-- `[brit_expat]` — expat-school friends, weekend hangouts, things her classmates would say
+- `[almaty_daily]` — school friends, weekend hangouts, things her classmates would say
 - If Artem mentions family travel at session start, shift to location-appropriate scenarios
 
 **Important note (durable observation)**:
@@ -150,10 +151,10 @@ Early stage on supplementary surfaces (micro-sessions through 2026-05-07). Since
 - Easy on-ramp for input questions
 - Coach explanations in English (per Artem's call 2026-05-01) — different from Anna/Nicole who get Russian
 
-**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [brit_expat]`):
+**Exercise context themes** (tags: `[home_daily] | [leisure_sport] | [almaty_daily]`):
 - `[home_daily]` — school, friends, age-appropriate scenarios
 - `[leisure_sport]` — sports, gaming, weekend plans
-- `[brit_expat]` — expat-school playground, weekend hangouts with friends, casual peer banter
+- `[almaty_daily]` — school playground, weekend hangouts with friends, casual peer banter
 
 ---
 
@@ -161,7 +162,7 @@ Early stage on supplementary surfaces (micro-sessions through 2026-05-07). Since
 
 **Player key**: `egor` · **Level**: B2 → C1 · **Coach language**: `en` · **Defaults**: B2+C1, `biz: false`
 
-Mathematician at KPMG, Almaty (different timezone — coordinate accordingly).
+Mathematician at KPMG, Almaty — same city as the family since 2026-07.
 English-speaking consulting work (Russian-speaking colleagues, English-language deliverables and clients). Applying to UK/Western master's.
 
 As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA Free Write, PWA Phrase Swaps drill, exercise sessions. Quiz remains primary. Coach tab access via the family PWA login — no CC channel. Dormant since onboarding (74 lifetime answers, none since 2026-04-30, per the 2026-07-03 review); window held but flagged stale — re-compose on return rather than resume.
@@ -183,7 +184,7 @@ As of 2026-05-06 has full parity with the family on supplementary surfaces: PWA 
 - `[kpmg_consulting]` — English-speaking consulting work at KPMG Almaty (client deliverables, internal English memos, audit/advisory scenarios with Russian-L1 colleagues)
 - `[almaty_daily]` — Almaty city life, weekend, family — ordinary daily-life context for non-academic items
 
-No `[brit_expat]` — different geography, no Bahrain expat exposure.
+The family now shares his geography; his tags stay as-is.
 
 **For stats reviews**: focus on academic / IELTS-relevant patterns; include Coach-tab activity now that he has access.
 
@@ -196,7 +197,7 @@ context themes. "The man went to the shop" is never acceptable.
 
 **Travel context comes from the user, not stored memory.** Claude Code does not have
 access to claude.ai user memory, so it cannot know if the family is travelling unless
-told. Default to home/Bahrain themes. When Artem (or another user) mentions travel
+told. Default to home/Almaty themes. When Artem (or another user) mentions travel
 at session start ("we're in Turkey this week", "we just got back from Istanbul"),
 shift exercise themes to that location for the rest of the session.
 

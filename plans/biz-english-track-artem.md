@@ -43,6 +43,10 @@ Baselines for G1/G4 set in Phase 0; targets are "beat baseline meaningfully", nu
 
 Monthly `retention_probe` replaces one drill block (retention lane unchanged). Weekly slots get satisfied opportunistically by drill blocks; revisit `EX_WEEKLY_TARGETS` composition after CP1 — no code change now.
 
+**Morning brief** — `daily-morning-coach` scheduled task at 07:00 machine-local runs the `morning-coach` skill: reads the ledger + `coach_notes`, posts a ≤160-word brief as a GitHub issue (email + phone push — the daily cue). Big picture first: module scoreboard, cumulative wins, milestone state with drift stated factually; then 1–2 explained slips; then today's suggestion tied to the nearest milestone and calibrated to the gap (2–3 idle days → 20-min minimum or Reading Lab; 4+ → live-day restart via the recalibration rule). Idle days are never announced — they appear only as shifted dates. Opt-in self-cue for the builder shell, suggestion-only tone — doctrine §6's no-manufactured-urgency rule stands untouched for learner-shell players.
+
+**Minimum viable session**: teacher block + 5 drills, ~20 min, logged normally — a shrunk session always beats a skipped one.
+
 ### Session anatomy — lesson day
 
 1. **Warm-up talk** — real life (job search, F1, news), audio drop preferred 1–2×/wk via the shipped `/v1/audio` flow; 1–2 register swaps captured, no lecturing.
