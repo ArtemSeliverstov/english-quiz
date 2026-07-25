@@ -43,8 +43,8 @@ Artem supplies the passage (≤1 page, The Black Company). Walk: who speaks to w
 
 ## Wrap + logging (auto-write, then read out)
 
-1. Build silently: session doc `mode: "conversation"`, `model_used: "claude-code-cc"`, full `messages[]`, `topics_covered: ["biz_lesson:<module_id>"]`, `register_rubric` (required; anchor = the scenario's register), `assessment` (confidence rules as free-write), `audio_turns[]` if any.
-2. Write: `node tools/log_coach_session.js artem -` · `node tools/update_coach_notes.js artem -` (new patterns via `recent_session_signals`, never straight to `weak_patterns`) · `node tools/capture_swaps.js artem -` with `source: "biz_lesson"` for harvested chunks.
+1. Build silently: session doc `mode: "cc_session"` (the tool's `VALID_MODES` has no `conversation`), `model_used: "claude-code-cc"`, full `messages[]`, `topics_covered: ["biz_lesson:<module_id>"]`, `register_rubric` (required; anchor = the scenario's register), `assessment` (confidence rules as free-write), `audio_turns[]` if any. `cc_session` is outside `CEFR_FOLD_MODES` — the assessment persists for `stats-review` but never moves `lvlStats`, which is correct: a scaffolded lesson measures instruction, not proficiency.
+2. Write: `node tools/log_coach_session.js artem -` · `node tools/update_coach_notes.js artem -` (new patterns via `recent_session_signals`, never straight to `weak_patterns`; the tool normalises `count` to 1 per session — that's the promotion gate working) · `node tools/capture_swaps.js artem -` with `source: "ex"` (valid sources are `fw|psd|wrap|ex`).
 3. Edit the plan file: prepend ledger line `S# · date · module · outcome · Тайминг` (Тайминг from transcript timestamps, total + per-block); bump module status when a module opens or closes.
 4. Read-out: 4-row table (Covered / Strongest / Watch / Up next), then "How did it feel? — or skip" (answer → `recent_observations`). Offer register-check / prompt-rephrasing roundup; never inline them.
 

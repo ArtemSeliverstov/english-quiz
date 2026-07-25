@@ -67,7 +67,7 @@ Statuses: ⚪ not started · 🔵 in work · ✅ closed. Annotate with session r
 
 | # | Module | ~Sessions | Status |
 |---|---|---|---|
-| A1 | Meeting machinery: turn-taking, interrupting, disagreeing, hedging | 3–4 | ⚪ |
+| A1 | Meeting machinery: turn-taking, interrupting, disagreeing, hedging | 3–4 | 🔵 S1 |
 | A2 | Numbers aloud: figures, trends, approximations ("north of", "flat-ish", "give or take") | 2–3 | ⚪ |
 | A3 | Small talk & rapport: pre-meeting, networking, corridor | 2–3 | ⚪ |
 | A4 | Banks & advisors: facilities/covenant/refi calls, steering auditors and consultants | 3–4 | ⚪ |
@@ -79,7 +79,7 @@ Statuses: ⚪ not started · 🔵 in work · ✅ closed. Annotate with session r
 
 | # | Module | Cadence | Status |
 |---|---|---|---|
-| B1 | Register mechanics: Latinate↔phrasal dial, spoken-vs-written markers | 2 sessions | ⚪ |
+| B1 | Register mechanics: Latinate↔phrasal dial, spoken-vs-written markers | 2 sessions | 🔵 opened S1 — dial taught early, out of sequence, because A1 production demanded it |
 | B2 | Reading Lab — The Black Company | weekly, recurring | ⚪ |
 | B3 | Allusion & metaphor stock: sports/military/biblical staples of business talk | 2, then ambient | ⚪ |
 | B4 | Humor, understatement, deadpan — Brit-expat + grimdark's native register | 2, then ambient | ⚪ |
@@ -104,4 +104,4 @@ Statuses: ⚪ not started · 🔵 in work · ✅ closed. Annotate with session r
 
 One line per session, newest on top: `S# · date · module · outcome · Тайминг`.
 
-*(empty — starts S1)*
+- **S1 · 2026-07-25 · A1** — 5 chunks taught, all 5 produced cold; 11 drill items + 3-turn scenario (advisory partner blaming finance). Central finding: **chunk-as-decoration** — spoken chunks bolted onto unchanged written frames, and with no chunk to reach for, register-down produced *shorter written English*. Converted mid-session after the Latinate→Germanic dial was taught explicitly (*recovery of the receivable* → *get the money*; found *park the capex decision* cold). Perfect-aspect open-window missed ×3 → parked per protocol. Articles: determiner **drops** ×4 at pace — inversion of the documented the-overuse. Baseline recording declined → **owed at S2**. Тайминг: not captured (no transcript timestamps).
