@@ -76,6 +76,6 @@ References win on conflict.
 | `stats-review` | Stats JSON upload, "review stats" |
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
 | `register-check` | "register check", "check my phrasing" — B2/C1 message pass |
-| `morning-coach` | daily 07:00 task + "morning brief" — track status, recap, suggestion |
-| `mistakes-review` | "review mistakes" + daily 07:30 — past-31h triage |
+| `morning-coach` | cloud 07:00 + "morning brief" — status, recap, suggestion |
+| `mistakes-review` | "review mistakes" + cloud 07:00 — past-31h triage |
 | `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |

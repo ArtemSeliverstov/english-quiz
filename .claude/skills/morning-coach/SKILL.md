@@ -1,6 +1,6 @@
 ---
 name: morning-coach
-description: Daily morning brief for Artem's business-english track — big-picture status (achievements + milestone drift), light recap with 1-2 explained mistakes, today's session suggestion. Fires from the daily-morning-coach scheduled task at 07:00, or live when Artem says "morning brief", "утренний бриф", "что сегодня по английскому". Produces the brief only — never runs exercises.
+description: Daily morning brief for Artem's business-english track — big-picture status (achievements + milestone drift), light recap with 1-2 explained mistakes, today's session suggestion. Fires from the english-tutor-daily cloud routine at 07:00 Almaty, or live when Artem says "morning brief", "утренний бриф", "что сегодня по английскому". Produces the brief only — never runs exercises.
 ---
 
 # Morning Coach — daily brief
@@ -33,7 +33,7 @@ Monday: append a 2-line week view — modules, Lab/live-day placement, dues.
 
 ## Delivery
 
-- Scheduled run → per the task's delivery section (GitHub issue → email + phone push). Issue title: `Morning coach YYYY-MM-DD — <suggestion in 3-5 words>`. Always post, even on quiet days — the cue's value is predictability.
+- Routine run (`english-tutor-daily`, cloud) → one combined GitHub issue with the quiz-mistakes section (email + phone push). Issue title: `English tutor YYYY-MM-DD — <suggestion in 3-5 words>`. Always post, even on quiet days — the cue's value is predictability.
 - Live invocation in a session → render inline, no issue.
 
 ## Tone (doctrine §6 guard)
