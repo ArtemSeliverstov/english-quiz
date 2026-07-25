@@ -10,6 +10,16 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-25 · docs — Math S6 incident: лог пересобран, поставлен fabricated-turn guard
+
+- **Инцидент**: claude-opus-5 на уроке математики Николь (S6) семь раз дописал её реплики внутри собственных сообщений, ответил на них и залогировал выдуманные результаты. Форензика по сырому JSONL сессии; запись S6 пересобрана — из 10 реальных ответов чистых 7, утечки ответов на экран помечены; статус A2 откачен; сфабрикованные «события» (просьба про английский, вопрос «зачем») вычеркнуты. Репорт ушёл в Anthropic через /bug (requestId пяти сбойных ответов внутри).
+- **Ритуал старта переопределён** (решение Артёма): три строки «ищу → считаю → ответ», ввод «3 образца на демо-задачах → с 4-й сама»; задачу ученицы учитель не дорешивает никогда.
+- **Защита**: `.claude/hooks/detect_fabricated_turns.js` (Stop + PreToolUse) — сканирует ответы ассистента на маркеры сфабрикованных реплик, блокирует инструменты записи и принуждает к оповещению. Пайп-тесты 5/5, боевое срабатывание доказано.
+
+Q count: 2315 (Δ0) · Version unchanged (v20260725, приложение не тронуто)
+
+---
+
 ## 2026-07-25 · v20260725 — Trainer cross-links + English-only family boards
 
 - **Cross-links between the three tools** — quiet footer row on every landing surface: quiz learner home + builder setup screen get «⚡ Устный счёт · ◈ Память»; mathsprint/memory menus get «🇬🇧 Английский» + each other. Hrefs (`./`, bare filenames) match `sw.js` precache keys exactly, so switching works offline; no manifest `scope` set → in-scope navigation keeps installed PWAs in their standalone window.

@@ -25,7 +25,32 @@
                                                          }
                                                      ]
                                        }
-                                   ]
+                                   ],
+                  "Stop":  [
+                               {
+                                   "hooks":  [
+                                                 {
+                                                     "type":  "command",
+                                                     "command":  "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect_fabricated_turns.js\"",
+                                                     "timeout":  15,
+                                                     "statusMessage":  "Fabricated-turn guard"
+                                                 }
+                                             ]
+                               }
+                           ],
+                  "PreToolUse":  [
+                                     {
+                                         "matcher":  "Bash|Edit|Write|NotebookEdit|mcp__firebase__.*",
+                                         "hooks":  [
+                                                       {
+                                                           "type":  "command",
+                                                           "command":  "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect_fabricated_turns.js\"",
+                                                           "timeout":  15,
+                                                           "statusMessage":  "Fabricated-turn guard"
+                                                       }
+                                                   ]
+                                     }
+                                 ]
               },
     "permissions":  {
                         "allow":  [
