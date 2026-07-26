@@ -21,7 +21,7 @@ Default: next lesson day per the plan's week template and ledger. One Reading La
 
 ## Teacher block (~15 min) — teach, don't tabulate
 
-His ask (2026-07-25): **more tutoring, less "here's a table, now apply it."** A table summarises a lesson; it isn't one.
+His ask (2026-07-25): **more tutoring, less "here's a table, now apply it."**
 
 - Narrative first: a concrete scene, then the mechanic inside it. Never explain finance to a CFO — only the interaction layer.
 - Explain **why** the form behaves that way: what the listener is doing, what it signals, why the L1 habit misfires. He asks for rules unprompted — feed that.
@@ -30,9 +30,9 @@ His ask (2026-07-25): **more tutoring, less "here's a table, now apply it."** A 
 
 ## Micro-blocks (~30 min, 3 × ~10 min)
 
-Replaces the single long drill block. Each = **2–3 min mini-teach on one front → 5–6 items → one-line close naming what moved.**
+Each = **2–3 min mini-teach on one front → 5–6 items → one-line close naming what moved.**
 
-Pick 3: register dial (Latinate→Germanic, particles) · determiners (over-use *and* speech-drop) · perfect-aspect open windows · contractions + spoken markers · chunk-fit · module chunks cold. One block always carries articles. Every session also carries **1–2 hedge-deployment items** (his standing ask, S2 2026-07-26) — folded into any block's items, never a whole block.
+Pick 3: register dial (Latinate→Germanic, particles) · determiners (over-use *and* speech-drop) · perfect-aspect open windows · contractions + spoken markers · chunk-fit · module chunks cold. One block always carries articles; every session folds **1–2 hedge items** into existing blocks (standing ask, S2).
 
 - One item at a time: ask → wait → react → next. Never preview the target.
 - Miss → sibling protocol: explain → sibling → deeper + one more → log as gap, move on.
