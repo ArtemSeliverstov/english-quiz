@@ -32,7 +32,7 @@ His ask (2026-07-25): **more tutoring, less "here's a table, now apply it."** A 
 
 Replaces the single long drill block. Each = **2–3 min mini-teach on one front → 5–6 items → one-line close naming what moved.**
 
-Pick 3: register dial (Latinate→Germanic, particles) · determiners (over-use *and* speech-drop) · perfect-aspect open windows · contractions + spoken markers · chunk-fit · module chunks cold. One block always carries articles.
+Pick 3: register dial (Latinate→Germanic, particles) · determiners (over-use *and* speech-drop) · perfect-aspect open windows · contractions + spoken markers · chunk-fit · module chunks cold. One block always carries articles. Every session also carries **1–2 hedge-deployment items** (his standing ask, S2 2026-07-26) — folded into any block's items, never a whole block.
 
 - One item at a time: ask → wait → react → next. Never preview the target.
 - Miss → sibling protocol: explain → sibling → deeper + one more → log as gap, move on.

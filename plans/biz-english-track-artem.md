@@ -51,7 +51,7 @@ Monthly `retention_probe` replaces one drill block (retention lane unchanged). W
 
 1. **Warm-up talk** — real life (job search, F1, news), audio drop preferred 1–2×/wk via the shipped `/v1/audio` flow; 1–2 register swaps captured, no lecturing.
 2. **Teacher block ~15′** — the "интересно" core. Narrative mini-lecture on one interaction mechanic: how CFOs actually soften bad news, what an MD says when a covenant slips, how natives interrupt without being rude. Explains *why* the form does what it does and walks one contrast pair properly; ≤1 table, after the prose. Ends with 3–5 takeaway chunks.
-3. **Micro-blocks ~30′** — three ~10′ units, each a 2–3′ mini-teach on one named weakness (register dial · determiners · perfect-aspect open windows · contractions/spoken markers · chunk-fit · module chunks cold) + 5–6 items, one at a time, closing with what moved. One block always carries an article front. Revised after S1 — one long single-front block gave too little teaching per unit of drilling.
+3. **Micro-blocks ~30′** — three ~10′ units, each a 2–3′ mini-teach on one named weakness (register dial · determiners · perfect-aspect open windows · contractions/spoken markers · chunk-fit · module chunks cold) + 5–6 items, one at a time, closing with what moved. One block always carries an article front; every session interleaves 1–2 hedge-deployment items (Artem's standing ask, S2 2026-07-26). Revised after S1 — one long single-front block gave too little teaching per unit of drilling.
 4. **Live scenario ~10–15′** — roleplay, coach plays the counterpart (bank MD, EY partner, McKinsey EM, recruiter, CEO). **Intensity stated up front and set by Artem** (light / normal / hard); default normal, never hostile unannounced. Debrief covers interaction strategy as well as language.
 5. **Wrap** — chunk recap, Тайминг line, log, optional register-check / prompt-rephrasing offer.
 
@@ -67,7 +67,7 @@ Statuses: ⚪ not started · 🔵 in work · ✅ closed. Annotate with session r
 
 | # | Module | ~Sessions | Status |
 |---|---|---|---|
-| A1 | Meeting machinery: turn-taking, interrupting, disagreeing, hedging | 3–4 | 🔵 S1 |
+| A1 | Meeting machinery: turn-taking, interrupting, disagreeing, hedging | 3–4 | 🔵 S1–S2 |
 | A2 | Numbers aloud: figures, trends, approximations ("north of", "flat-ish", "give or take") | 2–3 | ⚪ |
 | A3 | Small talk & rapport: pre-meeting, networking, corridor | 2–3 | ⚪ |
 | A4 | Banks & advisors: facilities/covenant/refi calls, steering auditors and consultants | 3–4 | ⚪ |
@@ -104,4 +104,5 @@ Statuses: ⚪ not started · 🔵 in work · ✅ closed. Annotate with session r
 
 One line per session, newest on top: `S# · date · module · outcome · Тайминг`.
 
+- **S2 · 2026-07-26 · A1 (hedging)** — easy mode at his request (first ride after rotavirus): long teacher block, 2 micro-blocks, no scenario; **baseline recording + perfect-aspect re-test both slid to S3** (fatigue-day testing = false-low signal). Hedging taught as listener-obligation management, 3-job inventory; 5 chunks, block 1 = 5 items: move structure genuinely converted vs S1's chunk-as-decoration, rounding move landed first try; **"to be fair" misfired as candour-opener ×2 → converted** after rebalancer rule ("in their defence" test); comfort-chunk "the way things are trending" carried 3/5; "as things stand" modeled, never self-deployed — force cold next A1 touch. Articles block 5/6 at reading pace: **S1 pace-drop hypothesis confirmed** (all 3 S1 drop-lines caught instantly → drop = pace artifact, drill speed not rules); new inverse miss possessor-article over-deletion ("the contractor's paperwork") → converted on sibling; of-PP pin held; GCC/Central Asia clean. Contractions persisted (signal → count 2, at promotion gate). Тайминг: not captured (no transcript timestamps).
 - **S1 · 2026-07-25 · A1** — 5 chunks taught, all 5 produced cold; 11 drill items + 3-turn scenario (advisory partner blaming finance). Central finding: **chunk-as-decoration** — spoken chunks bolted onto unchanged written frames, and with no chunk to reach for, register-down produced *shorter written English*. Converted mid-session after the Latinate→Germanic dial was taught explicitly (*recovery of the receivable* → *get the money*; found *park the capex decision* cold). Perfect-aspect open-window missed ×3 → parked per protocol. Articles: determiner **drops** ×4 at pace — inversion of the documented the-overuse. Baseline recording declined → **owed at S2**. Тайминг: not captured (no transcript timestamps).
