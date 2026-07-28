@@ -21,7 +21,7 @@ Nicole is a fluent oral native speaker without the formal grade 5–6 metalingui
 
 | Step | Mechanism |
 |---|---|
-| Разбор | Kickoff with Artem at topic unlock, 15–25 min, CC-led RU tutorial + `ref/ru/` algorithm page |
+| Разбор | Kickoff **run live by CC directly with Nicole** at topic unlock, 15–25 min, `ref/ru/` algorithm page as source material. Parents' role is only to sit her at the computer — not to teach the algorithm themselves (decision 2026-07-26, see Doctrine overrides) |
 | Опорная практика | Blocked quiz set; first items carry `intro` rule card (scaffold fade); every `exp` walks the algorithm step that applied |
 | Закрепление | Smart/weak modes as-is: spacing, intervals; interleaving grows with the window |
 | Производство | `error_correction` items + paper диктант 1×/week on the week's орфограммы, checked via photo in CC |
@@ -71,9 +71,9 @@ W1 фундамент + Н/НН · W2 НЕ + слитно/раздельно/д�
 
 Daily rhythm: 15 min app + 15 min русское чтение. Kickoff 1–2×/wk, диктант 1×/wk, mock Sundays from W3. Readiness metric: mock 7 → 16+ by late August.
 
-## Kickoff #1 script — «слова о словах» (~20 min, Artem + Nicole)
+## Kickoff #1 — «слова о словах» (2026-07-09, ~20 min) — historical, format superseded
 
-Re-aimed after day-1 data (2026-07-09): first-pass 67% with guessing on terminology; weak-replay 100%. Teach the metalanguage, not the Н/НН algorithm — the app drills the algorithm itself.
+Ran as an Artem-led script (below) — worked for W1, but the model didn't scale: **neither Artem nor Anna could reliably tell what needed explaining from the `ref/ru/` page alone**, which is the real reason W2's kickoff never happened (14-day gap surfaced 2026-07-26, see version-log). From W2 on, kickoffs run live in CC chat directly with Nicole per the Topic cycle row above — no parent-run script. Original W1 script kept for reference:
 
 1. **Рамка** (2 мин): «8 слов о словах — на них стоят все правила 7 класса. Вспомним — дальше всё будет проще».
 2. **Части речи вопросом** (6 мин): открой `ref/ru.html` § 2. Ты называешь слово — она отвечает вопросом и частью речи: *музыка, слушать, громкий, громко, пять, она, из-за*. Потом меняетесь ролями — она загадывает тебе (роль учителя закрепляет лучше).
@@ -81,7 +81,7 @@ Re-aimed after day-1 data (2026-07-09): first-pass 67% with guessing on terminol
 4. **Семья слов** (4 мин): *смех / смеяться / смешной / смешно* — разложить по четырём частям речи. Это её ловушка из теста («бег» ≠ глагол).
 5. **Закрытие** (2 мин): она открывает приложение при тебе и делает 10 вопросов — терм-слой подтянется сам.
 
-After: log via `tools/log_exercise.js nicole_ru` with `exercise: 'kickoff'`, topic «Морфемика + Н/НН», then a one-line `recent_observations` note (what stuck, what wobbled).
+After any kickoff (CC-led or historical): log via `tools/log_exercise.js nicole_ru` with `exercise: 'kickoff'`, topic = week's topics, then a one-line `recent_observations` note (what stuck, what wobbled).
 
 ## Doctrine overrides — surfaced
 
@@ -89,6 +89,7 @@ After: log via `tools/log_exercise.js nicole_ru` with `exercise: 'kickoff'`, top
 - Диктант stays paper, outside the PWA — no conflict with §6 no-audio-layer.
 - Daily чтение is a habit outside the system, not the §6 reading-comprehension layer.
 - Worker RU coach mode (self-serve «переспросить правило») — phase 2. Trigger: kickoff model works but she needs re-explanations between sessions.
+- **Kickoffs run CC-led, not parent-led** (decision 2026-07-26, Artem + Anna): the original W1 script asked a parent to teach from `ref/ru/` cold, and it didn't transfer — neither could tell what needed explaining. Parents' role is getting her to the computer, not narrating the algorithm. Same shape as math-track sessions (`plans/math-track-nicole.md`), which never had a parent-script layer to begin with.
 
 ## Build order
 

@@ -10,6 +10,27 @@ specifics live in their dedicated reference files.
 
 ---
 
+## 2026-07-27 · docs — Math S8: столбик взят · уголок в багаже · friction ввода
+
+- **S8 (Николь, ~59 мин контента)**: разминка — Тип 2 на холоде: 16,2 (направление, Тип 1 вместо Типа 2) → самокоррекция 20 от нейтрального вопроса о методе + третий свой метод (100:90×18). Столбик: дефолт снова дистрибутивный (замер №2), формат со сдвигом взят с одного показа (456×38 → 17328 на бумаге, стрелка сдвига своя); в дистрибутивной попытке сумма 27328 ❌ — класс ошибки S7, в столбике не воспроизвёлся (сдвиг страхует сложение). Уголок 848:4=212 чисто по шагам — знаком со школы (демо шло до попытки, замер не холодный); остаток в середине / ноль в частном → разминка S9.
+- **Само-разбор (запрос Артёма)**: по сырому транскрипту — 16 реальных реплик, фабрикаций нет, хук молчал (первая полная math-сессия на sonnet-5). Улучшить: (1) пропущена неверная сумма 27328 — «всё верно» сказано без пересчёта; (2) канал ответа не задан в задании → ~23 мин мышиных картинок; (3) уголок: демо до проверки — замер не холодный; (4) фрейм «новый приём» → протест «знала с 3-го класса», подавать как «формат контрольной».
+- **Friction ввода — главный вывод**: мышь нечитаема, бумага+фото работает, но фотать не нравится; тача у ноутбука нет (GetSystemMetrics=0). Варианты к решению до S9: Excalidraw-комната с iPad (живая доска, чтение из браузерной панели CC) · режим «Столбик» в mathsprint (клеточный ввод, «новый навык = новый режим») · Учи.ру для солодриллов · графпланшет (задел на геометрию). Ежедневка уходит с бумаги; таймированные прогоны и пробники остаются бумажными (формат экзамена). **Решение (вечер 2026-07-27)**: Excalidraw-комната протестирована живьём с Артёмом (Galaxy + S Pen ↔ браузерная панель CC, синк в обе стороны, рукопись читается отлично) — принята стандартом с S9; протокол старта (разминка в чат + параллельный подъём доски + ссылка отдельной строкой) — в плане §Ритм и механика.
+
+Q count: 2315 (Δ0) · Version unchanged (v20260725, приложение не тронуто)
+
+---
+
+## 2026-07-26 · docs — RU-track: 14-day gap surfaced, Н/НН single-Н gap closed
+
+- **Adherence check via live Firestore** (`players/nicole_ru`): last activity 2026-07-12, one day of practice total since the 2026-07-09 launch (35 items, 3 sessions same morning). W2 kickoff (НЕ, слитно/раздельно/дефис) never run; program calendar was already into W3 (mock week) with nothing beyond W1 touched. Программный трекер (`progress/ru-program-tracker-nicole.md`) unchanged since launch — confirms no fold has happened.
+- **Н/НН diagnosis**: 9/17 (53%), and all 5 wrong answers share one signature — «нн» written where «н» was correct (серебряное, комариный, ветреный, румяные, зелёная). Clean single-cause finding: defaults to doubling, never checks the single-Н triggers. Морфемика holding strong at 17/18 (94%) — no action needed there.
+- **Targeted reteach run** (not a fresh W2 kickoff — closing the open W1 hole first): taught the three single-Н triggers (suffix -АН-/-ЯН-/-ИН-, непроизводные, the «ветреный» exception) against her own missed words, then tested 6 unseen bank items one at a time — 6/6, including the ветреный/ветряная discrimination pair with a correct verbal rule explanation (not a lucky guess).
+- Logged `exercise: 'kickoff'` row (canonical total:1/correct:1 marker, real 6/6 detail in `items[]`/`meta`) + first `coach_notes.recent_observations` entry for `nicole_ru` (doc had none before — Coach tab is hidden for this profile, so this is the first write to that field). W2 kickoff still outstanding — flagged, not run today.
+
+Q count: 2315 (Δ0) · Version unchanged (v20260725, приложение не тронуто)
+
+---
+
 ## 2026-07-26 · docs — Math S7: A2 закрыта · график до лагеря · хук поймал инцидент №2
 
 - **S7 (Николь, ~29 мин)**: холодный чек вычеркнутого из S6 — 4/4; Тип 3 взят (вывела сама, обратив Тип 2); **проценты + пропорции (A2) закрыты целиком**; повтор отношений на новом варианте (средняя часть) чисто; столбик — найдена дыра формата: дистрибутивное разложение вместо классического RU-алгоритма (предсказано планом S6), деление уголком не проверено.
