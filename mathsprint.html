@@ -43,6 +43,8 @@
   .mode.sel .m-name{color:var(--mc);}
   .mode.gated{opacity:.5; cursor:default;}
   .mode.gated .m-ex{color:var(--accent); white-space:normal; text-align:right;}
+  .duel{display:block; width:100%; text-align:left; border:1px solid #3a4270; background:var(--card); color:var(--text); border-radius:14px; padding:11px 14px; font-size:.95rem; cursor:pointer;}
+  .duel span{color:var(--dim);}
   .seg button.locked{opacity:.4; cursor:default;}
   .seg{display:flex; border:1px solid #3a4270; border-radius:12px; overflow:hidden; width:max-content;}
   .seg button{background:var(--card); color:var(--dim); border:0; padding:10px 22px; font-size:1rem; cursor:pointer;}
@@ -163,6 +165,8 @@
     <div class="sub">семейный спринт</div>
     <div class="label">Кто играет</div>
     <div class="chips" id="players"></div>
+    <div class="label">Дуэль недели</div>
+    <button class="duel" id="duel-banner"></button>
     <div class="label">Режим</div>
     <div class="modes" id="modes"></div>
     <div class="label">Примеров в сете</div>
@@ -326,11 +330,18 @@ async function ensureFresh(mode,n,rerender){
   await fetchCombo(mode,n);
   if(rerender) rerender();
 }
+// Документ прогона; errItems — какие именно примеры не решились с первого раза
+// (диагностика плато вида «Дроби всегда 2 ошибки», план §mathsprint). Кап 10 записей.
+function scoreDoc(run){
+  const d = {player:run.p, name:nameOf(run.p), mode:run.m, n:run.n, ms:run.ms, err:run.err, ts:run.ts};
+  if(run.errItems && run.errItems.length) d.errItems = run.errItems;
+  return d;
+}
 async function pushOnline(run){
   if(!ONLINE) return;
   try {
     const id = `${run.p}__${run.m}__${run.n}__${run.ts}`;
-    await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, n:run.n, ms:run.ms, err:run.err, ts:run.ts});
+    await fsSet(`${SCORES_COLL}/${id}`, scoreDoc(run));
     await fetchCombo(run.m, run.n);
     await pruneOnline(run.m, run.n);
   } catch(e){
@@ -350,7 +361,7 @@ async function flushPending(){
     for(const run of [...store.pending]){
       try {
         const id = `${run.p}__${run.m}__${run.n}__${run.ts}`;
-        await fsSet(`${SCORES_COLL}/${id}`, {player:run.p, name:nameOf(run.p), mode:run.m, n:run.n, ms:run.ms, err:run.err, ts:run.ts});
+        await fsSet(`${SCORES_COLL}/${id}`, scoreDoc(run));
         store.pending = store.pending.filter(x => !(x.ts===run.ts && x.p===run.p));
         save();
       } catch(e){ break; }                   // сеть снова упала — попробуем позже
@@ -499,6 +510,18 @@ const MODES = {
 };
 const MODE_KEYS = Object.keys(MODES);
 const LENS = [10, 25];
+
+// Дуэль недели — второй титул к классике «База, 10» (классика заморожена, план §mathsprint).
+// Ротация по понедельникам тянет семью в редко играемые режимы; Профи вне ротации (персональные гейты).
+const DUEL_ROTATION = ['ord','pct','frac','int','lite'];
+const DUEL_ANCHOR = Date.UTC(2026,7,2,19,0,0);   // пн 03.08.2026 00:00 Алматы (UTC+5); первая неделя — Порядок
+const duelWeekIdx = () => Math.max(0, Math.floor((Date.now()-DUEL_ANCHOR)/604800000));
+const duelMode = () => DUEL_ROTATION[duelWeekIdx() % DUEL_ROTATION.length];
+const duelWeekStart = () => DUEL_ANCHOR + duelWeekIdx()*604800000;
+function duelBestText(){
+  const rows = computeRows(duelMode(), 10).filter(r => r.ts >= duelWeekStart());
+  return rows.length ? `лучший недели: ${rows[0].name} — ${fmt(rows[0].ms)}` : 'на этой неделе пока никто';
+}
 
 function buildSet(modeId, n){
   const mix = MODES[modeId].mix, per = mix.reduce((s,[,c])=>s+c,0);
@@ -662,10 +685,12 @@ function renderMenu(){
     const locked = store.auth !== p.id;
     return `<button class="chip${sel.p===p.id?' sel':''}" data-p="${p.id}">${locked?'<span class="lock">🔒 </span>':''}${p.name}</button>`;
   }).join('');
+  const dm = duelMode();
+  $('#duel-banner').innerHTML = `🏅 <b style="color:${MODES[dm].color}">${MODES[dm].name}, 10</b> · <span>${duelBestText()}</span>`;
   $('#modes').innerHTML = Object.entries(MODES).map(([id,m]) => {
     const gate = sel.p ? modeGate(sel.p, id) : null;
     return `<div class="mode${sel.m===id?' sel':''}${gate?' gated':''}" style="--mc:${m.color}" data-m="${id}"${gate?' data-gate="1"':''}>
-       <span class="m-name">${gate?'🔒 ':''}${m.name}</span><span class="m-ex">${gate||m.ex}</span></div>`;
+       <span class="m-name">${gate?'🔒 ':''}${m.name}${id===dm?' 🏅':''}</span><span class="m-ex">${gate||m.ex}</span></div>`;
   }).join('');
   $('#lens').innerHTML = LENS.map(n => {
     const lock = sel.p ? lenLocked(sel.p, sel.m, n) : false;
@@ -675,8 +700,11 @@ function renderMenu(){
   $('#menu-lb-title').textContent = `${MODES[sel.m].name}, ${sel.n}`;
   $('#menu-lb-src').textContent = srcLabel(sel.m, sel.n);
   renderList($('#board-menu'), sel.m, sel.n, {limit:MENU_TOP});
+  ensureFresh(dm, 10, renderMenu);   // строка дуэли живёт на чужой связке — подтянуть её тоже (TTL гасит цикл)
 }
 $('#scr-menu').addEventListener('click', e => {
+  const duel=e.target.closest('#duel-banner');
+  if(duel){ const dm=duelMode(); if(!(sel.p && modeGate(sel.p, dm))){ sel.m=dm; sel.n=10; store.lastMode=dm; store.lastN=10; save(); renderMenu(); ensureFresh(dm, 10, renderMenu); } return; }
   const chip=e.target.closest('[data-p]'), mode=e.target.closest('[data-m]'), len=e.target.closest('[data-n]');
   if(chip){
     const id=chip.dataset.p;
@@ -735,7 +763,7 @@ $('#pad').addEventListener('click', e => {
 function startRun(){
   if(!sel.p || sel.p!==store.auth) return;
   if(modeGate(sel.p, sel.m) || lenLocked(sel.p, sel.m, sel.n)) return;
-  game = {items:buildSet(sel.m, sel.n), idx:0, err:0, cur:'', itemMs:[], playing:false, lockUntil:0, raf:0, frac:!!MODES[sel.m].frac};
+  game = {items:buildSet(sel.m, sel.n), idx:0, err:0, cur:'', itemMs:[], errLog:[], playing:false, lockUntil:0, raf:0, frac:!!MODES[sel.m].frac};
   renderPad(); show('#scr-game'); renderQ();
   $('#hint').textContent = game.frac ? 'несократимая дробь · смешанное — через ␣ · ✓' : '';
   let c=3; const cd=$('#countdown'); cd.textContent=c; cd.classList.add('on');
@@ -787,12 +815,14 @@ function onSubmit(){
     const it = game.items[game.idx];
     const v = fracVerdict(game.cur, it.f, it.form);
     if(v==='ok') return advance();
-    wrong(v==='notreduced' ? 'сократи до конца' : (v==='form' ? formHint(it) : '')); return;
+    wrong(v==='notreduced' ? 'сократи до конца' : (v==='form' ? formHint(it) : ''), v); return;
   }
   if(digitsOf(game.cur)===0) return;
   wrong();
 }
-function wrong(msg){
+function wrong(msg, v){
+  const it = game.items[game.idx];
+  if(game.errLog.length<10){ const e={q:it.q, a:ansText(it), in:game.cur}; if(v) e.v=v; game.errLog.push(e); }
   game.err++; game.cur=''; game.lockUntil=performance.now()+LOCK_MS;
   if(navigator.vibrate) navigator.vibrate(60);
   const w=$('#q-wrap'); w.classList.remove('wrong'); void w.offsetWidth; w.classList.add('wrong');
@@ -838,6 +868,7 @@ async function finish(now){
   const rawMs=Math.round(now-game.t0);
   const totalMs=rawMs + game.err*PENALTY_MS;
   const run={p:sel.p, m:sel.m, n:sel.n, ms:totalMs, err:game.err, ts:Date.now()};
+  if(game.errLog.length) run.errItems = game.errLog;
   lastRun = run;
   const prevBest = Math.min(Infinity, ...store.runs.filter(r=>r.p===sel.p&&r.m===sel.m&&r.n===sel.n).map(r=>r.ms));
   store.runs.push(run); if(store.runs.length>500) store.runs=store.runs.slice(-500); save();

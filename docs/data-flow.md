@@ -16,7 +16,7 @@ Field-level ownership lives in `references/firestore-schema.md` (writer/reader c
 | **CC `weak-spots-session` / `interview-prep` skills** | Firebase MCP (remote-CC safe) | `players/{name}`, `worker/index.js` catalogs | `coach_sessions/{sid}`; masked updates to `coach_notes` + fold fields **only** (see bug-log 2026-05-20) |
 | **CC `stats-review` skill** | `tools/get_all_players.js`, `tools/update_coach_notes.js` | all of `players/*` + subcollections | `players/{name}.coach_notes`, generated tracker markdown |
 | **Library authoring** | `library_drafts/*.json` → `tools/push_library.js` | local drafts | `exercises_library/{type}/items/*` + `_meta` |
-| **Math Sprint game** | `mathsprint.html` (standalone, math track) | `math_sprint_scores/*` (all family runs) | `math_sprint_scores/{player}__{mode}__{n}__{ts}` — one immutable doc per run; client prunes each combo to top-50 |
+| **Math Sprint game** | `mathsprint.html` (standalone, math track) | `math_sprint_scores/*` (all family runs) | `math_sprint_scores/{player}__{mode}__{n}__{ts}` — one immutable doc per run; `errItems[]` {q, a, in, v?} = missed items, cap 10 (accuracy-plateau diagnostics); client prunes each combo to top-50 |
 | **Memory trainer** | `memory.html` (standalone, cognitive track) | `memory_trainer_scores/*` (all family runs) | `memory_trainer_scores/{player}__{mode}__{ts}` — one immutable doc per run (level score); client prunes each mode to top-50 |
 | **RTDB legacy** | `artem-grammar-hub-default-rtdb.europe-west1.firebasedatabase.app` | read-only | frozen; console deletion pending (overdue since 2026-05-28) |
 

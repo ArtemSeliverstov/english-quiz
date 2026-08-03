@@ -276,6 +276,7 @@ this is a navigation aid.
 | `ut_b` | 16 | Used To | B-series |
 | `wc` | 15 | Word Choice | |
 | `ru_mor`, `ru_nn` | 53 | RU: Морфемика и части речи / RU: Н/НН | RU track (`plans/ru-track-nicole.md`) — gated to ruTrack profiles, outside the 27 English categories |
+| `ru_mt` | 16 | RU: Математические термины | Терм-канал math-track (`plans/math-track-nicole.md` §терм-дорожка) — same ruTrack gate; ✅ в ru_terms только по производству в CC-сессиях |
 | Retired (do not reuse) | — | — | `qt01`, `qt02`, `wt01` |
 
 ID convention: prefix + sequential number, never reused, never renumbered
