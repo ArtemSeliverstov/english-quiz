@@ -29,10 +29,10 @@ What's next, what's deferred. Ordered by category, not strict priority.
 ## Phase 1 — Content priorities
 
 Canonical table lives in `references/coverage-matrix.md` (single home — this section
-used to duplicate it and both copies drifted). Current bank: 2,299 q — 2,246 EN across
-27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 53 RU-track
-(outside the EN matrix). Highlights: Natural English shipped (30 q, in Anna's window);
-C1 target met; C2 remains the open gap.
+used to duplicate it and both copies drifted). Current bank: 2,376 q — 2,246 EN across
+27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 130 RU-track
+(outside the EN matrix; v20260818 added Синтаксис/Причастия/Сложное ×15). Highlights:
+Natural English shipped (30 q, in Anna's window); C1 target met; C2 remains the open gap.
 
 ---
 
@@ -45,10 +45,13 @@ W1 bank (Морфемика 20 + Н/НН 33), `ref/ru.html`. Shipped v20260709-r
 (integrity baseline, backups, stats-review). Shipped v20260709-r4: terminology foundation
 (+16 items, intro 21/36), kickoff #1 script, kickoff/mock CC types. Ernest joined the track
 (v20260710): `ernest_ru` profile (cap B2, same bank + sibling switch) + 38-item 40-min
-placement instrument `diagnostics/ru-ernest-diagnostic-1.md` — his OGE-year program lands
-after scoring (likely new categories: Причастия/Деепричастия, Пунктуация-8кл). Next: W2
-content (НЕ, слитно/раздельно/дефис), `mistakes-review` adherence line, Ernest diagnostic
-administration + results.
+placement instrument `diagnostics/ru-ernest-diagnostic-1.md`. Diagnostics #1 (27/38) and
+#2 (24/45, вход в 10 класс Tamos) administered; sprint plan of record:
+`plans/ru-track-ernest.md`. Shipped v20260818: EN/RU закладки (`?track=ru` entry, picker
+split, «📕 Русский» cross-links) + his sprint categories Синтаксис / Причастия и
+деепричастия / Сложное предложение (×15 each) + `ernest_ru` window re-composed to them.
+Next: W2 content for Nicole (НЕ, слитно/раздельно/дефис), Ernest sprint sessions S1–S10,
+family-profiles Tamos re-frame (по аппруву).
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,
 C1 Indirect Questions, C1 Modal Verbs, C1 Linking Words, C1 Vocabulary.

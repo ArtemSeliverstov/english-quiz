@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260803">
+  <meta name="app-version" content="v20260818">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1147,7 +1147,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260803</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260818</span></p>
 </header>
 
 <!-- TABS -->
@@ -1200,7 +1200,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
       <table id="lh-levels-table" class="lh-board"><tbody></tbody></table>
     </div>
 
-    <div class="trainer-links"><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
+    <div class="trainer-links"><a class="tl-track" href="./?track=ru">📕 Русский</a><span class="tl-sep">·</span><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
   </div>
 </div>
 
@@ -1285,7 +1285,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
   </div>
-  <div class="trainer-links"><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
+  <div class="trainer-links"><a class="tl-track" href="./?track=ru">📕 Русский</a><span class="tl-sep">·</span><a href="mathsprint.html">⚡ Устный счёт</a><span class="tl-sep">·</span><a href="memory.html">◈ Память</a></div>
 </div>
 </div>
 
@@ -3953,7 +3953,55 @@ const ALL_QUESTIONS = [{id:'pp01',type:'mcq',cat:'Tenses',themes:['meta'],lvl:'B
 {id:'ru_mt13',type:'mcq',cat:'RU: Математические термины',themes:['home_daily'],lvl:'B1',biz:false,q:'Запись 507 — что это?',ans:1,opts:['Три числа','Одно число, записанное тремя цифрами','Одна цифра'],exp:'<strong>Цифры</strong> — знаки 0–9, из них записывают числа: 507 — одно число из цифр 5, 0, 7. Частый оборот задач: «сумма цифр числа» (5+0+7=12). ✗ «Три числа» путает цифру с числом.'},
 {id:'ru_mt14',type:'gap',cat:'RU: Математические термины',themes:['home_daily'],lvl:'B1',biz:false,q:'Из чисел 12, 7, 19 число 7 — ___',ans:1,opts:['наибольшее','наименьшее','среднее'],exp:'<strong>Наименьшее</strong> — самое маленькое в наборе: 7 < 12 < 19. ✗ Наибольшее — 19. В условиях эти слова решают, что искать — читай их внимательно.'},
 {id:'ru_mt15',type:'input',cat:'RU: Математические термины',themes:['home_daily'],lvl:'B1',biz:false,q:'6/8 = 3/4. Что сделали с дробью 6/8? Её ___',ans:'сократили|сократила|сократил',hint:'разделили верх и низ на одно число — глагол (1 слово)',exp:'Дробь <strong>сократили</strong>: разделили числитель и знаменатель на 2. Несократимая дробь — финиш любого ответа. ✗ Значение не изменилось: 6/8 = 3/4 — та же дробь.'},
-{id:'ru_mt16',type:'gap',cat:'RU: Математические термины',themes:['home_daily'],lvl:'B1',biz:false,q:'30 : 4 = 7 (ост. 2). Число 2 — это ___',ans:1,opts:['частное','остаток','делитель'],exp:'<strong>Остаток</strong> — то, что не разделилось: 4 × 7 = 28, 30 − 28 = 2. ✗ Частное — 7. Остаток 0 в уголке = разделилось нацело.'}];
+{id:'ru_mt16',type:'gap',cat:'RU: Математические термины',themes:['home_daily'],lvl:'B1',biz:false,q:'30 : 4 = 7 (ост. 2). Число 2 — это ___',ans:1,opts:['частное','остаток','делитель'],exp:'<strong>Остаток</strong> — то, что не разделилось: 4 × 7 = 28, 30 − 28 = 2. ✗ Частное — 7. Остаток 0 в уголке = разделилось нацело.'},
+// ── RU: Синтаксис — спринт Эрнеста к 10 классу (plans/ru-track-ernest.md; фронт №1 диагностик 1–2: основа, сказуемые, односоставные, связи, члены) ──
+{id:'ru_sin01',type:'mcq',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Грамматическая основа</strong> = подлежащее (кто? что?) + сказуемое (что делает?). Всё остальное — второстепенные члены.',q:'Укажи грамматическую основу предложения «Эрнест собрал новый компьютер».',ans:0,opts:['Эрнест собрал','собрал компьютер','новый компьютер'],exp:'Кто? — <strong>Эрнест</strong>, что сделал? — <strong>собрал</strong>: это основа. ✗ «компьютер» — дополнение (собрал что?), в основу не входит.'},
+{id:'ru_sin02',type:'input',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B1',biz:false,q:'Выпиши грамматическую основу: «Вода в озере была ледяной». ___',ans:'вода была ледяной',hint:'подлежащее и сказуемое целиком (3 слова)',exp:'Сказуемое здесь составное именное: связка <strong>была</strong> + именная часть <strong>ледяной</strong> — в основу входит целиком. ✗ «вода была» — обрезок: «была» без именной части смысла не передаёт.'},
+{id:'ru_sin03',type:'mcq',cat:'RU: Синтаксис',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Укажи грамматическую основу: «Друзья закончили играть в футбол».',ans:0,opts:['друзья закончили играть','друзья закончили','закончили играть'],exp:'<strong>Закончили играть</strong> — составное глагольное сказуемое (фазовый глагол + инфинитив), берётся целиком. ✗ «друзья закончили» теряет смысловой глагол: закончили ЧТО ДЕЛАТЬ?'},
+{id:'ru_sin04',type:'gap',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'В предложении «Утро было холодным» сказуемое «было холодным» — составное ___',ans:0,opts:['именное','глагольное'],exp:'Связка <strong>быть</strong> + именная часть (прилагательное) = составное именное сказуемое. ✗ Составное глагольное — это вспомогательный глагол + инфинитив: начал читать.'},
+{id:'ru_sin05',type:'mcq',cat:'RU: Синтаксис',themes:['leisure_sport'],lvl:'B2',biz:false,q:'В каком предложении составное глагольное сказуемое?',ans:0,opts:['Он начал тренироваться.','Он будет тренироваться.','Он тренируется.'],exp:'<strong>Начал тренироваться</strong> = фазовый глагол + инфинитив → составное глагольное. ✗ «будет тренироваться» — будущее сложное, это ПРОСТОЕ глагольное сказуемое: одна форма времени.'},
+{id:'ru_sin06',type:'gap',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'«Завтра мы будем писать контрольную». Сказуемое «будем писать» — ___ глагольное.',ans:0,opts:['простое','составное'],exp:'<strong>Будем писать</strong> — сложная форма будущего времени одного глагола «писать» → простое глагольное. ✗ Составное требует двух разных глаголов: начнём писать, хотим писать.'},
+{id:'ru_sin07',type:'mcq',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Односоставное предложение</strong> — в основе только ОДИН главный член: или сказуемое (Люблю грозу), или подлежащее (Ночь.).',q:'Укажи односоставное предложение.',ans:0,opts:['Люблю зимние каникулы.','Каникулы начались.','Брат вернулся из школы.'],exp:'«<strong>Люблю</strong>…» — только сказуемое, деятель ясен из формы глагола (я) → односоставное. ✗ В остальных есть и подлежащее, и сказуемое — двусоставные.'},
+{id:'ru_sin08',type:'mcq',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи безличное предложение.',ans:1,opts:['Зима пришла рано.','К вечеру похолодало.','Мороз крепчал.'],exp:'<strong>Похолодало</strong> — действие без деятеля: подлежащего нет и не может быть → безличное. ✗ «Зима пришла» — двусоставное: зима — подлежащее.'},
+{id:'ru_sin09',type:'mcq',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи назывное предложение.',ans:2,opts:['Вечереет.','Вечер наступил.','Поздний вечер.'],exp:'<strong>Назывное</strong> — только подлежащее: «Поздний вечер.» ✗ «Вечереет» — тоже односоставное, но безличное: там только сказуемое.'},
+{id:'ru_sin10',type:'gap',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Три вида связи</strong>: согласование — слова меняются вместе (синий мяч, синего мяча); управление — главное слово требует падежа (пинать мяч); примыкание — зависимое слово неизменяемо (бить метко).',q:'Словосочетание «играть громко» — вид связи: ___',ans:0,opts:['примыкание','согласование','управление'],exp:'<strong>Громко</strong> — наречие, не изменяется вовсе, присоединяется только по смыслу → примыкание. ✗ Управление требует падежа: играть (во что?) в шахматы.'},
+{id:'ru_sin11',type:'gap',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'Словосочетание «второй уровень» — вид связи: ___',ans:1,opts:['управление','согласование','примыкание'],exp:'<strong>Второй</strong> изменяется вместе с «уровень»: второго уровня, на втором уровне → согласование. ✗ При управлении зависимое слово стоит в одном падеже и не подстраивается.'},
+{id:'ru_sin12',type:'gap',cat:'RU: Синтаксис',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Словосочетание «победить соперника» — вид связи: ___',ans:2,opts:['согласование','примыкание','управление'],exp:'Глагол требует винительного падежа: победить (кого?) <strong>соперника</strong> → управление. ✗ При согласовании оба слова меняются вместе: сильный соперник — сильного соперника.'},
+{id:'ru_sin13',type:'input',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B1',biz:false,q:'«Эрнест написал сообщение другу». Каким членом предложения является слово «другу»? ___',ans:'дополнение|дополнением',hint:'отвечает на вопрос «кому?» (1 термин)',exp:'Написал (кому?) <strong>другу</strong> — вопрос косвенного падежа → дополнение. ✗ Обстоятельство отвечает на «как? где? когда?», определение — на «какой?».'},
+{id:'ru_sin14',type:'gap',cat:'RU: Синтаксис',themes:['leisure_sport'],lvl:'B1',biz:false,q:'«Команда тренируется вечером». Слово «вечером» — это ___',ans:0,opts:['обстоятельство','дополнение','определение'],exp:'Тренируется (когда?) <strong>вечером</strong> → обстоятельство времени. ✗ Дополнение отвечает на вопросы падежей: вижу (что?) вечер.'},
+{id:'ru_sin15',type:'input',cat:'RU: Синтаксис',themes:['home_daily'],lvl:'B2',biz:false,q:'Выпиши грамматическую основу: «Осенью дни становятся короче». ___',ans:'дни становятся короче',hint:'подлежащее и сказуемое целиком (3 слова)',exp:'<strong>Становятся короче</strong> — составное именное сказуемое: глагол-связка + сравнительная степень. ✗ «дни становятся» — обрезок: становятся КАКИМИ?'},
+// ── RU: Причастия и деепричастия — спринт Эрнеста S5–S6 (залог, вид, Н/НН причастий, обороты) ──
+{id:'ru_pr01',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Причастие</strong> — форма глагола, отвечает на «какой?» и называет признак по действию: бегущий (который бежит), прочитанный (который прочитали).',q:'Укажи причастие.',ans:0,opts:['летящий','полёт','лететь','лётчик'],exp:'<strong>Летящий</strong> = «который летит» — признак по действию → причастие. ✗ «полёт» — существительное, «лететь» — глагол, «лётчик» — человек, а не признак.'},
+{id:'ru_pr02',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Деепричастие</strong> отвечает на «что делая? что сделав?» и называет добавочное действие: шёл, насвистывая.',q:'Укажи деепричастие.',ans:1,opts:['улыбка','улыбаясь','улыбаться','улыбчивый'],exp:'<strong>Улыбаясь</strong> — «что делая?» — добавочное действие → деепричастие. ✗ «улыбчивый» — прилагательное: постоянный признак, а не действие.'},
+{id:'ru_pr03',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B2',biz:false,intro:'<strong>Залог</strong>: действительное причастие — предмет сам действует (читающий мальчик); страдательное — с предметом что-то делают (прочитанная книга).',q:'Укажи страдательное причастие.',ans:2,opts:['строящий','строивший','построенный'],exp:'<strong>Построенный</strong> — «который построили»: действие направлено НА предмет → страдательное. ✗ «строящий», «строивший» — сам строит → действительные.'},
+{id:'ru_pr04',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Укажи действительное причастие.',ans:0,opts:['победивший','побеждённый','побеждаемый'],exp:'<strong>Победивший</strong> — сам победил → действительное. ✗ «побеждённый», «побеждаемый» — их победили/побеждают → страдательные.'},
+{id:'ru_pr05',type:'input',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B2',biz:false,q:'Деепричастие «закончив» отвечает на вопрос: что ___?',ans:'сделав',hint:'действие уже завершено (1 слово)',exp:'<strong>Закончив</strong> — совершенный вид: что СДЕЛАВ? ✗ «что делая?» — вопрос несовершенного вида: заканчивая. Пара вопросов различает вид любого деепричастия.'},
+{id:'ru_pr06',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Н/НН в причастиях</strong>: есть приставка (кроме не-), зависимое слово или совершенный вид → НН. Ничего этого нет → одна Н: сушёные фрукты, но засушенный / сушённые в духовке.',q:'сушё___ые фрукты',ans:0,opts:['н','нн'],exp:'Нет приставки, нет зависимых слов, вид несовершенный → одна Н: суш<strong>ён</strong>ые. ✗ сушённые — потребовало бы зависимого слова: сушённые в духовке.'},
+{id:'ru_pr07',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,q:'засуше___ый цветок в учебнике',ans:1,opts:['н','нн'],exp:'Приставка <strong>за-</strong> → НН: засушенный. ✗ Сравни пару: сушёные фрукты (без приставки, одна Н) — засушенный цветок.'},
+{id:'ru_pr08',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B2',biz:false,q:'копчё___ая на углях рыба',ans:1,opts:['н','нн'],exp:'Зависимое слово «на углях» → НН: копч<strong>ённ</strong>ая на углях. ✗ Без зависимого слова была бы одна Н: копчёная рыба.'},
+{id:'ru_pr09',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B2',biz:false,q:'законче___ый проект',ans:1,opts:['н','нн'],exp:'Приставка за- и совершенный вид (что сделать? — закончить) → НН: законч<strong>енн</strong>ый. ✗ Одна Н живёт только у бесприставочных несовершенного вида: вязаная шапка.'},
+{id:'ru_pr10',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B2',biz:false,q:'Работа сдела___а вовремя.',ans:0,opts:['н','нн'],exp:'<strong>Краткое причастие</strong> — всегда одна Н: работа сделана. ✗ НН осталось бы в полной форме: сделанная работа. Краткость проверяй вопросом «какова?».'},
+{id:'ru_pr11',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Причастный оборот</strong> выделяется запятыми, только когда стоит ПОСЛЕ определяемого слова: «Игра, скачанная вчера, …». Перед словом — без запятых.',q:'В каком предложении нужны запятые?',ans:1,opts:['Скачанная вчера игра уже надоела.','Игра скачанная вчера уже надоела.','Вчерашняя игра уже надоела.'],exp:'Оборот «скачанная вчера» стоит ПОСЛЕ слова «игра» → выделяется: «Игра, скачанная вчера, уже надоела». ✗ В первом варианте оборот ДО слова — запятые не нужны.'},
+{id:'ru_pr12',type:'mcq',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,q:'В каком предложении запятая поставлена верно?',ans:0,opts:['Собравшись с мыслями, он ответил.','Собравшись с мыслями он, ответил.','Он, ответил собравшись с мыслями.'],exp:'Деепричастный оборот выделяется ЦЕЛИКОМ: «<strong>Собравшись с мыслями</strong>, он ответил». ✗ Запятая внутри оборота разрезает его пополам — граница проходит после последнего слова оборота.'},
+{id:'ru_pr13',type:'error_correction',error_type:'other',cat:'RU: Причастия и деепричастия',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Игрок забивший гол побежал к трибунам.',ans:'игрок, забивший гол, побежал к трибунам',hint:'не хватает двух запятых',exp:'Оборот «забивший гол» стоит после слова «игрок» → две запятые: «Игрок, забивший гол, побежал…». ✗ Без запятых оборот сливается с основой предложения.'},
+{id:'ru_pr14',type:'input',cat:'RU: Причастия и деепричастия',themes:['leisure_sport'],lvl:'B2',biz:false,q:'«Выигранный матч»: причастие «выигранный» — действительное или страдательное? ___',ans:'страдательное',hint:'термин залога (1 слово)',exp:'Матч выиграли — действие направлено НА него → <strong>страдательное</strong>. ✗ Действительным был бы «выигравший»: тот, кто сам выиграл.'},
+{id:'ru_pr15',type:'gap',cat:'RU: Причастия и деепричастия',themes:['home_daily'],lvl:'B1',biz:false,q:'Улыбаясь она помахала нам рукой. — Нужна ли запятая после «улыбаясь»?',ans:0,opts:['да','нет'],exp:'Одиночное деепричастие обособляется: «<strong>Улыбаясь,</strong> она помахала…». ✗ Без запятой «улыбаясь» читается слитно с основой, а это добавочное действие.'},
+// ── RU: Сложное предложение — спринт Эрнеста S7–S8 (ССП/СПП/БСП, знаки БСП, придаточные, косвенная речь) ──
+{id:'ru_sl01',type:'mcq',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B1',biz:false,intro:'<strong>Сложное предложение</strong> = две и больше грамматических основ. Посчитай пары «подлежащее + сказуемое» — узнаешь, простое или сложное.',q:'Укажи сложное предложение.',ans:1,opts:['Прозвенел звонок с урока.','Прозвенел звонок, и урок начался.','Звонок прозвенел неожиданно громко.'],exp:'Две основы: «звонок прозвенел» + «урок начался» → сложное. ✗ В остальных — по одной основе, это простые предложения.'},
+{id:'ru_sl02',type:'input',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B1',biz:false,q:'Сколько грамматических основ: «Когда матч закончился, болельщики вышли на улицу, и город зашумел»? Запиши цифрой: ___',ans:'3|три',hint:'посчитай пары «подлежащее + сказуемое» (цифра)',exp:'Три основы: матч закончился / болельщики вышли / город зашумел. ✗ «на улицу» — обстоятельство, не основа: в счёт идут только пары подлежащее+сказуемое.'},
+{id:'ru_sl03',type:'mcq',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B2',biz:false,intro:'<strong>Три типа</strong>: ССП — части равноправны (союзы и, а, но). СПП — одна часть подчинена (что, когда, который, чтобы). БСП — без союза, только знак.',q:'Укажи сложноподчинённое предложение (СПП).',ans:1,opts:['Матч закончился, и мы ушли.','Мы ушли со стадиона, когда матч закончился.','Матч закончился — все ушли.'],exp:'«<strong>Когда</strong>» подчиняет: часть отвечает на вопрос «когда ушли?» → СПП. ✗ «и» связывает равноправные части → ССП; без союза → БСП.'},
+{id:'ru_sl04',type:'mcq',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи сложносочинённое предложение (ССП).',ans:2,opts:['Я знаю, что ты придёшь.','Наступила ночь.','Ветер стих, и море успокоилось.'],exp:'«<strong>И</strong>» между равноправными частями (ни одна не отвечает на вопрос другой) → ССП. ✗ «что» подчиняет: знаю ЧТО? → СПП.'},
+{id:'ru_sl05',type:'mcq',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи бессоюзное сложное предложение (БСП).',ans:0,opts:['Стемнело, в окнах зажёгся свет.','Стемнело, и в окнах зажёгся свет.','Когда стемнело, зажгли фонари.'],exp:'Две основы соединены <strong>без союза</strong>, только запятой → БСП. ✗ «и» → ССП, «когда» → СПП: тип определяет союз, а не смысл.'},
+{id:'ru_sl06',type:'error_correction',error_type:'other',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B1',biz:false,q:'Он написал что опоздает на тренировку.',ans:'он написал, что опоздает на тренировку',hint:'не хватает одной запятой',exp:'Перед союзом «<strong>что</strong>» на границе частей СПП всегда запятая: «написал, что опоздает». ✗ Без запятой граница двух основ не отмечена.'},
+{id:'ru_sl07',type:'mcq',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,q:'В каком предложении нужна запятая перед И?',ans:1,opts:['Он открыл ноутбук и запустил игру.','Подул ветер и по крыше застучал дождь.','Мы купили чипсы и колу.'],exp:'Две основы: «ветер подул» + «дождь застучал» → запятая перед «и». ✗ «открыл и запустил» — однородные сказуемые ОДНОГО подлежащего, запятая не нужна.'},
+{id:'ru_sl08',type:'gap',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,intro:'<strong>Знаки БСП</strong>: вторая часть объясняет первую (можно вставить «что» или «потому что») → двоеточие. Противопоставление или быстрый результат (можно вставить «а», «поэтому») → тире.',q:'Стало ясно ___ дождь не кончится до вечера.',ans:0,opts:[':','—',','],exp:'Вторая часть раскрывает, ЧТО стало ясно → <strong>двоеточие</strong>. Проверка: вставляется «что». ✗ Тире — при противопоставлении или следствии.'},
+{id:'ru_sl09',type:'gap',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Летом он тренируется ___ зимой отдыхает.',ans:1,opts:[':','—',';'],exp:'Части противопоставлены — вставляется «а»: «тренируется, А зимой отдыхает» → <strong>тире</strong>. ✗ Двоеточие — когда вторая часть объясняет первую.'},
+{id:'ru_sl10',type:'gap',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Прозвучал свисток ___ игра сразу остановилась.',ans:0,opts:['—',':'],exp:'Вторая часть — быстрый результат первой (вставляется «поэтому») → <strong>тире</strong>. ✗ Двоеточие шло бы при пояснении причины: «Я понял: …».'},
+{id:'ru_sl11',type:'mcq',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Укажи СПП с придаточным определительным.',ans:0,opts:['Стадион, на котором мы играем, недавно открыли.','Я знаю, что матч перенесли.','Когда пошёл дождь, игру остановили.'],exp:'«На котором мы играем» отвечает на «<strong>какой</strong> стадион?» → определительное. ✗ «что матч перенесли» — знаю ЧТО? → изъяснительное.'},
+{id:'ru_sl12',type:'mcq',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,q:'Укажи СПП с придаточным изъяснительным.',ans:1,opts:['Дом, в котором мы живём, старый.','Она написала, что задержится после уроков.','Мы остались дома, потому что шёл дождь.'],exp:'Написала <strong>ЧТО?</strong> — придаточное раскрывает содержание речи → изъяснительное. ✗ «в котором мы живём» — какой дом? → определительное.'},
+{id:'ru_sl13',type:'gap',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B1',biz:false,q:'«Мы остались дома, потому что шёл дождь». Придаточное отвечает на вопрос ___',ans:0,opts:['почему?','какой?','что?'],exp:'«Потому что шёл дождь» называет причину → обстоятельственное придаточное причины. ✗ «какой?» — вопрос определительных (союзное слово «который»).'},
+{id:'ru_sl14',type:'mcq',cat:'RU: Сложное предложение',themes:['leisure_sport'],lvl:'B2',biz:false,q:'Укажи предложение с ошибкой при передаче чужой речи.',ans:1,opts:['Тренер сказал, что поставит меня в состав.','Тренер сказал, что я поставлю тебя в состав.','Тренер спросил, готов ли я играть.'],exp:'«Что <strong>я поставлю тебя</strong>» — слова тренера от первого лица застряли внутри косвенной речи. Верно: «что поставит меня». ✗ Вариант с «ли» — правильная косвенная форма вопроса.'},
+{id:'ru_sl15',type:'gap',cat:'RU: Сложное предложение',themes:['home_daily'],lvl:'B2',biz:false,q:'Он спросил: «Ты придёшь?» → Он спросил, приду ___ я.',ans:0,opts:['ли','что','бы'],exp:'Вопрос без вопросительного слова передаётся частицей «<strong>ли</strong>» после глагола: спросил, приду ли я. ✗ «что» вводит утверждение: сказал, что приду.'}];
 
 let TOTAL = 0;
 let LEVEL_TOTALS = {};
@@ -7748,6 +7796,12 @@ function isRuTrack(key) {
   return !!(m && m.ruTrack);
 }
 
+// ══ Закладки: ?track=ru is the Russian entry, bare URL the English one.
+// The URL routes only at load (picker filter + boot reconciliation below);
+// afterwards the PROFILE stays the single source of truth and confirmPlayer
+// rewrites the URL to match it. plans/ru-track-ernest.md.
+const ENTRY_TRACK = new URLSearchParams(location.search).get('track') === 'ru' ? 'ru' : 'en';
+
 // ══════════════════════════════════════════════════════════════
 //  PLAYER IDENTITY + PIN AUTH
 // ══════════════════════════════════════════════════════════════
@@ -7773,6 +7827,17 @@ async function confirmPlayer(key) {
   localStorage.setItem('quizPlayerKey', key);
   // Grammar Reference language bridge — auto-switch for Russian-speaking players
   localStorage.setItem('ref-lang', (key === 'anna' || key === 'nicole' || isRuTrack(key)) ? 'ru' : 'en');
+  // Закладка URL + cross-link follow the profile, so refresh/bookmark stays on-track.
+  try {
+    const wantRu = isRuTrack(key);
+    if (wantRu !== (new URLSearchParams(location.search).get('track') === 'ru')) {
+      history.replaceState(null, '', wantRu ? './?track=ru' : './');
+    }
+    document.querySelectorAll('.trainer-links .tl-track').forEach(a => {
+      a.textContent = wantRu ? '🇬🇧 Английский' : '📕 Русский';
+      a.setAttribute('href', wantRu ? './' : './?track=ru');
+    });
+  } catch (e) {}
   document.getElementById('name-picker').style.display = 'none';
   const member = FAMILY_MEMBERS.find(m => m.key === key);
   if (member) {
@@ -7904,7 +7969,10 @@ window.cancelPin = function() {
 
 function showNamePicker() {
   const grid = document.getElementById('name-btn-grid');
-  grid.innerHTML = FAMILY_MEMBERS.map(m =>
+  // Закладки: each entry lists only its own track's profiles (EN закладка —
+  // English five, ?track=ru — RU profiles). Cross-track moves go via the
+  // закладка links / sibling bridge, not the picker.
+  grid.innerHTML = FAMILY_MEMBERS.filter(m => !!m.ruTrack === (ENTRY_TRACK === 'ru')).map(m =>
     `<button class="name-btn" onclick="window._selectName('${m.key}')">${m.emoji} ${m.name}</button>`
   ).join('');
   grid.style.display = 'grid';
@@ -8850,6 +8918,32 @@ function loadLocalPinOverride(key) {
 //  INIT
 // ══════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // Закладка reconciliation: entry URL names one track, saved profile is on the
+  // other. Same-PIN sibling pair (ernest↔ernest_ru, nicole↔nicole_ru) → silent
+  // switch via confirmPlayer — NEVER a bare localStorage swap: confirmPlayer
+  // carries the 2026-05-02 contamination guards (local wipe + reload before any
+  // sync). No linked profile on this track (artem/anna/egor on ?track=ru) →
+  // regular picker, filtered to the entry's track.
+  const bootMe = currentPlayer ? FAMILY_MEMBERS.find(m => m.key === currentPlayer) : null;
+  if (bootMe && !!bootMe.ruTrack !== (ENTRY_TRACK === 'ru')) {
+    const bootSib = bootMe.siblingProfile ? FAMILY_MEMBERS.find(x => x.key === bootMe.siblingProfile) : null;
+    if (bootSib && bootSib.pinHash === bootMe.pinHash) {
+      loadLocalPinOverride(currentPlayer);
+      setFbStatus('loading', '⏳ Loading your progress from server…');
+      confirmPlayer(bootSib.key).then(() => {
+        window._fbLoadComplete = true;  // confirmPlayer reloaded from Firestore; without this flag saveData never auto-syncs
+        setFbStatus('online', '✅ Progress loaded from server');
+        if (typeof isLearnerShell === 'function' && isLearnerShell()) {
+          const tabSetup = document.getElementById('tab-setup');
+          if (tabSetup) tabSetup.style.display = 'none';
+          showLearnerHome();
+        }
+      });
+    } else {
+      setTimeout(showNamePicker, 600);
+    }
+    return;
+  }
   if (!currentPlayer) {
     setTimeout(showNamePicker, 600);
   } else {

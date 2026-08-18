@@ -9,7 +9,23 @@ Format: `[topic]` — decision and rationale. Newest substantive decisions first
 
 ## Surfaces
 
-### Memory trainer as a standalone surface, evidence-honest framing (2026-07-24)
+### EN/RU закладки: два входа, один движок, профиль — источник истины (2026-08-18)
+`?track=ru` — отдельный вход русского трека на том же `index.html`; ссылка «📕 Русский»
+в кросс-линках всех лендингов (quiz home/setup, mathsprint, memory), симметрично
+«🇬🇧 Английский» с RU-стороны. Почему НЕ отдельная страница: движок один (не §6
+«третья quiz-поверхность» — это маршрутизация, не новая поверхность), дубль 1.6 MB
+файла — нерабочая цена. Ключевые решения:
+- **URL маршрутизирует только на входе** (фильтр пикера + boot-reconciliation);
+  после загрузки источник истины — профиль, и `confirmPlayer` перезаписывает URL
+  под него (`history.replaceState`). Ни одного нового состояния «трек» в данных.
+- **Тихий свитч только через `confirmPlayer`** — несёт guards контаминации
+  2026-05-02 (wipe + reload до любого sync). Голый своп localStorage запрещён:
+  локальная БД предыдущего профиля утекла бы в Firestore-док сиблинга.
+- **Пикер фильтруется по входу** — отменяет «deliberately unfiltered» из
+  v20260725: тогда RU-профили были в общем пикере, потому что RU-входа не было;
+  теперь у каждого трека свой вход, и смешанный пикер только путал детей.
+- **`sw.js` матчит с `ignoreSearch:true`** — иначе навигация `/?track=ru`
+  промахивается мимо прекэш-ключа `./` и офлайн ломается ровно для RU-закладки.
 `memory.html`: a standalone working-memory/attention trainer, requested by Artem for his
 "forget what I was talking/reading about when distracted" complaint (45, normal aging —
 interference control, not storage, is what slips first). Follows the mathsprint template:
