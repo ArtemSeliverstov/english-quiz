@@ -279,7 +279,7 @@ Common active prefixes (selected examples):
 | `wf_` | Word Formation | Wordform |
 | `qt_i` | Quantifiers | Input series (s89, B1) |
 | `refl`, `reflop`, `reflby` | Pronouns | Reflexive series (migrated s89) |
-| `ru_mor`, `ru_nn`, `ru_mt` | RU: Морфемика / Н/НН / Математические термины | RU track — gated to ruTrack profiles |
+| `ru_mor`, `ru_nn`, `ru_mt`, `ru_ph` | RU: Морфемика / Н/НН / Математические термины / Физические термины | RU track — gated to ruTrack profiles |
 | `ru_sin`, `ru_pr`, `ru_sl` | RU: Синтаксис / Причастия и деепричастия / Сложное предложение | RU track, спринт Эрнеста (`plans/ru-track-ernest.md`) |
 
 The prefix index lives in `references/question-bank-taxonomy.md` §7; for current
@@ -306,7 +306,8 @@ archived HTML KB (`archive/quiz_knowledge_base_v20260428-s87.html`) is historica
 RU-track categories are prefixed `RU: ` and sit outside the 28-value English list —
 gated to ruTrack profiles in `selectQuestions` (`plans/ru-track-nicole.md`). Live:
 RU: Морфемика и части речи · RU: Н/НН · RU: Математические термины (терм-канал
-math-track, `plans/math-track-nicole.md`) · RU: Синтаксис · RU: Причастия и
+math-track, `plans/math-track-nicole.md`) · RU: Физические термины (терм-канал
+physics-track, `plans/physics-track-nicole.md`) · RU: Синтаксис · RU: Причастия и
 деепричастия · RU: Сложное предложение (спринт Эрнеста, `plans/ru-track-ernest.md`).
 
 ---

@@ -59,9 +59,9 @@ Deviations are computed at render, never stored. On ship update: `firestore-sche
 
 **Deviation rules**: day done = `daily_activity[date].items ≥ 10` · диктант/mock satisfied by a matching exercises row inside week bounds · topic lag = planned close date passed with accuracy <70% or items below plan.
 
-## RU categories (11)
+## RU categories (12)
 
-RU: Морфемика и части речи · RU: Н/НН · RU: НЕ с частями речи · RU: Слитно/раздельно/дефис · RU: Местоимения · RU: Прилагательные · RU: Наречия · RU: Числительные · RU: Пунктуация · RU: Лексика и выразительность · RU: Математические термины (гость из math-track: стоячая категория вне недельного цикла, `plans/math-track-nicole.md` §терм-дорожка)
+RU: Морфемика и части речи · RU: Н/НН · RU: НЕ с частями речи · RU: Слитно/раздельно/дефис · RU: Местоимения · RU: Прилагательные · RU: Наречия · RU: Числительные · RU: Пунктуация · RU: Лексика и выразительность · RU: Математические термины (гость из math-track: стоячая категория вне недельного цикла, `plans/math-track-nicole.md` §терм-дорожка) · RU: Физические термины (гость из physics-track, та же логика — `plans/physics-track-nicole.md`)
 
 ID prefix `ru_` + topic slug (`ru_nn01`, `ru_ne01`). Register in `question-bank-taxonomy.md` §7 when authoring starts.
 

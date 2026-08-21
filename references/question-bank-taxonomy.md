@@ -277,6 +277,7 @@ this is a navigation aid.
 | `wc` | 15 | Word Choice | |
 | `ru_mor`, `ru_nn` | 53 | RU: Морфемика и части речи / RU: Н/НН | RU track (`plans/ru-track-nicole.md`) — gated to ruTrack profiles, outside the 27 English categories |
 | `ru_mt` | 16 | RU: Математические термины | Терм-канал math-track (`plans/math-track-nicole.md` §терм-дорожка) — same ruTrack gate; ✅ в ru_terms только по производству в CC-сессиях |
+| `ru_ph` | 24 | RU: Физические термины | Терм-канал physics-track (`plans/physics-track-nicole.md`; ярус 1 `nicole_physics_ru_terms.md`): формульный алфавит, СИ, тело/вещество/явление, цена деления, км/ч↔м/с, приставки — same ruTrack gate; ✅ в ru_terms только по производству в CC-сессиях |
 | `ru_sin` | 15 | RU: Синтаксис | Спринт Эрнеста к 10 классу (`plans/ru-track-ernest.md`) — основа, типы сказуемых, односоставные, виды связи, члены предложения; same ruTrack gate |
 | `ru_pr` | 15 | RU: Причастия и деепричастия | Спринт Эрнеста S5–S6 — залог, вид, Н/НН причастий, обороты и их пунктуация; same ruTrack gate |
 | `ru_sl` | 15 | RU: Сложное предложение | Спринт Эрнеста S7–S8 — ССП/СПП/БСП, знаки БСП, виды придаточных, косвенная речь; same ruTrack gate |
