@@ -72,7 +72,7 @@ References win on conflict.
 | `free-write` | "free write", "поговорим", "пообщаемся" — CC-side |
 | `interview-prep` | "interview prep", "mock interview" — Artem audio-first |
 | `weak-spots-session` | "30 min on X", "weak spots", "deep dive" |
-| `math-session` | "математика", "math session" — Nicole/Ernest math tracks, CC + доска |
+| `math-session` | "математика", "физика", "math session" — Nicole/Ernest, CC + доска |
 | `quiz-development` | "add questions", "fix question", "audit" — authoring |
 | `stats-review` | Stats JSON upload, "review stats" |
 | `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
