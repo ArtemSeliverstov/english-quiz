@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Guard against fabricated user turns inside assistant output (incident 2026-07-25,
 // Nicole math S6: model appended "user…"-marked replies to its own messages and
-// answered them). Wired as Stop + PreToolUse hook in .claude/settings.json.
+// answered them; incident 2026-08-30, math S17: fable-5 leaked ~17 predicted
+// answers as line-start "um<answer>" strings the old signatures missed).
+// Wired as Stop + PreToolUse hook in .claude/settings.json.
 //
 // Scans assistant text blocks of the CURRENT turn (everything after the last real
 // user text record in the transcript) for line-start fabrication markers.
@@ -23,6 +25,10 @@ const SIGNATURES = [
   /(^|\n)(?:human|assistant|система)\s*:[^\n]*/gi,
   // fake visible think-block: line-start lowercase "think" + capitalized sentence
   /(^|\n)think\s+[A-ZА-ЯЁ][^\n]*/g,
+  // leaked predicted reply: line-start "um" glued to anything but a lowercase Latin
+  // letter — "um30 уменьшаемое", "umC", "um*(жду 🙂)*", "um складыватель" (S17);
+  // lowercase continuation ("umbrella") stays legal
+  /(^|\n)um(?=[^a-z\n])[^\n]*/g,
 ];
 
 function readTail(path) {
