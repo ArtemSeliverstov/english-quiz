@@ -297,6 +297,22 @@ Makes the promotion gate (`count >= 2` → `weak_patterns`) cheap to run daily. 
 drops the promoted `pattern_id` from the buffer in one write. Label composition stays with the
 skill (Claude) — the tool never invents a machine-generated label. See `coach-notes-schema.md`.
 
+### `ru_retest_queue.js` — RU-track retest queue (generated view)
+
+Builds `progress/ru-retest-queue-{name}.md` from a player's `exercises` rows: every
+`error_types[]` entry is a pattern; a pattern is retested cold at +3 days while it has
+0 cold passes, +7 after 1, +14 after 2, and leaves the queue after 3. Cold passes are
+logged as `meta.cold_passes: {pattern_id: n}` on any later exercise row (the session
+that ran the cold разминка); a later fail resets the count. Immediate retests right
+after teaching are never counted. Read-only against Firestore.
+
+```
+node tools/ru_retest_queue.js --out progress/ru-retest-queue-nicole.md
+node tools/ru_retest_queue.js --player ernest_ru
+```
+
+Run at the start of every RU session (to pick the ПОРА rows) and again after logging it.
+
 ## One-off scripts — house rule
 
 One-off migration/authoring scripts **never enter this directory or the repo**

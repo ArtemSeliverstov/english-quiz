@@ -59,7 +59,8 @@ References win on conflict.
 | `progress/phrasal-verbs-tracker-anna.md` | Anna | `stats-review` (status + Freq) |
 | `progress/natural-phrases-tracker-{name}.md` × 5 | per player | `stats-review` — **generated** view of `phrase_tracker`, never hand-edit |
 | `progress/weak-spots-tracker-artem.md` | Artem | `stats-review` — two-tier; builder-only |
-| `progress/exercise-domain-map-artem.md` | Artem | `stats-review`/on-demand — leverage-sorted program view; ▲ zone opens sessions. |
+| `progress/exercise-domain-map-artem.md` | Artem | `stats-review`/on-demand — leverage-sorted program view. |
+| `progress/ru-retest-queue-nicole.md` | Nicole (RU) | `tools/ru_retest_queue.js` — **generated**, never hand-edit |
 
 ---
 
@@ -72,11 +73,11 @@ References win on conflict.
 | `free-write` | "free write", "поговорим", "пообщаемся" — CC-side |
 | `interview-prep` | "interview prep", "mock interview" — Artem audio-first |
 | `weak-spots-session` | "30 min on X", "weak spots", "deep dive" |
-| `math-session` | "математика", "физика", "math session" — Nicole/Ernest, CC + доска |
+| `math-session` | "математика", "физика", "math session" — Nicole/Ernest |
 | `quiz-development` | "add questions", "fix question", "audit" — authoring |
 | `stats-review` | Stats JSON upload, "review stats" |
-| `routing-audit` | "audit landing", "check routing" — learner-shell CTA alignment |
-| `register-check` | "register check", "check my phrasing" — B2/C1 message pass |
+| `routing-audit` | "audit landing", "check routing" |
+| `register-check` | "register check", "check my phrasing" |
 | `morning-coach` | cloud 07:00 + "morning brief" |
 | `mistakes-review` | "review mistakes" + cloud 07:00 — past-31h triage |
-| `deploy-build` | "deploy", "ship it", "push the changes" — pre-deploy validation |
+| `deploy-build` | "deploy", "ship it", "push the changes" |

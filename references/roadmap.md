@@ -29,9 +29,9 @@ What's next, what's deferred. Ordered by category, not strict priority.
 ## Phase 1 — Content priorities
 
 Canonical table lives in `references/coverage-matrix.md` (single home — this section
-used to duplicate it and both copies drifted). Current bank: 2,376 q — 2,246 EN across
-27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 130 RU-track
-(outside the EN matrix; v20260818 added Синтаксис/Причастия/Сложное ×15). Highlights:
+used to duplicate it and both copies drifted). Current bank: 2,415 q — 2,246 EN across
+27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 169 RU-track
+(outside the EN matrix; v20260818 added Синтаксис/Причастия/Сложное ×15; v20260908 added НЕ с частями речи ×15 — Nicole quiz probe 08–15.09). Highlights:
 Natural English shipped (30 q, in Anna's window); C1 target met; C2 remains the open gap.
 
 ---
@@ -50,7 +50,7 @@ placement instrument `diagnostics/ru-ernest-diagnostic-1.md`. Diagnostics #1 (27
 `plans/ru-track-ernest.md`. Shipped v20260818: EN/RU закладки (`?track=ru` entry, picker
 split, «📕 Русский» cross-links) + his sprint categories Синтаксис / Причастия и
 деепричастия / Сложное предложение (×15 each) + `ernest_ru` window re-composed to them.
-Next: W2 content for Nicole (НЕ, слитно/раздельно/дефис), Ernest sprint sessions S1–S10,
+Next: Nicole quiz probe verdict 15.09 (`daily_activity` ≥3 days → author W2–W5: слитно/раздельно/дефис, числительные, пунктуация; else spacing stays in CC — `plans/ru-track-nicole.md` § Session protocol), Ernest sprint sessions S1–S10,
 family-profiles Tamos re-frame (по аппруву).
 
 Done items (S31): B1 Grammar expansion, B1 Articles expansion, Used To category,

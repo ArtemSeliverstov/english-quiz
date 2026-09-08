@@ -91,6 +91,16 @@ After any kickoff (CC-led or historical): log via `tools/log_exercise.js nicole_
 - Worker RU coach mode (self-serve «переспросить правило») — phase 2. Trigger: kickoff model works but she needs re-explanations between sessions.
 - **Kickoffs run CC-led, not parent-led** (decision 2026-07-26, Artem + Anna): the original W1 script asked a parent to teach from `ref/ru/` cold, and it didn't transfer — neither could tell what needed explaining. Parents' role is getting her to the computer, not narrating the algorithm. Same shape as math-track sessions (`plans/math-track-nicole.md`), which never had a parent-script layer to begin with.
 
+## Session protocol — additions 2026-09-08
+
+Основание: mini-mock B 07.09 (`diagnostics/nicole_ru_final_week_29-31.md` § Результаты). Немедленные ретесты после разбора проходят почти всегда, отложенные через 2–4 дня — 12/14, через 8 дней без разминки — 7/12. Теряется не правило, а запуск проверки; теряется за неделю без контакта.
+
+1. **Холодная разминка открывает сессию** — до 5 строк со статусом ПОРА из `progress/ru-retest-queue-nicole.md` (`node tools/ru_retest_queue.js --out …` перед сессией), новые слова, без объяснения перед ответом. Это единственный замер; немедленный ретест после объяснения — не evidence и в очередь не пишется. Попадания логируются в строке сессии как `meta.cold_passes: {pattern_id: n}`; промах — обычный `error_types[]` (сбрасывает счёт). Три холодных попадания закрывают паттерн.
+2. **Ответ = проверка + ответ.** В дриле голое «слитно»/«нн» не засчитывается: сначала слово-детектор («стык», «-ЯН», «а-спор», «хозяин есть», «что?»), потом ответ. На бумажном mock детектор пишется на полях, проверяются обе колонки.
+3. **Каждое правило — контрастной парой** в момент объяснения, не после ошибки («не большой, а маленький / небольшой, но уютный»; «по-осеннему тепло / по осеннему парку»). Якорь без пары дал гиперкоррекцию в ту же сессию (07.09).
+4. **Контакт не реже раза в 2–3 дня**, пусть 10 минут = только разминка. Разрыв длиннее недели обнуляет больше, чем даёт любой урок.
+5. **Квиз — пробник 08–15.09.** Категория «RU: НЕ с частями речи» (`ru_ne01–15`) под её детекторы, фиксированный слот 5 мин после домашки, 15 вопросов. Профиль `nicole_ru` до 08.09 не открывался ни разу (0 ответов). Решение по `daily_activity`: ≥3 дня за неделю → авторим W2–W5 (слитно/раздельно/дефис, числительные, пунктуация, части речи-ловушки) и интервалы отдаём smart-режиму; иначе спейсинг остаётся в CC, в квиз больше не вкладываемся.
+
 ## Build order
 
 1. Data skeleton: `players/nicole_ru` doc + `study_plan` seed + `daily_activity` bump in play loop
