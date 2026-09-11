@@ -29,9 +29,9 @@ What's next, what's deferred. Ordered by category, not strict priority.
 ## Phase 1 — Content priorities
 
 Canonical table lives in `references/coverage-matrix.md` (single home — this section
-used to duplicate it and both copies drifted). Current bank: 2,415 q — 2,246 EN across
-27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 169 RU-track
-(outside the EN matrix; v20260818 added Синтаксис/Причастия/Сложное ×15; v20260908 added НЕ с частями речи ×15 — Nicole quiz probe 08–15.09). Highlights:
+used to duplicate it and both copies drifted). Current bank: 2,435 q — 2,246 EN across
+27 categories (B1 759 · B2 1128 · C1 348 · C2 11 — `audits/` 2026-07-03) + 189 RU-track
+(outside the EN matrix; v20260818 added Синтаксис/Причастия/Сложное ×15; v20260908 added НЕ с частями речи ×15 — Nicole quiz probe 08–15.09; v20260911 added Математические термины ×20 — лексика условий олимпиады). Highlights:
 Natural English shipped (30 q, in Anna's window); C1 target met; C2 remains the open gap.
 
 ---
