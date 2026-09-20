@@ -5,7 +5,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta name="app-version" content="v20260911">
+  <meta name="app-version" content="v20260920">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f0e17">
 <meta name="mobile-web-app-capable" content="yes">
@@ -205,6 +205,10 @@ header p{color:var(--muted);font-family:'DM Mono',monospace;font-size:.7rem;text
   border-radius:0 8px 8px 0;padding:.6rem 1rem;margin-bottom:1.2rem;
   font-size:.88rem;color:var(--muted);line-height:1.6;}
 .multi-sentence{font-size:1.1rem;font-weight:600;line-height:2.2;margin-bottom:1.2rem;}
+.cat-stakes{background:rgba(78,154,241,.07);border-left-color:#4e9af1;font-size:.82rem;}
+.lh-mastered-list{line-height:1.9;}
+.lh-mastered-chip{display:inline-block;background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.25);
+  border-radius:999px;padding:.15rem .6rem;margin:.1rem .3rem .1rem 0;color:var(--text);font-size:.82rem;}
 .mblank{display:inline-flex;align-items:center;justify-content:center;
   min-width:54px;height:32px;border-bottom:2px solid var(--accent);
   font-family:'DM Mono',monospace;font-size:.9rem;font-weight:700;
@@ -1147,7 +1151,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
 
 <header>
   <h1>English <span>Grammar</span> Quiz</h1>
-  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260911</span></p>
+  <p id="hdr-sub"><span id="hdr-player" style="display:none;cursor:pointer;" onclick="showNamePicker()" title="Сменить игрока / Switch player"></span> <a id="refLink" href="ref/index.html" style="text-decoration:none;font-size:.8rem;opacity:.6;transition:opacity .15s;" title="Grammar Reference">📖</a> <span id="hdr-ver" style="opacity:.45;font-size:.65rem">v20260920</span></p>
 </header>
 
 <!-- TABS -->
@@ -1188,6 +1192,11 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
         <div id="lh-medals-delta" class="lh-medals-delta"></div>
       </div>
       <button class="lh-medals-link" onclick="homeOpenStats()">View →</button>
+    </div>
+
+    <div class="lh-zone" id="lh-mastered-zone" style="display:none;">
+      <div class="lh-zone-label">Closed topics</div>
+      <div id="lh-mastered-list" class="lh-mastered-list"></div>
     </div>
 
     <div class="lh-zone" id="lh-streaks-zone">
@@ -1398,7 +1407,7 @@ select.ex-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg x
     <h2 id="grad-title" style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:.4rem;color:var(--text);"></h2>
     <p id="grad-sub" style="color:var(--muted);font-size:.875rem;margin-bottom:1.25rem;line-height:1.6;"></p>
     <button id="grad-upgrade-btn" onclick="gradUpgrade()" style="width:100%;padding:.65rem 1rem;border-radius:8px;border:none;background:var(--accent);color:#0f0e17;font-weight:700;font-size:.95rem;cursor:pointer;margin-bottom:.6rem;"></button>
-    <button onclick="dismissGrad()" style="background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;padding:.3rem;">Maybe later</button>
+    <button id="grad-later-btn" onclick="dismissGrad()" style="background:none;border:none;color:var(--muted);font-size:.82rem;cursor:pointer;padding:.3rem;">Maybe later</button>
   </div>
 </div>
 
@@ -4949,6 +4958,10 @@ function renderLearnerHome() {
 
   // Zone 5: RU-track program card (visible only when study_plan exists)
   renderRuProgramCard();
+
+  // Zone 6: closed-topics shelf + one-time closure celebration (doctrine §5)
+  renderLearnerMasteredShelf();
+  checkMasteredCelebration();
 }
 
 async function renderLearnerFamilyBoards() {
@@ -5216,6 +5229,21 @@ const QUIZ_COUNT_DEFAULT = 10;
 function quizCountFor(player) {
   return QUIZ_COUNT_BY_PLAYER[player] || QUIZ_COUNT_DEFAULT;
 }
+
+// School-stakes lines (ernest_ru): one muted line on the first question of a
+// category per session, tying the drill to the Tamos grade-10 assessment.
+// Doctrine §5 — stakes framing, not sparkle; never names what's being tested.
+const CAT_STAKES_ERNEST = {
+  'RU: Синтаксис': 'В 10 классе с этого начинается любой разбор предложения на уроке.',
+  'RU: Причастия и деепричастия': 'Обороты и их запятые — главный источник потерянных баллов в письменных работах.',
+  'RU: Сложное предложение': 'Ядро контрольных по синтаксису в 10 классе.',
+  'RU: Н/НН': 'Постоянный гость школьных диктантов и тестов — в 10 классе спрашивают без подсказок.',
+  'RU: Морфемика и части речи': 'Язык, на котором сформулированы задания учебника: «разберите по составу», «определите часть речи».',
+};
+function catStakesFor(player, cat) {
+  return player === 'ernest_ru' ? (CAT_STAKES_ERNEST[cat] || null) : null;
+}
+let sessionStakesShown = new Set();
 
 async function homeFindPartialTranslation(player) {
   try {
@@ -5947,6 +5975,18 @@ function renderQ() {
 
   const optsEl = document.getElementById('q-options');
   optsEl.innerHTML = '';
+
+  // School-stakes line: first question of a category per session (ernest_ru only,
+  // see CAT_STAKES_ERNEST). Rendered above the rule intro.
+  if (cur === 0) sessionStakesShown = new Set();
+  const stakesLine = catStakesFor(currentPlayer, q.cat);
+  if (stakesLine && !sessionStakesShown.has(q.cat)) {
+    sessionStakesShown.add(q.cat);
+    const sEl = document.createElement('div');
+    sEl.className = 'multi-intro cat-stakes';
+    sEl.textContent = '🎯 ' + stakesLine;
+    optsEl.appendChild(sEl);
+  }
 
   // Rule-card intro for any type (RU-track scaffold fade: first items of a topic
   // carry the algorithm, later ones don't). multi renders its own inside
@@ -7122,10 +7162,18 @@ function showGradModal(level, acc, nextLevel) {
   btn.textContent = 'Enable ' + cfg.next + ' questions →';
   btn.style.background = cfg.color;
   btn.dataset.next = cfg.next;
-  // Confetti
+  btn.onclick = gradUpgrade;
+  const later = document.getElementById('grad-later-btn');
+  if (later) later.style.display = '';
+  spawnGradConfetti(cfg.color);
+  const modal = document.getElementById('grad-modal');
+  modal.style.display = 'flex';
+}
+
+function spawnGradConfetti(primaryColor) {
   const c = document.getElementById('grad-confetti');
   c.innerHTML = '';
-  const colors = [cfg.color, '#fbbf24', '#f87171', '#34d399', '#60a5fa'];
+  const colors = [primaryColor, '#fbbf24', '#f87171', '#34d399', '#60a5fa'];
   for (let i = 0; i < 22; i++) {
     const dot = document.createElement('div');
     dot.className = 'conf-dot';
@@ -7136,8 +7184,6 @@ function showGradModal(level, acc, nextLevel) {
       'transform:rotate(' + (Math.random()*180) + 'deg);';
     c.appendChild(dot);
   }
-  const modal = document.getElementById('grad-modal');
-  modal.style.display = 'flex';
 }
 
 function gradUpgrade() {
@@ -7150,6 +7196,78 @@ function gradUpgrade() {
 function dismissGrad() {
   const modal = document.getElementById('grad-modal');
   if (modal) modal.style.display = 'none';
+}
+
+// ── Category-closure celebration (learner shell) ──────────────────────────
+// Rotation moves categories into learning_path.mastered_categories via a
+// CC-side Firestore patch; the first home render after that shows a one-time
+// "topic closed" modal (doctrine §5: rare meaningful achievements, not
+// per-answer rewards). Once-guard: DB._masteredCelebrated — local-only,
+// carried through the loadFromFirebase merge. On a device with no guard yet,
+// only closures dated within 14 days celebrate; older ones baseline silently.
+function masteredCategoryNames(lp) {
+  return ((lp && lp.mastered_categories) || [])
+    .map(m => typeof m === 'string' ? m : (m && m.category))
+    .filter(Boolean);
+}
+function catDisplayName(cat) { return String(cat).replace(/^RU:\s*/, ''); }
+
+function showMasteryModal(cats) {
+  const ru = typeof isRuTrack === 'function' && isRuTrack(currentPlayer);
+  document.getElementById('grad-badge').textContent = '🏁';
+  document.getElementById('grad-title').textContent =
+    cats.length === 1 ? (ru ? 'Тема закрыта!' : 'Topic closed!')
+                      : (ru ? 'Темы закрыты!' : 'Topics closed!');
+  document.getElementById('grad-sub').textContent =
+    cats.map(catDisplayName).join(' · ') + (ru
+      ? ' — без ошибок. Тема уходит из ежедневной тренировки и будет изредка возвращаться на повторение.'
+      : ' — mastered. It leaves the daily rotation and will come back occasionally for review.');
+  const btn = document.getElementById('grad-upgrade-btn');
+  btn.textContent = ru ? 'Класс!' : 'Nice!';
+  btn.style.background = '#34d399';
+  btn.dataset.next = '';
+  btn.onclick = dismissGrad;
+  const later = document.getElementById('grad-later-btn');
+  if (later) later.style.display = 'none';
+  spawnGradConfetti('#34d399');
+  document.getElementById('grad-modal').style.display = 'flex';
+}
+
+function checkMasteredCelebration() {
+  try {
+    if (typeof isLearnerShell !== 'function' || !isLearnerShell()) return;
+    const entries = (DB.learning_path && DB.learning_path.mastered_categories) || [];
+    if (!entries.length) return;
+    const seen = Array.isArray(DB._masteredCelebrated) ? DB._masteredCelebrated : null;
+    const cutoff = Date.now() - 14 * 86400000;
+    const all = [], fresh = [];
+    entries.forEach(m => {
+      const cat = typeof m === 'string' ? m : (m && m.category);
+      if (!cat) return;
+      all.push(cat);
+      if (seen ? !seen.includes(cat)
+               : !!(m && m.mastered_date && Date.parse(m.mastered_date) >= cutoff)) fresh.push(cat);
+    });
+    if (seen && !fresh.length) return;
+    DB._masteredCelebrated = all;
+    saveData(DB);
+    if (fresh.length) setTimeout(() => showMasteryModal(fresh), 600);
+  } catch (e) { console.warn('mastered celebration check failed', e); }
+}
+
+// Closed-topics shelf on the learner home card — the durable counterpart of
+// the one-time modal: mastered categories as chips, no counters, no percentages.
+function renderLearnerMasteredShelf() {
+  const zone = document.getElementById('lh-mastered-zone');
+  if (!zone) return;
+  const cats = masteredCategoryNames(DB.learning_path);
+  if (!cats.length) { zone.style.display = 'none'; return; }
+  const ru = typeof isRuTrack === 'function' && isRuTrack(currentPlayer);
+  const label = zone.querySelector('.lh-zone-label');
+  if (label) label.textContent = ru ? 'Закрытые темы' : 'Closed topics';
+  document.getElementById('lh-mastered-list').innerHTML =
+    cats.map(c => '<span class="lh-mastered-chip">🏁 ' + catDisplayName(c) + '</span>').join('');
+  zone.style.display = '';
 }
 function renderLevelInference() {
   const banner = document.getElementById('level-inference-banner');
@@ -8177,11 +8295,15 @@ async function loadFromFirebase() {
         daily_activity: remote.daily_activity  || {},
         badges:         remote.badges          || {},
         _owner:         currentPlayer,   // client-side marker; stripped from sync payload
+        // Local-only once-guard for the closure celebration — must survive the
+        // remote merge or every sync re-celebrates (null = never initialised).
+        _masteredCelebrated: (local && Array.isArray(local._masteredCelebrated)) ? local._masteredCelebrated : null,
       };
       if (typeof saveData === 'function') await saveData(merged);
       if (typeof DB !== 'undefined') {
         Object.assign(DB, merged);
         if (typeof renderStats === 'function') renderStats();
+        if (typeof checkMasteredCelebration === 'function') checkMasteredCelebration();
       }
       return true;
     }

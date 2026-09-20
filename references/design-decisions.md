@@ -318,6 +318,24 @@ to SW caching index.html only.)
 Force SW refresh after deploy. Uses `location.replace(location.pathname)` (not
 `document.write` — that re-executes scripts and crashes the app, s21).
 
+### Category closure as celebration event + shelf (2026-09-20)
+When a CC-side rotation moves categories into `learning_path.mastered_categories`,
+the learner shell shows a one-time «Тема закрыта» modal (reuses `#grad-modal`) and
+a permanent chips shelf on home. Rationale: doctrine §5 «rare meaningful
+achievements» — for a teenager, closure of a topic is the honest motivator;
+per-answer rewards stay banned (§6). Once-guard `DB._masteredCelebrated` is
+local-only and carried through the `loadFromFirebase` merge; on a fresh device
+only closures with `mastered_date` ≤14 days old celebrate, older ones baseline
+silently. `mastered_categories` entries must be objects `{category,
+mastered_date}` — plain strings silently skip the 30-day spaced-review path in
+`applyLearnerWindowFilter`.
+
+### School-stakes line per category (ernest_ru, 2026-09-20)
+`CAT_STAKES_ERNEST` map → one muted line (🎯) on the first question of a category
+per session, tying the drill to the Tamos grade-10 assessment. Stakes framing,
+not sparkle (§5); never names the tested rule (diagnostic-contamination rule).
+Scoped to ernest_ru until another player needs it.
+
 ---
 
 ## Operational
